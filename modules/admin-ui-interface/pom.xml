@@ -13,8 +13,8 @@
   <properties>
     <opencast.basedir>${project.basedir}/../..</opencast.basedir>
     <checkstyle.skip>false</checkstyle.skip>
-    <admin-ui-interface.url>https://github.com/opencast/opencast-admin-ui-interface/releases/download/2022-10-19/oc-admin-ui-interface-2022-10-19.tar.gz</admin-ui-interface.url>
-    <admin-ui-interface.sha256>3e6a24e3d3a7aca5d86d08ce9119c4b12a0a5f4cfde6bc4dd7ba3b94cccbc72b</admin-ui-interface.sha256>
+    <interface.url>https://github.com/opencast/opencast-admin-interface/releases/download/2023-02-03/oc-admin-ui-2023-02-03.tar.gz</interface.url>
+    <interface.sha256>0d7e03d482104333c4be5f8b0c8613b9c115da1f3b0d9d7c26a3280ba8d5c4f1</interface.sha256>
   </properties>
   <build>
     <plugins>
@@ -28,8 +28,8 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>${admin-ui-interface.url}</url>
-              <sha256>${admin-ui-interface.sha256}</sha256>
+              <url>${interface.url}</url>
+              <sha256>${interface.sha256}</sha256>
               <unpack>true</unpack>
               <checkSignature>true</checkSignature>
               <outputDirectory>target/classes/admin-ui-interface/</outputDirectory>
