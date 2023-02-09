@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="1c89fa51-7999-4e5a-bf54-428c0d598579" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.crowdin.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/ISSUE_TEMPLATE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/PULL_REQUEST_TEMPLATE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/dependabot.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/check-icla.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/check-merge-conflict.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/create-release.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/deploy-crowdin-keys.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/deploy-docs.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/test-admin-interface-frontend.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/test-configuration.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/test-database-upgrade.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/test-documentation-build.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/test-lti-tools.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/test-opencast-build.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/update-matrix-room.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/update-translations.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.style-and-markdown-build.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/components/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/components/Header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/explore-h2-database.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/explore-h2-database.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/git-branching-model-simple.svg" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/git-branching-model-simple.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/git-branching-model-two-versions.svg" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/git-branching-model-two-versions.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/git-version-tag.svg" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/git-version-tag.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/configuration/opensearch.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/configuration/opensearch.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/datepicker/animated-overlay.gif" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/datepicker/animated-overlay.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/installation/rpm-el.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/installation/rpm-el.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/javascript/popper.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/javascript/popper.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/javascript/tippy.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/javascript/tippy.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/modules/paella.player7/configuration.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/modules/paella.player7/configuration.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/modules/plugin-management.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/modules/plugin-management.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/amberscripttranscripts.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/amberscripttranscripts.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/google-speech-authorisation.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/google-speech-authorisation.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/google-speech-create_oauth-client-id.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/google-speech-create_oauth-client-id.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/google-speech_client-secret.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/google-speech_client-secret.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/google-speech_create_token.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/google-speech_create_token.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/google-speech_genarated-token.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/google-speech_genarated-token.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/googlespeechtranscripts.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/googlespeechtranscripts.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/microsoftazuretranscripts.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/microsoftazuretranscripts.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/vosk.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/vosk.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/watsontranscripts.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/watsontranscripts.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/whisper.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/modules/transcription.modules/whisper.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/prereleases.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/prereleases.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/workflowoperationhandlers/assert-woh.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/workflowoperationhandlers/assert-woh.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/workflowoperationhandlers/microsoft-azure-attach-transcription-woh.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/workflowoperationhandlers/microsoft-azure-attach-transcription-woh.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/workflowoperationhandlers/microsoft-azure-start-transcription-woh.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/workflowoperationhandlers/microsoft-azure-start-transcription-woh.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/workflowoperationhandlers/publication-to-workspace-woh.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/workflowoperationhandlers/publication-to-workspace-woh.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/workflowoperationhandlers/tag-engage-woh.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/workflowoperationhandlers/tag-engage-woh.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/workflowoperationhandlers/webvtt-to-cutmarks.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/img/workflowoperationhandlers/webvtt-to-cutmarks.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/modules/paella-player-7/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/modules/paella-player-7/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/reducers/healthReducers.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/reducers/healthReducers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/styles/base/fontawesome/_fixed-width.scss" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/styles/base/fontawesome/_fixed-width.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/styles/base/fontawesome/_larger.scss" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/styles/base/fontawesome/_larger.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/styles/base/fontawesome/_list.scss" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/styles/base/fontawesome/_list.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/styles/components/_breadcrumbs.scss" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/styles/components/_breadcrumbs.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/styles/components/_form.scss" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/styles/components/_form.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/styles/components/_stats.scss" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/styles/components/_stats.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/styles/components/modals/_nav.scss" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/styles/components/modals/_nav.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/styles/vendor/bourbon/functions/_px-to-em.scss" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/styles/vendor/bourbon/functions/_px-to-em.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/styles/vendor/bourbon/functions/_strip-units.scss" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/styles/vendor/bourbon/functions/_strip-units.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/styles/vendor/neat/grid/_private.scss" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/styles/vendor/neat/grid/_private.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/styles/vendor/neat/grid/_span-columns.scss" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/styles/vendor/neat/grid/_span-columns.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/styles/views/modals/_edit-events.scss" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/styles/views/modals/_edit-events.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/styles/views/modals/_event-series.scss" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/styles/views/modals/_event-series.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/thunks/healthThunks.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/thunks/healthThunks.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/thunks/statisticsThunks.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/thunks/statisticsThunks.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/app/GET/admin-ng/event/1a2a040b-ef73-4323-93dd-052b86036b75/asset/attachment/attachments.json" beforeDir="false" afterPath="$PROJECT_DIR$/test/app/GET/admin-ng/event/1a2a040b-ef73-4323-93dd-052b86036b75/asset/attachment/attachments.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/app/GET/admin-ng/event/1a2a040b-ef73-4323-93dd-052b86036b75/asset/attachment/cover.json" beforeDir="false" afterPath="$PROJECT_DIR$/test/app/GET/admin-ng/event/1a2a040b-ef73-4323-93dd-052b86036b75/asset/attachment/cover.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/app/GET/admin-ng/event/events.json" beforeDir="false" afterPath="$PROJECT_DIR$/test/app/GET/admin-ng/event/events.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/app/GET/admin-ng/resources/services/filters.json" beforeDir="false" afterPath="$PROJECT_DIR$/test/app/GET/admin-ng/resources/services/filters.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2KUeTZkCIVW4NWicUHNzNzazqGB" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/build/opencast-dist-develop-12-SNAPSHOT/etc" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/build/opencast-dist-develop-12-SNAPSHOT/etc" />
+      <recent name="$PROJECT_DIR$/etc" />
+    </key>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1c89fa51-7999-4e5a-bf54-428c0d598579" name="Default Changelist" comment="" />
+      <created>1674033596861</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1674033596861</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Fix Picard package version">
+      <created>1674485837736</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1674485837736</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Remove everything ActiveMQ related from Picard">
+      <created>1674486928532</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1674486928532</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Fix table column names&#10;&#10;Fixes various table column names for events and series that have changed over the years. This should make sorting for those columns work again.">
+      <created>1674563042883</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1674563042883</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Make runtime-info-ui the universal login page&#10;&#10;Turns the login page served by the runtime-info-ui module into the universal login page for all Opencast nodes.&#10;This means the same login page is shown across nodes, instead of the admin node having a special login page.&#10;&#10;Gets rid of the runtime-info-ui-ng module, which is no longer needed.&#10;&#10;Gets rid of the overview page shown after logging in on non-admin nodes (on the root path). Instead, immediately redirects to the rest docs.&#10;&#10;ToDos:&#10;- Bring the login page up to the style, functionality and code of the login page in admin-ui-frontend&#10;- Remove the login page from admin-ui-frontend">
+      <created>1675268357392</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1675268357392</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Replace admin-ui-frontend with admin-ui-interface&#10;&#10;Throws away the old admin UI and replaces it with a modul for the new admin ui. Much like studio and editor, the new admin ui will not be built during the general Opencast build process, but builds will be pulled from a secondary repository.">
+      <created>1675355611403</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1675355611403</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Fix Picard package version" />
+    <MESSAGE value="Remove everything ActiveMQ related from Picard" />
+    <MESSAGE value="Fix table column names&#10;&#10;Fixes various table column names for events and series that have changed over the years. This should make sorting for those columns work again." />
+    <MESSAGE value="Make runtime-info-ui the universal login page&#10;&#10;Turns the login page served by the runtime-info-ui module into the universal login page for all Opencast nodes.&#10;This means the same login page is shown across nodes, instead of the admin node having a special login page.&#10;&#10;Gets rid of the runtime-info-ui-ng module, which is no longer needed.&#10;&#10;Gets rid of the overview page shown after logging in on non-admin nodes (on the root path). Instead, immediately redirects to the rest docs.&#10;&#10;ToDos:&#10;- Bring the login page up to the style, functionality and code of the login page in admin-ui-frontend&#10;- Remove the login page from admin-ui-frontend" />
+    <MESSAGE value="Replace admin-ui-frontend with admin-ui-interface&#10;&#10;Throws away the old admin UI and replaces it with a modul for the new admin ui. Much like studio and editor, the new admin ui will not be built during the general Opencast build process, but builds will be pulled from a secondary repository." />
+    <option name="LAST_COMMIT_MESSAGE" value="Replace admin-ui-frontend with admin-ui-interface&#10;&#10;Throws away the old admin UI and replaces it with a modul for the new admin ui. Much like studio and editor, the new admin ui will not be built during the general Opencast build process, but builds will be pulled from a secondary repository." />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2142" y="0" width="1032" height="933" key="CommitChangelistDialog2" timestamp="1675355610920">
+      <screen x="1920" y="0" width="2560" height="1408" />
+    </state>
+    <state x="2142" y="0" width="1032" height="933" key="CommitChangelistDialog2/0.0.1920.1080/1920.0.2560.1408/4480.0.2560.1440@1920.0.2560.1408" timestamp="1675355610920" />
+    <state x="222" y="203" width="1973" height="1016" key="CommitChangelistDialog2/2560.171.1920.1080/0.203.2560.1016@0.203.2560.1016" timestamp="1675268357188" />
+    <state width="567" height="526" key="DebuggerActiveHint" timestamp="1674748467397">
+      <screen x="0" y="32" width="2560" height="1376" />
+    </state>
+    <state width="567" height="526" key="DebuggerActiveHint/0.32.2560.1376/2560.0.2560.1440@0.32.2560.1376" timestamp="1674748467397" />
+    <state x="1035" y="542" width="480" height="362" key="ExperimentsDialog" timestamp="1675946358036">
+      <screen x="0" y="32" width="1920" height="1048" />
+    </state>
+    <state x="1035" y="542" width="480" height="362" key="ExperimentsDialog/0.32.1920.1048/1920.0.2560.1440/4480.0.2560.1440@0.32.1920.1048" timestamp="1675946358036" />
+    <state width="2514" height="204" key="GridCell.Tab.0.bottom" timestamp="1675354114806">
+      <screen x="1920" y="0" width="2560" height="1408" />
+    </state>
+    <state width="2514" height="204" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.2560.1408/4480.0.2560.1440@1920.0.2560.1408" timestamp="1675354114806" />
+    <state width="2514" height="514" key="GridCell.Tab.0.bottom/0.32.2560.1376/2560.0.2560.1440@0.32.2560.1376" timestamp="1674752250933" />
+    <state width="2514" height="204" key="GridCell.Tab.0.bottom/2560.171.1920.1080/0.203.2560.1016@0.203.2560.1016" timestamp="1675269830595" />
+    <state width="2514" height="204" key="GridCell.Tab.0.center" timestamp="1675354114806">
+      <screen x="1920" y="0" width="2560" height="1408" />
+    </state>
+    <state width="2514" height="204" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.2560.1408/4480.0.2560.1440@1920.0.2560.1408" timestamp="1675354114806" />
+    <state width="2514" height="514" key="GridCell.Tab.0.center/0.32.2560.1376/2560.0.2560.1440@0.32.2560.1376" timestamp="1674752250933" />
+    <state width="2514" height="204" key="GridCell.Tab.0.center/2560.171.1920.1080/0.203.2560.1016@0.203.2560.1016" timestamp="1675269830595" />
+    <state width="2514" height="204" key="GridCell.Tab.0.left" timestamp="1675354114806">
+      <screen x="1920" y="0" width="2560" height="1408" />
+    </state>
+    <state width="2514" height="204" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.2560.1408/4480.0.2560.1440@1920.0.2560.1408" timestamp="1675354114806" />
+    <state width="2514" height="514" key="GridCell.Tab.0.left/0.32.2560.1376/2560.0.2560.1440@0.32.2560.1376" timestamp="1674752250933" />
+    <state width="2514" height="204" key="GridCell.Tab.0.left/2560.171.1920.1080/0.203.2560.1016@0.203.2560.1016" timestamp="1675269830595" />
+    <state width="2514" height="204" key="GridCell.Tab.0.right" timestamp="1675354114806">
+      <screen x="1920" y="0" width="2560" height="1408" />
+    </state>
+    <state width="2514" height="204" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.2560.1408/4480.0.2560.1440@1920.0.2560.1408" timestamp="1675354114806" />
+    <state width="2514" height="514" key="GridCell.Tab.0.right/0.32.2560.1376/2560.0.2560.1440@0.32.2560.1376" timestamp="1674752250933" />
+    <state width="2514" height="204" key="GridCell.Tab.0.right/2560.171.1920.1080/0.203.2560.1016@0.203.2560.1016" timestamp="1675269830595" />
+    <state width="2514" height="204" key="GridCell.Tab.1.bottom" timestamp="1675354114807">
+      <screen x="1920" y="0" width="2560" height="1408" />
+    </state>
+    <state width="2514" height="204" key="GridCell.Tab.1.bottom/0.0.1920.1080/1920.0.2560.1408/4480.0.2560.1440@1920.0.2560.1408" timestamp="1675354114807" />
+    <state width="2514" height="514" key="GridCell.Tab.1.bottom/0.32.2560.1376/2560.0.2560.1440@0.32.2560.1376" timestamp="1674752250933" />
+    <state width="2514" height="204" key="GridCell.Tab.1.bottom/2560.171.1920.1080/0.203.2560.1016@0.203.2560.1016" timestamp="1675269830596" />
+    <state width="2514" height="204" key="GridCell.Tab.1.center" timestamp="1675354114807">
+      <screen x="1920" y="0" width="2560" height="1408" />
+    </state>
+    <state width="2514" height="204" key="GridCell.Tab.1.center/0.0.1920.1080/1920.0.2560.1408/4480.0.2560.1440@1920.0.2560.1408" timestamp="1675354114807" />
+    <state width="2514" height="514" key="GridCell.Tab.1.center/0.32.2560.1376/2560.0.2560.1440@0.32.2560.1376" timestamp="1674752250933" />
+    <state width="2514" height="204" key="GridCell.Tab.1.center/2560.171.1920.1080/0.203.2560.1016@0.203.2560.1016" timestamp="1675269830595" />
+    <state width="2514" height="204" key="GridCell.Tab.1.left" timestamp="1675354114807">
+      <screen x="1920" y="0" width="2560" height="1408" />
+    </state>
+    <state width="2514" height="204" key="GridCell.Tab.1.left/0.0.1920.1080/1920.0.2560.1408/4480.0.2560.1440@1920.0.2560.1408" timestamp="1675354114807" />
+    <state width="2514" height="514" key="GridCell.Tab.1.left/0.32.2560.1376/2560.0.2560.1440@0.32.2560.1376" timestamp="1674752250933" />
+    <state width="2514" height="204" key="GridCell.Tab.1.left/2560.171.1920.1080/0.203.2560.1016@0.203.2560.1016" timestamp="1675269830595" />
+    <state width="2514" height="204" key="GridCell.Tab.1.right" timestamp="1675354114807">
+      <screen x="1920" y="0" width="2560" height="1408" />
+    </state>
+    <state width="2514" height="204" key="GridCell.Tab.1.right/0.0.1920.1080/1920.0.2560.1408/4480.0.2560.1440@1920.0.2560.1408" timestamp="1675354114807" />
+    <state width="2514" height="514" key="GridCell.Tab.1.right/0.32.2560.1376/2560.0.2560.1440@0.32.2560.1376" timestamp="1674752250933" />
+    <state width="2514" height="204" key="GridCell.Tab.1.right/2560.171.1920.1080/0.203.2560.1016@0.203.2560.1016" timestamp="1675269830595" />
+    <state x="2795" y="308" width="800" height="564" key="Vcs.Push.Dialog.v2" timestamp="1675355618546">
+      <screen x="1920" y="0" width="2560" height="1408" />
+    </state>
+    <state x="2795" y="308" key="Vcs.Push.Dialog.v2/0.0.1920.1080/1920.0.2560.1408/4480.0.2560.1440@1920.0.2560.1408" timestamp="1675355618546" />
+    <state x="875" y="425" width="800" height="564" key="Vcs.Push.Dialog.v2/2560.171.1920.1080/0.203.2560.1016@0.203.2560.1016" timestamp="1675268359175" />
+    <state width="1280" height="688" key="XDebugger.FullValuePopup" timestamp="1674748561706">
+      <screen x="0" y="32" width="2560" height="1376" />
+    </state>
+    <state width="1280" height="688" key="XDebugger.FullValuePopup/0.32.2560.1376/2560.0.2560.1440@0.32.2560.1376" timestamp="1674748561706" />
+    <state x="317" y="32" width="1220" height="1048" key="find.popup" timestamp="1675945185481">
+      <screen x="0" y="32" width="1920" height="1048" />
+    </state>
+    <state x="2343" y="0" width="1626" height="1408" key="find.popup/0.0.1920.1080/1920.0.2560.1408/4480.0.2560.1440@1920.0.2560.1408" timestamp="1674731212194" />
+    <state x="2488" y="0" width="2185" height="1408" key="find.popup/0.32.1920.1016/1920.0.3440.1440@1920.0.3440.1440" timestamp="1674118687350" />
+    <state x="317" y="32" width="1220" height="1048" key="find.popup/0.32.1920.1048/1920.0.2560.1440/4480.0.2560.1440@0.32.1920.1048" timestamp="1675945185481" />
+    <state x="423" y="32" width="1627" height="1376" key="find.popup/0.32.2560.1376/2560.0.2560.1440@0.32.2560.1376" timestamp="1674752241588" />
+    <state x="423" y="203" width="1626" height="1016" key="find.popup/2560.171.1920.1080/0.203.2560.1016@0.203.2560.1016" timestamp="1675259369430" />
+    <state x="3375" y="514" width="529" height="386" key="git4idea.ui.GitUnstashDialog" timestamp="1674127403527">
+      <screen x="1920" y="0" width="3440" height="1440" />
+    </state>
+    <state x="3375" y="514" width="529" height="386" key="git4idea.ui.GitUnstashDialog/0.32.1920.1016/1920.0.3440.1440@1920.0.3440.1440" timestamp="1674127403527" />
+    <state x="772" y="265" width="672" height="495" key="search.everywhere.popup" timestamp="1675946360438">
+      <screen x="0" y="32" width="1920" height="1048" />
+    </state>
+    <state x="3303" y="321" width="672" height="678" key="search.everywhere.popup/0.32.1920.1016/1920.0.3440.1440@1920.0.3440.1440" timestamp="1674127252973" />
+    <state x="772" y="265" width="672" height="495" key="search.everywhere.popup/0.32.1920.1048/1920.0.2560.1440/4480.0.2560.1440@0.32.1920.1048" timestamp="1675946360438" />
+    <state x="1029" y="338" width="896" height="650" key="search.everywhere.popup/0.32.2560.1376/2560.0.2560.1440@0.32.2560.1376" timestamp="1674746287258" />
+    <state x="1029" y="429" width="672" height="479" key="search.everywhere.popup/2560.171.1920.1080/0.203.2560.1016@0.203.2560.1016" timestamp="1674492856067" />
+    <state x="754" y="427" width="475" height="263" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1675945019669">
+      <screen x="0" y="32" width="1920" height="1048" />
+    </state>
+    <state x="2925" y="531" width="540" height="353" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.0.1920.1080/1920.0.2560.1408/4480.0.2560.1440@1920.0.2560.1408" timestamp="1675354478841" />
+    <state x="754" y="427" width="475" height="263" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.32.1920.1048/1920.0.2560.1440/4480.0.2560.1440@0.32.1920.1048" timestamp="1675945019669" />
+  </component>
+</project>
