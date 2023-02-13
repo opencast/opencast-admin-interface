@@ -32,7 +32,7 @@
               <sha256>${interface.sha256}</sha256>
               <unpack>true</unpack>
               <checkSignature>true</checkSignature>
-              <outputDirectory>target/classes/admin-ui-interface/</outputDirectory>
+              <outputDirectory>target/classes/admin-ui/</outputDirectory>
             </configuration>
           </execution>
         </executions>
@@ -49,9 +49,9 @@
           <instructions>
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Build-Number>${buildNumber}</Build-Number>
-            <Private-Package>admin-ui-interface.*</Private-Package>
+            <Private-Package>admin-ui.*</Private-Package>
             <Http-Alias>/admin-ui</Http-Alias>
-            <Http-Classpath>/admin-ui-interface</Http-Classpath>
+            <Http-Classpath>/admin-ui</Http-Classpath>
             <Http-Welcome>index.html</Http-Welcome>
           </instructions>
         </configuration>
