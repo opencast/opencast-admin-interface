@@ -21,6 +21,7 @@ import { hasAccess } from "../../../utils/utils";
 import DropDown from "../DropDown";
 import { filterRoles, getAclTemplateText } from "../../../utils/aclUtils";
 
+export let hasChanges = false;
 /**
  * This component manages the access policy tab of resource details modals
  */
@@ -106,6 +107,7 @@ const ResourceDetailsAccessPolicyTab = ({
 
 	/* resets the formik form and hides the save and cancel buttons */
 	const resetPolicies = (resetFormik) => {
+		hasChanges = false;
 		setPolicyChanged(false);
 		resetFormik();
 	};
@@ -143,6 +145,7 @@ const ResourceDetailsAccessPolicyTab = ({
 			saveNewAccessPolicies(resourceId, access).then((success) => {
 				// fetch new policies from the backend, if save successful
 				if (success) {
+					hasChanges = false;
 					setPolicyChanged(false);
 					fetchAccessPolicies(resourceId);
 				}
@@ -191,6 +194,7 @@ const ResourceDetailsAccessPolicyTab = ({
 	 * initial policies or equal to them */
 	const isPolicyChanged = (newPolicies) => {
 		if (newPolicies.length !== policies.length) {
+			hasChanges = true;
 			return true;
 		}
 		const sortSchema = (pol1, pol2) => {
@@ -206,6 +210,7 @@ const ResourceDetailsAccessPolicyTab = ({
 				sortedNewPolicies[i].actions.length !==
 					sortedInitialPolicies[i].actions.length
 			) {
+				hasChanges = true;
 				return true;
 			}
 			if (
@@ -218,11 +223,13 @@ const ResourceDetailsAccessPolicyTab = ({
 						sortedNewPolicies[i].actions[j] !==
 						sortedInitialPolicies[i].actions[j]
 					) {
+						hasChanges = true;
 						return true;
 					}
 				}
 			}
 		}
+		hasChanges = false;
 		return false;
 	};
 

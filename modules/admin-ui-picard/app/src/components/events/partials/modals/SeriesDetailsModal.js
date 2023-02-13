@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import SeriesDetails from "./SeriesDetails";
+import { hasChanges } from "../../../shared/modals/ResourceDetailsAccessPolicyTab";
 
 /**
  * This component renders the modal for displaying series details
@@ -8,8 +9,19 @@ import SeriesDetails from "./SeriesDetails";
 const SeriesDetailsModal = ({ handleClose, seriesTitle, seriesId }) => {
 	const { t } = useTranslation();
 
+	let confirmUnsaved = () => {
+		return window.confirm(t("CONFIRMATIONS.WARNINGS.UNSAVED_CHANGES"));
+	};
+
 	const close = () => {
-		handleClose();
+		if (hasChanges) {
+			if (confirmUnsaved()) {
+				handleClose();
+				hasChanges = false;
+			}
+		} else {
+			handleClose();
+		}
 	};
 
 	// todo: add hotkeys
