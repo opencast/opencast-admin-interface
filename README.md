@@ -1,68 +1,80 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Opencast Admin UI
+=====================
 
-## Available Scripts
+The Opencast Admin UI is a graphical interface included by Opencast to give
+admins an easy way of managing their Opencast instance.
 
-In the project directory, you can run:
 
-### `npm start`
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Development
+-------
+To test locally, run:
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+    npm start
 
-### `npm test`
+(You may have to run `npm ci` beforehand both in the root and `/app` directory)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This will start a client server in the development mode.
+Open [http://localhost:3000](localhost:3000) to view it in the browser.
+It will also start a backend server with dummy data at localhost:5000.
 
-### `npm run build`
+--------
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To test with real data, instead run:
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+    npm proxy-server
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This will start a proxy server at localhost:5000. It will automatically proxy
+requests to a Opencast instance at localhost:8080.
+You can then start the client in a different tab by running:
 
-### `npm run eject`
+    npm client
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+How to cut a release for Opencast
+---------------------------------
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+1. [NOT YET FUNCTIONAL] (Optional) Run the [Update translations](https://github.com/opencast/opencast-editor/actions/workflows/update-translations.yml) workflow, to make sure all changes from crowdin are included in the next release.
+1. Switch to the commit you want to turn into the release
+1. Create and push a new tag
+   ```bash
+    DATE=$(date +%Y-%m-%d)
+    git tag -m Release -s "$DATE"
+    git push upstream "$DATE":"$DATE"
+   ```
+1. Wait for the [Create release draft](https://github.com/opencast/opencast-editor/actions/workflows/create-release.yml)
+   workflow to finish
+    - It will create a new [GitHub release draft](https://github.com/opencast/opencast-editor/releases)
+    - Review and publish the draft
+1. Submit a pull request against Opencast
+    - [Update the release](https://github.com/opencast/opencast/blob/b2bea8822b95b8692bb5bbbdf75c9931c2b7298a/modules/admin-ui-interface/pom.xml#L16-L17)
+    - [Adjust the documentation](https://github.com/opencast/opencast/blob/b2bea8822b95b8692bb5bbbdf75c9931c2b7298a/docs/guides/admin/docs/modules/admin-ui.md)
+      if necessary
+    - Verify that the new release runs in Opencast, then create the pull request.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Opencast API used by the Admin UI
+-------------
+The Admin UI accesses all endpoints in Opencast located under
 
-### Code Splitting
+* `/admin-ng/*`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+If you want to use current version of the frontend with an earlier Opencast
+version, you will have to cherry pick the relevant commits from the Opencast
+repository yourself.
 
-### Analyzing the Bundle Size
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
 
-### Making a Progressive Web App
+Translating the Admin UI
+-------------
+TBA
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
 
-### Advanced Configuration
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Configuration
+-------------
+The Admin UI frontend cannot be directly configured. Rather, it adapts to the
+various configurations in the Opencast backend. TODO: Throw in some links to the
+docs, which ones?
