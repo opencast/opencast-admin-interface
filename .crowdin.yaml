@@ -1,4 +1,4 @@
-project_id: opencast-community
+project_id: opencast-admin-interface
 api_token_env: CROWDIN_TOKEN
 base_path: .
 preserve_hierarchy: true
