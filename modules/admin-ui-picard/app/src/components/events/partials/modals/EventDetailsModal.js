@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import EventDetails from "./EventDetails";
 import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
-import { hasChanges } from "../../../shared/modals/ResourceDetailsAccessPolicyTab";
 
 /**
  * This component renders the modal for displaying event details
@@ -16,20 +15,16 @@ const EventDetailsModal = ({
 }) => {
 	const { t } = useTranslation();
 
-	let confirmUnsaved = () => {
+	// tracks, whether the policies are different to the initial value
+	const [policyChanged, setPolicyChanged] = useState(false);
+
+	const confirmUnsaved = () => {
 		return window.confirm(t("CONFIRMATIONS.WARNINGS.UNSAVED_CHANGES"));
 	};
 
 	const close = () => {
-		if (hasChanges) {
-			if (confirmUnsaved()) {
-				removeNotificationWizardForm();
-				handleClose();
-				hasChanges = false;
-			} else {
-				removeNotificationWizardForm();
-			}
-		} else {
+		if (!policyChanged || confirmUnsaved()) {
+			setPolicyChanged(false);
 			removeNotificationWizardForm();
 			handleClose();
 		}
@@ -56,7 +51,12 @@ const EventDetailsModal = ({
 						</h2>
 					</header>
 
-					<EventDetails tabIndex={tabIndex} eventId={eventId} />
+					<EventDetails
+						tabIndex={tabIndex}
+						eventId={eventId}
+						policyChanged={policyChanged}
+						setPolicyChanged={(value) => setPolicyChanged(value)}
+					/>
 				</section>
 			</>
 		)

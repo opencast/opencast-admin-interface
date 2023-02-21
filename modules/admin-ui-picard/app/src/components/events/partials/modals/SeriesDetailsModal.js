@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import SeriesDetails from "./SeriesDetails";
-import { hasChanges } from "../../../shared/modals/ResourceDetailsAccessPolicyTab";
 
 /**
  * This component renders the modal for displaying series details
@@ -9,17 +8,16 @@ import { hasChanges } from "../../../shared/modals/ResourceDetailsAccessPolicyTa
 const SeriesDetailsModal = ({ handleClose, seriesTitle, seriesId }) => {
 	const { t } = useTranslation();
 
-	let confirmUnsaved = () => {
+	// tracks, whether the policies are different to the initial value
+	const [policyChanged, setPolicyChanged] = useState(false);
+
+	const confirmUnsaved = () => {
 		return window.confirm(t("CONFIRMATIONS.WARNINGS.UNSAVED_CHANGES"));
 	};
 
 	const close = () => {
-		if (hasChanges) {
-			if (confirmUnsaved()) {
-				handleClose();
-				hasChanges = false;
-			}
-		} else {
+		if (!policyChanged || confirmUnsaved()) {
+			setPolicyChanged(false);
 			handleClose();
 		}
 	};
@@ -36,7 +34,11 @@ const SeriesDetailsModal = ({ handleClose, seriesTitle, seriesId }) => {
 					</h2>
 				</header>
 
-				<SeriesDetails seriesId={seriesId} />
+				<SeriesDetails
+					seriesId={seriesId}
+					policyChanged={policyChanged}
+					setPolicyChanged={(value) => setPolicyChanged(value)}
+				/>
 			</section>
 		</>
 	);
