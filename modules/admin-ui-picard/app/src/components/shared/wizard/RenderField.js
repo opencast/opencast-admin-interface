@@ -197,18 +197,20 @@ const EditableDateValue = ({
 			</ThemeProvider>
 		</div>
 	) : (
-		<div onClick={() => setEditMode(true)}>
+		<div onClick={() => setEditMode(true)} className="show-edit">
 			<span className="editable preserve-newlines">
 				{t("dateFormats.dateTime.short", { dateTime: new Date(text) }) || ""}
 			</span>
-			<i className="edit fa fa-pencil-square" />
-			{showCheck && (
-				<i
-					className={cn("saved fa fa-check", {
-						active: initialValues[field.name] !== field.value,
-					})}
-				/>
-			)}
+			<div>
+				<i className="edit fa fa-pencil-square" />
+				{showCheck && (
+					<i
+						className={cn("saved fa fa-check", {
+							active: initialValues[field.name] !== field.value,
+						})}
+					/>
+				)}
+			</div>
 		</div>
 	);
 };
@@ -246,18 +248,20 @@ const EditableSingleSelect = ({
 			/>
 		</div>
 	) : (
-		<div onClick={() => setEditMode(true)}>
+		<div onClick={() => setEditMode(true)} className="show-edit">
 			<span className="editable preserve-newlines">
 				{text || t("SELECT_NO_OPTION_SELECTED")}
 			</span>
-			<i className="edit fa fa-pencil-square" />
-			{showCheck && (
-				<i
-					className={cn("saved fa fa-check", {
-						active: initialValues[field.name] !== field.value,
-					})}
-				/>
-			)}
+			<div>
+				<i className="edit fa fa-pencil-square" />
+				{showCheck && (
+					<i
+						className={cn("saved fa fa-check", {
+							active: initialValues[field.name] !== field.value,
+						})}
+					/>
+				)}
+			</div>
 		</div>
 	);
 };
@@ -271,7 +275,6 @@ const EditableSingleValueTextArea = ({
 	handleKeyDown,
 	form: { initialValues },
 	showCheck,
-	isFirst,
 }) => {
 	return editMode ? (
 		<div
@@ -281,21 +284,23 @@ const EditableSingleValueTextArea = ({
 		>
 			<textarea
 				{...field}
-				autoFocus={isFirst}
+				autoFocus={true}
 				className="editable vertical-resize"
 			/>
 		</div>
 	) : (
-		<div onClick={() => setEditMode(true)}>
+		<div onClick={() => setEditMode(true)} className="show-edit">
 			<span className="editable preserve-newlines">{text || ""}</span>
-			<i className="edit fa fa-pencil-square" />
-			{showCheck && (
-				<i
-					className={cn("saved fa fa-check", {
-						active: initialValues[field.name] !== field.value,
-					})}
-				/>
-			)}
+			<div>
+				<i className="edit fa fa-pencil-square" />
+				{showCheck && (
+					<i
+						className={cn("saved fa fa-check", {
+							active: initialValues[field.name] !== field.value,
+						})}
+					/>
+				)}
+			</div>
 		</div>
 	);
 };
@@ -309,7 +314,6 @@ const EditableSingleValue = ({
 	setEditMode,
 	handleKeyDown,
 	showCheck,
-	isFirst,
 }) => {
 	return editMode ? (
 		<div
@@ -317,19 +321,21 @@ const EditableSingleValue = ({
 			onKeyDown={(e) => handleKeyDown(e, "input")}
 			ref={childRef}
 		>
-			<input {...field} autoFocus={isFirst} type="text" />
+			<input {...field} autoFocus={true} type="text" />
 		</div>
 	) : (
-		<div onClick={() => setEditMode(true)}>
+		<div onClick={() => setEditMode(true)} className="show-edit">
 			<span className="editable preserve-newlines">{text || ""}</span>
-			<i className="edit fa fa-pencil-square" />
-			{showCheck && (
-				<i
-					className={cn("saved fa fa-check", {
-						active: initialValues[field.name] !== field.value,
-					})}
-				/>
-			)}
+			<div>
+				<i className="edit fa fa-pencil-square" />
+				{showCheck && (
+					<i
+						className={cn("saved fa fa-check", {
+							active: initialValues[field.name] !== field.value,
+						})}
+					/>
+				)}
+			</div>
 		</div>
 	);
 };
@@ -373,18 +379,20 @@ const EditableSingleValueTime = ({
 			</ThemeProvider>
 		</div>
 	) : (
-		<div onClick={() => setEditMode(true)}>
+		<div onClick={() => setEditMode(true)} className="show-edit">
 			<span className="editable preserve-newlines">
 				{t("dateFormats.dateTime.short", { dateTime: new Date(text) }) || ""}
 			</span>
-			<i className="edit fa fa-pencil-square" />
-			{showCheck && (
-				<i
-					className={cn("saved fa fa-check", {
-						active: initialValues[field.name] !== field.value,
-					})}
-				/>
-			)}
+			<div>
+				<i className="edit fa fa-pencil-square" />
+				{showCheck && (
+					<i
+						className={cn("saved fa fa-check", {
+							active: initialValues[field.name] !== field.value,
+						})}
+					/>
+				)}
+			</div>
 		</div>
 	);
 };

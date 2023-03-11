@@ -185,6 +185,11 @@ a.disabled, button.disabled, div.disabled {
   }
 }
 
+div.show-edit {
+  display: flex;
+  justify-content: space-between;
+}
+
 span.editable {
   border-bottom: 1px dashed #999;
 }
