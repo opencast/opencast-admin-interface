@@ -39,6 +39,8 @@ const SeriesDetails = ({
 	updateSeries,
 	updateExtendedMetadata,
 	loadStatistics,
+	policyChanged,
+	setPolicyChanged,
 }) => {
 	const { t } = useTranslation();
 
@@ -147,6 +149,8 @@ const SeriesDetails = ({
 					<SeriesDetailsAccessTab
 						seriesId={seriesId}
 						header={tabs[page].tabNameTranslation}
+						policyChanged={policyChanged}
+						setPolicyChanged={setPolicyChanged}
 					/>
 				)}
 				{page === 3 && (

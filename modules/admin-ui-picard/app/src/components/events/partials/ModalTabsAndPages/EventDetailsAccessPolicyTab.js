@@ -19,6 +19,8 @@ const EventDetailsAccessPolicyTab = ({
 	fetchAccessPolicies,
 	fetchHasActiveTransactions,
 	saveNewAccessPolicies,
+	policyChanged,
+	setPolicyChanged,
 }) => {
 	return (
 		<ResourceDetailsAccessPolicyTab
@@ -33,6 +35,8 @@ const EventDetailsAccessPolicyTab = ({
 			saveNewAccessPolicies={saveNewAccessPolicies}
 			descriptionText={t("EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION")}
 			editAccessRole={"ROLE_UI_EVENTS_DETAILS_ACL_EDIT"}
+			policyChanged={policyChanged}
+			setPolicyChanged={setPolicyChanged}
 		/>
 	);
 };

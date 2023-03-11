@@ -41,6 +41,8 @@ const ResourceDetailsAccessPolicyTab = ({
 	saveButtonText,
 	editAccessRole,
 	user,
+	policyChanged,
+	setPolicyChanged,
 }) => {
 	const baseAclId = "";
 
@@ -55,9 +57,6 @@ const ResourceDetailsAccessPolicyTab = ({
 
 	// list of possible roles
 	const [roles, setRoles] = useState(false);
-
-	// tracks, whether the policies are different to the initial value
-	const [policyChanged, setPolicyChanged] = useState(false);
 
 	// this state is used, because the policies should be read-only, if a transaction is currently being performed on a resource
 	const [transactions, setTransactions] = useState({ read_only: false });

@@ -71,6 +71,8 @@ const EventDetails = ({
 	loadStatistics,
 	fetchAssetUploadOptions,
 	removeNotificationWizardForm,
+	policyChanged,
+	setPolicyChanged,
 }) => {
 	const { t } = useTranslation();
 
@@ -346,6 +348,8 @@ const EventDetails = ({
 						eventId={eventId}
 						header={tabs[page].bodyHeaderTranslation}
 						t={t}
+						policyChanged={policyChanged}
+						setPolicyChanged={setPolicyChanged}
 					/>
 				)}
 				{page === 7 && (
