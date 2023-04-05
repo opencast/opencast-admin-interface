@@ -92,9 +92,11 @@ app.use('', (req, res, next) => {
                 'content-type': req.headers['content-type'],
                 'X-Requested-Auth': 'Digest'
             },
-            jar: true,
-            body: body
+            jar: true
         };
+        if (body.length) {
+            authConfig.body = body;
+        }
 
         requestDigest(username, password).request(authConfig, onReadFromBackend);
     };
@@ -104,7 +106,7 @@ app.use('', (req, res, next) => {
         buffer.push(chunk);
     });
     req.on('end', function () {
-        onForwardToBackend(Buffer.concat(buffer).toString());
+        onForwardToBackend(Buffer.concat(buffer));
     });
 });
 
