@@ -1,54 +1,23 @@
-# Ignore file for Opencast
-#
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# ignore maven target directories
-target/
-target-grunt/
-node_modules/
-bower_components/
-node/
-/build/
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
 
-# ignore Eclipse project data
-.project
-.classpath
-.factorypath
-.metadata/
-.settings/
-.recommenders/
+# testing
+/coverage
 
-# ignore NetBeans project data
-*/nbproject/*
-*/nb-configuration.xml
+# production
+/build
 
-# ignore VSCode project data
-.vscode/
-
-# ingore OS artifacts
+# misc
 .DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# Ignore all temporary editor files
-*.swp
-*.iml
-.idea
-
-# Ignore Maven files and local repository
-/.m2/
-/settings.xml
-
-# Ignore mkdocs sites and python virtualenv (docs/guides/readme.md)
-docs/guides/*/site
-docs/guides/venv
-
-# Ignore Makefiles
-# Sometimes they help, but they should never be tracked
-Makefile
-
-# Ignore OS artifacts
-.DS_Store
-
-# Ignore phantomjs logs
-phantomjsdriver.log
-
-# Ignore python cache folder
-__pycache__
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

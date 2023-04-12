@@ -1,4 +1,0 @@
-mkdocs
-mkdocs-windmill
-mkdocs-mermaid2-plugin
-mkdocs-macros-plugin
