@@ -1,9 +1,0 @@
-JaxbWorkflowConfiguration
-JaxbWorkflowInstance
-JaxbWorkflowOperationInstance
-WorkflowDefinitionImpl
-WorkflowDefinitionSet
-WorkflowOperationDefinitionImpl
-WorkflowOperationResultImpl
-WorkflowSetImpl
-WorkflowStateMappingImpl
