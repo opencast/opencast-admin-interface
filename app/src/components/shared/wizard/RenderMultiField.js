@@ -106,7 +106,6 @@ const RenderMultiField = ({
 // Renders multi select
 const EditMultiSelect = ({
 	collection,
-	setEditMode,
 	handleKeyDown,
 	handleChange,
 	inputValue,
@@ -119,7 +118,7 @@ const EditMultiSelect = ({
 	return (
 		<>
 			<div ref={childRef}>
-				<div onBlur={() => setEditMode(false)}>
+				<div>
 					<input
 						type="text"
 						name={field.name}
@@ -128,6 +127,7 @@ const EditMultiSelect = ({
 						onChange={(e) => handleChange(e)}
 						placeholder={t("EDITABLE.MULTI.PLACEHOLDER")}
 						list="data-list"
+						autoFocus={true}
 					/>
 					{/* Display possible options for values as some kind of dropdown */}
 					<datalist id="data-list">
@@ -199,7 +199,7 @@ const ShowValue = ({
 	fieldValue,
 }) => {
 	return (
-		<div onClick={() => setEditMode(true)}>
+		<div onClick={() => setEditMode(true)} className="show-edit">
 			{field.value instanceof Array && field.value.length !== 0 ? (
 				<ul>
 					{field.value.map((item, key) => (
@@ -211,14 +211,16 @@ const ShowValue = ({
 			) : (
 				<span className="editable preserve-newlines">{""}</span>
 			)}
-			<i className="edit fa fa-pencil-square" />
-			{showCheck && (
-				<i
-					className={cn("saved fa fa-check", {
-						active: initialValues[field.name] !== field.value,
-					})}
-				/>
-			)}
+			<div>
+				<i className="edit fa fa-pencil-square" />
+				{showCheck && (
+					<i
+						className={cn("saved fa fa-check", {
+							active: initialValues[field.name] !== field.value,
+						})}
+					/>
+				)}
+			</div>
 		</div>
 	);
 };
