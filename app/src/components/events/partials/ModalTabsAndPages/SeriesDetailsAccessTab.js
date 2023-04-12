@@ -18,6 +18,8 @@ const SeriesDetailsAccessTab = ({
 	policies,
 	fetchAccessPolicies,
 	saveNewAccessPolicies,
+	policyChanged,
+	setPolicyChanged,
 }) => {
 	const { t } = useTranslation();
 
@@ -37,6 +39,8 @@ const SeriesDetailsAccessTab = ({
 			fetchAccessPolicies={fetchAccessPolicies}
 			saveNewAccessPolicies={saveNewAccessPolicies}
 			editAccessRole={"ROLE_UI_SERIES_DETAILS_ACL_EDIT"}
+			policyChanged={policyChanged}
+			setPolicyChanged={setPolicyChanged}
 		/>
 	);
 };

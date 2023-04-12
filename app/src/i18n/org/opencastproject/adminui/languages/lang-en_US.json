@@ -122,7 +122,8 @@
 		},
 		"WARNINGS": {
 			"SERIES_HAS_EVENTS": "This series does contain events. Deleting the series will not delete the events.",
-			"EVENT_WILL_BE_GONE": "If you continue, the event will be irrevocably gone."
+			"EVENT_WILL_BE_GONE": "If you continue, the event will be irrevocably gone.",
+			"UNSAVED_CHANGES": "You have unsaved changes. If you continue, those changes will be discarded. Are you sure that you want to continue?"
 		},
 		"ERRORS": {
 			"SERIES_HAS_EVENTS": "This series cannot be deleted as it still contains events."

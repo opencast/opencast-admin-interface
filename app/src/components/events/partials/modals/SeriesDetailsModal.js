@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import SeriesDetails from "./SeriesDetails";
 
@@ -8,8 +8,18 @@ import SeriesDetails from "./SeriesDetails";
 const SeriesDetailsModal = ({ handleClose, seriesTitle, seriesId }) => {
 	const { t } = useTranslation();
 
+	// tracks, whether the policies are different to the initial value
+	const [policyChanged, setPolicyChanged] = useState(false);
+
+	const confirmUnsaved = () => {
+		return window.confirm(t("CONFIRMATIONS.WARNINGS.UNSAVED_CHANGES"));
+	};
+
 	const close = () => {
-		handleClose();
+		if (!policyChanged || confirmUnsaved()) {
+			setPolicyChanged(false);
+			handleClose();
+		}
 	};
 
 	// todo: add hotkeys
@@ -24,7 +34,11 @@ const SeriesDetailsModal = ({ handleClose, seriesTitle, seriesId }) => {
 					</h2>
 				</header>
 
-				<SeriesDetails seriesId={seriesId} />
+				<SeriesDetails
+					seriesId={seriesId}
+					policyChanged={policyChanged}
+					setPolicyChanged={(value) => setPolicyChanged(value)}
+				/>
 			</section>
 		</>
 	);
