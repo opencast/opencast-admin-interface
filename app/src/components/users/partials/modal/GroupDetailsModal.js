@@ -27,8 +27,8 @@ const GroupDetailsModal = ({ close, groupName }) => {
 				style={modalStyle}
 			>
 				<header>
-					<a
-						className="fa fa-times close-modal"
+					<button
+						className="button-like-anchor fa fa-times close-modal"
 						onClick={() => handleClose()}
 					/>
 					<h2>{t("USERS.GROUPS.DETAILS.EDITCAPTION", { name: groupName })}</h2>

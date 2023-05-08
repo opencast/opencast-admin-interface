@@ -32,8 +32,8 @@ const ConfirmModal = ({
 				style={{ fontSize: "14px" }}
 			>
 				<header>
-					<a
-						className="fa fa-times close-modal"
+					<button
+						className="button-like-anchor fa fa-times close-modal"
 						onClick={() => handleClose()}
 					/>
 					<h2>{t("CONFIRMATIONS.ACTIONS.CONFIRMATION")}</h2>

@@ -28,7 +28,10 @@ const NewResourceModal = ({ handleClose, showModal, resource }) => {
 					id="add-event-modal"
 				>
 					<header>
-						<a className="fa fa-times close-modal" onClick={() => close()} />
+						<button
+              className="button-like-anchor fa fa-times close-modal"
+              onClick={() => close()}
+            />
 						{resource === "events" && <h2>{t("EVENTS.EVENTS.NEW.CAPTION")}</h2>}
 						{resource === "series" && <h2>{t("EVENTS.SERIES.NEW.CAPTION")}</h2>}
 						{resource === "themes" && (

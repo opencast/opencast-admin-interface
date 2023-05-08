@@ -123,8 +123,8 @@ const TableFiltersProfiles = ({
 						// if settingsMode is true the list with all saved profiles is shown
 						<div className="filters-list">
 							<header>
-								<a
-									className="icon close"
+								<button
+									className="button-like-anchor icon close"
 									onClick={() => setFilterSettings(!showFilterSettings)}
 								/>
 								<h4>{t("TABLE_FILTERS.PROFILES.FILTERS_HEADER")}</h4>
@@ -137,23 +137,24 @@ const TableFiltersProfiles = ({
 									// repeat for each profile in profiles filtered for currently shown resource (else-case)
 									currentProfiles.map((profile, key) => (
 										<li key={key}>
-											<a
+											<button
 												title="profile.description"
 												onClick={() => chooseFilterProfile(profile.filterMap)}
+                        className="button-like-anchor"
 											>
 												{profile.name.substr(0, 70)}
-											</a>
+											</button>
 											{/* Settings icon to edit profile */}
-											<a
+											<button
 												onClick={() => editFilterProfile(profile)}
 												title={t("TABLE_FILTERS.PROFILES.EDIT")}
-												className="icon edit"
+												className="button-like-anchor icon edit"
 											/>
 											{/* Remove icon to remove profile */}
-											<a
+											<button
 												onClick={() => removeFilterProfile(profile)}
 												title={t("TABLE_FILTERS.PROFILES.REMOVE")}
-												className="icon remove"
+												className="button-like-anchor icon remove"
 											/>
 										</li>
 									))
@@ -164,12 +165,12 @@ const TableFiltersProfiles = ({
 							{/* settingsMode is switched and save dialog is opened*/}
 							<div className="input-container">
 								<div className="btn-container">
-									<a
-										className="save"
+									<button
+										className="button-like-anchor save"
 										onClick={() => setSettingsMode(!settingsMode)}
 									>
 										{t("TABLE_FILTERS.PROFILES.SAVE_FILTERS").substr(0, 70)}
-									</a>
+									</button>
 								</div>
 							</div>
 						</div>
@@ -177,8 +178,8 @@ const TableFiltersProfiles = ({
 						// if settingsMode is false then show editing dialog of selected filter profile
 						<div className="filter-details">
 							<header>
-								<a
-									className="icon close"
+								<button
+									className="button-like-anchor icon close"
 									onClick={() => {
 										setFilterSettings(!showFilterSettings);
 										setSettingsMode(true);
@@ -216,15 +217,15 @@ const TableFiltersProfiles = ({
 							<div className="input-container">
 								{/* Buttons for saving and canceling editing */}
 								<div className="btn-container">
-									<a onClick={cancelEditProfile} className="cancel">
+									<button onClick={cancelEditProfile} className="button-like-anchor cancel">
 										{t("CANCEL")}
-									</a>
-									<a
+									</button>
+									<button
 										onClick={saveProfile}
-										className={cn("save", { disabled: !validName })}
+										className={"button-like-anchor " + cn("save", { disabled: !validName })}
 									>
 										{t("SAVE")}
-									</a>
+									</button>
 								</div>
 							</div>
 						</div>

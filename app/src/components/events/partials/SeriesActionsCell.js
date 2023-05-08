@@ -74,9 +74,9 @@ const SeriesActionsCell = ({
 		<>
 			{/* series details */}
 			{hasAccess("ROLE_UI_SERIES_DETAILS_VIEW", user) && (
-				<a
+				<button
 					onClick={() => showSeriesDetailsModal()}
-					className="more-series"
+					className="button-like-anchor more-series"
 					title={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
@@ -91,9 +91,9 @@ const SeriesActionsCell = ({
 
 			{/* delete series */}
 			{hasAccess("ROLE_UI_SERIES_DELETE", user) && (
-				<a
+				<button
 					onClick={() => showDeleteConfirmation()}
-					className="remove"
+					className="button-like-anchor remove"
 					title={t("EVENTS.SERIES.TABLE.TOOLTIP.DELETE")}
 				/>
 			)}

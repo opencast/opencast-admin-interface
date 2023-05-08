@@ -95,34 +95,34 @@ const SeriesDetails = ({
 			{/* navigation for navigating between tabs */}
 			<nav className="modal-nav" id="modal-nav">
 				{hasAccess(tabs[0].accessRole, user) && (
-					<a className={cn({ active: page === 0 })} onClick={() => openTab(0)}>
+					<button className={"button-like-anchor " + cn({ active: page === 0 })} onClick={() => openTab(0)}>
 						{t(tabs[0].tabNameTranslation)}
-					</a>
+					</button>
 				)}
 				{!tabs[1].hidden && hasAccess(tabs[1].accessRole, user) && (
-					<a className={cn({ active: page === 1 })} onClick={() => openTab(1)}>
+					<button className={"button-like-anchor " + cn({ active: page === 1 })} onClick={() => openTab(1)}>
 						{t(tabs[1].tabNameTranslation)}
-					</a>
+					</button>
 				)}
 				{hasAccess(tabs[2].accessRole, user) && (
-					<a className={cn({ active: page === 2 })} onClick={() => openTab(2)}>
+					<button className={"button-like-anchor " + cn({ active: page === 2 })} onClick={() => openTab(2)}>
 						{t(tabs[2].tabNameTranslation)}
-					</a>
+					</button>
 				)}
 				{hasAccess(tabs[3].accessRole, user) && (
-					<a className={cn({ active: page === 3 })} onClick={() => openTab(3)}>
+					<button className={"button-like-anchor " + cn({ active: page === 3 })} onClick={() => openTab(3)}>
 						{t(tabs[3].tabNameTranslation)}
-					</a>
+					</button>
 				)}
 				{!tabs[4].hidden && hasAccess(tabs[4].accessRole, user) && (
-					<a className={cn({ active: page === 4 })} onClick={() => openTab(4)}>
+					<button className={"button-like-anchor " + cn({ active: page === 4 })} onClick={() => openTab(4)}>
 						{t(tabs[4].tabNameTranslation)}
-					</a>
+					</button>
 				)}
 				{feeds.length > 0 && (
-					<a className={cn({ active: page === 5 })} onClick={() => openTab(5)}>
+					<button className={"button-like-anchor " + cn({ active: page === 5 })} onClick={() => openTab(5)}>
 						{t(tabs[5].tabNameTranslation)}
-					</a>
+					</button>
 				)}
 			</nav>
 

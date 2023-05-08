@@ -88,9 +88,9 @@ const RegistrationModal = ({ close }) => {
 				className="modal active modal-open modal-animation"
 			>
 				<header>
-					<a
+					<button
 						onClick={() => handleClose()}
-						className="fa fa-times close-modal"
+						className="button-like-anchor fa fa-times close-modal"
 					/>
 					<h2>{t("ADOPTER_REGISTRATION.MODAL.CAPTION")}</h2>
 				</header>

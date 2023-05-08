@@ -171,7 +171,7 @@ a.disabled, button.disabled, div.disabled {
   color: #fff;
   border-radius: 4px;
 
-  a {
+  button {
     color: white;
     font-weight: bold;
   }
@@ -369,7 +369,7 @@ div.table-filter {
       padding: 2px;
     }
 
-    span a i {
+    span button i {
       color: white;
     }
 
@@ -486,15 +486,15 @@ input.disabled, select.disabled {
 
     .pagination {
 
-      a {
+      button {
         padding: 7px 10px;
       }
 
-      a.wide {
+      button.wide {
         width: inline;
       }
 
-      a:hover:not(.active) {
+      button:hover:not(.active) {
         background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fefefe), to(#f0f0f0));
         background: -moz-linear-gradient(0% 0% 270deg, #fefefe, #f0f0f0);
       }

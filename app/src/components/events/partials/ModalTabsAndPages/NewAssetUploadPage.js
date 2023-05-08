@@ -82,8 +82,8 @@ const NewAssetUploadPage = ({
 													</td>
 													{/*Button to remove asset*/}
 													<td className="fit">
-														<a
-															className="remove"
+														<button
+															className="button-like-anchor remove"
 															onClick={() => {
 																formik.setFieldValue(asset.id, null);
 																document.getElementById(asset.id).value = "";

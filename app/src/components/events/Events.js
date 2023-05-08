@@ -272,31 +272,31 @@ const Events = ({
 								<ul className="dropdown-ul">
 									{hasAccess("ROLE_UI_EVENTS_DELETE", user) && (
 										<li>
-											<a onClick={() => setDeleteModal(true)}>
+											<button className="button-like-anchor" onClick={() => setDeleteModal(true)}>
 												{t("BULK_ACTIONS.DELETE.EVENTS.CAPTION")}
-											</a>
+											</button>
 										</li>
 									)}
 									{hasAccess("ROLE_UI_TASKS_CREATE", user) && (
 										<li>
-											<a onClick={() => setStartTaskModal(true)}>
+											<button className="button-like-anchor" onClick={() => setStartTaskModal(true)}>
 												{t("BULK_ACTIONS.SCHEDULE_TASK.CAPTION")}
-											</a>
+											</button>
 										</li>
 									)}
 									{hasAccess("ROLE_UI_EVENTS_DETAILS_SCHEDULING_EDIT", user) &&
 										hasAccess("ROLE_UI_EVENTS_DETAILS_METADATA_EDIT", user) && (
 											<li>
-												<a onClick={() => setEditScheduledEventsModal(true)}>
+												<button className="button-like-anchor" onClick={() => setEditScheduledEventsModal(true)}>
 													{t("BULK_ACTIONS.EDIT_EVENTS.CAPTION")}
-												</a>
+												</button>
 											</li>
 										)}
 									{hasAccess("ROLE_UI_EVENTS_DETAILS_METADATA_EDIT", user) && (
 										<li>
-											<a onClick={() => setEditMetadataEventsModal(true)}>
+											<button className="button-like-anchor" onClick={() => setEditMetadataEventsModal(true)}>
 												{t("BULK_ACTIONS.EDIT_EVENTS_METADATA.CAPTION")}
-											</a>
+											</button>
 										</li>
 									)}
 								</ul>

@@ -142,9 +142,9 @@ const EditMultiSelect = ({
 					fieldValue.map((item, key) => (
 						<span className="ng-multi-value" key={key}>
 							{item}
-							<a onClick={() => removeItem(key)}>
+							<button className="button-like-anchor" onClick={() => removeItem(key)}>
 								<i className="fa fa-times" />
-							</a>
+							</button>
 						</span>
 					))}
 			</div>
@@ -181,9 +181,9 @@ const EditMultiValue = ({
 				fieldValue.map((item, key) => (
 					<span className="ng-multi-value" key={key}>
 						{item}
-						<a onClick={() => removeItem(key)}>
+						<button className="button-like-anchor" onClick={() => removeItem(key)}>
 							<i className="fa fa-times" />
-						</a>
+						</button>
 					</span>
 				))}
 		</>

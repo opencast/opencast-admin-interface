@@ -49,7 +49,7 @@
             line-height: 30px;
             padding-left: 10px;
         }
-        > a {
+        > button {
             float: right;
             padding-right: 5px;
             padding-top: 5px;
@@ -136,7 +136,12 @@
                 padding-right: 5px;
             }
 
-            > a { word-wrap: break-word; &.active { color: $l-blue; }  }
+            > button {
+              word-wrap: break-word;
+              font-size: inherit;
+
+              &.active { color: $l-blue; }
+            }
 
         } // li
     }
@@ -191,12 +196,14 @@
             @include btn(white);
             margin-right: 3px;
             float: left;
+            height: inherit;
         } // cancel
 
         .save {
             @include btn(green);
             text-shadow: none;
             float: right;
+            height: inherit;
         } // save
     } // input-container
 

@@ -232,12 +232,24 @@
 
 // Standard button styles
 button {
-    height: $btn-height;
-    font-size: 12px;
-    font-weight: 600;
-    color: #fff;
-    border-radius: $main-border-radius;
     display: inline-block;
+    height: $btn-height;
+    border-radius: $main-border-radius;
+    color: #fff;
+    font-size: 12px;
+    font-weight: $weight-semibold;
+}
+
+// Need to be added for moving from anchor to button tags
+.button-like-anchor {
+    height: initial;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: inherit;
+    font-family: inherit;
+
+    color: #069;
 }
 
 // Buttons

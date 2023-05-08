@@ -147,25 +147,25 @@ const EventDetailsCommentsTab = ({
 												"ROLE_UI_EVENTS_DETAILS_COMMENTS_DELETE",
 												user
 											) && (
-												<a
+												<button
 													onClick={() => deleteComment(comment)}
-													className="delete"
+													className="button-like-anchor delete"
 												>
 													{t("EVENTS.EVENTS.DETAILS.COMMENTS.DELETE")}
-												</a>
+												</button>
 											)}
 											{hasAccess(
 												"ROLE_UI_EVENTS_DETAILS_COMMENTS_REPLY",
 												user
 											) && (
-												<a
+												<button
 													onClick={
 														() => replyTo(comment, key) /* enters reply mode */
 													}
-													className="reply"
+													className="button-like-anchor reply"
 												>
 													{t("EVENTS.EVENTS.DETAILS.COMMENTS.REPLY")}
-												</a>
+												</button>
 											)}
 											<span
 												className="resolve"
@@ -202,15 +202,15 @@ const EventDetailsCommentsTab = ({
 															"ROLE_UI_EVENTS_DETAILS_COMMENTS_DELETE",
 															user
 														) && (
-															<a
+															<button
 																onClick={() =>
 																	deleteReply(comment, reply, replyKey)
 																}
-																className="delete"
+																className="button-like-anchor delete"
 															>
 																<i className="fa fa-times-circle" />
 																{t("EVENTS.EVENTS.DETAILS.COMMENTS.DELETE")}
-															</a>
+															</button>
 														)}
 													</div>
 												))

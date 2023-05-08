@@ -261,9 +261,9 @@ const AclAccessPage = ({
 																						{/*Remove policy*/}
 																						{isAccess && (
 																							<td>
-																								<a
+																								<button
 																									onClick={() => remove(index)}
-																									className="remove"
+																									className="button-like-anchor remove"
 																								/>
 																							</td>
 																						)}
@@ -283,7 +283,7 @@ const AclAccessPage = ({
 																				<tr>
 																					{/*Add additional policy row*/}
 																					<td colSpan="5">
-																						<a
+																						<button
 																							onClick={() => {
 																								push({
 																									role: "",
@@ -293,13 +293,14 @@ const AclAccessPage = ({
 																								});
 																								checkAcls(formik.values.acls);
 																							}}
+                                              className="button-like-anchor"
 																						>
 																							{" "}
 																							+{" "}
 																							{t(
 																								"USERS.ACLS.NEW.ACCESS.ACCESS_POLICY.NEW"
 																							)}
-																						</a>
+																						</button>
 																					</td>
 																				</tr>
 																			)}

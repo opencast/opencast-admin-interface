@@ -294,14 +294,14 @@ const MenuLang = () => {
 			{/* one list item for each available language */}
 			{languages.map((language, key) => (
 				<li key={key}>
-					<a onClick={() => changeLanguage(language.code)}>
+					<button className="button-like-anchor" onClick={() => changeLanguage(language.code)}>
 						<img
 							className="lang-flag"
 							src={language.flag}
 							alt={language.code}
 						/>
 						{language.long}
-					</a>
+					</button>
 				</li>
 			))}
 		</ul>
@@ -392,16 +392,16 @@ const MenuHelp = ({
 						</li>
 					)}
 				<li>
-					<a onClick={() => showHotKeys()}>
+					<button className="button-like-anchor" onClick={() => showHotKeys()}>
 						<span>{t("HELP.HOTKEY_CHEAT_SHEET")}</span>
-					</a>
+					</button>
 				</li>
 				{/* Adoter registration Modal */}
 				{hasAccess("ROLE_ADMIN", user) && (
 					<li>
-						<a onClick={() => showAdoptersRegistrationModal()}>
+						<button className="button-like-anchor" onClick={() => showAdoptersRegistrationModal()}>
 							<span>{t("HELP.ADOPTER_REGISTRATION")}</span>
-						</a>
+						</button>
 					</li>
 				)}
 			</ul>
@@ -414,9 +414,9 @@ const MenuUser = () => {
 	return (
 		<ul className="dropdown-ul">
 			<li>
-				<a onClick={() => logout()}>
+				<button className="button-like-anchor" onClick={() => logout()}>
 					<span className="logout-icon">{t("LOGOUT")}</span>
-				</a>
+				</button>
 			</li>
 		</ul>
 	);

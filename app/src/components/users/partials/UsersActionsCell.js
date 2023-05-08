@@ -39,9 +39,9 @@ const UsersActionCell = ({ row, deleteUser, fetchUserDetails, user }) => {
 		<>
 			{/* edit/show user details */}
 			{hasAccess("ROLE_UI_USERS_EDIT", user) && (
-				<a
+				<button
 					onClick={() => showUserDetails()}
-					className="more"
+					className="button-like-anchor more"
 					title={t("USERS.USERS.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
@@ -52,9 +52,9 @@ const UsersActionCell = ({ row, deleteUser, fetchUserDetails, user }) => {
 
 			{row.manageable && hasAccess("ROLE_UI_USERS_DELETE", user) && (
 				<>
-					<a
+					<button
 						onClick={() => setDeleteConfirmation(true)}
-						className="remove"
+						className="button-like-anchor remove"
 						title={t("USERS.USERS.TABLE.TOOLTIP.DETAILS")}
 					/>
 

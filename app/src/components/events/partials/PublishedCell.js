@@ -36,9 +36,9 @@ const PublishCell = ({ row }) => {
 		<div className="popover-wrapper" ref={containerPublications}>
 			{row.publications.length ? (
 				<>
-					<a className="popover-wrapper__trigger">
+					<button className="button-like-anchor popover-wrapper__trigger">
 						<span onClick={() => setShowPopup(!showPopup)}>{t("YES")}</span>
-					</a>
+					</button>
 					{showPopup && (
 						<div className="js-popover popover">
 							<div className="popover__header" />
@@ -58,9 +58,9 @@ const PublishCell = ({ row }) => {
 												<span>{t(publication.name)}</span>
 											</a>
 										) : (
-											<a key={key} className="popover__list-item">
+											<button key={key} className="button-like-anchor popover__list-item">
 												<span>{t(publication.name)}</span>
-											</a>
+											</button>
 										)
 									) : null
 								)}

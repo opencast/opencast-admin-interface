@@ -537,11 +537,11 @@ const ResourceDetailsAccessPolicyTab = ({
 																							) && (
 																								<td>
 																									{!transactions.read_only && (
-																										<a
+																										<button
 																											onClick={() =>
 																												remove(index)
 																											}
-																											className="remove"
+																											className="button-like-anchor remove"
 																										/>
 																									)}
 																								</td>
@@ -555,16 +555,17 @@ const ResourceDetailsAccessPolicyTab = ({
 																				hasAccess(editAccessRole, user) && (
 																					<tr>
 																						<td colSpan="5">
-																							<a
+																							<button
 																								onClick={() =>
 																									push(createPolicy(""))
 																								}
+                                                className="button-like-anchor"
 																							>
 																								+{" "}
 																								{t(
 																									"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW"
 																								)}
-																							</a>
+																							</button>
 																						</td>
 																					</tr>
 																				)}

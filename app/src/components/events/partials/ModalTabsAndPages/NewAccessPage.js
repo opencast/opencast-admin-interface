@@ -246,9 +246,9 @@ const NewAccessPage = ({
 																						)}
 																						{/*Remove policy*/}
 																						<td>
-																							<a
+																							<button
 																								onClick={() => remove(index)}
-																								className="remove"
+																								className="button-like-anchor remove"
 																							/>
 																						</td>
 																					</tr>
@@ -269,7 +269,7 @@ const NewAccessPage = ({
 																			<tr>
 																				{/*Add additional policy row*/}
 																				<td colSpan="5">
-																					<a
+																					<button
 																						onClick={() => {
 																							push({
 																								role: "",
@@ -279,12 +279,13 @@ const NewAccessPage = ({
 																							});
 																							checkAcls(formik.values.acls);
 																						}}
+                                            className="button-like-anchor"
 																					>
 																						+{" "}
 																						{t(
 																							"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.NEW"
 																						)}
-																					</a>
+																					</button>
 																				</td>
 																			</tr>
 																		)}

@@ -49,9 +49,9 @@ const ThemesActionsCell = ({
 		<>
 			{/* edit themes */}
 			{hasAccess("ROLE_UI_THEMES_EDIT", user) && (
-				<a
+				<button
 					onClick={() => showThemeDetails()}
-					className="more"
+					className="button-like-anchor more"
 					title={t("CONFIGURATION.THEMES.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
@@ -66,9 +66,9 @@ const ThemesActionsCell = ({
 
 			{/* delete themes */}
 			{hasAccess("ROLE_UI_THEMES_DELETE", user) && (
-				<a
+				<button
 					onClick={() => setDeleteConfirmation(true)}
-					className="remove ng-scope ng-isolate-scope"
+					className="button-like-anchor remove ng-scope ng-isolate-scope"
 					title={t("CONFIGURATION.THEMES.TABLE.TOOLTIP.DELETE")}
 				/>
 			)}

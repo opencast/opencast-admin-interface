@@ -29,13 +29,13 @@ const EventsStatusCell = ({
 	};
 
 	return (
-		<a
-			className="crosslink"
+		<button
+			className="button-like-anchor crosslink"
 			onClick={() => addFilter(row.event_status)}
 			title={t("EVENTS.EVENTS.TABLE.TOOLTIP.STATUS")}
 		>
 			{t(row.displayable_status)}
-		</a>
+		</button>
 	);
 };
 

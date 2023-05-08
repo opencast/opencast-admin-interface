@@ -159,7 +159,12 @@ const Table = ({
 			<div className="action-bar">
 				<ul>
 					<li>
-						<a onClick={() => showEditTableViewModal()}>{t("TABLE_EDIT")}</a>
+						<button
+              onClick={() => showEditTableViewModal()}
+              className="button-like-anchor"
+            >
+                {t("TABLE_EDIT")}
+            </button>
 					</li>
 				</ul>
 			</div>
@@ -286,7 +291,12 @@ const Table = ({
 						<ul className="dropdown-ul">
 							{sizeOptions.map((size, key) => (
 								<li key={key}>
-									<a onClick={() => changePageSize(size)}>{size}</a>
+									<button
+                    onClick={() => changePageSize(size)}
+                    className="button-like-anchor"
+                  >
+                    {size}
+                  </button>
 								</li>
 							))}
 						</ul>
@@ -295,24 +305,24 @@ const Table = ({
 
 				{/* Pagination and navigation trough pages */}
 				<div className="pagination">
-					<a
-						className={cn("prev", { disabled: !isNavigatePrevious() })}
+					<button
+						className={"button-like-anchor " + cn("prev", { disabled: !isNavigatePrevious() })}
 						onClick={() => goToPage(pageOffset - 1)}
 					/>
 					{directAccessible.map((page, key) =>
 						page.active ? (
-							<a key={key} className="active">
+							<button key={key} className="button-like-anchor active">
 								{page.label}
-							</a>
+							</button>
 						) : (
-							<a key={key} onClick={() => goToPage(page.number)}>
+							<button key={key} className="button-like-anchor" onClick={() => goToPage(page.number)}>
 								{page.label}
-							</a>
+							</button>
 						)
 					)}
 
-					<a
-						className={cn("next", { disabled: !isNavigateNext() })}
+					<button
+						className={"button-like-anchor " + cn("next", { disabled: !isNavigateNext() })}
 						onClick={() => goToPage(pageOffset + 1)}
 					/>
 				</div>

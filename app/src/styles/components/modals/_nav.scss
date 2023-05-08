@@ -29,7 +29,7 @@
     background: $modal-nav-bg-color;
     border-bottom: 1px solid $modal-nav-border-color;
 
-    > a {
+    > button {
         $width: 100px;
         width: $width;
         display: inline-block;
@@ -38,7 +38,7 @@
         overflow: hidden;
         padding: 14px 5px;
         box-sizing: border-box;
-        height : $height; 
+        height : $height;
         line-height: $line-height;
         color: $modal-nav-link-color;
         font-size: 13px;

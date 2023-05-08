@@ -178,7 +178,7 @@ const SelectContainer = ({ resource, formikField, manageable = true }) => {
 						{resource.searchable && (
 							<>
 								{/* search bar */}
-								<a className="clear" onClick={() => clearSearchField()} />
+								<button className="button-like-anchor clear" onClick={() => clearSearchField()} />
 								<input
 									type="text"
 									id="search"

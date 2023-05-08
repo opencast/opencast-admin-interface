@@ -28,7 +28,7 @@ const SeriesDetailsModal = ({ handleClose, seriesTitle, seriesId }) => {
 			<div className="modal-animation modal-overlay" />
 			<section className="modal modal-animation" id="series-details-modal">
 				<header>
-					<a className="fa fa-times close-modal" onClick={() => close()} />
+					<button className="button-like-anchor fa fa-times close-modal" onClick={() => close()} />
 					<h2>
 						{t("EVENTS.SERIES.DETAILS.HEADER", { resourceId: seriesTitle })}
 					</h2>

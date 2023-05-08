@@ -77,7 +77,8 @@
             width: 100% !important;
         }
 
-        a.clear {
+        button.clear {
+            height: inherit;
             margin-top: 10px;
             float: right;
             @include btn(white);

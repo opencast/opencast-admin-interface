@@ -259,12 +259,13 @@ const TableFilters = ({
 												}
 											</span>
 											{/* Remove icon in blue area around filter */}
-											<a
+											<button
 												title={t("TABLE_FILTERS.REMOVE")}
 												onClick={() => removeFilter(filter)}
+                        className="button-like-anchor"
 											>
 												<i className="fa fa-times" />
-											</a>
+											</button>
 										</span>
 									);
 								}
