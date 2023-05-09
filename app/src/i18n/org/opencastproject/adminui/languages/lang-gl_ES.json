@@ -1593,8 +1593,6 @@
 				"COMPLETED": "Traballos completados",
 				"RUNNING": "Traballos en execución",
 				"QUEUED": "Traballos en cola",
-				"MEAN_RUN_TIME": "Tempo medio de execución",
-				"MEAN_QUEUE_TIME": "Tempo medio de espera na cola",
 				"MAINTENANCE": "Mantemento",
 				"MAINTENANCE_OFF": "Activar o modo de mantemento",
 				"MAINTENANCE_ON": "Desactivar o modo de mantemento"

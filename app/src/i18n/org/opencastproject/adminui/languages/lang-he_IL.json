@@ -1593,8 +1593,6 @@
 				"COMPLETED": "משימות שהושלמו",
 				"RUNNING": "משימות רצות",
 				"QUEUED": "משימות בתור",
-				"MEAN_RUN_TIME": "זמן ריצה ממוצע",
-				"MEAN_QUEUE_TIME": "זמן ממוצע בתור",
 				"MAINTENANCE": "תחזוקה",
 				"MAINTENANCE_OFF": "הפעל מצב תחזוקה",
 				"MAINTENANCE_ON": "צא ממצב תחזוקה"

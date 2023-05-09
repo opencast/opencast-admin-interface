@@ -1593,8 +1593,6 @@
 				"COMPLETED": "Avslutade jobb",
 				"RUNNING": "Aktiva jobb",
 				"QUEUED": "Köade jobb",
-				"MEAN_RUN_TIME": "Genomsnittlig körtid",
-				"MEAN_QUEUE_TIME": "Genomsnittlig kötid",
 				"MAINTENANCE": "Underhåll",
 				"MAINTENANCE_OFF": "Starta underhållsläge",
 				"MAINTENANCE_ON": "Lämna underhållsläget"
