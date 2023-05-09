@@ -96,7 +96,8 @@ const NewEventSummary = ({
 													<td>
 														{asset.translate}
 														<span className="ui-helper-hidden">
-															({asset.type} "{asset.flavorType}//
+                              { // eslint-disable-next-line react/jsx-no-comment-textnodes
+                              } ({asset.type} "{asset.flavorType}//
 															{asset.flavorSubType}")
 														</span>
 													</td>
@@ -129,7 +130,8 @@ const NewEventSummary = ({
 																asset["displayOverride.SHORT"]
 															)}
 															<span className="ui-helper-hidden">
-																({asset.type} "{asset.flavorType}//
+                                { // eslint-disable-next-line react/jsx-no-comment-textnodes
+                                } ({asset.type} "{asset.flavorType}//
 																{asset.flavorSubType}")
 															</span>
 														</td>
