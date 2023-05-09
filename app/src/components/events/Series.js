@@ -25,7 +25,6 @@ import { getTotalSeries, isShowActions } from "../../selectors/seriesSeletctor";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
-import { logger } from "../../utils/logger";
 import Header from "../Header";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
@@ -99,7 +98,7 @@ const Series = ({
 		setShowActions(false);
 
 		// Load events on mount
-		loadSeries().then((r) => logger.info(r));
+		loadSeries().then((r) => console.info(r));
 
 		// Function for handling clicks outside of an dropdown menu
 		const handleClickOutside = (e) => {

@@ -7,7 +7,6 @@ import {
 	resetNumError,
 	setError,
 } from "../actions/healthActions";
-import { logger } from "../utils/logger";
 
 /**
  * This file contains methods/thunks used to query the REST-API of Opencast to get information about the health status of OC.
@@ -88,6 +87,6 @@ export const fetchHealthStatus = () => async (dispatch) => {
 			});
 	} catch (e) {
 		dispatch(loadStatusFailure());
-		logger.error(e);
+		console.error(e);
 	}
 };

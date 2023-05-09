@@ -30,7 +30,6 @@ import {
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
-import { logger } from "../../utils/logger";
 import Header from "../Header";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
@@ -114,7 +113,7 @@ const Events = ({
 		setShowActions(false);
 
 		// Load events on mount
-		loadEvents().then((r) => logger.info(r));
+		loadEvents().then((r) => console.info(r));
 
 		// Function for handling clicks outside of an open dropdown menu
 		const handleClickOutside = (e) => {

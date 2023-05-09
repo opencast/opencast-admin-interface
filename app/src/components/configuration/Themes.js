@@ -15,7 +15,6 @@ import Notifications from "../shared/Notifications";
 import NewResourceModal from "../shared/NewResourceModal";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
-import { logger } from "../../utils/logger";
 import Header from "../Header";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
@@ -54,7 +53,7 @@ const Themes = ({
 		resetTextFilter();
 
 		// Load themes on mount
-		loadThemes().then((r) => logger.info(r));
+		loadThemes().then((r) => console.info(r));
 
 		// Fetch themes every minute
 		let fetchThemesInterval = setInterval(loadThemes, 5000);

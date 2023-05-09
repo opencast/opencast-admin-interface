@@ -21,7 +21,6 @@ import { fetchServices } from "../../thunks/serviceThunks";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
-import { logger } from "../../utils/logger";
 import Header from "../Header";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
@@ -86,7 +85,7 @@ const Servers = ({
 		resetTextFilter();
 
 		// Load servers on mount
-		loadServers().then((r) => logger.info(r));
+		loadServers().then((r) => console.info(r));
 
 		// Fetch servers every minute
 		let fetchServersInterval = setInterval(loadServers, 5000);

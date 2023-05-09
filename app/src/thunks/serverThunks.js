@@ -5,7 +5,6 @@ import {
 	loadServersSuccess,
 } from "../actions/serverActions";
 import { getURLParams } from "../utils/resourceUtils";
-import { logger } from "../utils/logger";
 
 // fetch servers from server
 export const fetchServers = () => async (dispatch, getState) => {
@@ -22,11 +21,11 @@ export const fetchServers = () => async (dispatch, getState) => {
 
 		const servers = await data.data;
 
-		logger.info(servers);
+		console.info(servers);
 
 		dispatch(loadServersSuccess(servers));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadServersFailure());
 	}
 };
@@ -40,9 +39,9 @@ export const setServerMaintenance = async (host, maintenance) => {
 	axios
 		.post("/services/maintenance", data)
 		.then((response) => {
-			logger.info(response);
+			console.info(response);
 		})
 		.catch((response) => {
-			logger.error(response);
+			console.error(response);
 		});
 };

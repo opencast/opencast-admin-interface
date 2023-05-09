@@ -15,7 +15,6 @@ import {
 	isSavingCommentReply,
 } from "../../../../selectors/eventDetailsSelectors";
 import Notifications from "../../../shared/Notifications";
-import { logger } from "../../../../utils/logger";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
 import DropDown from "../../../shared/DropDown";
@@ -39,7 +38,7 @@ const EventDetailsCommentsTab = ({
 	user,
 }) => {
 	useEffect(() => {
-		loadComments(eventId).then((r) => logger.info(r));
+		loadComments(eventId).then((r) => console.info(r));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

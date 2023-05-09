@@ -6,7 +6,6 @@ import {
 import axios from "axios";
 import { addNotification } from "./notificationThunks";
 import { prepareAccessPolicyRulesForPost } from "../utils/resourceUtils";
-import { logger } from "../utils/logger";
 
 // fetch details about a certain acl from server
 export const fetchAclDetails = (aclId) => async (dispatch) => {
@@ -94,7 +93,7 @@ export const fetchAclDetails = (aclId) => async (dispatch) => {
 		dispatch(loadAclDetailsSuccess(aclDetails));
 	} catch (e) {
 		dispatch(loadAclDetailsFailure());
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -112,11 +111,11 @@ export const updateAclDetails = (values, aclId) => async (dispatch) => {
 	axios
 		.put(`/admin-ng/acl/${aclId}`, data)
 		.then((response) => {
-			logger.info(response);
+			console.info(response);
 			dispatch(addNotification("success", "ACL_UPDATED"));
 		})
 		.catch((response) => {
-			logger.error(response);
+			console.error(response);
 			dispatch(addNotification("error", "ACL_NOT_SAVED"));
 		});
 };

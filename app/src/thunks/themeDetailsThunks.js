@@ -7,7 +7,6 @@ import {
 } from "../actions/themeDetailsActions";
 import { buildThemeBody } from "../utils/resourceUtils";
 import { addNotification } from "./notificationThunks";
-import { logger } from "../utils/logger";
 
 // fetch details of certain theme from server
 export const fetchThemeDetails = (id) => async (dispatch) => {
@@ -36,7 +35,7 @@ export const fetchUsage = (id) => async (dispatch) => {
 
 		dispatch(loadThemeUsageSuccess(themeUsage));
 	} catch (e) {
-		logger.log(e);
+		console.log(e);
 		dispatch(loadThemeDetailsFailure());
 	}
 };
@@ -53,11 +52,11 @@ export const updateThemeDetails = (id, values) => async (dispatch) => {
 			},
 		})
 		.then((response) => {
-			logger.info(response);
+			console.info(response);
 			dispatch(addNotification("success", "THEME_CREATED"));
 		})
 		.catch((response) => {
-			logger.error(response);
+			console.error(response);
 			dispatch(addNotification("error", "THEME_NOT_CREATED"));
 		});
 };

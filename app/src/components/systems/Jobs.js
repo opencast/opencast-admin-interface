@@ -21,7 +21,6 @@ import { fetchServices } from "../../thunks/serviceThunks";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
-import { logger } from "../../utils/logger";
 import Header from "../Header";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
@@ -86,7 +85,7 @@ const Jobs = ({
 		resetTextFilter();
 
 		// Load jobs on mount
-		loadJobs().then((r) => logger.info(r));
+		loadJobs().then((r) => console.info(r));
 
 		// Fetch jobs every minute
 		let fetchJobInterval = setInterval(loadJobs, 5000);

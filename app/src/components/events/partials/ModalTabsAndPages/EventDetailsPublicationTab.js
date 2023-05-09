@@ -4,7 +4,6 @@ import Notifications from "../../../shared/Notifications";
 import { getPublications } from "../../../../selectors/eventDetailsSelectors";
 import { fetchEventPublications } from "../../../../thunks/eventDetailsThunks";
 import { connect } from "react-redux";
-import { logger } from "../../../../utils/logger";
 
 const EventDetailsPublicationTab = ({
 	eventId,
@@ -20,7 +19,7 @@ const EventDetailsPublicationTab = ({
 	};
 
 	useEffect(() => {
-		fetchPublications(eventId).then((r) => logger.info(r));
+		fetchPublications(eventId).then((r) => console.info(r));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

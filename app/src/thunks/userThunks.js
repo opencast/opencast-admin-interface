@@ -7,7 +7,6 @@ import {
 import { buildUserBody, getURLParams } from "../utils/resourceUtils";
 import { transformToIdValueArray } from "../utils/utils";
 import { addNotification } from "./notificationThunks";
-import { logger } from "../utils/logger";
 
 // fetch users from server
 export const fetchUsers = () => async (dispatch, getState) => {
@@ -53,11 +52,11 @@ export const postNewUser = (values) => async (dispatch) => {
 			},
 		})
 		.then((response) => {
-			logger.info(response);
+			console.info(response);
 			dispatch(addNotification("success", "USER_ADDED"));
 		})
 		.catch((response) => {
-			logger.error(response);
+			console.error(response);
 			dispatch(addNotification("error", "USER_NOT_SAVED"));
 		});
 };
@@ -68,12 +67,12 @@ export const deleteUser = (id) => async (dispatch) => {
 	axios
 		.delete(`/admin-ng/users/${id}.json`)
 		.then((res) => {
-			logger.info(res);
+			console.info(res);
 			// add success notification
 			dispatch(addNotification("success", "USER_DELETED"));
 		})
 		.catch((res) => {
-			logger.error(res);
+			console.error(res);
 			// add error notification
 			dispatch(addNotification("error", "USER_NOT_DELETED"));
 		});

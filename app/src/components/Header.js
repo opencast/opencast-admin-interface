@@ -19,7 +19,6 @@ import { availableHotkeys } from "../configs/hotkeysConfig";
 import { studioURL } from "../configs/generalConfig";
 import { getCurrentLanguageInformation, hasAccess } from "../utils/utils";
 import { overflowStyle } from "../utils/componentStyles";
-import { logger } from "../utils/logger";
 import RegistrationModal from "./shared/RegistrationModal";
 import HotKeyCheatSheet from "./shared/HotKeyCheatSheet";
 
@@ -43,11 +42,11 @@ function logout() {
 	axios
 		.get("/j_spring_security_logout")
 		.then((response) => {
-			logger.info(response);
+			console.info(response);
 			window.location.reload();
 		})
 		.catch((response) => {
-			logger.error(response);
+			console.error(response);
 		});
 }
 
@@ -132,7 +131,7 @@ const Header = ({
 		};
 
 		// Fetching health status information at mount
-		loadHealthStatus().then((r) => logger.info(r));
+		loadHealthStatus().then((r) => console.info(r));
 		// Fetch health status every minute
 		setInterval(loadingHealthStatus, 5000);
 

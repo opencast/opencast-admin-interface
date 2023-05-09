@@ -6,7 +6,6 @@ import {
 } from "../actions/groupActions";
 import { buildGroupBody, getURLParams } from "../utils/resourceUtils";
 import { addNotification } from "./notificationThunks";
-import { logger } from "../utils/logger";
 
 // fetch groups from server
 export const fetchGroups = () => async (dispatch, getState) => {
@@ -41,11 +40,11 @@ export const postNewGroup = (values) => async (dispatch) => {
 			},
 		})
 		.then((response) => {
-			logger.info(response);
+			console.info(response);
 			dispatch(addNotification("success", "GROUP_ADDED"));
 		})
 		.catch((response) => {
-			logger.error(response);
+			console.error(response);
 			if (response.status === 409) {
 				dispatch(addNotification("error", "GROUP_CONFLICT"));
 			} else {
@@ -59,12 +58,12 @@ export const deleteGroup = (id) => async (dispatch) => {
 	axios
 		.delete(`/admin-ng/groups/${id}`)
 		.then((res) => {
-			logger.info(res);
+			console.info(res);
 			// add success notification
 			dispatch(addNotification("success", "GROUP_DELETED"));
 		})
 		.catch((res) => {
-			logger.error(res);
+			console.error(res);
 			// add error notification
 			dispatch(addNotification("error", "GROUP_NOT_DELETED"));
 		});
