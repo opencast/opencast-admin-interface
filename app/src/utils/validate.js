@@ -16,7 +16,7 @@ export const NewEventSchema = [
 	Yup.object().shape({
 		uploadAssetsTrack: Yup.array().when("sourceMode", {
 			is: (value) => value === "UPLOAD",
-			then: Yup.array().test(
+			then: () => Yup.array().test(
 				"at-least-one-uploaded",
 				"at least one uploaded",
 				(uploadAssetsTrack) => {
@@ -27,50 +27,50 @@ export const NewEventSchema = [
 		scheduleStartDate: Yup.date().when("sourceMode", {
 			is: (value) =>
 				value === "SCHEDULE_SINGLE" || value === "SCHEDULE_MULTIPLE",
-			then: Yup.date().required("Required"),
+			then: () => Yup.date().required("Required"),
 		}),
 		scheduleEndDate: Yup.date().when("sourceMode", {
 			is: "SCHEDULE_MULTIPLE",
-			then: Yup.date().required("Required"),
+			then: () => Yup.date().required("Required"),
 		}),
 		repeatOn: Yup.array().when("sourceMode", {
 			is: "SCHEDULE_MULTIPLE",
-			then: Yup.array().min(1).required("Required"),
+			then: () => Yup.array().min(1).required("Required"),
 		}),
 		scheduleStartHour: Yup.string().when("sourceMode", {
 			is: (value) =>
 				value === "SCHEDULE_SINGLE" || value === "SCHEDULE_MULTIPLE",
-			then: Yup.string().required("Required"),
+			then: () => Yup.string().required("Required"),
 		}),
 		scheduleStartMinute: Yup.string().when("sourceMode", {
 			is: (value) =>
 				value === "SCHEDULE_SINGLE" || value === "SCHEDULE_MULTIPLE",
-			then: Yup.string().required("Required"),
+			then: () => Yup.string().required("Required"),
 		}),
 		scheduleDurationHours: Yup.string().when("sourceMode", {
 			is: (value) =>
 				value === "SCHEDULE_SINGLE" || value === "SCHEDULE_MULTIPLE",
-			then: Yup.string().required("Required"),
+			then: () => Yup.string().required("Required"),
 		}),
 		scheduleDurationMinutes: Yup.string().when("sourceMode", {
 			is: (value) =>
 				value === "SCHEDULE_SINGLE" || value === "SCHEDULE_MULTIPLE",
-			then: Yup.string().required("Required"),
+			then: () => Yup.string().required("Required"),
 		}),
 		scheduleEndHour: Yup.string().when("sourceMode", {
 			is: (value) =>
 				value === "SCHEDULE_SINGLE" || value === "SCHEDULE_MULTIPLE",
-			then: Yup.string().required("Required"),
+			then: () => Yup.string().required("Required"),
 		}),
 		scheduleEndMinute: Yup.string().when("sourceMode", {
 			is: (value) =>
 				value === "SCHEDULE_SINGLE" || value === "SCHEDULE_MULTIPLE",
-			then: Yup.string().required("Required"),
+			then: () => Yup.string().required("Required"),
 		}),
 		location: Yup.string().when("sourceMode", {
 			is: (value) =>
 				value === "SCHEDULE_SINGLE" || value === "SCHEDULE_MULTIPLE",
-			then: Yup.string().required("Required"),
+			then: () => Yup.string().required("Required"),
 		}),
 	}),
 	Yup.object().shape({
@@ -93,25 +93,25 @@ export const NewThemeSchema = [
 	Yup.object().shape({
 		bumperFile: Yup.string().when("bumperActive", {
 			is: true,
-			then: Yup.string().required("Required"),
+			then: () => Yup.string().required("Required"),
 		}),
 	}),
 	Yup.object().shape({
 		trailerFile: Yup.string().when("trailerActive", {
 			is: true,
-			then: Yup.string().required("Required"),
+			then: () => Yup.string().required("Required"),
 		}),
 	}),
 	Yup.object().shape({
 		titleSlideBackground: Yup.string().when("titleSlideMode", {
 			is: "upload",
-			then: Yup.string().required("Required"),
+			then: () => Yup.string().required("Required"),
 		}),
 	}),
 	Yup.object().shape({
 		watermarkFile: Yup.string().when("watermarkActive", {
 			is: true,
-			then: Yup.string().required("Required"),
+			then: () => Yup.string().required("Required"),
 		}),
 	}),
 ];
@@ -150,7 +150,7 @@ export const EditUserSchema = Yup.object().shape({
 	email: Yup.string().email().required("Required"),
 	passwordConfirmation: Yup.string().when("password", {
 		is: (value) => !!value,
-		then: Yup.string()
+		then: () => Yup.string()
 			.oneOf([Yup.ref("password"), null], "Passwords must match")
 			.required("Required"),
 	}),
