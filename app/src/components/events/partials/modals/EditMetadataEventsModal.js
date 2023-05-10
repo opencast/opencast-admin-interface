@@ -16,7 +16,6 @@ import {
 	updateBulkMetadata,
 } from "../../../../thunks/eventThunks";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
-import { logger } from "../../../../utils/logger";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 
 // Get info about the current language and its date locale
@@ -66,7 +65,7 @@ const EditMetadataEventsModal = ({
 
 	const handleSubmit = (values) => {
 		const response = updateBulkMetadata(metadataFields, values);
-		logger.info(response);
+		console.info(response);
 		close();
 	};
 

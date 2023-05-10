@@ -7,7 +7,6 @@ import {
 	loadUserInfoSuccess,
 } from "../actions/userInfoActions";
 import axios from "axios";
-import { logger } from "../utils/logger";
 import { addNotification } from "./notificationThunks";
 
 export const fetchUserInfo = () => async (dispatch) => {
@@ -27,7 +26,7 @@ export const fetchUserInfo = () => async (dispatch) => {
 
 		dispatch(loadUserInfoSuccess(userInfo));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadUserInfoFailure());
 		dispatch(addNotification("error", "PROBLEM_ON_START"));
 	}
@@ -43,7 +42,7 @@ export const fetchOcVersion = () => async (dispatch) => {
 
 		dispatch(loadOcVersionSuccess(ocVersion));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadOcVersionFailure());
 	}
 };

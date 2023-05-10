@@ -6,7 +6,6 @@ import languages from "../i18n/languages";
 import i18n from "../i18n/i18n";
 import cn from "classnames";
 import axios from "axios";
-import { logger } from "../utils/logger";
 
 //Get code, flag and name of the current language
 let currentLang = languages.find(({ code }) => code === i18n.language);
@@ -71,11 +70,11 @@ const Login = () => {
 		axios
 			.post("/admin-ng/j_spring_security_check", data)
 			.then((response) => {
-				logger.info(response);
+				console.info(response);
 				history.push("/events/events");
 			})
 			.catch((response) => {
-				logger.error(response);
+				console.error(response);
 				setError(true);
 			});
 	};

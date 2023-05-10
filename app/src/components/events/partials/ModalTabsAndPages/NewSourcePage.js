@@ -17,7 +17,6 @@ import { removeNotificationWizardForm } from "../../../../actions/notificationAc
 import { checkConflicts } from "../../../../thunks/eventThunks";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
 import { hours, minutes, weekdays } from "../../../../configs/modalConfig";
-import { logger } from "../../../../utils/logger";
 import DateFnsUtils from "@date-io/date-fns";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import {
@@ -74,7 +73,7 @@ const NewSourcePage = ({
 		loadingInputDevices();
 
 		// validate form because dependent default values need to be checked
-		formik.validateForm().then((r) => logger.info(r));
+		formik.validateForm().then((r) => console.info(r));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

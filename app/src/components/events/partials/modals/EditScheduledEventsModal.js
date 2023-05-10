@@ -12,7 +12,6 @@ import {
 } from "../../../../thunks/eventThunks";
 import { connect } from "react-redux";
 import { usePageFunctions } from "../../../../hooks/wizardHooks";
-import { logger } from "../../../../utils/logger";
 import { fetchRecordings } from "../../../../thunks/recordingThunks";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
@@ -100,7 +99,7 @@ const EditScheduledEventsModal = ({
 		// Only update events if there are changes
 		if (values.changedEvents.length > 0) {
 			const response = updateScheduledEventsBulk(values);
-			logger.info(response);
+			console.info(response);
 		}
 		close();
 	};

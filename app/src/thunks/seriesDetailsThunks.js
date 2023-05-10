@@ -1,6 +1,5 @@
 import axios from "axios";
 import _ from "lodash";
-import { logger } from "../utils/logger";
 import {
 	loadSeriesDetailsAclsSuccess,
 	loadSeriesDetailsFailure,
@@ -113,7 +112,7 @@ export const fetchSeriesDetailsAcls = (id) => async (dispatch) => {
 		dispatch(loadSeriesDetailsAclsSuccess(seriesAcls));
 	} catch (e) {
 		dispatch(loadSeriesDetailsFailure());
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -127,7 +126,7 @@ export const fetchSeriesDetailsFeeds = (id) => async (dispatch) => {
 
 		const feedsResponse = await data.data;
 
-		logger.info(feedsResponse);
+		console.info(feedsResponse);
 
 		let seriesFeeds = [];
 		for (let i = 0; i < feedsResponse.length; i++) {
@@ -162,7 +161,7 @@ export const fetchSeriesDetailsFeeds = (id) => async (dispatch) => {
 
 		dispatch(loadSeriesDetailsFeedsSuccess(seriesFeeds));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadSeriesDetailsFailure());
 	}
 };
@@ -186,7 +185,7 @@ export const fetchSeriesDetailsTheme = (id) => async (dispatch) => {
 
 		dispatch(loadSeriesDetailsThemeSuccess(seriesTheme));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadSeriesDetailsFailure());
 	}
 };
@@ -232,7 +231,7 @@ export const updateSeriesMetadata = (id, values) => async (
 		};
 		dispatch(setSeriesDetailsMetadata(seriesMetadata));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -272,7 +271,7 @@ export const updateExtendedSeriesMetadata = (id, values, catalog) => async (
 
 		dispatch(setSeriesDetailsExtendedMetadata(newExtendedMetadata));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -289,7 +288,7 @@ export const updateSeriesAccess = (id, policies) => async (dispatch) => {
 			},
 		})
 		.then((res) => {
-			logger.info(res);
+			console.info(res);
 			dispatch(
 				addNotification(
 					"info",
@@ -302,7 +301,7 @@ export const updateSeriesAccess = (id, policies) => async (dispatch) => {
 			return true;
 		})
 		.catch((res) => {
-			logger.error(res);
+			console.error(res);
 			dispatch(
 				addNotification(
 					"error",
@@ -343,7 +342,7 @@ export const updateSeriesTheme = (id, values) => async (dispatch, getState) => {
 			);
 		})
 		.catch((response) => {
-			logger.error(response);
+			console.error(response);
 		});
 };
 

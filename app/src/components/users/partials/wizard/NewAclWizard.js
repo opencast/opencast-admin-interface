@@ -8,7 +8,6 @@ import { postNewAcl } from "../../../../thunks/aclThunks";
 import { initialFormValuesNewAcl } from "../../../../configs/modalConfig";
 import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { NewAclSchema } from "../../../../utils/validate";
-import { logger } from "../../../../utils/logger";
 import AclAccessPage from "./AclAccessPage";
 
 /**
@@ -46,7 +45,7 @@ const NewAclWizard = ({ close, postNewAcl }) => {
 
 	const handleSubmit = (values) => {
 		const response = postNewAcl(values);
-		logger.info(response);
+		console.info(response);
 		close();
 	};
 

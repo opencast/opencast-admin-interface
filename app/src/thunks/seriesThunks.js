@@ -22,7 +22,6 @@ import {
 	transformToObjectArray,
 } from "../utils/utils";
 import { addNotification } from "./notificationThunks";
-import { logger } from "../utils/logger";
 
 // fetch series from server
 export const fetchSeries = () => async (dispatch, getState) => {
@@ -41,7 +40,7 @@ export const fetchSeries = () => async (dispatch, getState) => {
 		dispatch(loadSeriesSuccess(series));
 	} catch (e) {
 		dispatch(loadSeriesFailure());
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -70,7 +69,7 @@ export const fetchSeriesMetadata = () => async (dispatch) => {
 		dispatch(loadSeriesMetadataSuccess(metadata, extendedMetadata));
 	} catch (e) {
 		dispatch(loadSeriesFailure());
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -88,7 +87,7 @@ export const fetchSeriesThemes = () => async (dispatch) => {
 		dispatch(loadSeriesThemesSuccess(themes));
 	} catch (e) {
 		dispatch(loadSeriesThemesFailure());
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -147,11 +146,11 @@ export const postNewSeries = (values, metadataInfo, extendedMetadata) => async (
 			},
 		})
 		.then((response) => {
-			logger.info(response);
+			console.info(response);
 			dispatch(addNotification("success", "SERIES_ADDED"));
 		})
 		.catch((response) => {
-			logger.error(response);
+			console.error(response);
 			dispatch(addNotification("error", "SERIES_NOT_SAVED"));
 		});
 };
@@ -182,12 +181,12 @@ export const deleteSeries = (id) => async (dispatch) => {
 	axios
 		.delete(`/admin-ng/series/${id}`)
 		.then((res) => {
-			logger.info(res);
+			console.info(res);
 			// add success notification
 			dispatch(addNotification("success", "SERIES_DELETED"));
 		})
 		.catch((res) => {
-			logger.error(res);
+			console.error(res);
 			// add error notification
 			dispatch(addNotification("error", "SERIES_NOT_DELETED"));
 		});
@@ -206,12 +205,12 @@ export const deleteMultipleSeries = (series) => async (dispatch) => {
 	axios
 		.post("/admin-ng/series/deleteSeries", data)
 		.then((res) => {
-			logger.info(res);
+			console.info(res);
 			//add success notification
 			dispatch(addNotification("success", "SERIES_DELETED"));
 		})
 		.catch((res) => {
-			logger.error(res);
+			console.error(res);
 			//add error notification
 			dispatch(addNotification("error", "SERIES_NOT_DELETED"));
 		});

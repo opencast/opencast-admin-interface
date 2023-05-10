@@ -109,7 +109,6 @@ import {
 	getAssetUploadWorkflow,
 } from "../selectors/eventSelectors";
 import { calculateDuration } from "../utils/dateUtils";
-import { logger } from "../utils/logger";
 import { fetchRecordings } from "./recordingThunks";
 import { getRecordings } from "../selectors/recordingSelectors";
 
@@ -159,7 +158,7 @@ export const fetchMetadata = (eventId) => async (dispatch) => {
 
 		dispatch(loadEventMetadataSuccess(usualMetadata, extendedMetadata));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadEventMetadataFailure());
 	}
 };
@@ -186,7 +185,7 @@ export const updateMetadata = (eventId, values) => async (
 		};
 		dispatch(setEventMetadata(eventMetadata));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -224,7 +223,7 @@ export const updateExtendedMetadata = (eventId, values, catalog) => async (
 
 		dispatch(setExtendedEventMetadata(newExtendedMetadata));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -280,7 +279,7 @@ export const fetchAssets = (eventId) => async (dispatch) => {
 			);
 		}
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadEventAssetsFailure());
 	}
 };
@@ -331,7 +330,7 @@ export const fetchAssetAttachments = (eventId) => async (dispatch) => {
 
 		dispatch(loadEventAssetAttachmentsSuccess(attachmentsResponse));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadEventAssetAttachmentsFailure());
 	}
 };
@@ -353,7 +352,7 @@ export const fetchAssetAttachmentDetails = (eventId, attachmentId) => async (
 
 		dispatch(loadEventAssetAttachmentDetailsSuccess(attachmentDetailsResponse));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadEventAssetAttachmentDetailsFailure());
 	}
 };
@@ -373,7 +372,7 @@ export const fetchAssetCatalogs = (eventId) => async (dispatch) => {
 
 		dispatch(loadEventAssetCatalogsSuccess(catalogsResponse));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadEventAssetCatalogsFailure());
 	}
 };
@@ -395,7 +394,7 @@ export const fetchAssetCatalogDetails = (eventId, catalogId) => async (
 
 		dispatch(loadEventAssetCatalogDetailsSuccess(catalogDetailsResponse));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadEventAssetCatalogDetailsFailure());
 	}
 };
@@ -427,7 +426,7 @@ export const fetchAssetMedia = (eventId) => async (dispatch) => {
 
 		dispatch(loadEventAssetMediaSuccess(media));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadEventAssetMediaFailure());
 	}
 };
@@ -465,7 +464,7 @@ export const fetchAssetMediaDetails = (eventId, mediaId) => async (
 
 		dispatch(loadEventAssetMediaDetailsSuccess(mediaDetails));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadEventAssetMediaDetailsFailure());
 	}
 };
@@ -485,7 +484,7 @@ export const fetchAssetPublications = (eventId) => async (dispatch) => {
 
 		dispatch(loadEventAssetPublicationsSuccess(publicationsResponse));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadEventAssetPublicationsFailure());
 	}
 };
@@ -509,7 +508,7 @@ export const fetchAssetPublicationDetails = (eventId, publicationId) => async (
 			loadEventAssetPublicationDetailsSuccess(publicationDetailsResponse)
 		);
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadEventAssetPublicationDetailsFailure());
 	}
 };
@@ -548,13 +547,13 @@ export const updateAssets = (values, eventId) => async (dispatch, getState) => {
 			},
 		})
 		.then((response) => {
-			logger.info(response);
+			console.info(response);
 			dispatch(
 				addNotification("success", "EVENTS_UPDATED", null, NOTIFICATION_CONTEXT)
 			);
 		})
 		.catch((response) => {
-			logger.error(response);
+			console.error(response);
 			dispatch(
 				addNotification(
 					"error",
@@ -578,7 +577,7 @@ export const saveAccessPolicies = (eventId, policies) => async (dispatch) => {
 	return axios
 		.post(`/admin-ng/event/${eventId}/access`, data.toString(), headers)
 		.then((response) => {
-			logger.info(response);
+			console.info(response);
 			dispatch(
 				addNotification(
 					"info",
@@ -591,7 +590,7 @@ export const saveAccessPolicies = (eventId, policies) => async (dispatch) => {
 			return true;
 		})
 		.catch((response) => {
-			logger.error(response);
+			console.error(response);
 			dispatch(
 				addNotification(
 					"error",
@@ -636,7 +635,7 @@ export const fetchAccessPolicies = (eventId) => async (dispatch) => {
 
 		dispatch(loadEventPoliciesSuccess(policies));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadEventPoliciesFailure());
 	}
 };
@@ -649,7 +648,7 @@ export const fetchHasActiveTransactions = (eventId) => async () => {
 		const hasActiveTransactions = await transactionsData.data;
 		return hasActiveTransactions;
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -670,7 +669,7 @@ export const fetchComments = (eventId) => async (dispatch) => {
 		dispatch(loadEventCommentsSuccess(comments, commentReasons));
 	} catch (e) {
 		dispatch(loadEventCommentsFailure());
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -697,7 +696,7 @@ export const saveComment = (eventId, commentText, commentReason) => async (
 		return true;
 	} catch (e) {
 		dispatch(saveCommentDone());
-		logger.error(e);
+		console.error(e);
 		return false;
 	}
 };
@@ -710,7 +709,7 @@ export const deleteComment = (eventId, commentId) => async () => {
 		await commentDeleted.data;
 		return true;
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		return false;
 	}
 };
@@ -742,7 +741,7 @@ export const saveCommentReply = (
 		return true;
 	} catch (e) {
 		dispatch(saveCommentReplyDone());
-		logger.error(e);
+		console.error(e);
 		return false;
 	}
 };
@@ -756,7 +755,7 @@ export const deleteCommentReply = (eventId, commentId, replyId) => async () => {
 
 		return true;
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		return false;
 	}
 };
@@ -837,7 +836,7 @@ export const fetchSchedulingInfo = (eventId) => async (dispatch, getState) => {
 
 		dispatch(loadEventSchedulingSuccess(source));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadEventSchedulingFailure());
 	}
 };
@@ -940,7 +939,7 @@ export const checkConflicts = (eventId, startDate, endDate, deviceId) => async (
 					dispatch(checkConflictsSuccess(conflicts));
 					return false;
 				} else {
-					logger.error(error);
+					console.error(error);
 					dispatch(checkConflictsFailure());
 					return false;
 				}
@@ -1018,7 +1017,7 @@ export const saveSchedulingInfo = (
 			dispatch(fetchSchedulingInfo(eventId));
 		})
 		.catch((response) => {
-			logger.error(response);
+			console.error(response);
 			dispatch(
 				addNotification(
 					"error",
@@ -1075,7 +1074,7 @@ export const fetchWorkflows = (eventId) => async (dispatch, getState) => {
 		}
 	} catch (e) {
 		dispatch(loadEventWorkflowsFailure());
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -1093,7 +1092,7 @@ export const fetchWorkflowDetails = (eventId, workflowId) => async (
 	} catch (e) {
 		dispatch(loadEventWorkflowDetailsFailure());
 		// todo: probably needs a Notification to the user
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -1135,12 +1134,12 @@ export const saveWorkflowConfig = (values, eventId) => async (dispatch) => {
 	axios
 		.put(`/admin-ng/event/${eventId}/workflows`, data, header)
 		.then((response) => {
-			logger.info(response);
+			console.info(response);
 			dispatch(removeNotificationWizardForm());
 			dispatch(fetchWorkflows(eventId));
 		})
 		.catch((response) => {
-			logger.error(response);
+			console.error(response);
 			dispatch(
 				addNotification(
 					"error",
@@ -1267,7 +1266,7 @@ export const fetchWorkflowOperations = (eventId, workflowId) => async (
 	} catch (e) {
 		dispatch(loadEventWorkflowOperationsFailure());
 		// todo: probably needs a Notification to the user
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -1289,7 +1288,7 @@ export const fetchWorkflowOperationDetails = (
 	} catch (e) {
 		dispatch(loadEventWorkflowOperationDetailsFailure());
 		// todo: probably needs a Notification to the user
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -1308,7 +1307,7 @@ export const fetchWorkflowErrors = (eventId, workflowId) => async (
 	} catch (e) {
 		dispatch(loadEventWorkflowErrorsFailure());
 		// todo: probably needs a Notification to the user
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -1328,7 +1327,7 @@ export const fetchWorkflowErrorDetails = (
 	} catch (e) {
 		dispatch(loadEventWorkflowErrorDetailsFailure());
 		// todo: probably needs a Notification to the user
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -1381,7 +1380,7 @@ export const fetchEventPublications = (eventId) => async (dispatch) => {
 		dispatch(loadEventPublicationsSuccess(publications.publications));
 	} catch (e) {
 		dispatch(loadEventPublicationsFailure());
-		logger.error(e);
+		console.error(e);
 	}
 };
 
