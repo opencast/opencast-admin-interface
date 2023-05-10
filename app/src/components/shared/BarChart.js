@@ -1,5 +1,5 @@
 import React from "react";
-import { Bar } from "react-chartjs-3";
+import { Bar } from "react-chartjs-2";
 
 /**
  * This component provides a bar chart for visualising (statistics) data

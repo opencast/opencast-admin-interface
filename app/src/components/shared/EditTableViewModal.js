@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Draggable } from "react-smooth-dnd";
+import { Container, Draggable } from "@edorivai/react-smooth-dnd";
 import { arrayMoveImmutable } from "array-move";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
