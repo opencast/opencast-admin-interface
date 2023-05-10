@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Draggable } from "react-smooth-dnd";
-import arrayMove from "array-move";
+import { arrayMoveImmutable } from "array-move";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { changeColumnSelection } from "../../thunks/tableThunks";
@@ -68,7 +68,7 @@ const EditTableViewModal = ({
 
 	// change column order based on where column was dragged and dropped
 	const onDrop = ({ removedIndex, addedIndex }) => {
-		setActiveColumns((columns) => arrayMove(columns, removedIndex, addedIndex));
+		setActiveColumns((columns) => arrayMoveImmutable(columns, removedIndex, addedIndex));
 	};
 
 	return (
