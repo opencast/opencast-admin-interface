@@ -1,56 +1,56 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlnsDc="http://purl.org/dc/elements/1.1/"
+   xmlnsCc="http://creativecommons.org/ns#"
+   xmlnsRdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlnsSvg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlnsSodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlnsInkscape="http://www.inkscape.org/namespaces/inkscape"
    height="400"
    width="600"
    version="1.1"
    id="svg8"
-   sodipodi:docname="da_DK.svg"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+   sodipodiDocname="da_DK.svg"
+   inkscapeVersion="0.92.3 (2405546, 2018-03-11)">
   <metadata
      id="metadata14">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
+    <rdfRDF>
+      <ccWork
+         rdfAbout="">
+        <dcFormat>image/svg+xml</dcFormat>
+        <dcType
+           rdfResource="http://purl.org/dc/dcmitype/StillImage" />
+        <dcTitle></dcTitle>
+      </ccWork>
+    </rdfRDF>
   </metadata>
   <defs
      id="defs12" />
-  <sodipodi:namedview
+  <sodipodiNamedview
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1"
      objecttolerance="10"
      gridtolerance="10"
      guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="3840"
-     inkscape:window-height="2051"
+     inkscapePageopacity="0"
+     inkscapePageshadow="2"
+     inkscapeWindow-width="3840"
+     inkscapeWindow-height="2051"
      id="namedview10"
      showgrid="false"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:zoom="2.38396"
-     inkscape:cx="352.63658"
-     inkscape:cy="248.17198"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg8" />
+     inkscapeZoom="2.38396"
+     inkscapeCx="352.63658"
+     inkscapeCy="248.17198"
+     inkscapeWindow-x="0"
+     inkscapeWindow-y="0"
+     inkscapeWindow-maximized="1"
+     inkscapeCurrent-layer="svg8" />
   <rect
      height="400"
      width="600"

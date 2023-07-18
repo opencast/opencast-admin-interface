@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Sodipodi ("http://www.sodipodi.com/") -->
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://web.resource.org/cc/"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlnsDc="http://purl.org/dc/elements/1.1/"
+   xmlnsCc="http://web.resource.org/cc/"
+   xmlnsRdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlnsSvg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlnsSodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlnsInkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg934"
-   sodipodi:version="0.32"
+   sodipodiVersion="0.32"
    width="600"
    height="400"
-   sodipodi:docbase="F:\Mis Documentos - Miaj Dokumentoj\Mis imágenes\++Wiki\Sullpukuna\SVG"
-   sodipodi:docname="Flag_of_Galicia.svg"
-   inkscape:version="0.43"
+   sodipodiDocbase="F:\Mis Documentos - Miaj Dokumentoj\Mis imágenes\++Wiki\Sullpukuna\SVG"
+   sodipodiDocname="Flag_of_Galicia.svg"
+   inkscapeVersion="0.43"
    version="1.0">
   <metadata
      id="metadata188">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-      </cc:Work>
-    </rdf:RDF>
+    <rdfRDF>
+      <ccWork
+         rdfAbout="">
+        <dcFormat>image/svg+xml</dcFormat>
+        <dcType
+           rdfResource="http://purl.org/dc/dcmitype/StillImage" />
+      </ccWork>
+    </rdfRDF>
   </metadata>
   <defs
      id="defs936" />
-  <sodipodi:namedview
+  <sodipodiNamedview
      id="base"
-     inkscape:zoom="1"
-     inkscape:cx="342.97407"
-     inkscape:cy="77.681573"
-     inkscape:window-width="1024"
-     inkscape:window-height="678"
-     inkscape:window-x="-4"
-     inkscape:window-y="-4"
-     inkscape:current-layer="svg934" />
+     inkscapeZoom="1"
+     inkscapeCx="342.97407"
+     inkscapeCy="77.681573"
+     inkscapeWindow-width="1024"
+     inkscapeWindow-height="678"
+     inkscapeWindow-x="-4"
+     inkscapeWindow-y="-4"
+     inkscapeCurrent-layer="svg934" />
   <g
      id="g5162"
      transform="matrix(1,0,0,1.000076,-4e-2,-96.05513)">
