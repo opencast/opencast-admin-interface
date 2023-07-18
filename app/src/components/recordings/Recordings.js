@@ -14,7 +14,6 @@ import { loadRecordingsIntoTable } from "../../thunks/tableThunks";
 import { fetchFilters } from "../../thunks/tableFilterThunks";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
-import { logger } from "../../utils/logger";
 import Header from "../Header";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
@@ -52,7 +51,7 @@ const Recordings = ({
 		resetTextFilter();
 
 		// Load recordings on mount
-		loadRecordings().then((r) => logger.info(r));
+		loadRecordings().then((r) => console.info(r));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

@@ -11,7 +11,6 @@ import NewAccessPage from "../ModalTabsAndPages/NewAccessPage";
 import NewProcessingPage from "../ModalTabsAndPages/NewProcessingPage";
 import NewSourcePage from "../ModalTabsAndPages/NewSourcePage";
 import { NewEventSchema } from "../../../../utils/validate";
-import { logger } from "../../../../utils/logger";
 import WizardStepperEvent from "../../../shared/wizard/WizardStepperEvent";
 import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
@@ -115,7 +114,7 @@ const NewEventWizard = ({
 	const handleSubmit = (values) => {
 		workflowPanelRef.current?.submitForm();
 		const response = postNewEvent(values, metadataFields, extendedMetadata);
-		logger.info(response);
+		console.info(response);
 		close();
 	};
 

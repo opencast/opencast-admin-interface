@@ -6,7 +6,6 @@ import {
 import axios from "axios";
 import { addNotification } from "./notificationThunks";
 import { buildGroupBody } from "../utils/resourceUtils";
-import { logger } from "../utils/logger";
 
 // fetch details about certain group from server
 export const fetchGroupDetails = (groupName) => async (dispatch) => {
@@ -39,7 +38,7 @@ export const fetchGroupDetails = (groupName) => async (dispatch) => {
 		dispatch(loadGroupDetailsSuccess(groupDetails));
 	} catch (e) {
 		dispatch(loadGroupDetailsFailure());
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -52,11 +51,11 @@ export const updateGroupDetails = (values, groupId) => async (dispatch) => {
 	axios
 		.put(`/admin-ng/groups/${groupId}`, data)
 		.then((response) => {
-			logger.info(response);
+			console.info(response);
 			dispatch(addNotification("success", "GROUP_UPDATED"));
 		})
 		.catch((response) => {
-			logger.error(response);
+			console.error(response);
 			if (response.status === 409) {
 				dispatch(addNotification("error", "GROUP_CONFLICT"));
 			} else {

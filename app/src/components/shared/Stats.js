@@ -9,7 +9,6 @@ import { connect } from "react-redux";
 import { fetchEvents } from "../../thunks/eventThunks";
 import { loadEventsIntoTable } from "../../thunks/tableThunks";
 import { fetchStats } from "../../thunks/tableFilterThunks";
-import { logger } from "../../utils/logger";
 
 /**
  * This component renders the status bar of the event view and filters depending on these
@@ -47,7 +46,7 @@ const Stats = ({
 
 	useEffect(() => {
 		// Load stats on mount
-		loadStats().then((r) => logger.info(r));
+		loadStats().then((r) => console.info(r));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

@@ -5,7 +5,6 @@ import {
 	createDownloadUrl,
 } from "../utils/statisticsUtils";
 import { getHttpHeaders } from "../utils/resourceUtils";
-import { logger } from "../utils/logger";
 import { getStatistics } from "../selectors/statisticsSelectors";
 import {
 	loadStatisticsFailure,
@@ -186,13 +185,13 @@ export const fetchStatistics = (
 				.catch((response) => {
 					// put unfinished statistics list into redux store but set flag that an error occurred
 					dispatch(loadStatisticsSuccess(newStatistics, true));
-					logger.error(response);
+					console.error(response);
 				});
 		})
 		.catch((response) => {
 			// getting statistics from API failed
 			dispatch(loadStatisticsFailure(true));
-			logger.error(response);
+			console.error(response);
 		});
 };
 
@@ -279,6 +278,6 @@ export const fetchStatisticsValueUpdate = (
 		.catch((response) => {
 			// getting new statistic values from API failed
 			dispatch(updateStatisticsFailure());
-			logger.error(response);
+			console.error(response);
 		});
 };

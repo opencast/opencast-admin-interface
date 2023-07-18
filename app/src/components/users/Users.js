@@ -22,7 +22,6 @@ import { fetchAcls } from "../../thunks/aclThunks";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
-import { logger } from "../../utils/logger";
 import Header from "../Header";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
@@ -88,7 +87,7 @@ const Users = ({
 		resetTextFilter();
 
 		// Load users on mount
-		loadUsers().then((r) => logger.info(r));
+		loadUsers().then((r) => console.info(r));
 
 		// Fetch users every minute
 		let fetchUsersInterval = setInterval(loadUsers, 5000);

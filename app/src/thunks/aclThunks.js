@@ -11,7 +11,6 @@ import {
 } from "../utils/resourceUtils";
 import { transformToIdValueArray } from "../utils/utils";
 import { addNotification } from "./notificationThunks";
-import { logger } from "../utils/logger";
 import { NOTIFICATION_CONTEXT_ACCESS } from "../configs/modalConfig";
 import { removeNotificationWizardAccess } from "../actions/notificationActions";
 
@@ -90,11 +89,11 @@ export const postNewAcl = (values) => async (dispatch) => {
 			},
 		})
 		.then((response) => {
-			logger.info(response);
+			console.info(response);
 			dispatch(addNotification("success", "ACL_ADDED"));
 		})
 		.catch((response) => {
-			logger.error(response);
+			console.error(response);
 			dispatch(addNotification("error", "ACL_NOT_SAVED"));
 		});
 };
@@ -103,12 +102,12 @@ export const deleteAcl = (id) => async (dispatch) => {
 	axios
 		.delete(`/admin-ng/acl/${id}`)
 		.then((res) => {
-			logger.info(res);
+			console.info(res);
 			//add success notification
 			dispatch(addNotification("success", "ACL_DELETED"));
 		})
 		.catch((res) => {
-			logger.error(res);
+			console.error(res);
 			// add error notification
 			dispatch(addNotification("error", "ACL_NOT_DELETED"));
 		});

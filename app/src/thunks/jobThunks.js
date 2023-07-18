@@ -5,7 +5,6 @@ import {
 	loadJobsSuccess,
 } from "../actions/jobActions";
 import { getURLParams } from "../utils/resourceUtils";
-import { logger } from "../utils/logger";
 
 // fetch jobs from server
 export const fetchJobs = () => async (dispatch, getState) => {
@@ -21,7 +20,7 @@ export const fetchJobs = () => async (dispatch, getState) => {
 		const jobs = await data.data;
 		dispatch(loadJobsSuccess(jobs));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 		dispatch(loadJobsFailure());
 	}
 };

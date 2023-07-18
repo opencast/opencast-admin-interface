@@ -7,7 +7,6 @@ import {
 } from "../actions/tableFilterActions";
 import axios from "axios";
 import { relativeDateSpanToFilterValue } from "../utils/dateUtils";
-import { logger } from "../utils/logger";
 import { setOffset } from "../actions/tableActions";
 import { fetchEvents } from "./eventThunks";
 import { fetchServices } from "./serviceThunks";
@@ -41,7 +40,7 @@ export const fetchFilters = (resource) => async (dispatch) => {
 		await dispatch(loadFiltersSuccess(filtersList, resource));
 	} catch (e) {
 		dispatch(loadFiltersFailure());
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -101,7 +100,7 @@ export const fetchStats = () => async (dispatch) => {
 
 		dispatch(loadStats(stats));
 	} catch (e) {
-		logger.error(e);
+		console.error(e);
 	}
 };
 
@@ -173,7 +172,7 @@ function transformResponse(data) {
 			filters[key].options = filterArr;
 		}
 	} catch (e) {
-		logger.error(e.message);
+		console.error(e.message);
 	}
 
 	return { filters: filters };

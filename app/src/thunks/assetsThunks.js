@@ -6,7 +6,6 @@ import {
 	loadAssetUploadOptionsSuccess,
 	setAssetUploadWorkflow,
 } from "../actions/assetActions";
-import { logger } from "../utils/logger";
 
 // thunks for assets, especially for getting asset options
 
@@ -61,7 +60,7 @@ export const fetchAssetUploadOptions = () => async (dispatch, getState) => {
 			.catch((response) => {
 				// getting asset upload options from API failed
 				dispatch(loadAssetUploadOptionsFailure());
-				logger.error(response);
+				console.error(response);
 			});
 	}
 };

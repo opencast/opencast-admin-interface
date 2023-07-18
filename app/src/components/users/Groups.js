@@ -22,7 +22,6 @@ import { fetchAcls } from "../../thunks/aclThunks";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
-import { logger } from "../../utils/logger";
 import Header from "../Header";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
@@ -88,7 +87,7 @@ const Groups = ({
 		resetTextFilter();
 
 		// Load groups on mount
-		loadGroups().then((r) => logger.info(r));
+		loadGroups().then((r) => console.info(r));
 
 		// Fetch groups every minute
 		let fetchGroupsInterval = setInterval(loadGroups, 5000);

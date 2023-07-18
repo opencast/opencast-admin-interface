@@ -6,7 +6,6 @@ import {
 import { buildThemeBody, getURLParams } from "../utils/resourceUtils";
 import axios from "axios";
 import { addNotification } from "./notificationThunks";
-import { logger } from "../utils/logger";
 
 // fetch themes from server
 export const fetchThemes = () => async (dispatch, getState) => {
@@ -40,11 +39,11 @@ export const postNewTheme = (values) => async (dispatch) => {
 			},
 		})
 		.then((response) => {
-			logger.info(response);
+			console.info(response);
 			dispatch(addNotification("success", "THEME_CREATED"));
 		})
 		.catch((response) => {
-			logger.error(response);
+			console.error(response);
 			dispatch(addNotification("error", "THEME_NOT_CREATED"));
 		});
 };
@@ -53,12 +52,12 @@ export const deleteTheme = (id) => async (dispatch) => {
 	axios
 		.delete(`/admin-ng/themes/${id}`)
 		.then((res) => {
-			logger.info(res);
+			console.info(res);
 			// add success notification
 			dispatch(addNotification("success", "THEME_DELETED"));
 		})
 		.catch((res) => {
-			logger.error(res);
+			console.error(res);
 			// add error notification
 			dispatch(addNotification("error", "THEME_NOT_DELETED"));
 		});

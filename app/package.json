@@ -10,11 +10,9 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "chart.js": "2.9.4",
-    "react-chartjs-3": "^2.7.7",
-    "react-select": "^5.4.0",
     "array-move": "^3.0.1",
     "axios": "^0.21.1",
+    "chart.js": "2.9.4",
     "classnames": "^2.2.6",
     "date-fns": "^2.16.1",
     "dompurify": "^2.2.6",
@@ -29,6 +27,7 @@
     "moment-timezone": "^0.5.33",
     "node-sass": "^6.0.0",
     "react": "^16.13.1",
+    "react-chartjs-3": "^2.7.7",
     "react-datepicker": "^2.14.1",
     "react-dom": "^16.13.1",
     "react-hotkeys": "^2.0.0",
@@ -38,6 +37,7 @@
     "react-redux": "^7.2.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "^4.0.3",
+    "react-select": "^5.4.0",
     "react-smooth-dnd": "^0.11.1",
     "react-widgets": "^4.6.1",
     "redux": "^4.0.5",
@@ -46,7 +46,6 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "styled-components": "^5.1.1",
-    "winston": "^3.3.3",
     "yup": "^0.31.0"
   },
   "scripts": {
@@ -78,7 +77,6 @@
     "customize-cra": "^0.9.1",
     "prop-types": "^15.7.2",
     "react-app-rewired": "^2.1.5",
-    "uuid": "^8.3.2",
-    "winston-transport-browserconsole": "^1.0.5"
+    "uuid": "^8.3.2"
   }
 }
