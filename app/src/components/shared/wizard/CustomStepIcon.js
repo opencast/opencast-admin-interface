@@ -1,6 +1,6 @@
 import { useStepIconStyles } from "../../../utils/wizardUtils";
 import cn from "classnames";
-import { FaCircle, FaDotCircle } from "react-icons/all";
+import { FaCircle, FaDotCircle } from "react-icons/fa";
 import React from "react";
 
 /**
