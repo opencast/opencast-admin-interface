@@ -83,7 +83,8 @@ const EventDetailsAssetsAddAsset = ({
 																	? t(asset.displayOverride)
 																	: t(asset.title)}
 																<span className="ui-helper-hidden">
-																	({asset.type} "{asset.flavorType}//
+                                  { // eslint-disable-next-line react/jsx-no-comment-textnodes
+                                  } ({asset.type} "{asset.flavorType}//
 																	{asset.flavorSubType}")
 																</span>
 															</td>
