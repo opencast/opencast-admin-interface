@@ -52,6 +52,7 @@ const PublishCell = ({ row }) => {
 												href={publication.url}
 												className="popover__list-item"
 												target="_blank"
+                        rel='noreferrer'
 												key={key}
 												enabled
 											>
