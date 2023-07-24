@@ -27,15 +27,20 @@ export const setDefaultConfig = (workflowDefinitions, workflowId) => {
 const fillDefaultConfig = (fieldset, defaultConfiguration) => {
 	// iteration through each input field
 	fieldset.forEach((field) => {
-		// set value in default configuration
-		if (field.type !== "radio") {
-			defaultConfiguration[field.name] = field.value;
-		} else {
-			// set only the checked input of radio button as default value
-			if (field.type === "radio" && field.checked) {
-				defaultConfiguration[field.name] = field.value;
-			}
-		}
+
+    // set only the checked input of radio button as default value
+    if (field.type === "radio" && field.checked) {
+      defaultConfiguration[field.name] = field.value;
+    }
+    else if (field.type === "datetime-local") {
+      const date = new Date(new Date().toString().split('GMT')[0]+' UTC').toISOString().split('.')[0];
+      defaultConfiguration[field.name] = date;
+      field.defaultValue = date;
+    }
+    // set value in default configuration
+    else {
+      defaultConfiguration[field.name] = field.value;
+    }
 
 		// if an input has further configuration then go through fillDefaultConfig again
 		if (field.fieldset) {

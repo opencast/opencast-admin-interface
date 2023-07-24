@@ -84,73 +84,31 @@ const renderInputByType = (field, key, formik) => {
 			return <RenderNumber field={field} key={key} formik={formik} />;
 		case "text":
 			return <RenderText field={field} key={key} formik={formik} />;
+    case "datetime-local":
+      return <RenderDatetimeLocal field={field} key={key} formik={formik} />;
 		default:
 			return "";
 	}
 };
 
-const RenderCheckbox = ({ field, key, formik }) => {
-	// id used for Field and label
-	const uuid = uuidv4();
-	const disabled = !!field.disabled ? field.disabled : false;
+const RenderDatetimeLocal = ({ field, key, formik }) => {
+  field.value = undefined;
 
-	return (
-		<li key={key}>
-			<Field
-				id={uuid}
-				className="configField"
-				name={"configuration." + field.name}
-				defaultValue={field.value}
-				disabled={disabled}
-				type={field.type}
-			/>
-			<label htmlFor={uuid}>{field.label}</label>
-			{/* if input has an additional fieldset or further configuration inputs
-             then render again by input type*/}
-			{!!field.fieldset && !!formik.values.configuration[field.name] && (
-				<ul className="workflow-configuration-subpanel">
-					{field.fieldset?.map((f, keys) => renderInputByType(f, keys, formik))}
-				</ul>
-			)}
-		</li>
-	);
+  return <RenderField field={field} key={key} formik={formik} />;
+};
+
+const RenderCheckbox = ({ field, key, formik }) => {
+  field.defaultValue = field.value;
+  field.value = undefined;
+
+  return <RenderField field={field} key={key} formik={formik} />;
 };
 
 const RenderRadio = ({ field, key, formik }) => {
-	// id used for Field and label
-	const uuid = uuidv4();
-	const disabled = !!field.disabled ? field.disabled : false;
-
-	return (
-		<li key={key}>
-			<Field
-				id={uuid}
-				className="configField"
-				name={"configuration." + field.name}
-				value={field.value}
-				disabled={disabled}
-				type={field.type}
-			/>
-			<label htmlFor={uuid}>{field.label}</label>
-			{/* if input has an additional fieldset or further configuration inputs
-            then render again by input type*/}
-			{!!field.fieldset &&
-				formik.values.configuration[field.name] === field.value && (
-					<ul className="workflow-configuration-subpanel">
-						{field.fieldset?.map((f, keys) =>
-							renderInputByType(f, keys, formik)
-						)}
-					</ul>
-				)}
-		</li>
-	);
+  return <RenderField field={field} key={key} formik={formik} />;
 };
 
 const RenderNumber = ({ field, key, formik }) => {
-	// id used for Field and label
-	const uuid = uuidv4();
-	const disabled = !!field.disabled ? field.disabled : false;
-
 	// validate that value of number is between max and min
 	const validate = (value) => {
 		let error;
@@ -160,44 +118,61 @@ const RenderNumber = ({ field, key, formik }) => {
 		return error;
 	};
 
-	return (
-		<li key={key}>
-			<Field
-				id={uuid}
-				validate={validate}
-				className="configField"
-				name={"configuration." + field.name}
-				disabled={disabled}
-				type={field.type}
-				min={field.min}
-				max={field.max}
-			/>
-			<label htmlFor={uuid}>{field.label}</label>
-			{/* if input has an additional fieldset or further configuration inputs
-            then render again by input type*/}
-			{!!field.fieldset && !!formik.values.configuration[field.name] && (
-				<ul className="workflow-configuration-subpanel">
-					{field.fieldset?.map((f, keys) => renderInputByType(f, keys, formik))}
-				</ul>
-			)}
-		</li>
-	);
+  field.defaultValue = field.value;
+  field.value = undefined;
+
+  return <RenderField field={field} key={key} formik={formik} validate={validate}/>;
 };
 
 const RenderText = ({ field, key, formik }) => {
+  field.value = undefined;
+
+  return <RenderField field={field} key={key} formik={formik} />;
+};
+
+const RenderField = ({field, key, formik, validate = undefined }) => {
 	// id used for Field and label
 	const uuid = uuidv4();
 	const disabled = !!field.disabled ? field.disabled : false;
 
+  // Only set value to *anything* if there is actually a value to be had
+  // Otherwise it empties the displayed value when switching between tabs
+  const renderField = () => {
+    if (field.value) {
+      return(
+        <Field
+          id={uuid}
+          defaultValue={field.defaultValue}
+          value={field.value}
+          validate={validate}
+          className="configField"
+          name={"configuration." + field.name}
+          disabled={disabled}
+          type={field.type}
+          min={field.min}
+          max={field.max}
+        />
+      )
+    } else {
+      return(
+        <Field
+          id={uuid}
+          defaultValue={field.defaultValue}
+          validate={validate}
+          className="configField"
+          name={"configuration." + field.name}
+          disabled={disabled}
+          type={field.type}
+          min={field.min}
+          max={field.max}
+        />
+      )
+    }
+  }
+
 	return (
 		<li key={key}>
-			<Field
-				id={uuid}
-				className="configField"
-				name={"configuration." + field.name}
-				disabled={disabled}
-				type={field.type}
-			/>
+			{renderField()}
 			<label htmlFor={uuid}>{field.label}</label>
 			{/* if input has an additional fieldset or further configuration inputs
             then render again by input type*/}
@@ -208,7 +183,7 @@ const RenderText = ({ field, key, formik }) => {
 			)}
 		</li>
 	);
-};
+}
 
 // Getting state data out of redux store
 const mapStateToProps = () => {
