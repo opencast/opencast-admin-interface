@@ -1,6 +1,4 @@
 import ServersStatusCell from "../../components/systems/partials/ServersStatusCell";
-import MeanRunTimeCell from "../../components/systems/partials/MeanRunTimeCell";
-import MeanQueueTimeCell from "../../components/systems/partials/MeanQueueTimeCell";
 import ServersMaintenanceCell from "../../components/systems/partials/ServersMaintenanceCell";
 
 /**
@@ -52,18 +50,6 @@ export const serversTableConfig = {
 			sortable: true,
 		},
 		{
-			template: "MeanRunTimeCell",
-			name: "meanRunTime",
-			label: "SYSTEMS.SERVERS.TABLE.MEAN_RUN_TIME",
-			sortable: true,
-		},
-		{
-			template: "MeanQueueTimeCell",
-			name: "meanQueueTime",
-			label: "SYSTEMS.SERVERS.TABLE.MEAN_QUEUE_TIME",
-			sortable: true,
-		},
-		{
 			template: "ServersMaintenanceCell",
 			name: "maintenance",
 			label: "SYSTEMS.SERVERS.TABLE.MAINTENANCE",
@@ -83,7 +69,5 @@ export const serversTableConfig = {
  */
 export const serversTemplateMap = {
 	ServersStatusCell: ServersStatusCell,
-	MeanRunTimeCell: MeanRunTimeCell,
-	MeanQueueTimeCell: MeanQueueTimeCell,
 	ServersMaintenanceCell: ServersMaintenanceCell,
 };

@@ -1593,8 +1593,6 @@
 				"COMPLETED": "Dokončani posli",
 				"RUNNING": "Posli, ki se izvajajo",
 				"QUEUED": "Posli v čakalni vrsti",
-				"MEAN_RUN_TIME": "Povprečen čas izvajanja",
-				"MEAN_QUEUE_TIME": "Povprečen čas v čakalni vrsti",
 				"MAINTENANCE": "Vzdrževanje",
 				"MAINTENANCE_OFF": "Odpri način vzdrževanja",
 				"MAINTENANCE_ON": "Zapri način vzdrževanja"
