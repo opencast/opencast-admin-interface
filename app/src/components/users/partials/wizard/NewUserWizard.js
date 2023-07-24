@@ -38,19 +38,19 @@ const NewUserWizard = ({ close, usernames, postNewUser }) => {
 		<>
 			{/*Head navigation*/}
 			<nav className="modal-nav" id="modal-nav" style={navStyle}>
-				<a
-					className={cn("wider", { active: tab === 0 })}
+				<button
+					className={"button-like-anchor " + cn("wider", { active: tab === 0 })}
 					onClick={() => openTab(0)}
 				>
 					{t("USERS.USERS.DETAILS.TABS.USER")}
-				</a>
-				<a
-					className={cn("wider", { active: tab === 1 })}
+				</button>
+				<button
+					className={"button-like-anchor " + cn("wider", { active: tab === 1 })}
 					onClick={() => openTab(1)}
 					title={t("USERS.USERS.DETAILS.DESCRIPTION.ROLES")}
 				>
 					{t("USERS.USERS.DETAILS.TABS.ROLES")}
-				</a>
+				</button>
 			</nav>
 
 			{/* Initialize overall form */}

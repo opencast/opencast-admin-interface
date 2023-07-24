@@ -291,8 +291,8 @@ const Upload = ({ formik }) => {
 												</div>
 											</td>
 											<td className="fit">
-												<a
-													className="remove"
+												<button
+													className="button-like-anchor remove"
 													onClick={() => {
 														formik.setFieldValue(
 															`uploadAssetsTrack.${key}.file`,

@@ -44,8 +44,8 @@ const RecordingsActionCell = ({
 		<>
 			{/* view details location/recording */}
 			{hasAccess("ROLE_UI_LOCATIONS_DETAILS_VIEW", user) && (
-				<a
-					className="more"
+				<button
+					className="button-like-anchor more"
 					title={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DETAILS")}
 					onClick={() => showRecordingDetails()}
 				/>
@@ -60,8 +60,8 @@ const RecordingsActionCell = ({
 
 			{/* delete location/recording */}
 			{hasAccess("ROLE_UI_LOCATIONS_DELETE", user) && (
-				<a
-					className="remove"
+				<button
+					className="button-like-anchor remove"
 					title={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DELETE")}
 					onClick={() => setDeleteConfirmation(true)}
 				/>

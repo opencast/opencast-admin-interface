@@ -120,18 +120,18 @@ const EventActionCell = ({
 
 			{/* Open event details */}
 			{hasAccess("ROLE_UI_EVENTS_DETAILS_VIEW", user) && (
-				<a
+				<button
 					onClick={() => onClickEventDetails()}
-					className="more"
+					className="button-like-anchor more"
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
 
 			{/* If event belongs to a series then the corresponding series details can be opened */}
 			{!!row.series && hasAccess("ROLE_UI_SERIES_DETAILS_VIEW", user) && (
-				<a
+				<button
 					onClick={() => onClickSeriesDetails()}
-					className="more-series"
+					className="button-like-anchor more-series"
 					title={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
@@ -139,9 +139,9 @@ const EventActionCell = ({
 			{/* Delete an event */}
 			{/*TODO: needs to be checked if event is published */}
 			{hasAccess("ROLE_UI_EVENTS_DELETE", user) && (
-				<a
+				<button
 					onClick={() => setDeleteConfirmation(true)}
-					className="remove"
+					className="button-like-anchor remove"
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.DELETE")}
 				/>
 			)}
@@ -174,19 +174,19 @@ const EventActionCell = ({
 
 			{/* If the event has comments and no open comments then the comment tab of event details can be opened directly */}
 			{row.has_comments && !row.has_open_comments && (
-				<a
+				<button
 					onClick={() => onClickComments()}
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.COMMENTS")}
-					className="comments"
+					className="button-like-anchor comments"
 				/>
 			)}
 
 			{/* If the event has comments and open comments then the comment tab of event details can be opened directly */}
 			{row.has_comments && row.has_open_comments && (
-				<a
+				<button
 					onClick={() => onClickComments()}
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.COMMENTS")}
-					className="comments-open"
+					className="button-like-anchor comments-open"
 				/>
 			)}
 
@@ -194,27 +194,27 @@ const EventActionCell = ({
                 details can be opened directly */}
 			{row.workflow_state === "PAUSED" &&
 				hasAccess("ROLE_UI_EVENTS_DETAILS_WORKFLOWS_EDIT", user) && (
-					<a
+					<button
 						title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PAUSED_WORKFLOW")}
 						onClick={() => onClickWorkflow()}
-						className="fa fa-warning"
+						className="button-like-anchor fa fa-warning"
 					/>
 				)}
 
 			{/* Open assets tab of event details directly*/}
 			{hasAccess("ROLE_UI_EVENTS_DETAILS_ASSETS_VIEW", user) && (
-				<a
+				<button
 					onClick={() => onClickAssets()}
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.ASSETS")}
-					className="fa fa-folder-open"
+					className="button-like-anchor fa fa-folder-open"
 				/>
 			)}
 			{/* Open dialog for embedded code*/}
 			{hasAccess("ROLE_UI_EVENTS_EMBEDDING_CODE_VIEW", user) && (
-				<a
+				<button
 					onClick={() => showEmbeddingCodeModal()}
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.EMBEDDING_CODE")}
-					className="fa fa-link"
+					className="button-like-anchor fa fa-link"
 				/>
 			)}
 

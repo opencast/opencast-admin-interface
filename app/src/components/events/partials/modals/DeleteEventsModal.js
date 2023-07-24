@@ -63,7 +63,7 @@ const DeleteEventsModal = ({ close, selectedRows, deleteMultipleEvent }) => {
 				style={{ display: "block" }}
 			>
 				<header>
-					<a onClick={close} className="fa fa-times close-modal" />
+					<button onClick={close} className="button-like-anchor fa fa-times close-modal" />
 					<h2>{t("BULK_ACTIONS.DELETE.EVENTS.CAPTION")}</h2>
 				</header>
 

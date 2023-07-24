@@ -101,20 +101,19 @@
         > li {
             text-decoration: none;
             text-shadow: 0 1px 0 $white;
-            color: $medium-prim-color;
-            font-size: 12px;
-            line-height: 20px;
-            font-weight: 600;
-            cursor: default;
             display: block;
             position: relative;
             @include transition(all 200ms);
 
-            a {
+            button {
                 display: block;
                 padding: 12px 15px;
+                width: 100%;
+                text-align: left;
+                font-size: inherit;
+                line-height: 20px;
 
-                &:hover {
+                &:hover, &:focus {
                     color: #666666;
                     background: #f2f2f2;
                 }
@@ -203,11 +202,11 @@
                     margin-top: -20px;
                 }
 
-                a {
+                button {
                     display: block;
                     padding: 4px 15px;
 
-                    &:hover {
+                    &:hover, &:focus {
                         color: #666666;
                         background: #f2f2f2;
                     }

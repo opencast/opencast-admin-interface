@@ -39,9 +39,9 @@ const GroupsActionsCell = ({ row, deleteGroup, fetchGroupDetails, user }) => {
 		<>
 			{/*edit/show group */}
 			{hasAccess("ROLE_UI_GROUPS_EDIT", user) && (
-				<a
+				<button
 					onClick={() => showGroupDetails()}
-					className="more"
+					className="button-like-anchor more"
 					title={t("USERS.GROUPS.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
@@ -53,9 +53,9 @@ const GroupsActionsCell = ({ row, deleteGroup, fetchGroupDetails, user }) => {
 
 			{/* delete group */}
 			{hasAccess("ROLE_UI_GROUPS_DELETE", user) && (
-				<a
+				<button
 					onClick={() => setDeleteConfirmation(true)}
-					className="remove"
+					className="button-like-anchor remove"
 					title={t("USERS.GROUPS.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}

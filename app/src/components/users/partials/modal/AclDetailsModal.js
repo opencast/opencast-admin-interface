@@ -27,8 +27,8 @@ const AclDetailsModal = ({ close, aclName }) => {
 				style={modalStyle}
 			>
 				<header>
-					<a
-						className="fa fa-times close-modal"
+					<button
+						className="button-like-anchor fa fa-times close-modal"
 						onClick={() => handleClose()}
 					/>
 					<h2>{t("USERS.ACLS.DETAILS.HEADER", { name: aclName })}</h2>

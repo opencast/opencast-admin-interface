@@ -77,8 +77,8 @@ const EmbeddingCodeModal = ({ close, eventId }) => {
 			<div className="modal-animation modal-overlay" />
 			<section className="modal modal-animation" id="embedding-code">
 				<header>
-					<a
-						className="fa fa-times close-modal"
+					<button
+						className="button-like-anchor fa fa-times close-modal"
 						onClick={() => handleClose()}
 					/>
 					<h2>{t("CONFIRMATIONS.ACTIONS.SHOW.EMBEDDING_CODE")}</h2>

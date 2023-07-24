@@ -110,7 +110,7 @@ const DeleteSeriesModal = ({ close, selectedRows, deleteMultipleSeries }) => {
 				style={{ display: "block" }}
 			>
 				<header>
-					<a onClick={() => close()} className="fa fa-times close-modal" />
+					<button onClick={() => close()} className="button-like-anchor fa fa-times close-modal" />
 					<h2>{t("BULK_ACTIONS.DELETE.SERIES.CAPTION")}</h2>
 				</header>
 

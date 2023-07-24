@@ -98,8 +98,8 @@ const EventDetailsAssetAttachments = ({
 														: null}
 												</td>
 												<td>
-													<a
-														className="details-link"
+													<button
+														className="button-like-anchor details-link"
 														onClick={() =>
 															openSubTab("attachment-details", item.id)
 														}
@@ -109,7 +109,7 @@ const EventDetailsAssetAttachments = ({
 																"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
 															) /* Details */
 														}
-													</a>
+													</button>
 												</td>
 											</tr>
 										))}

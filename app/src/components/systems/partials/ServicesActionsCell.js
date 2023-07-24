@@ -26,8 +26,8 @@ const ServicesActionCell = ({
 	return (
 		row.status !== "SYSTEMS.SERVICES.STATUS.NORMAL" &&
 		hasAccess("ROLE_UI_SERVICES_STATUS_EDIT", user) && (
-			<a
-				className="sanitize fa fa-undo"
+			<button
+				className="button-like-anchor sanitize fa fa-undo"
 				onClick={() => onClickRestart()}
 				title={t("SYSTEMS.SERVICES.TABLE.SANITIZE")}
 			/>

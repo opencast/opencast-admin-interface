@@ -224,9 +224,9 @@ const Series = ({
 								<ul className="dropdown-ul">
 									{hasAccess("ROLE_UI_SERIES_DELETE", user) && (
 										<li>
-											<a onClick={() => setDeleteSeriesModal(true)}>
+											<button className="button-like-anchor" onClick={() => setDeleteSeriesModal(true)}>
 												{t("BULK_ACTIONS.DELETE.SERIES.CAPTION")}
-											</a>
+											</button>
 										</li>
 									)}
 								</ul>

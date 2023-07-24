@@ -34,14 +34,14 @@ const EventsPresentersCell = ({
 		// Link template for presenter of event
 		// Repeat for each presenter
 		row.presenters.map((presenter, key) => (
-			<a
-				className="metadata-entry"
+			<button
+				className="button-like-anchor metadata-entry"
 				key={key}
 				title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PRESENTER")}
 				onClick={() => addFilter(presenter)}
 			>
 				{presenter}
-			</a>
+			</button>
 		))
 	);
 };

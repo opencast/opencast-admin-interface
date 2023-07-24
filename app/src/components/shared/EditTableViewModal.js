@@ -81,8 +81,8 @@ const EditTableViewModal = ({
 						id="edit-table-view-modal"
 					>
 						<header>
-							<a
-								className="fa fa-times close-modal"
+							<button
+								className="button-like-anchor fa fa-times close-modal"
 								onClick={() => {
 									clearData();
 									close();
@@ -120,8 +120,8 @@ const EditTableViewModal = ({
 													column ? (
 														<li className="drag-item" key={key}>
 															<div className="title">{t(column.label)}</div>
-															<a
-																className="move-item add"
+															<button
+																className="button-like-anchor move-item add"
 																onClick={() => changeColumn(column, false)}
 															/>
 														</li>
@@ -156,8 +156,8 @@ const EditTableViewModal = ({
 																		<div className="title">
 																			{t(column.label)}
 																		</div>
-																		<a
-																			className="move-item remove"
+																		<button
+																			className="button-like-anchor move-item remove"
 																			onClick={() => changeColumn(column, true)}
 																		/>
 																	</div>

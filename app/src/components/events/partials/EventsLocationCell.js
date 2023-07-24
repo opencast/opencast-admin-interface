@@ -30,13 +30,13 @@ const EventsLocationCell = ({
 
 	return (
 		// Link template for location of event
-		<a
-			className="crosslink"
+		<button
+			className="button-like-anchor crosslink"
 			title={t("EVENTS.EVENTS.TABLE.TOOLTIP.LOCATION")}
 			onClick={() => addFilter(row.location)}
 		>
 			{row.location}
-		</a>
+		</button>
 	);
 };
 

@@ -50,7 +50,7 @@
     border-radius: $border-radius;
     box-shadow: $box-shadow;
 
-    a {
+    a, button {
         overflow: visible;
         display: block;
         padding: $link-padding;
@@ -59,8 +59,12 @@
         @include transition-timing-function(ease-in);
         text-overflow: ellipsis;
         white-space: nowrap;
+        font-weight: $weight-semibold;
+        height: 32px;
+        width: 100%;
+        text-align: left;
 
-        &:hover {
+        &:hover, &:focus {
             background: $link-hover-color;
         }
     }

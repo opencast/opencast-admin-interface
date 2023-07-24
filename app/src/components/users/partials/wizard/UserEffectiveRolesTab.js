@@ -32,7 +32,7 @@ const UserEffectiveRolesTab = ({ formik }) => {
 					<p>{t("USERS.USERS.DETAILS.DESCRIPTION.EFFECTIVEROLES")}</p>
 
 					{/* list  all roles a user got */}
-					<a className="clear" onClick={() => clearSearchField()} />
+					<button className="button-like-anchor clear" onClick={() => clearSearchField()} />
 					<input
 						type="text"
 						id="search_effective"

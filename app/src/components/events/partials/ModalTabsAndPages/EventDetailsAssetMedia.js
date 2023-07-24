@@ -84,8 +84,8 @@ const EventDetailsAssetMedia = ({
 														: null}
 												</td>
 												<td>
-													<a
-														className="details-link"
+													<button
+														className="button-like-anchor details-link"
 														onClick={() => openSubTab("media-details", item.id)}
 													>
 														{
@@ -93,7 +93,7 @@ const EventDetailsAssetMedia = ({
 																"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
 															) /* Details */
 														}
-													</a>
+													</button>
 												</td>
 											</tr>
 										))}

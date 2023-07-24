@@ -214,11 +214,14 @@
         vertical-align: middle;
 
         // Action icons
-        > a {
+        > a, > button {
             display: inline-block;
             margin-right: 10px;
             vertical-align: middle;
             position: relative;
+            border-radius: inherit;
+            color: #1d5888;
+            padding: unset;
 
             &.remove {
                 @include build-icon(auto, auto, remove-icon, 17px, 17px);

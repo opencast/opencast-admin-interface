@@ -109,7 +109,7 @@ const EditScheduledEventsModal = ({
 			<div className="modal-animation modal-overlay" />
 			<section className="modal wizard modal-animation">
 				<header>
-					<a className="fa fa-times close-modal" onClick={() => close()} />
+					<button className="button-like-anchor fa fa-times close-modal" onClick={() => close()} />
 					<h2>{t("BULK_ACTIONS.EDIT_EVENTS.CAPTION")}</h2>
 				</header>
 

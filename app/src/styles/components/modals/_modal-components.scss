@@ -108,6 +108,8 @@
                     cursor: pointer;
                     color: $l-blue;
                     display: inline-block;
+                    line-height: inherit;
+                    padding: initial;
                 }
 
                 .delete {
@@ -396,9 +398,6 @@
     }
 
     button {
-        margin: 0 3px;
-        height: 32px;
-        min-width: 80px;
 
         &:first-child {
            margin-left: 0;

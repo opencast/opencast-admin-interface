@@ -30,13 +30,13 @@ const EventsDateCell = ({
 
 	return (
 		// Link template for start date of event
-		<a
-			className="crosslink"
+		<button
+			className="button-like-anchor crosslink"
 			title={t("EVENTS.EVENTS.TABLE.TOOLTIP.START")}
 			onClick={() => addFilter(row.date)}
 		>
 			{t("dateFormats.date.short", { date: new Date(row.date) })}
-		</a>
+		</button>
 	);
 };
 

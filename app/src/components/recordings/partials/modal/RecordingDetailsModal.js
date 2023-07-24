@@ -21,8 +21,8 @@ const RecordingDetailsModal = ({ close, recordingId }) => {
 				className="modal wizard modal-animation"
 			>
 				<header>
-					<a
-						className="fa fa-times close-modal"
+					<button
+						className="button-like-anchor fa fa-times close-modal"
 						onClick={() => handleClose()}
 					/>
 					<h2>

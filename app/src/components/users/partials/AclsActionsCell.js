@@ -39,9 +39,9 @@ const AclsActionsCell = ({ row, deleteAcl, fetchAclDetails, user }) => {
 		<>
 			{/* edit/show ACL details */}
 			{hasAccess("ROLE_UI_ACLS_EDIT", user) && (
-				<a
+				<button
 					onClick={() => showAclDetails()}
-					className="more"
+					className="button-like-anchor more"
 					title={t("USERS.ACLS.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
@@ -52,9 +52,9 @@ const AclsActionsCell = ({ row, deleteAcl, fetchAclDetails, user }) => {
 
 			{/* delete ACL */}
 			{hasAccess("ROLE_UI_ACLS_DELETE", user) && (
-				<a
+				<button
 					onClick={() => setDeleteConfirmation(true)}
-					className="remove"
+					className="button-like-anchor remove"
 					title={t("USERS.ACLS.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}

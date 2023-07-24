@@ -98,8 +98,8 @@ const EventDetailsWorkflowOperations = ({
 
 													{/* link to 'Operation Details'  sub-Tab */}
 													<td>
-														<a
-															className="details-link"
+														<button
+															className="button-like-anchor details-link"
 															onClick={() =>
 																openSubTab("workflow-operation-details", key)
 															}
@@ -109,7 +109,7 @@ const EventDetailsWorkflowOperations = ({
 																	"EVENTS.EVENTS.DETAILS.MEDIA.DETAILS"
 																) /* Details */
 															}
-														</a>
+														</button>
 													</td>
 												</tr>
 											))}

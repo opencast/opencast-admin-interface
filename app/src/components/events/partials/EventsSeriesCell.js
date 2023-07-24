@@ -31,13 +31,13 @@ const EventsSeriesCell = ({
 	return (
 		!!row.series && (
 			// Link template for series of event
-			<a
-				className="crosslink"
+			<button
+				className="button-like-anchor crosslink"
 				title={t("EVENTS.EVENTS.TABLE.TOOLTIP.SERIES")}
 				onClick={() => addFilter(row.series)}
 			>
 				{row.series.title}
-			</a>
+			</button>
 		)
 	);
 };

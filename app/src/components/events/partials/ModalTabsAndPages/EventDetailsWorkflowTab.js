@@ -209,46 +209,46 @@ const EventDetailsWorkflowTab = ({
 																<td>
 																	{item.status ===
 																		"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.RUNNING" && (
-																		<a
+																		<button
 																			onClick={() =>
 																				workflowAction(item.id, "STOP")
 																			}
-																			className="stop fa-fw"
+																			className="button-like-anchor stop fa-fw"
 																			title={t(
 																				"EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.STOP"
 																			)}
 																		>
 																			{/* STOP */}
-																		</a>
+																		</button>
 																	)}
 																	{item.status ===
 																		"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.PAUSED" && (
-																		<a
+																		<button
 																			onClick={() =>
 																				workflowAction(item.id, "NONE")
 																			}
-																			className="fa fa-hand-stop-o fa-fw"
+																			className="button-like-anchor fa fa-hand-stop-o fa-fw"
 																			style={{ color: "red" }}
 																			title={t(
 																				"EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.ABORT"
 																			)}
 																		>
 																			{/* Abort */}
-																		</a>
+																		</button>
 																	)}
 																	{item.status ===
 																		"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.PAUSED" && (
-																		<a
+																		<button
 																			onClick={() =>
 																				workflowAction(item.id, "RETRY")
 																			}
-																			className="fa fa-refresh fa-fw"
+																			className="button-like-anchor fa fa-refresh fa-fw"
 																			title={t(
 																				"EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.RETRY"
 																			)}
 																		>
 																			{/* Retry */}
-																		</a>
+																		</button>
 																	)}
 																	{(item.status ===
 																		"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.SUCCEEDED" ||
@@ -258,21 +258,21 @@ const EventDetailsWorkflowTab = ({
 																			"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.STOPPED") &&
 																		!isCurrentWorkflow(item.id) &&
 																		isRoleWorkflowDelete && (
-																			<a
+																			<button
 																				onClick={() => deleteWorkflow(item.id)}
-																				className="remove fa-fw"
+																				className="button-like-anchor remove fa-fw"
 																				title={t(
 																					"EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.DELETE"
 																				)}
 																			>
 																				{/* DELETE */}
-																			</a>
+																			</button>
 																		)}
 																</td>
 															)}
 															<td>
-																<a
-																	className="details-link"
+																<button
+																	className="button-like-anchor details-link"
 																	onClick={() =>
 																		openSubTab("workflow-details", item.id)
 																	}
@@ -282,7 +282,7 @@ const EventDetailsWorkflowTab = ({
 																			"EVENTS.EVENTS.DETAILS.MEDIA.DETAILS"
 																		) /* Details */
 																	}
-																</a>
+																</button>
 															</td>
 														</tr>
 													))}

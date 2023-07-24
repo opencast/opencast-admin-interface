@@ -17,8 +17,8 @@ const HotKeyCheatSheet = ({ close }) => {
 			<div className="modal-animation modal-overlay" />
 			<div className="modal modal-animation">
 				<header>
-					<a
-						className="fa fa-times close-modal"
+					<button
+						className="button-like-anchor fa fa-times close-modal"
 						onClick={() => handleClose()}
 					/>
 					<h2>{t("HOTKEYS.CHEAT_SHEET.TITLE")}</h2>

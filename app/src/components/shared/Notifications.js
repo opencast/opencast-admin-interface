@@ -30,9 +30,9 @@ const Notifications = ({
 	const renderNotification = (notification, key) => (
 		<li key={key}>
 			<div className={cn(notification.type, "alert sticky")}>
-				<a
+				<button
 					onClick={() => closeNotification(notification.id)}
-					className="fa fa-times close"
+					className="button-like-anchor fa fa-times close"
 				/>
 				<p>{t(notification.message)}</p>
 			</div>

@@ -148,6 +148,7 @@
         margin-top: 9px;
         @include transition($alert-transition);
         text-decoration: none;
+        color: inherit;
     }
 
     p {

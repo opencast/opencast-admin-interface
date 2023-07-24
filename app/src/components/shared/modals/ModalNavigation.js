@@ -16,13 +16,13 @@ const ModalNavigation = ({ tabInformation, page, openTab, user }) => {
 			{tabInformation.map(
 				(tab, key) =>
 					hasAccess(tab.accessRole, user) && (
-						<a
+						<button
 							key={key}
-							className={cn({ active: page === key })}
+							className={"button-like-anchor " + cn({ active: page === key })}
 							onClick={() => openTab(key)}
 						>
 							{t(tab.tabTranslation)}
-						</a>
+						</button>
 					)
 			)}
 		</nav>

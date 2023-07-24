@@ -217,8 +217,8 @@ const EventDetailsWorkflowDetails = ({
 													) /* Operations */
 												}
 											</span>
-											<a
-												className="details-link"
+											<button
+												className="button-like-anchor details-link"
 												onClick={() => openSubTab("workflow-operations")}
 											>
 												{
@@ -226,7 +226,7 @@ const EventDetailsWorkflowDetails = ({
 														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
 													) /* Details */
 												}
-											</a>
+											</button>
 										</li>
 										<li>
 											<span>
@@ -236,8 +236,8 @@ const EventDetailsWorkflowDetails = ({
 													) /* Errors & Warnings */
 												}
 											</span>
-											<a
-												className="details-link"
+											<button
+												className="button-like-anchor details-link"
 												onClick={() => openSubTab("errors-and-warnings")}
 											>
 												{
@@ -245,7 +245,7 @@ const EventDetailsWorkflowDetails = ({
 														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
 													) /* Details */
 												}
-											</a>
+											</button>
 										</li>
 									</ul>
 								</div>
@@ -313,13 +313,13 @@ const EventDetailsWorkflowDetails = ({
 													) /* Operations */
 												}
 											</span>
-											<a className="details-link">
+											<button className="button-like-anchor details-link">
 												{
 													t(
 														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
 													) /* Details */
 												}
-											</a>
+											</button>
 										</li>
 										<li>
 											<span>
@@ -329,13 +329,13 @@ const EventDetailsWorkflowDetails = ({
 													) /* Errors & Warnings */
 												}
 											</span>
-											<a className="details-link">
+											<button className="button-like-anchor details-link">
 												{
 													t(
 														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
 													) /* Details */
 												}
-											</a>
+											</button>
 										</li>
 									</ul>
 								</div>
