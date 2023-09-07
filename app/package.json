@@ -73,6 +73,7 @@
     "prop-types": "^15.8.1",
     "react-app-rewired": "^2.2.1",
     "sass": "^1.62.1",
+    "ts-migrate": "^0.1.35",
     "uuid": "^9.0.0"
   }
 }
