@@ -1,15 +1,17 @@
 // fill values with default configuration of chosen workflow
-export const setDefaultConfig = (workflowDefinitions, workflowId) => {
+export const setDefaultConfig = (workflowDefinitions: any, workflowId: any) => {
 	let defaultConfiguration = {};
 
 	// find configuration panel information about chosen workflow
 	let configPanel = workflowDefinitions.find(
+// @ts-expect-error TS(7006): Parameter 'workflow' implicitly has an 'any' type.
 		(workflow) => workflow.id === workflowId
 	).configuration_panel_json;
 
 	// only set default values if there is an configuration panel
 	if (configPanel.length > 0) {
 		// iterate through all config options and set their defaults
+// @ts-expect-error TS(7006): Parameter 'configOption' implicitly has an 'any' t... Remove this comment to see the full error message
 		configPanel.forEach((configOption) => {
 			if (configOption.fieldset) {
 				defaultConfiguration = fillDefaultConfig(
@@ -24,8 +26,10 @@ export const setDefaultConfig = (workflowDefinitions, workflowId) => {
 };
 
 // fills default configuration with values
+// @ts-expect-error TS(7006): Parameter 'fieldset' implicitly has an 'any' type.
 const fillDefaultConfig = (fieldset, defaultConfiguration) => {
 	// iteration through each input field
+// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
 	fieldset.forEach((field) => {
 
     // set only the checked input of radio button as default value

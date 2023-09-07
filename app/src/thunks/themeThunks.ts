@@ -8,6 +8,7 @@ import axios from "axios";
 import { addNotification } from "./notificationThunks";
 
 // fetch themes from server
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchThemes = () => async (dispatch, getState) => {
 	try {
 		dispatch(loadThemesInProgress());
@@ -28,6 +29,7 @@ export const fetchThemes = () => async (dispatch, getState) => {
 };
 
 // post new theme to backend
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 export const postNewTheme = (values) => async (dispatch) => {
 	let data = buildThemeBody(values);
 
@@ -40,25 +42,30 @@ export const postNewTheme = (values) => async (dispatch) => {
 		})
 		.then((response) => {
 			console.info(response);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "THEME_CREATED"));
 		})
 		.catch((response) => {
 			console.error(response);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "THEME_NOT_CREATED"));
 		});
 };
 
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const deleteTheme = (id) => async (dispatch) => {
 	axios
 		.delete(`/admin-ng/themes/${id}`)
 		.then((res) => {
 			console.info(res);
 			// add success notification
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "THEME_DELETED"));
 		})
 		.catch((res) => {
 			console.error(res);
 			// add error notification
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "THEME_NOT_DELETED"));
 		});
 };

@@ -16,6 +16,7 @@ export const loadJobsInProgress = () => ({
 	type: LOAD_JOBS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'jobs' implicitly has an 'any' type.
 export const loadJobsSuccess = (jobs) => ({
 	type: LOAD_JOBS_SUCCESS,
 	payload: { jobs },
@@ -27,6 +28,7 @@ export const loadJobsFailure = () => ({
 
 // Actions affecting UI
 
+// @ts-expect-error TS(7006): Parameter 'updatedColumns' implicitly has an 'any'... Remove this comment to see the full error message
 export const setJobColumns = (updatedColumns) => ({
 	type: SET_JOB_COLUMNS,
 	payload: { updatedColumns },

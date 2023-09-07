@@ -28,6 +28,7 @@ const initialState = {
 };
 
 // Reducer for groups
+// @ts-expect-error TS(7006): Parameter 'action' implicitly has an 'any' type.
 const groups = (state = initialState, action) => {
 	const { type, payload } = action;
 	switch (type) {

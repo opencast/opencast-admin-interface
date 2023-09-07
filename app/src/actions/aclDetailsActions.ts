@@ -13,6 +13,7 @@ export const loadAclDetailsInProgress = () => ({
 	type: LOAD_ACL_DETAILS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'aclDetails' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const loadAclDetailsSuccess = (aclDetails) => ({
 	type: LOAD_ACL_DETAILS_SUCCESS,
 	payload: { aclDetails },

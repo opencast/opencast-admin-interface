@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
+// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/NewThemePage' was res... Remove this comment to see the full error message
 import NewThemePage from "../ModalTabsAndPages/NewThemePage";
+// @ts-expect-error TS(6142): Module './NewSeriesSummary' was resolved to '/home... Remove this comment to see the full error message
 import NewSeriesSummary from "./NewSeriesSummary";
 import {
 	getSeriesExtendedMetadata,
 	getSeriesMetadata,
 } from "../../../../selectors/seriesSeletctor";
 import { connect } from "react-redux";
+// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/NewMetadataPage' was ... Remove this comment to see the full error message
 import NewMetadataPage from "../ModalTabsAndPages/NewMetadataPage";
+// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/NewMetadataExtendedPa... Remove this comment to see the full error message
 import NewMetadataExtendedPage from "../ModalTabsAndPages/NewMetadataExtendedPage";
+// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/NewAccessPage' was re... Remove this comment to see the full error message
 import NewAccessPage from "../ModalTabsAndPages/NewAccessPage";
 import { postNewSeries } from "../../../../thunks/seriesThunks";
+// @ts-expect-error TS(6142): Module '../../../shared/wizard/WizardStepper' was ... Remove this comment to see the full error message
 import WizardStepper from "../../../shared/wizard/WizardStepper";
 import { initialFormValuesNewSeries } from "../../../../configs/modalConfig";
 import { NewSeriesSchema } from "../../../../utils/validate";
@@ -20,9 +26,13 @@ import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
  * This component manages the pages of the new series wizard and the submission of values
  */
 const NewSeriesWizard = ({
+// @ts-expect-error TS(7031): Binding element 'metadataFields' implicitly has an... Remove this comment to see the full error message
 	metadataFields,
+// @ts-expect-error TS(7031): Binding element 'extendedMetadata' implicitly has ... Remove this comment to see the full error message
 	extendedMetadata,
+// @ts-expect-error TS(7031): Binding element 'close' implicitly has an 'any' ty... Remove this comment to see the full error message
 	close,
+// @ts-expect-error TS(7031): Binding element 'postNewSeries' implicitly has an ... Remove this comment to see the full error message
 	postNewSeries,
 }) => {
 	const initialValues = getInitialValues(metadataFields, extendedMetadata);
@@ -59,11 +69,13 @@ const NewSeriesWizard = ({
 	// Validation schema of current page
 	const currentValidationSchema = NewSeriesSchema[page];
 
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const nextPage = (values) => {
 		setSnapshot(values);
 
 		// set page as completely filled out
 		let updatedPageCompleted = pageCompleted;
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 		updatedPageCompleted[page] = true;
 		setPageCompleted(updatedPageCompleted);
 
@@ -74,6 +86,7 @@ const NewSeriesWizard = ({
 		}
 	};
 
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const previousPage = (values, twoPagesBack) => {
 		setSnapshot(values);
 		// if previous page is hidden or not always shown, then go back two pages
@@ -84,6 +97,7 @@ const NewSeriesWizard = ({
 		}
 	};
 
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
 		const response = postNewSeries(values, metadataFields, extendedMetadata);
 		console.info(response);
@@ -91,8 +105,10 @@ const NewSeriesWizard = ({
 	};
 
 	return (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/* Initialize overall form */}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<Formik
 				initialValues={snapshot}
 				validationSchema={currentValidationSchema}
@@ -107,8 +123,10 @@ const NewSeriesWizard = ({
 					}, [page]);
 
 					return (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<>
 							{/* Stepper that shows each step of wizard as header */}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<WizardStepper
 								steps={steps}
 								page={page}
@@ -118,8 +136,10 @@ const NewSeriesWizard = ({
 								formik={formik}
 								hasAccessPage
 							/>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div>
 								{page === 0 && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<NewMetadataPage
 										nextPage={nextPage}
 										formik={formik}
@@ -128,6 +148,7 @@ const NewSeriesWizard = ({
 									/>
 								)}
 								{page === 1 && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<NewMetadataExtendedPage
 										nextPage={nextPage}
 										previousPage={previousPage}
@@ -136,6 +157,7 @@ const NewSeriesWizard = ({
 									/>
 								)}
 								{page === 2 && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<NewAccessPage
 										nextPage={nextPage}
 										previousPage={previousPage}
@@ -144,6 +166,7 @@ const NewSeriesWizard = ({
 									/>
 								)}
 								{page === 3 && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<NewThemePage
 										nextPage={nextPage}
 										previousPage={previousPage}
@@ -151,6 +174,7 @@ const NewSeriesWizard = ({
 									/>
 								)}
 								{page === 4 && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<NewSeriesSummary
 										previousPage={previousPage}
 										formik={formik}
@@ -166,6 +190,7 @@ const NewSeriesWizard = ({
 	);
 };
 
+// @ts-expect-error TS(7006): Parameter 'metadataFields' implicitly has an 'any'... Remove this comment to see the full error message
 const getInitialValues = (metadataFields, extendedMetadata) => {
 	// Transform metadata fields provided by backend (saved in redux)
 	let initialValues = getInitialMetadataFieldValues(
@@ -174,7 +199,9 @@ const getInitialValues = (metadataFields, extendedMetadata) => {
 	);
 
 	// Add all initial form values known upfront listed in newSeriesConfig
+// @ts-expect-error TS(2550): Property 'entries' does not exist on type 'ObjectC... Remove this comment to see the full error message
 	for (const [key, value] of Object.entries(initialFormValuesNewSeries)) {
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 		initialValues[key] = value;
 	}
 
@@ -182,12 +209,15 @@ const getInitialValues = (metadataFields, extendedMetadata) => {
 };
 
 // Getting state data out of redux store
+// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
 	metadataFields: getSeriesMetadata(state),
 	extendedMetadata: getSeriesExtendedMetadata(state),
 });
 
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	postNewSeries: (values, metadataFields, extendedMetadata) =>
 		dispatch(postNewSeries(values, metadataFields, extendedMetadata)),
 });

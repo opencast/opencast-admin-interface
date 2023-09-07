@@ -6,7 +6,11 @@ import { useField } from "formik";
 /**
  * This component renders the select container used for roles and user pages in new group and new user pages.
  */
-const SelectContainer = ({ resource, formikField, manageable = true }) => {
+const SelectContainer = ({
+    resource,
+    formikField,
+    manageable = true
+}: any) => {
 	const { t } = useTranslation();
 
 	// Formik hook for getting data of specific form field
@@ -53,14 +57,17 @@ const SelectContainer = ({ resource, formikField, manageable = true }) => {
 		setItems(defaultItems);
 	};
 
+// @ts-expect-error TS(7006): Parameter 'input' implicitly has an 'any' type.
 	const handleChangeSearch = async (input) => {
 		const filtered = defaultItems.filter((item) => {
+// @ts-expect-error TS(2339): Property 'name' does not exist on type 'never'.
 			return item.name.toLowerCase().includes(input.toLowerCase());
 		});
 		setSearchField(input);
 		setItems(filtered);
 	};
 
+// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
 	const handleChangeAdd = (e) => {
 		let options = e.target.options;
 		let selectedOptions = [];
@@ -73,9 +80,11 @@ const SelectContainer = ({ resource, formikField, manageable = true }) => {
 		}
 
 		// set currently chosen options
+// @ts-expect-error TS(2345): Argument of type 'any[]' is not assignable to para... Remove this comment to see the full error message
 		setMarkedForAddition(selectedOptions);
 	};
 
+// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
 	const handleChangeRemove = (e) => {
 		let options = e.target.options;
 		let deselectedOptions = [];
@@ -88,6 +97,7 @@ const SelectContainer = ({ resource, formikField, manageable = true }) => {
 		}
 
 		// mark currently marked options for removal
+// @ts-expect-error TS(2345): Argument of type 'any[]' is not assignable to para... Remove this comment to see the full error message
 		setMarkedForRemoval(deselectedOptions);
 	};
 
@@ -125,9 +135,11 @@ const SelectContainer = ({ resource, formikField, manageable = true }) => {
 
 			// add marked item to items considered for search bar if not already containing
 			if (
-				!editableDefaultItems.some((item) => item.name === markedForRemoval[i])
+// @ts-expect-error TS(2339): Property 'name' does not exist on type 'never'.
+				!editableDefaultItems.some((item) => item.name: any === markedForRemoval[i])
 			) {
 				editableDefaultItems.push({
+// @ts-expect-error TS(2322): Type 'any' is not assignable to type 'never'.
 					id: !!markedForRemoval[i].id ? markedForRemoval.id : "",
 					name: markedForRemoval[i],
 				});
@@ -145,6 +157,7 @@ const SelectContainer = ({ resource, formikField, manageable = true }) => {
 	};
 
 	// move item from one array to another when matching key
+// @ts-expect-error TS(7006): Parameter 'key' implicitly has an 'any' type.
 	const move = (key, from, to) => {
 		for (let i = 0; i < from.length; i++) {
 			if (from[i].name === key) {
@@ -156,6 +169,7 @@ const SelectContainer = ({ resource, formikField, manageable = true }) => {
 	};
 
 	// remove item from array when matching key
+// @ts-expect-error TS(7006): Parameter 'key' implicitly has an 'any' type.
 	const remove = (key, compare) => {
 		for (let i = 0; i < compare.length; i++) {
 			if (compare[i].name === key) {
@@ -166,25 +180,35 @@ const SelectContainer = ({ resource, formikField, manageable = true }) => {
 	};
 
 	return (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<div className="row">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="multi-select-container offset-col-2">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="multi-select-col">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="row">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<label>
 							{t(resource.label + ".LEFT")}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<i className="required" />
 						</label>
 						{/*Search*/}
 						{resource.searchable && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<>
 								{/* search bar */}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<button className="button-like-anchor clear" onClick={() => clearSearchField()} />
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<input
 									type="text"
 									id="search"
 									className="search"
 									disabled={!manageable}
 									style={manageable ? {} : disabledStyle}
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 									placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
 									onChange={(e) => handleChangeSearch(e.target.value)}
 									value={searchField}
@@ -192,6 +216,7 @@ const SelectContainer = ({ resource, formikField, manageable = true }) => {
 							</>
 						)}
 						{/*Select with options provided by backend*/}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<select
 							multiple
 							className="available"
@@ -201,14 +226,19 @@ const SelectContainer = ({ resource, formikField, manageable = true }) => {
 							onChange={(e) => handleChangeAdd(e)}
 						>
 							{items.map((item, key) => (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<option key={key} value={item.name}>
+// @ts-expect-error TS(2339): Property 'name' does not exist on type 'never'.
 									{item.name}
 								</option>
 							))}
 						</select>
 					</div>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="row">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="button-container">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<button
 								className={cn("submit", {
 									disabled: !markedForAddition.length || !manageable,
@@ -221,12 +251,17 @@ const SelectContainer = ({ resource, formikField, manageable = true }) => {
 					</div>
 				</div>
 
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="exchange-icon" />
 
 				{/*Select with options chosen by user*/}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="multi-select-col">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="row">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<label>{t(resource.label + ".RIGHT")}</label>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<select
 							multiple
 							className="selected"
@@ -235,15 +270,20 @@ const SelectContainer = ({ resource, formikField, manageable = true }) => {
 							onChange={(e) => handleChangeRemove(e)}
 							value={markedForRemoval}
 						>
+// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
 							{selectedItems.map((item, key) => (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<option key={key} value={item.name}>
 									{item.name}
 								</option>
 							))}
 						</select>
 					</div>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="row">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="button-container">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<button
 								className={cn("remove", {
 									disabled: !markedForRemoval.length || !manageable,

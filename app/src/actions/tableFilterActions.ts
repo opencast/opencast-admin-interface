@@ -32,6 +32,7 @@ export const loadFiltersInProgress = () => ({
 	type: LOAD_FILTERS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'filters' implicitly has an 'any' type.
 export const loadFiltersSuccess = (filters, resource) => ({
 	type: LOAD_FILTERS_SUCCESS,
 	payload: { filters, resource },
@@ -43,6 +44,7 @@ export const loadFiltersFailure = () => ({
 
 // Actions affecting fetching of stats from server
 
+// @ts-expect-error TS(7006): Parameter 'stats' implicitly has an 'any' type.
 export const loadStats = (stats) => ({
 	type: LOAD_STATS,
 	payload: { stats },
@@ -54,6 +56,7 @@ export const resetFilterValues = () => ({
 	type: RESET_FILTER_VALUES,
 });
 
+// @ts-expect-error TS(7006): Parameter 'filterName' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const editFilterValue = (filterName, value) => ({
 	type: EDIT_FILTER_VALUE,
 	payload: { filterName, value },
@@ -61,6 +64,7 @@ export const editFilterValue = (filterName, value) => ({
 
 // Actions affecting text filter
 
+// @ts-expect-error TS(7006): Parameter 'textFilter' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const editTextFilter = (textFilter) => ({
 	type: EDIT_TEXT_FILTER,
 	payload: { textFilter },
@@ -72,6 +76,7 @@ export const removeTextFilter = () => ({
 
 // Actions affecting loading filters profiles saved
 
+// @ts-expect-error TS(7006): Parameter 'filterMap' implicitly has an 'any' type... Remove this comment to see the full error message
 export const loadFilterProfile = (filterMap) => ({
 	type: LOAD_FILTER_PROFILE,
 	payload: { filterMap },
@@ -79,6 +84,7 @@ export const loadFilterProfile = (filterMap) => ({
 
 // Actions affecting dates and filter selection
 
+// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 export const editSelectedFilter = (filter) => ({
 	type: EDIT_SELECTED_FILTER,
 	payload: { filter },
@@ -88,6 +94,7 @@ export const removeSelectedFilter = () => ({
 	type: REMOVE_SELECTED_FILTER,
 });
 
+// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 export const editSecondFilter = (filter) => ({
 	type: EDIT_SECOND_FILTER,
 	payload: { filter },

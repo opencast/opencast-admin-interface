@@ -15,6 +15,7 @@ import { NOTIFICATION_CONTEXT_ACCESS } from "../configs/modalConfig";
 import { removeNotificationWizardAccess } from "../actions/notificationActions";
 
 // fetch acls from server
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchAcls = () => async (dispatch, getState) => {
 	try {
 		dispatch(loadAclsInProgress());
@@ -54,6 +55,7 @@ export const fetchAclActions = async () => {
 };
 
 // fetch all policies of an certain acl template
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const fetchAclTemplateById = async (id) => {
 	let response = await axios.get(`/acl-manager/acl/${id}`);
 
@@ -63,6 +65,7 @@ export const fetchAclTemplateById = async (id) => {
 };
 
 // fetch roles for select dialogs and access policy pages
+// @ts-expect-error TS(7006): Parameter 'target' implicitly has an 'any' type.
 export const fetchRolesWithTarget = async (target) => {
 	let params = {
 		limit: -1,
@@ -75,6 +78,7 @@ export const fetchRolesWithTarget = async (target) => {
 };
 
 // post new acl to backend
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 export const postNewAcl = (values) => async (dispatch) => {
 	let acls = prepareAccessPolicyRulesForPost(values.acls);
 
@@ -90,29 +94,35 @@ export const postNewAcl = (values) => async (dispatch) => {
 		})
 		.then((response) => {
 			console.info(response);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "ACL_ADDED"));
 		})
 		.catch((response) => {
 			console.error(response);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "ACL_NOT_SAVED"));
 		});
 };
 // delete acl with provided id
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const deleteAcl = (id) => async (dispatch) => {
 	axios
 		.delete(`/admin-ng/acl/${id}`)
 		.then((res) => {
 			console.info(res);
 			//add success notification
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "ACL_DELETED"));
 		})
 		.catch((res) => {
 			console.error(res);
 			// add error notification
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "ACL_NOT_DELETED"));
 		});
 };
 
+// @ts-expect-error TS(7006): Parameter 'acls' implicitly has an 'any' type.
 export const checkAcls = (acls) => async (dispatch) => {
 	// Remove old notifications of context event-access
 	// Helps to prevent multiple notifications for same problem

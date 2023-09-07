@@ -8,6 +8,7 @@ import { addNotification } from "./notificationThunks";
 import { buildUserBody } from "../utils/resourceUtils";
 
 // fetch details about certain user from server
+// @ts-expect-error TS(7006): Parameter 'username' implicitly has an 'any' type.
 export const fetchUserDetails = (username) => async (dispatch) => {
 	try {
 		dispatch(loadUserDetailsInProgress());
@@ -29,6 +30,7 @@ export const fetchUserDetails = (username) => async (dispatch) => {
 };
 
 // update existing user with changed values
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 export const updateUserDetails = (values, username) => async (dispatch) => {
 	// get URL params used for put request
 	let data = buildUserBody(values);
@@ -38,10 +40,12 @@ export const updateUserDetails = (values, username) => async (dispatch) => {
 		.put(`/admin-ng/users/${username}.json`, data)
 		.then((response) => {
 			console.info(response);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "USER_UPDATED"));
 		})
 		.catch((response) => {
 			console.error(response);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "USER_NOT_SAVED"));
 		});
 };

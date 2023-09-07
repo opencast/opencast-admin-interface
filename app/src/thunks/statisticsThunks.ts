@@ -16,7 +16,9 @@ import {
 
 /* thunks for fetching statistics data */
 
+// @ts-expect-error TS(7006): Parameter 'organizationId' implicitly has an 'any'... Remove this comment to see the full error message
 export const fetchStatisticsPageStatistics = (organizationId) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch
 ) => {
 	dispatch(
@@ -32,12 +34,19 @@ export const fetchStatisticsPageStatistics = (organizationId) => async (
 };
 
 export const fetchStatisticsPageStatisticsValueUpdate = (
+// @ts-expect-error TS(7006): Parameter 'organizationId' implicitly has an 'any'... Remove this comment to see the full error message
 	organizationId,
+// @ts-expect-error TS(7006): Parameter 'providerId' implicitly has an 'any' typ... Remove this comment to see the full error message
 	providerId,
+// @ts-expect-error TS(7006): Parameter 'from' implicitly has an 'any' type.
 	from,
+// @ts-expect-error TS(7006): Parameter 'to' implicitly has an 'any' type.
 	to,
+// @ts-expect-error TS(7006): Parameter 'dataResolution' implicitly has an 'any'... Remove this comment to see the full error message
 	dataResolution,
+// @ts-expect-error TS(7006): Parameter 'timeMode' implicitly has an 'any' type.
 	timeMode
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 ) => async (dispatch) => {
 	dispatch(
 		fetchStatisticsValueUpdate(
@@ -56,12 +65,19 @@ export const fetchStatisticsPageStatisticsValueUpdate = (
 };
 
 export const fetchStatistics = (
+// @ts-expect-error TS(7006): Parameter 'resourceId' implicitly has an 'any' typ... Remove this comment to see the full error message
 	resourceId,
+// @ts-expect-error TS(7006): Parameter 'resourceType' implicitly has an 'any' t... Remove this comment to see the full error message
 	resourceType,
+// @ts-expect-error TS(7006): Parameter 'getStatistics' implicitly has an 'any' ... Remove this comment to see the full error message
 	getStatistics,
+// @ts-expect-error TS(7006): Parameter 'loadStatisticsInProgress' implicitly ha... Remove this comment to see the full error message
 	loadStatisticsInProgress,
+// @ts-expect-error TS(7006): Parameter 'loadStatisticsSuccess' implicitly has a... Remove this comment to see the full error message
 	loadStatisticsSuccess,
+// @ts-expect-error TS(7006): Parameter 'loadStatisticsFailure' implicitly has a... Remove this comment to see the full error message
 	loadStatisticsFailure
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 ) => async (dispatch, getState) => {
 	dispatch(loadStatisticsInProgress());
 
@@ -83,6 +99,7 @@ export const fetchStatistics = (
 			const originalFrom = moment().startOf(originalTimeMode);
 			const originalTo = moment().endOf(originalTimeMode);
 
+// @ts-expect-error TS(7034): Variable 'newStatistics' implicitly has type 'any[... Remove this comment to see the full error message
 			let newStatistics = [];
 			const statisticsValueRequest = [];
 
@@ -160,6 +177,7 @@ export const fetchStatistics = (
 					// iterate over value responses
 					for (const statisticsValue of dataResponse.data) {
 						// get the statistic the response is meant for
+// @ts-expect-error TS(7005): Variable 'newStatistics' implicitly has an 'any[]'... Remove this comment to see the full error message
 						const stat = newStatistics.find(
 							(element) => element.providerId === statisticsValue.providerId
 						);
@@ -173,6 +191,7 @@ export const fetchStatistics = (
 						};
 
 						// put updated statistic into statistics list
+// @ts-expect-error TS(7005): Variable 'newStatistics' implicitly has an 'any[]'... Remove this comment to see the full error message
 						newStatistics = newStatistics.map((oldStat) =>
 							oldStat === stat ? statistic : oldStat
 						);
@@ -180,10 +199,12 @@ export const fetchStatistics = (
 						// put statistics list into redux store
 						dispatch(loadStatisticsSuccess(newStatistics, false));
 					}
+// @ts-expect-error TS(7005): Variable 'newStatistics' implicitly has an 'any[]'... Remove this comment to see the full error message
 					dispatch(loadStatisticsSuccess(newStatistics, false));
 				})
 				.catch((response) => {
 					// put unfinished statistics list into redux store but set flag that an error occurred
+// @ts-expect-error TS(7005): Variable 'newStatistics' implicitly has an 'any[]'... Remove this comment to see the full error message
 					dispatch(loadStatisticsSuccess(newStatistics, true));
 					console.error(response);
 				});
@@ -196,16 +217,27 @@ export const fetchStatistics = (
 };
 
 export const fetchStatisticsValueUpdate = (
+// @ts-expect-error TS(7006): Parameter 'resourceId' implicitly has an 'any' typ... Remove this comment to see the full error message
 	resourceId,
+// @ts-expect-error TS(7006): Parameter 'resourceType' implicitly has an 'any' t... Remove this comment to see the full error message
 	resourceType,
+// @ts-expect-error TS(7006): Parameter 'providerId' implicitly has an 'any' typ... Remove this comment to see the full error message
 	providerId,
+// @ts-expect-error TS(7006): Parameter 'from' implicitly has an 'any' type.
 	from,
+// @ts-expect-error TS(7006): Parameter 'to' implicitly has an 'any' type.
 	to,
+// @ts-expect-error TS(7006): Parameter 'dataResolution' implicitly has an 'any'... Remove this comment to see the full error message
 	dataResolution,
+// @ts-expect-error TS(7006): Parameter 'timeMode' implicitly has an 'any' type.
 	timeMode,
+// @ts-expect-error TS(7006): Parameter 'getStatistics' implicitly has an 'any' ... Remove this comment to see the full error message
 	getStatistics,
+// @ts-expect-error TS(7006): Parameter 'updateStatisticsSuccess' implicitly has... Remove this comment to see the full error message
 	updateStatisticsSuccess,
+// @ts-expect-error TS(7006): Parameter 'updateStatisticsFailure' implicitly has... Remove this comment to see the full error message
 	updateStatisticsFailure
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 ) => async (dispatch, getState) => {
 	// get prior statistics
 	const state = getState();
@@ -238,6 +270,7 @@ export const fetchStatisticsValueUpdate = (
 
 				// get the statistic the response is meant for out of the statistics list
 				const stat = statistics.find(
+// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 					(element) => element.providerId === providerId
 				);
 
@@ -267,6 +300,7 @@ export const fetchStatisticsValueUpdate = (
 				};
 
 				// put updated statistic into statistics list
+// @ts-expect-error TS(7006): Parameter 'oldStat' implicitly has an 'any' type.
 				const newStatistics = statistics.map((oldStat) =>
 					oldStat === stat ? statistic : oldStat
 				);

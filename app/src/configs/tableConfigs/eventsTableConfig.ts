@@ -1,12 +1,22 @@
+// @ts-expect-error TS(6142): Module '../../components/events/partials/EventActi... Remove this comment to see the full error message
 import EventActionCell from "../../components/events/partials/EventActionCell";
+// @ts-expect-error TS(6142): Module '../../components/events/partials/EventsDat... Remove this comment to see the full error message
 import EventsDateCell from "../../components/events/partials/EventsDateCell";
+// @ts-expect-error TS(6142): Module '../../components/events/partials/EventsPre... Remove this comment to see the full error message
 import EventsPresentersCell from "../../components/events/partials/EventsPresentersCell";
+// @ts-expect-error TS(6142): Module '../../components/events/partials/EventsSer... Remove this comment to see the full error message
 import EventsSeriesCell from "../../components/events/partials/EventsSeriesCell";
+// @ts-expect-error TS(6142): Module '../../components/events/partials/EventsSta... Remove this comment to see the full error message
 import EventsStatusCell from "../../components/events/partials/EventsStatusCell";
+// @ts-expect-error TS(6142): Module '../../components/events/partials/EventsTec... Remove this comment to see the full error message
 import EventsTechnicalDateCell from "../../components/events/partials/EventsTechnicalDateCell";
+// @ts-expect-error TS(6142): Module '../../components/events/partials/Published... Remove this comment to see the full error message
 import PublishedCell from "../../components/events/partials/PublishedCell";
+// @ts-expect-error TS(6142): Module '../../components/events/partials/EventsLoc... Remove this comment to see the full error message
 import EventsLocationCell from "../../components/events/partials/EventsLocationCell";
+// @ts-expect-error TS(6142): Module '../../components/events/partials/EventsEnd... Remove this comment to see the full error message
 import EventsEndCell from "../../components/events/partials/EventsEndCell";
+// @ts-expect-error TS(6142): Module '../../components/events/partials/EventsSta... Remove this comment to see the full error message
 import EventsStartCell from "../../components/events/partials/EventsStartCell";
 
 /**

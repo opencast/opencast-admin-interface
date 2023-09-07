@@ -14,13 +14,21 @@ import Select from "react-select";
  * This component provides a bar chart for visualising (statistics) data
  */
 const DropDown = ({
+// @ts-expect-error TS(7031): Binding element 'value' implicitly has an 'any' ty... Remove this comment to see the full error message
 	value,
+// @ts-expect-error TS(7031): Binding element 'text' implicitly has an 'any' typ... Remove this comment to see the full error message
 	text,
+// @ts-expect-error TS(7031): Binding element 'options' implicitly has an 'any' ... Remove this comment to see the full error message
 	options,
+// @ts-expect-error TS(7031): Binding element 'type' implicitly has an 'any' typ... Remove this comment to see the full error message
 	type,
+// @ts-expect-error TS(7031): Binding element 'required' implicitly has an 'any'... Remove this comment to see the full error message
 	required,
+// @ts-expect-error TS(7031): Binding element 'handleChange' implicitly has an '... Remove this comment to see the full error message
 	handleChange,
+// @ts-expect-error TS(7031): Binding element 'placeholder' implicitly has an 'a... Remove this comment to see the full error message
 	placeholder,
+// @ts-expect-error TS(7031): Binding element 'tabIndex' implicitly has an 'any'... Remove this comment to see the full error message
 	tabIndex,
 	autoFocus = false,
 	defaultOpen = false,
@@ -33,6 +41,7 @@ const DropDown = ({
 	const style = dropDownStyle(type);
 
 	return (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<Select
 			tabIndex={tabIndex}
 			theme={dropDownSpacingTheme}

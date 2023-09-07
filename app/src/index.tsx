@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
+// @ts-expect-error TS(6142): Module './App' was resolved to '/home/arnewilken/I... Remove this comment to see the full error message
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
@@ -23,9 +24,13 @@ const store = configureStore();
 const persistor = persistStore(store);
 
 ReactDOM.render(
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 	<React.StrictMode>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<Provider store={store}>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<PersistGate loading={<div>loading...</div>} persistor={persistor}>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<App />
 			</PersistGate>
 		</Provider>

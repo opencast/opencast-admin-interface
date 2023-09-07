@@ -30,6 +30,7 @@ export const loadSeriesInProgress = () => ({
 	type: LOAD_SERIES_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'series' implicitly has an 'any' type.
 export const loadSeriesSuccess = (series) => ({
 	type: LOAD_SERIES_SUCCESS,
 	payload: { series },
@@ -41,21 +42,25 @@ export const loadSeriesFailure = () => ({
 
 // Actions affecting UI
 
+// @ts-expect-error TS(7006): Parameter 'isShowing' implicitly has an 'any' type... Remove this comment to see the full error message
 export const showActions = (isShowing) => ({
 	type: SHOW_ACTIONS_SERIES,
 	payload: { isShowing },
 });
 
+// @ts-expect-error TS(7006): Parameter 'updatedColumns' implicitly has an 'any'... Remove this comment to see the full error message
 export const setSeriesColumns = (updatedColumns) => ({
 	type: SET_SERIES_COLUMNS,
 	payload: { updatedColumns },
 });
 
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const setSeriesSelected = (id) => ({
 	type: SET_SERIES_SELECTED,
 	payload: { id },
 });
 
+// @ts-expect-error TS(7006): Parameter 'deletionAllowed' implicitly has an 'any... Remove this comment to see the full error message
 export const setSeriesDeletionAllowed = (deletionAllowed, hasEvents) => ({
 	type: SET_SERIES_DELETION_ALLOWED,
 	payload: { deletionAllowed, hasEvents },
@@ -67,6 +72,7 @@ export const loadSeriesMetadataInProgress = () => ({
 	type: LOAD_SERIES_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'metadata' implicitly has an 'any' type.
 export const loadSeriesMetadataSuccess = (metadata, extendedMetadata) => ({
 	type: LOAD_SERIES_METADATA_SUCCESS,
 	payload: { metadata, extendedMetadata },
@@ -82,6 +88,7 @@ export const loadSeriesThemesInProgress = () => ({
 	type: LOAD_SERIES_THEMES_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'themes' implicitly has an 'any' type.
 export const loadSeriesThemesSuccess = (themes) => ({
 	type: LOAD_SERIES_THEMES_SUCCESS,
 	payload: { themes },

@@ -5,7 +5,7 @@ const colorDropDownMain = "#aaa";
 const colorDropDownNormalFocus = "#5897fb";
 const colorDropDownDarkerFocus = "#2a62bc";
 
-export const dropDownStyle = (type) => {
+export const dropDownStyle = (type: any) => {
 	const width =
 		type === "theme" || type === "newTheme" || type === "workflow"
 			? "100%"
@@ -18,6 +18,7 @@ export const dropDownStyle = (type) => {
 			: 250;
 
 	return {
+// @ts-expect-error TS(7006): Parameter 'provided' implicitly has an 'any' type.
 		container: (provided, state) => ({
 			...provided,
 			width: width,
@@ -32,6 +33,7 @@ export const dropDownStyle = (type) => {
 			marginBottom: 0,
 			marginRight: 1,
 		}),
+// @ts-expect-error TS(7006): Parameter 'provided' implicitly has an 'any' type.
 		control: (provided, state) => ({
 			...provided,
 			marginBottom: 0,
@@ -52,6 +54,7 @@ export const dropDownStyle = (type) => {
 				borderColor: colorDropDownMain,
 			},
 		}),
+// @ts-expect-error TS(7006): Parameter 'provided' implicitly has an 'any' type.
 		dropdownIndicator: (provided, state) => ({
 			...provided,
 			transform: state.selectProps.menuIsOpen
@@ -64,10 +67,12 @@ export const dropDownStyle = (type) => {
 				color: colorDropDownNormalFocus,
 			},
 		}),
+// @ts-expect-error TS(7006): Parameter 'provided' implicitly has an 'any' type.
 		indicatorSeparator: (provided, state) => ({
 			...provided,
 			display: "none",
 		}),
+// @ts-expect-error TS(7006): Parameter 'provided' implicitly has an 'any' type.
 		input: (provided, state) => ({
 			...provided,
 			position: "relative",
@@ -79,24 +84,28 @@ export const dropDownStyle = (type) => {
 			paddingTop: 0,
 			paddingBottom: 0,
 		}),
+// @ts-expect-error TS(7006): Parameter 'provided' implicitly has an 'any' type.
 		menu: (provided, state) => ({
 			...provided,
 			zIndex: 9000,
 			marginTop: 1,
 			border: "none",
 		}),
+// @ts-expect-error TS(7006): Parameter 'provided' implicitly has an 'any' type.
 		menuList: (provided, state) => ({
 			...provided,
 			marginTop: 0,
 			border: `1px solid ${colorDropDownMain}`,
 			borderRadius: 4,
 		}),
+// @ts-expect-error TS(7006): Parameter 'provided' implicitly has an 'any' type.
 		noOptionsMessage: (provided, state) => ({
 			...provided,
 			textAlign: "left",
 			paddingTop: 0,
 			paddingBottom: 0,
 		}),
+// @ts-expect-error TS(7006): Parameter 'provided' implicitly has an 'any' type.
 		option: (provided, state) => ({
 			...provided,
 			paddingTop:
@@ -117,6 +126,7 @@ export const dropDownStyle = (type) => {
 			overflowWrap: "normal",
 			lineHeight: type === "comment" ? "105%" : "inherit",
 		}),
+// @ts-expect-error TS(7006): Parameter 'provided' implicitly has an 'any' type.
 		singleValue: (provided, state) => ({
 			...provided,
 			marginTop: 0,
@@ -124,6 +134,7 @@ export const dropDownStyle = (type) => {
 			paddingTop: 0,
 			paddingBottom: 0,
 		}),
+// @ts-expect-error TS(7006): Parameter 'provided' implicitly has an 'any' type.
 		valueContainer: (provided, state) => ({
 			...provided,
 			marginTop: 0,
@@ -135,6 +146,7 @@ export const dropDownStyle = (type) => {
 	};
 };
 
+// @ts-expect-error TS(7006): Parameter 'theme' implicitly has an 'any' type.
 export const dropDownSpacingTheme = (theme) => ({
 	...theme,
 	spacing: {

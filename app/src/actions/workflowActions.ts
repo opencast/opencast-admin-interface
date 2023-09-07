@@ -13,6 +13,7 @@ export const loadWorkflowDefInProgress = () => ({
 	type: LOAD_WORKFLOW_DEF_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'workflowDef' implicitly has an 'any' ty... Remove this comment to see the full error message
 export const loadWorkflowDefSuccess = (workflowDef) => ({
 	type: LOAD_WORKFLOW_DEF_SUCCESS,
 	payload: { workflowDef },

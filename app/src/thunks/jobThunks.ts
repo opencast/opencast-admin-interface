@@ -7,6 +7,7 @@ import {
 import { getURLParams } from "../utils/resourceUtils";
 
 // fetch jobs from server
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchJobs = () => async (dispatch, getState) => {
 	try {
 		dispatch(loadJobsInProgress());

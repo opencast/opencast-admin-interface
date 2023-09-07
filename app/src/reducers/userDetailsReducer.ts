@@ -19,6 +19,7 @@ const initialState = {
 };
 
 // reducer
+// @ts-expect-error TS(7006): Parameter 'action' implicitly has an 'any' type.
 const userDetails = (state = initialState, action) => {
 	const { type, payload } = action;
 	switch (type) {

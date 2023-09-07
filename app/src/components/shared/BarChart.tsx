@@ -4,7 +4,11 @@ import { Bar } from "react-chartjs-2";
 /**
  * This component provides a bar chart for visualising (statistics) data
  */
-const BarChart = ({ values, axisLabels, options }) => {
+const BarChart = ({
+    values,
+    axisLabels,
+    options
+}: any) => {
 	const data = {
 		labels: axisLabels,
 		datasets: [
@@ -19,6 +23,7 @@ const BarChart = ({ values, axisLabels, options }) => {
 		],
 	};
 
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 	return <Bar data={data} width={null} height={null} options={options} />;
 };
 

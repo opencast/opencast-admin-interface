@@ -7,6 +7,7 @@ import { loadSeriesInProgress } from "../actions/seriesActions";
 import { getURLParams } from "../utils/resourceUtils";
 
 // fetch services from server
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchServices = () => async (dispatch, getState) => {
 	try {
 		dispatch(loadSeriesInProgress());
@@ -27,6 +28,7 @@ export const fetchServices = () => async (dispatch, getState) => {
 };
 
 // restarts a service after initiated by user
+// @ts-expect-error TS(7006): Parameter 'host' implicitly has an 'any' type.
 export const restartService = async (host, serviceType) => {
 	let data = new URLSearchParams();
 	data.append("host", host);

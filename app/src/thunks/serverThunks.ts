@@ -7,6 +7,7 @@ import {
 import { getURLParams } from "../utils/resourceUtils";
 
 // fetch servers from server
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchServers = () => async (dispatch, getState) => {
 	try {
 		dispatch(loadServersInProgress());
@@ -31,6 +32,7 @@ export const fetchServers = () => async (dispatch, getState) => {
 };
 
 // change maintenance status of a server/host
+// @ts-expect-error TS(7006): Parameter 'host' implicitly has an 'any' type.
 export const setServerMaintenance = async (host, maintenance) => {
 	let data = new URLSearchParams();
 	data.append("host", host);

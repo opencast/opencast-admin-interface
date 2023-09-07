@@ -13,6 +13,7 @@ export const loadGroupDetailsInProgress = () => ({
 	type: LOAD_GROUP_DETAILS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'groupDetails' implicitly has an 'any' t... Remove this comment to see the full error message
 export const loadGroupDetailsSuccess = (groupDetails) => ({
 	type: LOAD_GROUP_DETAILS_SUCCESS,
 	payload: { groupDetails },

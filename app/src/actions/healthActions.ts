@@ -14,9 +14,9 @@ export const RESET_NUM_ERROR = "RESET_NUM_ERROR";
 
 // Actions affecting fetching health status from server and loading it into state
 
-export const loadHealthStatus = (healthStatus) => ({
-	type: LOAD_HEALTH_STATUS,
-	payload: { healthStatus },
+export const loadHealthStatus = (healthStatus: any) => ({
+    type: LOAD_HEALTH_STATUS,
+    payload: { healthStatus }
 });
 
 export const loadStatusInProgress = () => ({
@@ -29,11 +29,13 @@ export const loadStatusFailure = () => ({
 
 // Actions affecting setting information about errors
 
+// @ts-expect-error TS(7006): Parameter 'isError' implicitly has an 'any' type.
 export const setError = (isError) => ({
 	type: SET_ERROR,
 	payload: { isError },
 });
 
+// @ts-expect-error TS(7006): Parameter 'numError' implicitly has an 'any' type.
 export const addNumError = (numError) => ({
 	type: ADD_NUM_ERROR,
 	payload: { numError },

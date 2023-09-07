@@ -16,6 +16,7 @@ export const loadThemesInProgress = () => ({
 	type: LOAD_THEMES_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'themes' implicitly has an 'any' type.
 export const loadThemesSuccess = (themes) => ({
 	type: LOAD_THEMES_SUCCESS,
 	payload: { themes },
@@ -27,6 +28,7 @@ export const loadThemesFailure = () => ({
 
 // Actions affecting UI
 
+// @ts-expect-error TS(7006): Parameter 'updatedColumns' implicitly has an 'any'... Remove this comment to see the full error message
 export const setThemeColumns = (updatedColumns) => ({
 	type: SET_THEME_COLUMNS,
 	payload: { updatedColumns },

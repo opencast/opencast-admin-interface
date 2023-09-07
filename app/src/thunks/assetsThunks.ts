@@ -9,6 +9,7 @@ import {
 
 // thunks for assets, especially for getting asset options
 
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchAssetUploadOptions = () => async (dispatch, getState) => {
 	// get old asset upload options
 	const state = getState();
@@ -29,6 +30,7 @@ export const fetchAssetUploadOptions = () => async (dispatch, getState) => {
 				const assetUploadOptions = [];
 
 				// iterate over response and only use non-comment lines
+// @ts-expect-error TS(2550): Property 'entries' does not exist on type 'ObjectC... Remove this comment to see the full error message
 				for (const [optionKey, optionJson] of Object.entries(
 					dataResponse.data
 				)) {

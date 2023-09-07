@@ -8,9 +8,13 @@ import { getMetadataCollectionFieldName } from "../../../../../utils/resourceUti
  * before in wizard summary pages
  */
 const MetadataExtendedSummaryTable = ({
+// @ts-expect-error TS(7031): Binding element 'extendedMetadata' implicitly has ... Remove this comment to see the full error message
 	extendedMetadata,
+// @ts-expect-error TS(7031): Binding element 'formikValues' implicitly has an '... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7031): Binding element 'formikInitialValues' implicitly h... Remove this comment to see the full error message
 	formikInitialValues,
+// @ts-expect-error TS(7031): Binding element 'header' implicitly has an 'any' t... Remove this comment to see the full error message
 	header,
 }) => {
 	const { t } = useTranslation();
@@ -19,6 +23,7 @@ const MetadataExtendedSummaryTable = ({
 	const catalogs = [];
 	for (const catalog of extendedMetadata) {
 		const metadataFields = catalog.fields;
+// @ts-expect-error TS(7034): Variable 'metadata' implicitly has type 'any[]' in... Remove this comment to see the full error message
 		let metadata = [];
 
 		for (let i = 0; metadataFields.length > i; i++) {
@@ -59,6 +64,7 @@ const MetadataExtendedSummaryTable = ({
 							  );
 					}
 
+// @ts-expect-error TS(7005): Variable 'metadata' implicitly has an 'any[]' type... Remove this comment to see the full error message
 					metadata = metadata.concat({
 						name: catalog.flavor + "_" + metadataFields[i].id,
 						label: metadataFields[i].label,
@@ -71,15 +77,23 @@ const MetadataExtendedSummaryTable = ({
 	}
 
 	return (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<div className="obj tbl-list">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<header className="no-expand">{t(header)}</header>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="obj-container">
 				{catalogs.map((catalog, key) => (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<table className="main-tbl">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<tbody>
 							{catalog.map((entry, key) => (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<tr key={key}>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<td>{t(entry.label)}</td>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<td>
 										{Array.isArray(entry.value)
 											? entry.value.join(", ")

@@ -9,6 +9,7 @@ export const fetchAdopterRegistration = async () => {
 };
 
 // post request for adopter information
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 export const postRegistration = async (values) => {
 	// build body
 	let body = new URLSearchParams();

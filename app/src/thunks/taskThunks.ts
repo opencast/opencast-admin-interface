@@ -1,9 +1,10 @@
 import axios from "axios";
 import { addNotification } from "./notificationThunks";
 
-export const postTasks = (values) => async (dispatch) => {
+export const postTasks = (values: any) => async (dispatch: any) => {
 	let configuration = {};
 	Object.keys(values.configuration).forEach((config) => {
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 		configuration[config] = String(values.configuration[config]);
 	});
 
@@ -11,6 +12,7 @@ export const postTasks = (values) => async (dispatch) => {
 	for (let i = 0; i < values.events.length; i++) {
 		if (values.events[i].selected) {
 			let eventId = values.events[i].id;
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 			workflowConfig[eventId] = configuration;
 		}
 	}
@@ -31,10 +33,12 @@ export const postTasks = (values) => async (dispatch) => {
 		})
 		.then((response) => {
 			console.info(response);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "TASK_CREATED"));
 		})
 		.catch((response) => {
 			console.error(response);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "TASK_NOT_CREATED"));
 		});
 };

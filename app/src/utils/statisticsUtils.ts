@@ -7,7 +7,7 @@ import { getCurrentLanguageInformation } from "./utils";
  */
 
 /* creates callback function for formatting the labels of the xAxis in a statistics diagram */
-const createXAxisTickCallback = (timeMode, dataResolution, language) => {
+const createXAxisTickCallback = (timeMode: any, dataResolution: any, language: any) => {
 	let formatString = "L";
 	if (timeMode === "year") {
 		formatString = "MMMM";
@@ -29,13 +29,16 @@ const createXAxisTickCallback = (timeMode, dataResolution, language) => {
 		}
 	}
 
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	return (value, index, ticks) => {
 		return moment(value).locale(language).format(formatString);
 	};
 };
 
 /* creates callback function for the displayed label when hovering over a data point in a statistics diagram */
+// @ts-expect-error TS(7006): Parameter 'timeMode' implicitly has an 'any' type.
 const createTooltipCallback = (timeMode, dataResolution, language) => {
+// @ts-expect-error TS(7034): Variable 'formatString' implicitly has type 'any' ... Remove this comment to see the full error message
 	let formatString;
 	if (timeMode === "year") {
 		formatString = "MMMM YYYY";
@@ -65,16 +68,20 @@ const createTooltipCallback = (timeMode, dataResolution, language) => {
 		}
 	}
 
+// @ts-expect-error TS(7006): Parameter 'tooltipItem' implicitly has an 'any' ty... Remove this comment to see the full error message
 	return (tooltipItem) => {
 		const date = tooltipItem.label;
+// @ts-expect-error TS(7005): Variable 'formatString' implicitly has an 'any' ty... Remove this comment to see the full error message
 		const finalDate = moment(date).locale(language).format(formatString);
 		return finalDate + ": " + tooltipItem.value;
 	};
 };
 
 /* creates options for statistics chart */
+// @ts-expect-error TS(7006): Parameter 'timeMode' implicitly has an 'any' type.
 export const createChartOptions = (timeMode, dataResolution) => {
 	// Get info about the current language and its date locale
+// @ts-expect-error TS(2532): Object is possibly 'undefined'.
 	const currentLanguage = getCurrentLanguageInformation().dateLocale.code;
 
 	return {
@@ -115,11 +122,17 @@ export const createChartOptions = (timeMode, dataResolution) => {
 
 /* creates the url for downloading a csv file with current statistics */
 export const createDownloadUrl = (
+// @ts-expect-error TS(7006): Parameter 'resourceId' implicitly has an 'any' typ... Remove this comment to see the full error message
 	resourceId,
+// @ts-expect-error TS(7006): Parameter 'resourceType' implicitly has an 'any' t... Remove this comment to see the full error message
 	resourceType,
+// @ts-expect-error TS(7006): Parameter 'providerId' implicitly has an 'any' typ... Remove this comment to see the full error message
 	providerId,
+// @ts-expect-error TS(7006): Parameter 'from' implicitly has an 'any' type.
 	from,
+// @ts-expect-error TS(7006): Parameter 'to' implicitly has an 'any' type.
 	to,
+// @ts-expect-error TS(7006): Parameter 'dataResolution' implicitly has an 'any'... Remove this comment to see the full error message
 	dataResolution
 ) => {
 	const csvUrlSearchParams = new URLSearchParams({

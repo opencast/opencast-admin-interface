@@ -6,7 +6,7 @@ import { makeTwoDigits } from "./utils";
  */
 
 // transform relative date to an absolute date
-export const relativeToAbsoluteDate = (relative, type, from) => {
+export const relativeToAbsoluteDate = (relative: any, type: any, from: any) => {
 	let localMoment = moment();
 
 	let absolute;
@@ -23,8 +23,11 @@ export const relativeToAbsoluteDate = (relative, type, from) => {
 
 // transform from relative date span to filter value containing absolute dates
 export const relativeDateSpanToFilterValue = (
+// @ts-expect-error TS(7006): Parameter 'fromRelativeDate' implicitly has an 'an... Remove this comment to see the full error message
 	fromRelativeDate,
+// @ts-expect-error TS(7006): Parameter 'toRelativeDate' implicitly has an 'any'... Remove this comment to see the full error message
 	toRelativeDate,
+// @ts-expect-error TS(7006): Parameter 'type' implicitly has an 'any' type.
 	type
 ) => {
 	let fromAbsoluteDate = relativeToAbsoluteDate(fromRelativeDate, type, true);
@@ -38,6 +41,7 @@ export const relativeDateSpanToFilterValue = (
 };
 
 // creates a date object from a date, hour and minute
+// @ts-expect-error TS(7006): Parameter 'date' implicitly has an 'any' type.
 export const makeDate = (date, hour, minute) => {
 	const madeDate = new Date(date);
 	madeDate.setHours(hour);
@@ -47,6 +51,7 @@ export const makeDate = (date, hour, minute) => {
 };
 
 // calculates the duration between a start and end date in hours and minutes
+// @ts-expect-error TS(7006): Parameter 'startDate' implicitly has an 'any' type... Remove this comment to see the full error message
 export const calculateDuration = (startDate, endDate) => {
 	const duration = (endDate - startDate) / 1000;
 	const durationHours = (duration - (duration % 3600)) / 3600;
@@ -56,6 +61,7 @@ export const calculateDuration = (startDate, endDate) => {
 };
 
 // sets the duration in the formik
+// @ts-expect-error TS(7006): Parameter 'startDate' implicitly has an 'any' type... Remove this comment to see the full error message
 const setDuration = (startDate, endDate, setFieldValue) => {
 	const { durationHours, durationMinutes } = calculateDuration(
 		startDate,
@@ -67,16 +73,22 @@ const setDuration = (startDate, endDate, setFieldValue) => {
 };
 
 // checks if the time of the endDate is before the time of the startDate
+// @ts-expect-error TS(7006): Parameter 'startDate' implicitly has an 'any' type... Remove this comment to see the full error message
 const isEndBeforeStart = (startDate, endDate) => {
 	return startDate > endDate;
 };
 
 // changes the start in the formik
 const changeStart = (
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 	eventId,
+// @ts-expect-error TS(7006): Parameter 'start' implicitly has an 'any' type.
 	start,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
+// @ts-expect-error TS(7006): Parameter 'checkConflicts' implicitly has an 'any'... Remove this comment to see the full error message
 	checkConflicts
 ) => {
 	const startDate = makeDate(start.date, start.hour, start.minute);
@@ -106,13 +118,17 @@ const changeStart = (
 			startDate,
 			endDate,
 			formikValues.captureAgent
+// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
 		).then((r) => {});
 	}
 };
 
 export const changeStartDate = (
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	value,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
 	eventId = "",
 	checkConflicts = null
@@ -131,8 +147,11 @@ export const changeStartDate = (
 };
 
 export const changeStartHour = async (
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	value,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
 	eventId = "",
 	checkConflicts = null
@@ -153,8 +172,11 @@ export const changeStartHour = async (
 };
 
 export const changeStartMinute = async (
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	value,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
 	eventId = "",
 	checkConflicts = null
@@ -176,10 +198,15 @@ export const changeStartMinute = async (
 
 // changes the end in the formik
 const changeEnd = (
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 	eventId,
+// @ts-expect-error TS(7006): Parameter 'end' implicitly has an 'any' type.
 	end,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
+// @ts-expect-error TS(7006): Parameter 'checkConflicts' implicitly has an 'any'... Remove this comment to see the full error message
 	checkConflicts
 ) => {
 	const endDate = makeDate(
@@ -209,13 +236,17 @@ const changeEnd = (
 			startDate,
 			endDate,
 			formikValues.captureAgent
+// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
 		).then((r) => {});
 	}
 };
 
 export const changeEndHour = async (
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	value,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
 	eventId = "",
 	checkConflicts = null
@@ -235,8 +266,11 @@ export const changeEndHour = async (
 };
 
 export const changeEndMinute = async (
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	value,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
 	eventId = "",
 	checkConflicts = null
@@ -257,10 +291,15 @@ export const changeEndMinute = async (
 
 // changes the duration in the formik
 const changeDuration = (
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 	eventId,
+// @ts-expect-error TS(7006): Parameter 'duration' implicitly has an 'any' type.
 	duration,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
+// @ts-expect-error TS(7006): Parameter 'checkConflicts' implicitly has an 'any'... Remove this comment to see the full error message
 	checkConflicts
 ) => {
 	const startDate = makeDate(
@@ -286,13 +325,17 @@ const changeDuration = (
 			startDate,
 			endDate,
 			formikValues.captureAgent
+// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
 		).then((r) => {});
 	}
 };
 
 export const changeDurationHour = async (
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	value,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
 	eventId = "",
 	checkConflicts = null
@@ -312,8 +355,11 @@ export const changeDurationHour = async (
 };
 
 export const changeDurationMinute = async (
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	value,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
 	eventId = "",
 	checkConflicts = null
@@ -334,10 +380,15 @@ export const changeDurationMinute = async (
 
 // changes the start in the formik
 const changeStartMultiple = (
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 	eventId,
+// @ts-expect-error TS(7006): Parameter 'start' implicitly has an 'any' type.
 	start,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
+// @ts-expect-error TS(7006): Parameter 'checkConflicts' implicitly has an 'any'... Remove this comment to see the full error message
 	checkConflicts
 ) => {
 	const startDate = makeDate(start.date, start.hour, start.minute);
@@ -382,13 +433,17 @@ const changeStartMultiple = (
 			startDate,
 			endDate,
 			formikValues.captureAgent
+// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
 		).then((r) => {});
 	}
 };
 
 export const changeStartDateMultiple = (
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	value,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
 	eventId = "",
 	checkConflicts = null
@@ -407,8 +462,11 @@ export const changeStartDateMultiple = (
 };
 
 export const changeStartHourMultiple = async (
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	value,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
 	eventId = "",
 	checkConflicts = null
@@ -429,8 +487,11 @@ export const changeStartHourMultiple = async (
 };
 
 export const changeStartMinuteMultiple = async (
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	value,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
 	eventId = "",
 	checkConflicts = null
@@ -452,8 +513,11 @@ export const changeStartMinuteMultiple = async (
 
 // changes the end in the formik
 export const changeEndDateMultiple = async (
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	value,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
 	eventId = "",
 	checkConflicts = null
@@ -486,21 +550,28 @@ export const changeEndDateMultiple = async (
 	);
 
 	if (!!checkConflicts) {
+// @ts-expect-error TS(2349): This expression is not callable.
 		checkConflicts(
 			eventId,
 			startDate,
 			endDate,
 			formikValues.captureAgent
+// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
 		).then((r) => {});
 	}
 };
 
 // changes the end in the formik
 const changeEndMultiple = (
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 	eventId,
+// @ts-expect-error TS(7006): Parameter 'end' implicitly has an 'any' type.
 	end,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
+// @ts-expect-error TS(7006): Parameter 'checkConflicts' implicitly has an 'any'... Remove this comment to see the full error message
 	checkConflicts
 ) => {
 	let endDate = makeDate(formikValues.scheduleStartDate, end.hour, end.minute);
@@ -532,13 +603,17 @@ const changeEndMultiple = (
 			startDate,
 			endDate,
 			formikValues.captureAgent
+// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
 		).then((r) => {});
 	}
 };
 
 export const changeEndHourMultiple = async (
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	value,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
 	eventId = "",
 	checkConflicts = null
@@ -558,8 +633,11 @@ export const changeEndHourMultiple = async (
 };
 
 export const changeEndMinuteMultiple = async (
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	value,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
 	eventId = "",
 	checkConflicts = null
@@ -580,10 +658,15 @@ export const changeEndMinuteMultiple = async (
 
 // changes the duration in the formik
 const changeDurationMultiple = (
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 	eventId,
+// @ts-expect-error TS(7006): Parameter 'duration' implicitly has an 'any' type.
 	duration,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
+// @ts-expect-error TS(7006): Parameter 'checkConflicts' implicitly has an 'any'... Remove this comment to see the full error message
 	checkConflicts
 ) => {
 	const startDate = makeDate(
@@ -613,13 +696,17 @@ const changeDurationMultiple = (
 			startDate,
 			endDate,
 			formikValues.captureAgent
+// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
 		).then((r) => {});
 	}
 };
 
 export const changeDurationHourMultiple = async (
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	value,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
 	eventId = "",
 	checkConflicts = null
@@ -639,8 +726,11 @@ export const changeDurationHourMultiple = async (
 };
 
 export const changeDurationMinuteMultiple = async (
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	value,
+// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
+// @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
 	setFieldValue,
 	eventId = "",
 	checkConflicts = null
@@ -660,6 +750,7 @@ export const changeDurationMinuteMultiple = async (
 };
 
 // get localized time
+// @ts-expect-error TS(7006): Parameter 'm' implicitly has an 'any' type.
 export const localizedMoment = (m, currentLanguage) => {
 	return moment(m).locale(currentLanguage.dateLocale.code);
 };

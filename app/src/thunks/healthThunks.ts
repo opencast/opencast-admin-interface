@@ -21,6 +21,7 @@ const MALFORMED_DATA = "Malformed Data";
 const ERROR = "error";
 
 // Fetch health status and transform it to further use
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchHealthStatus = () => async (dispatch) => {
 	try {
 		dispatch(loadStatusInProgress());

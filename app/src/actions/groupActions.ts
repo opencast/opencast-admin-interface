@@ -16,6 +16,7 @@ export const loadGroupsInProgress = () => ({
 	type: LOAD_GROUPS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'groups' implicitly has an 'any' type.
 export const loadGroupsSuccess = (groups) => ({
 	type: LOAD_GROUPS_SUCCESS,
 	payload: { groups },
@@ -27,6 +28,7 @@ export const loadGroupsFailure = () => ({
 
 // Actions affecting UI
 
+// @ts-expect-error TS(7006): Parameter 'updatedColumns' implicitly has an 'any'... Remove this comment to see the full error message
 export const setGroupColumns = (updatedColumns) => ({
 	type: SET_GROUP_COLUMNS,
 	payload: { updatedColumns },

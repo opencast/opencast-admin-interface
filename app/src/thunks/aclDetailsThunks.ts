@@ -8,6 +8,7 @@ import { addNotification } from "./notificationThunks";
 import { prepareAccessPolicyRulesForPost } from "../utils/resourceUtils";
 
 // fetch details about a certain acl from server
+// @ts-expect-error TS(7006): Parameter 'aclId' implicitly has an 'any' type.
 export const fetchAclDetails = (aclId) => async (dispatch) => {
 	try {
 		dispatch(loadAclDetailsInProgress());
@@ -17,16 +18,19 @@ export const fetchAclDetails = (aclId) => async (dispatch) => {
 		let aclDetails = await data.data;
 
 		let acl = aclDetails.acl;
+// @ts-expect-error TS(7034): Variable 'transformedAcls' implicitly has type 'an... Remove this comment to see the full error message
 		let transformedAcls = [];
 
 		// transform policies for further use
 		for (let i = 0; acl.ace.length > i; i++) {
+// @ts-expect-error TS(7005): Variable 'transformedAcls' implicitly has an 'any[... Remove this comment to see the full error message
 			if (transformedAcls.find((rule) => rule.role === acl.ace[i].role)) {
 				for (let j = 0; transformedAcls.length > j; j++) {
 					// only update entry for policy if already added with other action
 					if (transformedAcls[j].role === acl.ace[i].role) {
 						if (acl.ace[i].action === "read") {
 							transformedAcls[j] = {
+// @ts-expect-error TS(7005): Variable 'transformedAcls' implicitly has an 'any[... Remove this comment to see the full error message
 								...transformedAcls[j],
 								read: acl.ace[i].allow,
 							};
@@ -34,6 +38,7 @@ export const fetchAclDetails = (aclId) => async (dispatch) => {
 						}
 						if (acl.ace[i].action === "write") {
 							transformedAcls[j] = {
+// @ts-expect-error TS(7005): Variable 'transformedAcls' implicitly has an 'any[... Remove this comment to see the full error message
 								...transformedAcls[j],
 								write: acl.ace[i].allow,
 							};
@@ -45,7 +50,9 @@ export const fetchAclDetails = (aclId) => async (dispatch) => {
 							acl.ace[i].allow === true
 						) {
 							transformedAcls[j] = {
+// @ts-expect-error TS(7005): Variable 'transformedAcls' implicitly has an 'any[... Remove this comment to see the full error message
 								...transformedAcls[j],
+// @ts-expect-error TS(7005): Variable 'transformedAcls' implicitly has an 'any[... Remove this comment to see the full error message
 								actions: transformedAcls[j].actions.concat(acl.ace[i].action),
 							};
 							break;
@@ -55,6 +62,7 @@ export const fetchAclDetails = (aclId) => async (dispatch) => {
 			} else {
 				// add policy if role not seen before
 				if (acl.ace[i].action === "read") {
+// @ts-expect-error TS(7005): Variable 'transformedAcls' implicitly has an 'any[... Remove this comment to see the full error message
 					transformedAcls = transformedAcls.concat({
 						role: acl.ace[i].role,
 						read: acl.ace[i].allow,
@@ -98,6 +106,7 @@ export const fetchAclDetails = (aclId) => async (dispatch) => {
 };
 
 // update details of a certain acl
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 export const updateAclDetails = (values, aclId) => async (dispatch) => {
 	// transform ACLs back to structure used by backend
 	let acls = prepareAccessPolicyRulesForPost(values.acls);
@@ -112,10 +121,12 @@ export const updateAclDetails = (values, aclId) => async (dispatch) => {
 		.put(`/admin-ng/acl/${aclId}`, data)
 		.then((response) => {
 			console.info(response);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "ACL_UPDATED"));
 		})
 		.catch((response) => {
 			console.error(response);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "ACL_NOT_SAVED"));
 		});
 };

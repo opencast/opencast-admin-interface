@@ -33,6 +33,7 @@ import {
 import { fetchSeriesOptions } from "./seriesThunks";
 
 // fetch events from server
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchEvents = () => async (dispatch, getState) => {
 	try {
 		dispatch(loadEventsInProgress());
@@ -79,6 +80,7 @@ export const fetchEvents = () => async (dispatch, getState) => {
 };
 
 // fetch event metadata from server
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchEventMetadata = () => async (dispatch) => {
 	try {
 		dispatch(loadEventMetadataInProgress());
@@ -92,9 +94,11 @@ export const fetchEventMetadata = () => async (dispatch) => {
 
 		for (const metadataCatalog of response) {
 			if (metadataCatalog.flavor === mainCatalog) {
+// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 				metadata = transformMetadataCollection({ ...metadataCatalog });
 			} else {
 				extendedMetadata.push(
+// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 					transformMetadataCollection({ ...metadataCatalog })
 				);
 			}
@@ -108,6 +112,7 @@ export const fetchEventMetadata = () => async (dispatch) => {
 };
 
 // get merged metadata for provided event ids
+// @ts-expect-error TS(7006): Parameter 'ids' implicitly has an 'any' type.
 export const postEditMetadata = async (ids) => {
 	let formData = new URLSearchParams();
 	formData.append("eventIds", JSON.stringify(ids));
@@ -135,12 +140,15 @@ export const postEditMetadata = async (ids) => {
 	} catch (e) {
 		// return error
 		return {
+// @ts-expect-error TS(2571): Object is of type 'unknown'.
 			fatalError: e.message,
 		};
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'metadataFields' implicitly has an 'any'... Remove this comment to see the full error message
 export const updateBulkMetadata = (metadataFields, values) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch
 ) => {
 	let formData = new URLSearchParams();
@@ -153,11 +161,13 @@ export const updateBulkMetadata = (metadataFields, values) => async (
 		},
 	];
 
+// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
 	metadataFields.mergedMetadata.forEach((field) => {
 		if (field.selected) {
 			let value = values[field.id];
 			metadata[0].fields.push({
 				...field,
+// @ts-expect-error TS(2322): Type 'any' is not assignable to type 'never'.
 				value: value,
 			});
 		}
@@ -174,6 +184,7 @@ export const updateBulkMetadata = (metadataFields, values) => async (
 		.then((res) => {
 			console.info(res);
 			dispatch(
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 				addNotification("success", "BULK_METADATA_UPDATE.ALL_EVENTS_UPDATED")
 			);
 		})
@@ -185,16 +196,19 @@ export const updateBulkMetadata = (metadataFields, values) => async (
 				// if this error data is undefined then an unexpected error occurred
 				if (!err.data) {
 					dispatch(
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 						addNotification("error", "BULK_METADATA_UPDATE.UNEXPECTED_ERROR")
 					);
 				} else {
 					if (err.data.updated && err.data.updated.length === 0) {
 						dispatch(
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 							addNotification("error", "BULK_METADATA_UPDATE.NO_EVENTS_UPDATED")
 						);
 					}
 					if (err.data.updateFailures && err.data.updateFailures.length > 0) {
 						dispatch(
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 							addNotification(
 								"warning",
 								"BULK_METADATA_UPDATE.SOME_EVENTS_NOT_UPDATED"
@@ -203,6 +217,7 @@ export const updateBulkMetadata = (metadataFields, values) => async (
 					}
 					if (err.data.notFound && err.data.notFound.length > 0) {
 						dispatch(
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 							addNotification(
 								"warning",
 								"BULK_ACTIONS.EDIT_EVENTS_METADATA.REQUEST_ERRORS.NOT_FOUND"
@@ -212,6 +227,7 @@ export const updateBulkMetadata = (metadataFields, values) => async (
 				}
 			} else {
 				dispatch(
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 					addNotification("error", "BULK_METADATA_UPDATE.UNEXPECTED_ERROR")
 				);
 			}
@@ -220,9 +236,13 @@ export const updateBulkMetadata = (metadataFields, values) => async (
 
 // Check for conflicts with already scheduled events
 export const checkForConflicts = async (
+// @ts-expect-error TS(7006): Parameter 'startDate' implicitly has an 'any' type... Remove this comment to see the full error message
 	startDate,
+// @ts-expect-error TS(7006): Parameter 'endDate' implicitly has an 'any' type.
 	endDate,
+// @ts-expect-error TS(7006): Parameter 'duration' implicitly has an 'any' type.
 	duration,
+// @ts-expect-error TS(7006): Parameter 'device' implicitly has an 'any' type.
 	device,
 	repeatOn = null
 ) => {
@@ -232,6 +252,7 @@ export const checkForConflicts = async (
 				device: device,
 				duration: duration.toString(),
 				end: endDate,
+// @ts-expect-error TS(2339): Property 'join' does not exist on type 'never'.
 				rrule: `FREQ=WEEKLY;BYDAY=${repeatOn.join()};BYHOUR=${startDate.getHours()};BYMINUTE=${startDate.getMinutes()}`,
 		  }
 		: {
@@ -262,8 +283,11 @@ export const checkForConflicts = async (
 };
 
 // post new event to backend
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 export const postNewEvent = (values, metadataInfo, extendedMetadata) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch,
+// @ts-expect-error TS(7006): Parameter 'getState' implicitly has an 'any' type.
 	getState
 ) => {
 	// get asset upload options from redux store
@@ -366,6 +390,7 @@ export const postNewEvent = (values, metadataInfo, extendedMetadata) => async (
 
 			source.metadata = {
 				...source.metadata,
+// @ts-expect-error TS(2322): Type '{ rrule: string; start: Date; device: any; i... Remove this comment to see the full error message
 				rrule: rRule,
 			};
 		}
@@ -386,6 +411,7 @@ export const postNewEvent = (values, metadataInfo, extendedMetadata) => async (
 			values.sourceMode === "UPLOAD"
 		) {
 			let asset = values.uploadAssetsTrack.find(
+// @ts-expect-error TS(7006): Parameter 'asset' implicitly has an 'any' type.
 				(asset) => asset.id === uploadAssetOptions[i].id
 			);
 			if (!!asset.file) {
@@ -417,6 +443,7 @@ export const postNewEvent = (values, metadataInfo, extendedMetadata) => async (
 
 	// prepare configurations for post
 	Object.keys(values.configuration).forEach((config) => {
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 		configuration[config] = String(values.configuration[config]);
 	});
 
@@ -447,15 +474,18 @@ export const postNewEvent = (values, metadataInfo, extendedMetadata) => async (
 		})
 		.then((response) => {
 			console.info(response);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "EVENTS_CREATED"));
 		})
 		.catch((response) => {
 			console.error(response);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "EVENTS_NOT_CREATED"));
 		});
 };
 
 // delete event with provided id
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const deleteEvent = (id) => async (dispatch) => {
 	// API call for deleting an event
 	axios
@@ -463,22 +493,27 @@ export const deleteEvent = (id) => async (dispatch) => {
 		.then((res) => {
 			// add success notification depending on status code
 			if (res.status === 200) {
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 				dispatch(addNotification("success", "EVENT_DELETED"));
 			} else {
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 				dispatch(addNotification("success", "EVENT_WILL_BE_DELETED"));
 			}
 		})
 		.catch((res) => {
 			// add error notification depending on status code
 			if (res.status === 401) {
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 				dispatch(addNotification("error", "EVENTS_NOT_DELETED_NOT_AUTHORIZED"));
 			} else {
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 				dispatch(addNotification("error", "EVENTS_NOT_DELETED"));
 			}
 		});
 };
 
 // delete multiple events
+// @ts-expect-error TS(7006): Parameter 'events' implicitly has an 'any' type.
 export const deleteMultipleEvent = (events) => async (dispatch) => {
 	let data = [];
 
@@ -493,20 +528,26 @@ export const deleteMultipleEvent = (events) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			//add success notification
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "EVENTS_DELETED"));
 		})
 		.catch((res) => {
 			console.error(res);
 			//add error notification
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "EVENTS_NOT_DELETED"));
 		});
 };
 
 // fetch scheduling info for events
 export const fetchScheduling = (
+// @ts-expect-error TS(7006): Parameter 'events' implicitly has an 'any' type.
 	events,
+// @ts-expect-error TS(7006): Parameter 'fetchNewScheduling' implicitly has an '... Remove this comment to see the full error message
 	fetchNewScheduling,
+// @ts-expect-error TS(7006): Parameter 'setFormikValue' implicitly has an 'any'... Remove this comment to see the full error message
 	setFormikValue
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 ) => async (dispatch, getState) => {
 	dispatch(loadEventSchedulingInProgress());
 
@@ -522,6 +563,7 @@ export const fetchScheduling = (
 			}
 		}
 
+// @ts-expect-error TS(2345): Argument of type 'boolean' is not assignable to pa... Remove this comment to see the full error message
 		formData.append("ignoreNonScheduled", true);
 
 		try {
@@ -582,6 +624,7 @@ export const fetchScheduling = (
 };
 
 // check if there are any scheduling conflicts with other events
+// @ts-expect-error TS(7006): Parameter 'events' implicitly has an 'any' type.
 export const checkForSchedulingConflicts = (events) => async (dispatch) => {
 	const formData = new FormData();
 	let update = [];
@@ -607,6 +650,7 @@ export const checkForSchedulingConflicts = (events) => async (dispatch) => {
 
 	formData.append("update", JSON.stringify(update));
 
+// @ts-expect-error TS(7034): Variable 'response' implicitly has type 'any[]' in... Remove this comment to see the full error message
 	let response = [];
 
 	axios
@@ -628,10 +672,12 @@ export const checkForSchedulingConflicts = (events) => async (dispatch) => {
 			console.error(res);
 		});
 
+// @ts-expect-error TS(7005): Variable 'response' implicitly has an 'any[]' type... Remove this comment to see the full error message
 	return response;
 };
 
 // update multiple scheduled events at once
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 export const updateScheduledEventsBulk = (values) => async (dispatch) => {
 	let formData = new FormData();
 	let update = [];
@@ -639,14 +685,17 @@ export const updateScheduledEventsBulk = (values) => async (dispatch) => {
 
 	for (let i = 0; i < values.changedEvents.length; i++) {
 		let eventChanges = values.editedEvents.find(
+// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 			(event) => event.eventId === values.changedEvents[i]
 		);
 		let originalEvent = values.events.find(
+// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 			(event) => event.id === values.changedEvents[i]
 		);
 
 		if (!eventChanges || !originalEvent) {
 			dispatch(
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 4.
 				addNotification(
 					"error",
 					"EVENTS_NOT_UPDATED_ID",
@@ -712,15 +761,18 @@ export const updateScheduledEventsBulk = (values) => async (dispatch) => {
 		.put("/admin-ng/event/bulk/update", formData)
 		.then((res) => {
 			console.info(res);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "EVENTS_UPDATED_ALL"));
 		})
 		.catch((res) => {
 			console.error(res);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "EVENTS_NOT_UPDATED_ALL"));
 		});
 };
 
 // check provided date range for conflicts
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 export const checkConflicts = (values) => async (dispatch) => {
 	let check = true;
 

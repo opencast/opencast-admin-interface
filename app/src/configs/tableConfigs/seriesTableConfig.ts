@@ -1,7 +1,12 @@
+// @ts-expect-error TS(6142): Module '../../components/events/partials/SeriesTit... Remove this comment to see the full error message
 import SeriesTitleCell from "../../components/events/partials/SeriesTitleCell";
+// @ts-expect-error TS(6142): Module '../../components/events/partials/SeriesCre... Remove this comment to see the full error message
 import SeriesCreatorsCell from "../../components/events/partials/SeriesCreatorsCell";
+// @ts-expect-error TS(6142): Module '../../components/events/partials/SeriesCon... Remove this comment to see the full error message
 import SeriesContributorsCell from "../../components/events/partials/SeriesContributorsCell";
+// @ts-expect-error TS(6142): Module '../../components/events/partials/SeriesDat... Remove this comment to see the full error message
 import SeriesDateTimeCell from "../../components/events/partials/SeriesDateTimeCell";
+// @ts-expect-error TS(6142): Module '../../components/events/partials/SeriesAct... Remove this comment to see the full error message
 import SeriesActionsCell from "../../components/events/partials/SeriesActionsCell";
 
 /**

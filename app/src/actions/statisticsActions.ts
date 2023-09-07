@@ -14,6 +14,7 @@ export const loadStatisticsInProgress = () => ({
 	type: LOAD_STATISTICS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'statistics' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const loadStatisticsSuccess = (statistics, hasError) => ({
 	type: LOAD_STATISTICS_SUCCESS,
 	payload: {
@@ -22,6 +23,7 @@ export const loadStatisticsSuccess = (statistics, hasError) => ({
 	},
 });
 
+// @ts-expect-error TS(7006): Parameter 'hasError' implicitly has an 'any' type.
 export const loadStatisticsFailure = (hasError) => ({
 	type: LOAD_STATISTICS_FAILURE,
 	payload: {
@@ -29,6 +31,7 @@ export const loadStatisticsFailure = (hasError) => ({
 	},
 });
 
+// @ts-expect-error TS(7006): Parameter 'statistics' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const updateStatisticsSuccess = (statistics) => ({
 	type: UPDATE_STATISTICS_SUCCESS,
 	payload: {

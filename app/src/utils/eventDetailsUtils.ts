@@ -32,6 +32,7 @@ export const error_detail_style = {
 	width: "750px",
 };
 
+// @ts-expect-error TS(7006): Parameter 'durationInMS' implicitly has an 'any' t... Remove this comment to see the full error message
 export const formatDuration = (durationInMS) => {
 	const duration = moment.duration(durationInMS);
 	if (duration.asHours() > 1) {
@@ -41,6 +42,7 @@ export const formatDuration = (durationInMS) => {
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'bytesValue' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const humanReadableBytesFilter = (bytesValue) => {
 	// best effort, independent on type
 	let bytes = parseInt(bytesValue);

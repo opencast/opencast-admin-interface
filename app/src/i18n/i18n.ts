@@ -6,21 +6,37 @@ import Backend from "i18next-xhr-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 
 // import language files
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import enGBTrans from "./org/opencastproject/adminui/languages/lang-en_GB";
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import enUSTrans from "./org/opencastproject/adminui/languages/lang-en_US";
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import daDKTrans from "./org/opencastproject/adminui/languages/lang-da_DK";
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import deDETrans from "./org/opencastproject/adminui/languages/lang-de_DE";
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import elGRTrans from "./org/opencastproject/adminui/languages/lang-el_GR";
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import esESTrans from "./org/opencastproject/adminui/languages/lang-es_ES";
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import frFRTrans from "./org/opencastproject/adminui/languages/lang-fr_FR";
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import glESTrans from "./org/opencastproject/adminui/languages/lang-gl_ES";
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import heILTrans from "./org/opencastproject/adminui/languages/lang-he_IL";
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import itITTrans from "./org/opencastproject/adminui/languages/lang-it_IT";
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import nlNLTrans from "./org/opencastproject/adminui/languages/lang-nl_NL";
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import plPLTrans from "./org/opencastproject/adminui/languages/lang-pl_PL";
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import slSITrans from "./org/opencastproject/adminui/languages/lang-sl_SI";
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import svSETrans from "./org/opencastproject/adminui/languages/lang-sv_SE";
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import trTRTrans from "./org/opencastproject/adminui/languages/lang-tr_TR";
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import zhZWTrans from "./org/opencastproject/adminui/languages/lang-zh_TW";
 
 // Assignment of language code to translation file
@@ -45,6 +61,7 @@ const resources = {
 };
 
 // Configuration of i18next
+// @ts-expect-error TS(2769): No overload matches this call.
 i18n
 	.use(Backend)
 	.use(LanguageDetector)

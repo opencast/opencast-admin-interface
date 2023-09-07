@@ -32,6 +32,7 @@ const initialState = {
 };
 
 // Reducer for health status
+// @ts-expect-error TS(7006): Parameter 'action' implicitly has an 'any' type.
 export const health = (state = initialState, action) => {
 	const { type, payload } = action;
 	switch (type) {

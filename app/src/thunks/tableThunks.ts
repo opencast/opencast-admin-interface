@@ -56,13 +56,16 @@ import { setServicesColumns } from "../actions/serviceActions";
  * */
 
 // Method to load events into the table
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const loadEventsIntoTable = () => async (dispatch, getState) => {
 	const { events, table } = getState();
 	const total = events.total;
 
 	const pagination = table.pagination;
 	// check which events are currently selected
+// @ts-expect-error TS(7006): Parameter 'result' implicitly has an 'any' type.
 	const resource = events.results.map((result) => {
+// @ts-expect-error TS(7006): Parameter 'row' implicitly has an 'any' type.
 		const current = table.rows.find((row) => row.id === result.id);
 
 		if (!!current && table.resource === "events") {
@@ -103,13 +106,16 @@ export const loadEventsIntoTable = () => async (dispatch, getState) => {
 };
 
 // Method to load series into the table
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const loadSeriesIntoTable = () => (dispatch, getState) => {
 	const { series, table } = getState();
 	const total = series.total;
 	const pagination = table.pagination;
 
 	// check which events are currently selected
+// @ts-expect-error TS(7006): Parameter 'result' implicitly has an 'any' type.
 	const resource = series.results.map((result) => {
+// @ts-expect-error TS(7006): Parameter 'row' implicitly has an 'any' type.
 		const current = table.rows.find((row) => row.id === result.id);
 
 		if (!!current && table.resource === "series") {
@@ -149,6 +155,7 @@ export const loadSeriesIntoTable = () => (dispatch, getState) => {
 	dispatch(loadResourceIntoTable(tableData));
 };
 
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const loadRecordingsIntoTable = () => (dispatch, getState) => {
 	const { recordings, table } = getState();
 	const pagination = table.pagination;
@@ -180,6 +187,7 @@ export const loadRecordingsIntoTable = () => (dispatch, getState) => {
 	dispatch(loadResourceIntoTable(tableData));
 };
 
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const loadJobsIntoTable = () => (dispatch, getState) => {
 	const { jobs, table } = getState();
 	const pagination = table.pagination;
@@ -210,6 +218,7 @@ export const loadJobsIntoTable = () => (dispatch, getState) => {
 	dispatch(loadResourceIntoTable(tableData));
 };
 
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const loadServersIntoTable = () => (dispatch, getState) => {
 	const { servers, table } = getState();
 	const pagination = table.pagination;
@@ -240,6 +249,7 @@ export const loadServersIntoTable = () => (dispatch, getState) => {
 	dispatch(loadResourceIntoTable(tableData));
 };
 
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const loadServicesIntoTable = () => (dispatch, getState) => {
 	const { services, table } = getState();
 	const pagination = table.pagination;
@@ -271,6 +281,7 @@ export const loadServicesIntoTable = () => (dispatch, getState) => {
 	dispatch(loadResourceIntoTable(tableData));
 };
 
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const loadUsersIntoTable = () => (dispatch, getState) => {
 	const { users, table } = getState();
 	const pagination = table.pagination;
@@ -301,6 +312,7 @@ export const loadUsersIntoTable = () => (dispatch, getState) => {
 	dispatch(loadResourceIntoTable(tableData));
 };
 
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const loadGroupsIntoTable = () => (dispatch, getState) => {
 	const { groups, table } = getState();
 	const pagination = table.pagination;
@@ -331,6 +343,7 @@ export const loadGroupsIntoTable = () => (dispatch, getState) => {
 	dispatch(loadResourceIntoTable(tableData));
 };
 
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const loadAclsIntoTable = () => (dispatch, getState) => {
 	const { acls, table } = getState();
 	const pagination = table.pagination;
@@ -360,6 +373,7 @@ export const loadAclsIntoTable = () => (dispatch, getState) => {
 	dispatch(loadResourceIntoTable(tableData));
 };
 
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const loadThemesIntoTable = () => (dispatch, getState) => {
 	const { themes, table } = getState();
 	const pagination = table.pagination;
@@ -391,6 +405,7 @@ export const loadThemesIntoTable = () => (dispatch, getState) => {
 };
 
 // Navigate between pages
+// @ts-expect-error TS(7006): Parameter 'pageNumber' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const goToPage = (pageNumber) => async (dispatch, getState) => {
 	dispatch(deselectAll());
 	dispatch(setOffset(pageNumber));
@@ -415,6 +430,7 @@ export const goToPage = (pageNumber) => async (dispatch, getState) => {
 			break;
 		}
 		case "recordings": {
+// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 			await dispatch(fetchRecordings());
 			dispatch(loadRecordingsIntoTable());
 			break;
@@ -458,6 +474,7 @@ export const goToPage = (pageNumber) => async (dispatch, getState) => {
 };
 
 // Update pages for example if page size was changed
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const updatePages = () => async (dispatch, getState) => {
 	const state = getState();
 
@@ -484,6 +501,7 @@ export const updatePages = () => async (dispatch, getState) => {
 			break;
 		}
 		case "recordings": {
+// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 			await dispatch(fetchRecordings());
 			dispatch(loadRecordingsIntoTable());
 			break;
@@ -527,6 +545,7 @@ export const updatePages = () => async (dispatch, getState) => {
 };
 
 // Select all rows on table page
+// @ts-expect-error TS(7006): Parameter 'selected' implicitly has an 'any' type.
 export const changeAllSelected = (selected) => (dispatch, getState) => {
 	const state = getState();
 
@@ -560,8 +579,11 @@ export const changeAllSelected = (selected) => (dispatch, getState) => {
 };
 
 // Select certain columns
+// @ts-expect-error TS(7006): Parameter 'updatedColumns' implicitly has an 'any'... Remove this comment to see the full error message
 export const changeColumnSelection = (updatedColumns) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch,
+// @ts-expect-error TS(7006): Parameter 'getState' implicitly has an 'any' type.
 	getState
 ) => {
 	const state = getState();
@@ -637,6 +659,7 @@ export const changeColumnSelection = (updatedColumns) => async (
 };
 
 // Select certain row
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const changeRowSelection = (id, selected) => (dispatch, getState) => {
 	dispatch(selectRow(id, selected));
 
@@ -663,6 +686,7 @@ export const changeRowSelection = (id, selected) => (dispatch, getState) => {
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'numberOfPages' implicitly has an 'any' ... Remove this comment to see the full error message
 const calculatePages = (numberOfPages, offset) => {
 	const pages = [];
 

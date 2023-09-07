@@ -31,6 +31,7 @@ const initialState = {
 };
 
 // Reducer for table filters
+// @ts-expect-error TS(7006): Parameter 'action' implicitly has an 'any' type.
 const tableFilters = (state = initialState, action) => {
 	const { type, payload } = action;
 	switch (type) {
@@ -67,7 +68,9 @@ const tableFilters = (state = initialState, action) => {
 			return {
 				...state,
 				data: state.data.map((filter) => {
+// @ts-expect-error TS(2339): Property 'name' does not exist on type 'never'.
 					return filter.name === filterName
+// @ts-expect-error TS(2698): Spread types may only be created from object types... Remove this comment to see the full error message
 						? { ...filter, value: value }
 						: filter;
 				}),
@@ -77,6 +80,7 @@ const tableFilters = (state = initialState, action) => {
 			return {
 				...state,
 				data: state.data.map((filter) => {
+// @ts-expect-error TS(2698): Spread types may only be created from object types... Remove this comment to see the full error message
 					return { ...filter, value: "" };
 				}),
 			};

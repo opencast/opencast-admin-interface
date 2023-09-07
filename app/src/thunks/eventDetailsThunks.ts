@@ -114,6 +114,7 @@ import { getRecordings } from "../selectors/recordingSelectors";
 
 // thunks for metadata
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchMetadata = (eventId) => async (dispatch) => {
 	try {
 		dispatch(loadEventMetadataInProgress());
@@ -148,9 +149,11 @@ export const fetchMetadata = (eventId) => async (dispatch) => {
 				};
 			}
 			if (catalog.flavor === mainCatalog) {
+// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 				usualMetadata = transformMetadataCollection({ ...transformedCatalog });
 			} else {
 				extendedMetadata.push(
+// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 					transformMetadataCollection({ ...transformedCatalog })
 				);
 			}
@@ -163,8 +166,11 @@ export const fetchMetadata = (eventId) => async (dispatch) => {
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const updateMetadata = (eventId, values) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch,
+// @ts-expect-error TS(7006): Parameter 'getState' implicitly has an 'any' type.
 	getState
 ) => {
 	try {
@@ -189,8 +195,11 @@ export const updateMetadata = (eventId, values) => async (
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const updateExtendedMetadata = (eventId, values, catalog) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch,
+// @ts-expect-error TS(7006): Parameter 'getState' implicitly has an 'any' type.
 	getState
 ) => {
 	try {
@@ -229,6 +238,7 @@ export const updateExtendedMetadata = (eventId, values, catalog) => async (
 
 //thunks for assets
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchAssets = (eventId) => async (dispatch) => {
 	try {
 		dispatch(loadEventAssetsInProgress());
@@ -254,6 +264,7 @@ export const fetchAssets = (eventId) => async (dispatch) => {
 		let uploadAssetOptions = [];
 		const optionsData = formatUploadAssetOptions(resourceOptionsListResponse);
 
+// @ts-expect-error TS(2339): Property 'options' does not exist on type '{}'.
 		for (const option of optionsData.options) {
 			if (option.type !== "track") {
 				uploadAssetOptions.push({ ...option });
@@ -261,6 +272,7 @@ export const fetchAssets = (eventId) => async (dispatch) => {
 		}
 
 		// if no asset options, undefine the option variable
+// @ts-expect-error TS(2322): Type 'any[] | undefined' is not assignable to type... Remove this comment to see the full error message
 		uploadAssetOptions =
 			uploadAssetOptions.length > 0 ? uploadAssetOptions : undefined;
 
@@ -284,6 +296,7 @@ export const fetchAssets = (eventId) => async (dispatch) => {
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'optionsData' implicitly has an 'any' ty... Remove this comment to see the full error message
 const formatUploadAssetOptions = (optionsData) => {
 	const optionPrefixSource = "EVENTS.EVENTS.NEW.SOURCE.UPLOAD";
 	const optionPrefixAsset = "EVENTS.EVENTS.NEW.UPLOAD_ASSET.OPTION";
@@ -292,6 +305,7 @@ const formatUploadAssetOptions = (optionsData) => {
 	let optionsResult = {};
 	let uploadOptions = [];
 
+// @ts-expect-error TS(2550): Property 'entries' does not exist on type 'ObjectC... Remove this comment to see the full error message
 	for (const [key, value] of Object.entries(optionsData)) {
 		if (key.charAt(0) !== "$") {
 			if (
@@ -306,15 +320,18 @@ const formatUploadAssetOptions = (optionsData) => {
 				uploadOptions.push({ ...options });
 			} else if (key.indexOf(workflowPrefix) >= 0) {
 				// parse upload workflow definition id
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 				optionsResult["workflow"] = value;
 			}
 		}
 	}
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 	optionsResult["options"] = uploadOptions;
 
 	return optionsResult;
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchAssetAttachments = (eventId) => async (dispatch) => {
 	try {
 		dispatch(loadEventAssetsInProgress());
@@ -335,7 +352,9 @@ export const fetchAssetAttachments = (eventId) => async (dispatch) => {
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchAssetAttachmentDetails = (eventId, attachmentId) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch
 ) => {
 	try {
@@ -357,6 +376,7 @@ export const fetchAssetAttachmentDetails = (eventId, attachmentId) => async (
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchAssetCatalogs = (eventId) => async (dispatch) => {
 	try {
 		dispatch(loadEventAssetsInProgress());
@@ -377,7 +397,9 @@ export const fetchAssetCatalogs = (eventId) => async (dispatch) => {
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchAssetCatalogDetails = (eventId, catalogId) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch
 ) => {
 	try {
@@ -399,6 +421,7 @@ export const fetchAssetCatalogDetails = (eventId, catalogId) => async (
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchAssetMedia = (eventId) => async (dispatch) => {
 	try {
 		dispatch(loadEventAssetsInProgress());
@@ -431,7 +454,9 @@ export const fetchAssetMedia = (eventId) => async (dispatch) => {
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchAssetMediaDetails = (eventId, mediaId) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch
 ) => {
 	try {
@@ -469,6 +494,7 @@ export const fetchAssetMediaDetails = (eventId, mediaId) => async (
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchAssetPublications = (eventId) => async (dispatch) => {
 	try {
 		dispatch(loadEventAssetsInProgress());
@@ -489,7 +515,9 @@ export const fetchAssetPublications = (eventId) => async (dispatch) => {
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchAssetPublicationDetails = (eventId, publicationId) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch
 ) => {
 	try {
@@ -513,6 +541,7 @@ export const fetchAssetPublicationDetails = (eventId, publicationId) => async (
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 export const updateAssets = (values, eventId) => async (dispatch, getState) => {
 	// get asset upload options from redux store
 	const state = getState();
@@ -526,6 +555,7 @@ export const updateAssets = (values, eventId) => async (dispatch, getState) => {
 		options: [],
 	};
 
+// @ts-expect-error TS(7006): Parameter 'option' implicitly has an 'any' type.
 	uploadAssetOptions.forEach((option) => {
 		if (!!values[option.id]) {
 			formData.append(option.id + ".0", values[option.id]);
@@ -549,12 +579,14 @@ export const updateAssets = (values, eventId) => async (dispatch, getState) => {
 		.then((response) => {
 			console.info(response);
 			dispatch(
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 4.
 				addNotification("success", "EVENTS_UPDATED", null, NOTIFICATION_CONTEXT)
 			);
 		})
 		.catch((response) => {
 			console.error(response);
 			dispatch(
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 4.
 				addNotification(
 					"error",
 					"EVENTS_NOT_UPDATED",
@@ -567,11 +599,13 @@ export const updateAssets = (values, eventId) => async (dispatch, getState) => {
 
 // thunks for access policies
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const saveAccessPolicies = (eventId, policies) => async (dispatch) => {
 	const headers = getHttpHeaders();
 
 	let data = new URLSearchParams();
 	data.append("acl", JSON.stringify(policies));
+// @ts-expect-error TS(2345): Argument of type 'boolean' is not assignable to pa... Remove this comment to see the full error message
 	data.append("override", true);
 
 	return axios
@@ -604,6 +638,7 @@ export const saveAccessPolicies = (eventId, policies) => async (dispatch) => {
 		});
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchAccessPolicies = (eventId) => async (dispatch) => {
 	try {
 		dispatch(loadEventPoliciesInProgress());
@@ -613,6 +648,7 @@ export const fetchAccessPolicies = (eventId) => async (dispatch) => {
 		);
 		let accessPolicies = await policyData.data;
 
+// @ts-expect-error TS(7034): Variable 'policies' implicitly has type 'any[]' in... Remove this comment to see the full error message
 		let policies = [];
 		if (!!accessPolicies.episode_access) {
 			const json = JSON.parse(accessPolicies.episode_access.acl).acl.ace;
@@ -620,19 +656,25 @@ export const fetchAccessPolicies = (eventId) => async (dispatch) => {
 			let policyRoles = [];
 			for (let i = 0; i < json.length; i++) {
 				const policy = json[i];
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 				if (!newPolicies[policy.role]) {
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 					newPolicies[policy.role] = createPolicy(policy.role);
 					policyRoles.push(policy.role);
 				}
 				if (policy.action === "read" || policy.action === "write") {
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 					newPolicies[policy.role][policy.action] = policy.allow;
 				} else if (policy.allow === true || policy.allow === "true") {
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 					newPolicies[policy.role].actions.push(policy.action);
 				}
 			}
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 			policies = policyRoles.map((role) => newPolicies[role]);
 		}
 
+// @ts-expect-error TS(7005): Variable 'policies' implicitly has an 'any[]' type... Remove this comment to see the full error message
 		dispatch(loadEventPoliciesSuccess(policies));
 	} catch (e) {
 		console.error(e);
@@ -640,6 +682,7 @@ export const fetchAccessPolicies = (eventId) => async (dispatch) => {
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchHasActiveTransactions = (eventId) => async () => {
 	try {
 		const transactionsData = await axios.get(
@@ -654,6 +697,7 @@ export const fetchHasActiveTransactions = (eventId) => async () => {
 
 // thunks for comments
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchComments = (eventId) => async (dispatch) => {
 	try {
 		dispatch(loadEventCommentsInProgress());
@@ -673,7 +717,9 @@ export const fetchComments = (eventId) => async (dispatch) => {
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const saveComment = (eventId, commentText, commentReason) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch
 ) => {
 	try {
@@ -701,6 +747,7 @@ export const saveComment = (eventId, commentText, commentReason) => async (
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const deleteComment = (eventId, commentId) => async () => {
 	try {
 		const commentDeleted = await axios.delete(
@@ -715,10 +762,15 @@ export const deleteComment = (eventId, commentId) => async () => {
 };
 
 export const saveCommentReply = (
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 	eventId,
+// @ts-expect-error TS(7006): Parameter 'commentId' implicitly has an 'any' type... Remove this comment to see the full error message
 	commentId,
+// @ts-expect-error TS(7006): Parameter 'replyText' implicitly has an 'any' type... Remove this comment to see the full error message
 	replyText,
+// @ts-expect-error TS(7006): Parameter 'commentResolved' implicitly has an 'any... Remove this comment to see the full error message
 	commentResolved
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 ) => async (dispatch) => {
 	try {
 		dispatch(saveCommentReplyInProgress());
@@ -746,6 +798,7 @@ export const saveCommentReply = (
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const deleteCommentReply = (eventId, commentId, replyId) => async () => {
 	try {
 		const commentReplyDeleted = await axios.delete(
@@ -762,6 +815,7 @@ export const deleteCommentReply = (eventId, commentId, replyId) => async () => {
 
 // thunks for scheduling
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchSchedulingInfo = (eventId) => async (dispatch, getState) => {
 	try {
 		dispatch(loadEventSchedulingInProgress());
@@ -792,6 +846,7 @@ export const fetchSchedulingInfo = (eventId) => async (dispatch, getState) => {
 		};
 
 		const agent = captureAgents.find(
+// @ts-expect-error TS(7006): Parameter 'agent' implicitly has an 'any' type.
 			(agent) => agent.id === schedulingResponse.agentId
 		);
 		if (!!agent) {
@@ -841,11 +896,14 @@ export const fetchSchedulingInfo = (eventId) => async (dispatch, getState) => {
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const checkConflicts = (eventId, startDate, endDate, deviceId) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch
 ) => {
 	dispatch(checkConflictsInProgress());
 
+// @ts-expect-error TS(7034): Variable 'conflicts' implicitly has type 'any[]' i... Remove this comment to see the full error message
 	const conflicts = [];
 
 	const now = new Date();
@@ -860,6 +918,7 @@ export const checkConflicts = (eventId, startDate, endDate, deviceId) => async (
 				NOTIFICATION_CONTEXT
 			)
 		);
+// @ts-expect-error TS(7005): Variable 'conflicts' implicitly has an 'any[]' typ... Remove this comment to see the full error message
 		dispatch(checkConflictsSuccess(conflicts));
 		return false;
 	} else {
@@ -902,13 +961,16 @@ export const checkConflicts = (eventId, startDate, endDate, deviceId) => async (
 						});
 					}
 
+// @ts-expect-error TS(7005): Variable 'conflicts' implicitly has an 'any[]' typ... Remove this comment to see the full error message
 					dispatch(checkConflictsSuccess(conflicts));
 					return false;
 				} else if (responseStatus === 204) {
 					//no conflicts detected
+// @ts-expect-error TS(7005): Variable 'conflicts' implicitly has an 'any[]' typ... Remove this comment to see the full error message
 					dispatch(checkConflictsSuccess(conflicts));
 					return true;
 				} else {
+// @ts-expect-error TS(7005): Variable 'conflicts' implicitly has an 'any[]' typ... Remove this comment to see the full error message
 					dispatch(checkConflictsSuccess(conflicts));
 					return false;
 				}
@@ -936,6 +998,7 @@ export const checkConflicts = (eventId, startDate, endDate, deviceId) => async (
 						});
 					}
 
+// @ts-expect-error TS(7005): Variable 'conflicts' implicitly has an 'any[]' typ... Remove this comment to see the full error message
 					dispatch(checkConflictsSuccess(conflicts));
 					return false;
 				} else {
@@ -948,10 +1011,15 @@ export const checkConflicts = (eventId, startDate, endDate, deviceId) => async (
 };
 
 export const saveSchedulingInfo = (
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 	eventId,
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	values,
+// @ts-expect-error TS(7006): Parameter 'startDate' implicitly has an 'any' type... Remove this comment to see the full error message
 	startDate,
+// @ts-expect-error TS(7006): Parameter 'endDate' implicitly has an 'any' type.
 	endDate
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 ) => async (dispatch, getState) => {
 	dispatch(saveEventSchedulingInProgress());
 
@@ -960,6 +1028,7 @@ export const saveSchedulingInfo = (
 	const captureAgents = getRecordings(state);
 	let device = {};
 
+// @ts-expect-error TS(7006): Parameter 'agent' implicitly has an 'any' type.
 	const agent = captureAgents.find((agent) => agent.id === values.captureAgent);
 	if (!!agent) {
 		device = {
@@ -970,6 +1039,7 @@ export const saveSchedulingInfo = (
 
 	const source = {
 		...oldSource,
+// @ts-expect-error TS(2339): Property 'id' does not exist on type '{}'.
 		agentId: device.id,
 		start: {
 			date: startDate,
@@ -989,6 +1059,7 @@ export const saveSchedulingInfo = (
 		agentConfiguration: {
 			...oldSource.agentConfiguration,
 			"capture.device.names": values.inputs.join(","),
+// @ts-expect-error TS(2339): Property 'id' does not exist on type '{}'.
 			"event.location": device.id,
 		},
 	};
@@ -1033,6 +1104,7 @@ export const saveSchedulingInfo = (
 
 // thunks for workflows
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchWorkflows = (eventId) => async (dispatch, getState) => {
 	try {
 		dispatch(loadEventWorkflowsInProgress());
@@ -1068,6 +1140,7 @@ export const fetchWorkflows = (eventId) => async (dispatch, getState) => {
 			const workflowDefinitions = getWorkflowDef(state);
 
 			dispatch(setEventWorkflowDefinitions(workflows, workflowDefinitions));
+// @ts-expect-error TS(2554): Expected 0 arguments, but got 1.
 			dispatch(changeWorkflow(false));
 
 			dispatch(loadEventWorkflowsSuccess(workflows));
@@ -1078,7 +1151,9 @@ export const fetchWorkflows = (eventId) => async (dispatch, getState) => {
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchWorkflowDetails = (eventId, workflowId) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch
 ) => {
 	try {
@@ -1096,6 +1171,7 @@ export const fetchWorkflowDetails = (eventId, workflowId) => async (
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const changeWorkflow = () => async (dispatch, getState) => {
 	const state = getState();
 	const workflow = getWorkflow(state);
@@ -1107,9 +1183,11 @@ const changeWorkflow = () => async (dispatch, getState) => {
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'workflowId' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const updateWorkflow = (workflowId) => async (dispatch, getState) => {
 	const state = getState();
 	const workflowDefinitions = getWorkflowDefinitions(state);
+// @ts-expect-error TS(7006): Parameter 'def' implicitly has an 'any' type.
 	const workflowDef = workflowDefinitions.find((def) => def.id === workflowId);
 	await dispatch(
 		setEventWorkflow({
@@ -1121,6 +1199,7 @@ export const updateWorkflow = (workflowId) => async (dispatch, getState) => {
 	dispatch(changeWorkflow());
 };
 
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 export const saveWorkflowConfig = (values, eventId) => async (dispatch) => {
 	let jsonData = {
 		id: values.workflowDefinition,
@@ -1153,10 +1232,15 @@ export const saveWorkflowConfig = (values, eventId) => async (dispatch) => {
 };
 
 export const performWorkflowAction = (
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 	eventId,
+// @ts-expect-error TS(7006): Parameter 'workflowId' implicitly has an 'any' typ... Remove this comment to see the full error message
 	workflowId,
+// @ts-expect-error TS(7006): Parameter 'action' implicitly has an 'any' type.
 	action,
+// @ts-expect-error TS(7006): Parameter 'close' implicitly has an 'any' type.
 	close
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 ) => async (dispatch) => {
 	dispatch(doEventWorkflowActionInProgress());
 
@@ -1205,8 +1289,11 @@ export const performWorkflowAction = (
 		});
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const deleteWorkflow = (eventId, workflowId) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch,
+// @ts-expect-error TS(7006): Parameter 'getState' implicitly has an 'any' type.
 	getState
 ) => {
 	dispatch(deleteEventWorkflowInProgress());
@@ -1230,6 +1317,7 @@ export const deleteWorkflow = (eventId, workflowId) => async (
 			if (!!workflows.entries) {
 				dispatch(
 					deleteEventWorkflowSuccess(
+// @ts-expect-error TS(7006): Parameter 'wf' implicitly has an 'any' type.
 						workflows.entries.filter((wf) => wf.id !== workflowId)
 					)
 				);
@@ -1251,7 +1339,9 @@ export const deleteWorkflow = (eventId, workflowId) => async (
 		});
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchWorkflowOperations = (eventId, workflowId) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch
 ) => {
 	try {
@@ -1271,9 +1361,13 @@ export const fetchWorkflowOperations = (eventId, workflowId) => async (
 };
 
 export const fetchWorkflowOperationDetails = (
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 	eventId,
+// @ts-expect-error TS(7006): Parameter 'workflowId' implicitly has an 'any' typ... Remove this comment to see the full error message
 	workflowId,
+// @ts-expect-error TS(7006): Parameter 'operationId' implicitly has an 'any' ty... Remove this comment to see the full error message
 	operationId
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 ) => async (dispatch) => {
 	try {
 		dispatch(loadEventWorkflowOperationDetailsInProgress());
@@ -1292,7 +1386,9 @@ export const fetchWorkflowOperationDetails = (
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchWorkflowErrors = (eventId, workflowId) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch
 ) => {
 	try {
@@ -1312,9 +1408,13 @@ export const fetchWorkflowErrors = (eventId, workflowId) => async (
 };
 
 export const fetchWorkflowErrorDetails = (
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 	eventId,
+// @ts-expect-error TS(7006): Parameter 'workflowId' implicitly has an 'any' typ... Remove this comment to see the full error message
 	workflowId,
+// @ts-expect-error TS(7006): Parameter 'errorId' implicitly has an 'any' type.
 	errorId
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 ) => async (dispatch) => {
 	try {
 		dispatch(loadEventWorkflowErrorDetailsInProgress());
@@ -1333,6 +1433,7 @@ export const fetchWorkflowErrorDetails = (
 
 // thunks for publications
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchEventPublications = (eventId) => async (dispatch) => {
 	try {
 		dispatch(loadEventPublicationsInProgress());
@@ -1349,6 +1450,7 @@ export const fetchEventPublications = (eventId) => async (dispatch) => {
 		let now = new Date();
 
 		// fill publication objects with additional information
+// @ts-expect-error TS(7006): Parameter 'publication' implicitly has an 'any' ty... Remove this comment to see the full error message
 		publications.publications.forEach((publication) => {
 			publication.enabled = !(
 				publication.id === "engage-live" &&
@@ -1386,6 +1488,7 @@ export const fetchEventPublications = (eventId) => async (dispatch) => {
 
 // thunks for statistics
 
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchEventStatistics = (eventId) => async (dispatch) => {
 	dispatch(
 		fetchStatistics(
@@ -1400,12 +1503,19 @@ export const fetchEventStatistics = (eventId) => async (dispatch) => {
 };
 
 export const fetchEventStatisticsValueUpdate = (
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 	eventId,
+// @ts-expect-error TS(7006): Parameter 'providerId' implicitly has an 'any' typ... Remove this comment to see the full error message
 	providerId,
+// @ts-expect-error TS(7006): Parameter 'from' implicitly has an 'any' type.
 	from,
+// @ts-expect-error TS(7006): Parameter 'to' implicitly has an 'any' type.
 	to,
+// @ts-expect-error TS(7006): Parameter 'dataResolution' implicitly has an 'any'... Remove this comment to see the full error message
 	dataResolution,
+// @ts-expect-error TS(7006): Parameter 'timeMode' implicitly has an 'any' type.
 	timeMode
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 ) => async (dispatch) => {
 	dispatch(
 		fetchStatisticsValueUpdate(

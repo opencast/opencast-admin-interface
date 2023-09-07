@@ -1,4 +1,5 @@
 import axios from "axios";
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'loda... Remove this comment to see the full error message
 import _ from "lodash";
 import {
 	loadSeriesDetailsAclsSuccess,
@@ -39,6 +40,7 @@ import {
 } from "./statisticsThunks";
 
 // fetch metadata of certain series from server
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const fetchSeriesDetailsMetadata = (id) => async (dispatch) => {
 	try {
 		dispatch(loadSeriesDetailsInProgress());
@@ -54,8 +56,10 @@ export const fetchSeriesDetailsMetadata = (id) => async (dispatch) => {
 
 		for (const catalog of metadataResponse) {
 			if (catalog.flavor === mainCatalog) {
+// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 				seriesMetadata = transformMetadataCollection({ ...catalog });
 			} else {
+// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 				extendedMetadata.push(transformMetadataCollection({ ...catalog }));
 			}
 		}
@@ -69,6 +73,7 @@ export const fetchSeriesDetailsMetadata = (id) => async (dispatch) => {
 };
 
 // fetch acls of certain series from server
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const fetchSeriesDetailsAcls = (id) => async (dispatch) => {
 	try {
 		dispatch(loadSeriesDetailsInProgress());
@@ -90,25 +95,34 @@ export const fetchSeriesDetailsAcls = (id) => async (dispatch) => {
 			);
 		}
 
+// @ts-expect-error TS(7034): Variable 'seriesAcls' implicitly has type 'any[]' ... Remove this comment to see the full error message
 		let seriesAcls = [];
 		if (!!response.series_access) {
 			const json = JSON.parse(response.series_access.acl).acl.ace;
 			let policies = {};
+// @ts-expect-error TS(7034): Variable 'policyRoles' implicitly has type 'any[]'... Remove this comment to see the full error message
 			let policyRoles = [];
+// @ts-expect-error TS(7006): Parameter 'policy' implicitly has an 'any' type.
 			json.forEach((policy) => {
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 				if (!policies[policy.role]) {
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 					policies[policy.role] = createPolicy(policy.role);
 					policyRoles.push(policy.role);
 				}
 				if (policy.action === "read" || policy.action === "write") {
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 					policies[policy.role][policy.action] = policy.allow;
 				} else if (policy.allow === true || policy.allow === "true") {
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 					policies[policy.role].actions.push(policy.action);
 				}
 			});
+// @ts-expect-error TS(7005): Variable 'policyRoles' implicitly has an 'any[]' t... Remove this comment to see the full error message
 			seriesAcls = policyRoles.map((role) => policies[role]);
 		}
 
+// @ts-expect-error TS(7005): Variable 'seriesAcls' implicitly has an 'any[]' ty... Remove this comment to see the full error message
 		dispatch(loadSeriesDetailsAclsSuccess(seriesAcls));
 	} catch (e) {
 		dispatch(loadSeriesDetailsFailure());
@@ -117,6 +131,7 @@ export const fetchSeriesDetailsAcls = (id) => async (dispatch) => {
 };
 
 // fetch feeds of certain series from server
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const fetchSeriesDetailsFeeds = (id) => async (dispatch) => {
 	try {
 		dispatch(loadSeriesDetailsInProgress());
@@ -128,6 +143,7 @@ export const fetchSeriesDetailsFeeds = (id) => async (dispatch) => {
 
 		console.info(feedsResponse);
 
+// @ts-expect-error TS(7034): Variable 'seriesFeeds' implicitly has type 'any[]'... Remove this comment to see the full error message
 		let seriesFeeds = [];
 		for (let i = 0; i < feedsResponse.length; i++) {
 			if (feedsResponse[i].name === "Series") {
@@ -159,6 +175,7 @@ export const fetchSeriesDetailsFeeds = (id) => async (dispatch) => {
 			}
 		}
 
+// @ts-expect-error TS(7005): Variable 'seriesFeeds' implicitly has an 'any[]' t... Remove this comment to see the full error message
 		dispatch(loadSeriesDetailsFeedsSuccess(seriesFeeds));
 	} catch (e) {
 		console.error(e);
@@ -167,6 +184,7 @@ export const fetchSeriesDetailsFeeds = (id) => async (dispatch) => {
 };
 
 // fetch theme of certain series from server
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const fetchSeriesDetailsTheme = (id) => async (dispatch) => {
 	try {
 		dispatch(loadSeriesDetailsInProgress());
@@ -191,6 +209,7 @@ export const fetchSeriesDetailsTheme = (id) => async (dispatch) => {
 };
 
 // fetch names of possible themes from server
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchNamesOfPossibleThemes = () => async (dispatch) => {
 	try {
 		dispatch(loadSeriesDetailsThemeNamesInProgress());
@@ -209,8 +228,11 @@ export const fetchNamesOfPossibleThemes = () => async (dispatch) => {
 };
 
 // update series with new metadata
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const updateSeriesMetadata = (id, values) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch,
+// @ts-expect-error TS(7006): Parameter 'getState' implicitly has an 'any' type.
 	getState
 ) => {
 	try {
@@ -221,12 +243,16 @@ export const updateSeriesMetadata = (id, values) => async (
 			values
 		);
 
-		await axios.put(`/admin-ng/series/${id}/metadata`, data, headers);
+// @ts-expect-error TS(2693): 'any' only refers to a type, but is being used as ... Remove this comment to see the full error message
+		await axios.put(`/admin-ng/series/${id: any}/metadata`, data, headers);
 
 		// updated metadata in series details redux store
 		let seriesMetadata = {
+// @ts-expect-error TS(2304): Cannot find name 'metadataInfos'.
 			flavor: metadataInfos.flavor,
+// @ts-expect-error TS(2304): Cannot find name 'metadataInfos'.
 			title: metadataInfos.title,
+// @ts-expect-error TS(2304): Cannot find name 'fields'.
 			fields: fields,
 		};
 		dispatch(setSeriesDetailsMetadata(seriesMetadata));
@@ -236,8 +262,11 @@ export const updateSeriesMetadata = (id, values) => async (
 };
 
 // update series with new metadata
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const updateExtendedSeriesMetadata = (id, values, catalog) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch,
+// @ts-expect-error TS(7006): Parameter 'getState' implicitly has an 'any' type.
 	getState
 ) => {
 	try {
@@ -275,10 +304,12 @@ export const updateExtendedSeriesMetadata = (id, values, catalog) => async (
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const updateSeriesAccess = (id, policies) => async (dispatch) => {
 	let data = new URLSearchParams();
 
 	data.append("acl", JSON.stringify(policies));
+// @ts-expect-error TS(2345): Argument of type 'boolean' is not assignable to pa... Remove this comment to see the full error message
 	data.append("override", true);
 
 	return axios
@@ -315,9 +346,11 @@ export const updateSeriesAccess = (id, policies) => async (dispatch) => {
 		});
 };
 
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const updateSeriesTheme = (id, values) => async (dispatch, getState) => {
 	let themeNames = getSeriesDetailsThemeNames(getState());
 
+// @ts-expect-error TS(7006): Parameter 'theme' implicitly has an 'any' type.
 	let themeId = themeNames.find((theme) => theme.value === values.theme).id;
 
 	let data = new URLSearchParams();
@@ -348,6 +381,7 @@ export const updateSeriesTheme = (id, values) => async (dispatch, getState) => {
 
 // thunks for statistics
 
+// @ts-expect-error TS(7006): Parameter 'seriesId' implicitly has an 'any' type.
 export const fetchSeriesStatistics = (seriesId) => async (dispatch) => {
 	dispatch(
 		fetchStatistics(
@@ -362,12 +396,19 @@ export const fetchSeriesStatistics = (seriesId) => async (dispatch) => {
 };
 
 export const fetchSeriesStatisticsValueUpdate = (
+// @ts-expect-error TS(7006): Parameter 'seriesId' implicitly has an 'any' type.
 	seriesId,
+// @ts-expect-error TS(7006): Parameter 'providerId' implicitly has an 'any' typ... Remove this comment to see the full error message
 	providerId,
+// @ts-expect-error TS(7006): Parameter 'from' implicitly has an 'any' type.
 	from,
+// @ts-expect-error TS(7006): Parameter 'to' implicitly has an 'any' type.
 	to,
+// @ts-expect-error TS(7006): Parameter 'dataResolution' implicitly has an 'any'... Remove this comment to see the full error message
 	dataResolution,
+// @ts-expect-error TS(7006): Parameter 'timeMode' implicitly has an 'any' type.
 	timeMode
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 ) => async (dispatch) => {
 	dispatch(
 		fetchStatisticsValueUpdate(

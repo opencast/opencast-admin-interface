@@ -17,11 +17,13 @@ export const SET_HIDDEN = "SET_HIDDEN";
 
 // Counter for id of notifications
 let nextNotificationId = 0;
+// @ts-expect-error TS(7006): Parameter 'notification' implicitly has an 'any' t... Remove this comment to see the full error message
 export const createNotification = (notification) => ({
 	type: CREATE_NOTIFICATION,
 	payload: { notification, id: nextNotificationId++ },
 });
 
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const removeNotification = (id) => ({
 	type: REMOVE_NOTIFICATION,
 	payload: { id },
@@ -37,6 +39,7 @@ export const removeNotificationWizardAccess = () => ({
 
 // Actions affecting updates of notifications
 
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const setHidden = (id, isHidden) => ({
 	type: SET_HIDDEN,
 	payload: { id, isHidden },

@@ -15,16 +15,19 @@ export const NewEventSchema = [
 	Yup.object().shape({}),
 	Yup.object().shape({
 		uploadAssetsTrack: Yup.array().when("sourceMode", {
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 			is: (value) => value === "UPLOAD",
 			then: () => Yup.array().test(
 				"at-least-one-uploaded",
 				"at least one uploaded",
 				(uploadAssetsTrack) => {
+// @ts-expect-error TS(2532): Object is possibly 'undefined'.
 					return uploadAssetsTrack.some((asset) => !!asset.file);
 				}
 			),
 		}),
 		scheduleStartDate: Yup.date().when("sourceMode", {
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 			is: (value) =>
 				value === "SCHEDULE_SINGLE" || value === "SCHEDULE_MULTIPLE",
 			then: () => Yup.date().required("Required"),
@@ -38,36 +41,43 @@ export const NewEventSchema = [
 			then: () => Yup.array().min(1).required("Required"),
 		}),
 		scheduleStartHour: Yup.string().when("sourceMode", {
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 			is: (value) =>
 				value === "SCHEDULE_SINGLE" || value === "SCHEDULE_MULTIPLE",
 			then: () => Yup.string().required("Required"),
 		}),
 		scheduleStartMinute: Yup.string().when("sourceMode", {
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 			is: (value) =>
 				value === "SCHEDULE_SINGLE" || value === "SCHEDULE_MULTIPLE",
 			then: () => Yup.string().required("Required"),
 		}),
 		scheduleDurationHours: Yup.string().when("sourceMode", {
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 			is: (value) =>
 				value === "SCHEDULE_SINGLE" || value === "SCHEDULE_MULTIPLE",
 			then: () => Yup.string().required("Required"),
 		}),
 		scheduleDurationMinutes: Yup.string().when("sourceMode", {
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 			is: (value) =>
 				value === "SCHEDULE_SINGLE" || value === "SCHEDULE_MULTIPLE",
 			then: () => Yup.string().required("Required"),
 		}),
 		scheduleEndHour: Yup.string().when("sourceMode", {
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 			is: (value) =>
 				value === "SCHEDULE_SINGLE" || value === "SCHEDULE_MULTIPLE",
 			then: () => Yup.string().required("Required"),
 		}),
 		scheduleEndMinute: Yup.string().when("sourceMode", {
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 			is: (value) =>
 				value === "SCHEDULE_SINGLE" || value === "SCHEDULE_MULTIPLE",
 			then: () => Yup.string().required("Required"),
 		}),
 		location: Yup.string().when("sourceMode", {
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 			is: (value) =>
 				value === "SCHEDULE_SINGLE" || value === "SCHEDULE_MULTIPLE",
 			then: () => Yup.string().required("Required"),
@@ -131,6 +141,7 @@ export const NewGroupSchema = [
 ];
 
 // Validation Schema used in new user wizard
+// @ts-expect-error TS(7006): Parameter 'usernames' implicitly has an 'any' type... Remove this comment to see the full error message
 export const NewUserSchema = (usernames) =>
 	Yup.object().shape({
 		username: Yup.string()
@@ -140,6 +151,7 @@ export const NewUserSchema = (usernames) =>
 		email: Yup.string().email().required("Required"),
 		password: Yup.string().required("Required"),
 		passwordConfirmation: Yup.string()
+// @ts-expect-error TS(2769): No overload matches this call.
 			.oneOf([Yup.ref("password"), null], "Passwords must match")
 			.required("Required"),
 	});
@@ -149,8 +161,10 @@ export const EditUserSchema = Yup.object().shape({
 	name: Yup.string().required("Required"),
 	email: Yup.string().email().required("Required"),
 	passwordConfirmation: Yup.string().when("password", {
+// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 		is: (value) => !!value,
 		then: () => Yup.string()
+// @ts-expect-error TS(2769): No overload matches this call.
 			.oneOf([Yup.ref("password"), null], "Passwords must match")
 			.required("Required"),
 	}),

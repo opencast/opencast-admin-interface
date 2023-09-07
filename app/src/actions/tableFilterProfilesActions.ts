@@ -10,16 +10,18 @@ export const CANCEL_EDITING_FILTER_PROFILE = "CANCEL_EDITING_FILTER_PROFILE";
 
 // Actions affecting filter profiles
 
-export const createFilterProfile = (filterProfile) => ({
-	type: CREATE_FILTER_PROFILE,
-	payload: { filterProfile },
+export const createFilterProfile = (filterProfile: any) => ({
+    type: CREATE_FILTER_PROFILE,
+    payload: { filterProfile }
 });
 
+// @ts-expect-error TS(7006): Parameter 'filterProfile' implicitly has an 'any' ... Remove this comment to see the full error message
 export const editFilterProfile = (filterProfile) => ({
 	type: EDIT_FILTER_PROFILE,
 	payload: { filterProfile },
 });
 
+// @ts-expect-error TS(7006): Parameter 'filterProfile' implicitly has an 'any' ... Remove this comment to see the full error message
 export const removeFilterProfile = (filterProfile) => ({
 	type: REMOVE_FILTER_PROFILE,
 	payload: { filterProfile },

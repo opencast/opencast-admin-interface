@@ -21,6 +21,7 @@ export const getHttpHeaders = () => {
 };
 
 // prepare URL params for getting resources
+// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 export const getURLParams = (state) => {
 	// get filter map from state
 	let filters = [];
@@ -46,6 +47,7 @@ export const getURLParams = (state) => {
 	if (filters.length) {
 		params = {
 			...params,
+// @ts-expect-error TS(2322): Type '{ filter: string; limit: any; offset: number... Remove this comment to see the full error message
 			filter: filters.join(","),
 		};
 	}
@@ -53,6 +55,7 @@ export const getURLParams = (state) => {
 	if (getTableSorting(state) !== "") {
 		params = {
 			...params,
+// @ts-expect-error TS(2322): Type '{ sort: string; limit: any; offset: number; ... Remove this comment to see the full error message
 			sort: getTableSorting(state) + ":" + getTableDirection(state),
 		};
 	}
@@ -61,6 +64,7 @@ export const getURLParams = (state) => {
 };
 
 // used for create URLSearchParams for API requests used to create/update user
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 export const buildUserBody = (values) => {
 	let data = new URLSearchParams();
 	// fill form data with user inputs
@@ -74,6 +78,7 @@ export const buildUserBody = (values) => {
 };
 
 // used for create URLSearchParams for API requests used to create/update group
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 export const buildGroupBody = (values) => {
 	let roles = [],
 		users = [];
@@ -97,13 +102,17 @@ export const buildGroupBody = (values) => {
 
 // get initial metadata field values for formik in create resources wizards
 export const getInitialMetadataFieldValues = (
+// @ts-expect-error TS(7006): Parameter 'metadataFields' implicitly has an 'any'... Remove this comment to see the full error message
 	metadataFields,
+// @ts-expect-error TS(7006): Parameter 'extendedMetadata' implicitly has an 'an... Remove this comment to see the full error message
 	extendedMetadata
 ) => {
 	let initialValues = {};
 
 	if (!!metadataFields.fields && metadataFields.fields.length > 0) {
+// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
 		metadataFields.fields.forEach((field) => {
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 			initialValues[field.id] = field.value;
 		});
 	}
@@ -111,6 +120,7 @@ export const getInitialMetadataFieldValues = (
 	if (extendedMetadata.length > 0) {
 		for (const metadataCatalog of extendedMetadata) {
 			if (!!metadataCatalog.fields && metadataCatalog.fields.length > 0) {
+// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
 				metadataCatalog.fields.forEach((field) => {
 					let value = field.value;
 					if (value === "true") {
@@ -119,6 +129,7 @@ export const getInitialMetadataFieldValues = (
 						value = false;
 					}
 
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 					initialValues[metadataCatalog.flavor + "_" + field.id] = value;
 				});
 			}
@@ -129,6 +140,7 @@ export const getInitialMetadataFieldValues = (
 };
 
 // transform collection of metadata into object with name and value
+// @ts-expect-error TS(7006): Parameter 'metadata' implicitly has an 'any' type.
 export const transformMetadataCollection = (metadata, noField) => {
 	if (noField) {
 		for (let i = 0; metadata.length > i; i++) {
@@ -166,10 +178,14 @@ export const transformMetadataCollection = (metadata, noField) => {
 };
 
 // transform metadata catalog for update via post request
+// @ts-expect-error TS(7006): Parameter 'catalog' implicitly has an 'any' type.
 export const transformMetadataForUpdate = (catalog, values) => {
+// @ts-expect-error TS(7034): Variable 'fields' implicitly has type 'any[]' in s... Remove this comment to see the full error message
 	let fields = [];
+// @ts-expect-error TS(7034): Variable 'updatedFields' implicitly has type 'any[... Remove this comment to see the full error message
 	let updatedFields = [];
 
+// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
 	catalog.fields.forEach((field) => {
 		if (field.value !== values[field.id]) {
 			let updatedField = {
@@ -189,21 +205,26 @@ export const transformMetadataForUpdate = (catalog, values) => {
 			{
 				flavor: catalog.flavor,
 				title: catalog.title,
+// @ts-expect-error TS(7005): Variable 'updatedFields' implicitly has an 'any[]'... Remove this comment to see the full error message
 				fields: updatedFields,
 			},
 		])
 	);
 	const headers = getHttpHeaders();
 
+// @ts-expect-error TS(7005): Variable 'fields' implicitly has an 'any[]' type.
 	return { fields, data, headers };
 };
 
 // Prepare metadata for post of new events or series
 export const prepareMetadataFieldsForPost = (
+// @ts-expect-error TS(7006): Parameter 'metadataInfo' implicitly has an 'any' t... Remove this comment to see the full error message
 	metadataInfo,
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	values,
 	formikIdPrefix = ""
 ) => {
+// @ts-expect-error TS(7034): Variable 'metadataFields' implicitly has type 'any... Remove this comment to see the full error message
 	let metadataFields = [];
 
 	// fill metadataField with field information send by server previously and values provided by user
@@ -219,9 +240,11 @@ export const prepareMetadataFieldsForPost = (
 		if (!!metadataInfo[i].translatable) {
 			fieldValue = {
 				...fieldValue,
+// @ts-expect-error TS(2322): Type '{ translatable: any; id: any; type: any; val... Remove this comment to see the full error message
 				translatable: metadataInfo[i].translatable,
 			};
 		}
+// @ts-expect-error TS(7005): Variable 'metadataFields' implicitly has an 'any[]... Remove this comment to see the full error message
 		metadataFields = metadataFields.concat(fieldValue);
 	}
 
@@ -230,7 +253,9 @@ export const prepareMetadataFieldsForPost = (
 
 // Prepare extended metadata for post of new events or series
 export const prepareExtendedMetadataFieldsForPost = (
+// @ts-expect-error TS(7006): Parameter 'extendedMetadata' implicitly has an 'an... Remove this comment to see the full error message
 	extendedMetadata,
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	values
 ) => {
 	const extendedMetadataFields = [];
@@ -258,10 +283,13 @@ export const prepareExtendedMetadataFieldsForPost = (
 };
 
 export const prepareSeriesMetadataFieldsForPost = (
+// @ts-expect-error TS(7006): Parameter 'metadataInfo' implicitly has an 'any' t... Remove this comment to see the full error message
 	metadataInfo,
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	values,
 	formikIdPrefix = ""
 ) => {
+// @ts-expect-error TS(7034): Variable 'metadataFields' implicitly has type 'any... Remove this comment to see the full error message
 	let metadataFields = [];
 
 	// fill metadataField with field information sent by server previously and values provided by user
@@ -277,32 +305,38 @@ export const prepareSeriesMetadataFieldsForPost = (
 		if (!!metadataInfo[i].translatable) {
 			fieldValue = {
 				...fieldValue,
+// @ts-expect-error TS(2322): Type '{ translatable: any; readOnly: any; id: any;... Remove this comment to see the full error message
 				translatable: metadataInfo[i].translatable,
 			};
 		}
 		if (!!metadataInfo[i].collection) {
 			fieldValue = {
 				...fieldValue,
+// @ts-expect-error TS(2322): Type '{ collection: never[]; readOnly: any; id: an... Remove this comment to see the full error message
 				collection: [],
 			};
 		}
 		if (!!metadataInfo[i].required) {
 			fieldValue = {
 				...fieldValue,
+// @ts-expect-error TS(2322): Type '{ required: any; readOnly: any; id: any; lab... Remove this comment to see the full error message
 				required: metadataInfo[i].required,
 			};
 		}
 		if (metadataInfo[i].type === "mixed_text") {
 			fieldValue = {
 				...fieldValue,
+// @ts-expect-error TS(2322): Type '{ presentableValue: any; readOnly: any; id: ... Remove this comment to see the full error message
 				presentableValue: values[formikIdPrefix + metadataInfo[i].id].join(),
 			};
 		} else {
 			fieldValue = {
 				...fieldValue,
+// @ts-expect-error TS(2322): Type '{ presentableValue: any; readOnly: any; id: ... Remove this comment to see the full error message
 				presentableValue: values[formikIdPrefix + metadataInfo[i].id],
 			};
 		}
+// @ts-expect-error TS(7005): Variable 'metadataFields' implicitly has an 'any[]... Remove this comment to see the full error message
 		metadataFields = metadataFields.concat(fieldValue);
 	}
 
@@ -311,7 +345,9 @@ export const prepareSeriesMetadataFieldsForPost = (
 
 // Prepare extended metadata for post of new events or series
 export const prepareSeriesExtendedMetadataFieldsForPost = (
+// @ts-expect-error TS(7006): Parameter 'extendedMetadata' implicitly has an 'an... Remove this comment to see the full error message
 	extendedMetadata,
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	values
 ) => {
 	const extendedMetadataFields = [];
@@ -338,9 +374,11 @@ export const prepareSeriesExtendedMetadataFieldsForPost = (
 };
 
 // returns the name for a field value from the collection
+// @ts-expect-error TS(7006): Parameter 'metadataField' implicitly has an 'any' ... Remove this comment to see the full error message
 export const getMetadataCollectionFieldName = (metadataField, field) => {
 	try {
 		const collectionField = metadataField.collection.find(
+// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 			(element) => element.value === field.value
 		);
 		return collectionField.name;
@@ -350,6 +388,7 @@ export const getMetadataCollectionFieldName = (metadataField, field) => {
 };
 
 // Prepare rules of access policies for post of new events or series
+// @ts-expect-error TS(7006): Parameter 'policies' implicitly has an 'any' type.
 export const prepareAccessPolicyRulesForPost = (policies) => {
 	// access policies for post request
 	let access = {
@@ -362,6 +401,7 @@ export const prepareAccessPolicyRulesForPost = (policies) => {
 	for (let i = 0; policies.length > i; i++) {
 		access.acl.ace = access.acl.ace.concat(
 			{
+// @ts-expect-error TS(2769): No overload matches this call.
 				action: "read",
 				allow: policies[i].read,
 				role: policies[i].role,
@@ -375,6 +415,7 @@ export const prepareAccessPolicyRulesForPost = (policies) => {
 		if (policies[i].actions.length > 0) {
 			for (let j = 0; policies[i].actions.length > j; j++) {
 				access.acl.ace = access.acl.ace.concat({
+// @ts-expect-error TS(2769): No overload matches this call.
 					action: policies[i].actions[j],
 					allow: true,
 					role: policies[i].role,
@@ -387,16 +428,20 @@ export const prepareAccessPolicyRulesForPost = (policies) => {
 };
 
 // transform response data in form that is used in wizards and modals for policies (for each role one entry)
+// @ts-expect-error TS(7006): Parameter 'acl' implicitly has an 'any' type.
 export const transformAclTemplatesResponse = (acl) => {
+// @ts-expect-error TS(7034): Variable 'template' implicitly has type 'any[]' in... Remove this comment to see the full error message
 	let template = [];
 
 	for (let i = 0; acl.ace.length > i; i++) {
+// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 		if (template.find((rule) => rule.role === acl.ace[i].role)) {
 			for (let j = 0; template.length > j; j++) {
 				// Only update entry for policy if already added with other action
 				if (template[j].role === acl.ace[i].role) {
 					if (acl.ace[i].action === "read") {
 						template[j] = {
+// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 							...template[j],
 							read: acl.ace[i].allow,
 						};
@@ -404,6 +449,7 @@ export const transformAclTemplatesResponse = (acl) => {
 					}
 					if (acl.ace[i].action === "write") {
 						template[j] = {
+// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 							...template[j],
 							write: acl.ace[i].allow,
 						};
@@ -415,7 +461,9 @@ export const transformAclTemplatesResponse = (acl) => {
 						acl.ace[i].allow === true
 					) {
 						template[j] = {
+// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 							...template[j],
+// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 							actions: template[j].actions.concat(acl.ace[i].action),
 						};
 						break;
@@ -425,6 +473,7 @@ export const transformAclTemplatesResponse = (acl) => {
 		} else {
 			// add policy if role not seen before
 			if (acl.ace[i].action === "read") {
+// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 				template = template.concat({
 					role: acl.ace[i].role,
 					read: acl.ace[i].allow,
@@ -459,6 +508,7 @@ export const transformAclTemplatesResponse = (acl) => {
 };
 
 // filter devices, so that only devices for which the user has access rights are left
+// @ts-expect-error TS(7006): Parameter 'user' implicitly has an 'any' type.
 export const filterDevicesForAccess = (user, inputDevices) => {
 	if (user.isOrgAdmin) {
 		return inputDevices;
@@ -478,11 +528,13 @@ export const filterDevicesForAccess = (user, inputDevices) => {
 };
 
 // returns, whether user has access rights for any inputDevices
+// @ts-expect-error TS(7006): Parameter 'user' implicitly has an 'any' type.
 export const hasAnyDeviceAccess = (user, inputDevices) => {
 	return filterDevicesForAccess(user, inputDevices).length > 0;
 };
 
 // returns, whether user has access rights for a specific inputDevice
+// @ts-expect-error TS(7006): Parameter 'user' implicitly has an 'any' type.
 export const hasDeviceAccess = (user, deviceId) => {
 	if (user.isOrgAdmin) {
 		return true;
@@ -495,6 +547,7 @@ export const hasDeviceAccess = (user, deviceId) => {
 };
 
 // build body for post/put request in theme context
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 export const buildThemeBody = (values) => {
 	// fill form data depending on user inputs
 	let data = new URLSearchParams();
@@ -523,6 +576,7 @@ export const buildThemeBody = (values) => {
 };
 
 // creates an empty policy with the role from the argument
+// @ts-expect-error TS(7006): Parameter 'role' implicitly has an 'any' type.
 export const createPolicy = (role) => {
 	return {
 		role: role,

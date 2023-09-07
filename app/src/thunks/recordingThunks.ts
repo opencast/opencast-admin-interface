@@ -8,6 +8,7 @@ import { getURLParams } from "../utils/resourceUtils";
 import { addNotification } from "./notificationThunks";
 
 // fetch recordings from server
+// @ts-expect-error TS(7006): Parameter 'flag' implicitly has an 'any' type.
 export const fetchRecordings = (flag) => async (dispatch, getState) => {
 	try {
 		dispatch(loadRecordingsInProgress());
@@ -58,6 +59,7 @@ export const fetchRecordings = (flag) => async (dispatch, getState) => {
 };
 
 // delete location with provided id
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const deleteRecording = (id) => async (dispatch) => {
 	// API call for deleting a location
 	axios
@@ -65,6 +67,7 @@ export const deleteRecording = (id) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			// add success notification
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "LOCATION_DELETED"));
 		})
 		.catch((res) => {
@@ -72,9 +75,11 @@ export const deleteRecording = (id) => async (dispatch) => {
 			// add error notification depending on status code
 			if (res.status === 401) {
 				dispatch(
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 					addNotification("error", "LOCATION_NOT_DELETED_NOT_AUTHORIZED")
 				);
 			} else {
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 				dispatch(addNotification("error", "LOCATION_NOT_DELETED"));
 			}
 		});

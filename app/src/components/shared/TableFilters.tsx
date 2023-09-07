@@ -20,6 +20,7 @@ import {
 	removeTextFilter,
 	resetFilterValues,
 } from "../../actions/tableFilterActions";
+// @ts-expect-error TS(6142): Module './TableFilterProfiles' was resolved to '/h... Remove this comment to see the full error message
 import TableFilterProfiles from "./TableFilterProfiles";
 import { getCurrentLanguageInformation } from "../../utils/utils";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
@@ -31,19 +32,33 @@ import { fetchFilters } from "../../thunks/tableFilterThunks";
  * This component renders the table filters in the upper right corner of the table
  */
 const TableFilters = ({
+// @ts-expect-error TS(7031): Binding element 'filterMap' implicitly has an 'any... Remove this comment to see the full error message
 	filterMap,
+// @ts-expect-error TS(7031): Binding element 'textFilter' implicitly has an 'an... Remove this comment to see the full error message
 	textFilter,
+// @ts-expect-error TS(7031): Binding element 'selectedFilter' implicitly has an... Remove this comment to see the full error message
 	selectedFilter,
+// @ts-expect-error TS(7031): Binding element 'secondFilter' implicitly has an '... Remove this comment to see the full error message
 	secondFilter,
+// @ts-expect-error TS(7031): Binding element 'onChangeTextFilter' implicitly ha... Remove this comment to see the full error message
 	onChangeTextFilter,
+// @ts-expect-error TS(7031): Binding element 'removeTextFilter' implicitly has ... Remove this comment to see the full error message
 	removeTextFilter,
+// @ts-expect-error TS(7031): Binding element 'editSelectedFilter' implicitly ha... Remove this comment to see the full error message
 	editSelectedFilter,
+// @ts-expect-error TS(7031): Binding element 'removeSelectedFilter' implicitly ... Remove this comment to see the full error message
 	removeSelectedFilter,
+// @ts-expect-error TS(7031): Binding element 'removeSecondFilter' implicitly ha... Remove this comment to see the full error message
 	removeSecondFilter,
+// @ts-expect-error TS(7031): Binding element 'resetFilterMap' implicitly has an... Remove this comment to see the full error message
 	resetFilterMap,
+// @ts-expect-error TS(7031): Binding element 'editFilterValue' implicitly has a... Remove this comment to see the full error message
 	editFilterValue,
+// @ts-expect-error TS(7031): Binding element 'loadResource' implicitly has an '... Remove this comment to see the full error message
 	loadResource,
+// @ts-expect-error TS(7031): Binding element 'loadResourceIntoTable' implicitly... Remove this comment to see the full error message
 	loadResourceIntoTable,
+// @ts-expect-error TS(7031): Binding element 'resource' implicitly has an 'any'... Remove this comment to see the full error message
 	resource,
 }) => {
 	const { t } = useTranslation();
@@ -71,6 +86,7 @@ const TableFilters = ({
 	};
 
 	// Remove a certain filter
+// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 	const removeFilter = async (filter) => {
 		editFilterValue(filter.name, "");
 
@@ -80,6 +96,7 @@ const TableFilters = ({
 	};
 
 	// Handle changes when a item of the component is clicked
+// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
 	const handleChange = async (e) => {
 		const itemName = e.target.name;
 		const itemValue = e.target.value;
@@ -95,6 +112,7 @@ const TableFilters = ({
 		// If the change is in secondFilter (filter is picked) then the selected value is saved in filterMap
 		// and the filter selections are cleared
 		if (itemName === "secondFilter") {
+// @ts-expect-error TS(7031): Binding element 'name' implicitly has an 'any' typ... Remove this comment to see the full error message
 			let filter = filterMap.find(({ name }) => name === selectedFilter);
 			editFilterValue(filter.name, itemValue);
 			setFilterSelector(false);
@@ -107,6 +125,7 @@ const TableFilters = ({
 	};
 
 	// Set the sate of startDate and endDate picked with datepicker
+// @ts-expect-error TS(7006): Parameter 'date' implicitly has an 'any' type.
 	const handleDatepickerChange = async (date, isStart = false) => {
 		if (isStart) {
 			await setStartDate(date);
@@ -116,6 +135,7 @@ const TableFilters = ({
 
 		// When both dates set, then set the value for this filter
 		if (!isStart) {
+// @ts-expect-error TS(7031): Binding element 'name' implicitly has an 'any' typ... Remove this comment to see the full error message
 			let filter = filterMap.find(({ name }) => name === selectedFilter);
 			await editFilterValue(
 				filter.name,
@@ -133,10 +153,13 @@ const TableFilters = ({
 		REMOVE_FILTERS: removeFilters,
 	};
 
+// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 	const renderBlueBox = (filter) => {
+// @ts-expect-error TS(7006): Parameter 'opt' implicitly has an 'any' type.
 		let valueLabel = filter.options.find((opt) => opt.value === filter.value)
 			.label;
 		return (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<span>
 				{t(filter.label).substr(0, 40)}:
 				{filter.translatable
@@ -147,16 +170,22 @@ const TableFilters = ({
 	};
 
 	return (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<GlobalHotKeys
+// @ts-expect-error TS(2769): No overload matches this call.
 				keyMap={availableHotkeys.general}
 				handlers={hotKeyHandlers}
 			/>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="filters-container">
 				{/* Text filter - Search Query */}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<input
 					type="text"
 					className="search expand"
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
 					onChange={(e) => handleChange(e)}
 					name="textFilter"
@@ -166,9 +195,13 @@ const TableFilters = ({
 				{/* Selection of filters and management of filter profiles*/}
 				{/*show only if filters.filters contains filters*/}
 				{!!filterMap && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="table-filter">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="filters">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<i
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 								title={t("TABLE_FILTERS.ADD")}
 								className="fa fa-filter"
 								onClick={() => setFilterSelector(!showFilterSelector)}
@@ -176,37 +209,47 @@ const TableFilters = ({
 
 							{/*show if icon is clicked*/}
 							{showFilterSelector && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div>
 									{/*Check if filters in filtersMap and show corresponding selection*/}
 									{!filterMap || false ? (
 										// Show if no filters in filtersList
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<select
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 											defaultValue={t(
 												"TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS"
 											)}
 											className="main-filter"
 										>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<option disabled>
 												{t("TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS")}
 											</option>
 										</select>
 									) : (
 										// Show all filtersMap as selectable options
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<select
+// @ts-expect-error TS(2322): Type '{ children: any[]; disable_search_threshold:... Remove this comment to see the full error message
 											disable_search_threshold="10"
 											onChange={(e) => handleChange(e)}
 											value={selectedFilter}
 											name="selectedFilter"
 											className="main-filter"
 										>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<option value="" disabled>
 												{t("TABLE_FILTERS.FILTER_SELECTION.PLACEHOLDER")}
 											</option>
 											{filterMap
 												.filter(
+// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 													(filter) => filter.name !== "presentersBibliographic"
 												)
+// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 												.map((filter, key) => (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<option key={key} value={filter.name}>
 														{t(filter.label).substr(0, 40)}
 													</option>
@@ -218,8 +261,10 @@ const TableFilters = ({
 
 							{/*Show selection of secondary filter if a main filter is chosen*/}
 							{!!selectedFilter && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div>
 									{/*Show the secondary filter depending on the type of main filter chosen (select or period)*/}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<FilterSwitch
 										filterMap={filterMap}
 										selectedFilter={selectedFilter}
@@ -233,17 +278,22 @@ const TableFilters = ({
 							)}
 
 							{/* Show for each selected filter a blue label containing its name and option */}
+// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 							{filterMap.map((filter, key) => {
 								if (!!filter.value) {
 									return (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<span className="ng-multi-value" key={key}>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<span>
 												{
 													// Use different representation of name and value depending on type of filter
 													filter.type === "select" ? (
 														renderBlueBox(filter)
 													) : filter.type === "period" ? (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<span>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<span>
 																{t(filter.label).substr(0, 40)}:
 																{t("dateFormats.date.short", {
@@ -259,11 +309,14 @@ const TableFilters = ({
 												}
 											</span>
 											{/* Remove icon in blue area around filter */}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<button
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 												title={t("TABLE_FILTERS.REMOVE")}
 												onClick={() => removeFilter(filter)}
                         className="button-like-anchor"
 											>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<i className="fa fa-times" />
 											</button>
 										</span>
@@ -273,19 +326,24 @@ const TableFilters = ({
 						</div>
 
 						{/* Remove icon to clear all filters */}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<i
 							onClick={removeFilters}
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 							title={t("TABLE_FILTERS.CLEAR")}
 							className="clear fa fa-times"
 						/>
 						{/* Settings icon to open filters profile dialog (save and editing filter profiles)*/}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<i
 							onClick={() => setFilterSettings(!showFilterSettings)}
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 							title={t("TABLE_FILTERS.PROFILES.FILTERS_HEADER")}
 							className="settings fa fa-cog fa-times"
 						/>
 
 						{/* Filter profile dialog for saving and editing filter profiles */}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<TableFilterProfiles
 							showFilterSettings={showFilterSettings}
 							setFilterSettings={setFilterSettings}
@@ -306,48 +364,64 @@ const TableFilters = ({
  * In case of select, a second selection is shown. In case of period, datepicker are shown.
  */
 const FilterSwitch = ({
+// @ts-expect-error TS(7031): Binding element 'filterMap' implicitly has an 'any... Remove this comment to see the full error message
 	filterMap,
+// @ts-expect-error TS(7031): Binding element 'selectedFilter' implicitly has an... Remove this comment to see the full error message
 	selectedFilter,
+// @ts-expect-error TS(7031): Binding element 'handleChange' implicitly has an '... Remove this comment to see the full error message
 	handleChange,
+// @ts-expect-error TS(7031): Binding element 'startDate' implicitly has an 'any... Remove this comment to see the full error message
 	startDate,
+// @ts-expect-error TS(7031): Binding element 'endDate' implicitly has an 'any' ... Remove this comment to see the full error message
 	endDate,
+// @ts-expect-error TS(7031): Binding element 'handleDate' implicitly has an 'an... Remove this comment to see the full error message
 	handleDate,
+// @ts-expect-error TS(7031): Binding element 'secondFilter' implicitly has an '... Remove this comment to see the full error message
 	secondFilter,
 }) => {
 	const { t } = useTranslation();
 
 	const currentLanguage = getCurrentLanguageInformation();
 
+// @ts-expect-error TS(7031): Binding element 'name' implicitly has an 'any' typ... Remove this comment to see the full error message
 	let filter = filterMap.find(({ name }) => name === selectedFilter);
 	// eslint-disable-next-line default-case
 	switch (filter.type) {
 		case "select":
 			return (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div>
 					{/*Show only if selected main filter has translatable options*/}
 					{filter.translatable ? (
 						// Show if the selected main filter has no further options
 						!filter.options || false ? (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<select
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 								defaultValue={t("TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS")}
 								className="second-filter"
 							>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<option disabled>
 									{t("TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS")}
 								</option>
 							</select>
 						) : (
 							// Show further options for a secondary filter
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<select
 								className="second-filter"
 								onChange={(e) => handleChange(e)}
 								value={secondFilter}
 								name="secondFilter"
 							>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<option value="" disabled>
 									{t("TABLE_FILTERS.FILTER_VALUE_SELECTION.PLACEHOLDER")}
 								</option>
+// @ts-expect-error TS(7006): Parameter 'option' implicitly has an 'any' type.
 								{filter.options.map((option, key) => (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<option key={key} value={option.value}>
 										{t(option.label).substr(0, 40)}
 									</option>
@@ -357,26 +431,33 @@ const FilterSwitch = ({
 					) : // Show only if the selected main filter has options that are not translatable (else case from above)
 					!filter.options || false ? (
 						// Show if the selected main filter has no further options
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<select
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 							defaultValue={t("TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS")}
 							className="second-filter"
 						>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<option disabled>
 								{t("TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS")}
 							</option>
 						</select>
 					) : (
 						// Show further options for a secondary filter
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<select
 							className="second-filter"
 							onChange={(e) => handleChange(e)}
 							value={secondFilter}
 							name="secondFilter"
 						>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<option value="" disabled>
 								{t("TABLE_FILTERS.FILTER_VALUE_SELECTION.PLACEHOLDER")}
 							</option>
+// @ts-expect-error TS(7006): Parameter 'option' implicitly has an 'any' type.
 							{filter.options.map((option, key) => (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<option key={key} value={option.value}>
 									{option.label.substr(0, 40)}
 								</option>
@@ -387,12 +468,16 @@ const FilterSwitch = ({
 			);
 		case "period":
 			return (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div>
 					{/* Show datepicker for start date */}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<MuiPickersUtilsProvider
 						utils={DateFnsUtils}
+// @ts-expect-error TS(2532): Object is possibly 'undefined'.
 						locale={currentLanguage.dateLocale}
 					>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<DatePicker
 							className="small-search start-date"
 							value={startDate}
@@ -400,6 +485,7 @@ const FilterSwitch = ({
 							format="dd/MM/yyyy"
 							onChange={(date) => handleDate(date, true)}
 						/>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<DatePicker
 							className="small-search end-date"
 							value={endDate}
@@ -414,6 +500,7 @@ const FilterSwitch = ({
 };
 
 // Getting state data out of redux store
+// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
 	textFilter: getTextFilter(state),
 	filterMap: getFilters(state),
@@ -424,16 +511,22 @@ const mapStateToProps = (state) => ({
 });
 
 // Mapping actions to dispatch
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
+// @ts-expect-error TS(7006): Parameter 'textFilter' implicitly has an 'any' typ... Remove this comment to see the full error message
 	onChangeTextFilter: (textFilter) => dispatch(editTextFilter(textFilter)),
 	removeTextFilter: () => dispatch(removeTextFilter()),
+// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 	editSelectedFilter: (filter) => dispatch(editSelectedFilter(filter)),
 	removeSelectedFilter: () => dispatch(removeSelectedFilter()),
+// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 	editSecondFilter: (filter) => dispatch(editSecondFilter(filter)),
 	removeSecondFilter: () => dispatch(removeSecondFilter()),
 	resetFilterMap: () => dispatch(resetFilterValues()),
+// @ts-expect-error TS(7006): Parameter 'filterName' implicitly has an 'any' typ... Remove this comment to see the full error message
 	editFilterValue: (filterName, value) =>
 		dispatch(editFilterValue(filterName, value)),
+// @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
 });
 

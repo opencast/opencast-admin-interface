@@ -6,6 +6,7 @@ import {
 } from "../actions/workflowActions";
 
 // fetch workflow definitions from server
+// @ts-expect-error TS(7006): Parameter 'type' implicitly has an 'any' type.
 export const fetchWorkflowDef = (type) => async (dispatch) => {
 	try {
 		dispatch(loadWorkflowDefInProgress());
@@ -45,6 +46,7 @@ export const fetchWorkflowDef = (type) => async (dispatch) => {
 
 		let workflows = response.workflows;
 
+// @ts-expect-error TS(7006): Parameter 'workflow' implicitly has an 'any' type.
 		workflows = workflows.map((workflow) => {
 			if (workflow.configuration_panel_json.length > 0) {
 				return {

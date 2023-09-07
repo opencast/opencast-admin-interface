@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+// @ts-expect-error TS(2305): Module '"react-router-dom"' has no exported member... Remove this comment to see the full error message
 import { useHistory } from "react-router-dom";
 import { Field, Formik } from "formik";
 import languages from "../i18n/languages";
@@ -17,6 +18,7 @@ const currentLanguage = currentLang;
 // References for detecting a click outside of the container of the dropdown menu of languages
 const containerLang = React.createRef();
 
+// @ts-expect-error TS(7006): Parameter 'code' implicitly has an 'any' type.
 function changeLanguage(code) {
 	// Load json-file of the language with provided code
 	i18n.changeLanguage(code);
@@ -43,7 +45,9 @@ const Login = () => {
 
 	useEffect(() => {
 		// Function for handling clicks outside of an open dropdown menu
+// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
 		const handleClickOutside = (e) => {
+// @ts-expect-error TS(2571): Object is of type 'unknown'.
 			if (containerLang.current && !containerLang.current.contains(e.target)) {
 				setMenuLang(false);
 			}
@@ -57,6 +61,7 @@ const Login = () => {
 	}, []);
 
 	// Handle submission of login data to backend
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
 		console.log(values);
 		let data = new URLSearchParams();
@@ -80,31 +85,45 @@ const Login = () => {
 	};
 
 	return (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/*Todo: find equivalent to ng-cloak*/}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="login-body">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<section className="login-container">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="login-form">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="form-container">
 							{/*Login form*/}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<Formik
 								onSubmit={(values) => handleSubmit(values)}
 								initialValues={initialValues}
 							>
 								{(formik) => (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<div className="formik-container">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<div className="row">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<p>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<span>{t("LOGIN.WELCOME")}</span>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<br />
 											</p>
 										</div>
 
 										{/*Only show if error occurs on login*/}
 										{isError && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<div className="error-container">{t("LOGIN.ERROR")}</div>
 										)}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<div className="row">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<Field
 												name="j_username"
 												type="text"
@@ -119,7 +138,9 @@ const Login = () => {
 												autoFocus="autoFocus"
 											/>
 										</div>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<div className="row">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<Field
 												name="j_password"
 												type="password"
@@ -134,15 +155,20 @@ const Login = () => {
 											/>
 										</div>
 
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<div className="row remember-me">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<Field
 												type="checkbox"
 												id="remember"
 												name="_spring_security_remember_me"
 											/>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<label htmlFor="remember">{t("LOGIN.REMEMBER")}</label>
 										</div>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<div className="row">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<button
 												className={cn("submit", {
 													active: formik.dirty && formik.isValid,
@@ -161,27 +187,38 @@ const Login = () => {
 						</div>
 
 						{/*Language dropdown menu*/}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<nav className="login-nav nav-dd-container" id="nav-dd-container">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div
 								className="nav-dd lang-dd"
 								id="lang-dd"
+// @ts-expect-error TS(2322): Type 'RefObject<unknown>' is not assignable to typ... Remove this comment to see the full error message
 								ref={containerLang}
 								onClick={() => setMenuLang(!displayMenuLang)}
 							>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<img
 									className="lang-flag"
+// @ts-expect-error TS(2532): Object is possibly 'undefined'.
 									src={currentLanguage.flag}
+// @ts-expect-error TS(2532): Object is possibly 'undefined'.
 									alt={currentLanguage.code}
 								/>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<span>{currentLanguage.long}</span>
 								{displayMenuLang && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<ul className="dropdown-ul">
 										{languages.map((language, key) => (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<li key={key}>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<a
 													href="#"
 													onClick={() => changeLanguage(language.code)}
 												>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<img
 														className="lang-flag"
 														src={language.flag}

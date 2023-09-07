@@ -9,6 +9,7 @@ import {
 import axios from "axios";
 import { addNotification } from "./notificationThunks";
 
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchUserInfo = () => async (dispatch) => {
 	try {
 		dispatch(loadUserInfoInProgress());
@@ -28,10 +29,12 @@ export const fetchUserInfo = () => async (dispatch) => {
 	} catch (e) {
 		console.error(e);
 		dispatch(loadUserInfoFailure());
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 		dispatch(addNotification("error", "PROBLEM_ON_START"));
 	}
 };
 
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchOcVersion = () => async (dispatch) => {
 	try {
 		dispatch(loadOcVersionInProgress());

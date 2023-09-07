@@ -16,6 +16,7 @@ export const loadRecordingsInProgress = () => ({
 	type: LOAD_RECORDINGS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'recordings' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const loadRecordingsSuccess = (recordings) => ({
 	type: LOAD_RECORDINGS_SUCCESS,
 	payload: { recordings },
@@ -27,6 +28,7 @@ export const loadRecordingsFailure = () => ({
 
 // Actions affecting UI
 
+// @ts-expect-error TS(7006): Parameter 'updatedColumns' implicitly has an 'any'... Remove this comment to see the full error message
 export const setRecordingsColumns = (updatedColumns) => ({
 	type: SET_RECORDINGS_COLUMNS,
 	payload: { updatedColumns },

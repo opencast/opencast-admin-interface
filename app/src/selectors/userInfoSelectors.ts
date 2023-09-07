@@ -1,8 +1,8 @@
 /**
  * This file contains selectors regarding information about the current user
  */
-export const getUserInformation = (state) => state.userInfo;
-export const getUserBasicInfo = (state) => state.userInfo.user;
-export const getUserRoles = (state) => state.userInfo.roles;
-export const getOrgProperties = (state) => state.userInfo.org.properties;
-export const getOrgId = (state) => state.userInfo.org.id;
+export const getUserInformation = (state: any) => state.userInfo;
+export const getUserBasicInfo = (state: any) => state.userInfo.user;
+export const getUserRoles = (state: any) => state.userInfo.roles;
+export const getOrgProperties = (state: any) => state.userInfo.org.properties;
+export const getOrgId = (state: any) => state.userInfo.org.id;

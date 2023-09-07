@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+// @ts-expect-error TS(6142): Module '../../shared/ConfirmModal' was resolved to... Remove this comment to see the full error message
 import ConfirmModal from "../../shared/ConfirmModal";
 import { deleteEvent } from "../../../thunks/eventThunks";
 import { connect } from "react-redux";
+// @ts-expect-error TS(6142): Module './modals/EventDetailsModal' was resolved t... Remove this comment to see the full error message
 import EventDetailsModal from "./modals/EventDetailsModal";
+// @ts-expect-error TS(6142): Module './modals/EmbeddingCodeModal' was resolved ... Remove this comment to see the full error message
 import EmbeddingCodeModal from "./modals/EmbeddingCodeModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
+// @ts-expect-error TS(6142): Module './modals/SeriesDetailsModal' was resolved ... Remove this comment to see the full error message
 import SeriesDetailsModal from "./modals/SeriesDetailsModal";
 import {
 	fetchNamesOfPossibleThemes,
@@ -20,13 +24,21 @@ import {
  * This component renders the action cells of events in the table view
  */
 const EventActionCell = ({
+// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
+// @ts-expect-error TS(7031): Binding element 'deleteEvent' implicitly has an 'a... Remove this comment to see the full error message
 	deleteEvent,
+// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsMetadata' impli... Remove this comment to see the full error message
 	fetchSeriesDetailsMetadata,
+// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsAcls' implicitl... Remove this comment to see the full error message
 	fetchSeriesDetailsAcls,
+// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsFeeds' implicit... Remove this comment to see the full error message
 	fetchSeriesDetailsFeeds,
+// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsTheme' implicit... Remove this comment to see the full error message
 	fetchSeriesDetailsTheme,
+// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsThemeNames' imp... Remove this comment to see the full error message
 	fetchSeriesDetailsThemeNames,
+// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
 }) => {
 	const { t } = useTranslation();
@@ -41,6 +53,7 @@ const EventActionCell = ({
 		setDeleteConfirmation(false);
 	};
 
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	const deletingEvent = (id) => {
 		deleteEvent(id);
 	};
@@ -100,8 +113,10 @@ const EventActionCell = ({
 	};
 
 	return (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/* Display modal for editing table view if table edit button is clicked */}
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<EventDetailsModal
 				showModal={displayEventDetailsModal}
 				handleClose={hideEventDetailsModal}
@@ -111,6 +126,7 @@ const EventActionCell = ({
 			/>
 
 			{displaySeriesDetailsModal && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<SeriesDetailsModal
 					handleClose={hideSeriesDetailsModal}
 					seriesId={row.series.id}
@@ -120,18 +136,22 @@ const EventActionCell = ({
 
 			{/* Open event details */}
 			{hasAccess("ROLE_UI_EVENTS_DETAILS_VIEW", user) && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => onClickEventDetails()}
 					className="button-like-anchor more"
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
 
 			{/* If event belongs to a series then the corresponding series details can be opened */}
 			{!!row.series && hasAccess("ROLE_UI_SERIES_DETAILS_VIEW", user) && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => onClickSeriesDetails()}
 					className="button-like-anchor more-series"
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
@@ -139,15 +159,18 @@ const EventActionCell = ({
 			{/* Delete an event */}
 			{/*TODO: needs to be checked if event is published */}
 			{hasAccess("ROLE_UI_EVENTS_DELETE", user) && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => setDeleteConfirmation(true)}
 					className="button-like-anchor remove"
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.DELETE")}
 				/>
 			)}
 
 			{/* Confirmation for deleting an event*/}
 			{displayDeleteConfirmation && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<ConfirmModal
 					close={hideDeleteConfirmation}
 					resourceName={row.title}
@@ -159,23 +182,28 @@ const EventActionCell = ({
 
 			{/* If the event has an preview then the editor can be opened and status if it needs to be cut is shown */}
 			{!!row.has_preview && hasAccess("ROLE_UI_EVENTS_EDITOR_VIEW", user) && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<a
 					href={`/editor-ui/index.html?id=${row.id}`}
 					className="cut"
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={
 						row.needs_cutting
 							? t("EVENTS.EVENTS.TABLE.TOOLTIP.EDITOR_NEEDS_CUTTING")
 							: t("EVENTS.EVENTS.TABLE.TOOLTIP.EDITOR")
 					}
 				>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					{row.needs_cutting && <span id="badge" className="badge" />}
 				</a>
 			)}
 
 			{/* If the event has comments and no open comments then the comment tab of event details can be opened directly */}
 			{row.has_comments && !row.has_open_comments && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => onClickComments()}
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.COMMENTS")}
 					className="button-like-anchor comments"
 				/>
@@ -183,8 +211,10 @@ const EventActionCell = ({
 
 			{/* If the event has comments and open comments then the comment tab of event details can be opened directly */}
 			{row.has_comments && row.has_open_comments && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => onClickComments()}
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.COMMENTS")}
 					className="button-like-anchor comments-open"
 				/>
@@ -194,7 +224,9 @@ const EventActionCell = ({
                 details can be opened directly */}
 			{row.workflow_state === "PAUSED" &&
 				hasAccess("ROLE_UI_EVENTS_DETAILS_WORKFLOWS_EDIT", user) && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 						title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PAUSED_WORKFLOW")}
 						onClick={() => onClickWorkflow()}
 						className="button-like-anchor fa fa-warning"
@@ -203,22 +235,27 @@ const EventActionCell = ({
 
 			{/* Open assets tab of event details directly*/}
 			{hasAccess("ROLE_UI_EVENTS_DETAILS_ASSETS_VIEW", user) && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => onClickAssets()}
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.ASSETS")}
 					className="button-like-anchor fa fa-folder-open"
 				/>
 			)}
 			{/* Open dialog for embedded code*/}
 			{hasAccess("ROLE_UI_EVENTS_EMBEDDING_CODE_VIEW", user) && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => showEmbeddingCodeModal()}
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.EMBEDDING_CODE")}
 					className="button-like-anchor fa fa-link"
 				/>
 			)}
 
 			{displayEmbeddingCodeModal && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<EmbeddingCodeModal close={hideEmbeddingCodeModal} eventId={row.id} />
 			)}
 		</>
@@ -226,16 +263,23 @@ const EventActionCell = ({
 };
 
 // Getting state data out of redux store
+// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
 	user: getUserInformation(state),
 });
 
 // Mapping actions to dispatch
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	deleteEvent: (id) => dispatch(deleteEvent(id)),
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	fetchSeriesDetailsMetadata: (id) => dispatch(fetchSeriesDetailsMetadata(id)),
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	fetchSeriesDetailsAcls: (id) => dispatch(fetchSeriesDetailsAcls(id)),
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	fetchSeriesDetailsFeeds: (id) => dispatch(fetchSeriesDetailsFeeds(id)),
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	fetchSeriesDetailsTheme: (id) => dispatch(fetchSeriesDetailsTheme(id)),
 	fetchSeriesDetailsThemeNames: () => dispatch(fetchNamesOfPossibleThemes()),
 });

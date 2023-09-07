@@ -32,6 +32,7 @@ export const loadEventsInProgress = () => ({
 	type: LOAD_EVENTS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'events' implicitly has an 'any' type.
 export const loadEventsSuccess = (events) => ({
 	type: LOAD_EVENTS_SUCCESS,
 	payload: { events },
@@ -43,16 +44,19 @@ export const loadEventsFailure = () => ({
 
 // Actions affecting UI
 
+// @ts-expect-error TS(7006): Parameter 'isShowing' implicitly has an 'any' type... Remove this comment to see the full error message
 export const showActions = (isShowing) => ({
 	type: SHOW_ACTIONS_EVENTS,
 	payload: { isShowing },
 });
 
+// @ts-expect-error TS(7006): Parameter 'updatedColumns' implicitly has an 'any'... Remove this comment to see the full error message
 export const setEventColumns = (updatedColumns) => ({
 	type: SET_EVENT_COLUMNS,
 	payload: { updatedColumns },
 });
 
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const setEventSelected = (id) => ({
 	type: SET_EVENT_SELECTED,
 	payload: { id },
@@ -64,6 +68,7 @@ export const loadEventMetadataInProgress = () => ({
 	type: LOAD_EVENT_METADATA_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'metadata' implicitly has an 'any' type.
 export const loadEventMetadataSuccess = (metadata, extendedMetadata) => ({
 	type: LOAD_EVENT_METADATA_SUCCESS,
 	payload: { metadata, extendedMetadata },
@@ -79,6 +84,7 @@ export const loadEventSchedulingInProgress = () => ({
 	type: LOAD_BULK_UPDATE_EVENT_SCHEDULING_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'editedEvents' implicitly has an 'any' t... Remove this comment to see the full error message
 export const loadEventSchedulingSuccess = (editedEvents, seriesOptions) => ({
 	type: LOAD_BULK_UPDATE_EVENT_SCHEDULING_SUCCESS,
 	payload: { editedEvents, seriesOptions },

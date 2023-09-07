@@ -17,6 +17,7 @@ const initialState = {
 };
 
 // Reducer for theme details
+// @ts-expect-error TS(7006): Parameter 'action' implicitly has an 'any' type.
 const themeDetails = (state = initialState, action) => {
 	const { type, payload } = action;
 	switch (type) {

@@ -147,6 +147,7 @@ export const loadEventMetadataInProgress = () => ({
 	type: LOAD_EVENT_METADATA_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'metadata' implicitly has an 'any' type.
 export const loadEventMetadataSuccess = (metadata, extendedMetadata) => ({
 	type: LOAD_EVENT_METADATA_SUCCESS,
 	payload: {
@@ -159,6 +160,7 @@ export const loadEventMetadataFailure = () => ({
 	type: LOAD_EVENT_METADATA_FAILURE,
 });
 
+// @ts-expect-error TS(7006): Parameter 'metadata' implicitly has an 'any' type.
 export const setEventMetadata = (metadata) => ({
 	type: SET_EVENT_METADATA,
 	payload: {
@@ -166,6 +168,7 @@ export const setEventMetadata = (metadata) => ({
 	},
 });
 
+// @ts-expect-error TS(7006): Parameter 'metadata' implicitly has an 'any' type.
 export const setExtendedEventMetadata = (metadata) => ({
 	type: SET_EXTENDED_EVENT_METADATA,
 	payload: {
@@ -179,8 +182,11 @@ export const loadEventAssetsInProgress = () => ({
 });
 
 export const loadEventAssetsSuccess = (
+// @ts-expect-error TS(7006): Parameter 'assets' implicitly has an 'any' type.
 	assets,
+// @ts-expect-error TS(7006): Parameter 'transactionsReadOnly' implicitly has an... Remove this comment to see the full error message
 	transactionsReadOnly,
+// @ts-expect-error TS(7006): Parameter 'uploadAssetOptions' implicitly has an '... Remove this comment to see the full error message
 	uploadAssetOptions
 ) => ({
 	type: LOAD_EVENT_ASSETS_SUCCESS,
@@ -195,6 +201,7 @@ export const loadEventAssetsFailure = () => ({
 	type: LOAD_EVENT_ASSETS_FAILURE,
 });
 
+// @ts-expect-error TS(7006): Parameter 'attachments' implicitly has an 'any' ty... Remove this comment to see the full error message
 export const loadEventAssetAttachmentsSuccess = (attachments) => ({
 	type: LOAD_EVENT_ASSET_ATTACHMENTS_SUCCESS,
 	payload: {
@@ -206,6 +213,7 @@ export const loadEventAssetAttachmentsFailure = () => ({
 	type: LOAD_EVENT_ASSET_ATTACHMENTS_FAILURE,
 });
 
+// @ts-expect-error TS(7006): Parameter 'attachmentDetails' implicitly has an 'a... Remove this comment to see the full error message
 export const loadEventAssetAttachmentDetailsSuccess = (attachmentDetails) => ({
 	type: LOAD_EVENT_ASSET_ATTACHMENT_DETAILS_SUCCESS,
 	payload: {
@@ -217,6 +225,7 @@ export const loadEventAssetAttachmentDetailsFailure = () => ({
 	type: LOAD_EVENT_ASSET_ATTACHMENT_DETAILS_FAILURE,
 });
 
+// @ts-expect-error TS(7006): Parameter 'catalogs' implicitly has an 'any' type.
 export const loadEventAssetCatalogsSuccess = (catalogs) => ({
 	type: LOAD_EVENT_ASSET_CATALOGS_SUCCESS,
 	payload: {
@@ -228,6 +237,7 @@ export const loadEventAssetCatalogsFailure = () => ({
 	type: LOAD_EVENT_ASSET_CATALOGS_FAILURE,
 });
 
+// @ts-expect-error TS(7006): Parameter 'catalogDetails' implicitly has an 'any'... Remove this comment to see the full error message
 export const loadEventAssetCatalogDetailsSuccess = (catalogDetails) => ({
 	type: LOAD_EVENT_ASSET_CATALOG_DETAILS_SUCCESS,
 	payload: {
@@ -239,6 +249,7 @@ export const loadEventAssetCatalogDetailsFailure = () => ({
 	type: LOAD_EVENT_ASSET_CATALOG_DETAILS_FAILURE,
 });
 
+// @ts-expect-error TS(7006): Parameter 'media' implicitly has an 'any' type.
 export const loadEventAssetMediaSuccess = (media) => ({
 	type: LOAD_EVENT_ASSET_MEDIA_SUCCESS,
 	payload: {
@@ -250,6 +261,7 @@ export const loadEventAssetMediaFailure = () => ({
 	type: LOAD_EVENT_ASSET_MEDIA_FAILURE,
 });
 
+// @ts-expect-error TS(7006): Parameter 'mediaDetails' implicitly has an 'any' t... Remove this comment to see the full error message
 export const loadEventAssetMediaDetailsSuccess = (mediaDetails) => ({
 	type: LOAD_EVENT_ASSET_MEDIA_DETAILS_SUCCESS,
 	payload: {
@@ -261,6 +273,7 @@ export const loadEventAssetMediaDetailsFailure = () => ({
 	type: LOAD_EVENT_ASSET_MEDIA_DETAILS_FAILURE,
 });
 
+// @ts-expect-error TS(7006): Parameter 'publications' implicitly has an 'any' t... Remove this comment to see the full error message
 export const loadEventAssetPublicationsSuccess = (publications) => ({
 	type: LOAD_EVENT_ASSET_PUBLICATIONS_SUCCESS,
 	payload: {
@@ -273,6 +286,7 @@ export const loadEventAssetPublicationsFailure = () => ({
 });
 
 export const loadEventAssetPublicationDetailsSuccess = (
+// @ts-expect-error TS(7006): Parameter 'publicationDetails' implicitly has an '... Remove this comment to see the full error message
 	publicationDetails
 ) => ({
 	type: LOAD_EVENT_ASSET_PUBLICATION_DETAILS_SUCCESS,
@@ -290,6 +304,7 @@ export const loadEventPoliciesInProgress = () => ({
 	type: LOAD_EVENT_POLICIES_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'policies' implicitly has an 'any' type.
 export const loadEventPoliciesSuccess = (policies) => ({
 	type: LOAD_EVENT_POLICIES_SUCCESS,
 	payload: {
@@ -306,6 +321,7 @@ export const loadEventCommentsInProgress = () => ({
 	type: LOAD_EVENT_COMMENTS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'comments' implicitly has an 'any' type.
 export const loadEventCommentsSuccess = (comments, commentReasons) => ({
 	type: LOAD_EVENT_COMMENTS_SUCCESS,
 	payload: {
@@ -339,6 +355,7 @@ export const loadEventPublicationsInProgress = () => ({
 	type: LOAD_EVENT_PUBLICATIONS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'publications' implicitly has an 'any' t... Remove this comment to see the full error message
 export const loadEventPublicationsSuccess = (publications) => ({
 	type: LOAD_EVENT_PUBLICATIONS_SUCCESS,
 	payload: {
@@ -355,6 +372,7 @@ export const loadEventSchedulingInProgress = () => ({
 	type: LOAD_EVENT_SCHEDULING_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'source' implicitly has an 'any' type.
 export const loadEventSchedulingSuccess = (source) => ({
 	type: LOAD_EVENT_SCHEDULING_SUCCESS,
 	payload: {
@@ -370,6 +388,7 @@ export const checkConflictsInProgress = () => ({
 	type: CHECK_CONFLICTS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'conflicts' implicitly has an 'any' type... Remove this comment to see the full error message
 export const checkConflictsSuccess = (conflicts) => ({
 	type: CHECK_CONFLICTS_SUCCESS,
 	payload: {
@@ -384,6 +403,7 @@ export const saveEventSchedulingInProgress = () => ({
 	type: SAVE_EVENT_SCHEDULING_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'source' implicitly has an 'any' type.
 export const saveEventSchedulingSuccess = (source) => ({
 	type: SAVE_EVENT_SCHEDULING_SUCCESS,
 	payload: {
@@ -400,6 +420,7 @@ export const loadEventWorkflowsInProgress = () => ({
 	type: LOAD_EVENT_WORKFLOWS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'workflows' implicitly has an 'any' type... Remove this comment to see the full error message
 export const loadEventWorkflowsSuccess = (workflows) => ({
 	type: LOAD_EVENT_WORKFLOWS_SUCCESS,
 	payload: {
@@ -415,6 +436,7 @@ export const loadEventWorkflowDetailsInProgress = () => ({
 	type: LOAD_EVENT_WORKFLOW_DETAILS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'workflowDetails' implicitly has an 'any... Remove this comment to see the full error message
 export const loadEventWorkflowDetailsSuccess = (workflowDetails) => ({
 	type: LOAD_EVENT_WORKFLOW_DETAILS_SUCCESS,
 	payload: {
@@ -430,6 +452,7 @@ export const loadEventWorkflowOperationsInProgress = () => ({
 	type: LOAD_EVENT_WORKFLOW_OPERATIONS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'workflowOperations' implicitly has an '... Remove this comment to see the full error message
 export const loadEventWorkflowOperationsSuccess = (workflowOperations) => ({
 	type: LOAD_EVENT_WORKFLOW_OPERATIONS_SUCCESS,
 	payload: {
@@ -446,6 +469,7 @@ export const loadEventWorkflowOperationDetailsInProgress = () => ({
 });
 
 export const loadEventWorkflowOperationDetailsSuccess = (
+// @ts-expect-error TS(7006): Parameter 'workflowOperationDetails' implicitly ha... Remove this comment to see the full error message
 	workflowOperationDetails
 ) => ({
 	type: LOAD_EVENT_WORKFLOW_OPERATION_DETAILS_SUCCESS,
@@ -462,6 +486,7 @@ export const loadEventWorkflowErrorsInProgress = () => ({
 	type: LOAD_EVENT_WORKFLOW_ERRORS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'workflowErrors' implicitly has an 'any'... Remove this comment to see the full error message
 export const loadEventWorkflowErrorsSuccess = (workflowErrors) => ({
 	type: LOAD_EVENT_WORKFLOW_ERRORS_SUCCESS,
 	payload: {
@@ -477,6 +502,7 @@ export const loadEventWorkflowErrorDetailsInProgress = () => ({
 	type: LOAD_EVENT_WORKFLOW_ERROR_DETAILS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'workflowErrorDetails' implicitly has an... Remove this comment to see the full error message
 export const loadEventWorkflowErrorDetailsSuccess = (workflowErrorDetails) => ({
 	type: LOAD_EVENT_WORKFLOW_ERROR_DETAILS_SUCCESS,
 	payload: {
@@ -489,7 +515,9 @@ export const loadEventWorkflowErrorDetailsFailure = () => ({
 });
 
 export const setEventWorkflowDefinitions = (
+// @ts-expect-error TS(7006): Parameter 'workflows' implicitly has an 'any' type... Remove this comment to see the full error message
 	workflows,
+// @ts-expect-error TS(7006): Parameter 'workflowDefinitions' implicitly has an ... Remove this comment to see the full error message
 	workflowDefinitions
 ) => ({
 	type: SET_EVENT_WORKFLOW_DEFINITIONS,
@@ -499,6 +527,7 @@ export const setEventWorkflowDefinitions = (
 	},
 });
 
+// @ts-expect-error TS(7006): Parameter 'workflow' implicitly has an 'any' type.
 export const setEventWorkflow = (workflow) => ({
 	type: SET_EVENT_WORKFLOW,
 	payload: {
@@ -506,6 +535,7 @@ export const setEventWorkflow = (workflow) => ({
 	},
 });
 
+// @ts-expect-error TS(7006): Parameter 'workflow_configuration' implicitly has ... Remove this comment to see the full error message
 export const setEventWorkflowConfiguration = (workflow_configuration) => ({
 	type: SET_EVENT_WORKFLOW_CONFIGURATION,
 	payload: {
@@ -529,6 +559,7 @@ export const deleteEventWorkflowInProgress = () => ({
 	type: DELETE_EVENT_WORKFLOW_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'workflowsEntries' implicitly has an 'an... Remove this comment to see the full error message
 export const deleteEventWorkflowSuccess = (workflowsEntries) => ({
 	type: DELETE_EVENT_WORKFLOW_SUCCESS,
 	payload: {
@@ -545,6 +576,7 @@ export const loadEventStatisticsInProgress = () => ({
 	type: LOAD_EVENT_STATISTICS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'statistics' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const loadEventStatisticsSuccess = (statistics, hasError) => ({
 	type: LOAD_EVENT_STATISTICS_SUCCESS,
 	payload: {
@@ -553,6 +585,7 @@ export const loadEventStatisticsSuccess = (statistics, hasError) => ({
 	},
 });
 
+// @ts-expect-error TS(7006): Parameter 'hasError' implicitly has an 'any' type.
 export const loadEventStatisticsFailure = (hasError) => ({
 	type: LOAD_EVENT_STATISTICS_FAILURE,
 	payload: {
@@ -560,6 +593,7 @@ export const loadEventStatisticsFailure = (hasError) => ({
 	},
 });
 
+// @ts-expect-error TS(7006): Parameter 'statistics' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const updateEventStatisticsSuccess = (statistics) => ({
 	type: UPDATE_EVENT_STATISTICS_SUCCESS,
 	payload: {

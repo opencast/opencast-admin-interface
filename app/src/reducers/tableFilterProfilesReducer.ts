@@ -15,6 +15,7 @@ const initialState = {
 };
 
 // Reducer for filter profiles
+// @ts-expect-error TS(7006): Parameter 'action' implicitly has an 'any' type.
 const tableFilterProfiles = (state = initialState, action) => {
 	const { type, payload } = action;
 	switch (type) {
@@ -30,6 +31,7 @@ const tableFilterProfiles = (state = initialState, action) => {
 			return {
 				...state,
 				profiles: state.profiles.map((filterProfile) => {
+// @ts-expect-error TS(2339): Property 'name' does not exist on type 'never'.
 					if (filterProfile.name === updatedFilterProfile.name) {
 						return updatedFilterProfile;
 					}
@@ -42,6 +44,7 @@ const tableFilterProfiles = (state = initialState, action) => {
 			return {
 				...state,
 				profiles: state.profiles.filter(
+// @ts-expect-error TS(2339): Property 'name' does not exist on type 'never'.
 					(filterProfile) => filterProfile.name !== filterProfileToRemove.name
 				),
 			};

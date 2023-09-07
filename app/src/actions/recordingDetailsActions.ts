@@ -14,6 +14,7 @@ export const loadRecordingDetailsInProgress = () => ({
 	type: LOAD_RECORDING_DETAILS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'recordingDetails' implicitly has an 'an... Remove this comment to see the full error message
 export const loadRecordingDetailsSuccess = (recordingDetails) => ({
 	type: LOAD_RECORDING_DETAILS_SUCCESS,
 	payload: { recordingDetails },

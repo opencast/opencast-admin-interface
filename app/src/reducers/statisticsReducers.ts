@@ -17,6 +17,7 @@ const initialState = {
 };
 
 // Reducer for statistics
+// @ts-expect-error TS(7006): Parameter 'action' implicitly has an 'any' type.
 const statistics = (state = initialState, action) => {
 	const { type, payload } = action;
 	switch (type) {

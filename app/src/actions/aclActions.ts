@@ -16,6 +16,7 @@ export const loadAclsInProgress = () => ({
 	type: LOAD_ACLS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'acls' implicitly has an 'any' type.
 export const loadAclsSuccess = (acls) => ({
 	type: LOAD_ACLS_SUCCESS,
 	payload: { acls },
@@ -27,6 +28,7 @@ export const loadAclsFailure = () => ({
 
 // Actions affecting UI
 
+// @ts-expect-error TS(7006): Parameter 'updatedColumns' implicitly has an 'any'... Remove this comment to see the full error message
 export const setACLColumns = (updatedColumns) => ({
 	type: SET_ACL_COLUMNS,
 	payload: { updatedColumns },

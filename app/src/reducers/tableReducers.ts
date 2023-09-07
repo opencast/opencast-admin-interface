@@ -64,6 +64,7 @@ const initialState = {
 };
 
 // Reducer for table
+// @ts-expect-error TS(7006): Parameter 'action' implicitly has an 'any' type.
 const table = (state = initialState, action) => {
 	const { type, payload } = action;
 	switch (type) {
@@ -103,9 +104,12 @@ const table = (state = initialState, action) => {
 			return {
 				...state,
 				rows: state.rows.map((row) => {
+// @ts-expect-error TS(2339): Property 'id' does not exist on type 'never'.
 					if (row.id === id) {
 						return {
+// @ts-expect-error TS(2698): Spread types may only be created from object types... Remove this comment to see the full error message
 							...row,
+// @ts-expect-error TS(2339): Property 'selected' does not exist on type 'never'... Remove this comment to see the full error message
 							selected: !row.selected,
 						};
 					}
@@ -118,6 +122,7 @@ const table = (state = initialState, action) => {
 				...state,
 				rows: state.rows.map((row) => {
 					return {
+// @ts-expect-error TS(2698): Spread types may only be created from object types... Remove this comment to see the full error message
 						...row,
 						selected: true,
 					};
@@ -129,6 +134,7 @@ const table = (state = initialState, action) => {
 				...state,
 				rows: state.rows.map((row) => {
 					return {
+// @ts-expect-error TS(2698): Spread types may only be created from object types... Remove this comment to see the full error message
 						...row,
 						selected: false,
 					};
@@ -208,13 +214,16 @@ const table = (state = initialState, action) => {
 			return {
 				...state,
 				pages: state.pages.map((page) => {
+// @ts-expect-error TS(2339): Property 'number' does not exist on type 'never'.
 					if (page.number === pageNumber) {
 						return {
+// @ts-expect-error TS(2698): Spread types may only be created from object types... Remove this comment to see the full error message
 							...page,
 							active: true,
 						};
 					} else {
 						return {
+// @ts-expect-error TS(2698): Spread types may only be created from object types... Remove this comment to see the full error message
 							...page,
 							active: false,
 						};

@@ -13,6 +13,7 @@ export const loadUserDetailsInProgress = () => ({
 	type: LOAD_USER_DETAILS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'userDetails' implicitly has an 'any' ty... Remove this comment to see the full error message
 export const loadUserDetailsSuccess = (userDetails) => ({
 	type: LOAD_USER_DETAILS_SUCCESS,
 	payload: { userDetails },

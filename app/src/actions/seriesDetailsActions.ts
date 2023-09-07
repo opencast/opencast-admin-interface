@@ -49,7 +49,9 @@ export const loadSeriesDetailsInProgress = () => ({
 });
 
 export const loadSeriesDetailsMetadataSuccess = (
+// @ts-expect-error TS(7006): Parameter 'seriesMetadata' implicitly has an 'any'... Remove this comment to see the full error message
 	seriesMetadata,
+// @ts-expect-error TS(7006): Parameter 'extendedMetadata' implicitly has an 'an... Remove this comment to see the full error message
 	extendedMetadata
 ) => ({
 	type: LOAD_SERIES_DETAILS_METADATA_SUCCESS,
@@ -65,6 +67,7 @@ export const loadSeriesDetailsFailure = () => ({
 
 // Actions affecting fetching acls of a certain series from server
 
+// @ts-expect-error TS(7006): Parameter 'seriesAcls' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const loadSeriesDetailsAclsSuccess = (seriesAcls) => ({
 	type: LOAD_SERIES_DETAILS_ACLS_SUCCESS,
 	payload: { seriesAcls },
@@ -72,6 +75,7 @@ export const loadSeriesDetailsAclsSuccess = (seriesAcls) => ({
 
 // Actions affecting fetching feeds of a certain series from server
 
+// @ts-expect-error TS(7006): Parameter 'seriesFeeds' implicitly has an 'any' ty... Remove this comment to see the full error message
 export const loadSeriesDetailsFeedsSuccess = (seriesFeeds) => ({
 	type: LOAD_SERIES_DETAILS_FEEDS_SUCCESS,
 	payload: { seriesFeeds },
@@ -79,6 +83,7 @@ export const loadSeriesDetailsFeedsSuccess = (seriesFeeds) => ({
 
 // Actions affecting fetching theme of a certain series from server
 
+// @ts-expect-error TS(7006): Parameter 'seriesTheme' implicitly has an 'any' ty... Remove this comment to see the full error message
 export const loadSeriesDetailsThemeSuccess = (seriesTheme) => ({
 	type: LOAD_SERIES_DETAILS_THEME_SUCCESS,
 	payload: { seriesTheme },
@@ -88,6 +93,7 @@ export const loadSeriesDetailsThemeNamesInProgress = () => ({
 	type: LOAD_SERIES_DETAILS_THEME_NAMES_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'themeNames' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const loadSeriesDetailsThemeNamesSuccess = (themeNames) => ({
 	type: LOAD_SERIES_DETAILS_THEME_NAMES_SUCCESS,
 	payload: { themeNames },
@@ -97,16 +103,19 @@ export const loadSeriesDetailsThemeNamesFailure = () => ({
 	type: LOAD_SERIES_DETAILS_THEME_NAMES_FAILURE,
 });
 
+// @ts-expect-error TS(7006): Parameter 'seriesTheme' implicitly has an 'any' ty... Remove this comment to see the full error message
 export const setSeriesDetailsTheme = (seriesTheme) => ({
 	type: SET_SERIES_DETAILS_THEME,
 	payload: { seriesTheme },
 });
 
+// @ts-expect-error TS(7006): Parameter 'seriesMetadata' implicitly has an 'any'... Remove this comment to see the full error message
 export const setSeriesDetailsMetadata = (seriesMetadata) => ({
 	type: SET_SERIES_DETAILS_METADATA,
 	payload: { seriesMetadata },
 });
 
+// @ts-expect-error TS(7006): Parameter 'seriesMetadata' implicitly has an 'any'... Remove this comment to see the full error message
 export const setSeriesDetailsExtendedMetadata = (seriesMetadata) => ({
 	type: SET_SERIES_DETAILS_EXTENDED_METADATA,
 	payload: { seriesMetadata },
@@ -118,6 +127,7 @@ export const loadSeriesStatisticsInProgress = () => ({
 	type: LOAD_SERIES_STATISTICS_IN_PROGRESS,
 });
 
+// @ts-expect-error TS(7006): Parameter 'statistics' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const loadSeriesStatisticsSuccess = (statistics, hasError) => ({
 	type: LOAD_SERIES_STATISTICS_SUCCESS,
 	payload: {
@@ -126,6 +136,7 @@ export const loadSeriesStatisticsSuccess = (statistics, hasError) => ({
 	},
 });
 
+// @ts-expect-error TS(7006): Parameter 'hasError' implicitly has an 'any' type.
 export const loadSeriesStatisticsFailure = (hasError) => ({
 	type: LOAD_SERIES_STATISTICS_FAILURE,
 	payload: {
@@ -133,6 +144,7 @@ export const loadSeriesStatisticsFailure = (hasError) => ({
 	},
 });
 
+// @ts-expect-error TS(7006): Parameter 'statistics' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const updateSeriesStatisticsSuccess = (statistics) => ({
 	type: UPDATE_SERIES_STATISTICS_SUCCESS,
 	payload: {

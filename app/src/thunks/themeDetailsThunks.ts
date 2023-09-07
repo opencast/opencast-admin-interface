@@ -9,6 +9,7 @@ import { buildThemeBody } from "../utils/resourceUtils";
 import { addNotification } from "./notificationThunks";
 
 // fetch details of certain theme from server
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const fetchThemeDetails = (id) => async (dispatch) => {
 	try {
 		dispatch(loadThemeDetailsInProgress());
@@ -25,6 +26,7 @@ export const fetchThemeDetails = (id) => async (dispatch) => {
 };
 
 // fetch usage of a certain theme
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const fetchUsage = (id) => async (dispatch) => {
 	try {
 		dispatch(loadThemeDetailsInProgress());
@@ -41,6 +43,7 @@ export const fetchUsage = (id) => async (dispatch) => {
 };
 
 // update a certain theme
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const updateThemeDetails = (id, values) => async (dispatch) => {
 	let data = buildThemeBody(values);
 
@@ -53,10 +56,12 @@ export const updateThemeDetails = (id, values) => async (dispatch) => {
 		})
 		.then((response) => {
 			console.info(response);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "THEME_CREATED"));
 		})
 		.catch((response) => {
 			console.error(response);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "THEME_NOT_CREATED"));
 		});
 };

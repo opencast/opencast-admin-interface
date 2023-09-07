@@ -24,6 +24,7 @@ import {
 import { addNotification } from "./notificationThunks";
 
 // fetch series from server
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchSeries = () => async (dispatch, getState) => {
 	try {
 		dispatch(loadSeriesInProgress());
@@ -45,6 +46,7 @@ export const fetchSeries = () => async (dispatch, getState) => {
 };
 
 // fetch series metadata from server
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchSeriesMetadata = () => async (dispatch) => {
 	try {
 		dispatch(loadSeriesMetadataInProgress());
@@ -58,9 +60,11 @@ export const fetchSeriesMetadata = () => async (dispatch) => {
 
 		for (const metadataCatalog of response) {
 			if (metadataCatalog.flavor === mainCatalog) {
+// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 				metadata = transformMetadataCollection({ ...metadataCatalog });
 			} else {
 				extendedMetadata.push(
+// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 					transformMetadataCollection({ ...metadataCatalog })
 				);
 			}
@@ -74,6 +78,7 @@ export const fetchSeriesMetadata = () => async (dispatch) => {
 };
 
 // fetch series themes from server
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchSeriesThemes = () => async (dispatch) => {
 	try {
 		dispatch(loadSeriesThemesInProgress());
@@ -92,7 +97,9 @@ export const fetchSeriesThemes = () => async (dispatch) => {
 };
 
 // post new series to backend
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 export const postNewSeries = (values, metadataInfo, extendedMetadata) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch
 ) => {
 	let metadataFields, extendedMetadataFields, metadata, access;
@@ -131,6 +138,7 @@ export const postNewSeries = (values, metadataInfo, extendedMetadata) => async (
 	if (values.theme !== "") {
 		jsonData = {
 			...jsonData,
+// @ts-expect-error TS(2322): Type '{ theme: number; metadata: { flavor: any; ti... Remove this comment to see the full error message
 			theme: parseInt(values.theme),
 		};
 	}
@@ -147,15 +155,18 @@ export const postNewSeries = (values, metadataInfo, extendedMetadata) => async (
 		})
 		.then((response) => {
 			console.info(response);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "SERIES_ADDED"));
 		})
 		.catch((response) => {
 			console.error(response);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "SERIES_NOT_SAVED"));
 		});
 };
 
 // check for events of the series and if deleting the series if it has events is allowed
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const checkForEventsDeleteSeriesModal = (id) => async (dispatch) => {
 	const hasEventsRequest = await axios.get(
 		`/admin-ng/series/${id}/hasEvents.json`
@@ -176,6 +187,7 @@ export const checkForEventsDeleteSeriesModal = (id) => async (dispatch) => {
 };
 
 // delete series with provided id
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const deleteSeries = (id) => async (dispatch) => {
 	// API call for deleting a series
 	axios
@@ -183,16 +195,19 @@ export const deleteSeries = (id) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			// add success notification
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "SERIES_DELETED"));
 		})
 		.catch((res) => {
 			console.error(res);
 			// add error notification
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "SERIES_NOT_DELETED"));
 		});
 };
 
 // delete series with provided ids
+// @ts-expect-error TS(7006): Parameter 'series' implicitly has an 'any' type.
 export const deleteMultipleSeries = (series) => async (dispatch) => {
 	let data = [];
 
@@ -207,11 +222,13 @@ export const deleteMultipleSeries = (series) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			//add success notification
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "SERIES_DELETED"));
 		})
 		.catch((res) => {
 			console.error(res);
 			//add error notification
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "SERIES_NOT_DELETED"));
 		});
 };
@@ -231,6 +248,7 @@ export const fetchSeriesOptions = async () => {
 };
 
 // Check if a series has events
+// @ts-expect-error TS(7006): Parameter 'seriesId' implicitly has an 'any' type.
 export const hasEvents = async (seriesId) => {
 	let data = await axios.get(`/admin-ng/series/${seriesId}/hasEvents.json`);
 

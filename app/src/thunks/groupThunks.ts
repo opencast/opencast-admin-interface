@@ -8,6 +8,7 @@ import { buildGroupBody, getURLParams } from "../utils/resourceUtils";
 import { addNotification } from "./notificationThunks";
 
 // fetch groups from server
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchGroups = () => async (dispatch, getState) => {
 	try {
 		dispatch(loadGroupsInProgress());
@@ -28,6 +29,7 @@ export const fetchGroups = () => async (dispatch, getState) => {
 };
 
 // post new group to backend
+// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 export const postNewGroup = (values) => async (dispatch) => {
 	// get URL params used for post request
 	let data = buildGroupBody(values);
@@ -41,18 +43,22 @@ export const postNewGroup = (values) => async (dispatch) => {
 		})
 		.then((response) => {
 			console.info(response);
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "GROUP_ADDED"));
 		})
 		.catch((response) => {
 			console.error(response);
 			if (response.status === 409) {
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 				dispatch(addNotification("error", "GROUP_CONFLICT"));
 			} else {
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 				dispatch(addNotification("error", "GROUP_NOT_SAVED"));
 			}
 		});
 };
 
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const deleteGroup = (id) => async (dispatch) => {
 	// API call for deleting a group
 	axios
@@ -60,11 +66,13 @@ export const deleteGroup = (id) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			// add success notification
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "GROUP_DELETED"));
 		})
 		.catch((res) => {
 			console.error(res);
 			// add error notification
+// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "GROUP_NOT_DELETED"));
 		});
 };

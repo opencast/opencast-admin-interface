@@ -1,5 +1,6 @@
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import autoMergeLevel2 from "redux-persist/lib";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";

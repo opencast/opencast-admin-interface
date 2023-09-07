@@ -9,8 +9,11 @@ import {
 	ADMIN_NOTIFICATION_DURATION_WARNING,
 } from "../configs/generalConfig";
 
+// @ts-expect-error TS(7006): Parameter 'type' implicitly has an 'any' type.
 export const addNotification = (type, key, duration, parameter, context) => (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch,
+// @ts-expect-error TS(7006): Parameter 'getState' implicitly has an 'any' type.
 	getState
 ) => {
 	if (!duration) {

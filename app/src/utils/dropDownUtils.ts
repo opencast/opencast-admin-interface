@@ -2,8 +2,9 @@
  * this file contains functions, which are needed for the searchable drop-down selections
  */
 
-export const filterBySearch = (filterText, type, options, t) => {
+export const filterBySearch = (filterText: any, type: any, options: any, t: any) => {
 	if (type === "language") {
+// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
 		return options.filter((item) =>
 			t(item.name).toLowerCase().includes(filterText)
 		);
@@ -13,18 +14,22 @@ export const filterBySearch = (filterText, type, options, t) => {
 		type === "aclRole" ||
 		type === "newTheme"
 	) {
+// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
 		return options.filter((item) =>
 			item.name.toLowerCase().includes(filterText)
 		);
 	} else if (type === "workflow") {
+// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
 		return options.filter((item) =>
 			item.title.toLowerCase().includes(filterText)
 		);
 	} else if (type === "comment") {
+// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
 		return options.filter((item) =>
 			t(item[0]).toLowerCase().includes(filterText)
 		);
 	} else {
+// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
 		return options.filter((item) =>
 			item.value.toLowerCase().includes(filterText)
 		);
@@ -38,10 +43,15 @@ export const filterBySearch = (filterText, type, options, t) => {
  * as well as adding an empty option, if available
  */
 export const formatDropDownOptions = (
+// @ts-expect-error TS(7006): Parameter 'unformattedOptions' implicitly has an '... Remove this comment to see the full error message
 	unformattedOptions,
+// @ts-expect-error TS(7006): Parameter 'type' implicitly has an 'any' type.
 	type,
+// @ts-expect-error TS(7006): Parameter 'currentValue' implicitly has an 'any' t... Remove this comment to see the full error message
 	currentValue,
+// @ts-expect-error TS(7006): Parameter 'required' implicitly has an 'any' type.
 	required,
+// @ts-expect-error TS(7006): Parameter 't' implicitly has an 'any' type.
 	t
 ) => {
 	const formattedOptions = [];

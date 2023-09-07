@@ -35,31 +35,57 @@ import { availableHotkeys } from "../../configs/hotkeysConfig";
  * This component renders the main navigation that opens when the burger button is clicked
  */
 const MainNav = ({
+// @ts-expect-error TS(7031): Binding element 'isOpen' implicitly has an 'any' t... Remove this comment to see the full error message
 	isOpen,
+// @ts-expect-error TS(7031): Binding element 'toggleMenu' implicitly has an 'an... Remove this comment to see the full error message
 	toggleMenu,
+// @ts-expect-error TS(7031): Binding element 'loadingEvents' implicitly has an ... Remove this comment to see the full error message
 	loadingEvents,
+// @ts-expect-error TS(7031): Binding element 'loadingEventsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingEventsIntoTable,
+// @ts-expect-error TS(7031): Binding element 'loadingSeries' implicitly has an ... Remove this comment to see the full error message
 	loadingSeries,
+// @ts-expect-error TS(7031): Binding element 'loadingSeriesIntoTable' implicitl... Remove this comment to see the full error message
 	loadingSeriesIntoTable,
+// @ts-expect-error TS(7031): Binding element 'loadingStats' implicitly has an '... Remove this comment to see the full error message
 	loadingStats,
+// @ts-expect-error TS(7031): Binding element 'loadingRecordings' implicitly has... Remove this comment to see the full error message
 	loadingRecordings,
+// @ts-expect-error TS(7031): Binding element 'loadingRecordingsIntoTable' impli... Remove this comment to see the full error message
 	loadingRecordingsIntoTable,
+// @ts-expect-error TS(7031): Binding element 'loadingJobs' implicitly has an 'a... Remove this comment to see the full error message
 	loadingJobs,
+// @ts-expect-error TS(7031): Binding element 'loadingJobsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingJobsIntoTable,
+// @ts-expect-error TS(7031): Binding element 'loadingServers' implicitly has an... Remove this comment to see the full error message
 	loadingServers,
+// @ts-expect-error TS(7031): Binding element 'loadingServersIntoTable' implicit... Remove this comment to see the full error message
 	loadingServersIntoTable,
+// @ts-expect-error TS(7031): Binding element 'loadingServices' implicitly has a... Remove this comment to see the full error message
 	loadingServices,
+// @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
 	loadingServicesIntoTable,
+// @ts-expect-error TS(7031): Binding element 'loadingUsers' implicitly has an '... Remove this comment to see the full error message
 	loadingUsers,
+// @ts-expect-error TS(7031): Binding element 'loadingUsersIntoTable' implicitly... Remove this comment to see the full error message
 	loadingUsersIntoTable,
+// @ts-expect-error TS(7031): Binding element 'loadingGroups' implicitly has an ... Remove this comment to see the full error message
 	loadingGroups,
+// @ts-expect-error TS(7031): Binding element 'loadingGroupsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingGroupsIntoTable,
+// @ts-expect-error TS(7031): Binding element 'loadingAcls' implicitly has an 'a... Remove this comment to see the full error message
 	loadingAcls,
+// @ts-expect-error TS(7031): Binding element 'loadingAclsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingAclsIntoTable,
+// @ts-expect-error TS(7031): Binding element 'loadingThemes' implicitly has an ... Remove this comment to see the full error message
 	loadingThemes,
+// @ts-expect-error TS(7031): Binding element 'loadingThemesIntoTable' implicitl... Remove this comment to see the full error message
 	loadingThemesIntoTable,
+// @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
 	resetOffset,
+// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
+// @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
 	loadingFilters,
 }) => {
 	const { t } = useTranslation();
@@ -212,86 +238,117 @@ const MainNav = ({
 		MAIN_MENU: toggleMenu,
 	};
 	return (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<GlobalHotKeys
+// @ts-expect-error TS(2769): No overload matches this call.
 				keyMap={availableHotkeys.general}
 				handlers={hotKeyHandlers}
 			/>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="menu-top" onClick={() => toggleMenu()}>
 				{isOpen && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<nav id="roll-up-menu">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div id="nav-container">
 							{/* todo: more than one href? how? roles? (see MainNav admin-ui-frontend)*/}
 							{hasAccess("ROLE_UI_NAV_RECORDINGS_VIEW", user) &&
 								(hasAccess("ROLE_UI_EVENTS_VIEW", user) ? (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Link to="/events/events" onClick={() => loadEvents()}>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<i className="events" title={t("NAV.EVENTS.TITLE")} />
 									</Link>
 								) : (
 									hasAccess("ROLE_UI_SERIES_VIEW", user) && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<Link to="/events/series" onClick={() => loadSeries()}>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<i className="events" title={t("NAV.EVENTS.TITLE")} />
 										</Link>
 									)
 								))}
 							{hasAccess("ROLE_UI_NAV_CAPTURE_VIEW", user) &&
 								hasAccess("ROLE_UI_LOCATIONS_VIEW", user) && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Link
 										to="/recordings/recordings"
 										onClick={() => loadRecordings()}
 									>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<i
 											className="recordings"
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 											title={t("NAV.CAPTUREAGENTS.TITLE")}
 										/>
 									</Link>
 								)}
 							{hasAccess("ROLE_UI_NAV_SYSTEMS_VIEW", user) &&
 								(hasAccess("ROLE_UI_JOBS_VIEW", user) ? (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Link to="/systems/jobs" onClick={() => loadJobs()}>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<i className="systems" title={t("NAV.SYSTEMS.TITLE")} />
 									</Link>
 								) : hasAccess("ROLE_UI_SERVERS_VIEW", user) ? (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Link to="/systems/servers" onClick={() => loadServers()}>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<i className="systems" title={t("NAV.SYSTEMS.TITLE")} />
 									</Link>
 								) : (
 									hasAccess("ROLE_UI_SERVICES_VIEW", user) && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<Link to="/systems/services" onClick={() => loadServices()}>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<i className="systems" title={t("NAV.SYSTEMS.TITLE")} />
 										</Link>
 									)
 								))}
 							{hasAccess("ROLE_UI_NAV_ORGANIZATION_VIEW", user) &&
 								(hasAccess("ROLE_UI_USERS_VIEW", user) ? (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Link to="/users/users" onClick={() => loadUsers()}>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<i className="users" title={t("NAV.USERS.TITLE")} />
 									</Link>
 								) : hasAccess("ROLE_UI_GROUPS_VIEW", user) ? (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Link to="/users/groups" onClick={() => loadGroups()}>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<i className="users" title={t("NAV.USERS.TITLE")} />
 									</Link>
 								) : (
 									hasAccess("ROLE_UI_ACLS_VIEW", user) && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<Link to="/users/acls" onClick={() => loadAcls()}>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<i className="users" title={t("NAV.USERS.TITLE")} />
 										</Link>
 									)
 								))}
 							{hasAccess("ROLE_UI_NAV_CONFIGURATION_VIEW", user) &&
 								hasAccess("ROLE_UI_THEMES_VIEW", user) && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Link to="/configuration/themes" onClick={() => loadThemes()}>
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<i
 											className="configuration"
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 											title={t("NAV.CONFIGURATION.TITLE")}
 										/>
 									</Link>
 								)}
 							{hasAccess("ROLE_UI_NAV_STATISTICS_VIEW", user) &&
 								hasAccess("ROLE_UI_STATISTICS_ORGANIZATION_VIEW", user) && (
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Link to="/statistics/organization">
+// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<i
 											className="statistics"
+// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 											title={t("NAV.STATISTICS.TITLE")}
 										/>
 									</Link>
@@ -305,17 +362,20 @@ const MainNav = ({
 };
 
 // Getting state data out of redux store
+// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
 	user: getUserInformation(state),
 });
 
 // Mapping actions to dispatch
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
 	loadingEvents: () => dispatch(fetchEvents()),
 	loadingEventsIntoTable: () => dispatch(loadEventsIntoTable()),
 	loadingSeries: () => dispatch(fetchSeries()),
 	loadingSeriesIntoTable: () => dispatch(loadSeriesIntoTable()),
 	loadingStats: () => dispatch(fetchStats()),
+// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 	loadingRecordings: () => dispatch(fetchRecordings()),
 	loadingRecordingsIntoTable: () => dispatch(loadRecordingsIntoTable()),
 	loadingJobs: () => dispatch(fetchJobs()),
@@ -333,6 +393,7 @@ const mapDispatchToProps = (dispatch) => ({
 	loadingThemes: () => dispatch(fetchThemes()),
 	loadingThemesIntoTable: () => dispatch(loadThemesIntoTable()),
 	resetOffset: () => dispatch(setOffset(0)),
+// @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
 });
 

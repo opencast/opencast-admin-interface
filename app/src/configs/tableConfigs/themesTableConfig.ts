@@ -1,3 +1,4 @@
+// @ts-expect-error TS(6142): Module '../../components/configuration/partials/Th... Remove this comment to see the full error message
 import ThemesActionsCell from "../../components/configuration/partials/ThemesActionsCell";
 
 /**

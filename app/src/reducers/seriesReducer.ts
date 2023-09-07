@@ -43,6 +43,7 @@ const initialState = {
 };
 
 // Reducer for series
+// @ts-expect-error TS(7006): Parameter 'action' implicitly has an 'any' type.
 const series = (state = initialState, action) => {
 	const { type, payload } = action;
 	switch (type) {
@@ -88,6 +89,7 @@ const series = (state = initialState, action) => {
 			const { id } = payload;
 			return {
 				...state,
+// @ts-expect-error TS(2339): Property 'rows' does not exist on type '{ isLoadin... Remove this comment to see the full error message
 				rows: state.rows.map((row) => {
 					if (row.id === id) {
 						return {

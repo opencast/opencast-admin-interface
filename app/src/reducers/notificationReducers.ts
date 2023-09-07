@@ -40,6 +40,7 @@ const initialState = {
 };
 
 // Reducer for notifications
+// @ts-expect-error TS(7006): Parameter 'action' implicitly has an 'any' type.
 export const notifications = (state = initialState, action) => {
 	const { type, payload } = action;
 	switch (type) {
@@ -67,6 +68,7 @@ export const notifications = (state = initialState, action) => {
 			return {
 				...state,
 				notifications: state.notifications.filter(
+// @ts-expect-error TS(2339): Property 'id' does not exist on type 'never'.
 					(notification) => notification.id !== idToRemove
 				),
 			};
@@ -75,6 +77,7 @@ export const notifications = (state = initialState, action) => {
 			return {
 				...state,
 				notifications: state.notifications.filter(
+// @ts-expect-error TS(2339): Property 'context' does not exist on type 'never'.
 					(notification) => notification.context !== NOTIFICATION_CONTEXT
 				),
 			};
@@ -83,6 +86,7 @@ export const notifications = (state = initialState, action) => {
 			return {
 				...state,
 				notifications: state.notifications.filter(
+// @ts-expect-error TS(2339): Property 'context' does not exist on type 'never'.
 					(notification) => notification.context !== NOTIFICATION_CONTEXT_ACCESS
 				),
 			};
@@ -92,8 +96,10 @@ export const notifications = (state = initialState, action) => {
 			return {
 				...state,
 				notifications: state.notifications.map((notification) => {
+// @ts-expect-error TS(2339): Property 'id' does not exist on type 'never'.
 					if (notification.id === idToUpdate) {
 						return {
+// @ts-expect-error TS(2698): Spread types may only be created from object types... Remove this comment to see the full error message
 							...notification,
 							hidden: isHidden,
 						};
