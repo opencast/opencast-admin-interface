@@ -1,5 +1,6 @@
 import {
 	createNotification,
+  createNotificationWithId,
 	removeNotification,
 } from "../actions/notificationActions";
 import { getLastAddedNotification } from "../selectors/notificationSelector";
@@ -9,7 +10,7 @@ import {
 	ADMIN_NOTIFICATION_DURATION_WARNING,
 } from "../configs/generalConfig";
 
-export const addNotification = (type, key, duration, parameter, context) => (
+export const addNotification = (type, key, duration, parameter, context, id) => (
 	dispatch,
 	getState
 ) => {
@@ -49,7 +50,12 @@ export const addNotification = (type, key, duration, parameter, context) => (
 		hidden: false,
 		context: context,
 	};
-	dispatch(createNotification(notification));
+  var dispatchedNotification;
+  if (!id) {
+	  dispatchedNotification = dispatch(createNotification(notification));
+  } else {
+    dispatchedNotification = dispatch(createNotificationWithId(notification, id));
+  }
 
 	// Get newly created notification and its id
 	let latestNotification = getLastAddedNotification(getState());
@@ -65,4 +71,13 @@ export const addNotification = (type, key, duration, parameter, context) => (
 			latestNotification.duration
 		);
 	}
+
+  return dispatchedNotification.payload.id;
 };
+
+export const addNotificationWithId = (id, type, key, duration, parameter, context) => (
+	dispatch,
+	getState
+) => {
+    dispatch(addNotification(type, key, duration, parameter, context, id))
+}

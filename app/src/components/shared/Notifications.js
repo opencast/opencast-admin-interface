@@ -34,7 +34,7 @@ const Notifications = ({
 					onClick={() => closeNotification(notification.id)}
 					className="button-like-anchor fa fa-times close"
 				/>
-				<p>{t(notification.message)}</p>
+				<p>{t(notification.message, notification.parameter)}</p>
 			</div>
 		</li>
 	);

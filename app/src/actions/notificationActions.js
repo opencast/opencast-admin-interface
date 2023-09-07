@@ -22,6 +22,11 @@ export const createNotification = (notification) => ({
 	payload: { notification, id: nextNotificationId++ },
 });
 
+export const createNotificationWithId = (notification, id) => ({
+	type: CREATE_NOTIFICATION,
+	payload: { notification, id: id },
+});
+
 export const removeNotification = (id) => ({
 	type: REMOVE_NOTIFICATION,
 	payload: { id },

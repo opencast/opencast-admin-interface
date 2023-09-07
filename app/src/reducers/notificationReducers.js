@@ -45,6 +45,21 @@ export const notifications = (state = initialState, action) => {
 	switch (type) {
 		case CREATE_NOTIFICATION: {
 			const { notification, id } = payload;
+      if (state.notifications.filter(e => e.id === id).length > 0) {
+        console.log("Notification with id: " + id + " already exists.")
+        return {
+          ...state,
+          notifications: state.notifications.map((oldNotification) => {
+            if (oldNotification.id === id) {
+              return {
+                id: id,
+                ...notification,
+              };
+            }
+            return oldNotification;
+          }),
+        };
+      }
 			return {
 				...state,
 				notifications: [
