@@ -1,5 +1,4 @@
 import React from "react";
-// @ts-expect-error TS(6142): Module '../../../shared/wizard/WizardNavigationBut... Remove this comment to see the full error message
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { useTranslation } from "react-i18next";
 import { Field } from "formik";
@@ -15,24 +14,16 @@ const GroupMetadataPage = ({
 	const { t } = useTranslation();
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/* Fields for name and description */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="modal-body">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="form-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="row">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<label>
 								{t("USERS.GROUPS.DETAILS.FORM.NAME")}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<i className="required">*</i>
 							</label>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<Field
 								tabIndex="1"
 								type="text"
@@ -41,11 +32,8 @@ const GroupMetadataPage = ({
 								name="name"
 							/>
 						</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="row">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<label>{t("USERS.GROUPS.DETAILS.FORM.DESCRIPTION")}</label>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<Field
 								as="textarea"
 								tabIndex="2"
@@ -59,7 +47,6 @@ const GroupMetadataPage = ({
 
 			{!isEdit && (
 				//{/* Button for navigation to next page */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<WizardNavigationButtons isFirst formik={formik} nextPage={nextPage} />
 			)}
 		</>

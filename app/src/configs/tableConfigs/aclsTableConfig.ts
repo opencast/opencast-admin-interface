@@ -1,4 +1,3 @@
-// @ts-expect-error TS(6142): Module '../../components/users/partials/AclsAction... Remove this comment to see the full error message
 import AclsActionsCell from "../../components/users/partials/AclsActionsCell";
 /**
  * Config that contains the columns and further information regarding acls. These are the information that never or hardly changes.

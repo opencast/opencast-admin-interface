@@ -305,7 +305,6 @@ const formatUploadAssetOptions = (optionsData) => {
 	let optionsResult = {};
 	let uploadOptions = [];
 
-// @ts-expect-error TS(2550): Property 'entries' does not exist on type 'ObjectC... Remove this comment to see the full error message
 	for (const [key, value] of Object.entries(optionsData)) {
 		if (key.charAt(0) !== "$") {
 			if (
@@ -313,7 +312,7 @@ const formatUploadAssetOptions = (optionsData) => {
 				key.indexOf(optionPrefixSource) >= 0
 			) {
 				// parse upload asset options
-				let options = JSON.parse(value);
+				let options = JSON.parse(value as any);
 				if (!options["title"]) {
 					options["title"] = key;
 				}

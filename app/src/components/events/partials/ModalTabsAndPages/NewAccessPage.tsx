@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-// @ts-expect-error TS(6142): Module '../../../shared/Notifications' was resolve... Remove this comment to see the full error message
 import Notifications from "../../../shared/Notifications";
 import {
 	checkAcls,
@@ -12,11 +11,9 @@ import {
 } from "../../../../thunks/aclThunks";
 import { Field, FieldArray } from "formik";
 import { connect } from "react-redux";
-// @ts-expect-error TS(6142): Module '../../../shared/wizard/RenderMultiField' w... Remove this comment to see the full error message
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
-// @ts-expect-error TS(6142): Module '../../../shared/DropDown' was resolved to ... Remove this comment to see the full error message
 import DropDown from "../../../shared/DropDown";
 import { filterRoles, getAclTemplateText } from "../../../../utils/aclUtils";
 
@@ -74,31 +71,20 @@ const NewAccessPage = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="modal-body">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="full-col">
 						{/* Notifications */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<Notifications context="not_corner" />
 						{!loading && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<ul>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<li>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<div className="obj list-obj">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<header className="no-expand">
 											{t("EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.TITLE")}
 										</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<p>
 												{t(
 													"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION"
@@ -106,31 +92,21 @@ const NewAccessPage = ({
 											</p>
 
 											{/* Template selection*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<div className="obj tbl-list">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<table className="main-tbl">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<th>
 																{t("EVENTS.SERIES.NEW.ACCESS.TEMPLATES.TITLE")}
 															</th>
 														</tr>
 													</thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<tbody>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<tr>
 															{aclTemplates.length > 0 ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<td className="editable">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<div className="obj-container padded">
 																		{/* dropdown for selecting a policy template */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<DropDown
 																			value={formik.values.aclTemplate}
 																			text={getAclTemplateText(
@@ -154,9 +130,7 @@ const NewAccessPage = ({
 																</td>
 															) : (
 																//Show if no option is available
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<div className="obj-container padded">
 																		{t(
 																			"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.EMPTY"
@@ -171,51 +145,39 @@ const NewAccessPage = ({
 										</div>
 
 										{/* Area for editing acls */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<div className="obj tbl-list">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<header>
 													{t(
 														"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.DETAILS"
 													)}
 												</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<table className="main-tbl">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<th>
 																	{t(
 																		"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.ROLE"
 																	)}
 																</th>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<th className="fit">
 																	{t(
 																		"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.READ"
 																	)}
 																</th>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<th className="fit">
 																	{t(
 																		"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.WRITE"
 																	)}
 																</th>
 																{aclActions.length > 0 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<th className="fit">
 																		{t(
 																			"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.ADDITIONAL_ACTIONS"
 																		)}
 																	</th>
 																)}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<th className="fit">
 																	{t(
 																		"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.ACTION"
@@ -223,25 +185,19 @@ const NewAccessPage = ({
 																</th>
 															</tr>
 														</thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<tbody>
 															{/*Add fieldArray/row for each policy in acls field*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<FieldArray name="acls">
 																{({ insert, remove, push }) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<>
 																		{roles.length > 0 ? (
 																			formik.values.acls.length > 0 &&
 																			formik.values.acls.map(
 // @ts-expect-error TS(7006): Parameter 'policy' implicitly has an 'any' type.
 																				(policy, index) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																					<tr key={index}>
 																						{/* dropdown for acl (/policy) role */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																						<td className="editable">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																							<DropDown
 																								value={policy.role}
 																								text={policy.role}
@@ -271,17 +227,13 @@ const NewAccessPage = ({
 																							/>
 																						</td>
 																						{/* Checkboxes for  policy.read and policy.write*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																						<td className="fit text-center">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																							<Field
 																								type="checkbox"
 																								name={`acls.${index}.read`}
 																							/>
 																						</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																						<td className="fit text-center">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																							<Field
 																								type="checkbox"
 																								name={`acls.${index}.write`}
@@ -289,11 +241,8 @@ const NewAccessPage = ({
 																						</td>
 																						{/* Show only if policy has actions*/}
 																						{aclActions.length > 0 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																							<td className="fit editable">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																								<div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																									<Field
 																										fieldInfo={{
 																											id: `acls.${index}.actions`,
@@ -308,9 +257,7 @@ const NewAccessPage = ({
 																							</td>
 																						)}
 																						{/*Remove policy*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																						<td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																							<button
 																								onClick={() => remove(index)}
 																								className="button-like-anchor remove"
@@ -320,9 +267,7 @@ const NewAccessPage = ({
 																				)
 																			)
 																		) : (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																			<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																				<td>
 																					{t(
 																						"EVENTS.SERIES.NEW.ACCESS.ROLES.EMPTY"
@@ -333,12 +278,9 @@ const NewAccessPage = ({
 
 																		{/*Todo: show only if user has role ROLE_UI_SERIES_DETAILS_ACL_EDIT */}
 																		{hasAccess(editAccessRole, user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																			<tr>
 																				{/*Add additional policy row*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-																				<td colSpan="5">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
+																				<td colSpan={5}>
 																					<button
 																						onClick={() => {
 																							push({
@@ -375,9 +317,7 @@ const NewAccessPage = ({
 				</div>
 			</div>
 			{/* Button for navigation to next page and previous page */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<footer>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					type="submit"
 					className={cn("submit", {
@@ -395,7 +335,6 @@ const NewAccessPage = ({
 				>
 					{t("WIZARD.NEXT_STEP")}
 				</button>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					className="cancel"
 					onClick={() => previousPage(formik.values, false)}
@@ -406,7 +345,6 @@ const NewAccessPage = ({
 				</button>
 			</footer>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="btm-spacer" />
 		</>
 	);

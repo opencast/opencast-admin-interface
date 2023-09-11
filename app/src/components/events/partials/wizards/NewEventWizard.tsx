@@ -1,24 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
-// @ts-expect-error TS(6142): Module './NewEventSummary' was resolved to '/home/... Remove this comment to see the full error message
 import NewEventSummary from "./NewEventSummary";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { getCurrentLanguageInformation } from "../../../../utils/utils";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/NewAssetUploadPage' w... Remove this comment to see the full error message
 import NewAssetUploadPage from "../ModalTabsAndPages/NewAssetUploadPage";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/NewMetadataExtendedPa... Remove this comment to see the full error message
 import NewMetadataExtendedPage from "../ModalTabsAndPages/NewMetadataExtendedPage";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/NewMetadataPage' was ... Remove this comment to see the full error message
 import NewMetadataPage from "../ModalTabsAndPages/NewMetadataPage";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/NewAccessPage' was re... Remove this comment to see the full error message
 import NewAccessPage from "../ModalTabsAndPages/NewAccessPage";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/NewProcessingPage' wa... Remove this comment to see the full error message
 import NewProcessingPage from "../ModalTabsAndPages/NewProcessingPage";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/NewSourcePage' was re... Remove this comment to see the full error message
 import NewSourcePage from "../ModalTabsAndPages/NewSourcePage";
 import { NewEventSchema } from "../../../../utils/validate";
-// @ts-expect-error TS(6142): Module '../../../shared/wizard/WizardStepperEvent'... Remove this comment to see the full error message
 import WizardStepperEvent from "../../../shared/wizard/WizardStepperEvent";
 import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
@@ -138,16 +130,13 @@ const NewEventWizard = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/* Initialize overall form */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<MuiPickersUtilsProvider
 				utils={DateFnsUtils}
 // @ts-expect-error TS(2532): Object is possibly 'undefined'.
 				locale={currentLanguage.dateLocale}
 			>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<Formik
 					initialValues={snapshot}
 					validationSchema={currentValidationSchema}
@@ -162,10 +151,8 @@ const NewEventWizard = ({
 						}, [page]);
 
 						return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<>
 								{/* Stepper that shows each step of wizard as header */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<WizardStepperEvent
 									steps={steps}
 									page={page}
@@ -174,10 +161,8 @@ const NewEventWizard = ({
 									setCompleted={setPageCompleted}
 									formik={formik}
 								/>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div>
 									{page === 0 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<NewMetadataPage
 											nextPage={nextPage}
 											formik={formik}
@@ -186,7 +171,6 @@ const NewEventWizard = ({
 										/>
 									)}
 									{page === 1 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<NewMetadataExtendedPage
 											previousPage={previousPage}
 											nextPage={nextPage}
@@ -195,7 +179,6 @@ const NewEventWizard = ({
 										/>
 									)}
 									{page === 2 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<NewSourcePage
 											previousPage={previousPage}
 											nextPage={nextPage}
@@ -203,7 +186,6 @@ const NewEventWizard = ({
 										/>
 									)}
 									{page === 3 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<NewAssetUploadPage
 											previousPage={previousPage}
 											nextPage={nextPage}
@@ -211,7 +193,6 @@ const NewEventWizard = ({
 										/>
 									)}
 									{page === 4 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<NewProcessingPage
 											previousPage={previousPage}
 											nextPage={nextPage}
@@ -221,7 +202,6 @@ const NewEventWizard = ({
 										/>
 									)}
 									{page === 5 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<NewAccessPage
 											previousPage={previousPage}
 											nextPage={nextPage}
@@ -230,7 +210,6 @@ const NewEventWizard = ({
 										/>
 									)}
 									{page === 6 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<NewEventSummary
 											previousPage={previousPage}
 											formik={formik}
@@ -308,7 +287,6 @@ const getInitialValues = (
 	}
 
 	// Add all initial form values known upfront listed in newEventsConfig
-// @ts-expect-error TS(2550): Property 'entries' does not exist on type 'ObjectC... Remove this comment to see the full error message
 	for (const [key, value] of Object.entries(initialFormValuesNewEvents)) {
 // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 		initialValues[key] = value;

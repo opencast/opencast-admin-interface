@@ -42,7 +42,6 @@ const EventsPresentersCell = ({
 		// Repeat for each presenter
 // @ts-expect-error TS(7006): Parameter 'presenter' implicitly has an 'any' type... Remove this comment to see the full error message
 		row.presenters.map((presenter, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<button
 				className="button-like-anchor metadata-entry"
 				key={key}

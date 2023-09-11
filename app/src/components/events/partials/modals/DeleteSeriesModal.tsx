@@ -82,7 +82,7 @@ const DeleteSeriesModal = ({ close, selectedRows, deleteMultipleSeries }) => {
 			setAllChecked(false);
 		}
 // @ts-expect-error TS(7006): Parameter 'series' implicitly has an 'any' type.
-		if (changedSeries.every((series) => series: any.selected === true)) {
+		if (changedSeries.every((series) => series.selected === true)) {
 			setAllChecked(true);
 		}
 	};
@@ -110,62 +110,40 @@ const DeleteSeriesModal = ({ close, selectedRows, deleteMultipleSeries }) => {
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-animation modal-overlay" />
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<section
 				className="modal active modal-open"
 				id="delete-series-status-modal"
 				style={{ display: "block" }}
 			>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button onClick={() => close()} className="button-like-anchor fa fa-times close-modal" />
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<h2>{t("BULK_ACTIONS.DELETE.SERIES.CAPTION")}</h2>
 				</header>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="modal-body">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="modal-alert danger obj">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<p>{t("BULK_ACTIONS.DELETE_SERIES_WARNING_LINE1")}</p>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<p>{t("BULK_ACTIONS.DELETE_SERIES_WARNING_LINE2")}</p>
 						</div>
 
 						{/* Only show if series not allowed to be deleted */}
 						{!isAllowed() && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="alert sticky warning">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<p>{t("BULK_ACTIONS.DELETE.SERIES.CANNOT_DELETE")}</p>
 							</div>
 						)}
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="full-col">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="obj">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<header>{t("EVENTS.SERIES.TABLE.CAPTION")}</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<table className="main-tbl">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<th className="small">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<input
 														type="checkbox"
 														checked={allChecked}
@@ -173,20 +151,15 @@ const DeleteSeriesModal = ({ close, selectedRows, deleteMultipleSeries }) => {
 														className="select-all-cbox"
 													/>
 												</th>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<th>{t("EVENTS.SERIES.TABLE.TITLE")}</th>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<th>{t("EVENTS.SERIES.TABLE.ORGANIZERS")}</th>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<th>{t("EVENTS.SERIES.TABLE.HAS_EVENTS")}</th>
 											</tr>
 										</thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tbody>
 											{/* Repeat for each marked series */}
-// @ts-expect-error TS(7006): Parameter 'series' implicitly has an 'any' type.
+{/* @ts-expect-error TS(7006): Parameter 'series' implicitly has an 'any' type. */}
 											{selectedSeries.map((series, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<tr
 													key={key}
 													className={cn({
@@ -196,9 +169,7 @@ const DeleteSeriesModal = ({ close, selectedRows, deleteMultipleSeries }) => {
 															series.hasEvents,
 													})}
 												>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<input
 															type="checkbox"
 															name="selection"
@@ -207,23 +178,18 @@ const DeleteSeriesModal = ({ close, selectedRows, deleteMultipleSeries }) => {
 															className="child-cbox"
 														/>
 													</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<td>{series.title}</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<td>
 														{/*Repeat for each creator*/}
-// @ts-expect-error TS(7006): Parameter 'organizer' implicitly has an 'any' type... Remove this comment to see the full error message
+{/* @ts-expect-error TS(7006): Parameter 'organizer' implicitly has an 'any' type */}
 														{series.organizers.map((organizer, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<span className="metadata-entry" key={key}>
 																{organizer}
 															</span>
 														))}
 													</td>
 													{/* Only show check if row has events, else empty cell*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														{series.hasEvents && <i className="fa fa-check" />}
 													</td>
 												</tr>
@@ -236,9 +202,7 @@ const DeleteSeriesModal = ({ close, selectedRows, deleteMultipleSeries }) => {
 					</div>
 				</div>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<footer>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button
 						onClick={() => deleteSelectedSeries()}
 						disabled={!checkValidity()}
@@ -249,7 +213,6 @@ const DeleteSeriesModal = ({ close, selectedRows, deleteMultipleSeries }) => {
 					>
 						{t("BULK_ACTIONS.DELETE.SERIES.BUTTON")}
 					</button>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button className="cancel" onClick={() => close()}>
 						{t("CANCEL")}
 					</button>

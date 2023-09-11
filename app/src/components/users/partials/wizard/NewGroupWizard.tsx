@@ -2,15 +2,10 @@ import React, { useEffect } from "react";
 import { Formik } from "formik";
 import { connect } from "react-redux";
 import { initialFormValuesNewGroup } from "../../../../configs/modalConfig";
-// @ts-expect-error TS(6142): Module '../../../shared/wizard/WizardStepper' was ... Remove this comment to see the full error message
 import WizardStepper from "../../../shared/wizard/WizardStepper";
-// @ts-expect-error TS(6142): Module './GroupMetadataPage' was resolved to '/hom... Remove this comment to see the full error message
 import GroupMetadataPage from "./GroupMetadataPage";
-// @ts-expect-error TS(6142): Module './GroupRolesPage' was resolved to '/home/a... Remove this comment to see the full error message
 import GroupRolesPage from "./GroupRolesPage";
-// @ts-expect-error TS(6142): Module './GroupUsersPage' was resolved to '/home/a... Remove this comment to see the full error message
 import GroupUsersPage from "./GroupUsersPage";
-// @ts-expect-error TS(6142): Module './NewGroupSummaryPage' was resolved to '/h... Remove this comment to see the full error message
 import NewGroupSummaryPage from "./NewGroupSummaryPage";
 import { postNewGroup } from "../../../../thunks/groupThunks";
 import { usePageFunctions } from "../../../../hooks/wizardHooks";
@@ -66,10 +61,8 @@ const NewGroupWizard = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/* Initialize overall form */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<Formik
 				initialValues={snapshot}
 				validationSchema={currentValidationSchema}
@@ -84,10 +77,8 @@ const NewGroupWizard = ({
 					}, [page]);
 
 					return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<>
 							{/* Stepper that shows each step of wizard as header */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<WizardStepper
 								steps={steps}
 								page={page}
@@ -96,14 +87,11 @@ const NewGroupWizard = ({
 								setCompleted={setPageCompleted}
 								formik={formik}
 							/>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div>
 								{page === 0 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<GroupMetadataPage formik={formik} nextPage={nextPage} />
 								)}
 								{page === 1 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<GroupRolesPage
 										formik={formik}
 										nextPage={nextPage}
@@ -111,7 +99,6 @@ const NewGroupWizard = ({
 									/>
 								)}
 								{page === 2 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<GroupUsersPage
 										formik={formik}
 										nextPage={nextPage}
@@ -119,7 +106,6 @@ const NewGroupWizard = ({
 									/>
 								)}
 								{page === 3 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<NewGroupSummaryPage
 										formik={formik}
 										previousPage={previousPage}

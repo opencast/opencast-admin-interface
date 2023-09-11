@@ -2,13 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
 import { initialFormValuesEditScheduledEvents } from "../../../../configs/modalConfig";
-// @ts-expect-error TS(6142): Module '../../../shared/wizard/WizardStepper' was ... Remove this comment to see the full error message
 import WizardStepper from "../../../shared/wizard/WizardStepper";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/EditScheduledEventsGe... Remove this comment to see the full error message
 import EditScheduledEventsGeneralPage from "../ModalTabsAndPages/EditScheduledEventsGeneralPage";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/EditScheduledEventsEd... Remove this comment to see the full error message
 import EditScheduledEventsEditPage from "../ModalTabsAndPages/EditScheduledEventsEditPage";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/EditScheduledEventsSu... Remove this comment to see the full error message
 import EditScheduledEventsSummaryPage from "../ModalTabsAndPages/EditScheduledEventsSummaryPage";
 import {
 	checkForSchedulingConflicts,
@@ -120,22 +116,15 @@ const EditScheduledEventsModal = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-animation modal-overlay" />
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<section className="modal wizard modal-animation">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button className="button-like-anchor fa fa-times close-modal" onClick={() => close()} />
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<h2>{t("BULK_ACTIONS.EDIT_EVENTS.CAPTION")}</h2>
 				</header>
 
 				{/* Initialize overall form */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<Formik
 					initialValues={snapshot}
 					validate={(values) => validateFormik(values)}
@@ -150,10 +139,8 @@ const EditScheduledEventsModal = ({
 						}, [page]);
 
 						return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<>
 								{/* Stepper that shows each step of wizard as header */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<WizardStepper
 									steps={steps}
 									page={page}
@@ -162,17 +149,14 @@ const EditScheduledEventsModal = ({
 									setCompleted={setPageCompleted}
 									formik={formik}
 								/>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div>
 									{page === 0 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<EditScheduledEventsGeneralPage
 											formik={formik}
 											nextPage={nextPage}
 										/>
 									)}
 									{page === 1 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<EditScheduledEventsEditPage
 											formik={formik}
 											nextPage={nextPage}
@@ -183,7 +167,6 @@ const EditScheduledEventsModal = ({
 										/>
 									)}
 									{page === 2 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<EditScheduledEventsSummaryPage
 											formik={formik}
 											previousPage={previousPage}

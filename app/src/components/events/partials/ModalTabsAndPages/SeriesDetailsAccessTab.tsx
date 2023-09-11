@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-// @ts-expect-error TS(6142): Module '../../../shared/modals/ResourceDetailsAcce... Remove this comment to see the full error message
 import ResourceDetailsAccessPolicyTab from "../../../shared/modals/ResourceDetailsAccessPolicyTab";
 import { getSeriesDetailsAcl } from "../../../../selectors/seriesDetailsSelectors";
 import {
@@ -36,7 +35,6 @@ const SeriesDetailsAccessTab = ({
 	}, []);
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<ResourceDetailsAccessPolicyTab
 			resourceId={seriesId}
 			header={header}

@@ -5,12 +5,10 @@ import { Formik } from "formik";
 import _ from "lodash";
 import cn from "classnames";
 import { connect } from "react-redux";
-// @ts-expect-error TS(6142): Module '../../../shared/Notifications' was resolve... Remove this comment to see the full error message
 import Notifications from "../../../shared/Notifications";
 import { updateSeriesTheme } from "../../../../thunks/seriesDetailsThunks";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
-// @ts-expect-error TS(6142): Module '../../../shared/DropDown' was resolved to ... Remove this comment to see the full error message
 import DropDown from "../../../shared/DropDown";
 
 /**
@@ -46,41 +44,26 @@ const SeriesDetailsThemeTab = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<Formik
 			enableReinitialize
 			initialValues={{ theme: theme }}
 			onSubmit={(values) => handleSubmit(values)}
 		>
 			{(formik) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="modal-body">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<Notifications context="not-corner" />
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="full-col">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div className="obj quick-actions">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<header>{t("CONFIGURATION.NAVIGATION.THEMES")}</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<div className="obj-container padded">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<ul>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<li>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<p>{t("EVENTS.SERIES.NEW.THEME.DESCRIPTION.TEXT")}</p>
 												{themeNames.length > 0 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<p>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<div className="editable">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<DropDown
 																value={formik.values.theme}
 																text={formik.values.theme}
@@ -108,12 +91,9 @@ const SeriesDetailsThemeTab = ({
 										</ul>
 									</div>
 									{formik.dirty && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<>
 											{/* Render buttons for updating theme */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<footer style={{ padding: "15px" }}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<button
 													type="submit"
 													onClick={() => formik.handleSubmit()}
@@ -125,7 +105,6 @@ const SeriesDetailsThemeTab = ({
 												>
 													{t("SAVE")}
 												</button>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<button
 // @ts-expect-error TS(2322): Type 'string' is not assignable to type '{ theme: ... Remove this comment to see the full error message
 													onClick={() => formik.resetForm({ values: "" })}
@@ -135,7 +114,6 @@ const SeriesDetailsThemeTab = ({
 												</button>
 											</footer>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<div className="btm-spacer" />
 										</>
 									)}

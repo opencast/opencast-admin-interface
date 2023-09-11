@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-// @ts-expect-error TS(6142): Module '../../shared/ConfirmModal' was resolved to... Remove this comment to see the full error message
 import ConfirmModal from "../../shared/ConfirmModal";
 import { deleteEvent } from "../../../thunks/eventThunks";
 import { connect } from "react-redux";
-// @ts-expect-error TS(6142): Module './modals/EventDetailsModal' was resolved t... Remove this comment to see the full error message
 import EventDetailsModal from "./modals/EventDetailsModal";
-// @ts-expect-error TS(6142): Module './modals/EmbeddingCodeModal' was resolved ... Remove this comment to see the full error message
 import EmbeddingCodeModal from "./modals/EmbeddingCodeModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
-// @ts-expect-error TS(6142): Module './modals/SeriesDetailsModal' was resolved ... Remove this comment to see the full error message
 import SeriesDetailsModal from "./modals/SeriesDetailsModal";
 import {
 	fetchNamesOfPossibleThemes,
@@ -113,10 +109,8 @@ const EventActionCell = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/* Display modal for editing table view if table edit button is clicked */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<EventDetailsModal
 				showModal={displayEventDetailsModal}
 				handleClose={hideEventDetailsModal}
@@ -126,7 +120,6 @@ const EventActionCell = ({
 			/>
 
 			{displaySeriesDetailsModal && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<SeriesDetailsModal
 					handleClose={hideSeriesDetailsModal}
 					seriesId={row.series.id}
@@ -136,7 +129,6 @@ const EventActionCell = ({
 
 			{/* Open event details */}
 			{hasAccess("ROLE_UI_EVENTS_DETAILS_VIEW", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => onClickEventDetails()}
 					className="button-like-anchor more"
@@ -147,7 +139,6 @@ const EventActionCell = ({
 
 			{/* If event belongs to a series then the corresponding series details can be opened */}
 			{!!row.series && hasAccess("ROLE_UI_SERIES_DETAILS_VIEW", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => onClickSeriesDetails()}
 					className="button-like-anchor more-series"
@@ -159,7 +150,6 @@ const EventActionCell = ({
 			{/* Delete an event */}
 			{/*TODO: needs to be checked if event is published */}
 			{hasAccess("ROLE_UI_EVENTS_DELETE", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => setDeleteConfirmation(true)}
 					className="button-like-anchor remove"
@@ -170,7 +160,6 @@ const EventActionCell = ({
 
 			{/* Confirmation for deleting an event*/}
 			{displayDeleteConfirmation && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<ConfirmModal
 					close={hideDeleteConfirmation}
 					resourceName={row.title}
@@ -182,7 +171,6 @@ const EventActionCell = ({
 
 			{/* If the event has an preview then the editor can be opened and status if it needs to be cut is shown */}
 			{!!row.has_preview && hasAccess("ROLE_UI_EVENTS_EDITOR_VIEW", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<a
 					href={`/editor-ui/index.html?id=${row.id}`}
 					className="cut"
@@ -193,14 +181,12 @@ const EventActionCell = ({
 							: t("EVENTS.EVENTS.TABLE.TOOLTIP.EDITOR")
 					}
 				>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					{row.needs_cutting && <span id="badge" className="badge" />}
 				</a>
 			)}
 
 			{/* If the event has comments and no open comments then the comment tab of event details can be opened directly */}
 			{row.has_comments && !row.has_open_comments && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => onClickComments()}
 // @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
@@ -211,7 +197,6 @@ const EventActionCell = ({
 
 			{/* If the event has comments and open comments then the comment tab of event details can be opened directly */}
 			{row.has_comments && row.has_open_comments && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => onClickComments()}
 // @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
@@ -224,7 +209,6 @@ const EventActionCell = ({
                 details can be opened directly */}
 			{row.workflow_state === "PAUSED" &&
 				hasAccess("ROLE_UI_EVENTS_DETAILS_WORKFLOWS_EDIT", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button
 // @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 						title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PAUSED_WORKFLOW")}
@@ -235,7 +219,6 @@ const EventActionCell = ({
 
 			{/* Open assets tab of event details directly*/}
 			{hasAccess("ROLE_UI_EVENTS_DETAILS_ASSETS_VIEW", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => onClickAssets()}
 // @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
@@ -245,7 +228,6 @@ const EventActionCell = ({
 			)}
 			{/* Open dialog for embedded code*/}
 			{hasAccess("ROLE_UI_EVENTS_EMBEDDING_CODE_VIEW", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => showEmbeddingCodeModal()}
 // @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
@@ -255,7 +237,6 @@ const EventActionCell = ({
 			)}
 
 			{displayEmbeddingCodeModal && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<EmbeddingCodeModal close={hideEmbeddingCodeModal} eventId={row.id} />
 			)}
 		</>

@@ -6,7 +6,6 @@ import {
 	saveAccessPolicies,
 } from "../../../../thunks/eventDetailsThunks";
 import { getPolicies } from "../../../../selectors/eventDetailsSelectors";
-// @ts-expect-error TS(6142): Module '../../../shared/modals/ResourceDetailsAcce... Remove this comment to see the full error message
 import ResourceDetailsAccessPolicyTab from "../../../shared/modals/ResourceDetailsAccessPolicyTab";
 
 /**
@@ -33,7 +32,6 @@ const EventDetailsAccessPolicyTab = ({
 	setPolicyChanged,
 }) => {
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<ResourceDetailsAccessPolicyTab
 			resourceId={eventId}
 			header={header}

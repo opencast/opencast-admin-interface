@@ -1,9 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-// @ts-expect-error TS(6142): Module '../../../shared/Notifications' was resolve... Remove this comment to see the full error message
 import Notifications from "../../../shared/Notifications";
 import { Field } from "formik";
-// @ts-expect-error TS(6142): Module '../../../shared/wizard/WizardNavigationBut... Remove this comment to see the full error message
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
@@ -25,26 +23,17 @@ const GeneralPage = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/* Fields for name and description */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="modal-body">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="full-col">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="form-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="row">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<Notifications />
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<label className="required" style={isEdit && editStyle}>
 									{t("CONFIGURATION.THEMES.DETAILS.GENERAL.NAME")}
 								</label>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<Field
 									name="name"
 									type="text"
@@ -54,13 +43,10 @@ const GeneralPage = ({
 									}
 								/>
 							</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="row">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<label style={isEdit && editStyle}>
 									{t("CONFIGURATION.THEMES.DETAILS.GENERAL.DESCRIPTION")}
 								</label>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<Field
 									name="description"
 									as="textarea"
@@ -78,7 +64,6 @@ const GeneralPage = ({
 			{/* Show navigation buttons only if page is used for a new theme*/}
 			{!isEdit && (
 				//Button for navigation to next page
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<WizardNavigationButtons isFirst formik={formik} nextPage={nextPage} />
 			)}
 		</>

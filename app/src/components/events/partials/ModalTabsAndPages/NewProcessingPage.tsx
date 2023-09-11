@@ -4,10 +4,8 @@ import cn from "classnames";
 import { connect } from "react-redux";
 import { fetchWorkflowDef } from "../../../../thunks/workflowThunks";
 import { getWorkflowDef } from "../../../../selectors/workflowSelectors";
-// @ts-expect-error TS(6142): Module '../wizards/RenderWorkflowConfig' was resol... Remove this comment to see the full error message
 import RenderWorkflowConfig from "../wizards/RenderWorkflowConfig";
 import { setDefaultConfig } from "../../../../utils/workflowPanelUtils";
-// @ts-expect-error TS(6142): Module '../../../shared/DropDown' was resolved to ... Remove this comment to see the full error message
 import DropDown from "../../../shared/DropDown";
 
 /**
@@ -55,27 +53,18 @@ const NewProcessingPage = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="modal-body">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="full-col">
 						{/* Workflow definition Selection*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="obj quick-actions">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<header className="no-expand">
 								{t("EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW")}
 							</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="obj-container padded">
 								{workflowDef.length > 0 ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<div className="editable">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<DropDown
 											value={formik.values.processingWorkflow}
 											text={
@@ -105,22 +94,18 @@ const NewProcessingPage = ({
 										/>
 									</div>
 								) : (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<span>
 										{t("EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW_EMPTY")}
 									</span>
 								)}
 
 								{/* Configuration panel of selected workflow */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div className="collapsible-box">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<div
 										id="new-event-workflow-configuration"
 										className="checkbox-container obj-container"
 									>
 										{formik.values.processingWorkflow ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<RenderWorkflowConfig
 												displayDescription
 												workflowId={formik.values.processingWorkflow}
@@ -136,9 +121,7 @@ const NewProcessingPage = ({
 			</div>
 
 			{/* Button for navigation to next page and previous page */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<footer>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					type="submit"
 					className={cn("submit", {
@@ -154,13 +137,11 @@ const NewProcessingPage = ({
 				>
 					{t("WIZARD.NEXT_STEP")}
 				</button>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-				<button className="cancel" onClick={() => previous()} tabIndex="101">
+				<button className="cancel" onClick={() => previous()} tabIndex={101}>
 					{t("WIZARD.BACK")}
 				</button>
 			</footer>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="btm-spacer" />
 		</>
 	);

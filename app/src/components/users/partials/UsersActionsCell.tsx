@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-// @ts-expect-error TS(6142): Module '../../shared/ConfirmModal' was resolved to... Remove this comment to see the full error message
 import ConfirmModal from "../../shared/ConfirmModal";
 import { deleteUser } from "../../../thunks/userThunks";
-// @ts-expect-error TS(6142): Module './modal/UserDetailsModal' was resolved to ... Remove this comment to see the full error message
 import UserDetailsModal from "./modal/UserDetailsModal";
 import { fetchUserDetails } from "../../../thunks/userDetailsThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
@@ -44,11 +42,9 @@ const UsersActionCell = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/* edit/show user details */}
 			{hasAccess("ROLE_UI_USERS_EDIT", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => showUserDetails()}
 					className="button-like-anchor more"
@@ -58,14 +54,11 @@ const UsersActionCell = ({
 			)}
 
 			{displayUserDetails && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<UserDetailsModal close={hideUserDetails} username={row.username} />
 			)}
 
 			{row.manageable && hasAccess("ROLE_UI_USERS_DELETE", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button
 						onClick={() => setDeleteConfirmation(true)}
 						className="button-like-anchor remove"
@@ -75,7 +68,6 @@ const UsersActionCell = ({
 
 					{/* Confirmation for deleting a user */}
 					{displayDeleteConfirmation && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<ConfirmModal
 							close={hideDeleteConfirmation}
 							resourceName={row.name}

@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-// @ts-expect-error TS(6142): Module '../../../shared/wizard/WizardNavigationBut... Remove this comment to see the full error message
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { connect } from "react-redux";
 import { getAssetUploadOptions } from "../../../../selectors/eventSelectors";
@@ -42,28 +41,17 @@ const NewAssetUploadPage = ({
 		}
 	};
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="modal-body">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="full-col">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="obj tbl-details">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<header>{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.SELECT_TYPE")}</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<table className="main-tbl">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<tbody>
 										{uploadAssets.length === 0 ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<td>
 													{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.NO_OPTIONS")}
 												</td>
@@ -71,26 +59,20 @@ const NewAssetUploadPage = ({
 										) : (
 // @ts-expect-error TS(7006): Parameter 'asset' implicitly has an 'any' type.
 											uploadAssets.map((asset, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<tr key={key}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<td>
 														{" "}
 														{!!asset.displayOverride
 															? t(asset.displayOverride)
 															: t(asset.title)}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<span className="ui-helper-hidden">
                               { // eslint-disable-next-line react/jsx-no-comment-textnodes
                               } ({asset.type} "{asset.flavorType}//
 															{asset.flavorSubType}")
 														</span>
 													</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<div className="file-upload">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<input
 																id={asset.id}
 																className="blue-btn file-select-btn"
@@ -101,7 +83,6 @@ const NewAssetUploadPage = ({
 																tabIndex=""
 															/>
 															{formik.values[asset.id] && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<span className="ui-helper">
 																	{formik.values[asset.id].name.substr(0, 50)}
 																</span>
@@ -109,9 +90,7 @@ const NewAssetUploadPage = ({
 														</div>
 													</td>
 													{/*Button to remove asset*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<td className="fit">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<button
 															className="button-like-anchor remove"
 															onClick={() => {
@@ -133,7 +112,6 @@ const NewAssetUploadPage = ({
 			</div>
 
 			{/* Button for navigation to next page */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<WizardNavigationButtons
 				noValidation
 				nextPage={nextPage}

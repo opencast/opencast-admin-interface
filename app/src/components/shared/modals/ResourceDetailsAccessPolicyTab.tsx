@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-// @ts-expect-error TS(6142): Module '../wizard/RenderMultiField' was resolved t... Remove this comment to see the full error message
 import RenderMultiField from "../wizard/RenderMultiField";
 import {
 	fetchAclActions,
@@ -8,7 +7,6 @@ import {
 	fetchAclTemplates,
 	fetchRolesWithTarget,
 } from "../../../thunks/aclThunks";
-// @ts-expect-error TS(6142): Module '../Notifications' was resolved to '/home/a... Remove this comment to see the full error message
 import Notifications from "../Notifications";
 import { Formik, Field, FieldArray } from "formik";
 import { addNotification } from "../../../thunks/notificationThunks";
@@ -20,49 +18,49 @@ import {
 } from "../../../utils/resourceUtils";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
-// @ts-expect-error TS(6142): Module '../DropDown' was resolved to '/home/arnewi... Remove this comment to see the full error message
 import DropDown from "../DropDown";
 import { filterRoles, getAclTemplateText } from "../../../utils/aclUtils";
 
 /**
  * This component manages the access policy tab of resource details modals
  */
-const ResourceDetailsAccessPolicyTab = ({
-// @ts-expect-error TS(7031): Binding element 'resourceId' implicitly has an 'an... Remove this comment to see the full error message
+const ResourceDetailsAccessPolicyTab : React.FC <{
+  resourceId: any,
+	header: any,
+	t: any,
+	policies: any,
+	fetchHasActiveTransactions?: any,
+	fetchAccessPolicies: any,
+	saveNewAccessPolicies: any,
+	descriptionText: any,
+	addNotification: any,
+	fetchAclTemplates: any,
+	fetchRoles: any,
+	removeNotificationWizardForm: any,
+	buttonText: any,
+	saveButtonText: any,
+	editAccessRole: any,
+	user: any,
+	policyChanged: any,
+	setPolicyChanged: any,
+}> = ({
 	resourceId,
-// @ts-expect-error TS(7031): Binding element 'header' implicitly has an 'any' t... Remove this comment to see the full error message
 	header,
-// @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
 	t,
-// @ts-expect-error TS(7031): Binding element 'policies' implicitly has an 'any'... Remove this comment to see the full error message
 	policies,
-// @ts-expect-error TS(7031): Binding element 'fetchHasActiveTransactions' impli... Remove this comment to see the full error message
 	fetchHasActiveTransactions,
-// @ts-expect-error TS(7031): Binding element 'fetchAccessPolicies' implicitly h... Remove this comment to see the full error message
 	fetchAccessPolicies,
-// @ts-expect-error TS(7031): Binding element 'saveNewAccessPolicies' implicitly... Remove this comment to see the full error message
 	saveNewAccessPolicies,
-// @ts-expect-error TS(7031): Binding element 'descriptionText' implicitly has a... Remove this comment to see the full error message
 	descriptionText,
-// @ts-expect-error TS(7031): Binding element 'addNotification' implicitly has a... Remove this comment to see the full error message
 	addNotification,
-// @ts-expect-error TS(7031): Binding element 'fetchAclTemplates' implicitly has... Remove this comment to see the full error message
 	fetchAclTemplates,
-// @ts-expect-error TS(7031): Binding element 'fetchRoles' implicitly has an 'an... Remove this comment to see the full error message
 	fetchRoles,
-// @ts-expect-error TS(7031): Binding element 'removeNotificationWizardForm' imp... Remove this comment to see the full error message
 	removeNotificationWizardForm,
-// @ts-expect-error TS(7031): Binding element 'buttonText' implicitly has an 'an... Remove this comment to see the full error message
 	buttonText,
-// @ts-expect-error TS(7031): Binding element 'saveButtonText' implicitly has an... Remove this comment to see the full error message
 	saveButtonText,
-// @ts-expect-error TS(7031): Binding element 'editAccessRole' implicitly has an... Remove this comment to see the full error message
 	editAccessRole,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
-// @ts-expect-error TS(7031): Binding element 'policyChanged' implicitly has an ... Remove this comment to see the full error message
 	policyChanged,
-// @ts-expect-error TS(7031): Binding element 'setPolicyChanged' implicitly has ... Remove this comment to see the full error message
 	setPolicyChanged,
 }) => {
 	const baseAclId = "";
@@ -165,7 +163,7 @@ const ResourceDetailsAccessPolicyTab = ({
 
 		if (allRulesValid && roleWithFullRightsExists) {
 // @ts-expect-error TS(2693): 'any' only refers to a type, but is being used as ... Remove this comment to see the full error message
-			saveNewAccessPolicies(resourceId, access: any).then((success) => {
+			saveNewAccessPolicies(resourceId, access).then((success) => {
 				// fetch new policies from the backend, if save successful
 				if (success) {
 					setPolicyChanged(false);
@@ -269,22 +267,15 @@ const ResourceDetailsAccessPolicyTab = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-body">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="full-col">
 					{/* Notifications */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<Notifications context="not_corner" />
 
 					{!loading && !!policies && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<ul>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<li>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<Formik
 									initialValues={{
 										policies: policies.length > 0 ? [...policies] : [],
@@ -298,24 +289,16 @@ const ResourceDetailsAccessPolicyTab = ({
 									}
 								>
 									{(formik) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<div className="obj list-obj">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<header>{t(header) /* Access Policy */}</header>
 
 											{/* policy templates */}
 											{hasAccess(editAccessRole, user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<div className="obj tbl-list">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<table className="main-tbl">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<th>
 																		{
 																			t(
@@ -326,13 +309,9 @@ const ResourceDetailsAccessPolicyTab = ({
 																</tr>
 															</thead>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<tbody>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<td className="editable">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<p>
 																			{
 																				descriptionText /* Description text for policies*/
@@ -340,7 +319,6 @@ const ResourceDetailsAccessPolicyTab = ({
 																		</p>
 																		{!transactions.read_only ? (
 																			/* dropdown for selecting a policy template */
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																			<DropDown
 																				value={formik.values.template}
 																				text={getAclTemplateText(
@@ -381,11 +359,8 @@ const ResourceDetailsAccessPolicyTab = ({
 											)}
 
 											{/* list of policy details and interface for changing them */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<div className="obj tbl-list">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<header>
 														{
 															t(
@@ -394,16 +369,11 @@ const ResourceDetailsAccessPolicyTab = ({
 														}
 													</header>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<table className="main-tbl">
 															{/* column headers */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<th>
 																		{
 																			t(
@@ -411,7 +381,6 @@ const ResourceDetailsAccessPolicyTab = ({
 																			) /* <!-- Role --> */
 																		}
 																	</th>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<th className="fit">
 																		{
 																			t(
@@ -419,7 +388,6 @@ const ResourceDetailsAccessPolicyTab = ({
 																			) /* <!-- Read --> */
 																		}
 																	</th>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<th className="fit">
 																		{
 																			t(
@@ -428,7 +396,6 @@ const ResourceDetailsAccessPolicyTab = ({
 																		}
 																	</th>
 																	{hasActions && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<th className="fit">
 																			{
 																				t(
@@ -438,7 +405,6 @@ const ResourceDetailsAccessPolicyTab = ({
 																		</th>
 																	)}
 																	{hasAccess(editAccessRole, user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<th className="fit">
 																			{
 																				t(
@@ -450,24 +416,18 @@ const ResourceDetailsAccessPolicyTab = ({
 																</tr>
 															</thead>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<tbody>
 																{/* list of policies */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<FieldArray name="policies">
 																	{({ replace, remove, push }) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<>
 																			{formik.values.policies.length > 0 &&
 																				formik.values.policies.map(
 																					(policy, index) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																						<tr key={index}>
 																							{/* dropdown for policy.role */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																							<td className="editable">
 																								{!transactions.read_only ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																									<DropDown
 																										value={policy.role}
 																										text={policy.role}
@@ -511,15 +471,12 @@ const ResourceDetailsAccessPolicyTab = ({
 																										}
 																									/>
 																								) : (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																									<p>{policy.role}</p>
 																								)}
 																							</td>
 
 																							{/* Checkboxes for policy.read and policy.write */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																							<td className="fit text-center">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																								<Field
 																									type="checkbox"
 																									name={`policies.${index}.read`}
@@ -544,9 +501,7 @@ const ResourceDetailsAccessPolicyTab = ({
 																									}
 																								/>
 																							</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																							<td className="fit text-center">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																								<Field
 																									type="checkbox"
 																									name={`policies.${index}.write`}
@@ -575,16 +530,13 @@ const ResourceDetailsAccessPolicyTab = ({
 
 																							{/* Multi value field for policy.actions (additional actions) */}
 																							{hasActions && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																								<td className="fit editable">
 																									{!transactions.read_only &&
 																										hasAccess(
 																											editAccessRole,
 																											user
 																										) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																											<div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																												<Field
 																													fieldInfo={{
 																														id: `policies.${index}.actions`,
@@ -611,7 +563,6 @@ const ResourceDetailsAccessPolicyTab = ({
 // @ts-expect-error TS(7006): Parameter 'actionKey' implicitly has an 'any' type... Remove this comment to see the full error message
 																												actionKey
 																											) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																												<div key={actionKey}>
 																													{customAction}
 																												</div>
@@ -625,10 +576,8 @@ const ResourceDetailsAccessPolicyTab = ({
 																								editAccessRole,
 																								user
 																							) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																								<td>
 																									{!transactions.read_only && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																										<button
 																											onClick={() =>
 																												remove(index)
@@ -645,11 +594,8 @@ const ResourceDetailsAccessPolicyTab = ({
 																			{/* create additional policy */}
 																			{!transactions.read_only &&
 																				hasAccess(editAccessRole, user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																					<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-																						<td colSpan="5">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
+																						<td colSpan={5}>
 																							<button
 																								onClick={() =>
 																									push(createPolicy(""))
@@ -677,11 +623,8 @@ const ResourceDetailsAccessPolicyTab = ({
 											{!transactions.read_only &&
 												policyChanged &&
 												formik.dirty && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<footer style={{ padding: "15px" }}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<div className="pull-left">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<button
 																type="reset"
 																onClick={() => resetPolicies(formik.resetForm)}
@@ -690,9 +633,7 @@ const ResourceDetailsAccessPolicyTab = ({
 																{t("CANCEL") /* Cancel */}
 															</button>
 														</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<div className="pull-right">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<button
 																onClick={() => saveAccess(formik.values)}
 																disabled={!formik.isValid}
@@ -713,7 +654,6 @@ const ResourceDetailsAccessPolicyTab = ({
 					)}
 				</div>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="full-col" />
 			</div>
 		</div>

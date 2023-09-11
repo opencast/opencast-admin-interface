@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-// @ts-expect-error TS(6142): Module '../../../shared/Notifications' was resolve... Remove this comment to see the full error message
 import Notifications from "../../../shared/Notifications";
 import { connect } from "react-redux";
 import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
@@ -91,43 +90,30 @@ const EventDetailsAssetsTab = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-body">
 				{/* Notifications */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<Notifications context="not_corner" />
 
 				{/* table with types of assets */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="full-col">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="obj tbl-container operations-tbl">
 						{" "}
 						{/* Assets */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<header>{t("EVENTS.EVENTS.DETAILS.ASSETS.CAPTION")}</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="obj-container">
 							{isFetching || (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<table cellPadding="0" cellSpacing="0" className="main-tbl">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<th>
 												{" "}
 												{t("EVENTS.EVENTS.DETAILS.ASSETS.TYPE") /* Type */}
 											</th>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<th>
 												{" "}
 												{t("EVENTS.EVENTS.DETAILS.ASSETS.SIZE") /* Size */}
 											</th>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<th className="medium">
 												{!isFetchingAssetUploadOptions &&
 													!!uploadAssetOptions &&
@@ -140,7 +126,6 @@ const EventDetailsAssetsTab = ({
 														"ROLE_UI_EVENTS_DETAILS_ASSETS_EDIT",
 														user
 													) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<button
 															className="button-like-anchor details-link"
 															onClick={() =>
@@ -158,11 +143,8 @@ const EventDetailsAssetsTab = ({
 											</th>
 										</tr>
 									</thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<tbody>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{
 													t(
@@ -170,12 +152,9 @@ const EventDetailsAssetsTab = ({
 													) /* Attachments */
 												}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>{assets.attachments}</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{assets.attachments > 0 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<button
 														className="button-like-anchor details-link"
 														onClick={() =>
@@ -191,9 +170,7 @@ const EventDetailsAssetsTab = ({
 												)}
 											</td>
 										</tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{
 													t(
@@ -201,12 +178,9 @@ const EventDetailsAssetsTab = ({
 													) /* Catalogs */
 												}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>{assets.catalogs}</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{assets.catalogs > 0 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<button
 														className="button-like-anchor details-link"
 														onClick={() =>
@@ -222,9 +196,7 @@ const EventDetailsAssetsTab = ({
 												)}
 											</td>
 										</tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{
 													t(
@@ -232,12 +204,9 @@ const EventDetailsAssetsTab = ({
 													) /* Media */
 												}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>{assets.media}</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{assets.media > 0 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<button
 														className="button-like-anchor details-link"
 														onClick={() => openSubTab("asset-media", "media")}
@@ -251,9 +220,7 @@ const EventDetailsAssetsTab = ({
 												)}
 											</td>
 										</tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{
 													t(
@@ -261,12 +228,9 @@ const EventDetailsAssetsTab = ({
 													) /* Publications */
 												}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>{assets.publications}</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{assets.publications > 0 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<button
 														className="button-like-anchor details-link"
 														onClick={() =>

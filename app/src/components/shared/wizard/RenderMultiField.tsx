@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { useClickOutsideField } from "../../../hooks/wizardHooks";
 
-const childRef = React.createRef();
+const childRef = React.createRef<HTMLDivElement>();
 
 /**
  * This component renders an editable field for multiple values depending on the type of the corresponding metadata
@@ -74,10 +74,8 @@ const RenderMultiField = ({
 		// Render editable field for multiple values depending on type of metadata field
 		// (types: see metadata.json retrieved from backend)
 		editMode ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<>
 				{fieldInfo.type === "mixed_text" && !!fieldInfo.collection ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<EditMultiSelect
 						collection={fieldInfo.collection}
 						field={field}
@@ -91,7 +89,6 @@ const RenderMultiField = ({
 					/>
 				) : (
 					fieldInfo.type === "mixed_text" && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<EditMultiValue
 							setEditMode={setEditMode}
 							fieldValue={fieldValue}
@@ -105,7 +102,6 @@ const RenderMultiField = ({
 				)}
 			</>
 		) : (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<ShowValue
 				setEditMode={setEditMode}
 				field={field}
@@ -136,13 +132,9 @@ const EditMultiSelect = ({
 	const { t } = useTranslation();
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div ref={childRef}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<input
 						type="text"
 						name={field.name}
@@ -155,11 +147,9 @@ const EditMultiSelect = ({
 						autoFocus={true}
 					/>
 					{/* Display possible options for values as some kind of dropdown */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<datalist id="data-list">
-// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
+{/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}
 						{collection.map((item, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<option key={key}>{item.value}</option>
 						))}
 					</datalist>
@@ -168,12 +158,9 @@ const EditMultiSelect = ({
 				{fieldValue instanceof Array &&
 					fieldValue.length !== 0 &&
 					fieldValue.map((item, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<span className="ng-multi-value" key={key}>
 							{item}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<button className="button-like-anchor" onClick={() => removeItem(key)}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<i className="fa fa-times" />
 							</button>
 						</span>
@@ -203,11 +190,8 @@ const EditMultiValue = ({
 	const { t } = useTranslation();
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div onBlur={() => setEditMode(false)} ref={childRef}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<input
 					type="text"
 					name={field.name}
@@ -221,12 +205,9 @@ const EditMultiValue = ({
 			{fieldValue instanceof Array &&
 				fieldValue.length !== 0 &&
 				fieldValue.map((item, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<span className="ng-multi-value" key={key}>
 						{item}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<button className="button-like-anchor" onClick={() => removeItem(key)}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<i className="fa fa-times" />
 						</button>
 					</span>
@@ -236,43 +217,36 @@ const EditMultiValue = ({
 };
 
 // Shows the values of the array in non-edit mode
-const ShowValue = ({
-// @ts-expect-error TS(7031): Binding element 'setEditMode' implicitly has an 'a... Remove this comment to see the full error message
+const ShowValue : React.FC<{
+  setEditMode: any,
+	form: any,
+	field: any,
+	showCheck: any,
+	fieldValue?: any,
+}> = ({
 	setEditMode,
-// @ts-expect-error TS(7031): Binding element 'initialValues' implicitly has an ... Remove this comment to see the full error message
 	form: { initialValues },
-// @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 	field,
-// @ts-expect-error TS(7031): Binding element 'showCheck' implicitly has an 'any... Remove this comment to see the full error message
 	showCheck,
-// @ts-expect-error TS(7031): Binding element 'fieldValue' implicitly has an 'an... Remove this comment to see the full error message
 	fieldValue,
 }) => {
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<div onClick={() => setEditMode(true)} className="show-edit">
 			{field.value instanceof Array && field.value.length !== 0 ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<ul>
-// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
+{/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}
 					{field.value.map((item, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<li key={key}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<span>{item}</span>
 						</li>
 					))}
 				</ul>
 			) : (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<span className="editable preserve-newlines">{""}</span>
 			)}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<i className="edit fa fa-pencil-square" />
 				{showCheck && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<i
 						className={cn("saved fa fa-check", {
 							active: initialValues[field.name] !== field.value,

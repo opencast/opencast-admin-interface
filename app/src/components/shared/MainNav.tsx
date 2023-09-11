@@ -238,46 +238,35 @@ const MainNav = ({
 		MAIN_MENU: toggleMenu,
 	};
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<GlobalHotKeys
 // @ts-expect-error TS(2769): No overload matches this call.
 				keyMap={availableHotkeys.general}
 				handlers={hotKeyHandlers}
 			/>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="menu-top" onClick={() => toggleMenu()}>
 				{isOpen && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<nav id="roll-up-menu">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div id="nav-container">
 							{/* todo: more than one href? how? roles? (see MainNav admin-ui-frontend)*/}
 							{hasAccess("ROLE_UI_NAV_RECORDINGS_VIEW", user) &&
 								(hasAccess("ROLE_UI_EVENTS_VIEW", user) ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Link to="/events/events" onClick={() => loadEvents()}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-										<i className="events" title={t("NAV.EVENTS.TITLE")} />
+										<i className="events" title={t<string>("NAV.EVENTS.TITLE")} />
 									</Link>
 								) : (
 									hasAccess("ROLE_UI_SERIES_VIEW", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<Link to="/events/series" onClick={() => loadSeries()}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-											<i className="events" title={t("NAV.EVENTS.TITLE")} />
+											<i className="events" title={t<string>("NAV.EVENTS.TITLE")} />
 										</Link>
 									)
 								))}
 							{hasAccess("ROLE_UI_NAV_CAPTURE_VIEW", user) &&
 								hasAccess("ROLE_UI_LOCATIONS_VIEW", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Link
 										to="/recordings/recordings"
 										onClick={() => loadRecordings()}
 									>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<i
 											className="recordings"
 // @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
@@ -287,53 +276,39 @@ const MainNav = ({
 								)}
 							{hasAccess("ROLE_UI_NAV_SYSTEMS_VIEW", user) &&
 								(hasAccess("ROLE_UI_JOBS_VIEW", user) ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Link to="/systems/jobs" onClick={() => loadJobs()}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-										<i className="systems" title={t("NAV.SYSTEMS.TITLE")} />
+										<i className="systems" title={t<string>("NAV.SYSTEMS.TITLE")} />
 									</Link>
 								) : hasAccess("ROLE_UI_SERVERS_VIEW", user) ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Link to="/systems/servers" onClick={() => loadServers()}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-										<i className="systems" title={t("NAV.SYSTEMS.TITLE")} />
+										<i className="systems" title={t<string>("NAV.SYSTEMS.TITLE")} />
 									</Link>
 								) : (
 									hasAccess("ROLE_UI_SERVICES_VIEW", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<Link to="/systems/services" onClick={() => loadServices()}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-											<i className="systems" title={t("NAV.SYSTEMS.TITLE")} />
+											<i className="systems" title={t<string>("NAV.SYSTEMS.TITLE")} />
 										</Link>
 									)
 								))}
 							{hasAccess("ROLE_UI_NAV_ORGANIZATION_VIEW", user) &&
 								(hasAccess("ROLE_UI_USERS_VIEW", user) ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Link to="/users/users" onClick={() => loadUsers()}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-										<i className="users" title={t("NAV.USERS.TITLE")} />
+										<i className="users" title={t<string>("NAV.USERS.TITLE")} />
 									</Link>
 								) : hasAccess("ROLE_UI_GROUPS_VIEW", user) ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Link to="/users/groups" onClick={() => loadGroups()}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-										<i className="users" title={t("NAV.USERS.TITLE")} />
+										<i className="users" title={t<string>("NAV.USERS.TITLE")} />
 									</Link>
 								) : (
 									hasAccess("ROLE_UI_ACLS_VIEW", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<Link to="/users/acls" onClick={() => loadAcls()}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-											<i className="users" title={t("NAV.USERS.TITLE")} />
+											<i className="users" title={t<string>("NAV.USERS.TITLE")} />
 										</Link>
 									)
 								))}
 							{hasAccess("ROLE_UI_NAV_CONFIGURATION_VIEW", user) &&
 								hasAccess("ROLE_UI_THEMES_VIEW", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Link to="/configuration/themes" onClick={() => loadThemes()}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<i
 											className="configuration"
 // @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
@@ -343,9 +318,7 @@ const MainNav = ({
 								)}
 							{hasAccess("ROLE_UI_NAV_STATISTICS_VIEW", user) &&
 								hasAccess("ROLE_UI_STATISTICS_ORGANIZATION_VIEW", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Link to="/statistics/organization">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<i
 											className="statistics"
 // @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message

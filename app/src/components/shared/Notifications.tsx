@@ -15,14 +15,15 @@ import {
 /**
  * This component renders notifications about occurred errors, warnings and info
  */
-const Notifications = ({
-// @ts-expect-error TS(7031): Binding element 'setNotificationHidden' implicitly... Remove this comment to see the full error message
+const Notifications : React.FC<{
+  setNotificationHidden: any,
+  notifications: any,
+  globalPosition: any,
+  context?: any,
+}> = ({
 	setNotificationHidden,
-// @ts-expect-error TS(7031): Binding element 'notifications' implicitly has an ... Remove this comment to see the full error message
 	notifications,
-// @ts-expect-error TS(7031): Binding element 'globalPosition' implicitly has an... Remove this comment to see the full error message
 	globalPosition,
-// @ts-expect-error TS(7031): Binding element 'context' implicitly has an 'any' ... Remove this comment to see the full error message
 	context,
 }) => {
 	const { t } = useTranslation();
@@ -34,16 +35,12 @@ const Notifications = ({
 
 // @ts-expect-error TS(7006): Parameter 'notification' implicitly has an 'any' t... Remove this comment to see the full error message
 	const renderNotification = (notification, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<li key={key}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className={cn(notification.type, "alert sticky")}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => closeNotification(notification.id)}
 					className="button-like-anchor fa fa-times close"
 				/>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<p>{t(notification.message)}</p>
 			</div>
 		</li>
@@ -52,7 +49,6 @@ const Notifications = ({
 	return (
 		// if context is not_corner then render notification without consider global notification position
 		context === "not_corner" ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<ul>
 				{notifications.map(
 // @ts-expect-error TS(7006): Parameter 'notification' implicitly has an 'any' t... Remove this comment to see the full error message
@@ -64,7 +60,6 @@ const Notifications = ({
 				)}
 			</ul>
 		) : context === "above_table" ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<ul>
 				{notifications.map(
 // @ts-expect-error TS(7006): Parameter 'notification' implicitly has an 'any' t... Remove this comment to see the full error message
@@ -76,7 +71,6 @@ const Notifications = ({
 				)}
 			</ul>
 		) : (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<ul
 				className={cn({
 					"global-notifications": true,

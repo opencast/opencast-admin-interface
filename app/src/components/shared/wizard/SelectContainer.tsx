@@ -136,8 +136,9 @@ const SelectContainer = ({
 			// add marked item to items considered for search bar if not already containing
 			if (
 // @ts-expect-error TS(2339): Property 'name' does not exist on type 'never'.
-				!editableDefaultItems.some((item) => item.name: any === markedForRemoval[i])
+				!editableDefaultItems.some((item) => item.name === markedForRemoval[i])
 			) {
+// @ts-expect-error TS(2322): Type 'any' is not assignable to type 'never'.
 				editableDefaultItems.push({
 // @ts-expect-error TS(2322): Type 'any' is not assignable to type 'never'.
 					id: !!markedForRemoval[i].id ? markedForRemoval.id : "",
@@ -180,28 +181,19 @@ const SelectContainer = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<div className="row">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="multi-select-container offset-col-2">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="multi-select-col">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="row">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<label>
 							{t(resource.label + ".LEFT")}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<i className="required" />
 						</label>
 						{/*Search*/}
 						{resource.searchable && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<>
 								{/* search bar */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<button className="button-like-anchor clear" onClick={() => clearSearchField()} />
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<input
 									type="text"
 									id="search"
@@ -216,7 +208,6 @@ const SelectContainer = ({
 							</>
 						)}
 						{/*Select with options provided by backend*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<select
 							multiple
 							className="available"
@@ -226,19 +217,16 @@ const SelectContainer = ({
 							onChange={(e) => handleChangeAdd(e)}
 						>
 							{items.map((item, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-								<option key={key} value={item.name}>
 // @ts-expect-error TS(2339): Property 'name' does not exist on type 'never'.
+								<option key={key} value={item.name}>
+{/* @ts-expect-error TS(2339): Property 'name' does not exist on type 'never'. */}
 									{item.name}
 								</option>
 							))}
 						</select>
 					</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="row">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="button-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<button
 								className={cn("submit", {
 									disabled: !markedForAddition.length || !manageable,
@@ -251,17 +239,12 @@ const SelectContainer = ({
 					</div>
 				</div>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="exchange-icon" />
 
 				{/*Select with options chosen by user*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="multi-select-col">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="row">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<label>{t(resource.label + ".RIGHT")}</label>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<select
 							multiple
 							className="selected"
@@ -270,20 +253,16 @@ const SelectContainer = ({
 							onChange={(e) => handleChangeRemove(e)}
 							value={markedForRemoval}
 						>
-// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
+{/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}
 							{selectedItems.map((item, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<option key={key} value={item.name}>
 									{item.name}
 								</option>
 							))}
 						</select>
 					</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="row">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="button-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<button
 								className={cn("remove", {
 									disabled: !markedForRemoval.length || !manageable,

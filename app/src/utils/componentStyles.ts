@@ -158,5 +158,5 @@ export const dropDownSpacingTheme = (theme) => ({
 
 export const overflowStyle = {
 	overflow: "auto",
-	overflowWrap: "normal",
+	overflowWrap: "normal" as const,
 };

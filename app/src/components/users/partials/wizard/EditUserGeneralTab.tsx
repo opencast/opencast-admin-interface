@@ -23,28 +23,19 @@ const EditUserGeneralTab = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-body">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="form-container">
 					{!formik.values.manageable && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="modal-alert warning">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<p>{t("NOTIFICATIONS.USER_NOT_MANAGEABLE")}</p>
 						</div>
 					)}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="row" style={editStyle}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<label>
 							{t("USERS.USERS.DETAILS.FORM.USERNAME")}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<i className="required">*</i>
 						</label>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<input
 							type="text"
 							name="username"
@@ -53,11 +44,8 @@ const EditUserGeneralTab = ({
 							value={formik.values.username}
 						/>
 					</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="row" style={editStyle}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<label>{t("USERS.USERS.DETAILS.FORM.NAME")}</label>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<Field
 							type="text"
 							name="name"
@@ -69,11 +57,8 @@ const EditUserGeneralTab = ({
 							value={formik.values.name}
 						/>
 					</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="row" style={editStyle}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<label>{t("USERS.USERS.DETAILS.FORM.EMAIL")}</label>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<Field
 							type="text"
 							name="email"
@@ -85,11 +70,8 @@ const EditUserGeneralTab = ({
 							value={formik.values.email}
 						/>
 					</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="row" style={editStyle}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<label>{t("USERS.USERS.DETAILS.FORM.PASSWORD")}</label>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<Field
 							type="password"
 							name="password"
@@ -101,11 +83,8 @@ const EditUserGeneralTab = ({
 							placeholder={t("USERS.USERS.DETAILS.FORM.PASSWORD") + "..."}
 						/>
 					</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="row" style={editStyle}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<label>{t("USERS.USERS.DETAILS.FORM.REPEAT_PASSWORD")}</label>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<Field
 							type="password"
 							name="passwordConfirmation"

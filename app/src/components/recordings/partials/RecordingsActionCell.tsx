@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-// @ts-expect-error TS(6142): Module '../../shared/ConfirmModal' was resolved to... Remove this comment to see the full error message
 import ConfirmModal from "../../shared/ConfirmModal";
-// @ts-expect-error TS(6142): Module './modal/RecordingDetailsModal' was resolve... Remove this comment to see the full error message
 import RecordingDetailsModal from "./modal/RecordingDetailsModal";
 import { deleteRecording } from "../../../thunks/recordingThunks";
 import { fetchRecordingDetails } from "../../../thunks/recordingDetailsThunks";
@@ -48,11 +46,9 @@ const RecordingsActionCell = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/* view details location/recording */}
 			{hasAccess("ROLE_UI_LOCATIONS_DETAILS_VIEW", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					className="button-like-anchor more"
 // @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
@@ -62,7 +58,6 @@ const RecordingsActionCell = ({
 			)}
 
 			{displayRecordingDetails && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<RecordingDetailsModal
 					close={hideRecordingDetails}
 					recordingId={row.name}
@@ -71,7 +66,6 @@ const RecordingsActionCell = ({
 
 			{/* delete location/recording */}
 			{hasAccess("ROLE_UI_LOCATIONS_DELETE", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					className="button-like-anchor remove"
 // @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
@@ -81,7 +75,6 @@ const RecordingsActionCell = ({
 			)}
 
 			{displayDeleteConfirmation && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<ConfirmModal
 					close={hideDeleteConfirmation}
 					resourceName={row.name}

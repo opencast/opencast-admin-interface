@@ -37,7 +37,6 @@ const EventsTechnicalDateCell = ({
 
 	return (
 		// Link template for technical date of event
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<button
 			className="button-like-anchor crosslink"
 // @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message

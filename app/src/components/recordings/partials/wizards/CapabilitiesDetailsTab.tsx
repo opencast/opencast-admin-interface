@@ -10,37 +10,25 @@ const CapabilitiesDetailsTab = ({
 	const { t } = useTranslation();
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-body">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="full-col">
 					{/* If capabilities has no item show corresponding message */}
 					{agent.capabilities.length > 0 ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="obj tbl-details">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<span>
 									{t("RECORDINGS.RECORDINGS.DETAILS.CAPABILITIES.CAPTION")}
 								</span>
 							</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<table className="main-tbl">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<tbody>
 										{/* Render table row for each capability item*/}
-// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
+{/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}
 										{agent.capabilities.map((item, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<tr key={key}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<td>{item.key}</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<td>{item.value}</td>
 											</tr>
 										))}
@@ -49,9 +37,7 @@ const CapabilitiesDetailsTab = ({
 							</div>
 						</div>
 					) : (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<p>
 								{t(
 									"RECORDINGS.RECORDINGS.DETAILS.CAPABILITIES.NO_CAPABILITIES"

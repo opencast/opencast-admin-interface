@@ -22,7 +22,6 @@ const isLocalhost = Boolean(
 
 // @ts-expect-error TS(7006): Parameter 'config' implicitly has an 'any' type.
 export function register(config) {
-// @ts-expect-error TS(2580): Cannot find name 'process'. Do you need to install... Remove this comment to see the full error message
 	if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
 		// The URL constructor is available in all browsers that support SW.
 // @ts-expect-error TS(2580): Cannot find name 'process'. Do you need to install... Remove this comment to see the full error message
@@ -35,7 +34,6 @@ export function register(config) {
 		}
 
 		window.addEventListener("load", () => {
-// @ts-expect-error TS(2580): Cannot find name 'process'. Do you need to install... Remove this comment to see the full error message
 			const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
 
 			if (isLocalhost) {

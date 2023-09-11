@@ -17,17 +17,11 @@ import {
 	updateSeriesMetadata,
 } from "../../../../thunks/seriesDetailsThunks";
 import { hasAccess } from "../../../../utils/utils";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/SeriesDetailsAccessTa... Remove this comment to see the full error message
 import SeriesDetailsAccessTab from "../ModalTabsAndPages/SeriesDetailsAccessTab";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/SeriesDetailsThemeTab... Remove this comment to see the full error message
 import SeriesDetailsThemeTab from "../ModalTabsAndPages/SeriesDetailsThemeTab";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/SeriesDetailsStatisti... Remove this comment to see the full error message
 import SeriesDetailsStatisticTab from "../ModalTabsAndPages/SeriesDetailsStatisticTab";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/SeriesDetailsFeedsTab... Remove this comment to see the full error message
 import SeriesDetailsFeedsTab from "../ModalTabsAndPages/SeriesDetailsFeedsTab";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/DetailsMetadataTab' w... Remove this comment to see the full error message
 import DetailsMetadataTab from "../ModalTabsAndPages/DetailsMetadataTab";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/DetailsExtendedMetada... Remove this comment to see the full error message
 import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsExtendedMetadataTab";
 
 /**
@@ -111,43 +105,35 @@ const SeriesDetails = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/* navigation for navigating between tabs */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<nav className="modal-nav" id="modal-nav">
 				{hasAccess(tabs[0].accessRole, user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button className={"button-like-anchor " + cn({ active: page === 0 })} onClick={() => openTab(0)}>
 						{t(tabs[0].tabNameTranslation)}
 					</button>
 				)}
 				{!tabs[1].hidden && hasAccess(tabs[1].accessRole, user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button className={"button-like-anchor " + cn({ active: page === 1 })} onClick={() => openTab(1)}>
 						{t(tabs[1].tabNameTranslation)}
 					</button>
 				)}
 				{hasAccess(tabs[2].accessRole, user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button className={"button-like-anchor " + cn({ active: page === 2 })} onClick={() => openTab(2)}>
 						{t(tabs[2].tabNameTranslation)}
 					</button>
 				)}
 				{hasAccess(tabs[3].accessRole, user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button className={"button-like-anchor " + cn({ active: page === 3 })} onClick={() => openTab(3)}>
 						{t(tabs[3].tabNameTranslation)}
 					</button>
 				)}
 				{!tabs[4].hidden && hasAccess(tabs[4].accessRole, user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button className={"button-like-anchor " + cn({ active: page === 4 })} onClick={() => openTab(4)}>
 						{t(tabs[4].tabNameTranslation)}
 					</button>
 				)}
 				{feeds.length > 0 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button className={"button-like-anchor " + cn({ active: page === 5 })} onClick={() => openTab(5)}>
 						{t(tabs[5].tabNameTranslation)}
 					</button>
@@ -155,10 +141,8 @@ const SeriesDetails = ({
 			</nav>
 
 			{/* render modal content depending on current page */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div>
 				{page === 0 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<DetailsMetadataTab
 						metadataFields={metadataFields}
 						resourceId={seriesId}
@@ -168,7 +152,6 @@ const SeriesDetails = ({
 					/>
 				)}
 				{page === 1 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<DetailsExtendedMetadataTab
 						resourceId={seriesId}
 						metadata={extendedMetadata}
@@ -177,7 +160,6 @@ const SeriesDetails = ({
 					/>
 				)}
 				{page === 2 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<SeriesDetailsAccessTab
 						seriesId={seriesId}
 						header={tabs[page].tabNameTranslation}
@@ -186,7 +168,6 @@ const SeriesDetails = ({
 					/>
 				)}
 				{page === 3 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<SeriesDetailsThemeTab
 						theme={theme}
 						themeNames={themeNames}
@@ -194,13 +175,11 @@ const SeriesDetails = ({
 					/>
 				)}
 				{page === 4 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<SeriesDetailsStatisticTab
 						seriesId={seriesId}
 						header={tabs[page].tabNameTranslation}
 					/>
 				)}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				{page === 5 && <SeriesDetailsFeedsTab feeds={feeds} />}
 			</div>
 		</>

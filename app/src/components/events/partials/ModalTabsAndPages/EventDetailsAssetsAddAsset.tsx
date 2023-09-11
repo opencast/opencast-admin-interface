@@ -1,8 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-// @ts-expect-error TS(6142): Module './EventDetailsTabHierarchyNavigation' was ... Remove this comment to see the full error message
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
-// @ts-expect-error TS(6142): Module '../../../shared/Notifications' was resolve... Remove this comment to see the full error message
 import Notifications from "../../../shared/Notifications";
 import { style_button_spacing } from "../../../../utils/eventDetailsUtils";
 import { Formik } from "formik";
@@ -50,10 +48,8 @@ const EventDetailsAssetsAddAsset = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<div className="modal-content">
 			{/* Hierarchy navigation */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<EventDetailsTabHierarchyNavigation
 				openSubTab={openSubTab}
 				hierarchyDepth={0}
@@ -61,40 +57,28 @@ const EventDetailsAssetsAddAsset = ({
 				subTabArgument0={"add-asset"}
 			/>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-body">
 				{/* Notifications */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<Notifications context="not_corner" />
 
 				{/* section for adding assets */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="full-col">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="obj tbl-container operations-tbl">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<header>
 							{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.ADD") /* Attachments */}
 						</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<Formik
 								initialValues={{ newAssets: {} }}
 								onSubmit={(values) => saveAssets(values)}
 							>
 								{(formik) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<div>
 										{/* file select for upload for different types of assets */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<table className="main-tbl">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<tbody>
 												{uploadAssets.length === 0 ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<td>
 															{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.NO_OPTIONS")}
 														</td>
@@ -102,26 +86,20 @@ const EventDetailsAssetsAddAsset = ({
 												) : (
 // @ts-expect-error TS(7006): Parameter 'asset' implicitly has an 'any' type.
 													uploadAssets.map((asset, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<tr key={key}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>
 																{" "}
 																{!!asset.displayOverride
 																	? t(asset.displayOverride)
 																	: t(asset.title)}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<span className="ui-helper-hidden">
                                   { // eslint-disable-next-line react/jsx-no-comment-textnodes
                                   } ({asset.type} "{asset.flavorType}//
 																	{asset.flavorSubType}")
 																</span>
 															</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<div className="file-upload">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<input
 																		id={asset.id}
 																		className="blue-btn file-select-btn"
@@ -133,11 +111,10 @@ const EventDetailsAssetsAddAsset = ({
 // @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
 																		tabIndex=""
 																	/>
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+{/* @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
 																	{formik.values[asset.id] && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<span className="ui-helper">
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+{/* @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
 																			{formik.values[asset.id].name.substr(
 																				0,
 																				50
@@ -147,9 +124,7 @@ const EventDetailsAssetsAddAsset = ({
 																</div>
 															</td>
 															{/*Button to remove asset*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td className="fit">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<button
 																	className="button-like-anchor remove"
 																	onClick={() => {
@@ -167,9 +142,7 @@ const EventDetailsAssetsAddAsset = ({
 										</table>
 
 										{/* add asset button */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<footer>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<button
 												className="submit"
 												style={style_button_spacing}

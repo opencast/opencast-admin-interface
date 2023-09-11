@@ -3,9 +3,7 @@ import { connect } from "react-redux";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-// @ts-expect-error TS(6142): Module './NewUserGeneralTab' was resolved to '/hom... Remove this comment to see the full error message
 import NewUserGeneralTab from "./NewUserGeneralTab";
-// @ts-expect-error TS(6142): Module './UserRolesTab' was resolved to '/home/arn... Remove this comment to see the full error message
 import UserRolesTab from "./UserRolesTab";
 import { initialFormValuesNewUser } from "../../../../configs/modalConfig";
 import { getUsernames } from "../../../../selectors/userSelectors";
@@ -25,7 +23,7 @@ const NewUserWizard = ({
 	const navStyle = {
 		left: "0px",
 		top: "auto",
-		position: "initial",
+		position: "initial" as const,
 	};
 
 	const [tab, setTab] = useState(0);
@@ -43,19 +41,15 @@ const NewUserWizard = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/*Head navigation*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<nav className="modal-nav" id="modal-nav" style={navStyle}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					className={"button-like-anchor " + cn("wider", { active: tab === 0 })}
 					onClick={() => openTab(0)}
 				>
 					{t("USERS.USERS.DETAILS.TABS.USER")}
 				</button>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					className={"button-like-anchor " + cn("wider", { active: tab === 1 })}
 					onClick={() => openTab(1)}
@@ -67,7 +61,6 @@ const NewUserWizard = ({
 			</nav>
 
 			{/* Initialize overall form */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<Formik
 				initialValues={initialFormValuesNewUser}
 				validationSchema={NewUserSchema(usernames)}
@@ -81,17 +74,12 @@ const NewUserWizard = ({
 					}, [tab]);
 
 					return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							{tab === 0 && <NewUserGeneralTab formik={formik} />}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							{tab === 1 && <UserRolesTab formik={formik} />}
 
 							{/* Navigation buttons and validation */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<footer>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<button
 									className={cn("submit", {
 										active: formik.dirty && formik.isValid,
@@ -102,7 +90,6 @@ const NewUserWizard = ({
 								>
 									{t("SUBMIT")}
 								</button>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<button className="cancel" onClick={() => close()}>
 									{t("CANCEL")}
 								</button>

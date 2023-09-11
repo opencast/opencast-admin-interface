@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
-// @ts-expect-error TS(6142): Module '../../shared/ConfirmModal' was resolved to... Remove this comment to see the full error message
 import ConfirmModal from "../../shared/ConfirmModal";
 import { deleteGroup } from "../../../thunks/groupThunks";
-// @ts-expect-error TS(6142): Module './modal/GroupDetailsModal' was resolved to... Remove this comment to see the full error message
 import GroupDetailsModal from "./modal/GroupDetailsModal";
 import { fetchGroupDetails } from "../../../thunks/groupDetailsThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
@@ -44,11 +42,9 @@ const GroupsActionsCell = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/*edit/show group */}
 			{hasAccess("ROLE_UI_GROUPS_EDIT", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => showGroupDetails()}
 					className="button-like-anchor more"
@@ -59,13 +55,11 @@ const GroupsActionsCell = ({
 
 			{/*modal displaying details about group*/}
 			{displayGroupDetails && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<GroupDetailsModal close={hideGroupDetails} groupName={row.name} />
 			)}
 
 			{/* delete group */}
 			{hasAccess("ROLE_UI_GROUPS_DELETE", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => setDeleteConfirmation(true)}
 					className="button-like-anchor remove"
@@ -76,7 +70,6 @@ const GroupsActionsCell = ({
 
 			{/*Confirmation for deleting a group*/}
 			{displayDeleteConfirmation && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<ConfirmModal
 					close={hideDeleteConfirmation}
 					resourceId={row.id}

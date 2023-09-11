@@ -6,7 +6,6 @@ import {
 	isSummaryReachable,
 	useStepperStyle,
 } from "../../../utils/wizardUtils";
-// @ts-expect-error TS(6142): Module './CustomStepIcon' was resolved to '/home/a... Remove this comment to see the full error message
 import CustomStepIcon from "./CustomStepIcon";
 import { checkAcls } from "../../../thunks/aclThunks";
 import { connect } from "react-redux";
@@ -68,7 +67,6 @@ const WizardStepperEvent = ({
 	const disabled = !(formik.dirty && formik.isValid);
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<Stepper
 			activeStep={page}
 			nonLinear
@@ -77,14 +75,11 @@ const WizardStepperEvent = ({
 			connector={false}
 			className={cn("step-by-step", classes.root)}
 		>
-// @ts-expect-error TS(7006): Parameter 'label' implicitly has an 'any' type.
+{/* @ts-expect-error TS(7006): Parameter 'label' implicitly has an 'any' type. */}
 			{steps.map((label, key) =>
 				!label.hidden ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<Step key={label.translation} completed={completed[key]}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<StepButton onClick={() => handleOnClick(key)} disabled={disabled}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<StepLabel StepIconComponent={CustomStepIcon}>
 								{t(label.translation)}
 							</StepLabel>

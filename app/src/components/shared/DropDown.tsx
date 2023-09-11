@@ -41,7 +41,6 @@ const DropDown = ({
 	const style = dropDownStyle(type);
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<Select
 			tabIndex={tabIndex}
 			theme={dropDownSpacingTheme}

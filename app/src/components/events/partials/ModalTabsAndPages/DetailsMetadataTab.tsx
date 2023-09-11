@@ -4,11 +4,8 @@ import { Field, Formik } from "formik";
 import cn from "classnames";
 // @ts-expect-error TS(7016): Could not find a declaration file for module 'loda... Remove this comment to see the full error message
 import _ from "lodash";
-// @ts-expect-error TS(6142): Module '../../../shared/Notifications' was resolve... Remove this comment to see the full error message
 import Notifications from "../../../shared/Notifications";
-// @ts-expect-error TS(6142): Module '../../../shared/wizard/RenderMultiField' w... Remove this comment to see the full error message
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
-// @ts-expect-error TS(6142): Module '../../../shared/wizard/RenderField' was re... Remove this comment to see the full error message
 import RenderField from "../../../shared/wizard/RenderField";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { connect } from "react-redux";
@@ -71,46 +68,31 @@ const DetailsMetadataTab = ({
 
 	return (
 		// initialize form
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<Formik
 			enableReinitialize
 			initialValues={getInitialValues()}
 			onSubmit={(values) => handleSubmit(values)}
 		>
 			{(formik) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="modal-body">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<Notifications context="not-corner" />
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="full-col">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div className="obj tbl-list">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<header className="no-expand">{t(header)}</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<table className="main-tbl">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<tbody>
 												{/* Render table row for each metadata field depending on type */}
 												{!!metadataFields &&
 													!!metadataFields.fields &&
 // @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
 													metadataFields.fields.map((field, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<tr key={key}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<span>{t(field.label)}</span>
 																{field.required && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<i className="required">*</i>
 																)}
 															</td>
@@ -118,7 +100,6 @@ const DetailsMetadataTab = ({
 																// non-editable field if readOnly is set
 																!!field.collection &&
 																field.collection.length !== 0 ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<td>
 																		{isJson(
 																			getMetadataCollectionFieldName(
@@ -142,16 +123,13 @@ const DetailsMetadataTab = ({
 																			  )}
 																	</td>
 																) : (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<td>{field.value}</td>
 																)
 															) : (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<td className="editable">
 																	{/* Render single value or multi value editable input */}
 																	{field.type === "mixed_text" &&
 																	field.collection.length !== 0 ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<Field
 																			name={field.id}
 																			fieldInfo={field}
@@ -159,7 +137,6 @@ const DetailsMetadataTab = ({
 																			component={RenderMultiField}
 																		/>
 																	) : (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<Field
 																			name={field.id}
 																			metadataField={field}
@@ -176,12 +153,9 @@ const DetailsMetadataTab = ({
 									</div>
 
 									{formik.dirty && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<>
 											{/* Render buttons for updating metadata */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<footer style={{ padding: "15px" }}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<button
 													type="submit"
 													onClick={() => formik.handleSubmit()}
@@ -193,7 +167,6 @@ const DetailsMetadataTab = ({
 												>
 													{t("SAVE")}
 												</button>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<button
 													className="cancel"
 													onClick={() => formik.resetForm({ values: "" })}
@@ -202,7 +175,6 @@ const DetailsMetadataTab = ({
 												</button>
 											</footer>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<div className="btm-spacer" />
 										</>
 									)}

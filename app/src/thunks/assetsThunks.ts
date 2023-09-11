@@ -30,7 +30,6 @@ export const fetchAssetUploadOptions = () => async (dispatch, getState) => {
 				const assetUploadOptions = [];
 
 				// iterate over response and only use non-comment lines
-// @ts-expect-error TS(2550): Property 'entries' does not exist on type 'ObjectC... Remove this comment to see the full error message
 				for (const [optionKey, optionJson] of Object.entries(
 					dataResponse.data
 				)) {
@@ -41,7 +40,7 @@ export const fetchAssetUploadOptions = () => async (dispatch, getState) => {
 						// if the line is a source upload option or additional asset upload option,
 						// format it and add to upload options list
 						if (isSourceOption || isAssetOption) {
-							let option = JSON.parse(optionJson);
+							let option = JSON.parse(optionJson as any);
 
 							option = {
 								...option,

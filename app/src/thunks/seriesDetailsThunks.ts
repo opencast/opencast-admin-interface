@@ -243,16 +243,12 @@ export const updateSeriesMetadata = (id, values) => async (
 			values
 		);
 
-// @ts-expect-error TS(2693): 'any' only refers to a type, but is being used as ... Remove this comment to see the full error message
-		await axios.put(`/admin-ng/series/${id: any}/metadata`, data, headers);
+		await axios.put(`/admin-ng/series/${id}/metadata`, data, headers);
 
 		// updated metadata in series details redux store
 		let seriesMetadata = {
-// @ts-expect-error TS(2304): Cannot find name 'metadataInfos'.
 			flavor: metadataInfos.flavor,
-// @ts-expect-error TS(2304): Cannot find name 'metadataInfos'.
 			title: metadataInfos.title,
-// @ts-expect-error TS(2304): Cannot find name 'fields'.
 			fields: fields,
 		};
 		dispatch(setSeriesDetailsMetadata(seriesMetadata));

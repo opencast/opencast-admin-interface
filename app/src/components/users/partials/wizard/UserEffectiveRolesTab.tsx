@@ -29,21 +29,14 @@ const UserEffectiveRolesTab = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-body">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="form-container multi-select-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<label>{t("USERS.USERS.DETAILS.TABS.EFFECTIVEROLES")}</label>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<p>{t("USERS.USERS.DETAILS.DESCRIPTION.EFFECTIVEROLES")}</p>
 
 					{/* list  all roles a user got */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button className="button-like-anchor clear" onClick={() => clearSearchField()} />
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<input
 						type="text"
 						id="search_effective"
@@ -54,11 +47,9 @@ const UserEffectiveRolesTab = ({
 						placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
 					/>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<select multiple style={{ height: "26em" }}>
-// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
+{/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}
 						{items.map((item, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<option key={key} value={item.name}>
 								{item.name}
 							</option>

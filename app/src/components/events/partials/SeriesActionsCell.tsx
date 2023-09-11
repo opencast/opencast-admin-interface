@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-// @ts-expect-error TS(6142): Module '../../shared/ConfirmModal' was resolved to... Remove this comment to see the full error message
 import ConfirmModal from "../../shared/ConfirmModal";
 import {
 	checkForEventsDeleteSeriesModal,
 	deleteSeries,
 } from "../../../thunks/seriesThunks";
 import { connect } from "react-redux";
-// @ts-expect-error TS(6142): Module './modals/SeriesDetailsModal' was resolved ... Remove this comment to see the full error message
 import SeriesDetailsModal from "./modals/SeriesDetailsModal";
 import {
 	fetchNamesOfPossibleThemes,
@@ -85,11 +83,9 @@ const SeriesActionsCell = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/* series details */}
 			{hasAccess("ROLE_UI_SERIES_DETAILS_VIEW", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => showSeriesDetailsModal()}
 					className="button-like-anchor more-series"
@@ -99,7 +95,6 @@ const SeriesActionsCell = ({
 			)}
 
 			{displaySeriesDetailsModal && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<SeriesDetailsModal
 					handleClose={hideSeriesDetailsModal}
 					seriesId={row.id}
@@ -109,7 +104,6 @@ const SeriesActionsCell = ({
 
 			{/* delete series */}
 			{hasAccess("ROLE_UI_SERIES_DELETE", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => showDeleteConfirmation()}
 					className="button-like-anchor remove"
@@ -119,7 +113,6 @@ const SeriesActionsCell = ({
 			)}
 
 			{displayDeleteConfirmation && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<ConfirmModal
 					close={hideDeleteConfirmation}
 					resourceName={row.title}

@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-// @ts-expect-error TS(6142): Module '../../shared/ConfirmModal' was resolved to... Remove this comment to see the full error message
 import ConfirmModal from "../../shared/ConfirmModal";
-// @ts-expect-error TS(6142): Module './wizard/ThemeDetailsModal' was resolved t... Remove this comment to see the full error message
 import ThemeDetailsModal from "./wizard/ThemeDetailsModal";
 import { deleteTheme } from "../../../thunks/themeThunks";
 import {
@@ -54,11 +52,9 @@ const ThemesActionsCell = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/* edit themes */}
 			{hasAccess("ROLE_UI_THEMES_EDIT", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => showThemeDetails()}
 					className="button-like-anchor more"
@@ -68,7 +64,6 @@ const ThemesActionsCell = ({
 			)}
 
 			{displayThemeDetails && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<ThemeDetailsModal
 					handleClose={hideThemeDetails}
 					themeId={row.id}
@@ -78,7 +73,6 @@ const ThemesActionsCell = ({
 
 			{/* delete themes */}
 			{hasAccess("ROLE_UI_THEMES_DELETE", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<button
 					onClick={() => setDeleteConfirmation(true)}
 					className="button-like-anchor remove ng-scope ng-isolate-scope"
@@ -88,7 +82,6 @@ const ThemesActionsCell = ({
 			)}
 
 			{displayDeleteConfirmation && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<ConfirmModal
 					close={hideDeleteConfirmation}
 					resourceName={row.name}

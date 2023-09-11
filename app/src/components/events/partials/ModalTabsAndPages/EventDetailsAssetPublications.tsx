@@ -1,8 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-// @ts-expect-error TS(6142): Module './EventDetailsTabHierarchyNavigation' was ... Remove this comment to see the full error message
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
-// @ts-expect-error TS(6142): Module '../../../shared/Notifications' was resolve... Remove this comment to see the full error message
 import Notifications from "../../../shared/Notifications";
 import {
 	getAssetPublications,
@@ -31,10 +29,8 @@ const EventDetailsAssetPublications = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<div className="modal-content">
 			{/* Hierarchy navigation */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<EventDetailsTabHierarchyNavigation
 				openSubTab={openSubTab}
 				hierarchyDepth={0}
@@ -42,18 +38,13 @@ const EventDetailsAssetPublications = ({
 				subTabArgument0={"asset-publications"}
 			/>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-body">
 				{/* Notifications */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<Notifications context="not_corner" />
 
 				{/* table with list of publications */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="full-col">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="obj tbl-container operations-tbl">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<header>
 							{
 								t(
@@ -61,15 +52,10 @@ const EventDetailsAssetPublications = ({
 								) /* Publications */
 							}
 						</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<table cellPadding="0" cellSpacing="0" className="main-tbl">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<th>
 											{
 												t(
@@ -77,7 +63,6 @@ const EventDetailsAssetPublications = ({
 												) /* ID */
 											}
 										</th>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<th>
 											{
 												t(
@@ -85,7 +70,6 @@ const EventDetailsAssetPublications = ({
 												) /* Channel */
 											}
 										</th>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<th>
 											{
 												t(
@@ -93,30 +77,22 @@ const EventDetailsAssetPublications = ({
 												) /* Tags */
 											}
 										</th>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<th className="medium" />
 									</tr>
 								</thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<tbody>
 									{isFetching ||
 // @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
 										publications.map((item, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<tr key={key}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<td>{item.id}</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<td>{item.channel}</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<td>
 													{!!item.tags && item.tags.length > 0
 														? item.tags.join(", ")
 														: null}
 												</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<button
 														className="button-like-anchor details-link"
 														onClick={() =>

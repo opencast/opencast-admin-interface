@@ -153,7 +153,7 @@ export const updateBulkMetadata = (metadataFields, values) => async (
 ) => {
 	let formData = new URLSearchParams();
 	formData.append("eventIds", JSON.stringify(metadataFields.merged));
-	let metadata = [
+	let metadata : { flavor: string, title: string, fields: any[]}[] = [
 		{
 			flavor: "dublincore/episode",
 			title: "EVENTS.EVENTS.DETAILS.CATALOG.EPISODE",
@@ -167,7 +167,6 @@ export const updateBulkMetadata = (metadataFields, values) => async (
 			let value = values[field.id];
 			metadata[0].fields.push({
 				...field,
-// @ts-expect-error TS(2322): Type 'any' is not assignable to type 'never'.
 				value: value,
 			});
 		}

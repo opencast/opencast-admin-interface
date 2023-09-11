@@ -78,82 +78,62 @@ const EmbeddingCodeModal = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-animation modal-overlay" />
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<section className="modal modal-animation" id="embedding-code">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button
 						className="button-like-anchor fa fa-times close-modal"
 						onClick={() => handleClose()}
 					/>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<h2>{t("CONFIRMATIONS.ACTIONS.SHOW.EMBEDDING_CODE")}</h2>
 				</header>
 
 				{/* embed size buttons */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="embedded-code-boxes">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div
 						id="620x349"
 						className="embedSizeButton size_620x349"
 						onClick={(e) => updateTextArea(e)}
 					>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<span className="span-embedded-code">620x349</span>
 					</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div
 						id="540x304"
 						className="embedSizeButton size_540x304"
 						onClick={(e) => updateTextArea(e)}
 					>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<span className="span-embedded-code">540x304</span>
 					</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div
 						id="460x259"
 						className="embedSizeButton size_460x259"
 						onClick={(e) => updateTextArea(e)}
 					>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<span className="span-embedded-code">460x259</span>
 					</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div
 						id="380x214"
 						className="embedSizeButton size_380x214"
 						onClick={(e) => updateTextArea(e)}
 					>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<span className="span-embedded-code">380x214</span>
 					</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div
 						id="300x169"
 						className="embedSizeButton size_300x169"
 						onClick={(e) => updateTextArea(e)}
 					>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<span className="span-embedded-code">300x169</span>
 					</div>
 				</div>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<span id="id_video" className="embedded-code-no-visible">
 					{eventId}
 				</span>
 
 				{/* text area containing current iFrame code to copy*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="embedded-code-video">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<textarea
 						id="social_embed-textarea"
 						className="social_embed-textarea embedded-code-textarea"
@@ -167,23 +147,17 @@ const EmbeddingCodeModal = ({
 
 				{/* copy confirmation */}
 				{showCopySuccess && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="copyConfirm">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<span id="copy_confirm_pre">
 							{t("CONFIRMATIONS.EMBEDDING_CODE")}
 						</span>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<span id="copy_confirm">{currentSize}</span>
 					</div>
 				)}
 
 				{/* copy button */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="embedded-code-copy-to-clipboard">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-					<div className="btn-container" style={{ marginButton: "20px" }}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
+					<div className="btn-container" style={{ marginBottom: "20px" }}>
 						<button
 							className="cancel-btn"
 							style={{ fontSize: "14px" }}

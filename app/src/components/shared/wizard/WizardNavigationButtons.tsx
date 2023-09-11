@@ -2,18 +2,19 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 
-const WizardNavigationButtons = ({
-// @ts-expect-error TS(7031): Binding element 'isFirst' implicitly has an 'any' ... Remove this comment to see the full error message
+const WizardNavigationButtons : React.FC<{
+  isFirst?: any,
+	isLast?: any,
+	noValidation?: any,
+	formik: any,
+	nextPage?: any,
+	previousPage?: any,
+}> = ({
 	isFirst,
-// @ts-expect-error TS(7031): Binding element 'isLast' implicitly has an 'any' t... Remove this comment to see the full error message
 	isLast,
-// @ts-expect-error TS(7031): Binding element 'noValidation' implicitly has an '... Remove this comment to see the full error message
 	noValidation,
-// @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
 	formik,
-// @ts-expect-error TS(7031): Binding element 'nextPage' implicitly has an 'any'... Remove this comment to see the full error message
 	nextPage,
-// @ts-expect-error TS(7031): Binding element 'previousPage' implicitly has an '... Remove this comment to see the full error message
 	previousPage,
 }) => {
 	const { t } = useTranslation();
@@ -28,12 +29,9 @@ const WizardNavigationButtons = ({
 	const disabled = !(formik.dirty && formik.isValid);
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<footer>
 				{isLast ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button
 						type="submit"
 						className={cn("submit", validation)}
@@ -47,7 +45,6 @@ const WizardNavigationButtons = ({
 						{t("WIZARD.CREATE")}
 					</button>
 				) : (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button
 						type="submit"
 						className={cn("submit", validation)}
@@ -62,7 +59,6 @@ const WizardNavigationButtons = ({
 					</button>
 				)}
 				{!isFirst && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button
 						className="cancel"
 						onClick={() => previousPage(formik.values, false)}
@@ -74,7 +70,6 @@ const WizardNavigationButtons = ({
 				)}
 			</footer>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="btm-spacer" />
 		</>
 	);

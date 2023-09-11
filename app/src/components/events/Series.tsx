@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from "react";
-// @ts-expect-error TS(6142): Module '../shared/MainNav' was resolved to '/home/... Remove this comment to see the full error message
 import MainNav from "../shared/MainNav";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { connect } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-// @ts-expect-error TS(6142): Module '../shared/TableFilters' was resolved to '/... Remove this comment to see the full error message
 import TableFilters from "../shared/TableFilters";
-// @ts-expect-error TS(6142): Module '../shared/Table' was resolved to '/home/ar... Remove this comment to see the full error message
 import Table from "../shared/Table";
-// @ts-expect-error TS(6142): Module '../shared/Notifications' was resolved to '... Remove this comment to see the full error message
 import Notifications from "../shared/Notifications";
-// @ts-expect-error TS(6142): Module '../shared/NewResourceModal' was resolved t... Remove this comment to see the full error message
 import NewResourceModal from "../shared/NewResourceModal";
-// @ts-expect-error TS(6142): Module './partials/modals/DeleteSeriesModal' was r... Remove this comment to see the full error message
 import DeleteSeriesModal from "./partials/modals/DeleteSeriesModal";
 import { seriesTemplateMap } from "../../configs/tableConfigs/seriesTableConfig";
 import {
@@ -31,9 +25,7 @@ import { getTotalSeries, isShowActions } from "../../selectors/seriesSeletctor";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
-// @ts-expect-error TS(6142): Module '../Header' was resolved to '/home/arnewilk... Remove this comment to see the full error message
 import Header from "../Header";
-// @ts-expect-error TS(6142): Module '../Footer' was resolved to '/home/arnewilk... Remove this comment to see the full error message
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
@@ -178,33 +170,24 @@ const Series = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<GlobalHotKeys
 // @ts-expect-error TS(2769): No overload matches this call.
 				keyMap={availableHotkeys.general}
 				handlers={hotKeyHandlers}
 			/>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<Header />
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<section className="action-nav-bar">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="btn-group">
 					{hasAccess("ROLE_UI_SERIES_CREATE", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<button className="add" onClick={() => showNewSeriesModal()}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<i className="fa fa-plus" />
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<span>{t("EVENTS.EVENTS.ADD_SERIES")}</span>
 						</button>
 					)}
 				</div>
 
 				{/* Display modal for new series if add series button is clicked */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<NewResourceModal
 					showModal={displayNewSeriesModal}
 					handleClose={hideNewSeriesModal}
@@ -212,18 +195,14 @@ const Series = ({
 				/>
 
 				{displayDeleteSeriesModal && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<DeleteSeriesModal close={hideDeleteModal} />
 				)}
 
 				{/* Include Burger-button menu */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<nav>
 					{hasAccess("ROLE_UI_EVENTS_VIEW", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<Link
 							to="/events/events"
 							className={cn({ active: false })}
@@ -233,7 +212,6 @@ const Series = ({
 						</Link>
 					)}
 					{hasAccess("ROLE_UI_SERIES_VIEW", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<Link
 							to="/events/series"
 							className={cn({ active: true })}
@@ -245,36 +223,27 @@ const Series = ({
 				</nav>
 			</section>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div
 				className="main-view"
 				style={displayNavigation ? styleNavOpen : styleNavClosed}
 			>
 				{/* Include notifications component */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<Notifications />
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="controls-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="filters-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div
 							className={cn("drop-down-container", { disabled: !showActions })}
 							onClick={(e) => handleActionMenu(e)}
 // @ts-expect-error TS(2322): Type 'RefObject<unknown>' is not assignable to typ... Remove this comment to see the full error message
 							ref={containerAction}
 						>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<span>{t("BULK_ACTIONS.CAPTION")}</span>
 							{/* show dropdown if actions is clicked*/}
 							{displayActionMenu && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<ul className="dropdown-ul">
 									{hasAccess("ROLE_UI_SERIES_DELETE", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<li>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<button className="button-like-anchor" onClick={() => setDeleteSeriesModal(true)}>
 												{t("BULK_ACTIONS.DELETE.SERIES.CAPTION")}
 											</button>
@@ -284,23 +253,18 @@ const Series = ({
 							)}
 						</div>
 						{/* Include filters component */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<TableFilters
 							loadResource={loadingSeries}
 							loadResourceIntoTable={loadingSeriesIntoTable}
 							resource={"series"}
 						/>
 					</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<h1>{t("EVENTS.SERIES.TABLE.CAPTION")}</h1>
 					{/* Include table view */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<h4>{t("TABLE_SUMMARY", { numberOfRows: series })}</h4>
 				</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<Table templateMap={seriesTemplateMap} />
 			</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<Footer />
 		</>
 	);

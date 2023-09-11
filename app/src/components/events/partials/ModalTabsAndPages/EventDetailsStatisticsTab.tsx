@@ -4,7 +4,6 @@ import {
 	hasStatisticsError,
 } from "../../../../selectors/eventDetailsSelectors";
 import { connect } from "react-redux";
-// @ts-expect-error TS(6142): Module '../../../shared/TimeSeriesStatistics' was ... Remove this comment to see the full error message
 import TimeSeriesStatistics from "../../../shared/TimeSeriesStatistics";
 import { fetchEventStatisticsValueUpdate } from "../../../../thunks/eventDetailsThunks";
 
@@ -35,19 +34,13 @@ const EventDetailsStatisticsTab = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-body">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="full-col">
 					{hasError ? (
 						/* error message */
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="obj">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<header>{t(header) /* Statistics */}</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="modal-alert danger">
 								{t("STATISTICS.NOT_AVAILABLE")}
 							</div>
@@ -56,17 +49,13 @@ const EventDetailsStatisticsTab = ({
 						/* iterates over the different available statistics */
 // @ts-expect-error TS(7006): Parameter 'stat' implicitly has an 'any' type.
 						statistics.map((stat, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="obj" key={key}>
 								{/* title of statistic */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<header className="no-expand">{t(stat.title)}</header>
 
 								{stat.providerType === "timeSeries" ? (
 									/* visualization of statistic for time series data */
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<TimeSeriesStatistics
 											t={t}
 											resourceId={eventId}
@@ -88,7 +77,6 @@ const EventDetailsStatisticsTab = ({
 									</div>
 								) : (
 									/* unsupported type message */
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<div className="modal-alert danger">
 										{t("STATISTICS.UNSUPPORTED_TYPE")}
 									</div>

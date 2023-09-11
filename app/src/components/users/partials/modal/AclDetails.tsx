@@ -3,14 +3,11 @@ import { useTranslation } from "react-i18next";
 import { Formik } from "formik";
 import cn from "classnames";
 import { connect } from "react-redux";
-// @ts-expect-error TS(6142): Module '../wizard/AclAccessPage' was resolved to '... Remove this comment to see the full error message
 import AclAccessPage from "../wizard/AclAccessPage";
-// @ts-expect-error TS(6142): Module '../wizard/AclMetadataPage' was resolved to... Remove this comment to see the full error message
 import AclMetadataPage from "../wizard/AclMetadataPage";
 import { getAclDetails } from "../../../../selectors/aclDetailsSelectors";
 import { updateAclDetails } from "../../../../thunks/aclDetailsThunks";
 import { NewAclSchema } from "../../../../utils/validate";
-// @ts-expect-error TS(6142): Module '../../../shared/modals/ModalNavigation' wa... Remove this comment to see the full error message
 import ModalNavigation from "../../../shared/modals/ModalNavigation";
 import { checkAcls } from "../../../../thunks/aclThunks";
 
@@ -60,26 +57,20 @@ const AclDetails = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/* Navigation */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<ModalNavigation tabInformation={tabs} openTab={openTab} page={page} />
 
 			{/* formik form used in entire modal */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<Formik
 				initialValues={initialValues}
 				validationSchema={NewAclSchema[0]}
 				onSubmit={(values) => handleSubmit(values)}
 			>
 				{(formik) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						{page === 0 && <AclMetadataPage formik={formik} isEdit />}
 						{page === 1 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<AclAccessPage
 								formik={formik}
 								isEdit
@@ -89,9 +80,7 @@ const AclDetails = ({
 						)}
 
 						{/* Navigation buttons and validation */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<footer>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<button
 								className={cn("submit", {
 									active: formik.dirty && formik.isValid,
@@ -107,7 +96,6 @@ const AclDetails = ({
 							>
 								{t("SUBMIT")}
 							</button>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<button className="cancel" onClick={() => close()}>
 								{t("CANCEL")}
 							</button>

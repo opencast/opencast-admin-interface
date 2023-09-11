@@ -24,7 +24,6 @@ import {
 import { connect } from "react-redux";
 import cn from "classnames";
 
-// @ts-expect-error TS(6142): Module '../shared/EditTableViewModal' was resolved... Remove this comment to see the full error message
 import EditTableViewModal from "../shared/EditTableViewModal";
 
 // @ts-expect-error TS(2307): Cannot find module '../../img/tbl-sort.png' or its... Remove this comment to see the full error message
@@ -33,7 +32,6 @@ import sortIcon from "../../img/tbl-sort.png";
 import sortUpIcon from "../../img/tbl-sort-up.png";
 // @ts-expect-error TS(2307): Cannot find module '../../img/tbl-sort-down.png' o... Remove this comment to see the full error message
 import sortDownIcon from "../../img/tbl-sort-down.png";
-// @ts-expect-error TS(6142): Module './Notifications' was resolved to '/home/ar... Remove this comment to see the full error message
 import Notifications from "./Notifications";
 
 const SortIcon = styled.i`
@@ -53,8 +51,7 @@ const SortActiveIcon = styled.i`
     left: auto;
     width: 8px;
     height: 13px;
-    // @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-    background-image: url(${(props) =>
+    background-image: url(${(props: any) =>
 			props.order === "ASC" ? sortUpIcon : sortDownIcon})};
 `;
 
@@ -97,14 +94,14 @@ const Table = ({
 	const sizeOptions = [10, 20, 50, 100];
 
 	const lengthDivStyle = {
-		position: "absolute",
-		visibility: "hidden",
+		position: "absolute" as const,
+		visibility: "hidden" as const,
 		height: "auto",
 		width: "auto",
-		whiteSpace: "nowrap",
+		whiteSpace: "nowrap" as const,
 	};
 	const loadingTdStyle = {
-		textAlign: "center",
+		textAlign: "center" as const,
 	};
 
 	const directAccessible = getDirectAccessiblePages(pages, pagination);
@@ -180,17 +177,11 @@ const Table = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<Notifications context="above_table" />
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="action-bar">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<ul>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<li>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<button
               onClick={() => showEditTableViewModal()}
               className="button-like-anchor"
@@ -202,26 +193,19 @@ const Table = ({
 			</div>
 
 			{/* Display modal for editing table view if table edit button is clicked */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<EditTableViewModal
 				showModal={displayEditTableViewModal}
 				handleClose={hideEditTableViewModal}
 			/>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div id="length-div" style={lengthDivStyle}></div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<table className={"main-tbl highlight-hover"}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<tr>
 						{/* Only show if multiple selection is possible */}
 						{table.multiSelect ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<th className="small">
 								{/*Checkbox to select all rows*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<input
 									type="checkbox"
 									onChange={(e) => onChangeAllSelected(e)}
@@ -230,10 +214,9 @@ const Table = ({
 						) : null}
 
 						{/* todo: if not column.deactivated*/}
-// @ts-expect-error TS(7006): Parameter 'column' implicitly has an 'any' type.
+{/* @ts-expect-error TS(7006): Parameter 'column' implicitly has an 'any' type. */}
 						{table.columns.map((column, key) =>
 							column.deactivated ? null : column.sortable ? ( // Check if column is sortable and render accordingly
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<th
 									key={key}
 									className={cn({
@@ -243,60 +226,46 @@ const Table = ({
 									})}
 									onClick={() => sortByColumn(column.name)}
 								>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<span>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<span>{t(column.label)}</span>
-// @ts-expect-error TS(2339): Property 'key' does not exist on type 'never'.
+{/* @ts-expect-error TS(2339): Property 'key' does not exist on type 'never'. */}
 										{!!sortConfig && column.name === sortConfig.key ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
+// @ts-expect-error TS(2339): Property 'direction' does not exist on type 'never'.
 											<SortActiveIcon order={sortConfig.direction} />
 										) : (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<SortIcon />
 										)}
 									</span>
 								</th>
 							) : (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<th key={key} className={cn({ sortable: false })}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<span>{t(column.label)}</span>
 								</th>
 							)
 						)}
 					</tr>
 				</thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<tbody>
 					{table.loading && rows.length === 0 ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<td colSpan={table.columns.length} style={loadingTdStyle}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<i className="fa fa-spinner fa-spin fa-2x fa-fw" />
 							</td>
 						</tr>
 					) : !table.loading && rows.length === 0 ? (
 						//Show if no results and table is not loading
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<td colSpan={table.columns.length}>{t("TABLE_NO_RESULT")}</td>
 						</tr>
 					) : (
 						!table.loading &&
 						//Repeat for each row in table.rows
 						resources.map((row, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<tr key={key}>
 								{/* Show if multi selection is possible */}
 								{/* Checkbox for selection of row */}
 								{table.multiSelect && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<input
 											type="checkbox"
 											checked={row.selected}
@@ -305,26 +274,22 @@ const Table = ({
 									</td>
 								)}
 								{/* Populate table */}
-// @ts-expect-error TS(7006): Parameter 'column' implicitly has an 'any' type.
+{/* @ts-expect-error TS(7006): Parameter 'column' implicitly has an 'any' type. */}
 								{table.columns.map((column, key) =>
 									!column.template &&
 									!column.translate &&
 									!column.deactivated ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<td key={key}>{row[column.name]}</td>
 									) : !column.template &&
 									  column.translate &&
 									  !column.deactivated ? (
 										//Show only if column not template, translate, not deactivated
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<td key={key}>{t(row[column.name])}</td>
 									) : !!column.template &&
 									  !column.deactivated &&
 									  !!templateMap[column.template] ? (
 										// if column has a template then apply it
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<td key={key}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<ColumnTemplate
 												row={row}
 												column={column}
@@ -332,7 +297,6 @@ const Table = ({
 											/>
 										</td>
 									) : !column.deactivated ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<td />
 									) : null
 								)}
@@ -343,25 +307,19 @@ const Table = ({
 			</table>
 
 			{/* Selection of page size */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div id="tbl-view-controls-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div
 					className="drop-down-container small flipped"
 					onClick={() => setShowPageSizes(!showPageSizes)}
 // @ts-expect-error TS(2322): Type 'RefObject<unknown>' is not assignable to typ... Remove this comment to see the full error message
 					ref={containerPageSize}
 				>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<span>{pagination.limit}</span>
 					{/* Drop down menu for selection of page size */}
 					{showPageSizes && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<ul className="dropdown-ul">
 							{sizeOptions.map((size, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<li key={key}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<button
                     onClick={() => changePageSize(size)}
                     className="button-like-anchor"
@@ -375,28 +333,23 @@ const Table = ({
 				</div>
 
 				{/* Pagination and navigation trough pages */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="pagination">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button
 						className={"button-like-anchor " + cn("prev", { disabled: !isNavigatePrevious() })}
 						onClick={() => goToPage(pageOffset - 1)}
 					/>
 					{directAccessible.map((page, key) =>
 						page.active ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<button key={key} className="button-like-anchor active">
 								{page.label}
 							</button>
 						) : (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<button key={key} className="button-like-anchor" onClick={() => goToPage(page.number)}>
 								{page.label}
 							</button>
 						)
 					)}
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<button
 						className={"button-like-anchor " + cn("next", { disabled: !isNavigateNext() })}
 						onClick={() => goToPage(pageOffset + 1)}
@@ -501,7 +454,6 @@ const useSortRows = (resources, config = null) => {
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 const ColumnTemplate = ({ row, column, templateMap }) => {
 	let Template = templateMap[column.template];
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 	return <Template row={row} />;
 };
 

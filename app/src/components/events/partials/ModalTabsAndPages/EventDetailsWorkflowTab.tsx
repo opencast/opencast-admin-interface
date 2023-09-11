@@ -19,15 +19,12 @@ import {
 	isFetchingWorkflows,
 	performingWorkflowAction,
 } from "../../../../selectors/eventDetailsSelectors";
-// @ts-expect-error TS(6142): Module '../../../shared/Notifications' was resolve... Remove this comment to see the full error message
 import Notifications from "../../../shared/Notifications";
-// @ts-expect-error TS(6142): Module '../wizards/RenderWorkflowConfig' was resol... Remove this comment to see the full error message
 import RenderWorkflowConfig from "../wizards/RenderWorkflowConfig";
 import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess, parseBooleanInObject } from "../../../../utils/utils";
 import { setDefaultConfig } from "../../../../utils/workflowPanelUtils";
-// @ts-expect-error TS(6142): Module '../../../shared/DropDown' was resolved to ... Remove this comment to see the full error message
 import DropDown from "../../../shared/DropDown";
 
 /**
@@ -156,24 +153,16 @@ const EventDetailsWorkflowTab = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<div className="modal-content" data-modal-tab-content="workflows">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-body">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="full-col">
 					{/* Notifications */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<Notifications context="not_corner" />
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<ul>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<li>
 							{workflows.scheduling || (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div className="obj tbl-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<header>
 										{
 											t(
@@ -181,19 +170,13 @@ const EventDetailsWorkflowTab = ({
 											) /* Workflow instances */
 										}
 									</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<table className="main-tbl">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<th>
 														{t("EVENTS.EVENTS.DETAILS.WORKFLOWS.ID") /* ID */}
 													</th>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<th>
 														{
 															t(
@@ -201,7 +184,6 @@ const EventDetailsWorkflowTab = ({
 															) /* Title */
 														}
 													</th>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<th>
 														{
 															t(
@@ -209,7 +191,6 @@ const EventDetailsWorkflowTab = ({
 															) /* Submitter */
 														}
 													</th>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<th>
 														{
 															t(
@@ -217,7 +198,6 @@ const EventDetailsWorkflowTab = ({
 															) /* Submitted */
 														}
 													</th>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<th>
 														{
 															t(
@@ -226,7 +206,6 @@ const EventDetailsWorkflowTab = ({
 														}
 													</th>
 													{isRoleWorkflowEdit && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<th className="fit">
 															{
 																t(
@@ -235,11 +214,9 @@ const EventDetailsWorkflowTab = ({
 															}
 														</th>
 													)}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<th className="medium" />
 												</tr>
 											</thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<tbody>
 												{isLoading ||
 													workflows.entries.map((
@@ -248,28 +225,20 @@ const EventDetailsWorkflowTab = ({
 // @ts-expect-error TS(7006): Parameter 'key' implicitly has an 'any' type.
 														key /*orderBy:'submitted':true track by $index"*/
 													) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<tr key={key}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>{item.id}</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>{item.title}</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>{item.submitter}</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>
 																{t("dateFormats.dateTime.medium", {
 																	dateTime: new Date(item.submitted),
 																})}
 															</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>{t(item.status)}</td>
 															{isRoleWorkflowEdit && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<td>
 																	{item.status ===
 																		"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.RUNNING" && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<button
 																			onClick={() =>
 																				workflowAction(item.id, "STOP")
@@ -284,7 +253,6 @@ const EventDetailsWorkflowTab = ({
 																	)}
 																	{item.status ===
 																		"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.PAUSED" && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<button
 																			onClick={() =>
 																				workflowAction(item.id, "NONE")
@@ -300,7 +268,6 @@ const EventDetailsWorkflowTab = ({
 																	)}
 																	{item.status ===
 																		"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.PAUSED" && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<button
 																			onClick={() =>
 																				workflowAction(item.id, "RETRY")
@@ -321,7 +288,6 @@ const EventDetailsWorkflowTab = ({
 																			"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.STOPPED") &&
 																		!isCurrentWorkflow(item.id) &&
 																		isRoleWorkflowDelete && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																			<button
 																				onClick={() => deleteWorkflow(item.id)}
 																				className="button-like-anchor remove fa-fw"
@@ -334,9 +300,7 @@ const EventDetailsWorkflowTab = ({
 																		)}
 																</td>
 															)}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<button
 																	className="button-like-anchor details-link"
 																	onClick={() =>
@@ -360,16 +324,13 @@ const EventDetailsWorkflowTab = ({
 
 							{workflows.scheduling &&
 								(isLoading || (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Formik
 										initialValues={setInitialValues()}
 										enableReinitialize
 										onSubmit={(values) => handleSubmit(values)}
 									>
 										{(formik) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<div className="obj list-obj">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<header>
 													{
 														t(
@@ -377,17 +338,11 @@ const EventDetailsWorkflowTab = ({
 														) /* Workflow configuration */
 													}
 												</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<div className="obj list-obj quick-actions">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<table className="main-tbl">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<th>
 																		{
 																			t(
@@ -398,17 +353,11 @@ const EventDetailsWorkflowTab = ({
 																</tr>
 															</thead>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<tbody>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<div className="obj-container padded">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																			<div className="editable">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																				<DropDown
 																					value={
 																						formik.values.workflowDefinition
@@ -454,7 +403,6 @@ const EventDetailsWorkflowTab = ({
 																				/>
 																				{/*pre-select-from="workflowDefinitionIds"*/}
 																			</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																			<div className="obj-container padded">
 																				{workflow.description}
 																			</div>
@@ -465,15 +413,10 @@ const EventDetailsWorkflowTab = ({
 														</table>
 													</div>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<div className="obj list-obj quick-actions">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<table className="main-tbl">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<thead>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<th>
 																		{
 																			t(
@@ -484,24 +427,18 @@ const EventDetailsWorkflowTab = ({
 																</tr>
 															</thead>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<tbody>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<div className="obj-container padded">
 																			{hasCurrentAgentAccess() &&
 																				isRoleWorkflowEdit &&
 																				!!workflowConfiguration &&
 																				!!workflowConfiguration.workflowId && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																					<div
 																						id="event-workflow-configuration"
 																						className="checkbox-container obj-container"
 																					>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																						<RenderWorkflowConfig
 																							workflowId={
 																								workflowConfiguration.workflowId
@@ -512,7 +449,6 @@ const EventDetailsWorkflowTab = ({
 																				)}
 																			{(!!workflowConfiguration &&
 																				!!workflowConfiguration.workflowId) || (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																				<div>
 																					{
 																						t(
@@ -535,11 +471,8 @@ const EventDetailsWorkflowTab = ({
 													!!workflowConfiguration &&
 													!!workflowConfiguration.workflowId &&
 													formik.dirty && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<footer style={{ padding: "15px" }}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<div className="pull-left">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<button
 																	type="reset"
 																	onClick={() => {
@@ -557,9 +490,7 @@ const EventDetailsWorkflowTab = ({
 																	{t("CANCEL") /* Cancel */}
 																</button>
 															</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<div className="pull-right">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<button
 																	onClick={() => formik.handleSubmit()}
 																	disabled={!(formik.dirty && formik.isValid)}

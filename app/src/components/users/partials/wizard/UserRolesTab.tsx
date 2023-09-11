@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { fetchRolesWithTarget } from "../../../../thunks/aclThunks";
-// @ts-expect-error TS(6142): Module '../../../shared/wizard/SelectContainer' wa... Remove this comment to see the full error message
 import SelectContainer from "../../../shared/wizard/SelectContainer";
 
 /**
@@ -27,15 +26,11 @@ const UserRolesTab = ({
 	}, []);
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-body">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="form-container">
 					{/*Select container for roles*/}
 					{!loading && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<SelectContainer
 							resource={{
 								searchable: true,

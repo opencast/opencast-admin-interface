@@ -3,13 +3,9 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-// @ts-expect-error TS(6142): Module '../Header' was resolved to '/home/arnewilk... Remove this comment to see the full error message
 import Header from "../Header";
-// @ts-expect-error TS(6142): Module '../Footer' was resolved to '/home/arnewilk... Remove this comment to see the full error message
 import Footer from "../Footer";
-// @ts-expect-error TS(6142): Module '../shared/MainNav' was resolved to '/home/... Remove this comment to see the full error message
 import MainNav from "../shared/MainNav";
-// @ts-expect-error TS(6142): Module '../shared/TimeSeriesStatistics' was resolv... Remove this comment to see the full error message
 import TimeSeriesStatistics from "../shared/TimeSeriesStatistics";
 import {
 	getStatistics,
@@ -82,20 +78,14 @@ const Statistics = ({
 	};
 
 	return (
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-        <span>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
+                <span>
 			<Header />
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<section className="action-nav-bar">
 				{/* Include Burger-button menu */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<nav>
 					{hasAccess("ROLE_UI_STATISTICS_ORGANIZATION_VIEW", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<Link
 							to="/statistics/organization"
 							className={cn({ active: true })}
@@ -108,17 +98,13 @@ const Statistics = ({
 			</section>
 
 			{/* main view of this page, displays statistics */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div
 				className="main-view"
 				style={displayNavigation ? styleNavOpen : styleNavClosed}
 			>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="obj statistics">
 					{/* heading */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="controls-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<h1>
 							{" "}
 							{t("STATISTICS.NAVIGATION.ORGANIZATION") /* Organisation */}{" "}
@@ -128,9 +114,7 @@ const Statistics = ({
 					{!isLoadingStatistics &&
 						(hasError || !hasStatistics ? (
 							/* error message */
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="obj">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div className="modal-alert danger">
 									{t("STATISTICS.NOT_AVAILABLE")}
 								</div>
@@ -139,17 +123,13 @@ const Statistics = ({
 							/* iterates over the different available statistics */
 // @ts-expect-error TS(7006): Parameter 'stat' implicitly has an 'any' type.
 							statistics.map((stat, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div className="obj" key={key}>
 									{/* title of statistic */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<header className="no-expand">{t(stat.title)}</header>
 
 									{stat.providerType === "timeSeries" ? (
 										/* visualization of statistic for time series data */
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<TimeSeriesStatistics
 												t={t}
 												resourceId={organizationId}
@@ -157,7 +137,7 @@ const Statistics = ({
 												providerId={stat.providerId}
 												fromDate={stat.from}
 												toDate={stat.to}
-												timeMode={stat.timeMode: any}
+												timeMode={stat.timeMode}
 												dataResolution={stat.dataResolution}
 												statDescription={stat.description}
 												onChange={recalculateStatistics}
@@ -171,7 +151,6 @@ const Statistics = ({
 										</div>
 									) : (
 										/* unsupported type message */
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<div className="modal-alert danger">
 											{t("STATISTICS.UNSUPPORTED_TYPE")}
 										</div>
@@ -181,7 +160,6 @@ const Statistics = ({
 						))}
 				</div>
 			</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<Footer />
 		</span>
     );

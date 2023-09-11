@@ -1,6 +1,4 @@
-// @ts-expect-error TS(6142): Module '../../components/systems/partials/ServersS... Remove this comment to see the full error message
 import ServersStatusCell from "../../components/systems/partials/ServersStatusCell";
-// @ts-expect-error TS(6142): Module '../../components/systems/partials/ServersM... Remove this comment to see the full error message
 import ServersMaintenanceCell from "../../components/systems/partials/ServersMaintenanceCell";
 
 /**

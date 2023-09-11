@@ -120,8 +120,7 @@ export const isFetchingWorkflowOperationDetails = (state) =>
 export const getWorkflowErrors = (state) => state.eventDetails.workflowErrors;
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 export const isFetchingWorkflowErrors = (state) =>
-// @ts-expect-error TS(7005): Variable 'any' implicitly has an 'any' type.
-	state: any.eventDetails.fetchingWorkflowErrorsInProgress;
+	state.eventDetails.fetchingWorkflowErrorsInProgress;
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 export const getWorkflowErrorDetails = (state) =>
 	state.eventDetails.workflowErrorDetails;

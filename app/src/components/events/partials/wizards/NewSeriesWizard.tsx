@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/NewThemePage' was res... Remove this comment to see the full error message
 import NewThemePage from "../ModalTabsAndPages/NewThemePage";
-// @ts-expect-error TS(6142): Module './NewSeriesSummary' was resolved to '/home... Remove this comment to see the full error message
 import NewSeriesSummary from "./NewSeriesSummary";
 import {
 	getSeriesExtendedMetadata,
 	getSeriesMetadata,
 } from "../../../../selectors/seriesSeletctor";
 import { connect } from "react-redux";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/NewMetadataPage' was ... Remove this comment to see the full error message
 import NewMetadataPage from "../ModalTabsAndPages/NewMetadataPage";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/NewMetadataExtendedPa... Remove this comment to see the full error message
 import NewMetadataExtendedPage from "../ModalTabsAndPages/NewMetadataExtendedPage";
-// @ts-expect-error TS(6142): Module '../ModalTabsAndPages/NewAccessPage' was re... Remove this comment to see the full error message
 import NewAccessPage from "../ModalTabsAndPages/NewAccessPage";
 import { postNewSeries } from "../../../../thunks/seriesThunks";
-// @ts-expect-error TS(6142): Module '../../../shared/wizard/WizardStepper' was ... Remove this comment to see the full error message
 import WizardStepper from "../../../shared/wizard/WizardStepper";
 import { initialFormValuesNewSeries } from "../../../../configs/modalConfig";
 import { NewSeriesSchema } from "../../../../utils/validate";
@@ -105,10 +99,8 @@ const NewSeriesWizard = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/* Initialize overall form */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<Formik
 				initialValues={snapshot}
 				validationSchema={currentValidationSchema}
@@ -123,10 +115,8 @@ const NewSeriesWizard = ({
 					}, [page]);
 
 					return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<>
 							{/* Stepper that shows each step of wizard as header */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<WizardStepper
 								steps={steps}
 								page={page}
@@ -136,10 +126,8 @@ const NewSeriesWizard = ({
 								formik={formik}
 								hasAccessPage
 							/>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div>
 								{page === 0 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<NewMetadataPage
 										nextPage={nextPage}
 										formik={formik}
@@ -148,7 +136,6 @@ const NewSeriesWizard = ({
 									/>
 								)}
 								{page === 1 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<NewMetadataExtendedPage
 										nextPage={nextPage}
 										previousPage={previousPage}
@@ -157,7 +144,6 @@ const NewSeriesWizard = ({
 									/>
 								)}
 								{page === 2 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<NewAccessPage
 										nextPage={nextPage}
 										previousPage={previousPage}
@@ -166,7 +152,6 @@ const NewSeriesWizard = ({
 									/>
 								)}
 								{page === 3 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<NewThemePage
 										nextPage={nextPage}
 										previousPage={previousPage}
@@ -174,7 +159,6 @@ const NewSeriesWizard = ({
 									/>
 								)}
 								{page === 4 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<NewSeriesSummary
 										previousPage={previousPage}
 										formik={formik}
@@ -199,7 +183,6 @@ const getInitialValues = (metadataFields, extendedMetadata) => {
 	);
 
 	// Add all initial form values known upfront listed in newSeriesConfig
-// @ts-expect-error TS(2550): Property 'entries' does not exist on type 'ObjectC... Remove this comment to see the full error message
 	for (const [key, value] of Object.entries(initialFormValuesNewSeries)) {
 // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 		initialValues[key] = value;

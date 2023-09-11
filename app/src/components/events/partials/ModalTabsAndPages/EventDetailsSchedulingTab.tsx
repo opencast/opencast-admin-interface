@@ -8,7 +8,6 @@ import { createTheme, ThemeProvider } from "@material-ui/core";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { Field, Formik } from "formik";
-// @ts-expect-error TS(6142): Module '../../../shared/Notifications' was resolve... Remove this comment to see the full error message
 import Notifications from "../../../shared/Notifications";
 import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import {
@@ -47,7 +46,6 @@ import {
 	hasDeviceAccess,
 } from "../../../../utils/resourceUtils";
 import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
-// @ts-expect-error TS(6142): Module '../../../shared/DropDown' was resolved to ... Remove this comment to see the full error message
 import DropDown from "../../../shared/DropDown";
 
 /**
@@ -231,36 +229,26 @@ const EventDetailsSchedulingTab = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-body">
 				{/* Notifications */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<Notifications context="not_corner" />
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="full-col">
 					{
 						/*list of scheduling conflicts*/
 						conflicts.length > 0 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<table className="main-tbl scheduling-conflict">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<tbody>
-// @ts-expect-error TS(7006): Parameter 'conflict' implicitly has an 'any' type.
+{/* @ts-expect-error TS(7006): Parameter 'conflict' implicitly has an 'any' type. */}
 									{conflicts.map((conflict, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr key={key}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>{conflict.title}</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{t("dateFormats.dateTime.medium", {
 													dateTime: new Date(conflict.start),
 												})}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{t("dateFormats.dateTime.medium", {
 													dateTime: new Date(conflict.end),
@@ -277,24 +265,19 @@ const EventDetailsSchedulingTab = ({
 						/* Scheduling configuration */
 						hasSchedulingProperties && (
 							/* Initialize form */
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<MuiPickersUtilsProvider
 								utils={DateFnsUtils}
 // @ts-expect-error TS(2532): Object is possibly 'undefined'.
 								locale={currentLanguage.dateLocale}
 							>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<Formik
 									enableReinitialize
 									initialValues={getInitialValues()}
 									onSubmit={(values) => submitForm(values).then((r) => {})}
 								>
 									{(formik) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<div className="obj tbl-details">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<span>
 													{
 														t(
@@ -303,42 +286,31 @@ const EventDetailsSchedulingTab = ({
 													}
 												</span>
 											</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<table className="main-tbl">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<tbody>
 														{/* time zone */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>
 																{t(
 																	"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.TIMEZONE"
 																)}
 															</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>{tz}</td>
 														</tr>
 
 														{/* start date */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>
 																{t(
 																	"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_DATE"
 																)}
 															</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>
 																{hasAccessRole &&
 																accessAllowed(formik.values.captureAgent) ? (
 																	/* date picker for start date */
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<ThemeProvider theme={theme}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<DatePicker
 																			name="scheduleStartDate"
 // @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
@@ -356,7 +328,6 @@ const EventDetailsSchedulingTab = ({
 																		/>
 																	</ThemeProvider>
 																) : (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<>
 																		{source.start.date.toLocaleDateString(
 // @ts-expect-error TS(2532): Object is possibly 'undefined'.
@@ -368,22 +339,18 @@ const EventDetailsSchedulingTab = ({
 														</tr>
 
 														{/* start time */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>
 																{t(
 																	"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_TIME"
 																)}
 															</td>
 															{hasAccessRole && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<td className="editable">
 																	{/* drop-down for hour
 																	 *
 																	 * This is the second input field.
 																	 */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<DropDown
 																		value={formik.values.scheduleStartHour}
 																		text={formik.values.scheduleStartHour}
@@ -413,7 +380,6 @@ const EventDetailsSchedulingTab = ({
 																	 *
 																	 * This is the third input field.
 																	 */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<DropDown
 																		value={formik.values.scheduleStartMinute}
 																		text={formik.values.scheduleStartMinute}
@@ -441,7 +407,6 @@ const EventDetailsSchedulingTab = ({
 																</td>
 															)}
 															{!hasAccessRole && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<td>
 																	{makeTwoDigits(source.start.hour)}:
 																	{makeTwoDigits(source.start.minute)}
@@ -450,22 +415,18 @@ const EventDetailsSchedulingTab = ({
 														</tr>
 
 														{/* duration */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>
 																{t(
 																	"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.DURATION"
 																)}
 															</td>
 															{hasAccessRole && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<td className="editable">
 																	{/* drop-down for hour
 																	 *
 																	 * This is the fourth input field.
 																	 */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<DropDown
 																		value={formik.values.scheduleDurationHours}
 																		text={formik.values.scheduleDurationHours}
@@ -493,7 +454,6 @@ const EventDetailsSchedulingTab = ({
 																	 *
 																	 * This is the fifth input field.
 																	 */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<DropDown
 																		value={
 																			formik.values.scheduleDurationMinutes
@@ -521,7 +481,6 @@ const EventDetailsSchedulingTab = ({
 																</td>
 															)}
 															{!hasAccessRole && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<td>
 																	{makeTwoDigits(source.duration.hour)}:
 																	{makeTwoDigits(source.duration.minute)}
@@ -530,22 +489,18 @@ const EventDetailsSchedulingTab = ({
 														</tr>
 
 														{/* end time */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>
 																{t(
 																	"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.END_TIME"
 																)}
 															</td>
 															{hasAccessRole && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<td className="editable">
 																	{/* drop-down for hour
 																	 *
 																	 * This is the sixth input field.
 																	 */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<DropDown
 																		value={formik.values.scheduleEndHour}
 																		text={formik.values.scheduleEndHour}
@@ -575,7 +530,6 @@ const EventDetailsSchedulingTab = ({
 																	 *
 																	 * This is the seventh input field.
 																	 */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<DropDown
 																		value={formik.values.scheduleEndMinute}
 																		text={formik.values.scheduleEndMinute}
@@ -604,7 +558,6 @@ const EventDetailsSchedulingTab = ({
 																	{/* display end date if on different day to start date */}
 																	{formik.values.scheduleEndDate.toString() !==
 																		formik.values.scheduleStartDate.toString() && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<span style={{ marginLeft: "10px" }}>
 																			{new Date(
 																				formik.values.scheduleEndDate
@@ -617,13 +570,11 @@ const EventDetailsSchedulingTab = ({
 																</td>
 															)}
 															{!hasAccessRole && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<td>
 																	{makeTwoDigits(source.end.hour)}:
 																	{makeTwoDigits(source.end.minute)}
 																	{formik.values.scheduleEndDate.toString() !==
 																		formik.values.scheduleStartDate.toString() && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<span>
 																			{new Date(
 																				formik.values.scheduleEndDate
@@ -638,22 +589,18 @@ const EventDetailsSchedulingTab = ({
 														</tr>
 
 														{/* capture agent (aka. room or location) */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>
 																{t(
 																	"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"
 																)}
 															</td>
 															{hasAccessRole && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<td className="editable">
 																	{/* drop-down for capture agents (aka. rooms or locations)
 																	 *
 																	 * This is the eighth input field.
 																	 */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<DropDown
 																		value={formik.values.captureAgent}
 																		text={formik.values.captureAgent}
@@ -681,20 +628,16 @@ const EventDetailsSchedulingTab = ({
 																	/>
 																</td>
 															)}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															{!hasAccessRole && <td>{source.device.name}</td>}
 														</tr>
 
 														{/* inputs */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>
 																{t(
 																	"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.INPUTS"
 																)}
 															</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<td>
 																{!!formik.values.captureAgent &&
 																	!!getInputs(formik.values.captureAgent) &&
@@ -709,9 +652,7 @@ const EventDetailsSchedulingTab = ({
 																		  getInputs(formik.values.captureAgent).map(
 // @ts-expect-error TS(7006): Parameter 'inputMethod' implicitly has an 'any' ty... Remove this comment to see the full error message
 																				(inputMethod, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																					<label key={key}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																						<Field
 																							name="inputs"
 																							type="checkbox"
@@ -723,7 +664,6 @@ const EventDetailsSchedulingTab = ({
 																				)
 																		  )
 																		: formik.values.inputs.map((input, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																				<span key={key}>
 																					{t(
 																						getInputs(
@@ -733,7 +673,6 @@ const EventDetailsSchedulingTab = ({
 																							(agent) => agent.id === input
 																						).value
 																					)}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																					<br />
 																				</span>
 																		  )))}
@@ -745,12 +684,9 @@ const EventDetailsSchedulingTab = ({
 
 											{/* Save and cancel buttons */}
 											{formik.dirty && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<>
 													{/* Render buttons for updating scheduling */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<footer style={{ padding: "15px" }}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<button
 															type="submit"
 															onClick={() => formik.handleSubmit()}
@@ -762,7 +698,6 @@ const EventDetailsSchedulingTab = ({
 														>
 															{t("SAVE") /* Save */}
 														</button>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<button
 															className="cancel"
 															onClick={() => {
@@ -775,7 +710,6 @@ const EventDetailsSchedulingTab = ({
 														</button>
 													</footer>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<div className="btm-spacer" />
 												</>
 											)}

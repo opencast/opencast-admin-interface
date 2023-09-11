@@ -14,11 +14,9 @@ import {
 	isSavingComment,
 	isSavingCommentReply,
 } from "../../../../selectors/eventDetailsSelectors";
-// @ts-expect-error TS(6142): Module '../../../shared/Notifications' was resolve... Remove this comment to see the full error message
 import Notifications from "../../../shared/Notifications";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
-// @ts-expect-error TS(6142): Module '../../../shared/DropDown' was resolved to ... Remove this comment to see the full error message
 import DropDown from "../../../shared/DropDown";
 
 /**
@@ -129,49 +127,35 @@ const EventDetailsCommentsTab = ({
 
 	// todo: add user and role management
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-body">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<Notifications context="not-corner" />
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="full-col">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="obj comments">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<header>{t(header)}</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="comment-container">
 								{
 									/* all comments listed below each other */
 // @ts-expect-error TS(7006): Parameter 'comment' implicitly has an 'any' type.
 									comments.map((comment, key) => (
 										/* one comment */
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<div
 											className={`comment ${
 												replyCommentId === key ? "active" : ""
 											}`}
 											key={key}
 										>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<hr />
 
 											{/* details about the comment */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<div className="date">
 												{t("dateFormats.dateTime.short", {
 													dateTime: new Date(comment.creationDate),
 												}) || ""}
 											</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<h4>{comment.author.name}</h4>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<span className="category">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<strong>
 													{t("EVENTS.EVENTS.DETAILS.COMMENTS.REASON")}
 												</strong>
@@ -179,7 +163,6 @@ const EventDetailsCommentsTab = ({
 											</span>
 
 											{/* comment text */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<p>{comment.text}</p>
 
 											{/* links with performable actions for the comment */}
@@ -187,7 +170,6 @@ const EventDetailsCommentsTab = ({
 												"ROLE_UI_EVENTS_DETAILS_COMMENTS_DELETE",
 												user
 											) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<button
 													onClick={() => deleteComment(comment)}
 													className="button-like-anchor delete"
@@ -199,7 +181,6 @@ const EventDetailsCommentsTab = ({
 												"ROLE_UI_EVENTS_DETAILS_COMMENTS_REPLY",
 												user
 											) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<button
 													onClick={
 														() => replyTo(comment, key) /* enters reply mode */
@@ -209,7 +190,6 @@ const EventDetailsCommentsTab = ({
 													{t("EVENTS.EVENTS.DETAILS.COMMENTS.REPLY")}
 												</button>
 											)}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<span
 												className="resolve"
 												ng-class="{ resolved : comment.resolvedStatus }"
@@ -221,31 +201,23 @@ const EventDetailsCommentsTab = ({
 												/* all replies to this comment listed below each other */
 // @ts-expect-error TS(7006): Parameter 'reply' implicitly has an 'any' type.
 												comment.replies.map((reply, replyKey) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<div className="comment is-reply" key={replyKey}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<hr />
 
 														{/* details about the reply and reply text */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<div className="date">
 															{t("dateFormats.dateTime.short", {
 																dateTime: new Date(reply.creationDate),
 															}) || ""}
 														</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<h4>{reply.author.name}</h4>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<span className="category">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<strong>
 																{t("EVENTS.EVENTS.DETAILS.COMMENTS.REASON")}
 															</strong>
 															:{" " + t(comment.reason) || ""}
 														</span>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<p>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<span>@{comment.author.name}</span> {reply.text}
 														</p>
 
@@ -254,7 +226,6 @@ const EventDetailsCommentsTab = ({
 															"ROLE_UI_EVENTS_DETAILS_COMMENTS_DELETE",
 															user
 														) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<button
 																onClick={() =>
 // @ts-expect-error TS(2554): Expected 2 arguments, but got 3.
@@ -262,7 +233,6 @@ const EventDetailsCommentsTab = ({
 																}
 																className="button-like-anchor delete"
 															>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<i className="fa fa-times-circle" />
 																{t("EVENTS.EVENTS.DETAILS.COMMENTS.DELETE")}
 															</button>
@@ -280,10 +250,8 @@ const EventDetailsCommentsTab = ({
 							/* form for writing a comment (not shown, while replying to a comment is active) */
 							replyToComment ||
 								(hasAccess("ROLE_UI_EVENTS_DETAILS_COMMENTS_CREATE", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<form className="add-comment">
 										{/* text field */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<textarea
 											value={newCommentText}
 											onChange={(comment) =>
@@ -295,13 +263,10 @@ const EventDetailsCommentsTab = ({
 										></textarea>
 
 										{/* drop-down for selecting a reason for the comment */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<div className="editable">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<DropDown
 												value={commentReason}
 												text={t(commentReason)}
-// @ts-expect-error TS(2550): Property 'entries' does not exist on type 'ObjectC... Remove this comment to see the full error message
 												options={Object.entries(commentReasons)}
 												type={"comment"}
 												required={true}
@@ -317,7 +282,6 @@ const EventDetailsCommentsTab = ({
 										</div>
 
 										{/* submit button for comment (only active, if text has been written and a reason has been selected) */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<button
 											disabled={
 												!!(
@@ -348,10 +312,8 @@ const EventDetailsCommentsTab = ({
 						{
 							/* form for writing a reply to a comment (only shown, while replying to a comment is active) */
 							replyToComment && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<form className="add-comment reply">
 									{/* text field */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<textarea
 										value={commentReplyText}
 										onChange={(reply) =>
@@ -366,7 +328,6 @@ const EventDetailsCommentsTab = ({
 									></textarea>
 
 									{/* submit button for comment reply (only active, if text has been written) */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<button
 										disabled={
 											!!(
@@ -394,7 +355,6 @@ const EventDetailsCommentsTab = ({
 									</button>
 
 									{/* cancel button (exits reply mode) */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<button className="red" onClick={() => exitReplyMode()}>
 										{
 											t(
@@ -408,9 +368,7 @@ const EventDetailsCommentsTab = ({
 										"ROLE_UI_EVENTS_DETAILS_COMMENTS_RESOLVE",
 										user
 									) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<input
 												type="checkbox"
 												id="resolved-checkbox"
@@ -419,7 +377,6 @@ const EventDetailsCommentsTab = ({
 													setCommentReplyIsResolved(!commentReplyIsResolved)
 												}
 											/>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<label>
 												{
 													t(

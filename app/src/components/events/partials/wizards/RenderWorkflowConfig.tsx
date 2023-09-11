@@ -27,7 +27,7 @@ const RenderWorkflowConfig = (props) => {
 
 	const descriptionBoxStyle = {
 		margin: "15px 0 0 0",
-		position: "relative",
+		position: "relative" as const,
 		border: "solid #c9d0d3",
 		borderWidth: "1px",
 		backgroundColor: "#fafafa",
@@ -39,40 +39,31 @@ const RenderWorkflowConfig = (props) => {
 		margin: "10px",
 		fontFamily: '"Open sans", Helvetica,sans-serif',
 		fontSize: "12px",
-		whiteSpace: "pre-line",
+		whiteSpace: "pre-line" as const,
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{displayDescription && description.length > 0 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="collapsible-box" style={descriptionBoxStyle}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div style={descriptionTextStyle}>{description}</div>
 				</div>
 			)}
 
 			{configPanel.length > 0 && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<form>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div id="workflow-configuration">
-// @ts-expect-error TS(7006): Parameter 'configOption' implicitly has an 'any' t... Remove this comment to see the full error message
+{/* @ts-expect-error TS(7006): Parameter 'configOption' implicitly has an 'any' t... Remove this comment to see the full error message */}
 						{configPanel.map((configOption, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<fieldset key={key}>
 								{!!configOption.legend && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<legend>{configOption.legend}</legend>
 								)}
 								{!!configOption.description && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<p>{configOption.description}</p>
 								)}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<ul>
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
+{/* @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type. */}
 									{configOption.fieldset?.map((field, keys) =>
 										renderInputByType(field, keys, formik)
 									)}
@@ -91,20 +82,15 @@ const RenderWorkflowConfig = (props) => {
 const renderInputByType = (field, key, formik) => {
 	switch (field.type) {
 		case "checkbox":
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			return <RenderCheckbox field={field} key={key} formik={formik} />;
 		case "radio":
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			return <RenderRadio field={field} key={key} formik={formik} />;
 		case "number":
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			return <RenderNumber field={field} key={key} formik={formik} />;
 		case "text":
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			return <RenderText field={field} key={key} formik={formik} />;
     case "datetime-local":
-      // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-      return <RenderDatetimeLocal field={field} key={key} formik={formik} />;
+            return <RenderDatetimeLocal field={field} key={key} formik={formik} />;
 		default:
 			return "";
 	}
@@ -114,8 +100,7 @@ const renderInputByType = (field, key, formik) => {
 const RenderDatetimeLocal = ({ field, key, formik }) => {
   field.value = undefined;
 
-  // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-  return <RenderField field={field} key={key} formik={formik} />;
+    return <RenderField field={field} key={key} formik={formik} />;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
@@ -123,14 +108,12 @@ const RenderCheckbox = ({ field, key, formik }) => {
   field.defaultValue = field.value;
   field.value = undefined;
 
-  // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-  return <RenderField field={field} key={key} formik={formik} />;
+    return <RenderField field={field} key={key} formik={formik} />;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 const RenderRadio = ({ field, key, formik }) => {
-  // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-  return <RenderField field={field} key={key} formik={formik} />;
+    return <RenderField field={field} key={key} formik={formik} />;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
@@ -148,20 +131,27 @@ const RenderNumber = ({ field, key, formik }) => {
   field.defaultValue = field.value;
   field.value = undefined;
 
-  // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-  return <RenderField field={field} key={key} formik={formik} validate={validate}/>;
+    return <RenderField field={field} key={key} formik={formik} validate={validate}/>;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 const RenderText = ({ field, key, formik }) => {
   field.value = undefined;
 
-  // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-  return <RenderField field={field} key={key} formik={formik} />;
+    return <RenderField field={field} key={key} formik={formik} />;
 };
 
-// @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderField = ({field, key, formik, validate = undefined }) => {
+const RenderField : React.FC<{
+  field: any,
+  key: any,
+  formik: any,
+  validate?: (value: any) => string | undefined,
+}> = ({
+  field,
+  key,
+  formik,
+  validate = undefined
+}) => {
 	// id used for Field and label
 	const uuid = uuidv4();
 	const disabled = !!field.disabled ? field.disabled : false;
@@ -171,8 +161,7 @@ const RenderField = ({field, key, formik, validate = undefined }) => {
   const renderField = () => {
     if (field.value) {
       return(
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-        <Field
+                <Field
           id={uuid}
           defaultValue={field.defaultValue}
           value={field.value}
@@ -187,8 +176,7 @@ const RenderField = ({field, key, formik, validate = undefined }) => {
       )
     } else {
       return(
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-        <Field
+                <Field
           id={uuid}
           defaultValue={field.defaultValue}
           validate={validate}
@@ -204,17 +192,14 @@ const RenderField = ({field, key, formik, validate = undefined }) => {
   }
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<li key={key}>
 			{renderField()}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<label htmlFor={uuid}>{field.label}</label>
 			{/* if input has an additional fieldset or further configuration inputs
             then render again by input type*/}
 			{!!field.fieldset && !!formik.values.configuration[field.name] && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<ul className="workflow-configuration-subpanel">
-// @ts-expect-error TS(7006): Parameter 'f' implicitly has an 'any' type.
+{/* @ts-expect-error TS(7006): Parameter 'f' implicitly has an 'any' type. */}
 					{field.fieldset?.map((f, keys) => renderInputByType(f, keys, formik))}
 				</ul>
 			)}

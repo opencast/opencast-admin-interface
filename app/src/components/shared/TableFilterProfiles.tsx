@@ -130,40 +130,30 @@ const TableFiltersProfiles = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{/*Show filter profiles dialog if settings icon in TableFilters is clicked*/}
 			{showFilterSettings && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="btn-dd filter-settings-dd df-profile-filters">
 					{/* depending on settingsMode show list of all saved profiles or the chosen profile to edit*/}
 					{settingsMode ? (
 						// if settingsMode is true the list with all saved profiles is shown
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="filters-list">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<button
 									className="button-like-anchor icon close"
 									onClick={() => setFilterSettings(!showFilterSettings)}
 								/>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<h4>{t("TABLE_FILTERS.PROFILES.FILTERS_HEADER")}</h4>
 							</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<ul>
 								{currentProfiles.length === 0 ? (
 									//if no profiles saved yet
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<li>{t("TABLE_FILTERS.PROFILES.EMPTY")}</li>
 								) : (
 									// repeat for each profile in profiles filtered for currently shown resource (else-case)
 // @ts-expect-error TS(7006): Parameter 'profile' implicitly has an 'any' type.
 									currentProfiles.map((profile, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<li key={key}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<button
 												title="profile.description"
 												onClick={() => chooseFilterProfile(profile.filterMap)}
@@ -172,7 +162,6 @@ const TableFiltersProfiles = ({
 												{profile.name.substr(0, 70)}
 											</button>
 											{/* Settings icon to edit profile */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<button
 												onClick={() => editFilterProfile(profile)}
 // @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
@@ -180,7 +169,6 @@ const TableFiltersProfiles = ({
 												className="button-like-anchor icon edit"
 											/>
 											{/* Remove icon to remove profile */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<button
 												onClick={() => removeFilterProfile(profile)}
 // @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
@@ -194,11 +182,8 @@ const TableFiltersProfiles = ({
 
 							{/* Save the currently selected filter options as new profile */}
 							{/* settingsMode is switched and save dialog is opened*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="input-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div className="btn-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<button
 										className="button-like-anchor save"
 										onClick={() => setSettingsMode(!settingsMode)}
@@ -210,11 +195,8 @@ const TableFiltersProfiles = ({
 						</div>
 					) : (
 						// if settingsMode is false then show editing dialog of selected filter profile
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="filter-details">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<button
 									className="button-like-anchor icon close"
 									onClick={() => {
@@ -222,20 +204,15 @@ const TableFiltersProfiles = ({
 										setSettingsMode(true);
 									}}
 								/>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<h4>{t("TABLE_FILTERS.PROFILES.FILTER_HEADER")}</h4>
 							</header>
 							{/* Input form for save/editing profile*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<label>
 									{t("TABLE_FILTERS.PROFILES.NAME")}{" "}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<i className="required">*</i>
 								</label>
 								{/*Input for name of the filter profile*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<input
 									required
 									name="name"
@@ -246,10 +223,8 @@ const TableFiltersProfiles = ({
 									placeholder={t("TABLE_FILTERS.PROFILES.NAME_PLACEHOLDER")}
 								/>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<label>{t("TABLE_FILTERS.PROFILES.DESCRIPTION")}</label>
 								{/*Input for a description of the filter profile*/}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<textarea
 									value={profileDescription}
 									name="description"
@@ -260,16 +235,12 @@ const TableFiltersProfiles = ({
 									)}
 								/>
 							</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="input-container">
 								{/* Buttons for saving and canceling editing */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div className="btn-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<button onClick={cancelEditProfile} className="button-like-anchor cancel">
 										{t("CANCEL")}
 									</button>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<button
 										onClick={saveProfile}
 										className={"button-like-anchor " + cn("save", { disabled: !validName })}

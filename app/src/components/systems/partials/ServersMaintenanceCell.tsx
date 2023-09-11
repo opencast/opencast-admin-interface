@@ -29,10 +29,8 @@ const ServersMaintenanceCell = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{hasAccess("ROLE_UI_SERVERS_MAINTENANCE_EDIT", user) && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<input
 					type="checkbox"
 					onChange={(e) => onClickCheckbox(e)}

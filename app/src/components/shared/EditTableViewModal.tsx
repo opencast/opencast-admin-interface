@@ -83,21 +83,15 @@ const EditTableViewModal = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<>
 			{showModal && (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="modal-animation modal-overlay" />
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<section
 						className="modal active modal-animation"
 						id="edit-table-view-modal"
 					>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<button
 								className="button-like-anchor fa fa-times close-modal"
 								onClick={() => {
@@ -105,17 +99,12 @@ const EditTableViewModal = ({
 									close();
 								}}
 							/>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<h2>{t("PREFERENCES.TABLE.CAPTION") /* Edit Table View */}</h2>
 						</header>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="modal-content">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="modal-body">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div className="tab-description for-header">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<p>
 										{t("PREFERENCES.TABLE.SUBHEADING", {
 											tableName: t(
@@ -125,15 +114,10 @@ const EditTableViewModal = ({
 									</p>
 								</div>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div className="row">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<div className="col">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<div className="obj drag-available-column">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<h2>
 													{
 														t(
@@ -142,16 +126,12 @@ const EditTableViewModal = ({
 													}
 												</h2>
 											</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<ul className="drag-drop-items">
-// @ts-expect-error TS(7006): Parameter 'column' implicitly has an 'any' type.
+{/* @ts-expect-error TS(7006): Parameter 'column' implicitly has an 'any' type. */}
 												{deactivatedCols.map((column, key) =>
 													column ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 														<li className="drag-item" key={key}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<div className="title">{t(column.label)}</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 															<button
 																className="button-like-anchor move-item add"
 																onClick={() => changeColumn(column, false)}
@@ -163,13 +143,9 @@ const EditTableViewModal = ({
 										</div>
 									</div>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<div className="col">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<div className="obj drag-selected-column">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<h2>
 													{
 														t(
@@ -178,28 +154,21 @@ const EditTableViewModal = ({
 													}
 												</h2>
 											</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<ul className="drag-drop-items">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<li>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 													<Container
 														dragHandleSelector=".drag-handle"
 														lockAxis="y"
 														onDrop={onDrop}
 													>
-// @ts-expect-error TS(7006): Parameter 'column' implicitly has an 'any' type.
+{/* @ts-expect-error TS(7006): Parameter 'column' implicitly has an 'any' type. */}
 														{activeCols.map((column, key) =>
 															column ? (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																<Draggable className="drag-item" key={key}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																	<div className="drag-handle">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<div className="title">
 																			{t(column.label)}
 																		</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 																		<button
 																			className="button-like-anchor move-item remove"
 																			onClick={() => changeColumn(column, true)}
@@ -215,9 +184,7 @@ const EditTableViewModal = ({
 									</div>
 								</div>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div className="tab-description for-footer">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<p>
 										{/* The order and selection will be saved automatically.
                                 Press "Reset" to restore the default view. */}
@@ -229,18 +196,13 @@ const EditTableViewModal = ({
 							</div>
 						</div>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<footer>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="pull-left">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<button onClick={() => clearData()} className="cancel active">
 									{t("CANCEL") /*Cancel*/}
 								</button>
 							</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<div className="pull-right">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<button onClick={() => save()} className="submit active">
 									{t("SAVE") /* Save As Default */}
 								</button>

@@ -6,7 +6,6 @@ import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker } from "@material-ui/pickers";
 import { createTheme, ThemeProvider } from "@material-ui/core";
 import { Field, Formik } from "formik";
-// @ts-expect-error TS(6142): Module './BarChart' was resolved to '/home/arnewil... Remove this comment to see the full error message
 import BarChart from "./BarChart";
 import {
 	availableCustomStatisticDataResolutions,
@@ -142,8 +141,7 @@ const TimeSeriesStatistics = ({
 		dataResolution
 	) => {
 		setFormikValue("fromDate", newFrom);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 6.
-		change(setFormikValue, timeMode, newFrom, to, dataResolution: any);
+		change(setFormikValue, timeMode, newFrom, to, dataResolution);
 	};
 
 	// change custom to date in formik and get new values from API
@@ -213,13 +211,11 @@ const TimeSeriesStatistics = ({
 
 	return (
 		/* Initialize form */
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<MuiPickersUtilsProvider
 			utils={DateFnsUtils}
 // @ts-expect-error TS(2532): Object is possibly 'undefined'.
 			locale={currentLanguage.dateLocale}
 		>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<Formik
 				enableReinitialize
 				initialValues={{
@@ -231,12 +227,9 @@ const TimeSeriesStatistics = ({
 				onSubmit={(values) => {}}
 			>
 				{(formik) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="statistics-graph">
 						{/* download link for a statistic file */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="download">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<a
 								className="download-icon"
 								href={exportUrl}
@@ -245,10 +238,8 @@ const TimeSeriesStatistics = ({
 						</div>
 
 						{/* radio buttons for selecting the mode of choosing the timeframe of statistic */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="mode">
 							{timeModes.map((mode, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<label
 									htmlFor={providerId + "-mode-" + key}
 									style={
@@ -258,7 +249,6 @@ const TimeSeriesStatistics = ({
 									}
 									key={key}
 								>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<Field
 										type="radio"
 										style={{ display: "none" }}
@@ -282,11 +272,8 @@ const TimeSeriesStatistics = ({
 						</div>
 
 						{/* statistics total value */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="total">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<span>{t("STATISTICS.TOTAL") /* Total */}</span>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<span>{": " + totalValue}</span>
 						</div>
 
@@ -295,9 +282,7 @@ const TimeSeriesStatistics = ({
 						{(formik.values.timeMode === "year" ||
 							formik.values.timeMode === "month") && (
 							/* year/month selection for statistic via previous and next buttons */
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<span className="preset">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<a
 									className="navigation prev"
 									onClick={() =>
@@ -309,14 +294,12 @@ const TimeSeriesStatistics = ({
 										)
 									}
 								/>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div>
 									{formatSelectedTimeframeName(
 										formik.values.fromDate,
 										formik.values.timeMode
 									)}
 								</div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<a
 									className="navigation next"
 									onClick={() =>
@@ -333,19 +316,13 @@ const TimeSeriesStatistics = ({
 
 						{formik.values.timeMode === "custom" && (
 							/* custom timeframe selection for statistic */
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<span className="custom">
 								{/* time range selection */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div className="range">
 									{/* date picker for selecting start date of the statistic */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<span>{t("STATISTICS.FROM") /* From */}</span>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<div className="chosen-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<ThemeProvider theme={theme}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<DatePicker
 												name="fromDate"
 												style={datePickerStyle}
@@ -367,13 +344,9 @@ const TimeSeriesStatistics = ({
 									</div>
 
 									{/* date picker for selecting end date of the statistic */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<span>{t("STATISTICS.TO") /* To */}</span>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<div className="chosen-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<ThemeProvider theme={theme}>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<DatePicker
 												name="toDate"
 												style={datePickerStyle}
@@ -396,16 +369,12 @@ const TimeSeriesStatistics = ({
 								</div>
 
 								{/* time granularity selection */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 								<div>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<span>
 										{t("STATISTICS.GRANULARITY") + " " /* Granularity */}
 									</span>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<div className="chosen-container chosen-container-single">
 										{/* drop-down for selecting the time granularity of the statistic */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<Field
 											className="chosen-single"
 											name="dataResolution"
@@ -425,10 +394,8 @@ const TimeSeriesStatistics = ({
 												"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
 											)}
 										>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<option value="" hidden />
 											{availableCustomDataResolutions.map((option, key) => (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 												<option value={option.value} key={key}>
 													{t("STATISTICS.TIME_GRANULARITIES." + option.label)}
 												</option>
@@ -439,10 +406,8 @@ const TimeSeriesStatistics = ({
 							</span>
 						)}
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<br />
 						{/* bar chart with visualization of statistic data */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<BarChart
 							values={sourceData}
 							axisLabels={chartLabels}
@@ -450,7 +415,6 @@ const TimeSeriesStatistics = ({
 						/>
 
 						{/* statistic description */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<p>{t(statDescription)}</p>
 					</div>
 				)}

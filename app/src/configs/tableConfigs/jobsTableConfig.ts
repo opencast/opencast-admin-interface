@@ -1,6 +1,4 @@
-// @ts-expect-error TS(6142): Module '../../components/systems/partials/JobsStar... Remove this comment to see the full error message
 import JobsStartedCell from "../../components/systems/partials/JobsStartedCell";
-// @ts-expect-error TS(6142): Module '../../components/systems/partials/JobsSubm... Remove this comment to see the full error message
 import JobsSubmittedCell from "../../components/systems/partials/JobsSubmittedCell";
 
 /**

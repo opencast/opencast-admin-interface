@@ -10,6 +10,7 @@
     "@material-ui/pickers": "^3.3.10",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
+    "@types/react-router-dom": "^5.3.3",
     "array-move": "^4.0.0",
     "axios": "^1.4.0",
     "classnames": "^2.3.2",

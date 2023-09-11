@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 import React from "react";
-// @ts-expect-error TS(6142): Module '../../../shared/Notifications' was resolve... Remove this comment to see the full error message
 import Notifications from "../../../shared/Notifications";
 import {
 	getWorkflow,
@@ -9,7 +8,6 @@ import {
 	isFetchingWorkflowOperationDetails,
 } from "../../../../selectors/eventDetailsSelectors";
 import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
-// @ts-expect-error TS(6142): Module './EventDetailsTabHierarchyNavigation' was ... Remove this comment to see the full error message
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 
 /**
@@ -34,10 +32,8 @@ const EventDetailsWorkflowOperationDetails = ({
 	};
 
 	return (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 		<div className="modal-content">
 			{/* Hierarchy navigation */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<EventDetailsTabHierarchyNavigation
 				openSubTab={openSubTab}
 				hierarchyDepth={2}
@@ -49,18 +45,13 @@ const EventDetailsWorkflowOperationDetails = ({
 				subTabArgument2={"workflow-operation-details"}
 			/>
 
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 			<div className="modal-body">
 				{/* Notifications */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<Notifications context="not_corner" />
 
 				{/* 'Operation Details' table */}
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 				<div className="full-col">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 					<div className="obj tbl-details">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<header>
 							{
 								t(
@@ -68,16 +59,11 @@ const EventDetailsWorkflowOperationDetails = ({
 								) /* Operation Details */
 							}
 						</header>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 						<div className="obj-container">
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 							<table className="main-tbl">
 								{isFetching || (
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 									<tbody>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{
 													t(
@@ -85,12 +71,9 @@ const EventDetailsWorkflowOperationDetails = ({
 													) /* Title */
 												}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>{operationDetails.name}</td>
 										</tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{
 													t(
@@ -98,12 +81,9 @@ const EventDetailsWorkflowOperationDetails = ({
 													) /* Description */
 												}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>{operationDetails.description}</td>
 										</tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{
 													t(
@@ -111,12 +91,9 @@ const EventDetailsWorkflowOperationDetails = ({
 													) /* State */
 												}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>{t(operationDetails.state)}</td>
 										</tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{
 													t(
@@ -124,12 +101,9 @@ const EventDetailsWorkflowOperationDetails = ({
 													) /* Execution Host */
 												}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>{operationDetails.execution_host}</td>
 										</tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{
 													t(
@@ -137,12 +111,9 @@ const EventDetailsWorkflowOperationDetails = ({
 													) /* Job */
 												}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>{operationDetails.job}</td>
 										</tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{
 													t(
@@ -150,12 +121,9 @@ const EventDetailsWorkflowOperationDetails = ({
 													) /* Time in Queue */
 												}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>{operationDetails.time_in_queue}ms</td>
 										</tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{
 													t(
@@ -163,16 +131,13 @@ const EventDetailsWorkflowOperationDetails = ({
 													) /* Started */
 												}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{t("dateFormats.dateTime.medium", {
 													dateTime: new Date(operationDetails.started),
 												})}
 											</td>
 										</tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{
 													t(
@@ -180,16 +145,13 @@ const EventDetailsWorkflowOperationDetails = ({
 													) /* Finished */
 												}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{t("dateFormats.dateTime.medium", {
 													dateTime: new Date(operationDetails.completed),
 												})}
 											</td>
 										</tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{
 													t(
@@ -197,12 +159,9 @@ const EventDetailsWorkflowOperationDetails = ({
 													) /* Retry Strategy */
 												}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>{operationDetails.retry_strategy}</td>
 										</tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{
 													t(
@@ -210,12 +169,9 @@ const EventDetailsWorkflowOperationDetails = ({
 													) /* Failed Attempts */
 												}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>{operationDetails.failed_attempts}</td>
 										</tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{
 													t(
@@ -223,12 +179,9 @@ const EventDetailsWorkflowOperationDetails = ({
 													) /* Max */
 												}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>{operationDetails.max_attempts}</td>
 										</tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{
 													t(
@@ -236,12 +189,9 @@ const EventDetailsWorkflowOperationDetails = ({
 													) /* Exception Handler Workflow */
 												}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>{operationDetails.exception_handler_workflow}</td>
 										</tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 										<tr>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>
 												{
 													t(
@@ -249,7 +199,6 @@ const EventDetailsWorkflowOperationDetails = ({
 													) /* Fail on Error */
 												}
 											</td>
-// @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 											<td>{operationDetails.fail_on_error}</td>
 										</tr>
 									</tbody>
