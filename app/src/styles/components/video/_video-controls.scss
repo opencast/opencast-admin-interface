@@ -23,7 +23,7 @@
 .video-controls {
     @include clearfix();
     box-sizing: border-box;
-    @include linear-gradient(top, #fff, #f7f7f7);
+    background: linear-gradient(to bottom, #fff, #f7f7f7);
     border: $thin-border-stroke $main-border-color;
     height: 50px;
     padding: 0 15px;
@@ -80,7 +80,7 @@
     }
 
     input {
-        @include appearance(none);
+        appearance: none;
         border-radius: 4px;
         height: 2px;
     }
@@ -222,7 +222,7 @@ $playback-icon-font-size: 16px;
 
     input[type="number"] {
         box-sizing: border-box;
-        @include appearance(none);
+        appearance: none;
         @include font-smoothing(on);
         background: none;
         border: 0;

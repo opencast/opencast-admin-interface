@@ -44,7 +44,7 @@
                 text-shadow: 0px 1px 0px rgba(0,0,0,0.2);
                 border: 1px solid $l-blue;
                 border-right: 1px solid darken($l-blue, 10%);
-                @include linear-gradient(top, lighten(#2b77b9, 5%), #388ed6);
+                background: linear-gradient(to bottom, lighten(#2b77b9, 5%), #388ed6);
                 box-shadow: 0px 2px 3px 1px rgba(0,0,0,.05);
             }
         }

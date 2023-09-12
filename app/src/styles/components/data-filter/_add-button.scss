@@ -24,9 +24,9 @@
     @include btn(white);
     @include fa-icon($fa-var-plus, before, inline-block, 0 8px 0 0, 0, inherit, 11px);
 
-    @include transition-property(width, padding, border-radius);
-    @include transition-duration(200ms);
-    @include transition-timing-function(ease-in);
+    transition-property: width, padding, border-radius;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in;
 
     float: left;
     padding: 12px 10px;
@@ -42,7 +42,7 @@
 
     // Transition Properties for @include fa-icon(...); mixin
     &:before {
-        @include transition(color 200ms ease-in);
+        transition: color 200ms ease-in;
     }
 
     .js-df-state-new-filter & {

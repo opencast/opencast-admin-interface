@@ -484,7 +484,7 @@ $segment-deleted-selected: saturate(darken($segment-deleted, 25%), 5%);
               position: absolute;
 
               display: none;
-              @include transition(all 800ms);
+              transition: all 800ms;
             }
 
             .arrow_box:after, .arrow_box:before {

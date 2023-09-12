@@ -60,7 +60,7 @@
         text-align: center;
         margin: -1px -1px 0px -1px;
         border: $thin-border-stroke darken($l-blue, 10%);
-        @include linear-gradient(top, #388ed6, #2b77b9);
+        background: linear-gradient(to bottom, #388ed6, #2b77b9);
 
         a {
             display: block;

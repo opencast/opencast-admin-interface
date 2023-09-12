@@ -42,7 +42,7 @@
     border-bottom: none;
     border-top-left-radius: $main-border-radius;
     border-top-right-radius: $main-border-radius;
-    @include linear-gradient(top, #fff, #f7f7f7);
+    background: linear-gradient(to bottom, #fff, #f7f7f7);
 
     $action-icon-margin: 0 4px 0 0;
 
@@ -92,7 +92,7 @@
     vertical-align: middle;
     position: relative;
     cursor: pointer;
-    @include user-select(none);
+    user-select: none;
     width: 25px;
     height: 22px;
     @include btn(white);
@@ -123,7 +123,7 @@
         background: $body-background;
         border: $thin-border-stroke $main-border-color;
         border-radius: $main-border-radius;
-        @include transition(visibility 200ms, opacity 200ms);
+        transition: visibility 200ms, opacity 200ms;
 
         &:before,
         &:after {

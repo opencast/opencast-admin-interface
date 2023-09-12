@@ -31,18 +31,18 @@
     @if $color == green-dark-bg {
         box-shadow: inset 0px 1px 0px 0px $primary-color-green-light-1, 0px 2px 3px 1px rgba(0,0,0,.05);
 
-        @include linear-gradient($primary-color-green, $primary-color-green-dark-1);
+        background: linear-gradient($primary-color-green, $primary-color-green-dark-1);
 
         border: $thin-border-stroke $dark-bg-border-color;
 
         &:hover {
             cursor: pointer;
-            @include linear-gradient($primary-color-green-light-1, darken($primary-color-green-dark-2, 5%));
+            background: linear-gradient($primary-color-green-light-1, darken($primary-color-green-dark-2, 5%));
         }
 
         &:focus {
             cursor: pointer;
-            @include linear-gradient($primary-color-green-light-1, darken($primary-color-green-dark-2, 5%));
+            background: linear-gradient($primary-color-green-light-1, darken($primary-color-green-dark-2, 5%));
         }
 
         &:active {
@@ -55,18 +55,18 @@
     @else if $color == blue-dark-bg {
         box-shadow: inset 0px 1px 0px 0px #456c8e, 0px 2px 3px 1px rgba(0,0,0,.05);
 
-        @include linear-gradient(#3a5e7e, #2c9966);
+        background: linear-gradient(#3a5e7e, #2c9966);
 
         border: $thin-border-stroke $dark-bg-border-color;
 
         &:hover {
             cursor: pointer;
-            @include linear-gradient(lighten(#3a5e7e, 5%), darken(#2c9966, 10%));
+            background: linear-gradient(lighten(#3a5e7e, 5%), darken(#2c9966, 10%));
         }
 
         &:focus {
             cursor: pointer;
-            @include linear-gradient(lighten(#3a5e7e, 5%), darken(#2c9966, 10%));
+            background: linear-gradient(lighten(#3a5e7e, 5%), darken(#2c9966, 10%));
         }
 
         &:active {
@@ -78,18 +78,18 @@
     @else if $color == green {
         box-shadow: inset 0px 1px 0px 0px $primary-color-green-light-1, 0px 2px 3px 1px rgba(0,0,0,.05);
 
-        @include linear-gradient($primary-color-green, $primary-color-green-dark-1);
+        background: linear-gradient($primary-color-green, $primary-color-green-dark-1);
 
         border: $thin-border-stroke $primary-color-green-dark-3;
 
         &:hover {
             cursor: pointer;
-            @include linear-gradient($primary-color-green-light-1, darken($primary-color-green-dark-2, 10%));
+            background: linear-gradient($primary-color-green-light-1, darken($primary-color-green-dark-2, 10%));
         }
 
         &:focus {
             cursor: pointer;
-            @include linear-gradient($primary-color-green-light-1, darken($primary-color-green-dark-2, 10%));
+            background: linear-gradient($primary-color-green-light-1, darken($primary-color-green-dark-2, 10%));
         }
 
         &:active {
@@ -102,18 +102,18 @@
     @else if $color == blue {
         box-shadow: inset 0px 1px 0px 0px #456c8e, 0px 2px 3px 1px rgba(0,0,0,.05);
 
-        @include linear-gradient(#3a5e7e, #2c9966);
+        background: linear-gradient(#3a5e7e, #2c9966);
 
         border: $thin-border-stroke $dark-bg-border-color;
 
         &:hover {
             cursor: pointer;
-            @include linear-gradient(darken(#3a5e7e, 1%), darken(#2c9966, 10%));
+            background: linear-gradient(darken(#3a5e7e, 1%), darken(#2c9966, 10%));
         }
 
         &:focus {
             cursor: pointer;
-            @include linear-gradient(darken(#3a5e7e, 1%), darken(#2c9966, 10%));
+            background: linear-gradient(darken(#3a5e7e, 1%), darken(#2c9966, 10%));
         }
 
         &:active {
@@ -126,18 +126,18 @@
 
         box-shadow: inset 0px 1px 0px 0px lighten(#388ed6, 10%), 0px 2px 3px 1px rgba(0,0,0,.05);
 
-        @include linear-gradient(#388ed6, #2b77b9);
+        background: linear-gradient(#388ed6, #2b77b9);
 
         border: $thin-border-stroke darken(#2b77b9, 5%);
 
         &:hover {
             cursor: pointer;
-            @include linear-gradient(lighten(#388ed6, 10%), darken(#2b77b9, 10%));
+            background: linear-gradient(lighten(#388ed6, 10%), darken(#2b77b9, 10%));
         }
 
         &:focus {
             cursor: pointer;
-            @include linear-gradient(lighten(#388ed6, 10%), darken(#2b77b9, 10%));
+            background: linear-gradient(lighten(#388ed6, 10%), darken(#2b77b9, 10%));
         }
 
         &:active {
@@ -150,18 +150,18 @@
 
         box-shadow: inset 0px 1px 0px 0px lighten(#55cef2, 10%), 0px 2px 3px 1px rgba(0,0,0,.05);
 
-        @include linear-gradient(#55cef2, #4da1f7);
+        background: linear-gradient(#55cef2, #4da1f7);
 
         border: $thin-border-stroke darken(#4da1f7, 10%);
 
         &:hover {
             cursor: pointer;
-            @include linear-gradient(lighten(#55cef2, 5%), darken(#4da1f7, 10%));
+            background: linear-gradient(lighten(#55cef2, 5%), darken(#4da1f7, 10%));
         }
 
         &:focus {
             cursor: pointer;
-            @include linear-gradient(lighten(#55cef2, 5%), darken(#4da1f7, 10%));
+            background: linear-gradient(lighten(#55cef2, 5%), darken(#4da1f7, 10%));
         }
 
         &:active {
@@ -173,20 +173,20 @@
     @else if $color == red {
         box-shadow: inset 0px 1px 0px 0px lighten($alt-red, 10%), 0px 2px 3px 1px rgba(0,0,0,.05);
 
-        @include linear-gradient(lighten($alt-red, 5%), darken($alt-red, 5%));
+        background: linear-gradient(lighten($alt-red, 5%), darken($alt-red, 5%));
 
         border: $thin-border-stroke darken($alt-red, 20%);
 
         &:hover {
             cursor: pointer;
             border: $thin-border-stroke darken($alt-red, 30%);
-            @include linear-gradient(lighten($alt-red, 10%), darken($alt-red, 10%));
+            background: linear-gradient(lighten($alt-red, 10%), darken($alt-red, 10%));
         }
 
         &:focus {
             cursor: pointer;
             border: $thin-border-stroke darken($alt-red, 30%);
-            @include linear-gradient(lighten($alt-red, 10%), darken($alt-red, 10%));
+            background: linear-gradient(lighten($alt-red, 10%), darken($alt-red, 10%));
         }
 
         &:active {
@@ -197,7 +197,7 @@
 
     @else if $color == white {
 
-        @include linear-gradient(#fff, #f7f7f7);
+        background: linear-gradient(#fff, #f7f7f7);
         border: $thin-border-stroke $main-border-color;
         box-shadow: inset 0px 1px 0px 0px #fff, 0px 1px 2px rgba(0,0,0,.05);
         outline: none;
@@ -207,14 +207,14 @@
         &:hover {
             cursor: pointer;
             border: $thin-border-stroke darken($main-border-color, 2%);
-            @include linear-gradient(darken(#fff, 4%), darken(#f7f7f7, 10%));
+            background: linear-gradient(darken(#fff, 4%), darken(#f7f7f7, 10%));
             color: $medium-prim-color;
         }
 
         &:focus {
             cursor: pointer;
             border: $thin-border-stroke darken($main-border-color, 2%);
-            @include linear-gradient(darken(#fff, 4%), darken(#f7f7f7, 10%));
+            background: linear-gradient(darken(#fff, 4%), darken(#f7f7f7, 10%));
             color: $medium-prim-color;
         }
 

@@ -54,9 +54,9 @@
         overflow: visible;
         display: block;
         padding: $link-padding;
-        @include transition-property($link-transition-property);
-        @include transition-duration(250ms);
-        @include transition-timing-function(ease-in);
+        transition-property: $link-transition-property;
+        transition-duration: 250ms;
+        transition-timing-function: ease-in;
         text-overflow: ellipsis;
         white-space: nowrap;
         font-weight: $weight-semibold;

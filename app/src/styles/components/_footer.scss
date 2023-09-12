@@ -58,7 +58,7 @@ $footer-background-color: darken($body-background, 5%);
         right: 0;
 
         a {
-            @include transition(all .2s);
+            transition: all .2s;
             @include footer-component-padding();
             border-left: 1px solid $footer-border-color;
             text-align: center;

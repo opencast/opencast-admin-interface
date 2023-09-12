@@ -78,7 +78,8 @@
                 z-index: $max-z;
                 width: $w;
                 height: $h;
-                @include retina-image("#{$img-path}#{$image-name}", $w $h);
+                background-image: url("#{$img-path}#{$image-name}.png");
+                background-size: $w $h;
             }
         }
     }
