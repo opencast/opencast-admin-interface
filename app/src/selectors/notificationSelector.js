@@ -4,8 +4,9 @@ export const getNotifications = (state) => state.notifications.notifications;
 export const getGlobalPositions = (state) =>
 	state.notifications.notificationPositionGlobal;
 
-export const getNotificationById = (id) =>
-	createSelector(getNotifications, (notifications) =>
+export const getNotificationById = createSelector(
+  getNotifications,
+  (notifications, id) =>
 		notifications.filter((notification) => notification.id === id)
 	);
 
