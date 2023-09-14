@@ -26,8 +26,8 @@
 $disable-warnings: true !default; // disables deprecation warnings
 
 // Imports
-@import "vendor/bourbon/bourbon";
-@import "vendor/neat/neat";
+@import "../../node_modules/bourbon/app/assets/stylesheets/bourbon";
+@import "../../node_modules/bourbon-neat/app/assets/stylesheets/neat";
 
 // Foundation
 // ----------------------------------------
