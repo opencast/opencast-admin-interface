@@ -31,12 +31,12 @@
     // Hide Behind Parent
     position: relative;
     z-index: -1;
-    @include transform(translateY(15px));
+    transform: translateY(15px);
 
-    @include transition-property(visibility, opacity, transform);
-    @include transition-duration(300ms);
-    @include transition-timing-function(ease-in-out);
-    @include transition-delay(80ms);
+    transition-property: visibility, opacity, transform;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+    transition-delay: 80ms;
 
     .js-df-state-new-filter & {
         visibility: visible;
@@ -44,6 +44,6 @@
 
         // Reveal from origin
         z-index: 1;
-        @include transform(translateY(0px));
+        transform: translateY(0px);
     }
 }

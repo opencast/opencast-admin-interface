@@ -42,9 +42,9 @@
     background: rgba($white, 0.98);
     box-shadow: 0 1px 3px rgba($black, 0.06);
 
-    @include transition-property(visibility, opacity);
-    @include transition-duration(100ms);
-    @include transition-timing-function(ease-in);
+    transition-property: visibility, opacity;
+    transition-duration: 100ms;
+    transition-timing-function: ease-in;
 
     a {
         display: block;
@@ -56,9 +56,9 @@
         text-shadow: none;
         cursor: pointer;
 
-        @include transition-property(color, background);
-        @include transition-duration(50ms);
-        @include transition-timing-function(ease-in);
+        transition-property: color, background;
+        transition-duration: 50ms;
+        transition-timing-function: ease-in;
 
         // ----------------------------------------
 

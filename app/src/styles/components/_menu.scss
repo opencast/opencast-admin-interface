@@ -62,7 +62,7 @@
             vertical-align: middle;
             position: relative;
             line-height: 50px;
-            @include transition(all .2s);
+            transition: all .2s;
             color: #c6c6c6;
         }
 

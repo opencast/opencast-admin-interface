@@ -23,15 +23,15 @@
 .df-popout-button {
     box-sizing: border-box;
     @include btn(white);
-    @include user-select(none);
+    user-select: none;
 
     $icon-pseudo-position: before;
     @include fa-icon($fa-var-ellipsis-v, $icon-pseudo-position, inline-block, 0 8px 0 0, 0, inherit, 14px);
 
-    @include transition-property(padding, visibility, opacity);
-    @include transition-duration(300ms);
-    @include transition-timing-function(ease-in-out);
-    @include transition-delay(80ms);
+    transition-property: padding, visibility, opacity;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+    transition-delay: 80ms;
 
     float: left;
     width: 15px;

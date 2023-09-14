@@ -1,5 +1,6 @@
 import {
 	createNotification,
+  createNotificationWithId,
 	removeNotification,
 } from "../actions/notificationActions";
 import { getLastAddedNotification } from "../selectors/notificationSelector";
@@ -9,8 +10,8 @@ import {
 	ADMIN_NOTIFICATION_DURATION_WARNING,
 } from "../configs/generalConfig";
 
-// @ts-expect-error TS(7006): Parameter 'type' implicitly has an 'any' type.
-export const addNotification = (type, key, duration, parameter, context) => (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
+export const addNotification = (type, key, duration, parameter, context, id) => (
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch,
 // @ts-expect-error TS(7006): Parameter 'getState' implicitly has an 'any' type.
@@ -52,7 +53,12 @@ export const addNotification = (type, key, duration, parameter, context) => (
 		hidden: false,
 		context: context,
 	};
-	dispatch(createNotification(notification));
+  var dispatchedNotification;
+  if (!id) {
+	  dispatchedNotification = dispatch(createNotification(notification));
+  } else {
+    dispatchedNotification = dispatch(createNotificationWithId(notification, id));
+  }
 
 	// Get newly created notification and its id
 	let latestNotification = getLastAddedNotification(getState());
@@ -68,4 +74,16 @@ export const addNotification = (type, key, duration, parameter, context) => (
 			latestNotification.duration
 		);
 	}
+
+  return dispatchedNotification.payload.id;
 };
+
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
+export const addNotificationWithId = (id, type, key, duration, parameter, context) => (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
+	dispatch,
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
+	getState
+) => {
+    dispatch(addNotification(type, key, duration, parameter, context, id))
+}

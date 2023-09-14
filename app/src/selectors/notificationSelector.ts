@@ -1,7 +1,8 @@
 import { createSelector } from "reselect";
 
 export const getNotifications = (state: any) => state.notifications.notifications;
-export const getGlobalPositions = (state: any) => state.notifications.notificationPositionGlobal;
+export const getGlobalPositions = (state: any) =>
+  state.notifications.notificationPositionGlobal;
 
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const getNotificationById = (id) =>

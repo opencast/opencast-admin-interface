@@ -52,6 +52,6 @@
     .shortcuts-popover {
         visibility: visible;
         opacity: 1;
-        @include transition-delay(0ms);
+        transition-delay: 0ms;
     }
 }

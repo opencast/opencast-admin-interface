@@ -25,12 +25,13 @@ import {
 	weekdays,
 	WORKFLOW_UPLOAD_ASSETS_NON_TRACK,
 } from "../configs/modalConfig";
-import { addNotification } from "./notificationThunks";
+import { addNotification, addNotificationWithId } from "./notificationThunks";
 import {
 	getAssetUploadOptions,
 	getSchedulingEditedEvents,
 } from "../selectors/eventSelectors";
 import { fetchSeriesOptions } from "./seriesThunks";
+import { removeNotification } from "../actions/notificationActions";
 
 // fetch events from server
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
@@ -464,13 +465,22 @@ export const postNewEvent = (values, metadataInfo, extendedMetadata) => async (
 		})
 	);
 
-	// Todo: process bar notification
+	// Process bar notification
+  var config = {
+    onUploadProgress: function(progressEvent) {
+      var percentCompleted = (progressEvent.loaded * 100) / progressEvent.total;
+      dispatch(addNotificationWithId(-42000, "success", "EVENTS_UPLOAD_STARTED", -1, { "progress": percentCompleted.toFixed(2) } ))
+      if (percentCompleted >= 100) {
+        dispatch(removeNotification(-42000))
+      }
+    },
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  };
+
 	axios
-		.post("/admin-ng/event/new", formData, {
-			headers: {
-				"Content-Type": "multipart/form-data",
-			},
-		})
+		.post("/admin-ng/event/new", formData, config)
 		.then((response) => {
 			console.info(response);
 // @ts-expect-error TS(2554): Expected 5 arguments, but got 2.

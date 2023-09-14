@@ -29,7 +29,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    @include background-image(linear-gradient(right, #F7F7F7 50%, rgba(#F7F7F7, 0)));
+    background-image: linear-gradient(to left, #F7F7F7 50%, rgba(#F7F7F7, 0));
 
     .df-clear-button {
         display: block;
@@ -42,13 +42,13 @@
         font-family: "Open Sans", sans-serif;
         color: #555;
 
-        @include transition-property(visibility, opacity);
-        @include transition-duration(300ms);
-        @include transition-timing-function(ease-in-out);
-        @include transition-delay(160ms);
+        transition-property: visibility, opacity;
+        transition-duration: 300ms;
+        transition-timing-function: ease-in-out;
+        transition-delay: 160ms;
 
         &:before {
-            @include transition(color 250ms ease-in-out);
+            transition: color 250ms ease-in-out;
         }
 
         &:hover {

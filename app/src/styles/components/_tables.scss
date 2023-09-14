@@ -54,7 +54,7 @@
         &.sortable {
             cursor: pointer;
             &:hover {
-                @include linear-gradient(top, $off-white, darken(#f1f3f5, 3%));
+                background: linear-gradient(to bottom, $off-white, darken(#f1f3f5, 3%));
             }
             &:active {
                 box-shadow: inset 0 3px 10px 2px rgba($black, 0.05);
@@ -82,8 +82,8 @@
         border-right: 1px solid #c9d0d6;
         border-left: 1px solid #fff;
         border-bottom: 1px solid $border-color;
-        @include user-select(none);
-        @include linear-gradient(top, darken($off-white, 1%), darken(#f1f3f5, 3%));
+        user-select: none;
+        background: linear-gradient(to bottom, darken($off-white, 1%), darken(#f1f3f5, 3%));
 
         // Typography
         line-height: 35px;
@@ -415,7 +415,7 @@
                 opacity: 0;
                 visibility: hidden;
                 float: right;
-                @include transition(all .2s);
+                transition: all .2s;
             }
 
             &.js-active:after {
@@ -456,7 +456,7 @@
             padding-left: 3px;
 
             &.open {
-                @include transform(rotate(90deg));
+                transform: rotate(90deg);
             }
         }
     }

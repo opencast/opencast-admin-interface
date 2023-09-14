@@ -24,7 +24,7 @@
     box-sizing: border-box;
     display: inline-block;
     vertical-align: top;
-    @include user-select(none);
+    user-select: none;
 }
 
 $df-height: 42px;

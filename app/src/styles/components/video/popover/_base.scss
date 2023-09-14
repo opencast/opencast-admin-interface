@@ -46,7 +46,7 @@
     content: "";
     display: block;
     margin: 0;
-    @include transition(margin 350ms ease-in-out);
+    transition: margin 350ms ease-in-out;
 }
 
 .keyboard-shortcuts.active .shortcuts-popover::after {
@@ -74,7 +74,7 @@ $parent-border-stroke: 1px;
 .popover-header {
     @extend .popover-container;
 
-    @include linear-gradient(top, #fff, #f7f7f7);
+    background: linear-gradient(to bottom, #fff, #f7f7f7);
     border: $thin-border-stroke $main-border-color;
     @include border-top-radius($main-border-radius);
     box-shadow: inset 0 1px 0px 0px #fff, 0 0 2px rgba(0,0,0,.05);

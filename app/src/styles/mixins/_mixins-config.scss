@@ -45,7 +45,8 @@
     left: $left;
     width: $width;
     height: $height;
-    @include retina-image("#{$img-path}#{$image}", $width $height);
+    background-image: url("#{$img-path}#{$image}.png");
+    background-size: $width $height;
 }
 
 
@@ -63,7 +64,7 @@
     box-sizing: border-box;
     height: $height;
     line-height: $height;
-    @include linear-gradient(top, #fff, #f3f5f6);
+    background: linear-gradient(to bottom, #fff, #f3f5f6);
     border-bottom: 1px solid $main-border-color;
     @include border-top-radius($main-border-radius);
     margin: 0;
@@ -80,11 +81,11 @@
         @include fa-icon($fa-var-chevron-down, after, inline-block, 10px 0);
 
         &:hover {
-            @include linear-gradient(top, #fff, darken(#f3f5f6, 2%));
+            background: linear-gradient(to bottom, #fff, darken(#f3f5f6, 2%));
         }
 
         &:active {
-            @include linear-gradient(top, darken(#fff, 2%), darken(#f3f5f6, 3%));
+            background: linear-gradient(to bottom, darken(#fff, 2%), darken(#f3f5f6, 3%));
         }
 
         &:after {
@@ -102,14 +103,14 @@
     z-index: $max-z - 9;
     visibility: hidden;
     opacity: 0;
-    @include transition(all 200ms);
+    transition: all 200ms;
     background: $white;
     border: $thin-border-stroke $main-border-color;
     border-radius: $main-border-radius;
     width: $width;
 
     header {
-        @include linear-gradient($white, #f7f7f7);
+        background: linear-gradient($white, #f7f7f7);
         @include border-top-radius($main-border-radius);
         border-bottom: $thin-border-stroke $main-border-color;
         height: 30px;
@@ -121,7 +122,7 @@
     }
 
     .footer-btn {
-        @include linear-gradient($off-white, #f0f2f5);
+        background: linear-gradient($off-white, #f0f2f5);
         border-top: $thin-border-stroke darken(#f0f2f5, 10%);
         @include border-bottom-radius($main-border-radius);
         display: block;

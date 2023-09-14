@@ -24,6 +24,12 @@ export const createNotification = (notification) => ({
 });
 
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
+export const createNotificationWithId = (notification, id) => ({
+	type: CREATE_NOTIFICATION,
+	payload: { notification, id: id },
+});
+
+// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const removeNotification = (id) => ({
 	type: REMOVE_NOTIFICATION,
 	payload: { id },
