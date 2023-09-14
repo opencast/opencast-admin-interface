@@ -44,9 +44,9 @@
     text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.2);
     text-align: center;
     background-color: $progress-bar-color;
-    @include linear-gradient(top, #388ed6, #2b77b9);
+    background: linear-gradient(to bottom, #388ed6, #2b77b9);
     border-right: 1px solid darken(#388ed6, 15%);
-    @include transition(width 600ms ease);
+    transition: width 600ms ease;
 
     &[aria-valuenow="1"],
     &[aria-valuenow="2"] {

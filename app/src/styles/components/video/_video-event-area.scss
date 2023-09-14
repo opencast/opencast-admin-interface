@@ -215,7 +215,7 @@
     header {
         $height: 35px;
         @include accordion-header($height);
-        @include user-select(none);
+        user-select: none;
         position: static;
 
         &.expand {

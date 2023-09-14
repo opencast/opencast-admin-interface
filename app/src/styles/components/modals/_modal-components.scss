@@ -359,7 +359,7 @@
         .remove-file-button {
 
             // Reset
-            @include appearance(none);
+            appearance: none;
             background: none;
             outline: none;
             border: none;
@@ -394,7 +394,7 @@
     }
 
     .progress-bar {
-        @include linear-gradient(top, lighten($bright-blue, 5%), $bright-blue);
+        background: linear-gradient(to bottom, lighten($bright-blue, 5%), $bright-blue);
     }
 
     button {
@@ -513,9 +513,9 @@
             z-index: $z-60;
             width: 500px;
             height: 100%;
-            @include calc(max-width, "100% - 10px");
-            @include calc(max-height, "100% - 12px");
-            @include linear-gradient(top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
+            max-width: calc(100% - 10px);
+            max-height: calc(100% - 12px);
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
             overflow: hidden;
         }
 
@@ -528,7 +528,7 @@
 
         .watermark-preview,
         .watermark-config {
-            @include span-columns(6);
+            @include grid-column(6);
         }
 
         .watermark-preview {
@@ -628,7 +628,7 @@
             line-height: 22px;
             font-weight: $weight-semibold;
             text-align: center;
-            @include calc(max-height, "100% - 0px");
+            max-height: calc(100% - 0px);
 
             &.left-aligned {
                 text-align: left;
@@ -685,7 +685,7 @@
 
             // for legal or other small print
             &.paragraph-meta {
-                @include linear-gradient(top, rgba($black, 0.8), rgba($black, 0.2));
+                background: linear-gradient(to bottom, rgba($black, 0.8), rgba($black, 0.2));
                 height: 100%;
                 font-size: 12px;
                 line-height: 18px;

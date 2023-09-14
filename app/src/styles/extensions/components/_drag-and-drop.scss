@@ -25,13 +25,13 @@
     padding: 15px 10px;
 
     .drag-item {
-        @include user-select(none);
+        user-select: none;
         height: 35px;
         width: 100%;
         border-radius: $main-border-radius;
         cursor: move;
         border: $thin-border-stroke $main-border-color;
-        @include linear-gradient(top, #fff, #f3f5f6);
+        background: linear-gradient(to bottom, #fff, #f3f5f6);
         color: darken(#8c939b, 10%);
         font-weight: 600;
         text-shadow: 0px 1px 0px #fff;
@@ -39,7 +39,7 @@
         position: relative;
         margin: 10px 0;
         box-shadow: 0 0 0 rgba(0,0,0,0);
-        @include transition(box-shadow .3s ease-in-out);
+        transition: box-shadow .3s ease-in-out;
 
         .title {
             padding: 10px;
@@ -47,12 +47,12 @@
         }
 
         &:hover {
-            @include linear-gradient(top, #fff, darken(#f3f5f6, 2%));
+            background: linear-gradient(to bottom, #fff, darken(#f3f5f6, 2%));
         }
 
         &:active,
         &.being-dragged {
-            @include linear-gradient(top, darken(#fff, 2%), darken(#f3f5f6, 3%));
+            background: linear-gradient(to bottom, darken(#fff, 2%), darken(#f3f5f6, 3%));
             cursor: move;
             border: $thin-border-stroke darken($main-border-color, 5%);
             box-shadow: 0 0 4px rgba(0,0,0,0.1);
@@ -75,7 +75,8 @@
             position: absolute;
             top: 12px;
             left: 10px;
-            @include retina-image("#{$img-path}grip", 13px 14px);
+            background-image: url("#{$img-path}grip.png");
+            background-size: 13px 14px;
         }
 
         // Item Move Buttons
@@ -88,11 +89,13 @@
             right: 10px;
 
             &.add {
-                @include retina-image("#{$img-path}plus-icon", 17px 17px);
+                background-image: url("#{$img-path}plus-icon.png");
+                background-size: 17px 17px;
             }
 
             &.remove {
-                @include retina-image("#{$img-path}remove-icon", 17px 17px);
+                background-image: url("#{$img-path}remove-icon.png");
+                background-size: 17px 17px;
             }
         }
     }

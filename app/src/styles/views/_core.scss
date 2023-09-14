@@ -152,10 +152,10 @@ body {
                 color: #717171;
                 text-shadow: 0 1px 0 rgba($white, 1);
                 border: $thin-border-stroke $main-border-color;
-                @include linear-gradient(top, #f8f8f8, #e9e9e9);
+                background: linear-gradient(to bottom, #f8f8f8, #e9e9e9);
 
                 // Pulled from Button Mixin (keep in sync with those styles)
-                @include linear-gradient(#fff, #f7f7f7);
+                background: linear-gradient(#fff, #f7f7f7);
                 border: $thin-border-stroke $main-border-color;
                 box-shadow: inset 0px 1px 0px 0px #fff, 0px 1px 2px rgba(0,0,0,.05);
                 outline: none;
@@ -164,7 +164,7 @@ body {
 
                 &:hover:not(.active) {
                     border: $thin-border-stroke darken($main-border-color, 2%);
-                    @include linear-gradient(darken(#fff, 1%), darken(#f7f7f7, 1%));
+                    background: linear-gradient(darken(#fff, 1%), darken(#f7f7f7, 1%));
                     color: $medium-prim-color;
                 }
 

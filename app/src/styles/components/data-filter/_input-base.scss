@@ -24,10 +24,10 @@
     position: relative;
     box-sizing: border-box;
 
-    @include transition-property(width, padding, visibility, opacity);
-    @include transition-duration(300ms);
-    @include transition-timing-function(ease-in-out);
-    @include transition-delay(80ms);
+    transition-property: width, padding, visibility, opacity;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+    transition-delay: 80ms;
 
     float: left;
     width: 0px;

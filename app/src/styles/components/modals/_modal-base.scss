@@ -53,7 +53,7 @@
     visibility: hidden;
     opacity: 0;
     display: none;
-    @include transition(all .2s);
+    transition: all .2s;
     z-index: ($max-z + 2);
     width: $modal-width;
     height: auto;
@@ -81,7 +81,7 @@
         font-size: 50px;
         color: rgba($white, 0.7);
         text-shadow: 0 0 10px rgba($black, 0.4);
-        @include transition(all 0.2s);
+        transition: all 0.2s;
 
         &.fa-chevron-left  {
             left: $spacing;
@@ -106,7 +106,7 @@
     // Hide overlay
     visibility: hidden;
     opacity: 0;
-    @include transition(all .15s);
+    transition: all .15s;
 
     &.active {
         opacity: 1;
@@ -118,7 +118,8 @@
     width: 100%;
     height: 100%;
     z-index: $max-z + 1;
-    @include radial-gradient(rgba($black, 0.2), rgba($black, 0.4));
+    background-color: rgba($black, 0.2);
+    background-image: radial-gradient(rgba($black, 0.2), rgba($black, 0.4));
 
 }
 
@@ -175,7 +176,7 @@
         header {
             $height: 35px;
             @include accordion-header($height);
-            @include user-select(none);
+            user-select: none;
             position: static;
 
             &.expand {

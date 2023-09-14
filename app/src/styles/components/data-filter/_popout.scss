@@ -54,7 +54,7 @@
 }
 
 .df-popout-header {
-    @include linear-gradient($white, #f7f7f7);
+    background: linear-gradient($white, #f7f7f7);
     border-top-left-radius: $main-border-radius;
     border-top-right-radius: $main-border-radius;
     border-bottom: $thin-border-stroke $main-border-color;
@@ -65,30 +65,47 @@
 }
 
 .df-table {
-    @include outer-container(100%);
+    // @include outer-container(100%);
+    @include grid-container;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+
     padding: 5px 10px;
     max-height: 150px;
     overflow: auto;
 
     // Row
     .row {
-        @include fill-parent();
-        @include row(table);
+        // @include fill-parent();
+        width: 100%;
+        box-sizing: border-box;
+        // @include row(table);
+        *zoom: 1;
+        display: block;
+    }
+    .row:before, .element:after {
+      content: " ";
+      display: table;
+    }
+    .row:after {
+      clear: both;
     }
 
     // Columns
     .df-saved-name {
-        @include span-columns(9);
-        @include pad(5px 0);
+        @include grid-column(9);
+        padding: 5px 0;
 
         font-size: 12px;
         font-weight: $weight-semibold;
     }
 
     .df-saved-actions {
-        @include span-columns(3);
-        @include reset-display;
-        @include pad(5px 0);
+        @include grid-column(3);
+        // @include reset-display;
+        display: block;
+        padding: 5px 0;
     }
 }
 
@@ -135,7 +152,12 @@ $df-saved-actions-font-size: 11px;
 
 // Filter Set Form
 .df-save-set-container {
-    @include outer-container(100%);
+    // @include outer-container(100%);
+    @include grid-container;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+
     padding: 10px;
 
     .row {
@@ -168,7 +190,7 @@ $df-saved-actions-font-size: 11px;
     }
 
     %df-save-set-button {
-        @include span-columns(6);
+        @include grid-column(6);
         text-shadow: none;
         text-align: center;
     }

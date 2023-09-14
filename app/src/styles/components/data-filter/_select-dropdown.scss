@@ -42,7 +42,7 @@ $df-select-dropdown-horizontal-padding: 6px;
 .df-select-dropdown {
     box-sizing: border-box;
     @include btn(white);
-    @include appearance(none);
+    appearance: none;
     display: inline-block;
     float: left;
     width: auto;
@@ -63,7 +63,7 @@ $df-select-dropdown-horizontal-padding: 6px;
         &:not(.df-paired-dropdown) {
             @extend .animated !optional;
             @extend .flipInX !optional;
-            @include animation-delay(400ms);
+            animation-delay: 400ms;
         }
 
         &.df-paired-dropdown {
@@ -99,7 +99,7 @@ $df-select-dropdown-horizontal-padding: 6px;
         text-align: left;
 
         &:hover {
-            @include background(linear-gradient(#fff, #f7f7f7));
+            background: linear-gradient(#fff, #f7f7f7);
             border: $thin-border-stroke $main-border-color;
             color: $medium-prim-color;
         }
@@ -145,13 +145,13 @@ $df-select-dropdown-horizontal-padding: 6px;
         @include fa-icon-color(before, $light-prim-color);
     }
 
-    @include transition-property(visibility, opacity);
-    @include transition-duration(300ms);
-    @include transition-timing-function(ease-in-out);
-    @include transition-delay(160ms);
+    transition-property: visibility, opacity;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+    transition-delay: 160ms;
 
     &:before {
-        @include transition(color 250ms ease-in-out);
+        transition: color 250ms ease-in-out;
     }
 
     &:hover:not(.disabled) {
