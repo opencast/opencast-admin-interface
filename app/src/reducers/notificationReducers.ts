@@ -46,11 +46,13 @@ export const notifications = (state = initialState, action) => {
 	switch (type) {
 		case CREATE_NOTIFICATION: {
 			const { notification, id } = payload;
+// @ts-expect-error TS(2339): Property 'id' does not exist on type 'never'.
       if (state.notifications.filter(e => e.id === id).length > 0) {
         console.log("Notification with id: " + id + " already exists.")
         return {
           ...state,
           notifications: state.notifications.map((oldNotification) => {
+// @ts-expect-error TS(2339): Property 'id' does not exist on type 'never'.
             if (oldNotification.id === id) {
               return {
                 id: id,

@@ -467,8 +467,10 @@ export const postNewEvent = (values, metadataInfo, extendedMetadata) => async (
 
 	// Process bar notification
   var config = {
+    // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
     onUploadProgress: function(progressEvent) {
       var percentCompleted = (progressEvent.loaded * 100) / progressEvent.total;
+      // @ts-expect-error TS(2554): Expected 6 arguments, but got 5.
       dispatch(addNotificationWithId(-42000, "success", "EVENTS_UPLOAD_STARTED", -1, { "progress": percentCompleted.toFixed(2) } ))
       if (percentCompleted >= 100) {
         dispatch(removeNotification(-42000))

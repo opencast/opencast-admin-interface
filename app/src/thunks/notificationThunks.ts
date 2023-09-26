@@ -11,7 +11,7 @@ import {
 } from "../configs/generalConfig";
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-export const addNotification = (type, key, duration, parameter, context, id) => (
+export const addNotification = (type, key, duration, parameter, context, id?) => (
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 	dispatch,
 // @ts-expect-error TS(7006): Parameter 'getState' implicitly has an 'any' type.
