@@ -10,6 +10,7 @@
     "@material-ui/pickers": "^3.3.10",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
+    "@types/react-router-dom": "^5.3.3",
     "array-move": "^4.0.0",
     "axios": "^1.4.0",
     "bourbon": "^7.3.0",
@@ -75,6 +76,7 @@
     "prop-types": "^15.8.1",
     "react-app-rewired": "^2.2.1",
     "sass": "^1.62.1",
+    "ts-migrate": "^0.1.35",
     "uuid": "^9.0.0"
   }
 }
