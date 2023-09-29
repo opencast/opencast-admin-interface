@@ -9,6 +9,29 @@ import {
 import axios from "axios";
 import { addNotification } from "./notificationThunks";
 
+interface IInfoMe {
+  org: {
+    anonymousRole: string,
+    name: string,
+    adminRole: string,
+    id: string,
+    properties: {[key: string]: string}
+  },
+  roles: string[],
+  userRole: string,
+  user : {
+    provider: string,
+    name: string,
+    email: string,
+    username: string,
+  }
+}
+
+export interface IUserInfo extends IInfoMe{
+  isAdmin: boolean,
+  isOrgAdmin: boolean,
+}
+
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchUserInfo = () => async (dispatch) => {
 	try {
@@ -16,13 +39,13 @@ export const fetchUserInfo = () => async (dispatch) => {
 
 		let data = await axios.get("/info/me.json");
 
-		let userInfo = await data.data;
+		let response: IInfoMe = await data.data;
 
 		// add direct information about user being an admin
-		userInfo = {
-			isAdmin: userInfo.roles.includes("ROLE_ADMIN"),
-			isOrgAdmin: userInfo.roles.includes(userInfo.org.adminRole),
-			...userInfo,
+		let userInfo: IUserInfo = {
+			isAdmin: response.roles.includes("ROLE_ADMIN"),
+			isOrgAdmin: response.roles.includes(response.org.adminRole),
+			...response,
 		};
 
 		dispatch(loadUserInfoSuccess(userInfo));
