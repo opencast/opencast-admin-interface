@@ -37,9 +37,9 @@ export const fetchUserInfo = () => async (dispatch) => {
 	try {
 		dispatch(loadUserInfoInProgress());
 
-		let data = await axios.get("/info/me.json");
+		let data = await axios.get<IInfoMe>("/info/me.json");
 
-		let response: IInfoMe = await data.data;
+		let response = data.data;
 
 		// add direct information about user being an admin
 		let userInfo: IUserInfo = {
