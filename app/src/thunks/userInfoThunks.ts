@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 import { addNotification } from "./notificationThunks";
 
-interface IInfoMe {
+type IInfoMe = {
   org: {
     anonymousRole: string,
     name: string,
