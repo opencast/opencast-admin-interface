@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 import { addNotification } from "./notificationThunks";
 
-type IInfoMe = {
+type InfoMe = {
   org: {
     anonymousRole: string,
     name: string,
@@ -27,7 +27,7 @@ type IInfoMe = {
   }
 }
 
-export interface IUserInfo extends IInfoMe{
+export interface UserInfo extends InfoMe {
   isAdmin: boolean,
   isOrgAdmin: boolean,
 }
@@ -37,12 +37,12 @@ export const fetchUserInfo = () => async (dispatch) => {
 	try {
 		dispatch(loadUserInfoInProgress());
 
-		let data = await axios.get<IInfoMe>("/info/me.json");
+		let data = await axios.get<InfoMe>("/info/me.json");
 
 		let response = data.data;
 
 		// add direct information about user being an admin
-		let userInfo: IUserInfo = {
+		let userInfo: UserInfo = {
 			isAdmin: response.roles.includes("ROLE_ADMIN"),
 			isOrgAdmin: response.roles.includes(response.org.adminRole),
 			...response,
