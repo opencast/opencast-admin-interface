@@ -18,7 +18,7 @@ type InfoMe = {
     properties: {[key: string]: string}
   },
   roles: string[],
-  userRole: string,
+  userRole: string | undefined,
   user : {
     provider: string,
     name: string,
@@ -57,7 +57,7 @@ export const fetchUserInfo = () => async (dispatch) => {
 	}
 };
 
-type OcVersion = {
+export type OcVersion = {
   "last-modified": number,
   consistent: boolean,
   version: string,
@@ -71,7 +71,7 @@ export const fetchOcVersion = () => async (dispatch) => {
 
 		let data = await axios.get<OcVersion>("/sysinfo/bundles/version?prefix=opencast");
 
-		let ocVersion = await data.data;
+		let ocVersion = data.data;
 
 		dispatch(loadOcVersionSuccess(ocVersion));
 	} catch (e) {
