@@ -1,10 +1,8 @@
-import { persistReducer } from "redux-persist";
+import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 // @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import autoMergeLevel2 from "redux-persist/lib";
-import thunk from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
-import { applyMiddleware, combineReducers, createStore } from "redux";
+import { combineReducers } from "redux";
 import tableFilters from "./reducers/tableFilterReducers";
 import tableFilterProfiles from "./reducers/tableFilterProfilesReducer";
 import events from "./reducers/eventReducers";
@@ -30,13 +28,14 @@ import aclDetails from "./reducers/aclDetailsReducer";
 import themeDetails from "./reducers/themeDetailsReducer";
 import userInfo from "./reducers/userInfoReducer";
 import statistics from "./reducers/statisticsReducers";
+import { configureStore } from "@reduxjs/toolkit";
 
 /**
  * This File contains the configuration for the store used by the reducers all over the app
  */
 
 // form reducer and all other reducers used in this app
-const reducers = {
+const reducers = combineReducers({
 	tableFilters,
 	tableFilterProfiles,
 	events,
@@ -62,7 +61,7 @@ const reducers = {
 	aclDetails,
 	userInfo,
 	statistics,
-};
+});
 
 // Configuration for persisting store
 const persistConfig = {
@@ -71,11 +70,16 @@ const persistConfig = {
 	stateReconciler: autoMergeLevel2,
 };
 
-const rootReducer = combineReducers(reducers);
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, reducers);
 
-// Store configuration, store holds the current state of the app
-// Todo: Change rootReducer to persistedReducer for actually saving state even if reloads occur. At the moment it is
-//  commented out because of debugging purposes.
-export const configureStore = () =>
-	createStore(persistedReducer, composeWithDevTools(applyMiddleware(thunk)));
+const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+})
+
+export default store;
