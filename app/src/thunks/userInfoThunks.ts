@@ -57,12 +57,19 @@ export const fetchUserInfo = () => async (dispatch) => {
 	}
 };
 
+type OcVersion = {
+  "last-modified": number,
+  consistent: boolean,
+  version: string,
+  buildNumber: string,
+}
+
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchOcVersion = () => async (dispatch) => {
 	try {
 		dispatch(loadOcVersionInProgress());
 
-		let data = await axios.get("/sysinfo/bundles/version?prefix=opencast");
+		let data = await axios.get<OcVersion>("/sysinfo/bundles/version?prefix=opencast");
 
 		let ocVersion = await data.data;
 
