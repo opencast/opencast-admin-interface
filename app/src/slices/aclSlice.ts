@@ -1,9 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { aclsTableConfig } from "../configs/tableConfigs/aclsTableConfig";
 
 /**
  * This file contains redux reducer for actions affecting the state of acls
  */
+type ACLsState = {
+  isLoading: boolean,
+	results: any[],     // TODO: proper typing
+	columns: any,       // TODO: proper typing, derive from `initialColumns`
+	total: number,
+	count: number,
+	offset: number,
+	limit: number,
+}
 
 // Fill columns initially with columns defined in aclsTableConfig
 const initialColumns = aclsTableConfig.columns.map((column) => ({
@@ -12,7 +21,7 @@ const initialColumns = aclsTableConfig.columns.map((column) => ({
 }));
 
 // Initial state of acls in redux store
-const initialState = {
+const initialState: ACLsState = {
 	isLoading: false,
 	results: [],
 	columns: initialColumns,
@@ -29,8 +38,14 @@ const aclsSlice = createSlice({
     loadedACLsInProgress(state) {
       state.isLoading = true;
     },
-    loadedACLsSuccess(state, action) {
-      const { acls } = action.payload;
+    loadedACLsSuccess(state, action: PayloadAction<{
+      total: ACLsState["total"],
+      count: ACLsState["count"],
+      limit: ACLsState["limit"],
+      offset: ACLsState["offset"],
+      results: ACLsState["results"],
+    }>) {
+      const acls = action.payload;
       state.isLoading = false;
       state.total = acls.total;
       state.count = acls.count;
@@ -41,9 +56,10 @@ const aclsSlice = createSlice({
     loadedACLsFailure(state) {
       state.isLoading = false;
     },
-    setACLColumns(state, action) {
-      const { updatedColumns } = action.payload;
-      state.columns = updatedColumns;
+    setACLColumns(state, action: PayloadAction<{
+      updatedColumns: ACLsState["columns"],
+    }>) {
+      state.columns = action.payload.updatedColumns;
     },
   }
 })
