@@ -47,7 +47,7 @@ import { setJobColumns } from "../actions/jobActions";
 import { setServerColumns } from "../actions/serverActions";
 import { setUserColumns } from "../actions/userActions";
 import { setGroupColumns } from "../actions/groupActions";
-import { setACLColumns } from "../actions/aclActions";
+import { setACLColumns } from "../slices/aclSlice";
 import { setThemeColumns } from "../actions/themeActions";
 import { setServicesColumns } from "../actions/serviceActions";
 

@@ -14,7 +14,7 @@ import servers from "./reducers/serverReducer";
 import services from "./reducers/serviceReducer";
 import users from "./reducers/userReducers";
 import groups from "./reducers/groupReducers";
-import acls from "./reducers/aclReducers";
+import acls from "./slices/aclSlice";
 import themes from "./reducers/themeReducers";
 import health from "./reducers/healthReducers";
 import { notifications } from "./reducers/notificationReducers";
