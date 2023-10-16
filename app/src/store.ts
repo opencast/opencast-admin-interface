@@ -82,4 +82,8 @@ const store = configureStore({
     }),
 })
 
+// Initialize typescript type inference
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
+
 export default store;
