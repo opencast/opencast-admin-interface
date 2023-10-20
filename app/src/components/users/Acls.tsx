@@ -16,7 +16,6 @@ import {
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
 import { fetchGroups } from "../../thunks/groupThunks";
-import { fetchAcls } from "../../thunks/aclThunks";
 import { getTotalAcls } from "../../selectors/aclSelectors";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
@@ -27,6 +26,7 @@ import { hasAccess } from "../../utils/utils";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
+import { fetchACLs } from "../../slices/aclSlice";
 
 /**
  * This component renders the table view of acls
@@ -43,7 +43,7 @@ const Acls: React.FC = () => {
 
 	const loadAcls = async () => {
 		// Fetching acls from server
-		await dispatch(fetchAcls());
+		await dispatch(fetchACLs());
 
 		// Load acls into table
 		dispatch(loadAclsIntoTable());
@@ -165,7 +165,7 @@ const Acls: React.FC = () => {
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={() => dispatch(fetchAcls())}
+						loadResource={() => dispatch(fetchACLs())}
 						loadResourceIntoTable={() => dispatch(loadAclsIntoTable())}
 						resource={"acls"}
 					/>
