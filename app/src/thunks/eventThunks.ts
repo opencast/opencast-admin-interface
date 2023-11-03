@@ -274,11 +274,35 @@ export const checkForConflicts = async (
 		})
 		.then((response) => {
 			status = response.status;
-			return status === 409;
+      const conflicts = [];
+      if (status === 409) {
+        const conflictsResponse = response.data;
+
+        for (const conflict of conflictsResponse) {
+          conflicts.push({
+            title: conflict.title,
+            start: conflict.start,
+            end: conflict.end,
+          });
+        }
+      }
+			return conflicts;
 		})
 		.catch((reason) => {
 			status = reason.response.status;
-			return status === 409;
+      const conflicts = [];
+      if (status === 409) {
+        const conflictsResponse = reason.response.data;
+
+        for (const conflict of conflictsResponse) {
+          conflicts.push({
+            title: conflict.title,
+            start: conflict.start,
+            end: conflict.end,
+          });
+        }
+      }
+			return conflicts;
 		});
 };
 
@@ -866,6 +890,7 @@ export const checkConflicts = (values) => async (dispatch) => {
 				)
 			);
 			check = false;
+      return conflicts;
 		}
 	}
 	return check;
