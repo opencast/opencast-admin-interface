@@ -36,10 +36,10 @@ const Acls: React.FC = () => {
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewAclModal, setNewAclModal] = useState(false);
 
-  const dispatch = useAppDispatch()
-  const acls = useAppSelector(state => getTotalAcls(state))
-	const user = useAppSelector(state => getUserInformation(state))
-  const currentFilterType = useAppSelector(state => getCurrentFilterResource(state))
+        const dispatch = useAppDispatch();
+        const acls = useAppSelector(state => getTotalAcls(state));
+	const user = useAppSelector(state => getUserInformation(state));
+        const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	const loadAcls = async () => {
 		// Fetching acls from server
