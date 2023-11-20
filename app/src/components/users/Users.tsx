@@ -57,7 +57,7 @@ const Users = ({
 	currentFilterType,
 }) => {
 	const { t } = useTranslation();
-  const dispatch = useAppDispatch()
+        const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewUserModal, setNewUserModal] = useState(false);
 
