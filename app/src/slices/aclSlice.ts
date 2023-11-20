@@ -92,4 +92,4 @@ export const {
 } = aclsSlice.actions
 
 // Export the slice reducer as the default export
-export default aclsSlice.reducer
+export default aclsSlice.reducer;
