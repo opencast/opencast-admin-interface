@@ -43,8 +43,8 @@ export const fetchACLs = createAsyncThunk('acls/fetchACLs', async (_, { getState
   // and then `fulfilled` or `rejected` actions based on the promise.
   // as needed based on the
   const res = await axios.get("/admin-ng/acl/acls.json", { params: params });
-  return res.data
-})
+  return res.data;
+});
 
 const aclsSlice = createSlice({
   name: 'acls',
