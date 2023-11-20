@@ -82,7 +82,7 @@ const aclsSlice = createSlice({
         state.status = 'failed'
         state.results = []
         state.error = action.error
-      })
+      });
   }
 })
 
