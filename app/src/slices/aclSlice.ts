@@ -70,7 +70,7 @@ const aclsSlice = createSlice({
         results: ACLsState["results"],
       }>) => {
         // Same "mutating" update syntax thanks to Immer
-        state.status = 'succeeded'
+        state.status = 'succeeded';
         const acls = action.payload;
         state.total = acls.total;
         state.count = acls.count;
