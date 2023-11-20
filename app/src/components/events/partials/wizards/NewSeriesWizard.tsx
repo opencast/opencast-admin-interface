@@ -40,6 +40,7 @@ const NewSeriesWizard = ({
 		{
 			translation: "EVENTS.SERIES.NEW.METADATA.CAPTION",
 			name: "metadata",
+			hidden: false,
 		},
 		{
 			translation: "EVENTS.EVENTS.DETAILS.TABS.EXTENDED-METADATA",
@@ -49,14 +50,17 @@ const NewSeriesWizard = ({
 		{
 			translation: "EVENTS.SERIES.NEW.ACCESS.CAPTION",
 			name: "access",
+			hidden: false,
 		},
 		{
 			translation: "EVENTS.SERIES.NEW.THEME.CAPTION",
 			name: "theme",
+			hidden: false,
 		},
 		{
 			translation: "EVENTS.SERIES.NEW.SUMMARY.CAPTION",
 			name: "summary",
+			hidden: false,
 		},
 	];
 
