@@ -81,7 +81,7 @@ const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
-})
+});
 
 // Initialize typescript type inference
 export type RootState = ReturnType<typeof store.getState>
