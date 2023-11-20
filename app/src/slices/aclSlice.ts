@@ -84,7 +84,7 @@ const aclsSlice = createSlice({
         state.error = action.error
       });
   }
-})
+});
 
 export const {
   setACLColumns,
