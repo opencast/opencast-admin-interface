@@ -79,9 +79,9 @@ const aclsSlice = createSlice({
         state.results = acls.results;
       })
       .addCase(fetchACLs.rejected, (state, action) => {
-        state.status = 'failed'
-        state.results = []
-        state.error = action.error
+        state.status = 'failed';
+        state.results = [];
+        state.error = action.error;
       });
   }
 });
