@@ -41,7 +41,6 @@ export const fetchACLs = createAsyncThunk('acls/fetchACLs', async (_, { getState
   // Just make the async request here, and return the response.
   // This will automatically dispatch a `pending` action first,
   // and then `fulfilled` or `rejected` actions based on the promise.
-  // as needed based on the
   const res = await axios.get("/admin-ng/acl/acls.json", { params: params });
   return res.data;
 });
