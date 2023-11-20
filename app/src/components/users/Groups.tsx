@@ -57,7 +57,7 @@ const Groups = ({
 	currentFilterType,
 }) => {
 	const { t } = useTranslation();
-  const dispatch = useAppDispatch()
+        const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewGroupModal, setNewGroupModal] = useState(false);
 
