@@ -60,7 +60,7 @@ const aclsSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchACLs.pending, (state) => {
-        state.status = 'loading'
+        state.status = 'loading';
       })
       // Pass the generated action creators to `.addCase()`
       .addCase(fetchACLs.fulfilled, (state, action: PayloadAction<{
