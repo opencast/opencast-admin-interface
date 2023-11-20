@@ -15,7 +15,7 @@ type ACLsState = {
 	count: number,
 	offset: number,
 	limit: number,
-}
+};
 
 // Fill columns initially with columns defined in aclsTableConfig
 const initialColumns = aclsTableConfig.columns.map((column) => ({
