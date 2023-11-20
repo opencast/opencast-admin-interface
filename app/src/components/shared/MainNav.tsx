@@ -88,7 +88,7 @@ const MainNav = ({
 	loadingFilters,
 }) => {
 	const { t } = useTranslation();
-  const dispatch = useAppDispatch()
+        const dispatch = useAppDispatch();
 	let navigate = useNavigate();
 
 	const loadEvents = () => {
