@@ -6,7 +6,7 @@ import { getURLParams } from '../utils/resourceUtils';
 /**
  * This file contains redux reducer for actions affecting the state of acls
  */
-type ACLsState = {
+type AclsState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
 	results: any[],		 // TODO: proper typing
@@ -24,7 +24,7 @@ const initialColumns = aclsTableConfig.columns.map((column) => ({
 }));
 
 // Initial state of acls in redux store
-const initialState: ACLsState = {
+const initialState: AclsState = {
 	status: 'uninitialized',
 	error: null,
 	results: [],
@@ -35,7 +35,7 @@ const initialState: ACLsState = {
 	limit: 0,
 };
 
-export const fetchACLs = createAsyncThunk('acls/fetchACLs', async (_, { getState }) => {
+export const fetchAcls = createAsyncThunk('acls/fetchAcls', async (_, { getState }) => {
 	const state = getState();
 	let params = getURLParams(state);
 	// Just make the async request here, and return the response.
@@ -49,8 +49,8 @@ const aclsSlice = createSlice({
 	name: 'acls',
 	initialState,
 	reducers: {
-		setACLColumns(state, action: PayloadAction<{
-			updatedColumns: ACLsState["columns"],
+		setAclColumns(state, action: PayloadAction<{
+			updatedColumns: AclsState["columns"],
 		}>) {
 			state.columns = action.payload.updatedColumns;
 		},
@@ -58,16 +58,16 @@ const aclsSlice = createSlice({
 	// These are used for thunks
 	extraReducers: builder => {
 		builder
-			.addCase(fetchACLs.pending, (state) => {
+			.addCase(fetchAcls.pending, (state) => {
 				state.status = 'loading';
 			})
 			// Pass the generated action creators to `.addCase()`
-			.addCase(fetchACLs.fulfilled, (state, action: PayloadAction<{
-				total: ACLsState["total"],
-				count: ACLsState["count"],
-				limit: ACLsState["limit"],
-				offset: ACLsState["offset"],
-				results: ACLsState["results"],
+			.addCase(fetchAcls.fulfilled, (state, action: PayloadAction<{
+				total: AclsState["total"],
+				count: AclsState["count"],
+				limit: AclsState["limit"],
+				offset: AclsState["offset"],
+				results: AclsState["results"],
 			}>) => {
 				// Same "mutating" update syntax thanks to Immer
 				state.status = 'succeeded';
@@ -78,7 +78,7 @@ const aclsSlice = createSlice({
 				state.offset = acls.offset;
 				state.results = acls.results;
 			})
-			.addCase(fetchACLs.rejected, (state, action) => {
+			.addCase(fetchAcls.rejected, (state, action) => {
 				state.status = 'failed';
 				state.results = [];
 				state.error = action.error;
@@ -86,7 +86,7 @@ const aclsSlice = createSlice({
 	}
 });
 
-export const { setACLColumns } = aclsSlice.actions;
+export const { setAclColumns } = aclsSlice.actions;
 
 // Export the slice reducer as the default export
 export default aclsSlice.reducer;

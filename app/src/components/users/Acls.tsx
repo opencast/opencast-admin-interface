@@ -26,7 +26,7 @@ import { hasAccess } from "../../utils/utils";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { fetchACLs } from "../../slices/aclSlice";
+import { fetchAcls } from "../../slices/aclSlice";
 
 /**
  * This component renders the table view of acls
@@ -43,7 +43,7 @@ const Acls: React.FC = () => {
 
 	const loadAcls = async () => {
 		// Fetching acls from server
-		await dispatch(fetchACLs());
+		await dispatch(fetchAcls());
 
 		// Load acls into table
 		dispatch(loadAclsIntoTable());
@@ -81,7 +81,7 @@ const Acls: React.FC = () => {
 		// Load acls on mount
 		loadAcls().then((r) => console.info(r));
 
-		// Fetch ACLs every minute
+		// Fetch Acls every minute
 		let fetchAclInterval = setInterval(loadAcls, 5000);
 
 		return () => clearInterval(fetchAclInterval);
@@ -165,7 +165,7 @@ const Acls: React.FC = () => {
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={() => dispatch(fetchACLs())}
+						loadResource={() => dispatch(fetchAcls())}
 						loadResourceIntoTable={() => dispatch(loadAclsIntoTable())}
 						resource={"acls"}
 					/>

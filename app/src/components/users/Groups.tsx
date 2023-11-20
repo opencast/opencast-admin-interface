@@ -26,7 +26,7 @@ import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
-import { fetchACLs } from "../../slices/aclSlice";
+import { fetchAcls } from "../../slices/aclSlice";
 import { useAppDispatch } from "../../store";
 
 /**
@@ -85,7 +85,7 @@ const Groups = ({
 		resetOffset();
 
 		// Fetching acls from server
-		dispatch(fetchACLs());
+		dispatch(fetchAcls());
 
 		// Load acls into table
 		loadingAclsIntoTable();

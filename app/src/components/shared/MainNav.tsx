@@ -29,7 +29,7 @@ import { fetchServices } from "../../thunks/serviceThunks";
 import { fetchGroups } from "../../thunks/groupThunks";
 import { GlobalHotKeys } from "react-hotkeys";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
-import { fetchACLs } from "../../slices/aclSlice";
+import { fetchAcls } from "../../slices/aclSlice";
 import { useAppDispatch } from "../../store";
 
 /**
@@ -205,7 +205,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching acls from server
-        dispatch(fetchACLs());
+        dispatch(fetchAcls());
 
 		// Load acls into table
 		loadingAclsIntoTable();

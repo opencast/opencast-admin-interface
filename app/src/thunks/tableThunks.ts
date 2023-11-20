@@ -46,7 +46,7 @@ import { setJobColumns } from "../actions/jobActions";
 import { setServerColumns } from "../actions/serverActions";
 import { setUserColumns } from "../actions/userActions";
 import { setGroupColumns } from "../actions/groupActions";
-import { fetchACLs, setACLColumns } from "../slices/aclSlice";
+import { fetchAcls, setAclColumns } from "../slices/aclSlice";
 import { setThemeColumns } from "../actions/themeActions";
 import { setServicesColumns } from "../actions/serviceActions";
 import { useAppDispatch } from "../store";
@@ -462,7 +462,7 @@ export const goToPage = (pageNumber) => async (dispatch, getState) => {
 			break;
 		}
 		case "acls": {
-			await appDispatch(fetchACLs());
+			await appDispatch(fetchAcls());
 			dispatch(loadAclsIntoTable());
 			break;
 		}
@@ -534,7 +534,7 @@ export const updatePages = () => async (dispatch, getState) => {
 			break;
 		}
 		case "acls": {
-			await appDispatch(fetchACLs());
+			await appDispatch(fetchAcls());
 			dispatch(loadAclsIntoTable());
 			break;
 		}
@@ -648,7 +648,7 @@ export const changeColumnSelection = (updatedColumns) => async (
 			break;
 		}
 		case "acls": {
-			await dispatch(setACLColumns(updatedColumns));
+			await dispatch(setAclColumns(updatedColumns));
 			dispatch(loadAclsIntoTable());
 			break;
 		}
