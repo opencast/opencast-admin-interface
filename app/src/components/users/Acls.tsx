@@ -62,7 +62,7 @@ const Acls: React.FC = () => {
 
 	const loadGroups = () => {
 		// Reset the current page to first page
-		dispatch(setOffset(0))
+		dispatch(setOffset(0));
 
 		// Fetching groups from server
 		dispatch(fetchGroups());
