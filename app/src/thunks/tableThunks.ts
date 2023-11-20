@@ -477,7 +477,7 @@ export const goToPage = (pageNumber) => async (dispatch, getState) => {
 // Update pages for example if page size was changed
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const updatePages = () => async (dispatch, getState) => {
-  const appDispatch = useAppDispatch()
+        const appDispatch = useAppDispatch();
 	const state = getState();
 
 	const pagination = getTablePagination(state);
