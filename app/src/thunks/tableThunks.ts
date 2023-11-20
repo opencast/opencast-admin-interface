@@ -407,7 +407,7 @@ export const loadThemesIntoTable = () => (dispatch, getState) => {
 // Navigate between pages
 // @ts-expect-error TS(7006): Parameter 'pageNumber' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const goToPage = (pageNumber) => async (dispatch, getState) => {
-  const appDispatch = useAppDispatch()
+        const appDispatch = useAppDispatch();
 	dispatch(deselectAll());
 	dispatch(setOffset(pageNumber));
 
