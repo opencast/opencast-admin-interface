@@ -51,7 +51,7 @@ const Acls: React.FC = () => {
 
 	const loadUsers = () => {
 		// Reset the current page to first page
-		dispatch(setOffset(0))
+		dispatch(setOffset(0));
 
 		// Fetching users from server
 		dispatch(fetchUsers());
