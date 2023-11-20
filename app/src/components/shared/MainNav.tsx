@@ -205,7 +205,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching acls from server
-    dispatch(fetchACLs());
+        dispatch(fetchACLs());
 
 		// Load acls into table
 		loadingAclsIntoTable();
