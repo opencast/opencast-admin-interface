@@ -86,9 +86,7 @@ const aclsSlice = createSlice({
   }
 });
 
-export const {
-  setACLColumns,
-} = aclsSlice.actions
+export const { setACLColumns } = aclsSlice.actions;
 
 // Export the slice reducer as the default export
 export default aclsSlice.reducer;
