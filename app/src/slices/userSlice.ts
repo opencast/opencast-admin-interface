@@ -36,6 +36,7 @@ const initialState: UsersState = {
 	limit: 0,
 };
 
+// fetch users from server
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async (_, { getState }) => {
 	const state = getState();
 	let params = getURLParams(state);
@@ -46,6 +47,7 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async (_, { getSt
 	return res.data;
 });
 
+// new user to backend
 export const postNewUser = createAsyncThunk('users/postNewUser', async (values: any, {dispatch}) => {
 	// get URL params used for post request
 	let data = buildUserBody(values);
@@ -62,12 +64,27 @@ export const postNewUser = createAsyncThunk('users/postNewUser', async (values: 
 		.then((response) => {
 			console.info(response);
 			dispatch(addNotification("success", "USER_ADDED"));
-			return response.data;
 		})
 		.catch((response) => {
 			console.error(response);
 			dispatch(addNotification("error", "USER_NOT_SAVED"));
-			return response.data;
+		});
+});
+
+// delete user with provided id
+export const deleteUser = createAsyncThunk('users/postNewUser', async (id: any, {dispatch}) => {
+	// API call for deleting an user
+	axios
+		.delete(`/admin-ng/users/${id}.json`)
+		.then((res) => {
+			console.info(res);
+			// add success notification
+			dispatch(addNotification("success", "USER_DELETED"));
+		})
+		.catch((res) => {
+			console.error(res);
+			// add error notification
+			dispatch(addNotification("error", "USER_NOT_DELETED"));
 		});
 });
 
