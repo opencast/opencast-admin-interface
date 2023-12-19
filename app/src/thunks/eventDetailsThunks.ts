@@ -578,14 +578,12 @@ export const updateAssets = (values, eventId) => async (dispatch, getState) => {
 		.then((response) => {
 			console.info(response);
 			dispatch(
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 4.
 				addNotification("success", "EVENTS_UPDATED", null, NOTIFICATION_CONTEXT)
 			);
 		})
 		.catch((response) => {
 			console.error(response);
 			dispatch(
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 4.
 				addNotification(
 					"error",
 					"EVENTS_NOT_UPDATED",
