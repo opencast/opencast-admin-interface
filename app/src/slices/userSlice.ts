@@ -1,6 +1,7 @@
 import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { usersTableConfig } from "../configs/tableConfigs/usersTableConfig";
 import axios from 'axios';
+import { transformToIdValueArray } from "../utils/utils";
 import { buildUserBody, getURLParams } from "../utils/resourceUtils";
 import { addNotification } from '../thunks/notificationThunks';
 
@@ -87,6 +88,17 @@ export const deleteUser = createAsyncThunk('users/postNewUser', async (id: any, 
 			dispatch(addNotification("error", "USER_NOT_DELETED"));
 		});
 });
+
+// get users and their user names
+export const fetchUsersAndUsernames = async () => {
+	let data = await axios.get(
+		"/admin-ng/resources/USERS.NAME.AND.USERNAME.json"
+	);
+
+	const response = await data.data;
+
+	return transformToIdValueArray(response);
+};
 
 const usersSlice = createSlice({
 	name: 'users',
