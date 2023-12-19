@@ -1,11 +1,5 @@
 import axios from "axios";
 import {
-	loadAclsFailure,
-	loadAclsInProgress,
-	loadAclsSuccess,
-} from "../actions/aclActions";
-import {
-	getURLParams,
 	prepareAccessPolicyRulesForPost,
 	transformAclTemplatesResponse,
 } from "../utils/resourceUtils";
@@ -13,25 +7,6 @@ import { transformToIdValueArray } from "../utils/utils";
 import { addNotification } from "./notificationThunks";
 import { NOTIFICATION_CONTEXT_ACCESS } from "../configs/modalConfig";
 import { removeNotificationWizardAccess } from "../actions/notificationActions";
-
-// fetch acls from server
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-export const fetchAcls = () => async (dispatch, getState) => {
-	try {
-		dispatch(loadAclsInProgress());
-
-		const state = getState();
-		let params = getURLParams(state);
-
-		// /acls.json?limit=0&offset=0&filter={filter}&sort={sort}
-		let data = await axios.get("/admin-ng/acl/acls.json", { params: params });
-
-		const acls = await data.data;
-		dispatch(loadAclsSuccess(acls));
-	} catch (e) {
-		dispatch(loadAclsFailure());
-	}
-};
 
 // todo: unite following in one fetch method (maybe also move to own file containing all fetches regarding resources endpoint)
 // get acl templates

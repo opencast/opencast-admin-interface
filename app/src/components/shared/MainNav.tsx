@@ -27,9 +27,10 @@ import { fetchSeries } from "../../thunks/seriesThunks";
 import { fetchServers } from "../../thunks/serverThunks";
 import { fetchServices } from "../../thunks/serviceThunks";
 import { fetchGroups } from "../../thunks/groupThunks";
-import { fetchAcls } from "../../thunks/aclThunks";
 import { GlobalHotKeys } from "react-hotkeys";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
+import { fetchAcls } from "../../slices/aclSlice";
+import { useAppDispatch } from "../../store";
 
 /**
  * This component renders the main navigation that opens when the burger button is clicked
@@ -73,8 +74,6 @@ const MainNav = ({
 	loadingGroups,
 // @ts-expect-error TS(7031): Binding element 'loadingGroupsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingGroupsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingAcls' implicitly has an 'a... Remove this comment to see the full error message
-	loadingAcls,
 // @ts-expect-error TS(7031): Binding element 'loadingAclsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingAclsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingThemes' implicitly has an ... Remove this comment to see the full error message
@@ -89,6 +88,7 @@ const MainNav = ({
 	loadingFilters,
 }) => {
 	const { t } = useTranslation();
+        const dispatch = useAppDispatch();
 	let navigate = useNavigate();
 
 	const loadEvents = () => {
@@ -205,7 +205,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching acls from server
-		loadingAcls();
+        dispatch(fetchAcls());
 
 		// Load acls into table
 		loadingAclsIntoTable();
@@ -361,7 +361,6 @@ const mapDispatchToProps = (dispatch) => ({
 	loadingUsersIntoTable: () => dispatch(loadUsersIntoTable()),
 	loadingGroups: () => dispatch(fetchGroups()),
 	loadingGroupsIntoTable: () => dispatch(loadGroupsIntoTable()),
-	loadingAcls: () => dispatch(fetchAcls()),
 	loadingAclsIntoTable: () => dispatch(loadAclsIntoTable()),
 	loadingThemes: () => dispatch(fetchThemes()),
 	loadingThemesIntoTable: () => dispatch(loadThemesIntoTable()),
