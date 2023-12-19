@@ -184,7 +184,6 @@ export const updateBulkMetadata = (metadataFields, values) => async (
 		.then((res) => {
 			console.info(res);
 			dispatch(
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 				addNotification("success", "BULK_METADATA_UPDATE.ALL_EVENTS_UPDATED")
 			);
 		})
@@ -196,19 +195,16 @@ export const updateBulkMetadata = (metadataFields, values) => async (
 				// if this error data is undefined then an unexpected error occurred
 				if (!err.data) {
 					dispatch(
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 						addNotification("error", "BULK_METADATA_UPDATE.UNEXPECTED_ERROR")
 					);
 				} else {
 					if (err.data.updated && err.data.updated.length === 0) {
 						dispatch(
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 							addNotification("error", "BULK_METADATA_UPDATE.NO_EVENTS_UPDATED")
 						);
 					}
 					if (err.data.updateFailures && err.data.updateFailures.length > 0) {
 						dispatch(
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 							addNotification(
 								"warning",
 								"BULK_METADATA_UPDATE.SOME_EVENTS_NOT_UPDATED"
@@ -217,7 +213,6 @@ export const updateBulkMetadata = (metadataFields, values) => async (
 					}
 					if (err.data.notFound && err.data.notFound.length > 0) {
 						dispatch(
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 							addNotification(
 								"warning",
 								"BULK_ACTIONS.EDIT_EVENTS_METADATA.REQUEST_ERRORS.NOT_FOUND"
@@ -227,7 +222,6 @@ export const updateBulkMetadata = (metadataFields, values) => async (
 				}
 			} else {
 				dispatch(
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 					addNotification("error", "BULK_METADATA_UPDATE.UNEXPECTED_ERROR")
 				);
 			}
@@ -485,12 +479,10 @@ export const postNewEvent = (values, metadataInfo, extendedMetadata) => async (
 		.post("/admin-ng/event/new", formData, config)
 		.then((response) => {
 			console.info(response);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "EVENTS_CREATED"));
 		})
 		.catch((response) => {
 			console.error(response);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "EVENTS_NOT_CREATED"));
 		});
 };
@@ -504,20 +496,16 @@ export const deleteEvent = (id) => async (dispatch) => {
 		.then((res) => {
 			// add success notification depending on status code
 			if (res.status === 200) {
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 				dispatch(addNotification("success", "EVENT_DELETED"));
 			} else {
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 				dispatch(addNotification("success", "EVENT_WILL_BE_DELETED"));
 			}
 		})
 		.catch((res) => {
 			// add error notification depending on status code
 			if (res.status === 401) {
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 				dispatch(addNotification("error", "EVENTS_NOT_DELETED_NOT_AUTHORIZED"));
 			} else {
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 				dispatch(addNotification("error", "EVENTS_NOT_DELETED"));
 			}
 		});
@@ -539,13 +527,11 @@ export const deleteMultipleEvent = (events) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			//add success notification
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "EVENTS_DELETED"));
 		})
 		.catch((res) => {
 			console.error(res);
 			//add error notification
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "EVENTS_NOT_DELETED"));
 		});
 };
@@ -706,7 +692,6 @@ export const updateScheduledEventsBulk = (values) => async (dispatch) => {
 
 		if (!eventChanges || !originalEvent) {
 			dispatch(
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 4.
 				addNotification(
 					"error",
 					"EVENTS_NOT_UPDATED_ID",
@@ -772,12 +757,10 @@ export const updateScheduledEventsBulk = (values) => async (dispatch) => {
 		.put("/admin-ng/event/bulk/update", formData)
 		.then((res) => {
 			console.info(res);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "EVENTS_UPDATED_ALL"));
 		})
 		.catch((res) => {
 			console.error(res);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "EVENTS_NOT_UPDATED_ALL"));
 		});
 };

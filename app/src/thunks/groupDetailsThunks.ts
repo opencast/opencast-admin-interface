@@ -55,16 +55,13 @@ export const updateGroupDetails = (values, groupId) => async (dispatch) => {
 		.put(`/admin-ng/groups/${groupId}`, data)
 		.then((response) => {
 			console.info(response);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "GROUP_UPDATED"));
 		})
 		.catch((response) => {
 			console.error(response);
 			if (response.status === 409) {
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 				dispatch(addNotification("error", "GROUP_CONFLICT"));
 			} else {
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 				dispatch(addNotification("error", "GROUP_NOT_SAVED"));
 			}
 		});
