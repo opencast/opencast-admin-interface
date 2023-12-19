@@ -38,18 +38,17 @@ import { fetchRecordings } from "./recordingThunks";
 import { fetchJobs } from "./jobThunks";
 import { fetchServers } from "./serverThunks";
 import { fetchServices } from "./serviceThunks";
-import { fetchUsers } from "./userThunks";
 import { fetchGroups } from "./groupThunks";
 import { fetchThemes } from "./themeThunks";
 import { setRecordingsColumns } from "../actions/recordingActions";
 import { setJobColumns } from "../actions/jobActions";
 import { setServerColumns } from "../actions/serverActions";
-import { setUserColumns } from "../actions/userActions";
 import { setGroupColumns } from "../actions/groupActions";
 import { fetchAcls, setAclColumns } from "../slices/aclSlice";
 import { setThemeColumns } from "../actions/themeActions";
 import { setServicesColumns } from "../actions/serviceActions";
 import { useAppDispatch } from "../store";
+import { fetchUsers, setUserColumns } from "../slices/userSlice";
 
 /**
  * This file contains methods/thunks used to manage the table in the main view and its state changes
@@ -452,7 +451,7 @@ export const goToPage = (pageNumber) => async (dispatch, getState) => {
 			break;
 		}
 		case "users": {
-			await dispatch(fetchUsers());
+			await appDispatch(fetchUsers());
 			dispatch(loadUsersIntoTable());
 			break;
 		}
@@ -524,7 +523,7 @@ export const updatePages = () => async (dispatch, getState) => {
 			break;
 		}
 		case "users": {
-			await dispatch(fetchUsers());
+			await appDispatch(fetchUsers());
 			dispatch(loadUsersIntoTable());
 			break;
 		}

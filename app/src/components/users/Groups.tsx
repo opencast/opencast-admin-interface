@@ -11,7 +11,6 @@ import NewResourceModal from "../shared/NewResourceModal";
 import { getTotalGroups } from "../../selectors/groupSelectors";
 import { groupsTemplateMap } from "../../configs/tableConfigs/groupsTableConfig";
 import { fetchFilters } from "../../thunks/tableFilterThunks";
-import { fetchUsers } from "../../thunks/userThunks";
 import {
 	loadAclsIntoTable,
 	loadGroupsIntoTable,
@@ -28,6 +27,7 @@ import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { fetchAcls } from "../../slices/aclSlice";
 import { useAppDispatch } from "../../store";
+import { fetchUsers } from "../../slices/userSlice";
 
 /**
  * This component renders the table view of groups
@@ -41,8 +41,6 @@ const Groups = ({
 	groups,
 // @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
 	loadingFilters,
-// @ts-expect-error TS(7031): Binding element 'loadingUsers' implicitly has an '... Remove this comment to see the full error message
-	loadingUsers,
 // @ts-expect-error TS(7031): Binding element 'loadingUsersIntoTable' implicitly... Remove this comment to see the full error message
 	loadingUsersIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingAclsIntoTable' implicitly ... Remove this comment to see the full error message
@@ -74,7 +72,7 @@ const Groups = ({
 		resetOffset();
 
 		// Fetching users from server
-		loadingUsers();
+		dispatch(fetchUsers());
 
 		// Load users into table
 		loadingUsersIntoTable();
@@ -215,7 +213,6 @@ const mapDispatchToProps = (dispatch) => ({
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
 	loadingGroups: () => dispatch(fetchGroups()),
 	loadingGroupsIntoTable: () => dispatch(loadGroupsIntoTable()),
-	loadingUsers: () => dispatch(fetchUsers()),
 	loadingUsersIntoTable: () => dispatch(loadUsersIntoTable()),
 	loadingAclsIntoTable: () => dispatch(loadAclsIntoTable()),
 	resetTextFilter: () => dispatch(editTextFilter("")),

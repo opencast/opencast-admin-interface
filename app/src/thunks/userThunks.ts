@@ -1,33 +1,7 @@
 import axios from "axios";
-import {
-	loadUsersFailure,
-	loadUsersInProgress,
-	loadUsersSuccess,
-} from "../actions/userActions";
-import { buildUserBody, getURLParams } from "../utils/resourceUtils";
+import { buildUserBody } from "../utils/resourceUtils";
 import { transformToIdValueArray } from "../utils/utils";
 import { addNotification } from "./notificationThunks";
-
-// fetch users from server
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-export const fetchUsers = () => async (dispatch, getState) => {
-	try {
-		dispatch(loadUsersInProgress());
-
-		const state = getState();
-		let params = getURLParams(state);
-
-		// /users.json?limit=0&offset=0&filter={filter}&sort={sort}
-		let data = await axios.get("/admin-ng/users/users.json", {
-			params: params,
-		});
-
-		const users = await data.data;
-		dispatch(loadUsersSuccess(users));
-	} catch (e) {
-		dispatch(loadUsersFailure());
-	}
-};
 
 // get users and their user names
 export const fetchUsersAndUsernames = async () => {

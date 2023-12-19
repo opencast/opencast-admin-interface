@@ -17,7 +17,6 @@ import {
 import { fetchEvents } from "../../thunks/eventThunks";
 import { fetchRecordings } from "../../thunks/recordingThunks";
 import { fetchJobs } from "../../thunks/jobThunks";
-import { fetchUsers } from "../../thunks/userThunks";
 import { fetchThemes } from "../../thunks/themeThunks";
 import { fetchFilters, fetchStats } from "../../thunks/tableFilterThunks";
 import { setOffset } from "../../actions/tableActions";
@@ -31,6 +30,7 @@ import { GlobalHotKeys } from "react-hotkeys";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { fetchAcls } from "../../slices/aclSlice";
 import { useAppDispatch } from "../../store";
+import { fetchUsers } from "../../slices/userSlice";
 
 /**
  * This component renders the main navigation that opens when the burger button is clicked
@@ -66,8 +66,6 @@ const MainNav = ({
 	loadingServices,
 // @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
 	loadingServicesIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingUsers' implicitly has an '... Remove this comment to see the full error message
-	loadingUsers,
 // @ts-expect-error TS(7031): Binding element 'loadingUsersIntoTable' implicitly... Remove this comment to see the full error message
 	loadingUsersIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingGroups' implicitly has an ... Remove this comment to see the full error message
@@ -179,7 +177,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching users from server
-		loadingUsers();
+		dispatch(fetchUsers());
 
 		// Load users into table
 		loadingUsersIntoTable();
@@ -357,7 +355,6 @@ const mapDispatchToProps = (dispatch) => ({
 	loadingServersIntoTable: () => dispatch(loadServersIntoTable()),
 	loadingServices: () => dispatch(fetchServices()),
 	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
-	loadingUsers: () => dispatch(fetchUsers()),
 	loadingUsersIntoTable: () => dispatch(loadUsersIntoTable()),
 	loadingGroups: () => dispatch(fetchGroups()),
 	loadingGroupsIntoTable: () => dispatch(loadGroupsIntoTable()),

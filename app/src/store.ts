@@ -12,7 +12,7 @@ import recordings from "./reducers/recordingReducer";
 import jobs from "./reducers/jobReducer";
 import servers from "./reducers/serverReducer";
 import services from "./reducers/serviceReducer";
-import users from "./reducers/userReducers";
+import users from "./slices/userSlice";
 import groups from "./reducers/groupReducers";
 import acls from "./slices/aclSlice";
 import themes from "./reducers/themeReducers";
