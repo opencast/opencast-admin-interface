@@ -1,7 +1,8 @@
 import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { usersTableConfig } from "../configs/tableConfigs/usersTableConfig";
 import axios from 'axios';
-import { getURLParams } from "../utils/resourceUtils";
+import { buildUserBody, getURLParams } from "../utils/resourceUtils";
+import { addNotification } from '../thunks/notificationThunks';
 
 /**
  * This file contains redux reducer for actions affecting the state of users
@@ -45,6 +46,31 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async (_, { getSt
 	return res.data;
 });
 
+export const postNewUser = createAsyncThunk('users/postNewUser', async (values: any, {dispatch}) => {
+	// get URL params used for post request
+	let data = buildUserBody(values);
+
+	axios
+		.post("/admin-ng/users", data, {
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+			},
+		})
+		// Usually we would extraReducers for responses, but reducers are not allowed to dispatch
+		// (they need to be free of side effects)
+		// Since we want to dispatch, we have to handle responses in our thunk
+		.then((response) => {
+			console.info(response);
+			dispatch(addNotification("success", "USER_ADDED"));
+			return response.data;
+		})
+		.catch((response) => {
+			console.error(response);
+			dispatch(addNotification("error", "USER_NOT_SAVED"));
+			return response.data;
+		});
+});
+
 const usersSlice = createSlice({
 	name: 'users',
 	initialState,
@@ -58,6 +84,7 @@ const usersSlice = createSlice({
 	// These are used for thunks
 	extraReducers: builder => {
 		builder
+			// fetchUsers
 			.addCase(fetchUsers.pending, (state) => {
 				state.status = 'loading';
 			})
