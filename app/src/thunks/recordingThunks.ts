@@ -67,7 +67,6 @@ export const deleteRecording = (id) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			// add success notification
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "LOCATION_DELETED"));
 		})
 		.catch((res) => {
@@ -75,11 +74,9 @@ export const deleteRecording = (id) => async (dispatch) => {
 			// add error notification depending on status code
 			if (res.status === 401) {
 				dispatch(
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 					addNotification("error", "LOCATION_NOT_DELETED_NOT_AUTHORIZED")
 				);
 			} else {
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 				dispatch(addNotification("error", "LOCATION_NOT_DELETED"));
 			}
 		});
