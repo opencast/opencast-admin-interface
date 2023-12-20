@@ -4,24 +4,27 @@ import { Formik } from "formik";
 import cn from "classnames";
 import { EditUserSchema } from "../../../../utils/validate";
 import UserRolesTab from "../wizard/UserRolesTab";
-import { connect } from "react-redux";
 import { getUserDetails } from "../../../../selectors/userDetailsSelectors";
 import EditUserGeneralTab from "../wizard/EditUserGeneralTab";
 import UserEffectiveRolesTab from "../wizard/UserEffectiveRolesTab";
-import { updateUserDetails } from "../../../../thunks/userDetailsThunks";
 import ModalNavigation from "../../../shared/modals/ModalNavigation";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { updateUserDetails } from "../../../../slices/userDetailsSlice";
 
 /**
  * This component manages the pages of the user details
  */
-const UserDetails = ({
-    close,
-    userDetails,
-    updateUserDetails
-}: any) => {
+const UserDetails: React.FC<{
+	close: () => void
+}> = ({
+	close,
+}) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const [page, setPage] = useState(0);
+
+	const userDetails = useAppSelector(state => getUserDetails(state));
 
 	const initialValues = {
 		...userDetails,
@@ -54,7 +57,7 @@ const UserDetails = ({
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
-		updateUserDetails(values, userDetails.username);
+		dispatch(updateUserDetails({values: values, username: userDetails.username}));
 		close();
 	};
 
@@ -101,18 +104,4 @@ const UserDetails = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	userDetails: getUserDetails(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	updateUserDetails: (values, username) =>
-		dispatch(updateUserDetails(values, username)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserDetails);
+export default UserDetails;
