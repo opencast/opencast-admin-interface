@@ -7,7 +7,7 @@ import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
 import NewResourceModal from "../shared/NewResourceModal";
-import { usersTemplateMap } from "../../configs/tableConfigs/usersTableConfig";
+import { usersTemplateMap } from "../../configs/tableConfigs/usersTableMap";
 import { getTotalUsers } from "../../selectors/userSelectors";
 import {
 	loadAclsIntoTable,
