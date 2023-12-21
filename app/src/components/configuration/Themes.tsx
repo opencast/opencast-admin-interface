@@ -7,7 +7,7 @@ import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
 import { fetchFilters } from "../../thunks/tableFilterThunks";
 import { connect } from "react-redux";
-import { themesTemplateMap } from "../../configs/tableConfigs/themesTableConfig";
+import { themesTemplateMap } from "../../configs/tableConfigs/themesTableMap";
 import { getTotalThemes } from "../../selectors/themeSelectors";
 import { fetchThemes } from "../../thunks/themeThunks";
 import { loadThemesIntoTable } from "../../thunks/tableThunks";
