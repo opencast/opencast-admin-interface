@@ -7,7 +7,7 @@ import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
 import MainNav from "../shared/MainNav";
 import Notifications from "../shared/Notifications";
-import { servicesTemplateMap } from "../../configs/tableConfigs/servicesTableConfig";
+import { servicesTemplateMap } from "../../configs/tableConfigs/servicesTableMap";
 import { fetchFilters } from "../../thunks/tableFilterThunks";
 import { fetchJobs } from "../../thunks/jobThunks";
 import {
