@@ -7,7 +7,7 @@ import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
 import { connect } from "react-redux";
 import Notifications from "../shared/Notifications";
-import { serversTemplateMap } from "../../configs/tableConfigs/serversTableConfig";
+import { serversTemplateMap } from "../../configs/tableConfigs/serversTableMap";
 import { getTotalServers } from "../../selectors/serverSelectors";
 import { fetchFilters } from "../../thunks/tableFilterThunks";
 import { fetchServers } from "../../thunks/serverThunks";
