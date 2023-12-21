@@ -103,27 +103,27 @@ const renderInputByType = (field, key, formik) => {
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderDatetimeLocal = ({ field, key, formik }) => {
+const RenderDatetimeLocal = ({ field, formik }) => {
   // field.value = undefined;
 
-    return <RenderField field={field} key={key} formik={formik} />;
+    return <RenderField field={field} formik={formik} />;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderCheckbox = ({ field, key, formik }) => {
+const RenderCheckbox = ({ field, formik }) => {
   // field.defaultValue = field.value;
   // field.value = undefined;
 
-    return <RenderField field={field} key={key} formik={formik} />;
+    return <RenderField field={field} formik={formik} />;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderRadio = ({ field, key, formik }) => {
-    return <RenderField field={field} key={key} formik={formik} />;
+const RenderRadio = ({ field, formik }) => {
+    return <RenderField field={field} formik={formik} />;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderNumber = ({ field, key, formik }) => {
+const RenderNumber = ({ field, formik }) => {
 	// validate that value of number is between max and min
 // @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	const validate = (value) => {
@@ -137,24 +137,22 @@ const RenderNumber = ({ field, key, formik }) => {
   // field.defaultValue = field.value;
   // field.value = undefined;
 
-    return <RenderField field={field} key={key} formik={formik} validate={validate}/>;
+    return <RenderField field={field} formik={formik} validate={validate}/>;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderText = ({ field, key, formik }) => {
+const RenderText = ({ field, formik }) => {
   // field.value = undefined;
 
-    return <RenderField field={field} key={key} formik={formik} />;
+    return <RenderField field={field} formik={formik} />;
 };
 
 const RenderField : React.FC<{
   field: any,
-  key: any,
   formik: any,
   validate?: (value: any) => string | undefined,
 }> = ({
   field,
-  key,
   formik,
   validate = undefined
 }) => {
@@ -198,7 +196,7 @@ const RenderField : React.FC<{
   }
 
 	return (
-		<li key={key}>
+		<li>
 			{renderField()}
 			<label htmlFor={uuid}>{field.label}</label>
 			{/* if input has an additional fieldset or further configuration inputs
