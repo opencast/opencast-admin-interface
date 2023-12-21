@@ -10,6 +10,7 @@ import {
 } from "../../../thunks/themeDetailsThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
+import { useAppSelector } from "../../../store";
 
 /**
  * This component renders the action cells of themes in the table view
@@ -23,13 +24,13 @@ const ThemesActionsCell = ({
 	fetchThemeDetails,
 // @ts-expect-error TS(7031): Binding element 'fetchUsage' implicitly has an 'an... Remove this comment to see the full error message
 	fetchUsage,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayThemeDetails, setThemeDetails] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
 		setDeleteConfirmation(false);
@@ -97,7 +98,7 @@ const ThemesActionsCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // Mapping actions to dispatch

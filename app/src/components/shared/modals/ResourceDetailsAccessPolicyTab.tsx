@@ -20,6 +20,7 @@ import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import DropDown from "../DropDown";
 import { filterRoles, getAclTemplateText } from "../../../utils/aclUtils";
+import { useAppSelector } from "../../../store";
 
 /**
  * This component manages the access policy tab of resource details modals
@@ -40,7 +41,6 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 	buttonText: any,
 	saveButtonText: any,
 	editAccessRole: any,
-	user: any,
 	policyChanged: any,
 	setPolicyChanged: any,
 }> = ({
@@ -59,7 +59,6 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 	buttonText,
 	saveButtonText,
 	editAccessRole,
-	user,
 	policyChanged,
 	setPolicyChanged,
 }) => {
@@ -82,6 +81,8 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 
 	// this state tracks, whether data is currently being fetched
 	const [loading, setLoading] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	/* fetch initial values from backend */
 	useEffect(() => {
@@ -663,7 +664,7 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // Mapping actions to dispatch

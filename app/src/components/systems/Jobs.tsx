@@ -26,6 +26,7 @@ import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
+import { useAppSelector } from "../../store";
 
 /**
  * This component renders the table view of jobs
@@ -51,13 +52,13 @@ const Jobs = ({
 	resetTextFilter,
 // @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
 	resetOffset,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
 	currentFilterType,
 }) => {
 	const { t } = useTranslation();
 	const [displayNavigation, setNavigation] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const loadJobs = async () => {
 		// Fetching jobs from server
@@ -177,7 +178,6 @@ const Jobs = ({
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
 	jobs: getTotalJobs(state),
-	user: getUserInformation(state),
 	currentFilterType: getCurrentFilterResource(state),
 });
 

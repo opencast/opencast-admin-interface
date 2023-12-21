@@ -27,7 +27,7 @@ import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { fetchAcls } from "../../slices/aclSlice";
-import { useAppDispatch } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
 
 /**
  * This component renders the table view of groups
@@ -51,8 +51,6 @@ const Groups = ({
 	resetTextFilter,
 // @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
 	resetOffset,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
 	currentFilterType,
 }) => {
@@ -60,6 +58,8 @@ const Groups = ({
         const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewGroupModal, setNewGroupModal] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const loadGroups = async () => {
 		// Fetching groups from server
@@ -204,7 +204,6 @@ const Groups = ({
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
 	groups: getTotalGroups(state),
-	user: getUserInformation(state),
 	currentFilterType: getCurrentFilterResource(state),
 });
 

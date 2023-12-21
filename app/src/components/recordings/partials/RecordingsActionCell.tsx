@@ -7,6 +7,7 @@ import { deleteRecording } from "../../../thunks/recordingThunks";
 import { fetchRecordingDetails } from "../../../thunks/recordingDetailsThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
+import { useAppSelector } from "../../../store";
 
 /**
  * This component renders the action cells of recordings in the table view
@@ -18,13 +19,13 @@ const RecordingsActionCell = ({
 	deleteRecording,
 // @ts-expect-error TS(7031): Binding element 'fetchRecordingDetails' implicitly... Remove this comment to see the full error message
 	fetchRecordingDetails,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayRecordingDetails, setRecordingDetails] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
 		setDeleteConfirmation(false);
@@ -90,7 +91,7 @@ const RecordingsActionCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // Mapping actions to dispatch

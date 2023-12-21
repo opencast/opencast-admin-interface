@@ -33,6 +33,7 @@ import { showActions } from "../../actions/seriesActions";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { GlobalHotKeys } from "react-hotkeys";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
+import { useAppSelector } from "../../store";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef();
@@ -65,8 +66,6 @@ const Series = ({
 	resetTextFilter,
 // @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
 	resetOffset,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'setShowActions' implicitly has an... Remove this comment to see the full error message
 	setShowActions,
 // @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
@@ -77,6 +76,8 @@ const Series = ({
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewSeriesModal, setNewSeriesModal] = useState(false);
 	const [displayDeleteSeriesModal, setDeleteSeriesModal] = useState(false);
+
+  const user = useAppSelector(state => getUserInformation(state));
 
 	let location = useLocation();
 
@@ -275,7 +276,6 @@ const Series = ({
 const mapStateToProps = (state) => ({
 	series: getTotalSeries(state),
 	showActions: isShowActions(state),
-	user: getUserInformation(state),
 	currentFilterType: getCurrentFilterResource(state),
 });
 

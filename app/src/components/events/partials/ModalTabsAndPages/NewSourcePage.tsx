@@ -41,6 +41,7 @@ import {
 	changeStartMinute,
 	changeStartMinuteMultiple,
 } from "../../../../utils/dateUtils";
+import { useAppSelector } from "../../../../store";
 
 // Style to bring date picker pop up to front
 const theme = createMuiTheme({
@@ -67,14 +68,14 @@ const NewSourcePage = ({
 	loadingInputDevices,
 // @ts-expect-error TS(7031): Binding element 'inputDevices' implicitly has an '... Remove this comment to see the full error message
 	inputDevices,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'removeNotificationWizardForm' imp... Remove this comment to see the full error message
 	removeNotificationWizardForm,
 // @ts-expect-error TS(7031): Binding element 'checkConflicts' implicitly has an... Remove this comment to see the full error message
 	checkConflicts,
 }) => {
 	const { t } = useTranslation();
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	useEffect(() => {
 		// Load recordings that can be used for input
@@ -739,7 +740,6 @@ const Schedule = ({ formik, inputDevices }) => {
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
 	inputDevices: getRecordings(state),
-	user: getUserInformation(state),
 });
 
 // Mapping actions to dispatch

@@ -20,6 +20,7 @@ import {
 	getSeriesHasEvents,
 	isSeriesDeleteAllowed,
 } from "../../../selectors/seriesSeletctor";
+import { useAppSelector } from "../../../store";
 
 /**
  * This component renders the action cells of series in the table view
@@ -41,8 +42,6 @@ const SeriesActionsCell = ({
 	fetchSeriesDetailsTheme,
 // @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsThemeNames' imp... Remove this comment to see the full error message
 	fetchSeriesDetailsThemeNames,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'deleteAllowed' implicitly has an ... Remove this comment to see the full error message
 	deleteAllowed,
 // @ts-expect-error TS(7031): Binding element 'hasEvents' implicitly has an 'any... Remove this comment to see the full error message
@@ -52,6 +51,8 @@ const SeriesActionsCell = ({
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displaySeriesDetailsModal, setSeriesDetailsModal] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
 		setDeleteConfirmation(false);
@@ -136,7 +137,6 @@ const SeriesActionsCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
 	deleteAllowed: isSeriesDeleteAllowed(state),
 	hasEvents: getSeriesHasEvents(state),
 });

@@ -39,6 +39,7 @@ import { GlobalHotKeys } from "react-hotkeys";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { fetchAssetUploadOptions } from "../../thunks/assetsThunks";
+import { useAppSelector } from "../../store";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef();
@@ -73,8 +74,6 @@ const Events = ({
 	resetOffset,
 // @ts-expect-error TS(7031): Binding element 'setShowActions' implicitly has an... Remove this comment to see the full error message
 	setShowActions,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'isFetchingAssetUploadOptions' imp... Remove this comment to see the full error message
 	isFetchingAssetUploadOptions,
 // @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
@@ -93,6 +92,8 @@ const Events = ({
 	const [displayEditMetadataEventsModal, setEditMetadataEventsModal] = useState(
 		false
 	);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	let location = useLocation();
 
@@ -347,7 +348,6 @@ const Events = ({
 const mapStateToProps = (state) => ({
 	events: getTotalEvents(state),
 	showActions: isShowActions(state),
-	user: getUserInformation(state),
 	currentFilterType: getCurrentFilterResource(state),
 	isLoadingEvents: isLoading(state),
 	isFetchingAssetUploadOptions: isFetchingAssetUploadOptions(state),

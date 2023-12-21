@@ -30,7 +30,7 @@ import { fetchGroups } from "../../thunks/groupThunks";
 import { GlobalHotKeys } from "react-hotkeys";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { fetchAcls } from "../../slices/aclSlice";
-import { useAppDispatch } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
 
 /**
  * This component renders the main navigation that opens when the burger button is clicked
@@ -82,14 +82,14 @@ const MainNav = ({
 	loadingThemesIntoTable,
 // @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
 	resetOffset,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
 	loadingFilters,
 }) => {
 	const { t } = useTranslation();
         const dispatch = useAppDispatch();
 	let navigate = useNavigate();
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const loadEvents = () => {
 		loadingFilters("events");
@@ -337,7 +337,7 @@ const MainNav = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // Mapping actions to dispatch

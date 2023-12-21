@@ -47,6 +47,7 @@ import {
 } from "../../../../utils/resourceUtils";
 import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 import DropDown from "../../../shared/DropDown";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component manages the main assets tab of event details modal
@@ -66,8 +67,6 @@ const EventDetailsSchedulingTab = ({
 	captureAgents,
 // @ts-expect-error TS(7031): Binding element 'checkingConflicts' implicitly has... Remove this comment to see the full error message
 	checkingConflicts,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'checkConflicts' implicitly has an... Remove this comment to see the full error message
 	checkConflicts,
 // @ts-expect-error TS(7031): Binding element 'saveSchedulingInfo' implicitly ha... Remove this comment to see the full error message
@@ -77,6 +76,8 @@ const EventDetailsSchedulingTab = ({
 // @ts-expect-error TS(7031): Binding element 'addNotification' implicitly has a... Remove this comment to see the full error message
 	addNotification,
 }) => {
+	const user = useAppSelector(state => getUserInformation(state));
+
 	useEffect(() => {
 		removeNotificationWizardForm();
 		checkConflicts(
@@ -728,7 +729,6 @@ const EventDetailsSchedulingTab = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
 	hasSchedulingProperties: getSchedulingProperties(state),
 	source: getSchedulingSource(state),
 	conflicts: getSchedulingConflicts(state),

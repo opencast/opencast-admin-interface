@@ -20,6 +20,7 @@ import {
 } from "../../../../selectors/eventSelectors";
 import { checkSchedulingConflicts } from "../../../../utils/bulkActionUtils";
 import DropDown from "../../../shared/DropDown";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component renders the edit page for scheduled events of the corresponding bulk action
@@ -49,10 +50,10 @@ const EditScheduledEventsEditPage = ({
 	loading,
 // @ts-expect-error TS(7031): Binding element 'seriesOptions' implicitly has an ... Remove this comment to see the full error message
 	seriesOptions,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	useEffect(() => {
 		const fetchEventInfos =
@@ -497,7 +498,6 @@ const EditScheduledEventsEditPage = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
 	loading: isLoadingScheduling(state),
 	seriesOptions: getSchedulingSeriesOptions(state),
 });

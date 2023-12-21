@@ -26,6 +26,7 @@ import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess, parseBooleanInObject } from "../../../../utils/utils";
 import { setDefaultConfig } from "../../../../utils/workflowPanelUtils";
 import DropDown from "../../../shared/DropDown";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component manages the workflows tab of the event details modal
@@ -69,9 +70,9 @@ const EventDetailsWorkflowTab = ({
 	performWorkflowAction,
 // @ts-expect-error TS(7031): Binding element 'deleteWf' implicitly has an 'any'... Remove this comment to see the full error message
 	deleteWf,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
+	const user = useAppSelector(state => getUserInformation(state));
+
 	const isRoleWorkflowEdit = hasAccess(
 		"ROLE_UI_EVENTS_DETAILS_WORKFLOWS_EDIT",
 		user
@@ -528,7 +529,6 @@ const mapStateToProps = (state) => ({
 	workflowConfiguration: getWorkflowConfiguration(state),
 	performingWorkflowAction: performingWorkflowAction(state),
 	deletingWorkflow: deletingWorkflow(state),
-	user: getUserInformation(state),
 });
 
 // Mapping actions to dispatch

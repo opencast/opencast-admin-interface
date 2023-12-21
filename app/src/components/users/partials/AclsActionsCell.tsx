@@ -7,20 +7,22 @@ import AclDetailsModal from "./modal/AclDetailsModal";
 import { fetchAclDetails } from "../../../thunks/aclDetailsThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
+import { useAppSelector } from "../../../store";
 
 /**
  * This component renders the action cells of acls in the table view
  */
 const AclsActionsCell = ({
-    row,
-    deleteAcl,
-    fetchAclDetails,
-    user
+	row,
+	deleteAcl,
+	fetchAclDetails,
 }: any) => {
 	const { t } = useTranslation();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayAclDetails, setAclDetails] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
 		setDeleteConfirmation(false);
@@ -84,7 +86,7 @@ const AclsActionsCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.

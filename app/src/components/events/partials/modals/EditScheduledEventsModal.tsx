@@ -21,6 +21,7 @@ import {
 	checkValidityUpdateScheduleEventSelection,
 } from "../../../../utils/bulkActionUtils";
 import { addNotification } from "../../../../thunks/notificationThunks";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component manages the pages of the edit scheduled bulk action
@@ -38,8 +39,6 @@ const EditScheduledEventsModal = ({
 	addNotification,
 // @ts-expect-error TS(7031): Binding element 'inputDevices' implicitly has an '... Remove this comment to see the full error message
 	inputDevices,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
 
@@ -57,6 +56,8 @@ const EditScheduledEventsModal = ({
 
 	// for edit page: conflicts with other events
 	const [conflicts, setConflicts] = useState([]);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	useEffect(() => {
 		// Load recordings that can be used for input
@@ -186,7 +187,6 @@ const EditScheduledEventsModal = ({
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
 	inputDevices: getRecordings(state),
-	user: getUserInformation(state),
 });
 
 // Mapping actions to dispatch

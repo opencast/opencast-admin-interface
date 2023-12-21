@@ -7,20 +7,22 @@ import GroupDetailsModal from "./modal/GroupDetailsModal";
 import { fetchGroupDetails } from "../../../thunks/groupDetailsThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
+import { useAppSelector } from "../../../store";
 
 /**
  * This component renders the action cells of groups in the table view
  */
 const GroupsActionsCell = ({
-    row,
-    deleteGroup,
-    fetchGroupDetails,
-    user
+	row,
+	deleteGroup,
+	fetchGroupDetails,
 }: any) => {
 	const { t } = useTranslation();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayGroupDetails, setGroupDetails] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
 		setDeleteConfirmation(false);
@@ -85,7 +87,7 @@ const GroupsActionsCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.

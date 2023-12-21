@@ -7,20 +7,22 @@ import UserDetailsModal from "./modal/UserDetailsModal";
 import { fetchUserDetails } from "../../../thunks/userDetailsThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
+import { useAppSelector } from "../../../store";
 
 /**
  * This component renders the action cells of users in the table view
  */
 const UsersActionCell = ({
-    row,
-    deleteUser,
-    fetchUserDetails,
-    user
+  row,
+	deleteUser,
+	fetchUserDetails,
 }: any) => {
 	const { t } = useTranslation();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayUserDetails, setUserDetails] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
 		setDeleteConfirmation(false);
@@ -85,7 +87,7 @@ const UsersActionCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // Mapping actions to dispatch

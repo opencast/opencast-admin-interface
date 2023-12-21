@@ -27,7 +27,7 @@ import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { fetchAcls } from "../../slices/aclSlice";
-import { useAppDispatch } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
 
 /**
  * This component renders the table view of users
@@ -51,8 +51,6 @@ const Users = ({
 	resetTextFilter,
 // @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
 	resetOffset,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
 	currentFilterType,
 }) => {
@@ -60,6 +58,8 @@ const Users = ({
         const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewUserModal, setNewUserModal] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const loadUsers = async () => {
 		// Fetching users from server
@@ -204,7 +204,6 @@ const Users = ({
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
 	users: getTotalUsers(state),
-	user: getUserInformation(state),
 	currentFilterType: getCurrentFilterResource(state),
 });
 

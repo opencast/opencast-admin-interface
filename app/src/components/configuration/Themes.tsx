@@ -20,6 +20,7 @@ import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
+import { useAppSelector } from "../../store";
 
 /**
  * This component renders the table view of events
@@ -35,14 +36,14 @@ const Themes = ({
 	loadingFilters,
 // @ts-expect-error TS(7031): Binding element 'resetTextFilter' implicitly has a... Remove this comment to see the full error message
 	resetTextFilter,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
 	currentFilterType,
 }) => {
 	const { t } = useTranslation();
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewThemesModal, setNewThemesModal] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const loadThemes = async () => {
 		// Fetching themes from server
@@ -147,7 +148,6 @@ const Themes = ({
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
 	themes: getTotalThemes(state),
-	user: getUserInformation(state),
 	currentFilterType: getCurrentFilterResource(state),
 });
 

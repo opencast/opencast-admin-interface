@@ -23,11 +23,10 @@ import {
 } from "../../thunks/statisticsThunks";
 import { hasAccess } from "../../utils/utils";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
-import { fetchUserInfo } from "../../thunks/userInfoThunks";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { fetchUserInfo } from "../../slices/userInfoSlice";
 
 const Statistics = ({
-// @ts-expect-error TS(7031): Binding element 'organizationId' implicitly has an... Remove this comment to see the full error message
-	organizationId,
 // @ts-expect-error TS(7031): Binding element 'statistics' implicitly has an 'an... Remove this comment to see the full error message
 	statistics,
 // @ts-expect-error TS(7031): Binding element 'isLoadingStatistics' implicitly h... Remove this comment to see the full error message
@@ -36,23 +35,22 @@ const Statistics = ({
 	hasStatistics,
 // @ts-expect-error TS(7031): Binding element 'hasError' implicitly has an 'any'... Remove this comment to see the full error message
 	hasError,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
-// @ts-expect-error TS(7031): Binding element 'fetchUserInfo' implicitly has an ... Remove this comment to see the full error message
-	fetchUserInfo,
 // @ts-expect-error TS(7031): Binding element 'loadStatistics' implicitly has an... Remove this comment to see the full error message
 	loadStatistics,
 // @ts-expect-error TS(7031): Binding element 'recalculateStatistics' implicitly... Remove this comment to see the full error message
 	recalculateStatistics,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const [displayNavigation, setNavigation] = useState(false);
 
+	const organizationId = useAppSelector(state => getOrgId(state));
+	const user = useAppSelector(state => getUserInformation(state));
+
 	useEffect(() => {
 		// fetch user information for organization id, then fetch statistics
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-		fetchUserInfo().then((e) => {
+		dispatch(fetchUserInfo()).then((e) => {
 			loadStatistics(organizationId).then();
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -168,18 +166,15 @@ const Statistics = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	organizationId: getOrgId(state),
 	hasStatistics: hasStatistics(state),
 	isLoadingStatistics: isFetchingStatistics(state),
 	statistics: getStatistics(state),
 	hasError: hasStatisticsError(state),
-	user: getUserInformation(state),
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-	fetchUserInfo: () => dispatch(fetchUserInfo()),
 // @ts-expect-error TS(7006): Parameter 'organizationId' implicitly has an 'any'... Remove this comment to see the full error message
 	loadStatistics: (organizationId) =>
 		dispatch(fetchStatisticsPageStatistics(organizationId)),

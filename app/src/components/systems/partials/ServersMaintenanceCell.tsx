@@ -7,6 +7,7 @@ import {
 import { loadServersIntoTable } from "../../../thunks/tableThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
+import { useAppSelector } from "../../../store";
 
 /**
  * This component renders the maintenance cells of servers in the table view
@@ -18,9 +19,9 @@ const ServersMaintenanceCell = ({
 	loadServers,
 // @ts-expect-error TS(7031): Binding element 'loadServersIntoTable' implicitly ... Remove this comment to see the full error message
 	loadServersIntoTable,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
+	const user = useAppSelector(state => getUserInformation(state));
+
 // @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
 	const onClickCheckbox = async (e) => {
 		await setServerMaintenance(row.hostname, e.target.checked);
@@ -45,7 +46,7 @@ const ServersMaintenanceCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // mapping actions to dispatch

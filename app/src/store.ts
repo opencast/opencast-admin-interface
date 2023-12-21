@@ -26,7 +26,7 @@ import userDetails from "./reducers/userDetailsReducer";
 import groupDetails from "./reducers/groupDetailsReducer";
 import aclDetails from "./reducers/aclDetailsReducer";
 import themeDetails from "./reducers/themeDetailsReducer";
-import userInfo from "./reducers/userInfoReducer";
+import userInfo from "./slices/userInfoSlice";
 import statistics from "./reducers/statisticsReducers";
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";

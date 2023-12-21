@@ -15,6 +15,7 @@ import {
 	fetchSeriesDetailsMetadata,
 	fetchSeriesDetailsTheme,
 } from "../../../thunks/seriesDetailsThunks";
+import { useAppSelector } from "../../../store";
 
 /**
  * This component renders the action cells of events in the table view
@@ -34,8 +35,6 @@ const EventActionCell = ({
 	fetchSeriesDetailsTheme,
 // @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsThemeNames' imp... Remove this comment to see the full error message
 	fetchSeriesDetailsThemeNames,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
 
@@ -44,6 +43,8 @@ const EventActionCell = ({
 	const [displaySeriesDetailsModal, setSeriesDetailsModal] = useState(false);
 	const [eventDetailsTabIndex, setEventDetailsTabIndex] = useState(0);
 	const [displayEmbeddingCodeModal, setEmbeddingCodeModal] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
 		setDeleteConfirmation(false);
@@ -246,7 +247,7 @@ const EventActionCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // Mapping actions to dispatch
