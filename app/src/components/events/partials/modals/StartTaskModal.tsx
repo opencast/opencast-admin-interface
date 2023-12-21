@@ -121,7 +121,6 @@ const StartTaskModal = ({
 									)}
 									{page === 2 && (
 										<StartTaskSummaryPage
-// @ts-expect-error TS(2322): Type '{ formik: FormikProps<any>; previousPage: an... Remove this comment to see the full error message
 											formik={formik}
 											previousPage={previousPage}
 										/>

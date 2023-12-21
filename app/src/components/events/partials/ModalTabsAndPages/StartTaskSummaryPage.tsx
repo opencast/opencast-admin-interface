@@ -2,17 +2,21 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { getWorkflowDef } from "../../../../selectors/workflowSelectors";
-import { connect } from "react-redux";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component renders the summary page of the start task bulk action
  */
-const StartTaskSummaryPage = ({
-    formik,
-    previousPage,
-    workflowDef
-}: any) => {
+const StartTaskSummaryPage: React.FC<{
+	formik: any	//TODO: Add type
+	previousPage: any	//TODO: Add type
+}> = ({
+	formik,
+	previousPage,
+}) => {
 	const { t } = useTranslation();
+
+	const workflowDef = useAppSelector(state => getWorkflowDef(state));
 
 	return (
 		<>
@@ -42,17 +46,12 @@ const StartTaskSummaryPage = ({
 											{t("BULK_ACTIONS.SCHEDULE_TASK.SUMMARY.WORKFLOW")}
 										</span>
 										<p>
-											{!!workflowDef.find(
-// @ts-expect-error TS(7006): Parameter 'workflowDef' implicitly has an 'any' ty... Remove this comment to see the full error message
-												(workflowDef) =>
-													workflowDef.id === formik.values.workflow
-											)
-												? workflowDef.find(
-// @ts-expect-error TS(7006): Parameter 'workflowDef' implicitly has an 'any' ty... Remove this comment to see the full error message
-														(workflowDef) =>
-															workflowDef.id === formik.values.workflow
-												  ).title
-												: ""}
+											{
+												workflowDef.find(
+													(workflow) =>
+														formik.values.processingWorkflow === workflow.id
+												)?.title ?? ""
+												}
 										</p>
 									</li>
 									<li>
@@ -85,10 +84,4 @@ const StartTaskSummaryPage = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	workflowDef: getWorkflowDef(state),
-});
-
-export default connect(mapStateToProps, null)(StartTaskSummaryPage);
+export default StartTaskSummaryPage;

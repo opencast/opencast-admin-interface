@@ -11,6 +11,7 @@ import MetadataSummaryTable from "./summaryTables/MetadataSummaryTable";
 import MetadataExtendedSummaryTable from "./summaryTables/MetadataExtendedSummaryTable";
 import AccessSummaryTable from "./summaryTables/AccessSummaryTable";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component renders the summary page for new events in the new event wizard.
@@ -28,12 +29,12 @@ const NewEventSummary = ({
 	metadataEvents,
 // @ts-expect-error TS(7031): Binding element 'extendedMetadata' implicitly has ... Remove this comment to see the full error message
 	extendedMetadata,
-// @ts-expect-error TS(7031): Binding element 'workflowDef' implicitly has an 'a... Remove this comment to see the full error message
-	workflowDef,
 // @ts-expect-error TS(7031): Binding element 'uploadAssetOptions' implicitly ha... Remove this comment to see the full error message
 	uploadAssetOptions,
 }) => {
 	const { t } = useTranslation();
+
+	const workflowDef = useAppSelector(state => getWorkflowDef(state));
 
 	// Get upload assets that are not of type track
 	const uploadAssetsOptionsNonTrack = uploadAssetOptions.filter(
@@ -63,7 +64,6 @@ const NewEventSummary = ({
 
 	// Get additional information about chosen workflow definition
 	const workflowDefinition = workflowDef.find(
-// @ts-expect-error TS(7006): Parameter 'workflow' implicitly has an 'any' type.
 		(workflow) => workflow.id === formik.values.processingWorkflow
 	);
 
@@ -306,7 +306,6 @@ const NewEventSummary = ({
 const mapStateToProps = (state) => ({
 	metadataEvents: getEventMetadata(state),
 	extendedMetadata: getExtendedEventMetadata(state),
-	workflowDef: getWorkflowDef(state),
 	uploadAssetOptions: getAssetUploadOptions(state),
 });
 

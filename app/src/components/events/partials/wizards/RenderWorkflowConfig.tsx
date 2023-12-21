@@ -1,29 +1,35 @@
 import React from "react";
-import { connect } from "react-redux";
 // @ts-expect-error TS(7016): Could not find a declaration file for module 'uuid... Remove this comment to see the full error message
 import { v4 as uuidv4 } from "uuid";
 import { Field } from "formik";
 import {
 	getWorkflowDefById,
-	makeGetWorkflowDefById,
 } from "../../../../selectors/workflowSelectors";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component renders the configuration panel for the selected workflow in the processing step of the new event
  * wizard chosen via dropdown.
- * Here, props is used instead of {} containing name of each prop because props are needed in the selector for finding
- * the workflow definition with the matching id. In this case props need to be considered in mapStateToProps and
- * therefore {} containing names of props not works.
  */
-// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-const RenderWorkflowConfig = (props) => {
+const RenderWorkflowConfig: React.FC<{
+	workflowId: string
+	formik: any	//TODO: Add type
+	displayDescription?: any
+}> = ({
+	workflowId,
+	formik,
+	displayDescription
+}) => {
+
+	const workflowDef = useAppSelector(state => getWorkflowDefById(state, workflowId));
+
 	// Get html for configuration panel
-	const configPanel = !!props.configuration_panel_json
-		? props.configuration_panel_json
+	const configPanel = !!workflowDef && workflowDef.configuration_panel_json
+		? workflowDef.configuration_panel_json
 		: [];
-	const description = !!props.description ? props.description : "";
-	const displayDescription = !!props.displayDescription;
-	let formik = props.formik;
+	const description = !!workflowDef && workflowDef.description
+		? workflowDef.description
+		: "";
 
 	const descriptionBoxStyle = {
 		margin: "15px 0 0 0",
@@ -98,15 +104,15 @@ const renderInputByType = (field, key, formik) => {
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 const RenderDatetimeLocal = ({ field, key, formik }) => {
-  field.value = undefined;
+  // field.value = undefined;
 
     return <RenderField field={field} key={key} formik={formik} />;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 const RenderCheckbox = ({ field, key, formik }) => {
-  field.defaultValue = field.value;
-  field.value = undefined;
+  // field.defaultValue = field.value;
+  // field.value = undefined;
 
     return <RenderField field={field} key={key} formik={formik} />;
 };
@@ -128,15 +134,15 @@ const RenderNumber = ({ field, key, formik }) => {
 		return error;
 	};
 
-  field.defaultValue = field.value;
-  field.value = undefined;
+  // field.defaultValue = field.value;
+  // field.value = undefined;
 
     return <RenderField field={field} key={key} formik={formik} validate={validate}/>;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 const RenderText = ({ field, key, formik }) => {
-  field.value = undefined;
+  // field.value = undefined;
 
     return <RenderField field={field} key={key} formik={formik} />;
 };
@@ -207,11 +213,4 @@ const RenderField : React.FC<{
 	);
 }
 
-// Getting state data out of redux store
-const mapStateToProps = () => {
-	getWorkflowDefById();
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-	return (state, props) => makeGetWorkflowDefById(state, props);
-};
-
-export default connect(mapStateToProps)(RenderWorkflowConfig);
+export default RenderWorkflowConfig;
