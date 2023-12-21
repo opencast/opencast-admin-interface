@@ -7,7 +7,7 @@ import cn from "classnames";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
-import { recordingsTemplateMap } from "../../configs/tableConfigs/recordingsTableConfig";
+import { recordingsTemplateMap } from "../../configs/tableConfigs/recordingsTableMap";
 import { getTotalRecordings } from "../../selectors/recordingSelectors";
 import { fetchRecordings } from "../../thunks/recordingThunks";
 import { loadRecordingsIntoTable } from "../../thunks/tableThunks";
