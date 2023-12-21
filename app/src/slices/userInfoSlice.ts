@@ -5,6 +5,13 @@ import { addNotification } from '../thunks/notificationThunks';
 /**
  * This file contains redux reducer for actions affecting the state of information about current user
  */
+type OcVersion = {
+  buildNumber: string | undefined,
+  consistent: boolean | undefined,
+  lastModified: number | undefined,
+  version: string | undefined,
+}
+
 type UserInfoState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
@@ -16,7 +23,7 @@ type UserInfoState = {
 	roles: string[],
 	userRole: string,
 	user: any,//TODO: Type this
-	ocVersion: any,//TODO: Type this
+	ocVersion: OcVersion,
 };
 
 // Initial state of userInfo in redux store
@@ -31,7 +38,12 @@ const initialState: UserInfoState = {
 	roles: [],
 	userRole: "",
 	user: {},
-	ocVersion: {},
+	ocVersion: {
+    buildNumber: undefined,
+    consistent: undefined,
+    lastModified: undefined,
+    version: undefined,
+  },
 };
 
 export const fetchUserInfo = createAsyncThunk('UserInfo/fetchUserInfo', async (_, { dispatch }) => {
@@ -103,16 +115,15 @@ const userInfoSlice = createSlice({
 			.addCase(fetchOcVersion.pending, (state) => {
 				state.statusOcVersion = 'loading';
 			})
-			.addCase(fetchOcVersion.fulfilled, (state, action: PayloadAction<{
-				ocVersion: UserInfoState["ocVersion"],
-			}>) => {
+			.addCase(fetchOcVersion.fulfilled, (state, action: PayloadAction<
+        OcVersion
+			>) => {
 				state.statusOcVersion = 'succeeded';
 				const ocVersion = action.payload;
 				state.ocVersion = ocVersion;
 			})
 			.addCase(fetchOcVersion.rejected, (state, action) => {
 				state.statusOcVersion = 'failed';
-				state.ocVersion = {};
 				state.errorOcVersion = action.error;
 			});
 	}
