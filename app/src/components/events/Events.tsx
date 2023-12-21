@@ -13,7 +13,7 @@ import DeleteEventsModal from "./partials/modals/DeleteEventsModal";
 import StartTaskModal from "./partials/modals/StartTaskModal";
 import EditScheduledEventsModal from "./partials/modals/EditScheduledEventsModal";
 import EditMetadataEventsModal from "./partials/modals/EditMetadataEventsModal";
-import { eventsTemplateMap } from "../../configs/tableConfigs/eventsTableConfig";
+import { eventsTemplateMap } from "../../configs/tableConfigs/eventsTableMap";
 import { fetchEventMetadata, fetchEvents } from "../../thunks/eventThunks";
 import {
 	loadEventsIntoTable,
