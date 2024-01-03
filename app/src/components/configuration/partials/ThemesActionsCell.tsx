@@ -4,12 +4,13 @@ import { connect } from "react-redux";
 import ConfirmModal from "../../shared/ConfirmModal";
 import ThemeDetailsModal from "./wizard/ThemeDetailsModal";
 import { deleteTheme } from "../../../thunks/themeThunks";
+import { getUserInformation } from "../../../selectors/userInfoSelectors";
+import { hasAccess } from "../../../utils/utils";
+import { useAppDispatch } from "../../../store";
 import {
 	fetchThemeDetails,
 	fetchUsage,
-} from "../../../thunks/themeDetailsThunks";
-import { getUserInformation } from "../../../selectors/userInfoSelectors";
-import { hasAccess } from "../../../utils/utils";
+} from "../../../slices/themeDetailsSlice";
 
 /**
  * This component renders the action cells of themes in the table view
@@ -19,14 +20,11 @@ const ThemesActionsCell = ({
 	row,
 // @ts-expect-error TS(7031): Binding element 'deleteTheme' implicitly has an 'a... Remove this comment to see the full error message
 	deleteTheme,
-// @ts-expect-error TS(7031): Binding element 'fetchThemeDetails' implicitly has... Remove this comment to see the full error message
-	fetchThemeDetails,
-// @ts-expect-error TS(7031): Binding element 'fetchUsage' implicitly has an 'an... Remove this comment to see the full error message
-	fetchUsage,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayThemeDetails, setThemeDetails] = useState(false);
@@ -40,8 +38,8 @@ const ThemesActionsCell = ({
 	};
 
 	const showThemeDetails = async () => {
-		await fetchThemeDetails(row.id);
-		await fetchUsage(row.id);
+		await dispatch(fetchThemeDetails(row.id));
+		await dispatch(fetchUsage(row.id));
 
 		setThemeDetails(true);
 	};
@@ -105,10 +103,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	deleteTheme: (id) => dispatch(deleteTheme(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchThemeDetails: (id) => dispatch(fetchThemeDetails(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchUsage: (id) => dispatch(fetchUsage(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ThemesActionsCell);
