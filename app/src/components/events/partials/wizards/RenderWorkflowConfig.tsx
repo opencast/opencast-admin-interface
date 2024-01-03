@@ -95,8 +95,8 @@ const renderInputByType = (field, key, formik) => {
 			return <RenderNumber field={field} key={key} formik={formik} />;
 		case "text":
 			return <RenderText field={field} key={key} formik={formik} />;
-    case "datetime-local":
-            return <RenderDatetimeLocal field={field} key={key} formik={formik} />;
+		case "datetime-local":
+			return <RenderDatetimeLocal field={field} key={key} formik={formik} />;
 		default:
 			return "";
 	}
@@ -104,17 +104,17 @@ const renderInputByType = (field, key, formik) => {
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 const RenderDatetimeLocal = ({ field, formik }) => {
-    return <RenderField field={field} formik={formik} />;
+		return <RenderField field={field} formik={formik} />;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 const RenderCheckbox = ({ field, formik }) => {
-    return <RenderField field={field} formik={formik} />;
+		return <RenderField field={field} formik={formik} />;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 const RenderRadio = ({ field, formik }) => {
-    return <RenderField field={field} formik={formik} />;
+		return <RenderField field={field} formik={formik} />;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
@@ -129,49 +129,49 @@ const RenderNumber = ({ field, formik }) => {
 		return error;
 	};
 
-    return <RenderField field={field} formik={formik} validate={validate}/>;
+		return <RenderField field={field} formik={formik} validate={validate}/>;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 const RenderText = ({ field, formik }) => {
-    return <RenderField field={field} formik={formik} />;
+		return <RenderField field={field} formik={formik} />;
 };
 
 const RenderField : React.FC<{
-  field: any,
-  formik: any,
-  validate?: (value: any) => string | undefined,
+	field: any,
+	formik: any,
+	validate?: (value: any) => string | undefined,
 }> = ({
-  field,
-  formik,
-  validate = undefined
+	field,
+	formik,
+	validate = undefined
 }) => {
 	// id used for Field and label
 	const uuid = uuidv4();
 	const disabled = !!field.disabled ? field.disabled : false;
 
-  const renderField = () => {
-      return(
+	const renderField = () => {
+			return(
 				<Field
-          id={uuid}
-          defaultValue={field.defaultValue}
-          validate={validate}
-          className="configField"
-          name={"configuration." + field.name}
-          disabled={disabled}
-          type={field.type}
-          min={field.min}
-          max={field.max}
-        />
-      )
-  }
+					id={uuid}
+					defaultValue={field.defaultValue}
+					validate={validate}
+					className="configField"
+					name={"configuration." + field.name}
+					disabled={disabled}
+					type={field.type}
+					min={field.min}
+					max={field.max}
+				/>
+			)
+	}
 
 	return (
 		<li>
 			{renderField()}
 			<label htmlFor={uuid}>{field.label}</label>
 			{/* if input has an additional fieldset or further configuration inputs
-            then render again by input type*/}
+						then render again by input type*/}
 			{!!field.fieldset && !!formik.values.configuration[field.name] && (
 				<ul className="workflow-configuration-subpanel">
 {/* @ts-expect-error TS(7006): Parameter 'f' implicitly has an 'any' type. */}
