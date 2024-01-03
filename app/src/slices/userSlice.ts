@@ -73,7 +73,7 @@ export const postNewUser = createAsyncThunk('users/postNewUser', async (values: 
 });
 
 // delete user with provided id
-export const deleteUser = createAsyncThunk('users/postNewUser', async (id: any, {dispatch}) => {
+export const deleteUser = createAsyncThunk('users/deleteUser', async (id: any, {dispatch}) => {
 	// API call for deleting an user
 	axios
 		.delete(`/admin-ng/users/${id}.json`)
