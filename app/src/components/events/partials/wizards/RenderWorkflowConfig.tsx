@@ -104,16 +104,11 @@ const renderInputByType = (field, key, formik) => {
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 const RenderDatetimeLocal = ({ field, formik }) => {
-  // field.value = undefined;
-
     return <RenderField field={field} formik={formik} />;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 const RenderCheckbox = ({ field, formik }) => {
-  // field.defaultValue = field.value;
-  // field.value = undefined;
-
     return <RenderField field={field} formik={formik} />;
 };
 
@@ -134,16 +129,11 @@ const RenderNumber = ({ field, formik }) => {
 		return error;
 	};
 
-  // field.defaultValue = field.value;
-  // field.value = undefined;
-
     return <RenderField field={field} formik={formik} validate={validate}/>;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 const RenderText = ({ field, formik }) => {
-  // field.value = undefined;
-
     return <RenderField field={field} formik={formik} />;
 };
 
@@ -160,27 +150,9 @@ const RenderField : React.FC<{
 	const uuid = uuidv4();
 	const disabled = !!field.disabled ? field.disabled : false;
 
-  // Only set value to *anything* if there is actually a value to be had
-  // Otherwise it empties the displayed value when switching between tabs
   const renderField = () => {
-    if (field.value) {
       return(
-                <Field
-          id={uuid}
-          defaultValue={field.defaultValue}
-          value={field.value}
-          validate={validate}
-          className="configField"
-          name={"configuration." + field.name}
-          disabled={disabled}
-          type={field.type}
-          min={field.min}
-          max={field.max}
-        />
-      )
-    } else {
-      return(
-                <Field
+				<Field
           id={uuid}
           defaultValue={field.defaultValue}
           validate={validate}
@@ -192,7 +164,6 @@ const RenderField : React.FC<{
           max={field.max}
         />
       )
-    }
   }
 
 	return (

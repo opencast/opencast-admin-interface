@@ -49,7 +49,7 @@ const StartTaskSummaryPage: React.FC<{
 											{
 												workflowDef.find(
 													(workflow) =>
-														formik.values.processingWorkflow === workflow.id
+														formik.values.workflow === workflow.id
 												)?.title ?? ""
 												}
 										</p>
@@ -60,7 +60,7 @@ const StartTaskSummaryPage: React.FC<{
 										</span>
 										{Object.keys(formik.values.configuration).map(
 											(config, key) => (
-												<p>
+												<p key={key}>
 													{config} :{" "}
 													{formik.values.configuration[config].toString()}
 												</p>
