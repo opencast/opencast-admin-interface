@@ -9,7 +9,6 @@ import { fetchFilters } from "../../thunks/tableFilterThunks";
 import { connect } from "react-redux";
 import { themesTemplateMap } from "../../configs/tableConfigs/themesTableConfig";
 import { getTotalThemes } from "../../selectors/themeSelectors";
-import { fetchThemes } from "../../thunks/themeThunks";
 import { loadThemesIntoTable } from "../../thunks/tableThunks";
 import Notifications from "../shared/Notifications";
 import NewResourceModal from "../shared/NewResourceModal";
@@ -20,17 +19,15 @@ import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { fetchThemes } from "../../slices/themeSlice";
 
 /**
  * This component renders the table view of events
  */
 const Themes = ({
-// @ts-expect-error TS(7031): Binding element 'loadingThemes' implicitly has an ... Remove this comment to see the full error message
-	loadingThemes,
 // @ts-expect-error TS(7031): Binding element 'loadingThemesIntoTable' implicitl... Remove this comment to see the full error message
 	loadingThemesIntoTable,
-// @ts-expect-error TS(7031): Binding element 'themes' implicitly has an 'any' t... Remove this comment to see the full error message
-	themes,
 // @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
 	loadingFilters,
 // @ts-expect-error TS(7031): Binding element 'resetTextFilter' implicitly has a... Remove this comment to see the full error message
@@ -41,12 +38,15 @@ const Themes = ({
 	currentFilterType,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewThemesModal, setNewThemesModal] = useState(false);
 
+	const themes = useAppSelector(state => getTotalThemes(state));
+
 	const loadThemes = async () => {
 		// Fetching themes from server
-		await loadingThemes();
+		await dispatch(fetchThemes());
 
 		// Load users into table
 		loadingThemesIntoTable();
@@ -128,7 +128,7 @@ const Themes = ({
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={loadingThemes}
+						loadResource={dispatch(fetchThemes())}
 						loadResourceIntoTable={loadingThemesIntoTable}
 						resource={"themes"}
 					/>
@@ -146,7 +146,6 @@ const Themes = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	themes: getTotalThemes(state),
 	user: getUserInformation(state),
 	currentFilterType: getCurrentFilterResource(state),
 });
@@ -156,7 +155,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
-	loadingThemes: () => dispatch(fetchThemes()),
 	loadingThemesIntoTable: () => dispatch(loadThemesIntoTable()),
 	resetTextFilter: () => dispatch(editTextFilter("")),
 });
