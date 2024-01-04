@@ -8,7 +8,6 @@ import languages from "../i18n/languages";
 // @ts-expect-error TS(2307): Cannot find module '../img/opencast-white.svg' or ... Remove this comment to see the full error message
 import opencastLogo from "../img/opencast-white.svg";
 import { GlobalHotKeys } from "react-hotkeys";
-import { fetchHealthStatus } from "../thunks/healthThunks";
 import { setSpecificServiceFilter } from "../thunks/tableFilterThunks";
 import { loadServicesIntoTable } from "../thunks/tableThunks";
 import { getErrorCount, getHealthStatus } from "../selectors/healthSelectors";
@@ -22,6 +21,8 @@ import { getCurrentLanguageInformation, hasAccess } from "../utils/utils";
 import { overflowStyle } from "../utils/componentStyles";
 import RegistrationModal from "./shared/RegistrationModal";
 import HotKeyCheatSheet from "./shared/HotKeyCheatSheet";
+import { useAppDispatch, useAppSelector } from "../store";
+import { fetchHealthStatus } from "../slices/healthSlice";
 
 // Get code, flag and name of the current language
 const currentLanguage = getCurrentLanguageInformation();
@@ -56,12 +57,6 @@ function logout() {
  * Component that renders the header and the navigation in the upper right corner.
  */
 const Header = ({
-// @ts-expect-error TS(7031): Binding element 'loadingHealthStatus' implicitly h... Remove this comment to see the full error message
-	loadingHealthStatus,
-// @ts-expect-error TS(7031): Binding element 'healthStatus' implicitly has an '... Remove this comment to see the full error message
-	healthStatus,
-// @ts-expect-error TS(7031): Binding element 'errorCounter' implicitly has an '... Remove this comment to see the full error message
-	errorCounter,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
 // @ts-expect-error TS(7031): Binding element 'orgProperties' implicitly has an ... Remove this comment to see the full error message
@@ -72,6 +67,7 @@ const Header = ({
 	loadingServicesIntoTable,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 	// State for opening (true) and closing (false) the dropdown menus for language, notification, help and user
 	const [displayMenuLang, setMenuLang] = useState(false);
 	const [displayMenuUser, setMenuUser] = useState(false);
@@ -80,8 +76,11 @@ const Header = ({
 	const [displayRegistrationModal, setRegistrationModal] = useState(false);
 	const [displayHotKeyCheatSheet, setHotKeyCheatSheet] = useState(false);
 
+	const healthStatus = useAppSelector(state => getHealthStatus(state));
+	const errorCounter = useAppSelector(state => getErrorCount(state));
+
 	const loadHealthStatus = async () => {
-		await loadingHealthStatus();
+		await dispatch(fetchHealthStatus());
 	};
 
 	const hideMenuHelp = () => {
@@ -145,7 +144,7 @@ const Header = ({
 		// Fetching health status information at mount
 		loadHealthStatus().then((r) => console.info(r));
 		// Fetch health status every minute
-		setInterval(loadingHealthStatus, 5000);
+		setInterval(() => dispatch(fetchHealthStatus()), 5000);
 
 		// Event listener for handle a click outside of dropdown menu
 		window.addEventListener("mousedown", handleClickOutside);
@@ -448,8 +447,6 @@ const MenuUser = () => {
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	healthStatus: getHealthStatus(state),
-	errorCounter: getErrorCount(state),
 	user: getUserInformation(state),
 	orgProperties: getOrgProperties(state),
 });
@@ -457,7 +454,6 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-	loadingHealthStatus: () => dispatch(fetchHealthStatus()),
 	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
 // @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 	setSpecificServiceFilter: (filter, filterValue) =>

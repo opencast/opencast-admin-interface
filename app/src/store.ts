@@ -16,7 +16,7 @@ import users from "./reducers/userReducers";
 import groups from "./reducers/groupReducers";
 import acls from "./slices/aclSlice";
 import themes from "./reducers/themeReducers";
-import health from "./reducers/healthReducers";
+import health from "./slices/healthSlice";
 import { notifications } from "./reducers/notificationReducers";
 import workflows from "./reducers/workflowReducers";
 import eventDetails from "./reducers/eventDeatilsReducers";
