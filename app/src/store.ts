@@ -23,7 +23,7 @@ import eventDetails from "./reducers/eventDeatilsReducers";
 import seriesDetails from "./reducers/seriesDetailsReducers";
 import recordingDetails from "./reducers/recordingDetailsReducer";
 import userDetails from "./reducers/userDetailsReducer";
-import groupDetails from "./reducers/groupDetailsReducer";
+import groupDetails from "./slices/groupDetailsSlice";
 import aclDetails from "./reducers/aclDetailsReducer";
 import themeDetails from "./reducers/themeDetailsReducer";
 import userInfo from "./reducers/userInfoReducer";
