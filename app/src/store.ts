@@ -13,7 +13,7 @@ import jobs from "./reducers/jobReducer";
 import servers from "./reducers/serverReducer";
 import services from "./reducers/serviceReducer";
 import users from "./reducers/userReducers";
-import groups from "./reducers/groupReducers";
+import groups from "./slices/groupSlice";
 import acls from "./slices/aclSlice";
 import themes from "./reducers/themeReducers";
 import health from "./reducers/healthReducers";

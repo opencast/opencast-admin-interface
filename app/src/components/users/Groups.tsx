@@ -17,7 +17,6 @@ import {
 	loadGroupsIntoTable,
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchGroups } from "../../thunks/groupThunks";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
@@ -27,18 +26,15 @@ import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { fetchAcls } from "../../slices/aclSlice";
-import { useAppDispatch } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { fetchGroups } from "../../slices/groupSlice";
 
 /**
  * This component renders the table view of groups
  */
 const Groups = ({
-// @ts-expect-error TS(7031): Binding element 'loadingGroups' implicitly has an ... Remove this comment to see the full error message
-	loadingGroups,
 // @ts-expect-error TS(7031): Binding element 'loadingGroupsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingGroupsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'groups' implicitly has an 'any' t... Remove this comment to see the full error message
-	groups,
 // @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
 	loadingFilters,
 // @ts-expect-error TS(7031): Binding element 'loadingUsers' implicitly has an '... Remove this comment to see the full error message
@@ -57,13 +53,15 @@ const Groups = ({
 	currentFilterType,
 }) => {
 	const { t } = useTranslation();
-        const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewGroupModal, setNewGroupModal] = useState(false);
 
+	const groups = useAppSelector(state => getTotalGroups(state));
+
 	const loadGroups = async () => {
 		// Fetching groups from server
-		await loadingGroups();
+		await dispatch(fetchGroups());
 
 		// Load groups into table
 		loadingGroupsIntoTable();
@@ -185,7 +183,7 @@ const Groups = ({
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={loadingGroups}
+						loadResource={dispatch(fetchGroups())}
 						loadResourceIntoTable={loadingGroupsIntoTable}
 						resource={"groups"}
 					/>
@@ -203,7 +201,6 @@ const Groups = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	groups: getTotalGroups(state),
 	user: getUserInformation(state),
 	currentFilterType: getCurrentFilterResource(state),
 });
@@ -213,7 +210,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
-	loadingGroups: () => dispatch(fetchGroups()),
 	loadingGroupsIntoTable: () => dispatch(loadGroupsIntoTable()),
 	loadingUsers: () => dispatch(fetchUsers()),
 	loadingUsersIntoTable: () => dispatch(loadUsersIntoTable()),

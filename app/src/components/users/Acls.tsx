@@ -15,7 +15,6 @@ import {
 	loadGroupsIntoTable,
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchGroups } from "../../thunks/groupThunks";
 import { getTotalAcls } from "../../selectors/aclSelectors";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
@@ -27,6 +26,7 @@ import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchAcls } from "../../slices/aclSlice";
+import { fetchGroups } from "../../slices/groupSlice";
 
 /**
  * This component renders the table view of acls
