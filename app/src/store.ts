@@ -8,7 +8,7 @@ import tableFilterProfiles from "./reducers/tableFilterProfilesReducer";
 import events from "./reducers/eventReducers";
 import table from "./reducers/tableReducers";
 import series from "./reducers/seriesReducer";
-import recordings from "./reducers/recordingReducer";
+import recordings from "./slices/recordingSlice";
 import jobs from "./reducers/jobReducer";
 import servers from "./reducers/serverReducer";
 import services from "./reducers/serviceReducer";
