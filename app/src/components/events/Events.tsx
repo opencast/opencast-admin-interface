@@ -19,7 +19,6 @@ import {
 	loadEventsIntoTable,
 	loadSeriesIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchSeries } from "../../thunks/seriesThunks";
 import { fetchFilters, fetchStats } from "../../thunks/tableFilterThunks";
 import {
 	getTotalEvents,
@@ -39,6 +38,8 @@ import { GlobalHotKeys } from "react-hotkeys";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { fetchAssetUploadOptions } from "../../thunks/assetsThunks";
+import { useAppDispatch } from "../../store";
+import { fetchSeries } from "../../slices/seriesSlice";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef();
@@ -55,8 +56,6 @@ const Events = ({
 	events,
 // @ts-expect-error TS(7031): Binding element 'showActions' implicitly has an 'a... Remove this comment to see the full error message
 	showActions,
-// @ts-expect-error TS(7031): Binding element 'loadingSeries' implicitly has an ... Remove this comment to see the full error message
-	loadingSeries,
 // @ts-expect-error TS(7031): Binding element 'loadingSeriesIntoTable' implicitl... Remove this comment to see the full error message
 	loadingSeriesIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
@@ -81,6 +80,7 @@ const Events = ({
 	currentFilterType,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 	const [displayActionMenu, setActionMenu] = useState(false);
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewEventModal, setNewEventModal] = useState(false);
@@ -112,7 +112,7 @@ const Events = ({
 		resetOffset();
 
 		//fetching series from server
-		loadingSeries();
+		dispatch(fetchSeries());
 
 		//load series into table
 		loadingSeriesIntoTable();
@@ -358,7 +358,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	loadingEvents: () => dispatch(fetchEvents()),
 	loadingEventsIntoTable: () => dispatch(loadEventsIntoTable()),
-	loadingSeries: () => dispatch(fetchSeries()),
 	loadingSeriesIntoTable: () => dispatch(loadSeriesIntoTable()),
 // @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),

@@ -10,6 +10,7 @@ import MetadataSummaryTable from "./summaryTables/MetadataSummaryTable";
 import MetadataExtendedSummaryTable from "./summaryTables/MetadataExtendedSummaryTable";
 import AccessSummaryTable from "./summaryTables/AccessSummaryTable";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component renders the summary page for new series in the new series wizard.
@@ -21,14 +22,12 @@ const NewSeriesSummary = ({
 	previousPage,
 // @ts-expect-error TS(7031): Binding element 'metaDataExtendedHidden' implicitl... Remove this comment to see the full error message
 	metaDataExtendedHidden,
-// @ts-expect-error TS(7031): Binding element 'metadataSeries' implicitly has an... Remove this comment to see the full error message
-	metadataSeries,
-// @ts-expect-error TS(7031): Binding element 'extendedMetadata' implicitly has ... Remove this comment to see the full error message
-	extendedMetadata,
-// @ts-expect-error TS(7031): Binding element 'seriesThemes' implicitly has an '... Remove this comment to see the full error message
-	seriesThemes,
 }) => {
 	const { t } = useTranslation();
+
+	const metadataSeries = useAppSelector(state => getSeriesMetadata(state));
+	const extendedMetadata = useAppSelector(state => getSeriesExtendedMetadata(state));
+	const seriesThemes = useAppSelector(state => getSeriesThemes(state));
 
 	// Get additional information about chosen series theme
 // @ts-expect-error TS(7006): Parameter 'theme' implicitly has an 'any' type.
@@ -92,12 +91,4 @@ const NewSeriesSummary = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	metadataSeries: getSeriesMetadata(state),
-	extendedMetadata: getSeriesExtendedMetadata(state),
-	seriesThemes: getSeriesThemes(state),
-});
-
-export default connect(mapStateToProps)(NewSeriesSummary);
+export default NewSeriesSummary;

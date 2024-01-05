@@ -1,9 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import { getSeriesThemes } from "../../../../selectors/seriesSeletctor";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import DropDown from "../../../shared/DropDown";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component renders the theme page for new series in the new series wizard.
@@ -12,9 +12,10 @@ const NewThemePage = ({
     formik,
     nextPage,
     previousPage,
-    seriesThemes
 }: any) => {
 	const { t } = useTranslation();
+
+	const seriesThemes = useAppSelector(state => getSeriesThemes(state));
 
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	const getDescription = (id) => {
@@ -92,9 +93,4 @@ const NewThemePage = ({
 	);
 };
 
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	seriesThemes: getSeriesThemes(state),
-});
-
-export default connect(mapStateToProps)(NewThemePage);
+export default NewThemePage;

@@ -30,7 +30,7 @@ import {
 	getAssetUploadOptions,
 	getSchedulingEditedEvents,
 } from "../selectors/eventSelectors";
-import { fetchSeriesOptions } from "./seriesThunks";
+import { fetchSeriesOptions } from "../slices/seriesSlice";
 import { removeNotification } from "../actions/notificationActions";
 
 // fetch events from server

@@ -22,10 +22,6 @@ import {
 	showActions as showEventsActions,
 } from "../actions/eventActions";
 import {
-	setSeriesColumns,
-	showActions as showSeriesActions,
-} from "../actions/seriesActions";
-import {
 	getPageOffset,
 	getResourceType,
 	getSelectedRows,
@@ -33,7 +29,11 @@ import {
 	getTablePagination,
 } from "../selectors/tableSelectors";
 import { fetchEvents } from "./eventThunks";
-import { fetchSeries } from "./seriesThunks";
+import {
+	fetchSeries,
+	setSeriesColumns,
+	showActionsSeries,
+} from "../slices/seriesSlice";
 import { fetchRecordings } from "./recordingThunks";
 import { fetchJobs } from "./jobThunks";
 import { fetchServers } from "./serverThunks";
@@ -559,7 +559,7 @@ export const changeAllSelected = (selected) => (dispatch, getState) => {
 				break;
 			}
 			case "series": {
-				dispatch(showSeriesActions(true));
+				dispatch(showActionsSeries(true));
 				break;
 			}
 		}
@@ -572,7 +572,7 @@ export const changeAllSelected = (selected) => (dispatch, getState) => {
 				break;
 			}
 			case "series": {
-				dispatch(showSeriesActions(false));
+				dispatch(showActionsSeries(false));
 				break;
 			}
 		}
@@ -609,9 +609,9 @@ export const changeColumnSelection = (updatedColumns) => async (
 			await dispatch(setSeriesColumns(updatedColumns));
 
 			if (getSelectedRows(state).length > 0) {
-				dispatch(showSeriesActions(true));
+				dispatch(showActionsSeries(true));
 			} else {
-				dispatch(showSeriesActions(false));
+				dispatch(showActionsSeries(false));
 			}
 
 			dispatch(loadSeriesIntoTable());
@@ -679,9 +679,9 @@ export const changeRowSelection = (id, selected) => (dispatch, getState) => {
 		}
 		case "series": {
 			if (getSelectedRows(state).length > 0) {
-				dispatch(showSeriesActions(true));
+				dispatch(showActionsSeries(true));
 			} else {
-				dispatch(showSeriesActions(false));
+				dispatch(showActionsSeries(false));
 			}
 			break;
 		}
