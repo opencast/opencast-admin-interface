@@ -7,7 +7,7 @@ import {
 	loadUserInfoSuccess,
 } from "../actions/userInfoActions";
 import axios from "axios";
-import { addNotification } from "./notificationThunks";
+import { addNotification } from "../slices/notificationSlice";
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchUserInfo = () => async (dispatch) => {
@@ -29,7 +29,7 @@ export const fetchUserInfo = () => async (dispatch) => {
 	} catch (e) {
 		console.error(e);
 		dispatch(loadUserInfoFailure());
-		dispatch(addNotification("error", "PROBLEM_ON_START"));
+		dispatch(addNotification({type: "error", key: "PROBLEM_ON_START"}));
 	}
 };
 

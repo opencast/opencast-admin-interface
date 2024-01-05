@@ -6,7 +6,7 @@ import {
 } from "../actions/userActions";
 import { buildUserBody, getURLParams } from "../utils/resourceUtils";
 import { transformToIdValueArray } from "../utils/utils";
-import { addNotification } from "./notificationThunks";
+import { addNotification } from "../slices/notificationSlice";
 
 // fetch users from server
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
@@ -55,11 +55,11 @@ export const postNewUser = (values) => async (dispatch) => {
 		})
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "USER_ADDED"));
+			dispatch(addNotification({type: "success", key: "USER_ADDED"}));
 		})
 		.catch((response) => {
 			console.error(response);
-			dispatch(addNotification("error", "USER_NOT_SAVED"));
+			dispatch(addNotification({type: "error", key: "USER_NOT_SAVED"}));
 		});
 };
 
@@ -72,11 +72,11 @@ export const deleteUser = (id) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			// add success notification
-			dispatch(addNotification("success", "USER_DELETED"));
+			dispatch(addNotification({type: "success", key: "USER_DELETED"}));
 		})
 		.catch((res) => {
 			console.error(res);
 			// add error notification
-			dispatch(addNotification("error", "USER_NOT_DELETED"));
+			dispatch(addNotification({type: "error", key: "USER_NOT_DELETED"}));
 		});
 };

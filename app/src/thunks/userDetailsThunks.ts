@@ -4,7 +4,7 @@ import {
 	loadUserDetailsInProgress,
 	loadUserDetailsSuccess,
 } from "../actions/userDetailsActions";
-import { addNotification } from "./notificationThunks";
+import { addNotification } from "../slices/notificationSlice";
 import { buildUserBody } from "../utils/resourceUtils";
 
 // fetch details about certain user from server
@@ -40,10 +40,10 @@ export const updateUserDetails = (values, username) => async (dispatch) => {
 		.put(`/admin-ng/users/${username}.json`, data)
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "USER_UPDATED"));
+			dispatch(addNotification({type: "success", key: "USER_UPDATED"}));
 		})
 		.catch((response) => {
 			console.error(response);
-			dispatch(addNotification("error", "USER_NOT_SAVED"));
+			dispatch(addNotification({type: "error", key: "USER_NOT_SAVED"}));
 		});
 };

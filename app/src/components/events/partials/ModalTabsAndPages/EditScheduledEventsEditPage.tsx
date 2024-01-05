@@ -11,8 +11,6 @@ import {
 	checkForSchedulingConflicts,
 	fetchScheduling,
 } from "../../../../thunks/eventThunks";
-import { addNotification } from "../../../../thunks/notificationThunks";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import {
 	getSchedulingSeriesOptions,
@@ -20,6 +18,8 @@ import {
 } from "../../../../selectors/eventSelectors";
 import { checkSchedulingConflicts } from "../../../../utils/bulkActionUtils";
 import DropDown from "../../../shared/DropDown";
+import { useAppDispatch } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component renders the edit page for scheduled events of the corresponding bulk action
@@ -39,10 +39,6 @@ const EditScheduledEventsEditPage = ({
 	setPageCompleted,
 // @ts-expect-error TS(7031): Binding element 'checkForSchedulingConflicts' impl... Remove this comment to see the full error message
 	checkForSchedulingConflicts,
-// @ts-expect-error TS(7031): Binding element 'addNotification' implicitly has a... Remove this comment to see the full error message
-	addNotification,
-// @ts-expect-error TS(7031): Binding element 'removeNotificationWizardForm' imp... Remove this comment to see the full error message
-	removeNotificationWizardForm,
 // @ts-expect-error TS(7031): Binding element 'fetchSchedulingData' implicitly h... Remove this comment to see the full error message
 	fetchSchedulingData,
 // @ts-expect-error TS(7031): Binding element 'loading' implicitly has an 'any' ... Remove this comment to see the full error message
@@ -53,6 +49,7 @@ const EditScheduledEventsEditPage = ({
 	user,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		const fetchEventInfos =
@@ -455,13 +452,13 @@ const EditScheduledEventsEditPage = ({
 					})}
 					disabled={!(formik.dirty && formik.isValid)}
 					onClick={async () => {
-						removeNotificationWizardForm();
+						dispatch(removeNotificationWizardForm());
 						if (
 							await checkSchedulingConflicts(
 								formik.values,
 								setConflicts,
 								checkForSchedulingConflicts,
-								addNotification
+								dispatch
 							)
 						) {
 							nextPage(formik.values);
@@ -508,10 +505,6 @@ const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'events' implicitly has an 'any' type.
 	checkForSchedulingConflicts: (events) =>
 		dispatch(checkForSchedulingConflicts(events)),
-// @ts-expect-error TS(7006): Parameter 'type' implicitly has an 'any' type.
-	addNotification: (type, key, duration, parameter, context) =>
-		dispatch(addNotification(type, key, duration, parameter, context)),
-	removeNotificationWizardForm: () => dispatch(removeNotificationWizardForm()),
 // @ts-expect-error TS(7006): Parameter 'events' implicitly has an 'any' type.
 	fetchSchedulingData: (events, fetchNewScheduling, setFieldValue) =>
 		dispatch(fetchScheduling(events, fetchNewScheduling, setFieldValue)),

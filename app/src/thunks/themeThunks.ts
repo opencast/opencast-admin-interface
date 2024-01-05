@@ -5,7 +5,7 @@ import {
 } from "../actions/themeActions";
 import { buildThemeBody, getURLParams } from "../utils/resourceUtils";
 import axios from "axios";
-import { addNotification } from "./notificationThunks";
+import { addNotification } from "../slices/notificationSlice";
 
 // fetch themes from server
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
@@ -42,11 +42,11 @@ export const postNewTheme = (values) => async (dispatch) => {
 		})
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "THEME_CREATED"));
+			dispatch(addNotification({type: "success", key: "THEME_CREATED"}));
 		})
 		.catch((response) => {
 			console.error(response);
-			dispatch(addNotification("error", "THEME_NOT_CREATED"));
+			dispatch(addNotification({type: "error", key: "THEME_NOT_CREATED"}));
 		});
 };
 
@@ -57,11 +57,11 @@ export const deleteTheme = (id) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			// add success notification
-			dispatch(addNotification("success", "THEME_DELETED"));
+			dispatch(addNotification({type: "success", key: "THEME_DELETED"}));
 		})
 		.catch((res) => {
 			console.error(res);
 			// add error notification
-			dispatch(addNotification("error", "THEME_NOT_DELETED"));
+			dispatch(addNotification({type: "error", key: "THEME_NOT_DELETED"}));
 		});
 };

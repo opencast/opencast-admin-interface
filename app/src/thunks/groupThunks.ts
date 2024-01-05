@@ -5,7 +5,7 @@ import {
 	loadGroupsSuccess,
 } from "../actions/groupActions";
 import { buildGroupBody, getURLParams } from "../utils/resourceUtils";
-import { addNotification } from "./notificationThunks";
+import { addNotification } from "../slices/notificationSlice";
 
 // fetch groups from server
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
@@ -43,14 +43,14 @@ export const postNewGroup = (values) => async (dispatch) => {
 		})
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "GROUP_ADDED"));
+			dispatch(addNotification({type: "success", key: "GROUP_ADDED"}));
 		})
 		.catch((response) => {
 			console.error(response);
 			if (response.status === 409) {
-				dispatch(addNotification("error", "GROUP_CONFLICT"));
+				dispatch(addNotification({type:"error", key: "GROUP_CONFLICT"}));
 			} else {
-				dispatch(addNotification("error", "GROUP_NOT_SAVED"));
+				dispatch(addNotification({type: "error", key: "GROUP_NOT_SAVED"}));
 			}
 		});
 };
@@ -63,11 +63,11 @@ export const deleteGroup = (id) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			// add success notification
-			dispatch(addNotification("success", "GROUP_DELETED"));
+			dispatch(addNotification({type: "success", key: "GROUP_DELETED"}));
 		})
 		.catch((res) => {
 			console.error(res);
 			// add error notification
-			dispatch(addNotification("error", "GROUP_NOT_DELETED"));
+			dispatch(addNotification({type: "error", key: "GROUP_NOT_DELETED"}));
 		});
 };

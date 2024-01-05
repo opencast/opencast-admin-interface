@@ -21,7 +21,7 @@ import {
 	transformToIdValueArray,
 	transformToObjectArray,
 } from "../utils/utils";
-import { addNotification } from "./notificationThunks";
+import { addNotification } from "../slices/notificationSlice";
 
 // fetch series from server
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
@@ -155,11 +155,11 @@ export const postNewSeries = (values, metadataInfo, extendedMetadata) => async (
 		})
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "SERIES_ADDED"));
+			dispatch(addNotification({type: "success", key: "SERIES_ADDED"}));
 		})
 		.catch((response) => {
 			console.error(response);
-			dispatch(addNotification("error", "SERIES_NOT_SAVED"));
+			dispatch(addNotification({type: "error", key: "SERIES_NOT_SAVED"}));
 		});
 };
 
@@ -193,12 +193,12 @@ export const deleteSeries = (id) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			// add success notification
-			dispatch(addNotification("success", "SERIES_DELETED"));
+			dispatch(addNotification({type: "success", key: "SERIES_DELETED"}));
 		})
 		.catch((res) => {
 			console.error(res);
 			// add error notification
-			dispatch(addNotification("error", "SERIES_NOT_DELETED"));
+			dispatch(addNotification({type: "error", key: "SERIES_NOT_DELETED"}));
 		});
 };
 
@@ -218,12 +218,12 @@ export const deleteMultipleSeries = (series) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			//add success notification
-			dispatch(addNotification("success", "SERIES_DELETED"));
+			dispatch(addNotification({type: "success", key: "SERIES_DELETED"}));
 		})
 		.catch((res) => {
 			console.error(res);
 			//add error notification
-			dispatch(addNotification("error", "SERIES_NOT_DELETED"));
+			dispatch(addNotification({type: "error", key: "SERIES_NOT_DELETED"}));
 		});
 };
 

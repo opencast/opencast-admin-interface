@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
 import { connect } from "react-redux";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import {
 	fetchAssetAttachments,
 	fetchAssetCatalogs,
@@ -20,6 +19,8 @@ import { getWorkflow } from "../../../../selectors/eventDetailsSelectors";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
 import { isFetchingAssetUploadOptions } from "../../../../selectors/eventSelectors";
+import { useAppDispatch } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the main assets tab of event details modal
@@ -54,8 +55,10 @@ const EventDetailsAssetsTab = ({
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
 }) => {
+	const dispatch = useAppDispatch();
+
 	useEffect(() => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 // @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
 		fetchAssets(eventId).then((r) => {});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -69,7 +72,7 @@ const EventDetailsAssetsTab = ({
 		bool1 = false,
 		bool2 = true
 	) => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		if (subTabName === "asset-attachments") {
 // @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
 			fetchAttachments(eventId).then((r) => {});

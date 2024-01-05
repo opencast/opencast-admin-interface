@@ -6,7 +6,7 @@ import {
 	loadThemeUsageSuccess,
 } from "../actions/themeDetailsActions";
 import { buildThemeBody } from "../utils/resourceUtils";
-import { addNotification } from "./notificationThunks";
+import { addNotification } from "../slices/notificationSlice";
 
 // fetch details of certain theme from server
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
@@ -56,10 +56,10 @@ export const updateThemeDetails = (id, values) => async (dispatch) => {
 		})
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "THEME_CREATED"));
+			dispatch(addNotification({type: "success", key: "THEME_CREATED"}));
 		})
 		.catch((response) => {
 			console.error(response);
-			dispatch(addNotification("error", "THEME_NOT_CREATED"));
+			dispatch(addNotification({type: "error", key: "THEME_NOT_CREATED"}));
 		});
 };

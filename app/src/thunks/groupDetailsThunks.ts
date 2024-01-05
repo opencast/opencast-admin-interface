@@ -4,7 +4,7 @@ import {
 	loadGroupDetailsSuccess,
 } from "../actions/groupDetailsActions";
 import axios from "axios";
-import { addNotification } from "./notificationThunks";
+import { addNotification } from "../slices/notificationSlice";
 import { buildGroupBody } from "../utils/resourceUtils";
 
 // fetch details about certain group from server
@@ -55,14 +55,14 @@ export const updateGroupDetails = (values, groupId) => async (dispatch) => {
 		.put(`/admin-ng/groups/${groupId}`, data)
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "GROUP_UPDATED"));
+			dispatch(addNotification({type: "success", key: "GROUP_UPDATED"}));
 		})
 		.catch((response) => {
 			console.error(response);
 			if (response.status === 409) {
-				dispatch(addNotification("error", "GROUP_CONFLICT"));
+				dispatch(addNotification({type: "error", key: "GROUP_CONFLICT"}));
 			} else {
-				dispatch(addNotification("error", "GROUP_NOT_SAVED"));
+				dispatch(addNotification({type: "error", key: "GROUP_NOT_SAVED"}));
 			}
 		});
 };

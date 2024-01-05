@@ -4,7 +4,7 @@ import {
 	loadAclDetailsSuccess,
 } from "../actions/aclDetailsActions";
 import axios from "axios";
-import { addNotification } from "./notificationThunks";
+import { addNotification } from "../slices/notificationSlice";
 import { prepareAccessPolicyRulesForPost } from "../utils/resourceUtils";
 
 // fetch details about a certain acl from server
@@ -121,10 +121,10 @@ export const updateAclDetails = (values, aclId) => async (dispatch) => {
 		.put(`/admin-ng/acl/${aclId}`, data)
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "ACL_UPDATED"));
+			dispatch(addNotification({type: "success", key: "ACL_UPDATED"}));
 		})
 		.catch((response) => {
 			console.error(response);
-			dispatch(addNotification("error", "ACL_NOT_SAVED"));
+			dispatch(addNotification({type: "error", key: "ACL_NOT_SAVED"}));
 		});
 };

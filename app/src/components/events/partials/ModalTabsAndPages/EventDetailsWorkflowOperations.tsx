@@ -7,8 +7,9 @@ import {
 	isFetchingWorkflowOperations,
 } from "../../../../selectors/eventDetailsSelectors";
 import { fetchWorkflowOperationDetails } from "../../../../thunks/eventDetailsThunks";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
+import { useAppDispatch } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the workflow operations for the workflows tab of the event details modal
@@ -29,9 +30,11 @@ const EventDetailsWorkflowOperations = ({
 // @ts-expect-error TS(7031): Binding element 'fetchOperationDetails' implicitly... Remove this comment to see the full error message
 	fetchOperationDetails,
 }) => {
+	const dispatch = useAppDispatch();
+
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
 	const openSubTab = (tabType, operationId = null) => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		setHierarchy(tabType);
 		if (tabType === "workflow-operation-details") {
 // @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.

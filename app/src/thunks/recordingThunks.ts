@@ -5,7 +5,7 @@ import {
 	loadRecordingsSuccess,
 } from "../actions/recordingActions";
 import { getURLParams } from "../utils/resourceUtils";
-import { addNotification } from "./notificationThunks";
+import { addNotification } from "../slices/notificationSlice";
 
 // fetch recordings from server
 // @ts-expect-error TS(7006): Parameter 'flag' implicitly has an 'any' type.
@@ -67,17 +67,17 @@ export const deleteRecording = (id) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			// add success notification
-			dispatch(addNotification("success", "LOCATION_DELETED"));
+			dispatch(addNotification({type: "success", key: "LOCATION_DELETED"}));
 		})
 		.catch((res) => {
 			console.error(res);
 			// add error notification depending on status code
 			if (res.status === 401) {
 				dispatch(
-					addNotification("error", "LOCATION_NOT_DELETED_NOT_AUTHORIZED")
+					addNotification({type: "error", key: "LOCATION_NOT_DELETED_NOT_AUTHORIZED"})
 				);
 			} else {
-				dispatch(addNotification("error", "LOCATION_NOT_DELETED"));
+				dispatch(addNotification({type: "error", key: "LOCATION_NOT_DELETED"}));
 			}
 		});
 };

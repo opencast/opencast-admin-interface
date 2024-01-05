@@ -20,7 +20,7 @@ import {
 	checkSchedulingConflicts,
 	checkValidityUpdateScheduleEventSelection,
 } from "../../../../utils/bulkActionUtils";
-import { addNotification } from "../../../../thunks/notificationThunks";
+import { useAppDispatch } from "../../../../store";
 
 /**
  * This component manages the pages of the edit scheduled bulk action
@@ -34,14 +34,13 @@ const EditScheduledEventsModal = ({
 	loadingInputDevices,
 // @ts-expect-error TS(7031): Binding element 'checkForSchedulingConflicts' impl... Remove this comment to see the full error message
 	checkForSchedulingConflicts,
-// @ts-expect-error TS(7031): Binding element 'addNotification' implicitly has a... Remove this comment to see the full error message
-	addNotification,
 // @ts-expect-error TS(7031): Binding element 'inputDevices' implicitly has an '... Remove this comment to see the full error message
 	inputDevices,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const initialValues = initialFormValuesEditScheduledEvents;
 
@@ -91,7 +90,7 @@ const EditScheduledEventsModal = ({
 				values,
 				setConflicts,
 				checkForSchedulingConflicts,
-				addNotification
+				dispatch,
 			).then((result) => {
 				const errors = {};
 				if (!result) {
@@ -195,9 +194,6 @@ const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'events' implicitly has an 'any' type.
 	checkForSchedulingConflicts: (events) =>
 		dispatch(checkForSchedulingConflicts(events)),
-// @ts-expect-error TS(7006): Parameter 'type' implicitly has an 'any' type.
-	addNotification: (type, key, duration, parameter, context) =>
-		dispatch(addNotification(type, key, duration, parameter, context)),
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	updateScheduledEventsBulk: (values) =>
 		dispatch(updateScheduledEventsBulk(values)),

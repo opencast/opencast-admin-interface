@@ -41,12 +41,13 @@ import {
 	fetchSchedulingInfo,
 	fetchEventStatistics,
 } from "../../../../thunks/eventDetailsThunks";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import EventDetailsStatisticsTab from "../ModalTabsAndPages/EventDetailsStatisticsTab";
 import { fetchAssetUploadOptions } from "../../../../thunks/assetsThunks";
 import { hasAnyDeviceAccess } from "../../../../utils/resourceUtils";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
+import { useAppDispatch } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the pages of the event details
@@ -70,7 +71,6 @@ const EventDetails : React.FC<{
 	loadScheduling?: any,
 	loadStatistics?: any,
 	fetchAssetUploadOptions?: any,
-	removeNotificationWizardForm?: any,
 	policyChanged: any,
 	setPolicyChanged: any,
 }>= ({
@@ -92,14 +92,14 @@ const EventDetails : React.FC<{
 	loadScheduling,
 	loadStatistics,
 	fetchAssetUploadOptions,
-	removeNotificationWizardForm,
 	policyChanged,
 	setPolicyChanged,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		loadMetadata(eventId).then();
 		loadScheduling(eventId).then();
 		loadStatistics(eventId).then();
@@ -172,7 +172,7 @@ const EventDetails : React.FC<{
 
 // @ts-expect-error TS(7006): Parameter 'tabNr' implicitly has an 'any' type.
 	const openTab = (tabNr) => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		setWorkflowTabHierarchy("entry");
 		setAssetsTabHierarchy("entry");
 		setPage(tabNr);
@@ -423,7 +423,6 @@ const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	loadStatistics: (id) => dispatch(fetchEventStatistics(id)),
 	fetchAssetUploadOptions: () => dispatch(fetchAssetUploadOptions()),
-	removeNotificationWizardForm: () => dispatch(removeNotificationWizardForm()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventDetails);
