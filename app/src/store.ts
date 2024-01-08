@@ -10,7 +10,7 @@ import table from "./reducers/tableReducers";
 import series from "./reducers/seriesReducer";
 import recordings from "./reducers/recordingReducer";
 import jobs from "./reducers/jobReducer";
-import servers from "./reducers/serverReducer";
+import servers from "./slices/serverSlice";
 import services from "./reducers/serviceReducer";
 import users from "./reducers/userReducers";
 import groups from "./reducers/groupReducers";

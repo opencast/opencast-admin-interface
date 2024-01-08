@@ -16,7 +16,6 @@ import {
 	loadServicesIntoTable,
 } from "../../thunks/tableThunks";
 import { fetchServices } from "../../thunks/serviceThunks";
-import { fetchServers } from "../../thunks/serverThunks";
 import { getTotalServices } from "../../selectors/serviceSelector";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
@@ -26,6 +25,8 @@ import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
+import { useAppDispatch } from "../../store";
+import { fetchServers } from "../../slices/serverSlice";
 
 /**
  * This component renders the table view of services
@@ -43,8 +44,6 @@ const Services = ({
 	loadingJobs,
 // @ts-expect-error TS(7031): Binding element 'loadingJobsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingJobsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingServers' implicitly has an... Remove this comment to see the full error message
-	loadingServers,
 // @ts-expect-error TS(7031): Binding element 'loadingServersIntoTable' implicit... Remove this comment to see the full error message
 	loadingServersIntoTable,
 // @ts-expect-error TS(7031): Binding element 'resetTextFilter' implicitly has a... Remove this comment to see the full error message
@@ -57,6 +56,7 @@ const Services = ({
 	currentFilterType,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 
 	const loadServices = async () => {
@@ -83,7 +83,7 @@ const Services = ({
 		resetOffset();
 
 		// Fetching servers from server
-		loadingServers();
+		dispatch(fetchServers());
 
 		// Load servers into table
 		loadingServersIntoTable();
