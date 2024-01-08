@@ -8,14 +8,9 @@ import {
 	getSeriesDetailsMetadata,
 	getSeriesDetailsTheme,
 	getSeriesDetailsThemeNames,
-	hasStatistics,
+	hasStatistics as seriesHasStatistics,
 } from "../../../../selectors/seriesDetailsSelectors";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
-import {
-	fetchSeriesStatistics,
-	updateExtendedSeriesMetadata,
-	updateSeriesMetadata,
-} from "../../../../thunks/seriesDetailsThunks";
 import { hasAccess } from "../../../../utils/utils";
 import SeriesDetailsAccessTab from "../ModalTabsAndPages/SeriesDetailsAccessTab";
 import SeriesDetailsThemeTab from "../ModalTabsAndPages/SeriesDetailsThemeTab";
@@ -23,6 +18,12 @@ import SeriesDetailsStatisticTab from "../ModalTabsAndPages/SeriesDetailsStatist
 import SeriesDetailsFeedsTab from "../ModalTabsAndPages/SeriesDetailsFeedsTab";
 import DetailsMetadataTab from "../ModalTabsAndPages/DetailsMetadataTab";
 import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsExtendedMetadataTab";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import {
+	fetchSeriesStatistics,
+	updateExtendedSeriesMetadata,
+	updateSeriesMetadata,
+} from "../../../../slices/seriesDetailsSlice";
 
 /**
  * This component manages the tabs of the series details modal
@@ -30,35 +31,33 @@ import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsExtendedMeta
 const SeriesDetails = ({
 // @ts-expect-error TS(7031): Binding element 'seriesId' implicitly has an 'any'... Remove this comment to see the full error message
 	seriesId,
-// @ts-expect-error TS(7031): Binding element 'metadataFields' implicitly has an... Remove this comment to see the full error message
-	metadataFields,
-// @ts-expect-error TS(7031): Binding element 'extendedMetadata' implicitly has ... Remove this comment to see the full error message
-	extendedMetadata,
-// @ts-expect-error TS(7031): Binding element 'feeds' implicitly has an 'any' ty... Remove this comment to see the full error message
-	feeds,
-// @ts-expect-error TS(7031): Binding element 'theme' implicitly has an 'any' ty... Remove this comment to see the full error message
-	theme,
-// @ts-expect-error TS(7031): Binding element 'themeNames' implicitly has an 'an... Remove this comment to see the full error message
-	themeNames,
-// @ts-expect-error TS(7031): Binding element 'hasStatistics' implicitly has an ... Remove this comment to see the full error message
-	hasStatistics,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
-// @ts-expect-error TS(7031): Binding element 'updateSeries' implicitly has an '... Remove this comment to see the full error message
-	updateSeries,
-// @ts-expect-error TS(7031): Binding element 'updateExtendedMetadata' implicitl... Remove this comment to see the full error message
-	updateExtendedMetadata,
-// @ts-expect-error TS(7031): Binding element 'loadStatistics' implicitly has an... Remove this comment to see the full error message
-	loadStatistics,
 // @ts-expect-error TS(7031): Binding element 'policyChanged' implicitly has an ... Remove this comment to see the full error message
 	policyChanged,
 // @ts-expect-error TS(7031): Binding element 'setPolicyChanged' implicitly has ... Remove this comment to see the full error message
 	setPolicyChanged,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
+
+	const extendedMetadata = useAppSelector(state => getSeriesDetailsExtendedMetadata(state));
+	const feeds = useAppSelector(state => getSeriesDetailsFeeds(state));
+	const metadataFields = useAppSelector(state => getSeriesDetailsMetadata(state));
+	const theme = useAppSelector(state => getSeriesDetailsTheme(state));
+	const themeNames = useAppSelector(state => getSeriesDetailsThemeNames(state));
+	const hasStatistics = useAppSelector(state => seriesHasStatistics(state));
+
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const updateSeriesMetadataWrapper = (id: any, values: any) => {
+		dispatch(updateSeriesMetadata({id, values}));
+	}
+	const updateExtendedSeriesMetadataWrapper = (id: any, values: any, catalog: any) => {
+		dispatch(updateExtendedSeriesMetadata({id, values, catalog}));
+	}
 
 	useEffect(() => {
-		loadStatistics(seriesId).then();
+		dispatch(fetchSeriesStatistics(seriesId)).then();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -147,7 +146,7 @@ const SeriesDetails = ({
 						metadataFields={metadataFields}
 						resourceId={seriesId}
 						header={tabs[page].tabNameTranslation}
-						updateResource={updateSeries}
+						updateResource={updateSeriesMetadataWrapper}
 						editAccessRole="ROLE_UI_SERIES_DETAILS_METADATA_EDIT"
 					/>
 				)}
@@ -155,7 +154,7 @@ const SeriesDetails = ({
 					<DetailsExtendedMetadataTab
 						resourceId={seriesId}
 						metadata={extendedMetadata}
-						updateResource={updateExtendedMetadata}
+						updateResource={updateExtendedSeriesMetadataWrapper}
 						editAccessRole="ROLE_UI_SERIES_DETAILS_METADATA_EDIT"
 					/>
 				)}
@@ -188,25 +187,13 @@ const SeriesDetails = ({
 
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	metadataFields: getSeriesDetailsMetadata(state),
-	extendedMetadata: getSeriesDetailsExtendedMetadata(state),
-	feeds: getSeriesDetailsFeeds(state),
-	theme: getSeriesDetailsTheme(state),
-	themeNames: getSeriesDetailsThemeNames(state),
 	user: getUserInformation(state),
-	hasStatistics: hasStatistics(state),
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	updateSeries: (id, values) => dispatch(updateSeriesMetadata(id, values)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	updateExtendedMetadata: (id, values, catalog) =>
-		dispatch(updateExtendedSeriesMetadata(id, values, catalog)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	loadStatistics: (id) => dispatch(fetchSeriesStatistics(id)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SeriesDetails);

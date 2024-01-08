@@ -8,18 +8,19 @@ import {
 import { connect } from "react-redux";
 import SeriesDetailsModal from "./modals/SeriesDetailsModal";
 import {
-	fetchNamesOfPossibleThemes,
+	fetchSeriesDetailsThemeNames,
 	fetchSeriesDetailsAcls,
 	fetchSeriesDetailsFeeds,
 	fetchSeriesDetailsMetadata,
 	fetchSeriesDetailsTheme,
-} from "../../../thunks/seriesDetailsThunks";
+} from "../../../slices/seriesDetailsSlice";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import {
 	getSeriesHasEvents,
 	isSeriesDeleteAllowed,
 } from "../../../selectors/seriesSeletctor";
+import { useAppDispatch, useAppSelector } from "../../../store";
 
 /**
  * This component renders the action cells of series in the table view
@@ -29,29 +30,19 @@ const SeriesActionsCell = ({
 	row,
 // @ts-expect-error TS(7031): Binding element 'deleteSeries' implicitly has an '... Remove this comment to see the full error message
 	deleteSeries,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsMetadata' impli... Remove this comment to see the full error message
-	fetchSeriesDetailsMetadata,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsAcls' implicitl... Remove this comment to see the full error message
-	fetchSeriesDetailsAcls,
 // @ts-expect-error TS(7031): Binding element 'checkDeleteAllowed' implicitly ha... Remove this comment to see the full error message
 	checkDeleteAllowed,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsFeeds' implicit... Remove this comment to see the full error message
-	fetchSeriesDetailsFeeds,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsTheme' implicit... Remove this comment to see the full error message
-	fetchSeriesDetailsTheme,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsThemeNames' imp... Remove this comment to see the full error message
-	fetchSeriesDetailsThemeNames,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
-// @ts-expect-error TS(7031): Binding element 'deleteAllowed' implicitly has an ... Remove this comment to see the full error message
-	deleteAllowed,
-// @ts-expect-error TS(7031): Binding element 'hasEvents' implicitly has an 'any... Remove this comment to see the full error message
-	hasEvents,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displaySeriesDetailsModal, setSeriesDetailsModal] = useState(false);
+
+	const hasEvents = useAppSelector(state => getSeriesHasEvents(state));
+	const deleteAllowed = useAppSelector(state => isSeriesDeleteAllowed(state));
 
 	const hideDeleteConfirmation = () => {
 		setDeleteConfirmation(false);
@@ -73,11 +64,11 @@ const SeriesActionsCell = ({
 	};
 
 	const showSeriesDetailsModal = async () => {
-		await fetchSeriesDetailsMetadata(row.id);
-		await fetchSeriesDetailsAcls(row.id);
-		await fetchSeriesDetailsFeeds(row.id);
-		await fetchSeriesDetailsTheme(row.id);
-		await fetchSeriesDetailsThemeNames();
+		await dispatch(fetchSeriesDetailsMetadata(row.id));
+		await dispatch(fetchSeriesDetailsAcls(row.id));
+		await dispatch(fetchSeriesDetailsFeeds(row.id));
+		await dispatch(fetchSeriesDetailsTheme(row.id));
+		await dispatch(fetchSeriesDetailsThemeNames());
 
 		setSeriesDetailsModal(true);
 	};
@@ -137,23 +128,12 @@ const SeriesActionsCell = ({
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
 	user: getUserInformation(state),
-	deleteAllowed: isSeriesDeleteAllowed(state),
-	hasEvents: getSeriesHasEvents(state),
 });
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	deleteSeries: (id) => dispatch(deleteSeries(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchSeriesDetailsMetadata: (id) => dispatch(fetchSeriesDetailsMetadata(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchSeriesDetailsAcls: (id) => dispatch(fetchSeriesDetailsAcls(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchSeriesDetailsFeeds: (id) => dispatch(fetchSeriesDetailsFeeds(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchSeriesDetailsTheme: (id) => dispatch(fetchSeriesDetailsTheme(id)),
-	fetchSeriesDetailsThemeNames: () => dispatch(fetchNamesOfPossibleThemes()),
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	checkDeleteAllowed: (id) => dispatch(checkForEventsDeleteSeriesModal(id)),
 });

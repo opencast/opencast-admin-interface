@@ -6,10 +6,11 @@ import _ from "lodash";
 import cn from "classnames";
 import { connect } from "react-redux";
 import Notifications from "../../../shared/Notifications";
-import { updateSeriesTheme } from "../../../../thunks/seriesDetailsThunks";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
 import DropDown from "../../../shared/DropDown";
+import { useAppDispatch } from "../../../../store";
+import { updateSeriesTheme } from "../../../../slices/seriesDetailsSlice";
 
 /**
  * This component renders the tab for editing the theme of a certain series
@@ -21,16 +22,15 @@ const SeriesDetailsThemeTab = ({
 	seriesId,
 // @ts-expect-error TS(7031): Binding element 'themeNames' implicitly has an 'an... Remove this comment to see the full error message
 	themeNames,
-// @ts-expect-error TS(7031): Binding element 'updateTheme' implicitly has an 'a... Remove this comment to see the full error message
-	updateTheme,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
-		updateTheme(seriesId, values);
+		dispatch(updateSeriesTheme({id: seriesId, values: values}));
 	};
 
 // @ts-expect-error TS(7006): Parameter 'formik' implicitly has an 'any' type.
@@ -62,30 +62,27 @@ const SeriesDetailsThemeTab = ({
 											<li>
 												<p>{t("EVENTS.SERIES.NEW.THEME.DESCRIPTION.TEXT")}</p>
 												{themeNames.length > 0 && (
-													<p>
-														<div className="editable">
-															<DropDown
-																value={formik.values.theme}
-																text={formik.values.theme}
-																options={themeNames}
-																type={"theme"}
-																required={false}
+													<div className="editable">
+														<DropDown
+															value={formik.values.theme}
+															text={formik.values.theme}
+															options={themeNames}
+															type={"theme"}
+															required={false}
 // @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																handleChange={(element) =>
-																	formik.setFieldValue("theme", element.value)
-																}
-																placeholder={t("EVENTS.SERIES.NEW.THEME.LABEL")}
-																tabIndex={"8"}
-																disabled={
-																	!hasAccess(
-																		"ROLE_UI_SERIES_DETAILS_THEMES_EDIT",
-																		user
-																	)
-																}
-															/>
-														</div>
-														{/*<option value={theme}>{theme}</option>*/}
-													</p>
+															handleChange={(element) =>
+																formik.setFieldValue("theme", element.value)
+															}
+															placeholder={t("EVENTS.SERIES.NEW.THEME.LABEL")}
+															tabIndex={"8"}
+															disabled={
+																!hasAccess(
+																	"ROLE_UI_SERIES_DETAILS_THEMES_EDIT",
+																	user
+																)
+															}
+														/>
+													</div>
 												)}
 											</li>
 										</ul>
@@ -135,8 +132,7 @@ const mapStateToProps = (state) => ({
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	updateTheme: (id, values) => dispatch(updateSeriesTheme(id, values)),
+
 });
 
 export default connect(
