@@ -37,7 +37,7 @@ import { fetchSeries } from "./seriesThunks";
 import { fetchRecordings } from "./recordingThunks";
 import { fetchJobs } from "./jobThunks";
 import { fetchServers } from "./serverThunks";
-import { fetchServices } from "./serviceThunks";
+import { fetchServices, setServiceColumns } from "../slices/serviceSlice";
 import { fetchUsers } from "./userThunks";
 import { fetchGroups } from "./groupThunks";
 import { fetchThemes } from "./themeThunks";
@@ -48,7 +48,6 @@ import { setUserColumns } from "../actions/userActions";
 import { setGroupColumns } from "../actions/groupActions";
 import { fetchAcls, setAclColumns } from "../slices/aclSlice";
 import { setThemeColumns } from "../actions/themeActions";
-import { setServicesColumns } from "../actions/serviceActions";
 import { useAppDispatch } from "../store";
 
 /**
@@ -633,7 +632,7 @@ export const changeColumnSelection = (updatedColumns) => async (
 			break;
 		}
 		case "services": {
-			await dispatch(setServicesColumns(updatedColumns));
+			await dispatch(setServiceColumns(updatedColumns));
 			dispatch(loadServicesIntoTable());
 			break;
 		}

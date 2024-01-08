@@ -17,7 +17,6 @@ import {
 	loadServicesIntoTable,
 } from "../../thunks/tableThunks";
 import { fetchJobs } from "../../thunks/jobThunks";
-import { fetchServices } from "../../thunks/serviceThunks";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
@@ -26,6 +25,8 @@ import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
+import { useAppDispatch } from "../../store";
+import { fetchServices } from "../../slices/serviceSlice";
 
 /**
  * This component renders the table view of servers
@@ -43,8 +44,6 @@ const Servers = ({
 	loadingJobs,
 // @ts-expect-error TS(7031): Binding element 'loadingJobsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingJobsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingServices' implicitly has a... Remove this comment to see the full error message
-	loadingServices,
 // @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
 	loadingServicesIntoTable,
 // @ts-expect-error TS(7031): Binding element 'resetTextFilter' implicitly has a... Remove this comment to see the full error message
@@ -57,6 +56,7 @@ const Servers = ({
 	currentFilterType,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 
 	const loadServers = async () => {
@@ -83,7 +83,7 @@ const Servers = ({
 		resetOffset();
 
 		// Fetching services from server
-		loadingServices();
+		dispatch(fetchServices());
 
 		// Load services into table
 		loadingServicesIntoTable();
@@ -190,7 +190,6 @@ const mapDispatchToProps = (dispatch) => ({
 	loadingServersIntoTable: () => dispatch(loadServersIntoTable()),
 	loadingJobs: () => dispatch(fetchJobs()),
 	loadingJobsIntoTable: () => dispatch(loadJobsIntoTable()),
-	loadingServices: () => dispatch(fetchServices()),
 	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
 	resetTextFilter: () => dispatch(editTextFilter("")),
 	resetOffset: () => dispatch(setOffset(0)),
