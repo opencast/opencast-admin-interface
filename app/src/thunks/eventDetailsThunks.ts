@@ -92,7 +92,7 @@ import { fetchWorkflowDef } from "./workflowThunks";
 import {
 	fetchStatistics,
 	fetchStatisticsValueUpdate,
-} from "./statisticsThunks";
+} from "../slices/statisticsSlice";
 import {
 	getBaseWorkflow,
 	getMetadata,
@@ -1487,20 +1487,22 @@ export const fetchEventPublications = (eventId) => async (dispatch) => {
 
 // thunks for statistics
 
+// TODO: BROKEN! FIX THIS WHEN MODERNIZING REDUX TOOLKIT FOR EVENTS
 // @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 export const fetchEventStatistics = (eventId) => async (dispatch) => {
-	dispatch(
-		fetchStatistics(
-			eventId,
-			"episode",
-			getStatistics,
-			loadEventStatisticsInProgress,
-			loadEventStatisticsSuccess,
-			loadEventStatisticsFailure
-		)
-	);
+	// dispatch(
+	// 	fetchStatistics(
+	// 		eventId,
+	// 		"episode",
+	// 		getStatistics,
+	// 		loadEventStatisticsInProgress,
+	// 		loadEventStatisticsSuccess,
+	// 		loadEventStatisticsFailure
+	// 	)
+	// );
 };
 
+// TODO: BROKEN! FIX THIS WHEN MODERNIZING REDUX TOOLKIT FOR EVENTS
 export const fetchEventStatisticsValueUpdate = (
 // @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 	eventId,
@@ -1516,18 +1518,18 @@ export const fetchEventStatisticsValueUpdate = (
 	timeMode
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 ) => async (dispatch) => {
-	dispatch(
-		fetchStatisticsValueUpdate(
-			eventId,
-			"episode",
-			providerId,
-			from,
-			to,
-			dataResolution,
-			timeMode,
-			getStatistics,
-			updateEventStatisticsSuccess,
-			updateEventStatisticsFailure
-		)
-	);
+	// dispatch(
+	// 	fetchStatisticsValueUpdate(
+	// 		eventId,
+	// 		"episode",
+	// 		providerId,
+	// 		from,
+	// 		to,
+	// 		dataResolution,
+	// 		timeMode,
+	// 		getStatistics,
+	// 		updateEventStatisticsSuccess,
+	// 		updateEventStatisticsFailure
+	// 	)
+	// );
 };
