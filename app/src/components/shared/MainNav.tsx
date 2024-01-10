@@ -14,7 +14,7 @@ import {
 	loadThemesIntoTable,
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchEvents } from "../../thunks/eventThunks";
+import { fetchEvents } from "../../slices/eventSlice";
 import { fetchRecordings } from "../../thunks/recordingThunks";
 import { fetchJobs } from "../../thunks/jobThunks";
 import { fetchUsers } from "../../thunks/userThunks";
@@ -40,8 +40,6 @@ const MainNav = ({
 	isOpen,
 // @ts-expect-error TS(7031): Binding element 'toggleMenu' implicitly has an 'an... Remove this comment to see the full error message
 	toggleMenu,
-// @ts-expect-error TS(7031): Binding element 'loadingEvents' implicitly has an ... Remove this comment to see the full error message
-	loadingEvents,
 // @ts-expect-error TS(7031): Binding element 'loadingEventsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingEventsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingSeries' implicitly has an ... Remove this comment to see the full error message
@@ -101,7 +99,7 @@ const MainNav = ({
 		loadingStats();
 
 		// Fetching events from server
-		loadingEvents();
+		// dispatch(fetchEvents());
 
 		// Load events into table
 		loadingEventsIntoTable();
@@ -343,7 +341,6 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-	loadingEvents: () => dispatch(fetchEvents()),
 	loadingEventsIntoTable: () => dispatch(loadEventsIntoTable()),
 	loadingSeries: () => dispatch(fetchSeries()),
 	loadingSeriesIntoTable: () => dispatch(loadSeriesIntoTable()),

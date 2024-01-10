@@ -554,7 +554,6 @@ export const updateAssets = (values, eventId) => async (dispatch, getState) => {
 		options: [],
 	};
 
-// @ts-expect-error TS(7006): Parameter 'option' implicitly has an 'any' type.
 	uploadAssetOptions.forEach((option) => {
 		if (!!values[option.id]) {
 			formData.append(option.id + ".0", values[option.id]);
