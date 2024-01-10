@@ -22,10 +22,10 @@ It will also start a backend server with dummy data at localhost:5000.
 
 To test with real data, instead run:
 
-    npm proxy-server *opencast_digest_username* *opencast_digest_password*
+    npm run proxy-server *opencast_url* *opencast_digest_username* *opencast_digest_password*
 
 This will start a proxy server at localhost:5000. It will automatically proxy
-requests to a Opencast instance at localhost:8080.
+requests to a Opencast instance specified by opencast_url.
 You can then start the client in a different tab by running:
 
     npm run client
