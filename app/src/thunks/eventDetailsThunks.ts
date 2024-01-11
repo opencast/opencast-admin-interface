@@ -871,12 +871,12 @@ export const fetchSchedulingInfo = (eventId) => async (dispatch, getState) => {
 		const source = {
 			...schedulingResponse,
 			start: {
-				date: startDate,
+				date: schedulingResponse.start,
 				hour: startDate.getHours(),
 				minute: startDate.getMinutes(),
 			},
 			end: {
-				date: endDate,
+				date: schedulingResponse.end,
 				hour: endDate.getHours(),
 				minute: endDate.getMinutes(),
 			},
