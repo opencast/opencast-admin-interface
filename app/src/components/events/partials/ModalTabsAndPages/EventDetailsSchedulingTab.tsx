@@ -77,12 +77,15 @@ const EventDetailsSchedulingTab = ({
 // @ts-expect-error TS(7031): Binding element 'addNotification' implicitly has a... Remove this comment to see the full error message
 	addNotification,
 }) => {
+	const sourceStartDate = new Date(source.start.date);
+	const endStartDate = new Date(source.start.date);
+
 	useEffect(() => {
 		removeNotificationWizardForm();
 		checkConflicts(
 			eventId,
-			source.start.date,
-			source.end.date,
+			sourceStartDate,
+			endStartDate,
 			source.device.id
 // @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
 		).then((r) => {});
@@ -329,7 +332,7 @@ const EventDetailsSchedulingTab = ({
 																	</ThemeProvider>
 																) : (
 																	<>
-																		{source.start.date.toLocaleDateString(
+																		{sourceStartDate.toLocaleDateString(
 // @ts-expect-error TS(2532): Object is possibly 'undefined'.
 																			currentLanguage.dateLocale.code
 																		)}
