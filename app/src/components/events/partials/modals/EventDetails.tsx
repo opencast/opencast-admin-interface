@@ -31,22 +31,23 @@ import {
 	isFetchingMetadata,
 	getSchedulingProperties,
 	isFetchingScheduling,
-	hasStatistics,
+	hasStatistics as getHasStatistics,
 	isFetchingStatistics,
 } from "../../../../selectors/eventDetailsSelectors";
-import {
-	fetchMetadata,
-	updateMetadata,
-	updateExtendedMetadata,
-	fetchSchedulingInfo,
-	fetchEventStatistics,
-} from "../../../../thunks/eventDetailsThunks";
 import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import EventDetailsStatisticsTab from "../ModalTabsAndPages/EventDetailsStatisticsTab";
 import { fetchAssetUploadOptions } from "../../../../thunks/assetsThunks";
 import { hasAnyDeviceAccess } from "../../../../utils/resourceUtils";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import {
+	fetchMetadata,
+	updateMetadata,
+	updateExtendedMetadata,
+	fetchSchedulingInfo,
+	fetchEventStatistics,
+} from "../../../../slices/eventDetailsSlice";
 
 /**
  * This component manages the pages of the event details
@@ -55,20 +56,8 @@ const EventDetails : React.FC<{
   tabIndex: any,
 	eventId: any,
 	close?: any,
-	metadata?: any,
-	extendedMetadata?: any,
-	isLoadingMetadata?: any,
-	hasSchedulingProperties?: any,
-	isLoadingScheduling?: any,
-	hasStatistics?: any,
-	isLoadingStatistics?: any,
 	captureAgents?: any,
 	user?: any,
-	loadMetadata?: any,
-	updateMetadata?: any,
-	updateExtendedMetadata?: any,
-	loadScheduling?: any,
-	loadStatistics?: any,
 	fetchAssetUploadOptions?: any,
 	removeNotificationWizardForm?: any,
 	policyChanged: any,
@@ -77,32 +66,21 @@ const EventDetails : React.FC<{
 	tabIndex,
 	eventId,
 	close,
-	metadata,
-	extendedMetadata,
-	isLoadingMetadata,
-	hasSchedulingProperties,
-	isLoadingScheduling,
-	hasStatistics,
-	isLoadingStatistics,
 	captureAgents,
 	user,
-	loadMetadata,
-	updateMetadata,
-	updateExtendedMetadata,
-	loadScheduling,
-	loadStatistics,
 	fetchAssetUploadOptions,
 	removeNotificationWizardForm,
 	policyChanged,
 	setPolicyChanged,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		removeNotificationWizardForm();
-		loadMetadata(eventId).then();
-		loadScheduling(eventId).then();
-		loadStatistics(eventId).then();
+		dispatch(fetchMetadata(eventId)).then();
+		dispatch(fetchSchedulingInfo(eventId)).then();
+		dispatch(fetchEventStatistics(eventId)).then();
 		fetchAssetUploadOptions().then();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -110,6 +88,22 @@ const EventDetails : React.FC<{
 	const [page, setPage] = useState(tabIndex);
 	const [workflowTabHierarchy, setWorkflowTabHierarchy] = useState("entry");
 	const [assetsTabHierarchy, setAssetsTabHierarchy] = useState("entry");
+
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const updateMetadataWrapper = (id: any, values: any) => {
+		dispatch(updateMetadata({eventId: id, values}));
+	}
+	const updateExtendedMetadataWrapper = (id: any, values: any, catalog: any) => {
+		dispatch(updateExtendedMetadata({eventId: id, values, catalog}));
+	}
+
+	const metadata = useAppSelector(state => getMetadata(state));
+	const extendedMetadata = useAppSelector(state => getExtendedMetadata(state));
+	const isLoadingMetadata = useAppSelector(state => isFetchingMetadata(state));
+	const hasSchedulingProperties = useAppSelector(state => getSchedulingProperties(state));
+	const isLoadingScheduling = useAppSelector(state => isFetchingScheduling(state));
+	const hasStatistics = useAppSelector(state => getHasStatistics(state));
+	const isLoadingStatistics = useAppSelector(state => isFetchingStatistics(state));
 
 	const tabs = [
 		{
@@ -235,7 +229,7 @@ const EventDetails : React.FC<{
 						metadataFields={metadata}
 						resourceId={eventId}
 						header={tabs[page].bodyHeaderTranslation}
-						updateResource={updateMetadata}
+						updateResource={updateMetadataWrapper}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
 					/>
 				)}
@@ -243,7 +237,7 @@ const EventDetails : React.FC<{
 					<DetailsExtendedMetadataTab
 						resourceId={eventId}
 						metadata={extendedMetadata}
-						updateResource={updateExtendedMetadata}
+						updateResource={updateExtendedMetadataWrapper}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
 					/>
 				)}
@@ -397,13 +391,6 @@ const EventDetails : React.FC<{
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	metadata: getMetadata(state),
-	extendedMetadata: getExtendedMetadata(state),
-	isLoadingMetadata: isFetchingMetadata(state),
-	hasSchedulingProperties: getSchedulingProperties(state),
-	isLoadingScheduling: isFetchingScheduling(state),
-	hasStatistics: hasStatistics(state),
-	isLoadingStatistics: isFetchingStatistics(state),
 	captureAgents: getRecordings(state),
 	user: getUserInformation(state),
 });
@@ -411,17 +398,6 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	loadMetadata: (id) => dispatch(fetchMetadata(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	updateMetadata: (id, values) => dispatch(updateMetadata(id, values)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	loadScheduling: (id) => dispatch(fetchSchedulingInfo(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	updateExtendedMetadata: (id, values, catalog) =>
-		dispatch(updateExtendedMetadata(id, values, catalog)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	loadStatistics: (id) => dispatch(fetchEventStatistics(id)),
 	fetchAssetUploadOptions: () => dispatch(fetchAssetUploadOptions()),
 	removeNotificationWizardForm: () => dispatch(removeNotificationWizardForm()),
 });

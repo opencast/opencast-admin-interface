@@ -1,14 +1,12 @@
-import { connect } from "react-redux";
 import React from "react";
 import Notifications from "../../../shared/Notifications";
 import {
-	getWorkflow,
 	getWorkflowOperationDetails,
-	getWorkflowOperations,
 	isFetchingWorkflowOperationDetails,
 } from "../../../../selectors/eventDetailsSelectors";
 import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component manages the workflow operation details for the workflows tab of the event details modal
@@ -20,11 +18,10 @@ const EventDetailsWorkflowOperationDetails = ({
 	t,
 // @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
-// @ts-expect-error TS(7031): Binding element 'operationDetails' implicitly has ... Remove this comment to see the full error message
-	operationDetails,
-// @ts-expect-error TS(7031): Binding element 'isFetching' implicitly has an 'an... Remove this comment to see the full error message
-	isFetching,
 }) => {
+	const operationDetails = useAppSelector(state => getWorkflowOperationDetails(state));
+	const isFetching = useAppSelector(state => isFetchingWorkflowOperationDetails(state));
+
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
 	const openSubTab = (tabType) => {
 		removeNotificationWizardForm();
@@ -212,13 +209,4 @@ const EventDetailsWorkflowOperationDetails = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	workflowId: getWorkflow(state).wiid,
-	operations: getWorkflowOperations(state),
-	isFetching: isFetchingWorkflowOperationDetails(state),
-	operationDetails: getWorkflowOperationDetails(state),
-});
-
-export default connect(mapStateToProps)(EventDetailsWorkflowOperationDetails);
+export default EventDetailsWorkflowOperationDetails;

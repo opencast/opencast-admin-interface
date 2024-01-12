@@ -3,23 +3,22 @@ import Notifications from "../../../shared/Notifications";
 import { connect } from "react-redux";
 import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import {
-	fetchAssetAttachments,
-	fetchAssetCatalogs,
-	fetchAssetMedia,
-	fetchAssetPublications,
-	fetchAssets,
-	fetchWorkflows,
-} from "../../../../thunks/eventDetailsThunks";
-import {
 	getAssets,
 	getUploadAssetOptions,
 	isFetchingAssets,
 	isTransactionReadOnly,
 } from "../../../../selectors/eventDetailsSelectors";
-import { getWorkflow } from "../../../../selectors/eventDetailsSelectors";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
 import { isFetchingAssetUploadOptions } from "../../../../selectors/eventSelectors";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import {
+	fetchAssetAttachments,
+	fetchAssetCatalogs,
+	fetchAssetMedia,
+	fetchAssetPublications,
+	fetchAssets,
+} from "../../../../slices/eventDetailsSlice";
 
 /**
  * This component manages the main assets tab of event details modal
@@ -31,33 +30,21 @@ const EventDetailsAssetsTab = ({
 	t,
 // @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
-// @ts-expect-error TS(7031): Binding element 'fetchAssets' implicitly has an 'a... Remove this comment to see the full error message
-	fetchAssets,
-// @ts-expect-error TS(7031): Binding element 'fetchAttachments' implicitly has ... Remove this comment to see the full error message
-	fetchAttachments,
-// @ts-expect-error TS(7031): Binding element 'fetchCatalogs' implicitly has an ... Remove this comment to see the full error message
-	fetchCatalogs,
-// @ts-expect-error TS(7031): Binding element 'fetchMedia' implicitly has an 'an... Remove this comment to see the full error message
-	fetchMedia,
-// @ts-expect-error TS(7031): Binding element 'fetchPublications' implicitly has... Remove this comment to see the full error message
-	fetchPublications,
-// @ts-expect-error TS(7031): Binding element 'assets' implicitly has an 'any' t... Remove this comment to see the full error message
-	assets,
-// @ts-expect-error TS(7031): Binding element 'transactionsReadOnly' implicitly ... Remove this comment to see the full error message
-	transactionsReadOnly,
-// @ts-expect-error TS(7031): Binding element 'uploadAssetOptions' implicitly ha... Remove this comment to see the full error message
-	uploadAssetOptions,
-// @ts-expect-error TS(7031): Binding element 'isFetching' implicitly has an 'an... Remove this comment to see the full error message
-	isFetching,
 // @ts-expect-error TS(7031): Binding element 'isFetchingAssetUploadOptions' imp... Remove this comment to see the full error message
 	isFetchingAssetUploadOptions,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
 }) => {
+	const dispatch = useAppDispatch();
+
+	const assets = useAppSelector(state => getAssets(state));
+	const uploadAssetOptions = useAppSelector(state => getUploadAssetOptions(state));
+	const isFetching = useAppSelector(state => isFetchingAssets(state));
+	const transactionsReadOnly = useAppSelector(state => isTransactionReadOnly(state));
+
 	useEffect(() => {
 		removeNotificationWizardForm();
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
-		fetchAssets(eventId).then((r) => {});
+		dispatch(fetchAssets(eventId)).then();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -71,20 +58,15 @@ const EventDetailsAssetsTab = ({
 	) => {
 		removeNotificationWizardForm();
 		if (subTabName === "asset-attachments") {
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
-			fetchAttachments(eventId).then((r) => {});
+			dispatch(fetchAssetAttachments(eventId)).then();
 		} else if (subTabName === "asset-attachments") {
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
-			fetchAttachments(eventId).then((r) => {});
+			dispatch(fetchAssetAttachments(eventId)).then();
 		} else if (subTabName === "asset-catalogs") {
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
-			fetchCatalogs(eventId).then((r) => {});
+			dispatch(fetchAssetCatalogs(eventId)).then();
 		} else if (subTabName === "asset-media") {
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
-			fetchMedia(eventId).then((r) => {});
+			dispatch(fetchAssetMedia(eventId)).then();
 		} else if (subTabName === "asset-publications") {
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
-			fetchPublications(eventId).then((r) => {});
+			dispatch(fetchAssetPublications(eventId)).then();
 		}
 		setHierarchy(subTabName);
 	};
@@ -118,7 +100,6 @@ const EventDetailsAssetsTab = ({
 												{!isFetchingAssetUploadOptions &&
 													!!uploadAssetOptions &&
 													uploadAssetOptions.filter(
-// @ts-expect-error TS(7006): Parameter 'asset' implicitly has an 'any' type.
 														(asset) => asset.type !== "track"
 													).length > 0 &&
 													!transactionsReadOnly &&
@@ -260,11 +241,6 @@ const EventDetailsAssetsTab = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	assets: getAssets(state),
-	isFetching: isFetchingAssets(state),
-	transactionsReadOnly: isTransactionReadOnly(state),
-	uploadAssetOptions: getUploadAssetOptions(state),
-	assetUploadWorkflowDefId: getWorkflow(state).id,
 	user: getUserInformation(state),
 	isFetchingAssetUploadOptions: isFetchingAssetUploadOptions(state),
 });
@@ -272,18 +248,7 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	fetchAssets: (eventId) => dispatch(fetchAssets(eventId)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	fetchAttachments: (eventId) => dispatch(fetchAssetAttachments(eventId)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	fetchCatalogs: (eventId) => dispatch(fetchAssetCatalogs(eventId)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	fetchMedia: (eventId) => dispatch(fetchAssetMedia(eventId)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	fetchPublications: (eventId) => dispatch(fetchAssetPublications(eventId)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	fetchWorkflows: (eventId) => dispatch(fetchWorkflows(eventId)),
+
 });
 
 export default connect(

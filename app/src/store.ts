@@ -19,7 +19,7 @@ import themes from "./reducers/themeReducers";
 import health from "./reducers/healthReducers";
 import { notifications } from "./reducers/notificationReducers";
 import workflows from "./reducers/workflowReducers";
-import eventDetails from "./reducers/eventDeatilsReducers";
+import eventDetails from "./slices/eventDetailsSlice";
 import seriesDetails from "./reducers/seriesDetailsReducers";
 import recordingDetails from "./reducers/recordingDetailsReducer";
 import userDetails from "./reducers/userDetailsReducer";

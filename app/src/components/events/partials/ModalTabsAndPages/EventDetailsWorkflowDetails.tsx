@@ -5,15 +5,16 @@ import {
 	getWorkflow,
 	isFetchingWorkflowDetails,
 } from "../../../../selectors/eventDetailsSelectors";
-import {
-	fetchWorkflowErrors,
-	fetchWorkflowOperations,
-} from "../../../../thunks/eventDetailsThunks";
 import { formatDuration } from "../../../../utils/eventDetailsUtils";
 import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import { hasAccess } from "../../../../utils/utils";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import {
+	fetchWorkflowErrors,
+	fetchWorkflowOperations,
+} from "../../../../slices/eventDetailsSlice";
 
 /**
  * This component manages the workflow details for the workflows tab of the event details modal
@@ -25,27 +26,22 @@ const EventDetailsWorkflowDetails = ({
 	t,
 // @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
-// @ts-expect-error TS(7031): Binding element 'workflowData' implicitly has an '... Remove this comment to see the full error message
-	workflowData,
-// @ts-expect-error TS(7031): Binding element 'isFetching' implicitly has an 'an... Remove this comment to see the full error message
-	isFetching,
-// @ts-expect-error TS(7031): Binding element 'fetchOperations' implicitly has a... Remove this comment to see the full error message
-	fetchOperations,
-// @ts-expect-error TS(7031): Binding element 'fetchErrors' implicitly has an 'a... Remove this comment to see the full error message
-	fetchErrors,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
 }) => {
+	const dispatch = useAppDispatch();
+
+	const workflowData = useAppSelector(state => getWorkflow(state));
+	const isFetching = useAppSelector(state => isFetchingWorkflowDetails(state));
+
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
 	const openSubTab = (tabType) => {
 		removeNotificationWizardForm();
 		setHierarchy(tabType);
 		if (tabType === "workflow-operations") {
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
-			fetchOperations(eventId, workflowData.wiid).then((r) => {});
+			dispatch(fetchWorkflowOperations({eventId, workflowId: workflowData.wiid})).then();
 		} else if (tabType === "errors-and-warnings") {
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
-			fetchErrors(eventId, workflowData.wiid).then((r) => {});
+			dispatch(fetchWorkflowErrors({eventId, workflowId: workflowData.wiid})).then();
 		}
 	};
 
@@ -362,20 +358,13 @@ const EventDetailsWorkflowDetails = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	workflowData: getWorkflow(state),
-	isFetching: isFetchingWorkflowDetails(state),
 	user: getUserInformation(state),
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	fetchOperations: (eventId, workflowId) =>
-		dispatch(fetchWorkflowOperations(eventId, workflowId)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	fetchErrors: (eventId, workflowId) =>
-		dispatch(fetchWorkflowErrors(eventId, workflowId)),
+
 });
 
 export default connect(
