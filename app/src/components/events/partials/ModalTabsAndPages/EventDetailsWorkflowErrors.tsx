@@ -23,7 +23,7 @@ const EventDetailsWorkflowErrors = ({
 }) => {
 	const dispatch = useAppDispatch();
 
-	const workflowId = useAppSelector(state => getWorkflow(state));
+	const workflow = useAppSelector(state => getWorkflow(state));
 	const errors = useAppSelector(state => getWorkflowErrors(state));
 	const isFetching = useAppSelector(state => isFetchingWorkflowErrors(state));
 
@@ -42,11 +42,11 @@ const EventDetailsWorkflowErrors = ({
 	};
 
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
-	const openSubTab = (tabType, errorId = null) => {
+	const openSubTab = (tabType, errorId: number | null = null) => {
 		removeNotificationWizardForm();
 		setHierarchy(tabType);
 		if (tabType === "workflow-error-details") {
-			dispatch(fetchWorkflowErrorDetails({eventId, workflowId, errorId})).then();
+			dispatch(fetchWorkflowErrorDetails({eventId, workflowId: workflow.wiid, errorId})).then();
 		}
 	};
 
@@ -106,7 +106,6 @@ const EventDetailsWorkflowErrors = ({
 										<tbody>
 											{
 												/* error details */
-// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
 												errors.entries.map((item, key) => (
 													<tr key={key}>
 														<td>

@@ -145,7 +145,6 @@ const EventDetailsWorkflowErrorDetails = ({
 
 											{/* list of technical error details */}
 											<td>
-{/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}
 												{errorDetails.details.map((item, key) => (
 													<div key={key}>
 														<h3>{item.name}</h3>

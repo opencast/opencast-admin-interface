@@ -182,7 +182,6 @@ const EventDetailsCommentsTab = ({
 
 											{
 												/* all replies to this comment listed below each other */
-// @ts-expect-error TS(7006): Parameter 'reply' implicitly has an 'any' type.
 												comment.replies.map((reply, replyKey) => (
 													<div className="comment is-reply" key={replyKey}>
 														<hr />

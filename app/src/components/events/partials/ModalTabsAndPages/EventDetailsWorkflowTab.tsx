@@ -353,7 +353,7 @@ const EventDetailsWorkflowTab = ({
 																							(workflowDef) =>
 																								workflowDef.id ===
 																								formik.values.workflowDefinition
-																						).title
+																						)?.title ?? ""
 																					}
 																					options={
 																						!!workflowDefinitions &&

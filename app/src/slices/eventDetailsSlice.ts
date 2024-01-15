@@ -26,13 +26,53 @@ import { calculateDuration } from "../utils/dateUtils";
 import { fetchRecordings } from "../thunks/recordingThunks";
 import { getRecordings } from "../selectors/recordingSelectors";
 import { RootState } from '../store';
+
+type MetadataField = {
+	id: string,
+	label: string,	// translation key
+	readOnly: boolean,
+	required: boolean,
+	type: string,
+	value: string,
+}
+
+interface Assets {
+	id: string,
+	mimetype: string,
+	tags: string[],
+	url: string,
+}
+
 type AssetDetails = {
 	id: string,
 	type: string,
 	mimetype: string,
-	size: any,	// TODO: proper typing
-	tags: any[],	// TODO: proper typing
-	url: string
+	size: number,
+	tags: string[],
+	url: string,
+	checksum: string | undefined,
+	reference: string,
+}
+
+type CommentAuthor = {
+	email: string | undefined,
+	name: string,
+	username: string,
+}
+
+// TODO: Further define this after modernizing Workflows
+type Workflow = {
+	scheduling: boolean,
+	entries: {
+		id: number,
+		status: string,	//translation key
+		submitted: string,	//date
+		submitter: string,
+		submitterEmail: string,
+		submitterName: string,
+		title: string
+	}[],
+	workflow: any // TODO: proper typing
 }
 
 type EventDetailsState = {
@@ -91,91 +131,222 @@ type EventDetailsState = {
 	statusStatistics: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorStatistics: SerializedError | null,
 	eventId: string,
-	metadata: any,	// TODO: proper typing
-	extendedMetadata: any[],	// TODO: proper typing
+	metadata: {
+		title: string,	// translation key
+		flavor: string,
+		fields: MetadataField[] | undefined
+	},
+	extendedMetadata: {
+		title: string,	// not (necessarily) translation key
+		flavor: string,
+		fields: MetadataField[] | undefined
+	}[],
 	assets: {
-		attachments: any,	// TODO: proper typing
-		catalogs: any,	// TODO: proper typing
-		media: any,	// TODO: proper typing
-		publications: any,	// TODO: proper typing
+		attachments: number,
+		catalogs: number,
+		media: number,
+		publications: number,
 	},
 	transactionsReadOnly: boolean,
-	uploadAssetOptions: any[],	// TODO: proper typing
-	assetAttachments: any[],	// TODO: proper typing
-	assetAttachmentDetails: AssetDetails & {
-		checksum: any,	// TODO: proper typing
-		reference: string,
-	},
-	assetCatalogs: any[],	// TODO: proper typing
-	assetCatalogDetails: AssetDetails & {
-		checksum: any,	// TODO: proper typing
-		reference: string,
-	},
-	assetMedia: any[],	// TODO: proper typing
+	uploadAssetOptions: {
+		id: string,
+		title: string,	// translation key
+		type: string,		// "track", "attachment" etc.
+		flavorType: string,
+		flavorSubType: string,
+		accept: string,
+		displayOrder: number,
+	}[] | undefined,
+	assetAttachments: Array< Assets & {
+		type: string,
+	}>,
+	assetAttachmentDetails: AssetDetails,
+	assetCatalogs: Array< Assets & {
+		type: string,
+	}>,
+	assetCatalogDetails: AssetDetails,
+	assetMedia: Array< Assets & {
+		type: string,
+		mediaFileName: string,
+	}>,
 	assetMediaDetails: AssetDetails & {
-		duration: any,	// TODO: proper typing
+		duration: number,
+		has_audio: boolean,
+		has_subtitle: boolean,
+		has_video: boolean,
 		streams: {
-			audio: any[],	// TODO: proper typing
-			video: any[],	// TODO: proper typing
+			audio: {
+				bitdepth: string,
+				bitrate: number,
+				channels: number,
+				framecount: number,
+				id: string,
+				peakleveldb: string,
+				rmsleveldb: string,
+				rmspeakdb: "",
+				samplingrate: number,
+				type: string,
+			}[],
+			video: {
+				bitrate: number,
+				framecount: number,
+				framerate: number,
+				id: string,
+				resolution: string,
+				scanorder: string,
+				scantype: string,
+				type: string,
+			}[],
 		},
-		video: string,
+		video: {
+			previews: {
+				uri: string,
+			}[]
+			url: string,
+		} | undefined,
 	},
-	assetPublications: any[],	// TODO: proper typing
+	assetPublications: Array< Assets & {
+		channel: string,
+	}>,
 	assetPublicationDetails: AssetDetails & {
 		channel: string,
-		reference: string,
 	},
-	policies: any[],	// TODO: proper typing
-	comments: any[],	// TODO: proper typing
-	commentReasons: any[],	// TODO: proper typing
+	policies: {
+		actions: string[],
+		read: boolean,
+		role: string,
+		write: boolean,
+	}[],
+	comments: {
+		author: CommentAuthor,
+		creationDate: string,
+		id: number,
+		modificationDate: string,
+		reason: string,	// translation key
+		replies: {
+			author: CommentAuthor,
+			creationDate: string,
+			id: number,
+			modificationDate: string,
+			text: string,
+		}[],
+		resolvedStatus: boolean,
+		text: string,
+	}[],
+	commentReasons: { [key: string]: string },
 	scheduling: {
 		hasProperties: boolean,
 	},
 	schedulingSource: {
 		start: {
 			date: string,
-			hour: any,		// TODO: proper typing
-			minute: any,		// TODO: proper typing
+			hour: number | undefined,
+			minute: number | undefined,
 		},
 		duration: {
-			hour: any,	// TODO: proper typing
-			minute: any,	// TODO: proper typing
+			hour: number | undefined,
+			minute: number | undefined,
 		},
 		end: {
 			date: string,
-			hour: any,	// TODO: proper typing
-			minute: any,	// TODO: proper typing
+			hour: number | undefined,
+			minute: number | undefined,
 		},
 		device: {
 			id: string,
+			inputs: string[],
+			inputMethods: string[],
 			name: string,
-			inputs: any[],	// TODO: proper typing
-			inputMethods: any[],	// TODO: proper typing
+			// Fields we add to "device" from recordings but don't actually care about?
+			// removable: boolean,
+			// roomId: string,
+			// status: string,
+			// type: string,
+			// updated: string,
+			// url: string,
 		},
-		agentId: any,	// TODO: proper typing
-		agentConfiguration: any,	// TODO: proper typing
+		agentId: string | undefined,
+		agentConfiguration: { [key: string]: string },
 	},
 	hasSchedulingConflicts: boolean,
-	schedulingConflicts: any[],	// TODO: proper typing
-	workflows: {
-		scheduling: boolean,
-		entries: any[],	// TODO: proper typing
-		workflow: any | {
-			workflowId: string,
-			description: string,
-		},
-	},
+	schedulingConflicts: {
+		title: string,
+		start: string,
+		end: string,
+	}[],
+	workflows: Workflow,
 	workflowConfiguration: {
 		workflowId: string,
-		description: string,
+		description?: string,
 	},
-	workflowDefinitions: any[],	// TODO: proper typing
+	// TODO: Import this from the workflowSlice
+	workflowDefinitions: {
+		configuration_panel: string,
+		configuration_panel_json: string,
+		description: string,
+		displayOrder: 100,
+		id: string,
+		tags: string[],
+		title: string
+	}[],
 	baseWorkflow: any,	// TODO: proper typing
-	workflowOperations: any,	// TODO: proper typing
-	workflowOperationDetails: any,	// TODO: proper typing
-	workflowErrors: any,	// TODO: proper typing
-	workflowErrorDetails: any,	// TODO: proper typing
-	publications: any[],	// TODO: proper typing
+	workflowOperations: {
+		entries: {
+			configuration: { [key: string]: string },
+			description: string,
+			id: number,
+			status: string,	// translation key
+			title: string,
+		}[]
+	},
+	workflowOperationDetails: {
+		completed: string,	// date
+		description: string,
+		exception_handler_workflow: string,
+		execution_host: string,
+		fail_on_error: boolean,
+		failed_attempts: number,
+		job: number,
+		max_attempts: number,
+		name: string,
+		retry_strategy: string,
+		started: string,	// date
+		state: string,	// translation key
+		time_in_queue: number,
+	},
+	workflowErrors: {
+		entries: {
+			description: string,
+			id: number,
+			severity: string,
+			timestamp: string,	// date
+			title: string,
+		}[]
+	},
+	workflowErrorDetails: {
+		description: string,
+		details: {
+			name: string,
+			value: string,
+		}[],
+		id: number,
+		job_id: number,
+		processing_host: string,
+		service_type: string,
+		severity: string,
+		technical_details: string,
+		timestamp: string,	// date
+		title: string,
+	},
+	publications: {
+		enabled: boolean,
+		icon?: string,
+		id: string,
+		name: string,	// translation key
+		order: number,
+		url: string,
+		description?: string,
+	}[],
 	statistics: any[],	// TODO: proper typing
 	hasStatisticsError: boolean,
 }
@@ -237,13 +408,17 @@ const initialState: EventDetailsState = {
 	statusStatistics: 'uninitialized',
 	errorStatistics: null,
 	eventId: "",
-	metadata: {},
+	metadata: {
+		title: "",
+		flavor: "",
+		fields: undefined
+	},
 	extendedMetadata: [],
 	assets: {
-		attachments: null,
-		catalogs: null,
-		media: null,
-		publications: null,
+		attachments: 0,
+		catalogs: 0,
+		media: 0,
+		publications: 0,
 	},
 	transactionsReadOnly: false,
 	uploadAssetOptions: [],
@@ -252,8 +427,8 @@ const initialState: EventDetailsState = {
 		id: "",
 		type: "",
 		mimetype: "",
-		size: null,
-		checksum: null,
+		size: 0,
+		checksum: undefined,
 		reference: "",
 		tags: [],
 		url: "",
@@ -263,8 +438,8 @@ const initialState: EventDetailsState = {
 		id: "",
 		type: "",
 		mimetype: "",
-		size: null,
-		checksum: null,
+		size: 0,
+		checksum: undefined,
 		reference: "",
 		tags: [],
 		url: "",
@@ -275,46 +450,52 @@ const initialState: EventDetailsState = {
 		type: "",
 		mimetype: "",
 		tags: [],
-		duration: null,
-		size: null,
+		duration: 0,
+		size: 0,
+		checksum: undefined,
+		reference: "",
+		has_audio: false,
+		has_subtitle: false,
+		has_video: false,
 		url: "",
 		streams: {
 			audio: [],
 			video: [],
 		},
-		video: "",
+		video: undefined,
 	},
 	assetPublications: [],
 	assetPublicationDetails: {
 		id: "",
 		type: "",
 		mimetype: "",
-		size: null,
+		size: 0,
 		channel: "",
+		checksum: undefined,
 		reference: "",
 		tags: [],
 		url: "",
 	},
 	policies: [],
 	comments: [],
-	commentReasons: [],
+	commentReasons: {},
 	scheduling: {
 		hasProperties: false,
 	},
 	schedulingSource: {
 		start: {
 			date: "",
-			hour: null,
-			minute: null,
+			hour: undefined,
+			minute: undefined,
 		},
 		duration: {
-			hour: null,
-			minute: null,
+			hour: undefined,
+			minute: undefined,
 		},
 		end: {
 			date: "",
-			hour: null,
-			minute: null,
+			hour: undefined,
+			minute: undefined,
 		},
 		device: {
 			id: "",
@@ -341,10 +522,39 @@ const initialState: EventDetailsState = {
 	},
 	workflowDefinitions: [],
 	baseWorkflow: {},
-	workflowOperations: {},
-	workflowOperationDetails: {},
-	workflowErrors: {},
-	workflowErrorDetails: {},
+	workflowOperations: {
+		entries: [],
+	},
+	workflowOperationDetails: {
+		completed: "",
+		description: "",
+		exception_handler_workflow: "",
+		execution_host: "",
+		fail_on_error: false,
+		failed_attempts: 0,
+		job: 0,
+		max_attempts: 0,
+		name: "",
+		retry_strategy: "",
+		started: "",
+		state: "",
+		time_in_queue: 0,
+	},
+	workflowErrors: {
+		entries: []
+	},
+	workflowErrorDetails: {
+		description: "",
+		details: [],
+		id: 0,
+		job_id: 0,
+		processing_host: "",
+		service_type: "",
+		severity: "",
+		technical_details: "",
+		timestamp: "",
+		title: "",
+	},
 	publications: [],
 	statistics: [],
 	hasStatisticsError: false,
@@ -356,7 +566,11 @@ export const fetchMetadata = createAsyncThunk('eventDetails/fetchMetadata', asyn
 	const metadataResponse = await metadataRequest.data;
 
 	const mainCatalog = "dublincore/episode";
-	let metadata = {};
+	let metadata = {
+		title: "",
+		flavor: "",
+		fields: undefined
+	};
 	let extendedMetadata = [];
 
 	for (const catalog of metadataResponse) {
@@ -441,8 +655,7 @@ export const fetchAssets = createAsyncThunk('eventDetails/fetchAssets', async (e
 	return { assets, transactionsReadOnly, uploadAssetOptions }
 });
 
-// @ts-expect-error TS(7006): Parameter 'optionsData' implicitly has an 'any' ty... Remove this comment to see the full error message
-const formatUploadAssetOptions = (optionsData) => {
+const formatUploadAssetOptions = (optionsData: object) => {
 	const optionPrefixSource = "EVENTS.EVENTS.NEW.SOURCE.UPLOAD";
 	const optionPrefixAsset = "EVENTS.EVENTS.NEW.UPLOAD_ASSET.OPTION";
 	const workflowPrefix = "EVENTS.EVENTS.NEW.UPLOAD_ASSET.WORKFLOWDEFID";
@@ -566,7 +779,6 @@ export const fetchAssetMediaDetails = createAsyncThunk('eventDetails/fetchAssetM
 	}
 
 	mediaDetails.video = {
-		...mediaDetails,
 		video: {
 			previews: [{ uri: mediaDetails.url }],
 		},
@@ -992,21 +1204,26 @@ export const fetchWorkflows = createAsyncThunk('eventDetails/fetchWorkflows', as
 
 	const data = await axios.get(`/admin-ng/event/${eventId}/workflows.json`);
 	const workflowsData = await data.data;
-	let workflows;
+	let workflows: Workflow;
 
 	if (!!workflowsData.results) {
 		workflows = {
 			entries: workflowsData.results,
 			scheduling: false,
 			workflow: {
-				id: "",
-				description: "",
+				workflowId: "",
+				description: undefined,
+				configuration: undefined
 			},
 		};
 
 	} else {
 		workflows = {
-			workflow: workflowsData,
+			workflow: {
+				workflowId: workflowsData.workflowId,
+				description: undefined,
+				configuration: undefined
+			},
 			scheduling: true,
 			entries: [],
 		};
@@ -1365,8 +1582,8 @@ export const updateWorkflow = createAsyncThunk('eventDetails/updateWorkflow', as
 	await dispatch(
 		setEventWorkflow({
 			workflowId: workflowId,
-			description: workflowDef.description,
-			configuration: workflowDef.configuration,
+			description: workflowDef?.description,
+			configuration: workflowDef?.configuration_panel_json // previously `workflowDef.configuration`. Might cause error
 		})
 	);
 });
@@ -1454,7 +1671,11 @@ const eventDetailsSlice = createSlice({
 			})
 			.addCase(fetchMetadata.rejected, (state, action) => {
 				state.statusMetadata = 'failed';
-				state.metadata = {};
+				state.metadata = {
+					title: "",
+					flavor: "",
+					fields: undefined
+				};
 				state.extendedMetadata = [];
 				state.errorMetadata = action.error;
 				console.error(action.error);
@@ -1477,10 +1698,10 @@ const eventDetailsSlice = createSlice({
 			.addCase(fetchAssets.rejected, (state, action) => {
 				state.statusAssets = 'failed';
 				const emptyAssets = {
-					attachments: null,
-					catalogs: null,
-					media: null,
-					publications: null,
+					attachments: 0,
+					catalogs: 0,
+					media: 0,
+					publications: 0,
 				};
 				state.assets = emptyAssets;
 				state.transactionsReadOnly = false;
@@ -1520,8 +1741,8 @@ const eventDetailsSlice = createSlice({
 					id: "",
 					type: "",
 					mimetype: "",
-					size: null,
-					checksum: null,
+					size: 0,
+					checksum: undefined,
 					reference: "",
 					tags: [],
 					url: "",
@@ -1562,8 +1783,8 @@ const eventDetailsSlice = createSlice({
 					id: "",
 					type: "",
 					mimetype: "",
-					size: null,
-					checksum: null,
+					size: 0,
+					checksum: undefined,
 					reference: "",
 					tags: [],
 					url: "",
@@ -1605,14 +1826,19 @@ const eventDetailsSlice = createSlice({
 					type: "",
 					mimetype: "",
 					tags: [],
-					duration: null,
-					size: null,
+					duration: 0,
+					size: 0,
+					checksum: undefined,
+					reference: "",
+					has_audio: false,
+					has_subtitle: false,
+					has_video: false,
 					url: "",
 					streams: {
 						audio: [],
 						video: [],
 					},
-					video: "",
+					video: undefined,
 				};
 				state.assetMediaDetails = emptyAssetMediaDetails;
 				state.errorAssetMediaDetails = action.error;
@@ -1650,7 +1876,8 @@ const eventDetailsSlice = createSlice({
 					id: "",
 					type: "",
 					mimetype: "",
-					size: null,
+					size: 0,
+					checksum: undefined,
 					channel: "",
 					reference: "",
 					tags: [],
@@ -1748,17 +1975,17 @@ const eventDetailsSlice = createSlice({
 				const emptySchedulingSource = {
 					start: {
 						date: "",
-						hour: null,
-						minute: null,
+						hour: undefined,
+						minute: undefined,
 					},
 					duration: {
-						hour: null,
-						minute: null,
+						hour: undefined,
+						minute: undefined,
 					},
 					end: {
 						date: "",
-						hour: null,
-						minute: null,
+						hour: undefined,
+						minute: undefined,
 					},
 					device: {
 						id: "",
@@ -1917,24 +2144,24 @@ const eventDetailsSlice = createSlice({
 				EventDetailsState["workflowOperationDetails"]
 			>) => {
 				state.statusWorkflowOperationDetails = 'succeeded';
-				state.workflowOperations = action.payload;
+				state.workflowOperationDetails = action.payload;
 			})
 			.addCase(fetchWorkflowOperationDetails.rejected, (state, action) => {
 				state.statusWorkflowOperationDetails = 'failed';
 				const emptyOperationDetails = {
-					name: "",
-					description: "",
-					state: "",
-					execution_host: "",
-					job: "",
-					time_in_queue: "",
-					started: "",
 					completed: "",
-					retry_strategy: "",
-					failed_attempts: "",
-					max_attempts: "",
+					description: "",
 					exception_handler_workflow: "",
-					fail_on_error: "",
+					execution_host: "",
+					fail_on_error: false,
+					failed_attempts: 0,
+					job: 0,
+					max_attempts: 0,
+					name: "",
+					retry_strategy: "",
+					started: "",
+					state: "",
+					time_in_queue: 0,
 				};
 				state.workflowOperationDetails = emptyOperationDetails;
 				state.errorWorkflowOperationDetails= action.error;
@@ -1970,7 +2197,18 @@ const eventDetailsSlice = createSlice({
 			})
 			.addCase(fetchWorkflowErrorDetails.rejected, (state, action) => {
 				state.statusWorkflowErrorDetails = 'failed';
-				state.workflowErrorDetails = {};
+				state.workflowErrorDetails = {
+					description: "",
+					details: [],
+					id: 0,
+					job_id: 0,
+					processing_host: "",
+					service_type: "",
+					severity: "",
+					technical_details: "",
+					timestamp: "",
+					title: "",
+				};
 				state.errorWorkflowOperationDetails = action.error;
 				// todo: probably needs a Notification to the user
 				console.error(action.error);
