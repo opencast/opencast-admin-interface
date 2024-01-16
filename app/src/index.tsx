@@ -5,8 +5,6 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 // redux imports
-import { persistStore } from "redux-persist";
-import { PersistGate } from "redux-persist/lib/integration/react";
 import { Provider } from "react-redux";
 import store from "./store";
 
@@ -17,15 +15,10 @@ import "./i18n/i18n";
 import "font-awesome/css/font-awesome.min.css";
 import "react-datepicker/dist/react-datepicker.css";
 
-// todo: comment persistent stuff in, only out commented because for debugging purposes
-const persistor = persistStore(store);
-
 ReactDOM.render(
 	<React.StrictMode>
 		<Provider store={store}>
-			<PersistGate loading={<div>loading...</div>} persistor={persistor}>
-				<App />
-			</PersistGate>
+			<App />
 		</Provider>
 	</React.StrictMode>,
 	document.getElementById("root")
