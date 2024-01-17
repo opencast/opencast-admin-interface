@@ -1,12 +1,12 @@
 import { connect } from "react-redux";
-import React from "react";
+import React, { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
 import {
 	getWorkflow,
 	getWorkflowOperations,
 	isFetchingWorkflowOperations,
 } from "../../../../selectors/eventDetailsSelectors";
-import { fetchWorkflowOperationDetails } from "../../../../thunks/eventDetailsThunks";
+import { fetchWorkflowOperationDetails, fetchWorkflowOperations } from "../../../../thunks/eventDetailsThunks";
 import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 
@@ -26,9 +26,26 @@ const EventDetailsWorkflowOperations = ({
 	operations,
 // @ts-expect-error TS(7031): Binding element 'isFetching' implicitly has an 'an... Remove this comment to see the full error message
 	isFetching,
+  // @ts-expect-error TS(7031): Binding element 'fetchOperationDetails' implicitly... Remove this comment to see the full error message
+	fetchOperations,
 // @ts-expect-error TS(7031): Binding element 'fetchOperationDetails' implicitly... Remove this comment to see the full error message
 	fetchOperationDetails,
 }) => {
+
+  const loadWorkflowOperations = async () => {
+		// Fetching workflow operations from server
+		await fetchOperations(eventId, workflowId);
+	};
+
+  useEffect(() => {
+		// Fetch workflow operations every 5 seconds
+		let fetchWorkflowOperationsInterval = setInterval(loadWorkflowOperations, 5000);
+
+		// Unmount interval
+		return () => clearInterval(fetchWorkflowOperationsInterval);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
 	const openSubTab = (tabType, operationId = null) => {
 		removeNotificationWizardForm();
@@ -146,6 +163,8 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
+  fetchOperations: (eventId: string, workflowId: string) =>
+    dispatch(fetchWorkflowOperations(eventId, workflowId)),
 // @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 	fetchOperationDetails: (eventId, workflowId, operationId) =>
 		dispatch(fetchWorkflowOperationDetails(eventId, workflowId, operationId)),

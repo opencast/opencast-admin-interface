@@ -5,30 +5,62 @@ The Opencast Admin UI is a graphical interface included by Opencast to give
 admins an easy way of managing their Opencast instance.
 
 
+Quickstart
+----------
+Commands to hack into your console to get to testing pull requests ASAP:
+
+```console
+git clone git@github.com:opencast/opencast-admin-interface.git opencast-admin-interface-demo
+cd opencast-admin-interface-demo
+npm ci
+cd app
+npm ci
+cd ..
+npm run proxy-server http://stable.opencast.org opencast_system_account CHANGE_ME
+```
+
+Open a second tab:
+
+```
+npm run client
+```
+
+Open a third tab to checkout the pull request you want to test. You need to know the pull request number!:
+
+```
+git fetch origin pull/{PULL REQUEST NUMBER HERE}/head:some-branch-name-of-your-choosing
+git checkout some-branch-name-of-your-choosing
+```
 
 Development
 -------
-To test locally, run:
 
-    npm start
+Before starting, get the project dependencies by running  `npm ci` beforehand both in the root and `/app` directory.
 
-(You may have to run `npm ci` beforehand both in the root and `/app` directory)
+To test with real data run:
 
-This will start a client server in the development mode.
-Open [http://localhost:3000](localhost:3000) to view it in the browser.
-It will also start a backend server with dummy data at localhost:5000.
-
---------
-
-To test with real data, instead run:
-
-    npm proxy-server *opencast_digest_username* *opencast_digest_password*
+    npm run proxy-server http://stable.opencast.org *opencast_digest_username* *opencast_digest_password*
 
 This will start a proxy server at localhost:5000. It will automatically proxy
-requests to a Opencast instance at localhost:8080.
+requests to a Opencast instance at http://stable.opencast.org. You can change
+the url to at a different Opencast if you wish (e.g. http://localhost.8080 for
+a local Opencast installation). Note that `http` is required.
+
 You can then start the client in a different tab by running:
 
     npm run client
+
+This will start a client server in the development mode.
+Open [http://localhost:3000](localhost:3000) to view it in the browser.
+
+--------
+
+Alternatively you can spin up a mock instance of the admin ui with:
+
+    npm start
+
+This uses mock data instead of a real Opencast. This means certain features will
+not work when using this mode.
 
 
 

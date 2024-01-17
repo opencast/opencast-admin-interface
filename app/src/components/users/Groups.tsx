@@ -18,7 +18,6 @@ import {
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
 import { fetchGroups } from "../../thunks/groupThunks";
-import { fetchAcls } from "../../thunks/aclThunks";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
@@ -27,6 +26,8 @@ import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
+import { fetchAcls } from "../../slices/aclSlice";
+import { useAppDispatch } from "../../store";
 
 /**
  * This component renders the table view of groups
@@ -44,8 +45,6 @@ const Groups = ({
 	loadingUsers,
 // @ts-expect-error TS(7031): Binding element 'loadingUsersIntoTable' implicitly... Remove this comment to see the full error message
 	loadingUsersIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingAcls' implicitly has an 'a... Remove this comment to see the full error message
-	loadingAcls,
 // @ts-expect-error TS(7031): Binding element 'loadingAclsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingAclsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'resetTextFilter' implicitly has a... Remove this comment to see the full error message
@@ -58,6 +57,7 @@ const Groups = ({
 	currentFilterType,
 }) => {
 	const { t } = useTranslation();
+        const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewGroupModal, setNewGroupModal] = useState(false);
 
@@ -85,7 +85,7 @@ const Groups = ({
 		resetOffset();
 
 		// Fetching acls from server
-		loadingAcls();
+		dispatch(fetchAcls());
 
 		// Load acls into table
 		loadingAclsIntoTable();
@@ -217,7 +217,6 @@ const mapDispatchToProps = (dispatch) => ({
 	loadingGroupsIntoTable: () => dispatch(loadGroupsIntoTable()),
 	loadingUsers: () => dispatch(fetchUsers()),
 	loadingUsersIntoTable: () => dispatch(loadUsersIntoTable()),
-	loadingAcls: () => dispatch(fetchAcls()),
 	loadingAclsIntoTable: () => dispatch(loadAclsIntoTable()),
 	resetTextFilter: () => dispatch(editTextFilter("")),
 	resetOffset: () => dispatch(setOffset(0)),
