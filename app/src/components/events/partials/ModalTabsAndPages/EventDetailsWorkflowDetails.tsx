@@ -193,7 +193,8 @@ const EventDetailsWorkflowDetails = ({
 									<div className="obj-container">
 										<table className="main-tbl">
 											<tbody>
-												{Object.entries(workflowData.configuration).map(
+												{workflowData && workflowData.configuration &&
+                          Object.entries(workflowData.configuration).map(
 													([confKey, confValue], key) => (
 														<tr key={key}>
 															<td>{confKey}</td>
