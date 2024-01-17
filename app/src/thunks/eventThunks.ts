@@ -879,7 +879,7 @@ export const checkConflicts = (values) => async (dispatch) => {
 				  );
 
 		// If conflicts with already scheduled events detected --> need to change times/date
-		if (conflicts) {
+		if (conflicts && conflicts.length > 0) {
 			dispatch(
 				addNotification(
 					"error",
