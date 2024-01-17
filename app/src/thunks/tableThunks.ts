@@ -40,14 +40,13 @@ import { fetchServers } from "./serverThunks";
 import { fetchServices } from "./serviceThunks";
 import { fetchUsers } from "./userThunks";
 import { fetchGroups } from "./groupThunks";
-import { fetchAcls } from "./aclThunks";
 import { fetchThemes } from "./themeThunks";
 import { setRecordingsColumns } from "../actions/recordingActions";
 import { setJobColumns } from "../actions/jobActions";
 import { setServerColumns } from "../actions/serverActions";
 import { setUserColumns } from "../actions/userActions";
 import { setGroupColumns } from "../actions/groupActions";
-import { setACLColumns } from "../actions/aclActions";
+import { fetchAcls, setAclColumns } from "../slices/aclSlice";
 import { setThemeColumns } from "../actions/themeActions";
 import { setServicesColumns } from "../actions/serviceActions";
 
@@ -646,7 +645,7 @@ export const changeColumnSelection = (updatedColumns) => async (
 			break;
 		}
 		case "acls": {
-			await dispatch(setACLColumns(updatedColumns));
+			await dispatch(setAclColumns(updatedColumns));
 			dispatch(loadAclsIntoTable());
 			break;
 		}
