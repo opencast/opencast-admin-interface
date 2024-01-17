@@ -5,6 +5,11 @@ import { makeTwoDigits } from "./utils";
  * This File contains methods concerning dates
  */
 
+// check if date can be parsed
+export const renderValidDate = (date: string) => {
+  return !isNaN(Date.parse(date)) ? new Date(date) : ""
+}
+
 // transform relative date to an absolute date
 export const relativeToAbsoluteDate = (relative: any, type: any, from: any) => {
 	let localMoment = moment();
