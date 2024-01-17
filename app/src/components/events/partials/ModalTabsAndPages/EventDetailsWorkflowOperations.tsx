@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
 import {
 	getWorkflow,
@@ -8,7 +8,7 @@ import {
 import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { fetchWorkflowOperationDetails } from "../../../../slices/eventDetailsSlice";
+import { fetchWorkflowOperationDetails, fetchWorkflowOperations } from "../../../../slices/eventDetailsSlice";
 
 /**
  * This component manages the workflow operations for the workflows tab of the event details modal
@@ -26,6 +26,20 @@ const EventDetailsWorkflowOperations = ({
 	const workflow = useAppSelector(state => getWorkflow(state));
 	const operations = useAppSelector(state => getWorkflowOperations(state));
 	const isFetching = useAppSelector(state => isFetchingWorkflowOperations(state));
+
+  const loadWorkflowOperations = async () => {
+		// Fetching workflow operations from server
+		await fetchWorkflowOperations({eventId, workflowId: workflow.wiid});
+	};
+
+  useEffect(() => {
+		// Fetch workflow operations every 5 seconds
+		let fetchWorkflowOperationsInterval = setInterval(loadWorkflowOperations, 5000);
+
+		// Unmount interval
+		return () => clearInterval(fetchWorkflowOperationsInterval);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
 	const openSubTab = (tabType, operationId: number | null = null) => {
