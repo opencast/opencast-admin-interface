@@ -7,7 +7,6 @@ import i18n from "../i18n/i18n";
 import languages from "../i18n/languages";
 // @ts-expect-error TS(2307): Cannot find module '../img/opencast-white.svg' or ... Remove this comment to see the full error message
 import opencastLogo from "../img/opencast-white.svg";
-import { GlobalHotKeys } from "react-hotkeys";
 import { fetchHealthStatus } from "../thunks/healthThunks";
 import { setSpecificServiceFilter } from "../thunks/tableFilterThunks";
 import { loadServicesIntoTable } from "../thunks/tableThunks";
@@ -22,6 +21,7 @@ import { getCurrentLanguageInformation, hasAccess } from "../utils/utils";
 import { overflowStyle } from "../utils/componentStyles";
 import RegistrationModal from "./shared/RegistrationModal";
 import HotKeyCheatSheet from "./shared/HotKeyCheatSheet";
+import { useHotkeys } from "react-hotkeys-hook";
 
 // Get code, flag and name of the current language
 const currentLanguage = getCurrentLanguageInformation();
@@ -112,9 +112,16 @@ const Header = ({
 		setHotKeyCheatSheet(false);
 	};
 
-	const hotKeyHandlers = {
-		HOTKEY_CHEATSHEET: showHotKeyCheatSheet,
+	const toggleHotKeyCheatSheet = () => {
+		setHotKeyCheatSheet(!displayHotKeyCheatSheet);
 	};
+
+	useHotkeys(
+    availableHotkeys.general.HOTKEY_CHEATSHEET.sequence,
+    () => toggleHotKeyCheatSheet(),
+		{ description: t(availableHotkeys.general.HOTKEY_CHEATSHEET.description) ?? undefined },
+    [toggleHotKeyCheatSheet]
+  );
 
 	useEffect(() => {
 		// Function for handling clicks outside of an open dropdown menu
@@ -158,11 +165,6 @@ const Header = ({
 
 	return (
 		<>
-			<GlobalHotKeys
-// @ts-expect-error TS(2769): No overload matches this call.
-				keyMap={availableHotkeys.general}
-				handlers={hotKeyHandlers}
-			/>
 			<header className="primary-header">
 				{/* Opencast logo in upper left corner */}
 				<div className="header-branding">

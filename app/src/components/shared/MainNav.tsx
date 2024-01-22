@@ -27,10 +27,10 @@ import { fetchSeries } from "../../thunks/seriesThunks";
 import { fetchServers } from "../../thunks/serverThunks";
 import { fetchServices } from "../../thunks/serviceThunks";
 import { fetchGroups } from "../../thunks/groupThunks";
-import { GlobalHotKeys } from "react-hotkeys";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { fetchAcls } from "../../slices/aclSlice";
 import { useAppDispatch } from "../../store";
+import { useHotkeys } from "react-hotkeys-hook";
 
 /**
  * This component renders the main navigation that opens when the burger button is clicked
@@ -224,26 +224,29 @@ const MainNav = ({
 		loadingThemesIntoTable();
 	};
 
-	const hotkeyLoadEvents = () => {
-		navigate("/events/events");
-	};
+	useHotkeys(
+    availableHotkeys.general.EVENT_VIEW.sequence,
+    () => navigate("/events/events"),
+		{ description: t(availableHotkeys.general.EVENT_VIEW.description) ?? undefined },
+    []
+  );
 
-	const hotkeyLoadSeries = () => {
-		navigate("/events/series");
-	};
+	useHotkeys(
+    availableHotkeys.general.SERIES_VIEW.sequence,
+    () => navigate("/events/series"),
+		{ description: t(availableHotkeys.general.SERIES_VIEW.description) ?? undefined },
+    []
+  );
 
-	const hotKeyHandlers = {
-		EVENT_VIEW: hotkeyLoadEvents,
-		SERIES_VIEW: hotkeyLoadSeries,
-		MAIN_MENU: toggleMenu,
-	};
+	useHotkeys(
+    availableHotkeys.general.MAIN_MENU.sequence,
+    () => toggleMenu(),
+		{ description: t(availableHotkeys.general.MAIN_MENU.description) ?? undefined },
+    [toggleMenu]
+  );
+
 	return (
 		<>
-			<GlobalHotKeys
-// @ts-expect-error TS(2769): No overload matches this call.
-				keyMap={availableHotkeys.general}
-				handlers={hotKeyHandlers}
-			/>
 			<div className="menu-top" onClick={() => toggleMenu()}>
 				{isOpen && (
 					<nav id="roll-up-menu">

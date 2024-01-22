@@ -16,6 +16,7 @@ import "./i18n/i18n";
 // import css files for certain libraries
 import "font-awesome/css/font-awesome.min.css";
 import "react-datepicker/dist/react-datepicker.css";
+import { HotkeysProvider } from "react-hotkeys-hook";
 
 // todo: comment persistent stuff in, only out commented because for debugging purposes
 const persistor = persistStore(store);
@@ -24,7 +25,9 @@ ReactDOM.render(
 	<React.StrictMode>
 		<Provider store={store}>
 			<PersistGate loading={<div>loading...</div>} persistor={persistor}>
-				<App />
+				<HotkeysProvider>
+					<App />
+				</HotkeysProvider>
 			</PersistGate>
 		</Provider>
 	</React.StrictMode>,
