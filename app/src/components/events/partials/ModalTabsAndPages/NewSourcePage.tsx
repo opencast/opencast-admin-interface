@@ -7,7 +7,6 @@ import {
 	getCurrentLanguageInformation,
 	getTimezoneOffset,
 } from "../../../../utils/utils";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Field, FieldArray } from "formik";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
@@ -41,17 +40,6 @@ import {
 	changeStartMinute,
 	changeStartMinuteMultiple,
 } from "../../../../utils/dateUtils";
-
-// Style to bring date picker pop up to front
-const theme = createMuiTheme({
-	props: {
-		MuiDialog: {
-			style: {
-				zIndex: "2147483550",
-			},
-		},
-	},
-});
 
 /**
  * This component renders the source page for new events in the new event wizard.
@@ -401,35 +389,33 @@ const Schedule = ({ formik, inputDevices }) => {
 								<i className="required">*</i>
 							</td>
 							<td>
-								<ThemeProvider theme={theme}>
-									<MuiPickersUtilsProvider
-										utils={DateFnsUtils}
+								<MuiPickersUtilsProvider
+									utils={DateFnsUtils}
 // @ts-expect-error TS(2532): Object is possibly 'undefined'.
-										locale={currentLanguage.dateLocale}
-									>
-										<DatePicker
-											name="scheduleStartDate"
-											value={formik.values.scheduleStartDate}
-											onChange={(value) => {
-												if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-													changeStartDateMultiple(
-														value,
-														formik.values,
-														formik.setFieldValue
-													);
-												} else {
-													changeStartDate(
-														value,
-														formik.values,
-														formik.setFieldValue
-													);
-												}
-											}}
+									locale={currentLanguage.dateLocale}
+								>
+									<DatePicker
+										name="scheduleStartDate"
+										value={formik.values.scheduleStartDate}
+										onChange={(value) => {
+											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+												changeStartDateMultiple(
+													value,
+													formik.values,
+													formik.setFieldValue
+												);
+											} else {
+												changeStartDate(
+													value,
+													formik.values,
+													formik.setFieldValue
+												);
+											}
+										}}
 // @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-											tabIndex="4"
-										/>
-									</MuiPickersUtilsProvider>
-								</ThemeProvider>
+										tabIndex="4"
+									/>
+								</MuiPickersUtilsProvider>
 							</td>
 						</tr>
 						{/* Render fields specific for multiple schedule (Only if this is current source mode)*/}
@@ -441,21 +427,19 @@ const Schedule = ({ formik, inputDevices }) => {
 										<i className="required">*</i>
 									</td>
 									<td>
-										<ThemeProvider theme={theme}>
-											<DatePicker
-												name="scheduleEndDate"
-												value={formik.values.scheduleEndDate}
-												onChange={(value) =>
-													changeEndDateMultiple(
-														value,
-														formik.values,
-														formik.setFieldValue
-													)
-												}
+										<DatePicker
+											name="scheduleEndDate"
+											value={formik.values.scheduleEndDate}
+											onChange={(value) =>
+												changeEndDateMultiple(
+													value,
+													formik.values,
+													formik.setFieldValue
+												)
+											}
 // @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-												tabIndex="5"
-											/>
-										</ThemeProvider>
+											tabIndex="5"
+										/>
 									</td>
 								</tr>
 								<tr>

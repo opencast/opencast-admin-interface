@@ -16,15 +16,29 @@ import "./i18n/i18n";
 // import css files for certain libraries
 import "font-awesome/css/font-awesome.min.css";
 import "react-datepicker/dist/react-datepicker.css";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core";
 
 // todo: comment persistent stuff in, only out commented because for debugging purposes
 const persistor = persistStore(store);
+
+// Style to bring date picker pop up to front
+const theme = createMuiTheme({
+	props: {
+		MuiDialog: {
+			style: {
+				zIndex: "2147483550",
+			},
+		},
+	},
+});
 
 ReactDOM.render(
 	<React.StrictMode>
 		<Provider store={store}>
 			<PersistGate loading={<div>loading...</div>} persistor={persistor}>
-				<App />
+				<ThemeProvider theme={theme}>
+					<App />
+				</ThemeProvider>
 			</PersistGate>
 		</Provider>
 	</React.StrictMode>,

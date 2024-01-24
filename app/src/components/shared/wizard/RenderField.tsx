@@ -2,7 +2,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import cn from "classnames";
 import { useClickOutsideField } from "../../../hooks/wizardHooks";
 import { getCurrentLanguageInformation, isJson } from "../../../utils/utils";
@@ -185,33 +184,21 @@ const EditableDateValue = ({
 }) => {
 	const { t } = useTranslation();
 
-	const theme = createMuiTheme({
-		props: {
-			MuiDialog: {
-				style: {
-					zIndex: "2147483550",
-				},
-			},
-		},
-	});
-
 	return editMode ? (
 		<div>
-			<ThemeProvider theme={theme}>
-				<MuiPickersUtilsProvider
-					utils={DateFnsUtils}
+			<MuiPickersUtilsProvider
+				utils={DateFnsUtils}
 // @ts-expect-error TS(2532): Object is possibly 'undefined'.
-					locale={currentLanguage.dateLocale}
-				>
-					<DateTimePicker
-						name={field.name}
-						value={field.value}
-						onChange={(value) => setFieldValue(field.name, value)}
-						onClose={() => setEditMode(false)}
-						fullWidth
-					/>
-				</MuiPickersUtilsProvider>
-			</ThemeProvider>
+				locale={currentLanguage.dateLocale}
+			>
+				<DateTimePicker
+					name={field.name}
+					value={field.value}
+					onChange={(value) => setFieldValue(field.name, value)}
+					onClose={() => setEditMode(false)}
+					fullWidth
+				/>
+			</MuiPickersUtilsProvider>
 		</div>
 	) : (
 		<div onClick={() => setEditMode(true)} className="show-edit">
@@ -397,33 +384,21 @@ const EditableSingleValueTime = ({
 }) => {
 	const { t } = useTranslation();
 
-	const theme = createMuiTheme({
-		props: {
-			MuiDialog: {
-				style: {
-					zIndex: "2147483550",
-				},
-			},
-		},
-	});
-
 	return editMode ? (
 		<div>
-			<ThemeProvider theme={theme}>
-				<MuiPickersUtilsProvider
-					utils={DateFnsUtils}
+			<MuiPickersUtilsProvider
+				utils={DateFnsUtils}
 // @ts-expect-error TS(2532): Object is possibly 'undefined'.
-					locale={currentLanguage.dateLocale}
-				>
-					<DateTimePicker
-						name={field.name}
-						value={field.value}
-						onChange={(value) => setFieldValue(field.name, value)}
-						onClose={() => setEditMode(false)}
-						fullWidth
-					/>
-				</MuiPickersUtilsProvider>
-			</ThemeProvider>
+				locale={currentLanguage.dateLocale}
+			>
+				<DateTimePicker
+					name={field.name}
+					value={field.value}
+					onChange={(value) => setFieldValue(field.name, value)}
+					onClose={() => setEditMode(false)}
+					fullWidth
+				/>
+			</MuiPickersUtilsProvider>
 		</div>
 	) : (
 		<div onClick={() => setEditMode(true)} className="show-edit">

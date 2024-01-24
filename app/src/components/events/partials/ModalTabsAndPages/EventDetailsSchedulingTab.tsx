@@ -4,7 +4,7 @@ import cn from "classnames";
 // @ts-expect-error TS(7016): Could not find a declaration file for module 'loda... Remove this comment to see the full error message
 import _ from "lodash";
 import { DatePicker } from "@material-ui/pickers";
-import { createTheme, ThemeProvider } from "@material-ui/core";
+import { createTheme } from "@material-ui/core";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { Field, Formik } from "formik";
@@ -310,23 +310,21 @@ const EventDetailsSchedulingTab = ({
 																{hasAccessRole &&
 																accessAllowed(formik.values.captureAgent) ? (
 																	/* date picker for start date */
-																	<ThemeProvider theme={theme}>
-																		<DatePicker
-																			name="scheduleStartDate"
+																	<DatePicker
+																		name="scheduleStartDate"
 // @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-																			tabIndex={"1"}
-																			value={formik.values.scheduleStartDate}
-																			onChange={(value) =>
-																				changeStartDate(
-																					value,
-																					formik.values,
-																					formik.setFieldValue,
-																					eventId,
-																					checkConflicts
-																				)
-																			}
-																		/>
-																	</ThemeProvider>
+																		tabIndex={"1"}
+																		value={formik.values.scheduleStartDate}
+																		onChange={(value) =>
+																			changeStartDate(
+																				value,
+																				formik.values,
+																				formik.setFieldValue,
+																				eventId,
+																				checkConflicts
+																			)
+																		}
+																	/>
 																) : (
 																	<>
 																		{source.start.date.toLocaleDateString(
