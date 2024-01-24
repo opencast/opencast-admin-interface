@@ -1,10 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { getCurrentLanguageInformation } from "../../utils/utils";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import { DatePicker } from "@material-ui/pickers";
-import { createTheme } from "@material-ui/core";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Field, Formik } from "formik";
 import BarChart from "./BarChart";
 import {
@@ -14,6 +11,7 @@ import {
 	statisticTimeModes,
 } from "../../configs/statisticsConfig";
 import { localizedMoment } from "../../utils/dateUtils";
+import { parseISO } from "date-fns";
 
 /**
  * This component visualizes statistics with data of type time series
@@ -52,17 +50,6 @@ const TimeSeriesStatistics = ({
 // @ts-expect-error TS(7031): Binding element 'chartOptions' implicitly has an '... Remove this comment to see the full error message
 	chartOptions,
 }) => {
-	// Style to bring date picker pop up to front
-	const theme = createTheme({
-		props: {
-			MuiDialog: {
-				style: {
-					zIndex: "2147483550",
-				},
-			},
-		},
-	});
-
 	// Style for date picker
 	const datePickerStyle = {
 		border: "1px solid #dedddd",
@@ -211,211 +198,203 @@ const TimeSeriesStatistics = ({
 
 	return (
 		/* Initialize form */
-		<MuiPickersUtilsProvider
-			utils={DateFnsUtils}
-// @ts-expect-error TS(2532): Object is possibly 'undefined'.
-			locale={currentLanguage.dateLocale}
+		<Formik
+			enableReinitialize
+			initialValues={{
+				timeMode: timeMode,
+				dataResolution: dataResolution,
+				fromDate: moment(fromDate).startOf(timeMode).format("YYYY-MM-DD"),
+				toDate: moment(toDate).endOf(timeMode).format("YYYY-MM-DD"),
+			}}
+			onSubmit={(values) => {}}
 		>
-			<Formik
-				enableReinitialize
-				initialValues={{
-					timeMode: timeMode,
-					dataResolution: dataResolution,
-					fromDate: moment(fromDate).startOf(timeMode).format("YYYY-MM-DD"),
-					toDate: moment(toDate).endOf(timeMode).format("YYYY-MM-DD"),
-				}}
-				onSubmit={(values) => {}}
-			>
-				{(formik) => (
-					<div className="statistics-graph">
-						{/* download link for a statistic file */}
-						<div className="download">
-							<a
-								className="download-icon"
-								href={exportUrl}
-								download={exportFileName(statTitle)}
-							/>
-						</div>
+			{(formik) => (
+				<div className="statistics-graph">
+					{/* download link for a statistic file */}
+					<div className="download">
+						<a
+							className="download-icon"
+							href={exportUrl}
+							download={exportFileName(statTitle)}
+						/>
+					</div>
 
-						{/* radio buttons for selecting the mode of choosing the timeframe of statistic */}
-						<div className="mode">
-							{timeModes.map((mode, key) => (
-								<label
-									htmlFor={providerId + "-mode-" + key}
-									style={
-										formik.values.timeMode === mode.value
-											? radioButtonStyle
-											: {}
-									}
-									key={key}
-								>
-									<Field
-										type="radio"
-										style={{ display: "none" }}
-										name="timeMode"
-										value={mode.value}
-										id={providerId + "-mode-" + key}
+					{/* radio buttons for selecting the mode of choosing the timeframe of statistic */}
+					<div className="mode">
+						{timeModes.map((mode, key) => (
+							<label
+								htmlFor={providerId + "-mode-" + key}
+								style={
+									formik.values.timeMode === mode.value
+										? radioButtonStyle
+										: {}
+								}
+								key={key}
+							>
+								<Field
+									type="radio"
+									style={{ display: "none" }}
+									name="timeMode"
+									value={mode.value}
+									id={providerId + "-mode-" + key}
 // @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
-										onChange={(event) =>
-											changeTimeMode(
-												event.target.value,
+									onChange={(event) =>
+										changeTimeMode(
+											event.target.value,
+											formik.setFieldValue,
+											formik.values.fromDate,
+											formik.values.toDate,
+											formik.values.dataResolution
+										)
+									}
+								/>
+								{t("STATISTICS.TIME_MODES." + mode.translation)}
+							</label>
+						))}
+					</div>
+
+					{/* statistics total value */}
+					<div className="total">
+						<span>{t("STATISTICS.TOTAL") /* Total */}</span>
+						<span>{": " + totalValue}</span>
+					</div>
+
+					{/* timeframe selection */}
+
+					{(formik.values.timeMode === "year" ||
+						formik.values.timeMode === "month") && (
+						/* year/month selection for statistic via previous and next buttons */
+						<span className="preset">
+							<a
+								className="navigation prev"
+								onClick={() =>
+									selectPrevious(
+										formik.setFieldValue,
+										formik.values.fromDate,
+										formik.values.timeMode,
+										formik.values.dataResolution
+									)
+								}
+							/>
+							<div>
+								{formatSelectedTimeframeName(
+									formik.values.fromDate,
+									formik.values.timeMode
+								)}
+							</div>
+							<a
+								className="navigation next"
+								onClick={() =>
+									selectNext(
+										formik.setFieldValue,
+										formik.values.fromDate,
+										formik.values.timeMode,
+										formik.values.dataResolution
+									)
+								}
+							/>
+						</span>
+					)}
+
+					{formik.values.timeMode === "custom" && (
+						/* custom timeframe selection for statistic */
+						<span className="custom">
+							{/* time range selection */}
+							<div className="range">
+								{/* date picker for selecting start date of the statistic */}
+								<span>{t("STATISTICS.FROM") /* From */}</span>
+								<div className="chosen-container">
+									<DatePicker
+										name="fromDate"
+										value={parseISO(formik.values.fromDate)}
+										slotProps={{ textField: { placeholder: t(
+											"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.START_DATE"
+										) } }}
+										onChange={(value) =>
+											changeFrom(
+												value,
 												formik.setFieldValue,
-												formik.values.fromDate,
+												formik.values.timeMode,
 												formik.values.toDate,
 												formik.values.dataResolution
 											)
 										}
 									/>
-									{t("STATISTICS.TIME_MODES." + mode.translation)}
-								</label>
-							))}
-						</div>
-
-						{/* statistics total value */}
-						<div className="total">
-							<span>{t("STATISTICS.TOTAL") /* Total */}</span>
-							<span>{": " + totalValue}</span>
-						</div>
-
-						{/* timeframe selection */}
-
-						{(formik.values.timeMode === "year" ||
-							formik.values.timeMode === "month") && (
-							/* year/month selection for statistic via previous and next buttons */
-							<span className="preset">
-								<a
-									className="navigation prev"
-									onClick={() =>
-										selectPrevious(
-											formik.setFieldValue,
-											formik.values.fromDate,
-											formik.values.timeMode,
-											formik.values.dataResolution
-										)
-									}
-								/>
-								<div>
-									{formatSelectedTimeframeName(
-										formik.values.fromDate,
-										formik.values.timeMode
-									)}
-								</div>
-								<a
-									className="navigation next"
-									onClick={() =>
-										selectNext(
-											formik.setFieldValue,
-											formik.values.fromDate,
-											formik.values.timeMode,
-											formik.values.dataResolution
-										)
-									}
-								/>
-							</span>
-						)}
-
-						{formik.values.timeMode === "custom" && (
-							/* custom timeframe selection for statistic */
-							<span className="custom">
-								{/* time range selection */}
-								<div className="range">
-									{/* date picker for selecting start date of the statistic */}
-									<span>{t("STATISTICS.FROM") /* From */}</span>
-									<div className="chosen-container">
-										<DatePicker
-											name="fromDate"
-											style={datePickerStyle}
-											value={formik.values.fromDate}
-											placeholder={t(
-												"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.START_DATE"
-											)}
-											onChange={(value) =>
-												changeFrom(
-													value,
-													formik.setFieldValue,
-													formik.values.timeMode,
-													formik.values.toDate,
-													formik.values.dataResolution
-												)
-											}
-										/>
-									</div>
-
-									{/* date picker for selecting end date of the statistic */}
-									<span>{t("STATISTICS.TO") /* To */}</span>
-									<div className="chosen-container">
-										<DatePicker
-											name="toDate"
-											style={datePickerStyle}
-											value={formik.values.toDate}
-											placeholder={t(
-												"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.END_DATE"
-											)}
-											onChange={(value) =>
-												changeTo(
-													value,
-													formik.setFieldValue,
-													formik.values.timeMode,
-													formik.values.fromDate,
-													formik.values.dataResolution
-												)
-											}
-										/>
-									</div>
 								</div>
 
-								{/* time granularity selection */}
-								<div>
-									<span>
-										{t("STATISTICS.GRANULARITY") + " " /* Granularity */}
-									</span>
-									<div className="chosen-container chosen-container-single">
-										{/* drop-down for selecting the time granularity of the statistic */}
-										<Field
-											className="chosen-single"
-											name="dataResolution"
-											as="select"
-											data-width="'100px'"
+								{/* date picker for selecting end date of the statistic */}
+								<span>{t("STATISTICS.TO") /* To */}</span>
+								<div className="chosen-container">
+									<DatePicker
+										name="toDate"
+										value={parseISO(formik.values.toDate)}
+										slotProps={{ textField: { placeholder: t(
+											"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.END_DATE"
+										) } }}
+										onChange={(value) =>
+											changeTo(
+												value,
+												formik.setFieldValue,
+												formik.values.timeMode,
+												formik.values.fromDate,
+												formik.values.dataResolution
+											)
+										}
+									/>
+								</div>
+							</div>
+
+							{/* time granularity selection */}
+							<div>
+								<span>
+									{t("STATISTICS.GRANULARITY") + " " /* Granularity */}
+								</span>
+								<div className="chosen-container chosen-container-single">
+									{/* drop-down for selecting the time granularity of the statistic */}
+									<Field
+										className="chosen-single"
+										name="dataResolution"
+										as="select"
+										data-width="'100px'"
 // @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
-											onChange={(event) =>
-												changeGranularity(
-													event.target.value,
-													formik.setFieldValue,
-													formik.values.timeMode,
-													formik.values.fromDate,
-													formik.values.toDate
-												)
-											}
-											placeholder={t(
-												"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
-											)}
-										>
-											<option value="" hidden />
-											{availableCustomDataResolutions.map((option, key) => (
-												<option value={option.value} key={key}>
-													{t("STATISTICS.TIME_GRANULARITIES." + option.label)}
-												</option>
-											))}
-										</Field>
-									</div>
+										onChange={(event) =>
+											changeGranularity(
+												event.target.value,
+												formik.setFieldValue,
+												formik.values.timeMode,
+												formik.values.fromDate,
+												formik.values.toDate
+											)
+										}
+										placeholder={t(
+											"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
+										)}
+									>
+										<option value="" hidden />
+										{availableCustomDataResolutions.map((option, key) => (
+											<option value={option.value} key={key}>
+												{t("STATISTICS.TIME_GRANULARITIES." + option.label)}
+											</option>
+										))}
+									</Field>
 								</div>
-							</span>
-						)}
+							</div>
+						</span>
+					)}
 
-						<br />
-						{/* bar chart with visualization of statistic data */}
-						<BarChart
-							values={sourceData}
-							axisLabels={chartLabels}
-							options={chartOptions}
-						/>
+					<br />
+					{/* bar chart with visualization of statistic data */}
+					<BarChart
+						values={sourceData}
+						axisLabels={chartLabels}
+						options={chartOptions}
+					/>
 
-						{/* statistic description */}
-						<p>{t(statDescription)}</p>
-					</div>
-				)}
-			</Formik>
-		</MuiPickersUtilsProvider>
+					{/* statistic description */}
+					<p>{t(statDescription)}</p>
+				</div>
+			)}
+		</Formik>
 	);
 };
 

@@ -1,15 +1,12 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import cn from "classnames";
 import { useClickOutsideField } from "../../../hooks/wizardHooks";
-import { getCurrentLanguageInformation, isJson } from "../../../utils/utils";
+import { isJson } from "../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../utils/resourceUtils";
 import DropDown from "../DropDown";
-
-// Get info about the current language and its date locale
-const currentLanguage = getCurrentLanguageInformation();
+import { parseISO } from "date-fns";
 
 const childRef = React.createRef<HTMLDivElement>();
 /**
@@ -186,19 +183,13 @@ const EditableDateValue = ({
 
 	return editMode ? (
 		<div>
-			<MuiPickersUtilsProvider
-				utils={DateFnsUtils}
-// @ts-expect-error TS(2532): Object is possibly 'undefined'.
-				locale={currentLanguage.dateLocale}
-			>
-				<DateTimePicker
-					name={field.name}
-					value={field.value}
-					onChange={(value) => setFieldValue(field.name, value)}
-					onClose={() => setEditMode(false)}
-					fullWidth
-				/>
-			</MuiPickersUtilsProvider>
+			<DateTimePicker
+				name={field.name}
+				value={parseISO(field.value)}
+				onChange={(value) => setFieldValue(field.name, value)}
+				onClose={() => setEditMode(false)}
+				slotProps={{ textField: { fullWidth: true } }}
+			/>
 		</div>
 	) : (
 		<div onClick={() => setEditMode(true)} className="show-edit">
@@ -386,19 +377,13 @@ const EditableSingleValueTime = ({
 
 	return editMode ? (
 		<div>
-			<MuiPickersUtilsProvider
-				utils={DateFnsUtils}
-// @ts-expect-error TS(2532): Object is possibly 'undefined'.
-				locale={currentLanguage.dateLocale}
-			>
-				<DateTimePicker
-					name={field.name}
-					value={field.value}
-					onChange={(value) => setFieldValue(field.name, value)}
-					onClose={() => setEditMode(false)}
-					fullWidth
-				/>
-			</MuiPickersUtilsProvider>
+			<DateTimePicker
+				name={field.name}
+				value={parseISO(field.value)}
+				onChange={(value) => setFieldValue(field.name, value)}
+				onClose={() => setEditMode(false)}
+				slotProps={{ textField: { fullWidth: true } }}
+			/>
 		</div>
 	) : (
 		<div onClick={() => setEditMode(true)} className="show-edit">

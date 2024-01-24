@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { Step, StepButton, StepLabel, Stepper } from "@material-ui/core";
+import { Step, StepButton, StepLabel, Stepper } from "@mui/material";
 import {
 	isSummaryReachable,
 	useStepperStyle,

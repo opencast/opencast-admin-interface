@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
 	getCurrentFilterResource,
 	getFilters,
@@ -21,11 +20,11 @@ import {
 	resetFilterValues,
 } from "../../actions/tableFilterActions";
 import TableFilterProfiles from "./TableFilterProfiles";
-import { getCurrentLanguageInformation } from "../../utils/utils";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { GlobalHotKeys } from "react-hotkeys";
 import { getResourceType } from "../../selectors/tableSelectors";
 import { fetchFilters } from "../../thunks/tableFilterThunks";
+import { parseISO } from "date-fns";
 
 /**
  * This component renders the table filters in the upper right corner of the table
@@ -355,8 +354,6 @@ const FilterSwitch = ({
 }) => {
 	const { t } = useTranslation();
 
-	const currentLanguage = getCurrentLanguageInformation();
-
 // @ts-expect-error TS(7031): Binding element 'name' implicitly has an 'any' typ... Remove this comment to see the full error message
 	let filter = filterMap.find(({ name }) => name === selectedFilter);
 	// eslint-disable-next-line default-case
@@ -433,25 +430,20 @@ const FilterSwitch = ({
 			return (
 				<div>
 					{/* Show datepicker for start date */}
-					<MuiPickersUtilsProvider
-						utils={DateFnsUtils}
-						locale={currentLanguage?.dateLocale}
-					>
-						<DatePicker
-							className="small-search start-date"
-							value={startDate}
-							disableToolbar
-							format="dd/MM/yyyy"
-							onChange={(date) => handleDate(date, true)}
-						/>
-						<DatePicker
-							className="small-search end-date"
-							value={endDate}
-							disableToolbar
-							format="dd/MM/yyyy"
-							onChange={(date) => handleDate(date)}
-						/>
-					</MuiPickersUtilsProvider>
+					<DatePicker
+						className="small-search start-date"
+						value={parseISO(startDate)}
+
+						format="dd/MM/yyyy"
+						onChange={(date) => handleDate(date, true)}
+					/>
+					<DatePicker
+						className="small-search end-date"
+						value={parseISO(endDate)}
+
+						format="dd/MM/yyyy"
+						onChange={(date) => handleDate(date)}
+					/>
 				</div>
 			);
     // This should never happen

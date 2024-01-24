@@ -16,28 +16,29 @@ import "./i18n/i18n";
 // import css files for certain libraries
 import "font-awesome/css/font-awesome.min.css";
 import "react-datepicker/dist/react-datepicker.css";
-import { ThemeProvider, createMuiTheme } from "@material-ui/core";
+import { ThemeProvider } from "@mui/material";
+import { createTheme } from '@mui/material/styles';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { getCurrentLanguageInformation } from "./utils/utils";
 
 // todo: comment persistent stuff in, only out commented because for debugging purposes
 const persistor = persistStore(store);
 
-// Style to bring date picker pop up to front
-const theme = createMuiTheme({
-	props: {
-		MuiDialog: {
-			style: {
-				zIndex: "2147483550",
-			},
-		},
-	},
-});
+const theme = createTheme({
+	zIndex: {
+		modal: 2147483550,
+	}
+})
 
 ReactDOM.render(
 	<React.StrictMode>
 		<Provider store={store}>
 			<PersistGate loading={<div>loading...</div>} persistor={persistor}>
 				<ThemeProvider theme={theme}>
-					<App />
+					<LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={getCurrentLanguageInformation()?.dateLocale}> {/*locale={getCurrentLanguageInformation()?.dateLocale}> */}
+						<App />
+					</LocalizationProvider>
 				</ThemeProvider>
 			</PersistGate>
 		</Provider>

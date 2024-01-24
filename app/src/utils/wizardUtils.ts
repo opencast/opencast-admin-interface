@@ -1,12 +1,13 @@
-import { makeStyles } from "@material-ui/core";
+import  makeStyles  from "@mui/styles/makeStyles";
 
 // Base style for Stepper component
-export const useStepperStyle = makeStyles((theme) => ({
+export const useStepperStyle = makeStyles({
 	root: {
 		background: "#eeeff0",
 		height: "100px",
+		padding: "24px",
 	},
-}));
+});
 
 // Style of icons used in Stepper
 export const useStepIconStyles = makeStyles({

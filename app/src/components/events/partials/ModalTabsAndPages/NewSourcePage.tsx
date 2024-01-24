@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import Notifications from "../../../shared/Notifications";
-import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
 	getCurrentLanguageInformation,
 	getTimezoneOffset,
@@ -16,7 +16,6 @@ import { removeNotificationWizardForm } from "../../../../actions/notificationAc
 import { checkConflicts } from "../../../../thunks/eventThunks";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
 import { hours, minutes, weekdays } from "../../../../configs/modalConfig";
-import DateFnsUtils from "@date-io/date-fns";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import {
 	filterDevicesForAccess,
@@ -40,6 +39,7 @@ import {
 	changeStartMinute,
 	changeStartMinuteMultiple,
 } from "../../../../utils/dateUtils";
+import { parseISO } from "date-fns";
 
 /**
  * This component renders the source page for new events in the new event wizard.
@@ -389,33 +389,27 @@ const Schedule = ({ formik, inputDevices }) => {
 								<i className="required">*</i>
 							</td>
 							<td>
-								<MuiPickersUtilsProvider
-									utils={DateFnsUtils}
-// @ts-expect-error TS(2532): Object is possibly 'undefined'.
-									locale={currentLanguage.dateLocale}
-								>
-									<DatePicker
-										name="scheduleStartDate"
-										value={formik.values.scheduleStartDate}
-										onChange={(value) => {
-											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-												changeStartDateMultiple(
-													value,
-													formik.values,
-													formik.setFieldValue
-												);
-											} else {
-												changeStartDate(
-													value,
-													formik.values,
-													formik.setFieldValue
-												);
-											}
-										}}
+								<DatePicker
+									name="scheduleStartDate"
+									value={parseISO(formik.values.scheduleStartDate)}
+									onChange={(value) => {
+										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+											changeStartDateMultiple(
+												value,
+												formik.values,
+												formik.setFieldValue
+											);
+										} else {
+											changeStartDate(
+												value,
+												formik.values,
+												formik.setFieldValue
+											);
+										}
+									}}
 // @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-										tabIndex="4"
-									/>
-								</MuiPickersUtilsProvider>
+									tabIndex="4"
+								/>
 							</td>
 						</tr>
 						{/* Render fields specific for multiple schedule (Only if this is current source mode)*/}
@@ -429,7 +423,7 @@ const Schedule = ({ formik, inputDevices }) => {
 									<td>
 										<DatePicker
 											name="scheduleEndDate"
-											value={formik.values.scheduleEndDate}
+											value={parseISO(formik.values.scheduleEndDate)}
 											onChange={(value) =>
 												changeEndDateMultiple(
 													value,
