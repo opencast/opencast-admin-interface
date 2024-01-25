@@ -33,7 +33,6 @@ const ServicesActionCell = ({
 			<button
 				className="button-like-anchor sanitize fa fa-undo"
 				onClick={() => onClickRestart()}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 				title={t("SYSTEMS.SERVICES.TABLE.SANITIZE")}
 			/>
 		)

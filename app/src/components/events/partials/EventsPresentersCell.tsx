@@ -45,7 +45,6 @@ const EventsPresentersCell = ({
 			<button
 				className="button-like-anchor metadata-entry"
 				key={key}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 				title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PRESENTER")}
 				onClick={() => addFilter(presenter)}
 			>

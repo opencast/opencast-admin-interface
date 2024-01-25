@@ -70,7 +70,6 @@ const Stats = ({
 						<div
 							className="stat"
 							onClick={() => showStatsFilter(st)}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 							title={t(st.description)}
 						>
 							<h1>{st.count}</h1>

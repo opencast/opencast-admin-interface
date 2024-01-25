@@ -132,7 +132,6 @@ const EventActionCell = ({
 				<button
 					onClick={() => onClickEventDetails()}
 					className="button-like-anchor more"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
@@ -142,7 +141,6 @@ const EventActionCell = ({
 				<button
 					onClick={() => onClickSeriesDetails()}
 					className="button-like-anchor more-series"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
@@ -153,7 +151,6 @@ const EventActionCell = ({
 				<button
 					onClick={() => setDeleteConfirmation(true)}
 					className="button-like-anchor remove"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.DELETE")}
 				/>
 			)}
@@ -174,7 +171,6 @@ const EventActionCell = ({
 				<a
 					href={`/editor-ui/index.html?id=${row.id}`}
 					className="cut"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={
 						row.needs_cutting
 							? t("EVENTS.EVENTS.TABLE.TOOLTIP.EDITOR_NEEDS_CUTTING")
@@ -189,7 +185,6 @@ const EventActionCell = ({
 			{row.has_comments && !row.has_open_comments && (
 				<button
 					onClick={() => onClickComments()}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.COMMENTS")}
 					className="button-like-anchor comments"
 				/>
@@ -199,7 +194,6 @@ const EventActionCell = ({
 			{row.has_comments && row.has_open_comments && (
 				<button
 					onClick={() => onClickComments()}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.COMMENTS")}
 					className="button-like-anchor comments-open"
 				/>
@@ -210,7 +204,6 @@ const EventActionCell = ({
 			{row.workflow_state === "PAUSED" &&
 				hasAccess("ROLE_UI_EVENTS_DETAILS_WORKFLOWS_EDIT", user) && (
 					<button
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 						title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PAUSED_WORKFLOW")}
 						onClick={() => onClickWorkflow()}
 						className="button-like-anchor fa fa-warning"
@@ -221,7 +214,6 @@ const EventActionCell = ({
 			{hasAccess("ROLE_UI_EVENTS_DETAILS_ASSETS_VIEW", user) && (
 				<button
 					onClick={() => onClickAssets()}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.ASSETS")}
 					className="button-like-anchor fa fa-folder-open"
 				/>
@@ -230,7 +222,6 @@ const EventActionCell = ({
 			{hasAccess("ROLE_UI_EVENTS_EMBEDDING_CODE_VIEW", user) && (
 				<button
 					onClick={() => showEmbeddingCodeModal()}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.EMBEDDING_CODE")}
 					className="button-like-anchor fa fa-link"
 				/>

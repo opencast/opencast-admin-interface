@@ -179,7 +179,6 @@ const TableFilters = ({
 				<input
 					type="text"
 					className="search expand"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
 					onChange={(e) => handleChange(e)}
 					name="textFilter"
@@ -192,7 +191,6 @@ const TableFilters = ({
 					<div className="table-filter">
 						<div className="filters">
 							<i
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 								title={t("TABLE_FILTERS.ADD")}
 								className="fa fa-filter"
 								onClick={() => setFilterSelector(!showFilterSelector)}
@@ -205,7 +203,6 @@ const TableFilters = ({
 									{!filterMap || false ? (
 										// Show if no filters in filtersList
 										<select
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 											defaultValue={t(
 												"TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS"
 											)}
@@ -289,7 +286,6 @@ const TableFilters = ({
 											</span>
 											{/* Remove icon in blue area around filter */}
 											<button
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 												title={t("TABLE_FILTERS.REMOVE")}
 												onClick={() => removeFilter(filter)}
                         className="button-like-anchor"
@@ -305,14 +301,12 @@ const TableFilters = ({
 						{/* Remove icon to clear all filters */}
 						<i
 							onClick={removeFilters}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 							title={t("TABLE_FILTERS.CLEAR")}
 							className="clear fa fa-times"
 						/>
 						{/* Settings icon to open filters profile dialog (save and editing filter profiles)*/}
 						<i
 							onClick={() => setFilterSettings(!showFilterSettings)}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 							title={t("TABLE_FILTERS.PROFILES.FILTERS_HEADER")}
 							className="settings fa fa-cog fa-times"
 						/>
@@ -369,7 +363,6 @@ const FilterSwitch = ({
 						// Show if the selected main filter has no further options
 						!filter.options || false ? (
 							<select
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 								defaultValue={t("TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS")}
 								className="second-filter"
 							>
@@ -400,7 +393,6 @@ const FilterSwitch = ({
 					!filter.options || false ? (
 						// Show if the selected main filter has no further options
 						<select
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 							defaultValue={t("TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS")}
 							className="second-filter"
 						>

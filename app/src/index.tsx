@@ -23,9 +23,9 @@ const persistor = persistStore(store);
 ReactDOM.render(
 	<React.StrictMode>
 		<Provider store={store}>
-			<PersistGate loading={<div>loading...</div>} persistor={persistor}>
+			{/* <PersistGate loading={<div>loading...</div>} persistor={persistor}> */}
 				<App />
-			</PersistGate>
+			{/* </PersistGate> */}
 		</Provider>
 	</React.StrictMode>,
 	document.getElementById("root")

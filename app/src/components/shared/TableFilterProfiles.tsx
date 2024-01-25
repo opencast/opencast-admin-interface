@@ -164,14 +164,12 @@ const TableFiltersProfiles = ({
 											{/* Settings icon to edit profile */}
 											<button
 												onClick={() => editFilterProfile(profile)}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 												title={t("TABLE_FILTERS.PROFILES.EDIT")}
 												className="button-like-anchor icon edit"
 											/>
 											{/* Remove icon to remove profile */}
 											<button
 												onClick={() => removeFilterProfile(profile)}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 												title={t("TABLE_FILTERS.PROFILES.REMOVE")}
 												className="button-like-anchor icon remove"
 											/>
@@ -219,7 +217,6 @@ const TableFiltersProfiles = ({
 									type="text"
 									value={profileName}
 									onChange={(e) => handleChange(e)}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 									placeholder={t("TABLE_FILTERS.PROFILES.NAME_PLACEHOLDER")}
 								/>
 
@@ -229,7 +226,6 @@ const TableFiltersProfiles = ({
 									value={profileDescription}
 									name="description"
 									onChange={(e) => handleChange(e)}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 									placeholder={t(
 										"TABLE_FILTERS.PROFILES.DESCRIPTION_PLACEHOLDER"
 									)}

@@ -31,7 +31,6 @@ const SeriesTitleCell = ({
 		<Link
 			to="/events/events"
 			className="crosslink"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 			title={t("EVENTS.SERIES.TABLE.TOOLTIP.SERIES")}
 			onClick={async () => await redirectToEvents(row.id)}
 		>

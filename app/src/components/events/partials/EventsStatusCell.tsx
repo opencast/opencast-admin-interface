@@ -39,7 +39,6 @@ const EventsStatusCell = ({
 		<button
 			className="button-like-anchor crosslink"
 			onClick={() => addFilter(row.event_status)}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 			title={t("EVENTS.EVENTS.TABLE.TOOLTIP.STATUS")}
 		>
 			{t(row.displayable_status)}
