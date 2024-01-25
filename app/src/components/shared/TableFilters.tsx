@@ -432,14 +432,14 @@ const FilterSwitch = ({
 					{/* Show datepicker for start date */}
 					<DatePicker
 						className="small-search start-date"
-						value={parseISO(startDate)}
+						value={typeof startDate === "string" ? parseISO(startDate) : startDate}
 
 						format="dd/MM/yyyy"
 						onChange={(date) => handleDate(date, true)}
 					/>
 					<DatePicker
 						className="small-search end-date"
-						value={parseISO(endDate)}
+						value={typeof endDate === "string" ? parseISO(endDate) : endDate}
 
 						format="dd/MM/yyyy"
 						onChange={(date) => handleDate(date)}

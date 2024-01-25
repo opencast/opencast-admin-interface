@@ -391,7 +391,7 @@ const Schedule = ({ formik, inputDevices }) => {
 							<td>
 								<DatePicker
 									name="scheduleStartDate"
-									value={parseISO(formik.values.scheduleStartDate)}
+									value={typeof formik.values.scheduleStartDate === "string" ? parseISO(formik.values.scheduleStartDate): formik.values.scheduleStartDate}
 									onChange={(value) => {
 										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
 											changeStartDateMultiple(
@@ -423,7 +423,7 @@ const Schedule = ({ formik, inputDevices }) => {
 									<td>
 										<DatePicker
 											name="scheduleEndDate"
-											value={parseISO(formik.values.scheduleEndDate)}
+											value={typeof formik.values.scheduleEndDate === "string" ? parseISO(formik.values.scheduleEndDate) : formik.values.scheduleEndDate}
 											onChange={(value) =>
 												changeEndDateMultiple(
 													value,

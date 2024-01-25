@@ -306,7 +306,7 @@ const TimeSeriesStatistics = ({
 								<div className="chosen-container">
 									<DatePicker
 										name="fromDate"
-										value={parseISO(formik.values.fromDate)}
+										value={typeof formik.values.fromDate === "string" ? parseISO(formik.values.fromDate) : formik.values.fromDate}
 										slotProps={{ textField: { placeholder: t(
 											"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.START_DATE"
 										) } }}
@@ -327,7 +327,7 @@ const TimeSeriesStatistics = ({
 								<div className="chosen-container">
 									<DatePicker
 										name="toDate"
-										value={parseISO(formik.values.toDate)}
+										value={typeof formik.values.toDate === "string" ? parseISO(formik.values.toDate) : formik.values.toDate}
 										slotProps={{ textField: { placeholder: t(
 											"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.END_DATE"
 										) } }}

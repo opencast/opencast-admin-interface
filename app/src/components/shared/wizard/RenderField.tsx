@@ -185,7 +185,7 @@ const EditableDateValue = ({
 		<div>
 			<DateTimePicker
 				name={field.name}
-				value={parseISO(field.value)}
+				value={typeof field.value === "string" ? parseISO(field.value) : field.value}
 				onChange={(value) => setFieldValue(field.name, value)}
 				onClose={() => setEditMode(false)}
 				slotProps={{ textField: { fullWidth: true } }}
