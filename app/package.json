@@ -15,7 +15,6 @@
     "array-move": "^4.0.0",
     "axios": "^1.6.5",
     "bourbon": "^7.3.0",
-    "bourbon-neat": "4.0.0",
     "classnames": "^2.5.1",
     "date-fns": "^2.30.0",
     "font-awesome": "^4.7.0",
