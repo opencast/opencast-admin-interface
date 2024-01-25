@@ -100,6 +100,10 @@ export const transformToObjectArray = (data) => {
  */
 // @ts-expect-error TS(7006): Parameter 'baseObject' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const parseBooleanInObject = (baseObject) => {
+	if (typeof baseObject === "undefined") {
+		return baseObject
+	}
+
 	let parsedObject = {};
 
 	Object.keys(baseObject).forEach((config) => {
