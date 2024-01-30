@@ -4,5 +4,5 @@ base_path: .
 preserve_hierarchy: true
 
 files:
-  - source: '/app/src/org/opencastproject/adminui/languages/lang-en_US.json'
-    translation: '/app/src/org/opencastproject/adminui/languages/lang-%locale_with_underscore%.json'
+  - source: '/app/src/i18n/org/opencastproject/adminui/languages/lang-en_US.json'
+    translation: '/app/src/i18n/org/opencastproject/adminui/languages/lang-%locale_with_underscore%.json'
