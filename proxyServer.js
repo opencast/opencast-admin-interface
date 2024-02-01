@@ -68,7 +68,8 @@ app.use('', (req, res, next) => {
 
     let onReadFromBackend = function (error, response, body) {
         if (error && (typeof error != 'object' || !error.hasOwnProperty('statusCode') || !error.hasOwnProperty('body'))) {
-            throw error;
+            console.error(error);
+            return;
         }
 
         // forward to client
