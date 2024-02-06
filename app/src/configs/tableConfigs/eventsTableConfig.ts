@@ -8,6 +8,7 @@ import PublishedCell from "../../components/events/partials/PublishedCell";
 import EventsLocationCell from "../../components/events/partials/EventsLocationCell";
 import EventsEndCell from "../../components/events/partials/EventsEndCell";
 import EventsStartCell from "../../components/events/partials/EventsStartCell";
+import EventsNotesCell from "../../components/events/partials/EventsNotesCell";
 
 /**
  * Config that contains the columns and further information regarding events. These are the information that never or hardly changes.
@@ -88,6 +89,13 @@ export const eventsTableConfig = {
 			label: "EVENTS.EVENTS.TABLE.ACTION",
 			translate: false,
 		},
+		{
+			name: "notes",
+			template: "EventsNotesCell",
+			label: "EVENTS.EVENTS.TABLE.ADMINUI_NOTES",
+			translate: false,
+			deactivated: true,
+		},
 	],
 	caption: "EVENTS.EVENTS.TABLE.CAPTION",
 	resource: "events",
@@ -110,4 +118,5 @@ export const eventsTemplateMap = {
 	EventsStatusCell: EventsStatusCell,
 	EventsTechnicalDateCell: EventsTechnicalDateCell,
 	PublishedCell: PublishedCell,
+	EventsNotesCell: EventsNotesCell,
 };

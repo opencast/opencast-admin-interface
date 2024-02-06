@@ -40,7 +40,16 @@ export const fetchEvents = () => async (dispatch, getState) => {
 		dispatch(loadEventsInProgress());
 
 		const state = getState();
-		let params = getURLParams(state);
+		let params: any = getURLParams(state);
+
+		// Only if the notes column is enabled, fetch comment information for events
+		// @ts-expect-error TS(7006):
+		if (state.table.columns.find(column => column.label === "EVENTS.EVENTS.TABLE.ADMINUI_NOTES" && !column.deactivated)) {
+			params = {
+				...params,
+				getComments: true
+			}
+		}
 
 		//admin-ng/event/events.json?filter={filter}&sort={sort}&limit=0&offset=0
 		let data = await axios.get("/admin-ng/event/events.json", {

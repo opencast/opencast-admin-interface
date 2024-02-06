@@ -78,6 +78,8 @@ import {
 	loadEventStatisticsFailure,
 	updateEventStatisticsSuccess,
 	updateEventStatisticsFailure,
+	updateCommentInProgress,
+	updateCommentDone,
 } from "../actions/eventDetailsActions";
 import { removeNotificationWizardForm } from "../actions/notificationActions";
 import { addNotification } from "./notificationThunks";
@@ -741,6 +743,36 @@ export const saveComment = (eventId, commentText, commentReason) => async (
 		return true;
 	} catch (e) {
 		dispatch(saveCommentDone());
+		console.error(e);
+		return false;
+	}
+};
+
+// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
+export const updateComment = (eventId, commentId, commentText, commentReason) => async (
+// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
+	dispatch
+) => {
+	try {
+		dispatch(updateCommentInProgress());
+
+		let headers = getHttpHeaders();
+
+		let data = new URLSearchParams();
+		data.append("text", commentText);
+		data.append("reason", commentReason);
+
+		const commentUpdated = await axios.post(
+			`/admin-ng/event/${eventId}/comment/${commentId}`,
+			data.toString(),
+			headers
+		);
+		await commentUpdated.data;
+
+		dispatch(updateCommentDone());
+		return true;
+	} catch (e) {
+		dispatch(updateCommentDone());
 		console.error(e);
 		return false;
 	}

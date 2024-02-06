@@ -26,8 +26,8 @@ import {
 
 // Fill columns initially with columns defined in eventsTableConfig
 const initialColumns = eventsTableConfig.columns.map((column) => ({
-	...column,
 	deactivated: false,
+	...column,
 }));
 
 // Initial state of events in redux store

@@ -60,6 +60,8 @@ export const SAVE_COMMENT_DONE = "SAVE_COMMENT_DONE";
 export const SAVE_COMMENT_IN_PROGRESS = "SAVE_COMMENT_IN_PROGRESS";
 export const SAVE_COMMENT_REPLY_DONE = "SAVE_COMMENT_REPLY_DONE";
 export const SAVE_COMMENT_REPLY_IN_PROGRESS = "SAVE_COMMENT_REPLY_IN_PROGRESS";
+export const UPDATE_COMMENT_DONE = "UPDATE_COMMENT_DONE";
+export const UPDATE_COMMENT_IN_PROGRESS = "UPDATE_COMMENT_IN_PROGRESS";
 
 // Constants of actions types affecting the publications tab
 export const LOAD_EVENT_PUBLICATIONS_IN_PROGRESS =
@@ -348,6 +350,14 @@ export const saveCommentReplyInProgress = () => ({
 
 export const saveCommentReplyDone = () => ({
 	type: SAVE_COMMENT_REPLY_DONE,
+});
+
+export const updateCommentInProgress = () => ({
+	type: UPDATE_COMMENT_IN_PROGRESS,
+});
+
+export const updateCommentDone = () => ({
+	type: UPDATE_COMMENT_DONE,
 });
 
 // actions for publications
