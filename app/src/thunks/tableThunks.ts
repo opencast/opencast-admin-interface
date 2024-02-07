@@ -600,6 +600,9 @@ export const changeColumnSelection = (updatedColumns) => async (
 
 			dispatch(loadEventsIntoTable());
 
+			await dispatch(fetchEvents());
+			dispatch(loadEventsIntoTable());
+
 			break;
 		}
 		case "series": {
