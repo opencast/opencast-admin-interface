@@ -85,7 +85,7 @@ const WizardStepperEvent = ({
 							</StepLabel>
 						</StepButton>
 					</Step>
-				) : null
+				) : <></>
 			)}
 		</Stepper>
 	);
