@@ -11,6 +11,7 @@ import MetadataSummaryTable from "./summaryTables/MetadataSummaryTable";
 import MetadataExtendedSummaryTable from "./summaryTables/MetadataExtendedSummaryTable";
 import AccessSummaryTable from "./summaryTables/AccessSummaryTable";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { translateOverrideFallback } from "../../../../utils/utils";
 
 /**
  * This component renders the summary page for new events in the new event wizard.
@@ -50,9 +51,7 @@ const NewEventSummary = ({
 // @ts-expect-error TS(7005): Variable 'uploadAssetsNonTrack' implicitly has an ... Remove this comment to see the full error message
 			uploadAssetsNonTrack = uploadAssetsNonTrack.concat({
 				name: uploadAssetsOptionsNonTrack[i].id,
-				translate: !!uploadAssetsOptionsNonTrack[i].displayOverride
-					? t(uploadAssetsOptionsNonTrack[i].displayOverride)
-					: t(uploadAssetsOptionsNonTrack[i].title),
+				translate: translateOverrideFallback(uploadAssetsOptionsNonTrack[i], t),
 				type: uploadAssetsOptionsNonTrack[i].type,
 				flavorType: uploadAssetsOptionsNonTrack[i].flavorType,
 				flavorSubType: uploadAssetsOptionsNonTrack[i].flavorSubType,
@@ -138,10 +137,7 @@ const NewEventSummary = ({
 												!!asset.file ? (
 													<tr key={key}>
 														<td>
-															{t(
-																asset.title + ".SHORT",
-																asset["displayOverride.SHORT"]
-															)}
+															{translateOverrideFallback(asset, t, "SHORT")}
 															<span className="ui-helper-hidden">
                                 { // eslint-disable-next-line react/jsx-no-comment-textnodes
                                 } ({asset.type} "{asset.flavorType}//

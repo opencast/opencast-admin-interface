@@ -6,6 +6,7 @@ import { style_button_spacing } from "../../../../utils/eventDetailsUtils";
 import { Formik } from "formik";
 import { updateAssets } from "../../../../thunks/eventDetailsThunks";
 import { getAssetUploadOptions } from "../../../../selectors/eventSelectors";
+import { translateOverrideFallback } from "../../../../utils/utils";
 
 /**
  * This component manages the add asset sub-tab for assets tab of event details modal
@@ -89,9 +90,7 @@ const EventDetailsAssetsAddAsset = ({
 														<tr key={key}>
 															<td>
 																{" "}
-																{!!asset.displayOverride
-																	? t(asset.displayOverride)
-																	: t(asset.title)}
+																{translateOverrideFallback(asset, t)}
 																<span className="ui-helper-hidden">
                                   { // eslint-disable-next-line react/jsx-no-comment-textnodes
                                   } ({asset.type} "{asset.flavorType}//

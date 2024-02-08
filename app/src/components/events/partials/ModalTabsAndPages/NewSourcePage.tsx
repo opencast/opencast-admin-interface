@@ -6,6 +6,7 @@ import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 import {
 	getCurrentLanguageInformation,
 	getTimezoneOffset,
+	translateOverrideFallback,
 } from "../../../../utils/utils";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Field, FieldArray } from "formik";
@@ -264,20 +265,14 @@ const Upload = ({ formik }) => {
 										<tr key={key}>
 											<td>
 												<span style={{ fontWeight: "bold" }}>
-													{t(
-														asset.title + ".SHORT",
-														asset["displayOverride.SHORT"]
-													)}
+													{translateOverrideFallback(asset, t, "SHORT")}
 												</span>
 												<span className="ui-helper-hidden">
 													({asset.type} "{asset.flavorType}/
 													{asset.flavorSubType}")
 												</span>
 												<p>
-													{t(
-														asset.title + ".DETAIL",
-														asset["displayOverride.DETAIL"]
-													)}
+													{translateOverrideFallback(asset, t, "DETAIL")}
 												</p>
 											</td>
 											<td>

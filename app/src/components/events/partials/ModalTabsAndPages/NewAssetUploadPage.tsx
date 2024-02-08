@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { connect } from "react-redux";
 import { getAssetUploadOptions } from "../../../../selectors/eventSelectors";
+import { translateOverrideFallback } from "../../../../utils/utils";
 
 /**
  * This component renders the asset upload page of the new event wizard
@@ -62,9 +63,7 @@ const NewAssetUploadPage = ({
 												<tr key={key}>
 													<td>
 														{" "}
-														{!!asset.displayOverride
-															? t(asset.displayOverride)
-															: t(asset.title)}
+														{translateOverrideFallback(asset, t)}
 														<span className="ui-helper-hidden">
                               { // eslint-disable-next-line react/jsx-no-comment-textnodes
                               } ({asset.type} "{asset.flavorType}//
