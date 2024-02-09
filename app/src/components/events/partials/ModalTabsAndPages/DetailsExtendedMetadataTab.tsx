@@ -2,7 +2,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Field, Formik } from "formik";
 import cn from "classnames";
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'loda... Remove this comment to see the full error message
 import _ from "lodash";
 import Notifications from "../../../shared/Notifications";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
