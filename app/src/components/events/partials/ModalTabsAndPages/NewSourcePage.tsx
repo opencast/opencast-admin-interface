@@ -210,16 +210,14 @@ const NewSourcePage = ({
 							nextPage(formik.values);
 						}
 					}}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-					tabIndex="100"
+					tabIndex={100}
 				>
 					{t("WIZARD.NEXT_STEP")}
 				</button>
 				<button
 					className="cancel"
 					onClick={() => previousPage(formik.values, false)}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-					tabIndex="101"
+					tabIndex={101}
 				>
 					{t("WIZARD.BACK")}
 				</button>
@@ -292,8 +290,7 @@ const Upload = ({ formik }) => {
 														type="file"
 														multiple={asset.multiple}
 														name={`uploadAssetsTrack.${key}.file`}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-														tabIndex=""
+														tabIndex={0}
 													/>
 													{/* Show name of file that is uploaded */}
 													{formik.values.uploadAssetsTrack[key].file && (
@@ -377,7 +374,7 @@ const Schedule = ({ formik, inputDevices }) => {
 						type="checkbox"
 						name="deviceInputs"
 						value={input.id}
-						tabIndex="12"
+						tabIndex={12}
 					/>
 					{t(input.value)}
 				</label>
@@ -425,8 +422,7 @@ const Schedule = ({ formik, inputDevices }) => {
 													);
 												}
 											}}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-											tabIndex="4"
+											tabIndex={4}
 										/>
 									</MuiPickersUtilsProvider>
 								</ThemeProvider>
@@ -452,8 +448,7 @@ const Schedule = ({ formik, inputDevices }) => {
 														formik.setFieldValue
 													)
 												}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-												tabIndex="5"
+												tabIndex={5}
 											/>
 										</ThemeProvider>
 									</td>
@@ -514,7 +509,7 @@ const Schedule = ({ formik, inputDevices }) => {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
-									tabIndex={"13"}
+									tabIndex={13}
 								/>
 
 								{/* drop-down for minute
@@ -544,7 +539,7 @@ const Schedule = ({ formik, inputDevices }) => {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
-									tabIndex={"14"}
+									tabIndex={14}
 								/>
 							</td>
 						</tr>
@@ -581,7 +576,7 @@ const Schedule = ({ formik, inputDevices }) => {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
-									tabIndex={"15"}
+									tabIndex={15}
 								/>
 
 								{/* drop-down for minute
@@ -611,7 +606,7 @@ const Schedule = ({ formik, inputDevices }) => {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
-									tabIndex={"16"}
+									tabIndex={16}
 								/>
 							</td>
 						</tr>
@@ -648,7 +643,7 @@ const Schedule = ({ formik, inputDevices }) => {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
-									tabIndex={"17"}
+									tabIndex={17}
 								/>
 
 								{/* drop-down for minute
@@ -678,7 +673,7 @@ const Schedule = ({ formik, inputDevices }) => {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
-									tabIndex={"18"}
+									tabIndex={18}
 								/>
 
 								{/* display end date if on different day to start date, only if this is current source mode */}
@@ -717,7 +712,7 @@ const Schedule = ({ formik, inputDevices }) => {
 									placeholder={t(
 										"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.LOCATION"
 									)}
-									tabIndex={"19"}
+									tabIndex={19}
 								/>
 							</td>
 						</tr>

@@ -27,8 +27,7 @@ const NewResourceModal = ({
 			<>
 				<div className="modal-animation modal-overlay" />
 				<section
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-					tabIndex="1"
+					tabIndex={1}
 					className="modal wizard modal-animation"
 					id="add-event-modal"
 				>

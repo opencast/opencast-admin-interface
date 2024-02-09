@@ -345,7 +345,7 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 																								"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.EMPTY"
 																						  )
 																				}
-																				tabIndex={"1"}
+																				tabIndex={1}
 																			/>
 																		) : (
 																			baseAclId

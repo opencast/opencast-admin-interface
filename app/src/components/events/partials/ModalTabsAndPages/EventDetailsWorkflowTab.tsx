@@ -395,7 +395,7 @@ const EventDetailsWorkflowTab = ({
 																									"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW_EMPTY"
 																							  )
 																					}
-																					tabIndex={"5"}
+																					tabIndex={5}
 																					disabled={
 																						!hasCurrentAgentAccess() ||
 																						!isRoleWorkflowEdit

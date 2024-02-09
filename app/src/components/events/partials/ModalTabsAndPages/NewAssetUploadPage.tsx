@@ -79,8 +79,7 @@ const NewAssetUploadPage = ({
 																accept={asset.accept}
 																onChange={(e) => handleChange(e, asset.id)}
 																type="file"
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-																tabIndex=""
+																tabIndex={0}
 															/>
 															{formik.values[asset.id] && (
 																<span className="ui-helper">
