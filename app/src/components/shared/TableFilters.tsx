@@ -25,6 +25,7 @@ import { GlobalHotKeys } from "react-hotkeys";
 import { getResourceType } from "../../selectors/tableSelectors";
 import { fetchFilters } from "../../thunks/tableFilterThunks";
 import { parseISO } from "date-fns";
+import moment from "moment";
 
 /**
  * This component renders the table filters in the upper right corner of the table
@@ -66,11 +67,15 @@ const TableFilters = ({
 	const [showFilterSettings, setFilterSettings] = useState(false);
 
 	// Variables containing selected start date and end date for date filter
-	const [startDate, setStartDate] = useState(new Date());
-	const [endDate, setEndDate] = useState(new Date());
+	const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+	const [endDate, setEndDate] = useState<Date | undefined>(undefined);
 
 	// Remove all selected filters, no filter should be "active" anymore
 	const removeFilters = async () => {
+		// Clear state
+		setStartDate(undefined);
+		setEndDate(undefined);
+
 		removeTextFilter();
 		removeSelectedFilter();
 		removeSelectedFilter();
@@ -86,6 +91,12 @@ const TableFilters = ({
 	// Remove a certain filter
 // @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 	const removeFilter = async (filter) => {
+		if (filter.name === "startDate") {
+			// Clear state
+			setStartDate(undefined);
+			setEndDate(undefined);
+		}
+
 		editFilterValue(filter.name, "");
 
 		// Reload resources when filter is removed
@@ -123,21 +134,33 @@ const TableFilters = ({
 	};
 
 	// Set the sate of startDate and endDate picked with datepicker
-// @ts-expect-error TS(7006): Parameter 'date' implicitly has an 'any' type.
-	const handleDatepickerChange = async (date, isStart = false) => {
+	const handleDatepickerChange = async (date: Date, isStart = false) => {
 		if (isStart) {
-			await setStartDate(date);
+			setStartDate(date);
 		} else {
-			await setEndDate(date);
+			setEndDate(date);
+		}
+	};
+
+	// If both dates are set, set the value for the startDate filter
+	// If the just changed, it can be passed here so we don't have wait a render
+	// cycle for the useState state to update
+	const handleDatepickerConfirm = async (date?: Date, isStart = false) => {
+		let myStartDate = startDate;
+		let myEndDate = endDate;
+		if (date && isStart) {
+			myStartDate = date;
+		}
+		if (date && !isStart) {
+			myEndDate = date;
 		}
 
-		// When both dates set, then set the value for this filter
-		if (!isStart) {
+		if (myStartDate && myEndDate && moment(myStartDate).isValid() && moment(myEndDate).isValid()) {
 // @ts-expect-error TS(7031): Binding element 'name' implicitly has an 'any' typ... Remove this comment to see the full error message
 			let filter = filterMap.find(({ name }) => name === selectedFilter);
 			await editFilterValue(
 				filter.name,
-				startDate.toISOString() + "/" + date.toISOString()
+				myStartDate.toISOString() + "/" + myEndDate.toISOString()
 			);
 			setFilterSelector(false);
 			removeSelectedFilter();
@@ -145,7 +168,7 @@ const TableFilters = ({
 			await loadResource();
 			loadResourceIntoTable();
 		}
-	};
+	}
 
 	const hotKeyHandlers = {
 		REMOVE_FILTERS: removeFilters,
@@ -251,9 +274,8 @@ const TableFilters = ({
 										filterMap={filterMap}
 										selectedFilter={selectedFilter}
 										secondFilter={secondFilter}
-										startDate={startDate}
-										endDate={endDate}
 										handleDate={handleDatepickerChange}
+										handleDateConfirm={handleDatepickerConfirm}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -343,12 +365,10 @@ const FilterSwitch = ({
 	selectedFilter,
 // @ts-expect-error TS(7031): Binding element 'handleChange' implicitly has an '... Remove this comment to see the full error message
 	handleChange,
-// @ts-expect-error TS(7031): Binding element 'startDate' implicitly has an 'any... Remove this comment to see the full error message
-	startDate,
-// @ts-expect-error TS(7031): Binding element 'endDate' implicitly has an 'any' ... Remove this comment to see the full error message
-	endDate,
 // @ts-expect-error TS(7031): Binding element 'handleDate' implicitly has an 'an... Remove this comment to see the full error message
 	handleDate,
+// @ts-expect-error TS(7031): Binding element 'handleDate' implicitly has an 'an... Remove this comment to see the full error message
+	handleDateConfirm,
 // @ts-expect-error TS(7031): Binding element 'secondFilter' implicitly has an '... Remove this comment to see the full error message
 	secondFilter,
 }) => {
@@ -431,18 +451,39 @@ const FilterSwitch = ({
 				<div>
 					{/* Show datepicker for start date */}
 					<DatePicker
+						autoFocus={true}
 						className="small-search start-date"
-						value={typeof startDate === "string" ? parseISO(startDate) : startDate}
-
+						value={null}
 						format="dd/MM/yyyy"
 						onChange={(date) => handleDate(date, true)}
+						onAccept={(e) => {
+							handleDateConfirm(e, true)
+						}}
+						slotProps={{
+							textField: {
+								onKeyDown: (event) => {
+									if (event.key === "Enter") {
+										handleDateConfirm()
+									}
+								},
+							},
+						}}
 					/>
 					<DatePicker
 						className="small-search end-date"
-						value={typeof endDate === "string" ? parseISO(endDate) : endDate}
-
+						value={null}
 						format="dd/MM/yyyy"
 						onChange={(date) => handleDate(date)}
+						onAccept={(e) => handleDateConfirm(e, false)}
+						slotProps={{
+							textField: {
+								onKeyDown: (event) => {
+									if (event.key === "Enter") {
+										handleDateConfirm()
+									}
+								},
+							},
+						}}
 					/>
 				</div>
 			);
