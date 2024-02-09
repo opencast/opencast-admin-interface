@@ -33,9 +33,9 @@ const RenderField = ({
 	const handleKeyDown = (event, type) => {
 		const { key } = event;
 		// keys pressable for leaving edit mode
-		const keys = ["Escape", "Tab", "Enter"];
+		const keys = ["Escape", "Enter"];
 
-		if (type !== "textarea" && keys.indexOf(key) > -1) {
+		if ((type !== "textarea" || type !== "select") && keys.indexOf(key) > -1) {
 			setEditMode(false);
 		}
 	};
@@ -209,7 +209,7 @@ const EditableDateValue = ({
 			/>
 		</div>
 	) : (
-		<div onClick={() => setEditMode(true)} className="show-edit">
+		<div onFocus={() => setEditMode(true)} className="show-edit" tabIndex={0}>
 			<span className="editable preserve-newlines">
 				<RenderDate date={text} />
 			</span>
@@ -269,7 +269,7 @@ const EditableSingleSelect = ({
 			/>
 		</div>
 	) : (
-		<div onClick={() => setEditMode(true)} className="show-edit">
+		<div onFocus={() => setEditMode(true)} className="show-edit" tabIndex={0}>
 			<span className="editable preserve-newlines">
 				{text || t("SELECT_NO_OPTION_SELECTED")}
 			</span>
@@ -317,7 +317,7 @@ const EditableSingleValueTextArea = ({
 			/>
 		</div>
 	) : (
-		<div onClick={() => setEditMode(true)} className="show-edit">
+		<div onFocus={() => setEditMode(true)} className="show-edit" tabIndex={0}>
 			<span className="editable preserve-newlines">{text || ""}</span>
 			<div>
 				<i className="edit fa fa-pencil-square" />
@@ -359,7 +359,7 @@ const EditableSingleValue = ({
 			<input {...field} autoFocus={true} type="text" />
 		</div>
 	) : (
-		<div onClick={() => setEditMode(true)} className="show-edit">
+		<div onFocus={() => setEditMode(true)} className="show-edit" tabIndex={0}>
 			<span className="editable preserve-newlines">{text || ""}</span>
 			<div>
 				<i className="edit fa fa-pencil-square" />
@@ -417,7 +417,7 @@ const EditableSingleValueTime = ({
 			/>
 		</div>
 	) : (
-		<div onClick={() => setEditMode(true)} className="show-edit">
+		<div onFocus={() => setEditMode(true)} className="show-edit" tabIndex={0}>
 			<span className="editable preserve-newlines">
 				{t("dateFormats.dateTime.short", { dateTime: new Date(text) }) || ""}
 			</span>
