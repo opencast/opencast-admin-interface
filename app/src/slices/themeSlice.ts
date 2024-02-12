@@ -7,10 +7,32 @@ import { addNotification } from '../thunks/notificationThunks';
 /**
  * This file contains redux reducer for actions affecting the state of themes
  */
+type Details = {
+	bumperActive: boolean,
+	bumperFile: string,
+	creationDate: any,
+	creator: string,
+	default: boolean,
+	description: string,
+	id: number,
+	licenseSlideActive: boolean,
+	licenseSlideBackground: string,
+	licenseSlideDescription: string,
+	name: string,
+	titleSlideActive: boolean,
+	titleSlideBackground: string,
+	titleSlideMetadata: string,
+	trailerActive: boolean,
+	trailerFile: string,
+	watermarkActive: boolean,
+	watermarkFile: string,
+	watermarkPosition: string,
+}
+
 type ThemeState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
-	results: any[],		 // TODO: proper typing
+	results: Details[],
 	columns: any,			 // TODO: proper typing, derive from `initialColumns`
 	total: number,
 	count: number,
