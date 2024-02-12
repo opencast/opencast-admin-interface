@@ -2,6 +2,7 @@ import RecordingsActionCell from "../../components/recordings/partials/Recording
 import RecordingsNameCell from "../../components/recordings/partials/RecordingsNameCell";
 import RecordingsStatusCell from "../../components/recordings/partials/RecordingsStatusCell";
 import RecordingsUpdateCell from "../../components/recordings/partials/RecordingsUpdateCell";
+import { TableConfig } from "./aclsTableConfig";
 
 /**
  * Config that contains the columns and further information regarding recordings. These are the information that never or hardly changes.
@@ -13,7 +14,7 @@ import RecordingsUpdateCell from "../../components/recordings/partials/Recording
  * - category type (here: recordings)
  * - is multi select possible?
  */
-export const recordingsTableConfig = {
+export const recordingsTableConfig: TableConfig = {
 	columns: [
 		{
 			name: "status",

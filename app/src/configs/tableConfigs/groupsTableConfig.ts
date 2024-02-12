@@ -1,4 +1,5 @@
 import GroupsActionsCell from "../../components/users/partials/GroupsActionsCell";
+import { TableConfig } from "./aclsTableConfig";
 
 /**
  * Config that contains the columns and further information regarding groups. These are the information that never or hardly changes.
@@ -10,7 +11,7 @@ import GroupsActionsCell from "../../components/users/partials/GroupsActionsCell
  * - category type (here: users)
  * - is multi select possible?
  */
-export const groupsTableConfig = {
+export const groupsTableConfig: TableConfig = {
 	columns: [
 		{
 			name: "name",

@@ -1,5 +1,6 @@
 import ServersStatusCell from "../../components/systems/partials/ServersStatusCell";
 import ServersMaintenanceCell from "../../components/systems/partials/ServersMaintenanceCell";
+import { TableConfig } from "./aclsTableConfig";
 
 /**
  * Config that contains the columns and further information regarding servers. These are the information that never or hardly changes.
@@ -11,7 +12,7 @@ import ServersMaintenanceCell from "../../components/systems/partials/ServersMai
  * - category type (here: systems)
  * - is multi select possible?
  */
-export const serversTableConfig = {
+export const serversTableConfig: TableConfig = {
 	columns: [
 		{
 			template: "ServersStatusCell",

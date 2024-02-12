@@ -1,5 +1,6 @@
 import UsersActionCell from "../../components/users/partials/UsersActionsCell";
 import UsersRolesCell from "../../components/users/partials/UsersRolesCell";
+import { TableConfig } from "./aclsTableConfig";
 
 /**
  * Config that contains the columns and further information regarding users. These are the information that never or hardly changes.
@@ -11,7 +12,7 @@ import UsersRolesCell from "../../components/users/partials/UsersRolesCell";
  * - category type (here: users)
  * - is multi select possible?
  */
-export const usersTableConfig = {
+export const usersTableConfig: TableConfig = {
 	columns: [
 		{
 			name: "name",

@@ -1,4 +1,5 @@
 import ThemesActionsCell from "../../components/configuration/partials/ThemesActionsCell";
+import { TableConfig } from "./aclsTableConfig";
 
 /**
  * Config that contains the columns and further information regarding themes. These are the information that never or hardly changes.
@@ -10,7 +11,7 @@ import ThemesActionsCell from "../../components/configuration/partials/ThemesAct
  * - category type (here: configuration)
  * - is multi select possible?
  */
-export const themesTableConfig = {
+export const themesTableConfig: TableConfig = {
 	columns: [
 		{
 			name: "name",

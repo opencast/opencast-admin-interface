@@ -8,6 +8,7 @@ import PublishedCell from "../../components/events/partials/PublishedCell";
 import EventsLocationCell from "../../components/events/partials/EventsLocationCell";
 import EventsEndCell from "../../components/events/partials/EventsEndCell";
 import EventsStartCell from "../../components/events/partials/EventsStartCell";
+import { TableConfig } from "./aclsTableConfig";
 
 /**
  * Config that contains the columns and further information regarding events. These are the information that never or hardly changes.
@@ -19,7 +20,7 @@ import EventsStartCell from "../../components/events/partials/EventsStartCell";
  * - category type (here: events)
  * - is multi select possible?
  */
-export const eventsTableConfig = {
+export const eventsTableConfig: TableConfig = {
 	columns: [
 		{
 			name: "title",

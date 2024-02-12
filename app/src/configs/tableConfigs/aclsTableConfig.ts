@@ -1,4 +1,20 @@
 import AclsActionsCell from "../../components/users/partials/AclsActionsCell";
+
+export type TableConfig = {
+	columns: {
+		name: string,
+		label: string,
+		template?: string,
+		sortable?: boolean,
+		translate?: boolean,
+		deactivated?: boolean,
+	}[],
+	caption: string,
+	resource: string,
+	category: string,
+	multiSelect: boolean,
+}
+
 /**
  * Config that contains the columns and further information regarding acls. These are the information that never or hardly changes.
  * That's why it is hard coded here and not fetched from server.
@@ -9,7 +25,7 @@ import AclsActionsCell from "../../components/users/partials/AclsActionsCell";
  * - category type (here: users)
  * - is multi select possible?
  */
-export const aclsTableConfig = {
+export const aclsTableConfig: TableConfig = {
 	columns: [
 		{
 			name: "name",

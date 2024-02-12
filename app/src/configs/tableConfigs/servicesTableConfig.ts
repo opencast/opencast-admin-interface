@@ -1,6 +1,7 @@
 import MeanRunTimeCell from "../../components/systems/partials/MeanRunTimeCell";
 import MeanQueueTimeCell from "../../components/systems/partials/MeanQueueTimeCell";
 import ServicesActionCell from "../../components/systems/partials/ServicesActionsCell";
+import { TableConfig } from "./aclsTableConfig";
 
 /**
  * Config that contains the columns and further information regarding services. These are the information that never or hardly changes.
@@ -12,7 +13,7 @@ import ServicesActionCell from "../../components/systems/partials/ServicesAction
  * - category type (here: systems)
  * - is multi select possible?
  */
-export const servicesTableConfig = {
+export const servicesTableConfig: TableConfig = {
 	columns: [
 		{
 			name: "status",
