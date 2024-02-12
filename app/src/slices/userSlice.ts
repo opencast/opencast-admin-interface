@@ -8,10 +8,19 @@ import { addNotification } from '../thunks/notificationThunks';
 /**
  * This file contains redux reducer for actions affecting the state of users
  */
+type UserResult = {
+	email?: string,
+	manageable: boolean,
+	name: string,
+	provider: string,
+	roles: { name: string, type: string }[],
+	username: string,
+}
+
 type UsersState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
-	results: any[],		 // TODO: proper typing
+	results: UserResult[],
 	columns: any,			 // TODO: proper typing, derive from `initialColumns`
 	total: number,
 	count: number,
