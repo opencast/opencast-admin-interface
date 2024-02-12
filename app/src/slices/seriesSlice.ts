@@ -17,6 +17,19 @@ import { addNotification } from "../thunks/notificationThunks";
 /**
  * This file contains redux reducer for actions affecting the state of series
  */
+type Series = {
+	contributors: string[],
+	createdBy?: string,
+	creation_date?: string,
+	id: string,
+	language?: string,
+	license?: string,
+	managedAcl?: string,
+	organizers: string[],
+	rightsHolder?: string,
+	title: string,
+}
+
 type SeriesState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
@@ -24,7 +37,7 @@ type SeriesState = {
 	errorMetadata: SerializedError | null,
 	statusThemes: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorThemes: SerializedError | null,
-	results: any[],		 // TODO: proper typing
+	results: Series[],
 	columns: any,			 // TODO: proper typing, derive from `initialColumns`
   showActions: boolean,
 	total: number,
