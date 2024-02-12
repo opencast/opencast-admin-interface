@@ -7,10 +7,18 @@ import { addNotification } from '../thunks/notificationThunks';
 /**
  * This file contains redux reducer for actions affecting the state of groups
  */
+type Group = {
+	description: string,
+	id: string,
+	name: string,
+  role: string,
+	users: {id: string, name: string}[],
+}
+
 type GroupState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
-	results: any[],		 // TODO: proper typing
+	results: Group[],
 	columns: any,			 // TODO: proper typing, derive from `initialColumns`
 	total: number,
 	count: number,
