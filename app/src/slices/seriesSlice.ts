@@ -319,20 +319,6 @@ const seriesSlice = createSlice({
 		>) {
 			state.showActions = action.payload;
 		},
-		setSeriesSelected(state, action: PayloadAction<
-			any
-		>) {
-			const id = action.payload
-			// state.: state.rows.map((row) => {
-			// 	if (row.id === id) {
-			// 		return {
-			// 			...row,
-			// 			selected: !row.selected,
-			// 		};
-			// 	}
-			// 	return row;
-			// }),
-		},
 		setSeriesDeletionAllowed(state, action: PayloadAction<{
 			deletionAllowed: SeriesState["deletionAllowed"],
 			hasEvents: SeriesState["hasEvents"],
@@ -403,7 +389,6 @@ const seriesSlice = createSlice({
 export const {
 	setSeriesColumns,
 	showActionsSeries,
-	setSeriesSelected,
 	setSeriesDeletionAllowed,
 } = seriesSlice.actions;
 
