@@ -25,6 +25,34 @@ import { RootState } from '../store';
 /**
  * This file contains redux reducer for actions affecting the state of a series
  */
+type MetadataCatalog = {
+	title: string,
+	flavor: string,
+	fields: {
+		collection?: {}[],	// different for e.g. languages and presenters
+		id: string,
+		label: string,
+		readOnly: boolean,
+		required: boolean,
+		translatable?: boolean,
+		type: string,
+		value: string | string[],
+	}[]
+}
+
+type Feed = {
+	link: string,
+	type: string,
+	version: string
+}
+
+type Acl = {
+	actions: string[],
+	read: boolean,
+	role: string,
+	write: boolean,
+}
+
 type SeriesDetailsState = {
 	statusMetadata: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorMetadata: SerializedError | null,
@@ -36,12 +64,12 @@ type SeriesDetailsState = {
 	errorTheme: SerializedError | null,
 	statusThemeNames: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorThemeNames: SerializedError | null,
-  metadata: any,
-	extendedMetadata: any[],
-	feeds: any,
-	acl: any,
+  metadata: MetadataCatalog,
+	extendedMetadata: MetadataCatalog[],
+	feeds: Feed[],
+	acl: Acl[],
 	theme: string,
-	themeNames: any[],
+	themeNames: { id: string, value: string }[],
 	fetchingStatisticsInProgress: boolean,
 	statistics: any[],
 	hasStatisticsError: boolean,
@@ -59,10 +87,14 @@ const initialState: SeriesDetailsState = {
 	errorTheme: null,
 	statusThemeNames: 'uninitialized',
 	errorThemeNames: null,
-	metadata: {},
+	metadata: {
+		title: "",
+		flavor: "",
+		fields: [],
+	},
 	extendedMetadata: [],
-	feeds: {},
-	acl: {},
+	feeds: [],
+	acl: [],
 	theme: "",
 	themeNames: [],
 	fetchingStatisticsInProgress: false,
@@ -308,7 +340,21 @@ export const updateSeriesTheme = createAsyncThunk('seriesDetails/updateSeriesThe
 
 	let themeNames = getSeriesDetailsThemeNames(getState() as RootState);
 
-	let themeId = themeNames.find((theme) => theme.value === values.theme).id;
+	let themeId = themeNames.find((theme) => theme.value === values.theme)?.id;
+
+	if (!themeId) {
+		console.error("Can't update series theme. " + values.theme + " not found");
+		dispatch(
+			addNotification(
+				"error",
+				"SERIES_NOT_SAVED",
+				10,
+				null,
+				NOTIFICATION_CONTEXT
+			)
+		);
+		return;
+	}
 
 	let data = new URLSearchParams();
 	data.append("themeId", themeId);
