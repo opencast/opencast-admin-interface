@@ -6,10 +6,25 @@ import { addNotification } from '../thunks/notificationThunks';
  * This file contains redux reducer for actions affecting the state of information about current user
  */
 type OcVersion = {
-  buildNumber: string | undefined,
-  consistent: boolean | undefined,
-  lastModified: number | undefined,
-  version: string | undefined,
+	buildNumber: string | undefined,
+	consistent: boolean | undefined,
+	lastModified: number | undefined,
+	version: string | undefined,
+}
+
+type UserInfoOrganization = {
+	adminRole: string,
+	anonymousRole: string,
+	id: string,
+	name: string,
+	properties: { [key: string]: string },
+}
+
+type UserInfoUser = {
+	email: string,
+	name: string,
+	provider: string,
+	username: string,
 }
 
 type UserInfoState = {
@@ -19,10 +34,10 @@ type UserInfoState = {
 	errorOcVersion: SerializedError | null,
 	isAdmin: boolean,
 	isOrgAdmin: boolean,
-	org: any,//TODO: Type this
+	org: UserInfoOrganization,
 	roles: string[],
 	userRole: string,
-	user: any,//TODO: Type this
+	user: UserInfoUser,
 	ocVersion: OcVersion,
 };
 
@@ -34,16 +49,27 @@ const initialState: UserInfoState = {
 	errorOcVersion: null,
 	isAdmin: false,
 	isOrgAdmin: false,
-	org: {},
+	org: {
+		adminRole: "",
+		anonymousRole: "",
+		id: "",
+		name: "",
+		properties: {}
+	},
 	roles: [],
 	userRole: "",
-	user: {},
+	user: {
+		email: "",
+		name: "",
+		provider: "",
+		username: "",
+	},
 	ocVersion: {
-    buildNumber: undefined,
-    consistent: undefined,
-    lastModified: undefined,
-    version: undefined,
-  },
+		buildNumber: undefined,
+		consistent: undefined,
+		lastModified: undefined,
+		version: undefined,
+	},
 };
 
 export const fetchUserInfo = createAsyncThunk('UserInfo/fetchUserInfo', async (_, { dispatch }) => {
@@ -60,17 +86,6 @@ export const fetchUserInfo = createAsyncThunk('UserInfo/fetchUserInfo', async (_
 		});
 
 	return res;
-
-	// let userInfo = await res.data;
-
-	// // add direct information about user being an admin
-	// userInfo = {
-	// 	isAdmin: userInfo.roles.includes("ROLE_ADMIN"),
-	// 	isOrgAdmin: userInfo.roles.includes(userInfo.org.adminRole),
-	// 	...userInfo,
-	// };
-
-	// return userInfo;
 });
 
 export const fetchOcVersion = createAsyncThunk('UserInfo/fetchOcVersion', async () => {
@@ -106,10 +121,21 @@ const userInfoSlice = createSlice({
 			})
 			.addCase(fetchUserInfo.rejected, (state, action) => {
 				state.status = 'failed';
-				state.org = {};
+				state.org = {
+					adminRole: "",
+					anonymousRole: "",
+					id: "",
+					name: "",
+					properties: {}
+				};
 				state.roles = [];
 				state.userRole = "";
-				state.user = {};
+				state.user = {
+					email: "",
+					name: "",
+					provider: "",
+					username: "",
+				};
 				state.error = action.error;
 			})
 			.addCase(fetchOcVersion.pending, (state) => {
