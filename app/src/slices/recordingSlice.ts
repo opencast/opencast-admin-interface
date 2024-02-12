@@ -7,10 +7,22 @@ import { addNotification } from '../thunks/notificationThunks';
 /**
  * This file contains redux reducer for actions affecting the state of recordings
  */
+type Recording = {
+	id: string,
+	inputs: string[],
+	name: string,
+	removable: boolean,
+	roomId: string,
+	status: string,
+	type: string,
+	updated: string,
+	url: string,
+}
+
 type RecordingState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
-	results: any[],		 // TODO: proper typing
+	results: Recording[],
 	columns: any,			 // TODO: proper typing, derive from `initialColumns`
 	total: number,
 	count: number,

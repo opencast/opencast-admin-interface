@@ -836,10 +836,16 @@ export const fetchSchedulingInfo = (eventId) => async (dispatch, getState) => {
 			endDate
 		);
 
-		let device = {
+		let device: {
+			id: string,
+			name: string,
+			inputs: string[],
+			inputMethods: string[],
+		} = {
 			id: "",
 			name: "",
 			inputs: [],
+			inputMethods: [],
 		};
 
 		const agent = captureAgents.find(
