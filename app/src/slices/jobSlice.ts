@@ -6,10 +6,22 @@ import { getURLParams } from '../utils/resourceUtils';
 /**
  * This file contains redux reducer for actions affecting the state of jobs
  */
+type Job = {
+	creator: string,
+	id: number,
+	operation: string,
+	processingHost: string,
+	processingNode: string,
+	started: string,
+	status: string,
+	submitted: string,
+	type: string,
+}
+
 type JobState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
-	results: any[],		 // TODO: proper typing
+	results: Job[],
 	columns: any,			 // TODO: proper typing, derive from `initialColumns`
 	total: number,
 	count: number,
@@ -42,7 +54,7 @@ export const fetchJobs = createAsyncThunk('jobs/fetchJobs', async (_, { getState
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
 	// /jobs.json?limit=0&offset=0&filter={filter}&sort={sort}
-	const res = await axios.get("/admin-ng/job/jobs.json?n", { params: params });
+	const res = await axios.get("/admin-ng/job/jobs.json?", { params: params });
 	return res.data;
 });
 
