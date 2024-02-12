@@ -4,9 +4,17 @@ import axios from 'axios';
 /**
  * This file contains redux reducer for actions affecting the state of workflows
  */
+type ConfigurationPanelField = {
+	// We could potentially specify 'fieldset' more, but I cannot find a definition
+	// for which key value pairs are allowed
+	fieldset?: { [key: string]: any }	// Values can be anything
+	legend?: string,
+	description?: string,
+}
+
 type Workflow = {
 	configuration_panel: string,	//XML
-	configuration_panel_json: any,	//Both the Json string AND the parsed Json!?
+	configuration_panel_json: string | ConfigurationPanelField[],	// 'string' will always be the empty string
 	description: string,
 	displayOrder: number,
 	id: string,
@@ -62,9 +70,9 @@ export const fetchWorkflowDef = createAsyncThunk('workflow/fetchWorkflowDef', as
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
 	const res = await axios.get("/admin-ng/event/new/processing?", { params: urlParams });
-	let workflows: Workflow[] = res.data.workflows;
+	let workflows = res.data.workflows;
 
-	workflows = workflows.map((workflow) => {
+	workflows = workflows.map((workflow: any) => {
 		if (workflow.configuration_panel_json.length > 0) {
 			return {
 				...workflow,

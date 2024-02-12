@@ -56,10 +56,9 @@ const RenderWorkflowConfig: React.FC<{
 				</div>
 			)}
 
-			{configPanel.length > 0 && (
+			{Array.isArray(configPanel) && configPanel.length > 0 && (
 				<form>
 					<div id="workflow-configuration">
-{/* @ts-expect-error TS(7006): Parameter 'configOption' implicitly has an 'any' t... Remove this comment to see the full error message */}
 						{configPanel.map((configOption, key) => (
 							<fieldset key={key}>
 								{!!configOption.legend && (
