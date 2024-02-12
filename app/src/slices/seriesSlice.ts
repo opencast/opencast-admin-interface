@@ -30,6 +30,27 @@ type Series = {
 	title: string,
 }
 
+type MetadataCatalog = {
+	title: string,
+	flavor: string,
+	fields: {
+		collection?: {}[],	// different for e.g. languages and presenters
+		id: string,
+		label: string,
+		readOnly: boolean,
+		required: boolean,
+		translatable?: boolean,
+		type: string,
+		value: string | string[],
+	}[]
+}
+
+type Theme = {
+	description: string,
+	id: string,
+	name: string,
+}
+
 type SeriesState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
@@ -44,9 +65,9 @@ type SeriesState = {
 	count: number,
 	offset: number,
 	limit: number,
-  metadata: any,						// TODO: proper typing
-	extendedMetadata: any[],	// TODO: proper typing
-	themes: any,							// TODO: proper typing
+  metadata: MetadataCatalog,
+	extendedMetadata: MetadataCatalog[],
+	themes: Theme[],
 	deletionAllowed: boolean,
 	hasEvents: boolean,
 }
@@ -72,9 +93,13 @@ const initialState: SeriesState = {
 	count: 0,
 	offset: 0,
 	limit: 0,
-	metadata: {},
+	metadata: {
+		title: "",
+		flavor: "",
+		fields: [],
+	},
 	extendedMetadata: [],
-	themes: {},
+	themes: [],
 	deletionAllowed: true,
 	hasEvents: false,
 };
@@ -97,7 +122,7 @@ export const fetchSeriesMetadata = createAsyncThunk('series/fetchSeriesMetadata'
 	const data = await res.data;
 
 	const mainCatalog = "dublincore/series";
-	let metadata = {};
+	let metadata: any = {};
 	const extendedMetadata = [];
 
 	for (const metadataCatalog of data) {

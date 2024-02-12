@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import {
 	getSeriesExtendedMetadata,
 	getSeriesMetadata,
@@ -30,7 +29,6 @@ const NewSeriesSummary = ({
 	const seriesThemes = useAppSelector(state => getSeriesThemes(state));
 
 	// Get additional information about chosen series theme
-// @ts-expect-error TS(7006): Parameter 'theme' implicitly has an 'any' type.
 	const theme = seriesThemes.find((theme) => theme.id === formik.values.theme);
 
 	return (
@@ -71,7 +69,7 @@ const NewSeriesSummary = ({
 									<tbody>
 										<tr>
 											<td>{t("EVENTS.SERIES.NEW.THEME.CAPTION")}</td>
-											<td>{theme.name}</td>
+											<td>{theme?.name}</td>
 										</tr>
 									</tbody>
 								</table>

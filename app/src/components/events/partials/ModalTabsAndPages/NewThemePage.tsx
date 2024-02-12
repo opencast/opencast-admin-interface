@@ -17,12 +17,16 @@ const NewThemePage = ({
 
 	const seriesThemes = useAppSelector(state => getSeriesThemes(state));
 
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	const getDescription = (id) => {
-// @ts-expect-error TS(7006): Parameter 'theme' implicitly has an 'any' type.
+	const getDescription = (id: string) => {
 		const theme = seriesThemes.find((theme) => theme.id === id);
 
-		return theme.description;
+		return theme?.description;
+	};
+
+	const getName = (id: string) => {
+		const theme = seriesThemes.find((theme) => theme.id === id);
+
+		return theme?.name;
 	};
 
 	return (
@@ -45,16 +49,7 @@ const NewThemePage = ({
 														<DropDown
 															value={formik.values.theme}
 															text={
-																!!seriesThemes.find(
-// @ts-expect-error TS(7006): Parameter 'theme' implicitly has an 'any' type.
-																	(theme) => formik.values.theme === theme.id
-																)
-																	? seriesThemes.find(
-// @ts-expect-error TS(7006): Parameter 'theme' implicitly has an 'any' type.
-																			(theme) =>
-																				formik.values.theme === theme.id
-																	  ).name
-																	: ""
+																getName(formik.values.theme) ? getName(formik.values.theme) : ""
 															}
 															options={seriesThemes}
 															type={"newTheme"}
