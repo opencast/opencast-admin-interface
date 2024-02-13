@@ -6,10 +6,22 @@ import { getURLParams } from '../utils/resourceUtils';
 /**
  * This file contains redux reducer for actions affecting the state of services
  */
+type Service = {
+	completed: number,
+	hostname: string,
+	meanQueueTime: number,
+	meanRunTime: number,
+	name: string,
+	nodeName: string,
+	queued: number,
+	running: number,
+	status: string,
+}
+
 type ServiceState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
-	results: any[],		 // TODO: proper typing
+	results: Service[],
 	columns: any,			 // TODO: proper typing, derive from `initialColumns`
 	total: number,
 	count: number,
