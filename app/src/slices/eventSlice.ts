@@ -26,6 +26,101 @@ import { fetchAssetUploadOptions } from '../thunks/assetsThunks';
 /**
  * This file contains redux reducer for actions affecting the state of events
  */
+type Comment = {
+	reason: string,
+	resolvedStatus: boolean,
+	modificationDate: string,
+	replies: {
+		id: number,
+		text: string,
+		creationDate: string,
+		modificationDate: string,
+		author: {
+			name: string,
+			email?: string,
+			username: string,
+		}
+	}[],
+	author: {
+		name: string,
+		email?: string,
+		username: string,
+	},
+	id: number,
+	text: string,
+	creationDate: string,
+}
+
+// Strings will be empty if there is no value
+type Event = {
+	agent_id: string,
+	comments?: Comment[],
+	date: string,
+	displayable_status: string,
+	end_date: string,
+	event_status: string,
+	has_comments: boolean,
+	has_open_comments: boolean,
+	has_preview: boolean,
+	id: string,
+	location: string,
+	managedAcl: string,
+	needs_cutting: boolean,
+	presenters: string[],
+	publications: {
+		enabled: boolean,
+		hiding: boolean,
+		id: string,
+		name: string,
+		url: string,
+	}[],
+	series?: { id: string, title: string }
+	source: string,
+	start_date: string,
+	technical_end: string,
+	technical_presenters: string[],
+	technical_start: string,
+	title: string,
+	workflow_state: string,
+}
+
+type MetadataCatalog = {
+	title: string,
+	flavor: string,
+	fields: {
+		collection?: {}[],	// different for e.g. languages and presenters
+		id: string,
+		label: string,
+		readOnly: boolean,
+		required: boolean,
+		translatable?: boolean,
+		type: string,
+		value: string | string[],
+	}[]
+}
+
+type EditedEvents = {
+	changedDeviceInputs: string[],
+	changedEndTimeHour: string,
+	changedEndTimeMinutes: string,
+	changedLocation: string,
+	changedSeries: string,
+	changedStartTimeHour: string,
+	changedStartTimeMinutes: string,
+	changedTitle: string,
+	changedWeekday: string,
+	deviceInputs: string,
+	endTimeHour: string,
+	endTimeMinutes: string,
+	eventId: string,
+	location: string,
+	series: string,
+	startTimeHour: string,
+	startTimeMinutes: string,
+	title: string,
+	weekday: string,
+}
+
 type EventState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
@@ -35,21 +130,24 @@ type EventState = {
 	errorSchedulingInfo: SerializedError | null,
 	statusAssetUploadOptions: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAssetUploadOptions: SerializedError | null,
-	results: any[],		 // TODO: proper typing
+	results: Event[],
 	columns: any,			 // TODO: proper typing, derive from `initialColumns`
 	total: number,
 	count: number,
 	offset: number,
 	limit: number,
 	showActions: boolean,
-	metadata: any,		// TODO: proper typing
-	extendedMetadata: any[],		// TODO: proper typing
+	metadata: MetadataCatalog,
+	extendedMetadata: MetadataCatalog[],
 	isFetchingAssetUploadOptions: boolean,
 	uploadAssetOptions: any[],		// TODO: proper typing
 	uploadAssetWorkflow: any,		// TODO: proper typing
 	schedulingInfo: {
-		editedEvents: any[],		// TODO: proper typing
-		seriesOptions: any[],		// TODO: proper typing
+		editedEvents: EditedEvents[],
+		seriesOptions: {
+			name: string,
+			value: string,
+		}[],
 	},
 }
 
@@ -76,7 +174,11 @@ const initialState: EventState = {
 	limit: 0,
 	offset: 0,
 	showActions: false,
-	metadata: {},
+	metadata: {
+		title: "",
+		flavor: "",
+		fields: [],
+	},
 	extendedMetadata: [],
 	isFetchingAssetUploadOptions: false,
 	uploadAssetOptions: [],
@@ -131,7 +233,7 @@ export const fetchEventMetadata = createAsyncThunk('events/fetchEventMetadata', 
 	const response = await data.data;
 
 	const mainCatalog = "dublincore/episode";
-	let metadata = {};
+	let metadata: any = {};
 	const extendedMetadata = [];
 
 	for (const metadataCatalog of response) {
