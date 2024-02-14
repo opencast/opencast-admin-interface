@@ -78,9 +78,9 @@ const serverSlice = createSlice({
 	name: 'servers',
 	initialState,
 	reducers: {
-		setServerColumns(state, action: PayloadAction<{
-			updatedColumns: ServerState["columns"],
-		}>) {
+		setServerColumns(state, action: PayloadAction<
+			ServerState["columns"]
+		>) {
 			state.columns = action.payload.updatedColumns;
 		},
 	},
