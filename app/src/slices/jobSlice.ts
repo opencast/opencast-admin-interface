@@ -62,10 +62,10 @@ const jobSlice = createSlice({
 	name: 'jobs',
 	initialState,
 	reducers: {
-		setJobColumns(state, action: PayloadAction<{
-			updatedColumns: JobState["columns"],
-		}>) {
-			state.columns = action.payload.updatedColumns;
+		setJobColumns(state, action: PayloadAction<
+			JobState["columns"]
+		>) {
+			state.columns = action.payload;
 		},
 	},
 	// These are used for thunks
