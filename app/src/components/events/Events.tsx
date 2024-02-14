@@ -90,6 +90,11 @@ const Events = ({
 
 	let location = useLocation();
 
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const fetchEventsWrapper = () => {
+		dispatch(fetchEvents())
+	}
+
 	const loadEvents = async () => {
 		// Fetching stats from server
 		loadingStats();
@@ -319,7 +324,7 @@ const Events = ({
 
 						{/* Include filters component*/}
 						<TableFilters
-							loadResource={dispatch(fetchEvents())}
+							loadResource={fetchEventsWrapper}
 							loadResourceIntoTable={loadingEventsIntoTable}
 							resource={"events"}
 						/>
