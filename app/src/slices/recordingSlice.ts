@@ -118,9 +118,9 @@ const recordingSlice = createSlice({
 	name: 'recordings',
 	initialState,
 	reducers: {
-		setRecordingsColumns(state, action: PayloadAction<{
-			updatedColumns: RecordingState["columns"],
-		}>) {
+		setRecordingsColumns(state, action: PayloadAction<
+			RecordingState["columns"]
+		>) {
 			state.columns = action.payload.updatedColumns;
 		},
 	},
