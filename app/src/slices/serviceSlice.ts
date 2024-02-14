@@ -79,9 +79,9 @@ const serviceSlice = createSlice({
 	name: 'services',
 	initialState,
 	reducers: {
-		setServiceColumns(state, action: PayloadAction<{
-			updatedColumns: ServiceState["columns"],
-		}>) {
+		setServiceColumns(state, action: PayloadAction<
+			ServiceState["columns"]
+		>) {
 			state.columns = action.payload.updatedColumns;
 		},
 	},
