@@ -972,9 +972,9 @@ const eventSlice = createSlice({
 	name: 'events',
 	initialState,
 	reducers: {
-		setEventColumns(state, action: PayloadAction<{
-			updatedColumns: EventState["columns"],
-		}>) {
+		setEventColumns(state, action: PayloadAction<
+			EventState["columns"]
+		>) {
 			state.columns = action.payload.updatedColumns;
 		},
 		setShowActions(state, action: PayloadAction<
