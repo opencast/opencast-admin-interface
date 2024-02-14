@@ -309,10 +309,10 @@ const seriesSlice = createSlice({
 	name: 'series',
 	initialState,
 	reducers: {
-		setSeriesColumns(state, action: PayloadAction<{
-			updatedColumns: SeriesState["columns"],
-		}>) {
-			state.columns = action.payload.updatedColumns;
+		setSeriesColumns(state, action: PayloadAction<
+			SeriesState["columns"]
+		>) {
+			state.columns = action.payload;
 		},
 		showActionsSeries(state, action: PayloadAction<
 			SeriesState["showActions"]
