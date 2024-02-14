@@ -113,10 +113,10 @@ const usersSlice = createSlice({
 	name: 'users',
 	initialState,
 	reducers: {
-		setUserColumns(state, action: PayloadAction<{
-			updatedColumns: UsersState["columns"],
-		}>) {
-			state.columns = action.payload.updatedColumns;
+		setUserColumns(state, action: PayloadAction<
+			UsersState["columns"]
+		>) {
+			state.columns = action.payload;
 		},
 	},
 	// These are used for thunks
