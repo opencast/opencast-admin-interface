@@ -59,6 +59,11 @@ const Groups = ({
 
 	const groups = useAppSelector(state => getTotalGroups(state));
 
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const fetchGroupsWrapper = () => {
+		dispatch(fetchGroups())
+	}
+
 	const loadGroups = async () => {
 		// Fetching groups from server
 		await dispatch(fetchGroups());
@@ -183,7 +188,7 @@ const Groups = ({
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={dispatch(fetchGroups())}
+						loadResource={fetchGroupsWrapper}
 						loadResourceIntoTable={loadingGroupsIntoTable}
 						resource={"groups"}
 					/>
