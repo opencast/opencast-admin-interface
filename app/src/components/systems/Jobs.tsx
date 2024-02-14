@@ -59,6 +59,11 @@ const Jobs = ({
 
 	const jobs = useAppSelector(state => getTotalJobs(state));
 
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const fetchJobsWrapper = () => {
+		dispatch(fetchJobs())
+	}
+
 	const loadJobs = async () => {
 		// Fetching jobs from server
 		await dispatch(fetchJobs());
@@ -158,7 +163,7 @@ const Jobs = ({
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={dispatch(fetchJobs())}
+						loadResource={fetchJobsWrapper}
 						loadResourceIntoTable={loadingJobsIntoTable}
 						resource={"jobs"}
 					/>
