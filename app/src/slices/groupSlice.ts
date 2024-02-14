@@ -101,10 +101,10 @@ const groupSlice = createSlice({
 	name: 'groups',
 	initialState,
 	reducers: {
-		setGroupColumns(state, action: PayloadAction<{
-			updatedColumns: GroupState["columns"],
-		}>) {
-			state.columns = action.payload.updatedColumns;
+		setGroupColumns(state, action: PayloadAction<
+			 GroupState["columns"]
+		>) {
+			state.columns = action.payload;
 		},
 	},
 	// These are used for thunks
