@@ -42,6 +42,11 @@ const Recordings = ({
 
 	const recordings = useAppSelector(state => getTotalRecordings(state));
 
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const fetchRecordingsWrapper = () => {
+		dispatch(fetchRecordings(undefined))
+	}
+
 	const loadRecordings = async () => {
 		// Fetching recordings from server
 		await dispatch(fetchRecordings(undefined));
@@ -96,7 +101,7 @@ const Recordings = ({
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={dispatch(fetchRecordings(undefined))}
+						loadResource={fetchRecordingsWrapper}
 						loadResourceIntoTable={loadingRecordingsIntoTable}
 						resource={"recordings"}
 					/>
