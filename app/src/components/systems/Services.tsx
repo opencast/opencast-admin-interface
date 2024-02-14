@@ -59,6 +59,11 @@ const Services = ({
 
 	const services = useAppSelector(state => getTotalServices(state));
 
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const fetchServicesWrapper = () => {
+		dispatch(fetchServices())
+	}
+
 	const loadServices = async () => {
 		// Fetching services from server
 		await dispatch(fetchServices());
@@ -158,7 +163,7 @@ const Services = ({
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={dispatch(fetchServices)}
+						loadResource={fetchServicesWrapper}
 						loadResourceIntoTable={loadingServicesIntoTable}
 						resource={"services"}
 					/>
