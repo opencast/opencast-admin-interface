@@ -114,10 +114,10 @@ const themeSlice = createSlice({
 	name: 'theme',
 	initialState,
 	reducers: {
-		setThemeColumns(state, action: PayloadAction<{
-			updatedColumns: ThemeState["columns"],
-		}>) {
-			state.columns = action.payload.updatedColumns;
+		setThemeColumns(state, action: PayloadAction<
+			ThemeState["columns"]
+		>) {
+			state.columns = action.payload;
 		},
 	},
 	// These are used for thunks
