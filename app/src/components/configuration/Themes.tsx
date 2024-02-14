@@ -44,6 +44,11 @@ const Themes = ({
 
 	const themes = useAppSelector(state => getTotalThemes(state));
 
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const fetchThemesWrapper = () => {
+		dispatch(fetchThemes())
+	}
+
 	const loadThemes = async () => {
 		// Fetching themes from server
 		await dispatch(fetchThemes());
@@ -128,7 +133,7 @@ const Themes = ({
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={dispatch(fetchThemes())}
+						loadResource={fetchThemesWrapper}
 						loadResourceIntoTable={loadingThemesIntoTable}
 						resource={"themes"}
 					/>
