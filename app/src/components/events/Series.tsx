@@ -73,6 +73,11 @@ const Series = ({
 	const series = useAppSelector(state => getTotalSeries(state));
 	const showActions = useAppSelector(state => isShowActions(state));
 
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const fetchSeriesWrapper = () => {
+		dispatch(fetchSeries())
+	}
+
 	const loadEvents = () => {
 		// Reset the current page to first page
 		resetOffset();
@@ -247,7 +252,7 @@ const Series = ({
 						</div>
 						{/* Include filters component */}
 						<TableFilters
-							loadResource={dispatch(fetchSeries)}
+							loadResource={fetchSeriesWrapper}
 							loadResourceIntoTable={loadingSeriesIntoTable}
 							resource={"series"}
 						/>
