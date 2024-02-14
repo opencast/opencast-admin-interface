@@ -55,7 +55,7 @@ const recordingDetailsSlice = createSlice({
 				Name: RecordingDetailsState["name"],
 				Status: RecordingDetailsState["status"],
 				Update: RecordingDetailsState["update"],
-				Url: RecordingDetailsState["url"],
+				URL: RecordingDetailsState["url"],
 				capabilities: RecordingDetailsState["capabilities"],
 				configuration: RecordingDetailsState["configuration"],
 				inputs: RecordingDetailsState["inputs"],
@@ -65,7 +65,7 @@ const recordingDetailsSlice = createSlice({
 				state.name = recordingDetails.Name;
 				state.status = recordingDetails.Status;
 				state.update = recordingDetails.Update;
-				state.url = recordingDetails.Url;
+				state.url = recordingDetails.URL;
 				state.capabilities = recordingDetails.capabilities;
 				state.configuration = recordingDetails.configuration;
 				state.inputs = recordingDetails.inputs;
