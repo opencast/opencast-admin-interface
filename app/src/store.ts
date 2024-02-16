@@ -21,7 +21,7 @@ import { notifications } from "./reducers/notificationReducers";
 import workflows from "./reducers/workflowReducers";
 import eventDetails from "./reducers/eventDeatilsReducers";
 import seriesDetails from "./reducers/seriesDetailsReducers";
-import recordingDetails from "./reducers/recordingDetailsReducer";
+import recordingDetails from "./slices/recordingDetailsSlice";
 import userDetails from "./reducers/userDetailsReducer";
 import groupDetails from "./reducers/groupDetailsReducer";
 import aclDetails from "./reducers/aclDetailsReducer";
