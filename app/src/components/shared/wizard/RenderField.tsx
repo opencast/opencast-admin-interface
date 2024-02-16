@@ -51,6 +51,7 @@ const RenderField = ({
 					setEditMode={setEditMode}
 					form={form}
 					showCheck={showCheck}
+					handleKeyDown={handleKeyDown}
 				/>
 			)}
 			{metadataField.type === "text" &&
@@ -124,6 +125,7 @@ const RenderField = ({
 					editMode={editMode}
 					setEditMode={setEditMode}
 					showCheck={showCheck}
+					handleKeyDown={handleKeyDown}
 				/>
 			)}
 			{metadataField.type === "boolean" && (
@@ -178,6 +180,8 @@ const EditableDateValue = ({
 	setEditMode,
 // @ts-expect-error TS(7031): Binding element 'showCheck' implicitly has an 'any... Remove this comment to see the full error message
 	showCheck,
+// @ts-expect-error TS(7031):
+	handleKeyDown
 }) => {
 	const { t } = useTranslation();
 
@@ -188,7 +192,19 @@ const EditableDateValue = ({
 				value={typeof field.value === "string" ? parseISO(field.value) : field.value}
 				onChange={(value) => setFieldValue(field.name, value)}
 				onClose={() => setEditMode(false)}
-				slotProps={{ textField: { fullWidth: true } }}
+				slotProps={{
+					textField: {
+						fullWidth: true,
+						onKeyDown: (event) => {
+							if (event.key === "Enter") {
+								handleKeyDown(event, "date")
+							}
+						},
+						onBlur: (event) => {
+							setEditMode(false)
+						}
+					}
+				}}
 			/>
 		</div>
 	) : (
@@ -372,6 +388,8 @@ const EditableSingleValueTime = ({
 	setEditMode,
 // @ts-expect-error TS(7031): Binding element 'showCheck' implicitly has an 'any... Remove this comment to see the full error message
 	showCheck,
+	// @ts-expect-error TS(7031): Binding element 'handleKeyDown' implicitly has an ... Remove this comment to see the full error message
+	handleKeyDown,
 }) => {
 	const { t } = useTranslation();
 
@@ -382,7 +400,19 @@ const EditableSingleValueTime = ({
 				value={parseISO(field.value)}
 				onChange={(value) => setFieldValue(field.name, value)}
 				onClose={() => setEditMode(false)}
-				slotProps={{ textField: { fullWidth: true } }}
+				slotProps={{
+					textField: {
+						fullWidth: true,
+						onKeyDown: (event) => {
+							if (event.key === "Enter") {
+								handleKeyDown(event, "date")
+							}
+						},
+						onBlur: (event) => {
+							setEditMode(false)
+						}
+					}
+				}}
 			/>
 		</div>
 	) : (
