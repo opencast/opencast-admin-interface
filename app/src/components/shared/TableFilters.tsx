@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { createRef, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -174,6 +174,13 @@ const TableFilters = ({
 			await loadResource();
 			loadResourceIntoTable();
 		}
+
+		if (myStartDate && isStart && !endDate) {
+			setEndDate(myStartDate);
+		}
+		if (myEndDate && !isStart && !startDate) {
+			setStartDate(myEndDate);
+		}
 	}
 
 	const hotKeyHandlers = {
@@ -280,6 +287,8 @@ const TableFilters = ({
 										filterMap={filterMap}
 										selectedFilter={selectedFilter}
 										secondFilter={secondFilter}
+										startDate={startDate}
+										endDate={endDate}
 										handleDate={handleDatepickerChange}
 										handleDateConfirm={handleDatepickerConfirm}
 										handleChange={handleChange}
@@ -371,6 +380,10 @@ const FilterSwitch = ({
 	selectedFilter,
 // @ts-expect-error TS(7031): Binding element 'handleChange' implicitly has an '... Remove this comment to see the full error message
 	handleChange,
+	// @ts-expect-error TS(7031):
+	startDate,
+	// @ts-expect-error TS(7031):
+	endDate,
 // @ts-expect-error TS(7031): Binding element 'handleDate' implicitly has an 'an... Remove this comment to see the full error message
 	handleDate,
 // @ts-expect-error TS(7031): Binding element 'handleDate' implicitly has an 'an... Remove this comment to see the full error message
@@ -379,6 +392,9 @@ const FilterSwitch = ({
 	secondFilter,
 }) => {
 	const { t } = useTranslation();
+
+	const startDateRef = useRef<HTMLInputElement>(null);
+	const endDateRef = useRef<HTMLInputElement>(null);
 
 // @ts-expect-error TS(7031): Binding element 'name' implicitly has an 'any' typ... Remove this comment to see the full error message
 	let filter = filterMap.find(({ name }) => name === selectedFilter);
@@ -458,34 +474,46 @@ const FilterSwitch = ({
 					{/* Show datepicker for start date */}
 					<DatePicker
 						autoFocus={true}
+						inputRef={startDateRef}
 						className="small-search start-date"
-						value={null}
+						value={startDate ?? {}}
 						format="dd/MM/yyyy"
 						onChange={(date) => handleDate(date, true)}
-						onAccept={(e) => {
-							handleDateConfirm(e, true)
-						}}
+						onAccept={(e) => {handleDateConfirm(e, true)}}
+						// onAccept does not trigger if the value did not change, therefore
+						// we also need to callback in onClose
+						onClose={() => handleDateConfirm()}
 						slotProps={{
 							textField: {
 								onKeyDown: (event) => {
 									if (event.key === "Enter") {
-										handleDateConfirm()
+										handleDateConfirm(undefined, true)
+										if (endDateRef.current && startDate && moment(startDate).isValid()) {
+											endDateRef.current.focus();
+										}
 									}
 								},
 							},
 						}}
 					/>
 					<DatePicker
+						inputRef={endDateRef}
 						className="small-search end-date"
-						value={null}
+						value={endDate ?? {}}
 						format="dd/MM/yyyy"
 						onChange={(date) => handleDate(date)}
 						onAccept={(e) => handleDateConfirm(e, false)}
+						// onAccept does not trigger if the value did not change, therefore
+						// we also need to callback in onClose
+						onClose={() => handleDateConfirm()}
 						slotProps={{
 							textField: {
 								onKeyDown: (event) => {
 									if (event.key === "Enter") {
-										handleDateConfirm()
+										handleDateConfirm(undefined, false)
+										if (startDateRef.current && endDate && moment(endDate).isValid()) {
+											startDateRef.current.focus();
+										}
 									}
 								},
 							},
