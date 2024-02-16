@@ -19,8 +19,9 @@ import {
 } from "../actions/tableActions";
 import {
 	setEventColumns,
-	showActions as showEventsActions,
-} from "../actions/eventActions";
+	setShowActions as showEventsActions,
+	fetchEvents,
+} from "../slices/eventSlice";
 import {
 	setSeriesColumns,
 	showActions as showSeriesActions,
@@ -32,7 +33,6 @@ import {
 	getTablePages,
 	getTablePagination,
 } from "../selectors/tableSelectors";
-import { fetchEvents } from "./eventThunks";
 import { fetchSeries } from "./seriesThunks";
 import { fetchRecordings } from "./recordingThunks";
 import { fetchJobs } from "./jobThunks";

@@ -19,7 +19,8 @@ import {
 import { getWorkflow } from "../../../../selectors/eventDetailsSelectors";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
-import { isFetchingAssetUploadOptions } from "../../../../selectors/eventSelectors";
+import { isFetchingAssetUploadOptions as getIsFetchingAssetUploadOptions } from "../../../../selectors/eventSelectors";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component manages the main assets tab of event details modal
@@ -49,11 +50,12 @@ const EventDetailsAssetsTab = ({
 	uploadAssetOptions,
 // @ts-expect-error TS(7031): Binding element 'isFetching' implicitly has an 'an... Remove this comment to see the full error message
 	isFetching,
-// @ts-expect-error TS(7031): Binding element 'isFetchingAssetUploadOptions' imp... Remove this comment to see the full error message
-	isFetchingAssetUploadOptions,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
 }) => {
+
+	const isFetchingAssetUploadOptions = useAppSelector(state => getIsFetchingAssetUploadOptions(state));
+
 	useEffect(() => {
 		removeNotificationWizardForm();
 // @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
@@ -266,7 +268,6 @@ const mapStateToProps = (state) => ({
 	uploadAssetOptions: getUploadAssetOptions(state),
 	assetUploadWorkflowDefId: getWorkflow(state).id,
 	user: getUserInformation(state),
-	isFetchingAssetUploadOptions: isFetchingAssetUploadOptions(state),
 });
 
 // Mapping actions to dispatch

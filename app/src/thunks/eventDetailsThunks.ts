@@ -554,7 +554,6 @@ export const updateAssets = (values, eventId) => async (dispatch, getState) => {
 		options: [],
 	};
 
-// @ts-expect-error TS(7006): Parameter 'option' implicitly has an 'any' type.
 	uploadAssetOptions.forEach((option) => {
 		if (!!values[option.id]) {
 			formData.append(option.id + ".0", values[option.id]);
@@ -578,14 +577,12 @@ export const updateAssets = (values, eventId) => async (dispatch, getState) => {
 		.then((response) => {
 			console.info(response);
 			dispatch(
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 4.
 				addNotification("success", "EVENTS_UPDATED", null, NOTIFICATION_CONTEXT)
 			);
 		})
 		.catch((response) => {
 			console.error(response);
 			dispatch(
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 4.
 				addNotification(
 					"error",
 					"EVENTS_NOT_UPDATED",

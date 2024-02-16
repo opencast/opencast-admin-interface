@@ -42,12 +42,10 @@ export const postNewTheme = (values) => async (dispatch) => {
 		})
 		.then((response) => {
 			console.info(response);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "THEME_CREATED"));
 		})
 		.catch((response) => {
 			console.error(response);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "THEME_NOT_CREATED"));
 		});
 };
@@ -59,13 +57,11 @@ export const deleteTheme = (id) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			// add success notification
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "THEME_DELETED"));
 		})
 		.catch((res) => {
 			console.error(res);
 			// add error notification
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "THEME_NOT_DELETED"));
 		});
 };
