@@ -150,9 +150,15 @@ const TableFilters = ({
 		let myEndDate = endDate;
 		if (date && isStart) {
 			myStartDate = date;
+			myStartDate.setHours(0);
+			myStartDate.setMinutes(0);
+			myStartDate.setSeconds(0);
 		}
 		if (date && !isStart) {
 			myEndDate = date;
+			myEndDate.setHours(23);
+			myEndDate.setMinutes(59);
+			myEndDate.setSeconds(59);
 		}
 
 		if (myStartDate && myEndDate && moment(myStartDate).isValid() && moment(myEndDate).isValid()) {
