@@ -9,7 +9,7 @@ import events from "./slices/eventSlice";
 import table from "./reducers/tableReducers";
 import series from "./reducers/seriesReducer";
 import recordings from "./reducers/recordingReducer";
-import jobs from "./reducers/jobReducer";
+import jobs from "./slices/jobSlice";
 import servers from "./reducers/serverReducer";
 import services from "./reducers/serviceReducer";
 import users from "./reducers/userReducers";

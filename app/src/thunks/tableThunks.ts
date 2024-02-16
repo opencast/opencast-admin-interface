@@ -35,14 +35,13 @@ import {
 } from "../selectors/tableSelectors";
 import { fetchSeries } from "./seriesThunks";
 import { fetchRecordings } from "./recordingThunks";
-import { fetchJobs } from "./jobThunks";
+import { fetchJobs, setJobColumns } from "../slices/jobSlice";
 import { fetchServers } from "./serverThunks";
 import { fetchServices } from "./serviceThunks";
 import { fetchUsers } from "./userThunks";
 import { fetchGroups } from "./groupThunks";
 import { fetchThemes } from "./themeThunks";
 import { setRecordingsColumns } from "../actions/recordingActions";
-import { setJobColumns } from "../actions/jobActions";
 import { setServerColumns } from "../actions/serverActions";
 import { setUserColumns } from "../actions/userActions";
 import { setGroupColumns } from "../actions/groupActions";

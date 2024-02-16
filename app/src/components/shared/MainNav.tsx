@@ -16,7 +16,6 @@ import {
 } from "../../thunks/tableThunks";
 import { fetchEvents } from "../../slices/eventSlice";
 import { fetchRecordings } from "../../thunks/recordingThunks";
-import { fetchJobs } from "../../thunks/jobThunks";
 import { fetchUsers } from "../../thunks/userThunks";
 import { fetchThemes } from "../../thunks/themeThunks";
 import { fetchFilters, fetchStats } from "../../thunks/tableFilterThunks";
@@ -31,6 +30,7 @@ import { GlobalHotKeys } from "react-hotkeys";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { fetchAcls } from "../../slices/aclSlice";
 import { useAppDispatch } from "../../store";
+import { fetchJobs } from "../../slices/jobSlice";
 
 /**
  * This component renders the main navigation that opens when the burger button is clicked
@@ -52,8 +52,6 @@ const MainNav = ({
 	loadingRecordings,
 // @ts-expect-error TS(7031): Binding element 'loadingRecordingsIntoTable' impli... Remove this comment to see the full error message
 	loadingRecordingsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingJobs' implicitly has an 'a... Remove this comment to see the full error message
-	loadingJobs,
 // @ts-expect-error TS(7031): Binding element 'loadingJobsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingJobsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingServers' implicitly has an... Remove this comment to see the full error message
@@ -138,7 +136,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching jobs from server
-		loadingJobs();
+		dispatch(fetchJobs());
 
 		// Load jobs into table
 		loadingJobsIntoTable();
@@ -348,7 +346,6 @@ const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 	loadingRecordings: () => dispatch(fetchRecordings()),
 	loadingRecordingsIntoTable: () => dispatch(loadRecordingsIntoTable()),
-	loadingJobs: () => dispatch(fetchJobs()),
 	loadingJobsIntoTable: () => dispatch(loadJobsIntoTable()),
 	loadingServers: () => dispatch(fetchServers()),
 	loadingServersIntoTable: () => dispatch(loadServersIntoTable()),
