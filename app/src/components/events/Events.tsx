@@ -13,8 +13,7 @@ import DeleteEventsModal from "./partials/modals/DeleteEventsModal";
 import StartTaskModal from "./partials/modals/StartTaskModal";
 import EditScheduledEventsModal from "./partials/modals/EditScheduledEventsModal";
 import EditMetadataEventsModal from "./partials/modals/EditMetadataEventsModal";
-import { eventsTemplateMap } from "../../configs/tableConfigs/eventsTableConfig";
-import { fetchEventMetadata, fetchEvents } from "../../thunks/eventThunks";
+import { eventsTemplateMap } from "../../configs/tableConfigs/eventsTableMap";
 import {
 	loadEventsIntoTable,
 	loadSeriesIntoTable,
@@ -22,8 +21,7 @@ import {
 import { fetchFilters, fetchStats } from "../../thunks/tableFilterThunks";
 import {
 	getTotalEvents,
-	isFetchingAssetUploadOptions,
-	isLoading,
+	isFetchingAssetUploadOptions as getIsFetchingAssetUploadOptions,
 	isShowActions,
 } from "../../selectors/eventSelectors";
 import { editTextFilter } from "../../actions/tableFilterActions";
@@ -33,12 +31,16 @@ import Header from "../Header";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
-import { showActions } from "../../actions/eventActions";
 import { GlobalHotKeys } from "react-hotkeys";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { fetchAssetUploadOptions } from "../../thunks/assetsThunks";
-import { useAppDispatch } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
+import {
+	fetchEventMetadata,
+	fetchEvents,
+	setShowActions,
+} from "../../slices/eventSlice";
 import { fetchSeries } from "../../slices/seriesSlice";
 
 // References for detecting a click outside of the container of the dropdown menu
@@ -48,34 +50,20 @@ const containerAction = React.createRef();
  * This component renders the table view of events
  */
 const Events = ({
-// @ts-expect-error TS(7031): Binding element 'loadingEvents' implicitly has an ... Remove this comment to see the full error message
-	loadingEvents,
 // @ts-expect-error TS(7031): Binding element 'loadingEventsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingEventsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'events' implicitly has an 'any' t... Remove this comment to see the full error message
-	events,
-// @ts-expect-error TS(7031): Binding element 'showActions' implicitly has an 'a... Remove this comment to see the full error message
-	showActions,
 // @ts-expect-error TS(7031): Binding element 'loadingSeriesIntoTable' implicitl... Remove this comment to see the full error message
 	loadingSeriesIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
 	loadingFilters,
 // @ts-expect-error TS(7031): Binding element 'loadingStats' implicitly has an '... Remove this comment to see the full error message
 	loadingStats,
-// @ts-expect-error TS(7031): Binding element 'loadingEventMetadata' implicitly ... Remove this comment to see the full error message
-	loadingEventMetadata,
 // @ts-expect-error TS(7031): Binding element 'resetTextFilter' implicitly has a... Remove this comment to see the full error message
 	resetTextFilter,
-// @ts-expect-error TS(7031): Binding element 'fetchAssetUploadOptions' implicit... Remove this comment to see the full error message
-	fetchAssetUploadOptions,
 // @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
 	resetOffset,
-// @ts-expect-error TS(7031): Binding element 'setShowActions' implicitly has an... Remove this comment to see the full error message
-	setShowActions,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
-// @ts-expect-error TS(7031): Binding element 'isFetchingAssetUploadOptions' imp... Remove this comment to see the full error message
-	isFetchingAssetUploadOptions,
 // @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
 	currentFilterType,
 }) => {
@@ -94,14 +82,23 @@ const Events = ({
 		false
 	);
 
+	const showActions = useAppSelector(state => isShowActions(state));
+	const events = useAppSelector(state => getTotalEvents(state));
+	const isFetchingAssetUploadOptions = useAppSelector(state => getIsFetchingAssetUploadOptions(state));
+
 	let location = useLocation();
+
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const fetchEventsWrapper = () => {
+		dispatch(fetchEvents())
+	}
 
 	const loadEvents = async () => {
 		// Fetching stats from server
 		loadingStats();
 
 		// Fetching events from server
-		await loadingEvents();
+		// await dispatch(fetchEvents());
 
 		// Load events into table
 		loadingEventsIntoTable();
@@ -126,7 +123,7 @@ const Events = ({
 		resetTextFilter();
 
 		// disable actions button
-		setShowActions(false);
+		dispatch(setShowActions(false));
 
 		// Load events on mount
 		loadEvents().then((r) => console.info(r));
@@ -167,8 +164,8 @@ const Events = ({
 	};
 
 	const showNewEventModal = async () => {
-		await loadingEventMetadata();
-		await fetchAssetUploadOptions();
+		await dispatch(fetchEventMetadata());
+		await dispatch(fetchAssetUploadOptions());
 
 		setNewEventModal(true);
 	};
@@ -325,7 +322,7 @@ const Events = ({
 
 						{/* Include filters component*/}
 						<TableFilters
-							loadResource={loadingEvents}
+							loadResource={fetchEventsWrapper}
 							loadResourceIntoTable={loadingEventsIntoTable}
 							resource={"events"}
 						/>
@@ -345,29 +342,20 @@ const Events = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	events: getTotalEvents(state),
-	showActions: isShowActions(state),
 	user: getUserInformation(state),
 	currentFilterType: getCurrentFilterResource(state),
-	isLoadingEvents: isLoading(state),
-	isFetchingAssetUploadOptions: isFetchingAssetUploadOptions(state),
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-	loadingEvents: () => dispatch(fetchEvents()),
 	loadingEventsIntoTable: () => dispatch(loadEventsIntoTable()),
 	loadingSeriesIntoTable: () => dispatch(loadSeriesIntoTable()),
 // @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
 	loadingStats: () => dispatch(fetchStats()),
-	loadingEventMetadata: () => dispatch(fetchEventMetadata()),
 	resetTextFilter: () => dispatch(editTextFilter("")),
 	resetOffset: () => dispatch(setOffset(0)),
-// @ts-expect-error TS(7006): Parameter 'isShowing' implicitly has an 'any' type... Remove this comment to see the full error message
-	setShowActions: (isShowing) => dispatch(showActions(isShowing)),
-	fetchAssetUploadOptions: () => dispatch(fetchAssetUploadOptions()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Events);

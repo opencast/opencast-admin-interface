@@ -14,7 +14,6 @@ import {
 	loadEventsIntoTable,
 	loadSeriesIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchEvents } from "../../thunks/eventThunks";
 import { fetchFilters, fetchStats } from "../../thunks/tableFilterThunks";
 import { getTotalSeries, isShowActions } from "../../selectors/seriesSeletctor";
 import { editTextFilter } from "../../actions/tableFilterActions";
@@ -28,6 +27,7 @@ import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { GlobalHotKeys } from "react-hotkeys";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
+import { fetchEvents } from "../../slices/eventSlice";
 import {
 	fetchSeries,
 	fetchSeriesMetadata,
@@ -44,8 +44,6 @@ const containerAction = React.createRef();
 const Series = ({
 // @ts-expect-error TS(7031): Binding element 'loadingSeriesIntoTable' implicitl... Remove this comment to see the full error message
 	loadingSeriesIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingEvents' implicitly has an ... Remove this comment to see the full error message
-	loadingEvents,
 // @ts-expect-error TS(7031): Binding element 'loadingEventsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingEventsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
@@ -86,7 +84,7 @@ const Series = ({
 		loadingStats();
 
 		// Fetching events from server
-		loadingEvents();
+		dispatch(fetchEvents());
 
 		// Load events into table
 		loadingEventsIntoTable();
@@ -279,7 +277,6 @@ const mapStateToProps = (state) => ({
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
 	loadingSeriesIntoTable: () => dispatch(loadSeriesIntoTable()),
-	loadingEvents: () => dispatch(fetchEvents()),
 	loadingEventsIntoTable: () => dispatch(loadEventsIntoTable()),
 // @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
