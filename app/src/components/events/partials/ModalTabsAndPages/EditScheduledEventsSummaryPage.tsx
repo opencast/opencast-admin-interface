@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
-import { connect } from "react-redux";
 import { getSchedulingSeriesOptions } from "../../../../selectors/eventSelectors";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component renders the summary page of the edit scheduled bulk action
@@ -11,16 +11,16 @@ import { getSchedulingSeriesOptions } from "../../../../selectors/eventSelectors
 const EditScheduledEventsSummaryPage : React.FC<{
   previousPage: any,
 	formik: any,
-	seriesOptions?: any,
 }>= ({
 	previousPage,
 	formik,
-	seriesOptions,
 }) => {
 	const { t } = useTranslation();
 
 	// Changes applied to events
 	const [changes, setChanges] = useState([]);
+
+	const seriesOptions = useAppSelector(state => getSchedulingSeriesOptions(state));
 
 	useEffect(() => {
 		// Check on mount if changes on events where applied on page before
@@ -197,10 +197,4 @@ const EditScheduledEventsSummaryPage : React.FC<{
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	seriesOptions: getSchedulingSeriesOptions(state),
-});
-
-export default connect(mapStateToProps, null)(EditScheduledEventsSummaryPage);
+export default EditScheduledEventsSummaryPage;

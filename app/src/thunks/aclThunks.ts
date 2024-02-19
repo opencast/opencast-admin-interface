@@ -69,12 +69,10 @@ export const postNewAcl = (values) => async (dispatch) => {
 		})
 		.then((response) => {
 			console.info(response);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "ACL_ADDED"));
 		})
 		.catch((response) => {
 			console.error(response);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "ACL_NOT_SAVED"));
 		});
 };
@@ -86,13 +84,11 @@ export const deleteAcl = (id) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			//add success notification
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "ACL_DELETED"));
 		})
 		.catch((res) => {
 			console.error(res);
 			// add error notification
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "ACL_NOT_DELETED"));
 		});
 };

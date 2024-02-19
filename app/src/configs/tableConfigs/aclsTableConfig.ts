@@ -1,5 +1,3 @@
-import AclsActionsCell from "../../components/users/partials/AclsActionsCell";
-
 export type TableConfig = {
 	columns: {
 		name: string,
@@ -42,13 +40,4 @@ export const aclsTableConfig: TableConfig = {
 	resource: "acls",
 	category: "users",
 	multiSelect: false,
-};
-
-/**
- * This map contains the mapping between the template strings above and the corresponding react component.
- * This helps to render different templates of cells more dynamically. Even empty needed, because Table component
- * uses template map.
- */
-export const aclsTemplateMap = {
-	AclsActionsCell: AclsActionsCell,
 };
