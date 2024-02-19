@@ -7,6 +7,7 @@ import { Formik } from "formik";
 import { updateAssets } from "../../../../thunks/eventDetailsThunks";
 import { getAssetUploadOptions } from "../../../../selectors/eventSelectors";
 import { translateOverrideFallback } from "../../../../utils/utils";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component manages the add asset sub-tab for assets tab of event details modal
@@ -20,12 +21,12 @@ const EventDetailsAssetsAddAsset = ({
 	setHierarchy,
 // @ts-expect-error TS(7031): Binding element 'updateAssets' implicitly has an '... Remove this comment to see the full error message
 	updateAssets,
-// @ts-expect-error TS(7031): Binding element 'uploadAssetOptions' implicitly ha... Remove this comment to see the full error message
-	uploadAssetOptions,
 }) => {
+
+	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
+
 	// Get upload assets that are not of type track
 	const uploadAssets = uploadAssetOptions.filter(
-// @ts-expect-error TS(7006): Parameter 'asset' implicitly has an 'any' type.
 		(asset) => asset.type !== "track"
 	);
 
@@ -85,7 +86,6 @@ const EventDetailsAssetsAddAsset = ({
 														</td>
 													</tr>
 												) : (
-// @ts-expect-error TS(7006): Parameter 'asset' implicitly has an 'any' type.
 													uploadAssets.map((asset, key) => (
 														<tr key={key}>
 															<td>
@@ -165,7 +165,6 @@ const EventDetailsAssetsAddAsset = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	uploadAssetOptions: getAssetUploadOptions(state),
 });
 
 // Mapping actions to dispatch

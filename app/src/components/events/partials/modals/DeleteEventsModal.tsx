@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { deleteMultipleEvent } from "../../../../thunks/eventThunks";
 import { getSelectedRows } from "../../../../selectors/tableSelectors";
 import { connect } from "react-redux";
+import { useAppDispatch } from "../../../../store";
+import { deleteMultipleEvent } from "../../../../slices/eventSlice";
 
 /**
  * This component manages the delete bulk action
@@ -11,15 +12,15 @@ import { connect } from "react-redux";
 const DeleteEventsModal = ({
     close,
     selectedRows,
-    deleteMultipleEvent
 }: any) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const [allChecked, setAllChecked] = useState(true);
 	const [selectedEvents, setSelectedEvents] = useState(selectedRows);
 
 	const deleteSelectedEvents = () => {
-		deleteMultipleEvent(selectedEvents);
+		dispatch(deleteMultipleEvent(selectedEvents));
 		close();
 	};
 
@@ -179,9 +180,7 @@ const mapStateToProps = (state) => ({
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'selectedEvents' implicitly has an 'any'... Remove this comment to see the full error message
-	deleteMultipleEvent: (selectedEvents) =>
-		dispatch(deleteMultipleEvent(selectedEvents)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeleteEventsModal);

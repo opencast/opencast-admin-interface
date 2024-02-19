@@ -19,8 +19,9 @@ import {
 } from "../actions/tableActions";
 import {
 	setEventColumns,
-	showActions as showEventsActions,
-} from "../actions/eventActions";
+	setShowActions as showEventsActions,
+	fetchEvents,
+} from "../slices/eventSlice";
 import {
 	setSeriesColumns,
 	showActions as showSeriesActions,
@@ -32,17 +33,15 @@ import {
 	getTablePages,
 	getTablePagination,
 } from "../selectors/tableSelectors";
-import { fetchEvents } from "./eventThunks";
 import { fetchSeries } from "./seriesThunks";
 import { fetchRecordings } from "./recordingThunks";
-import { fetchJobs } from "./jobThunks";
+import { fetchJobs, setJobColumns } from "../slices/jobSlice";
 import { fetchServers } from "./serverThunks";
 import { fetchServices } from "./serviceThunks";
 import { fetchUsers } from "./userThunks";
 import { fetchGroups } from "./groupThunks";
 import { fetchThemes } from "./themeThunks";
 import { setRecordingsColumns } from "../actions/recordingActions";
-import { setJobColumns } from "../actions/jobActions";
 import { setServerColumns } from "../actions/serverActions";
 import { setUserColumns } from "../actions/userActions";
 import { setGroupColumns } from "../actions/groupActions";
@@ -696,6 +695,10 @@ const calculatePages = (numberOfPages, offset) => {
 			active: i === offset,
 		});
 	}
+
+  if (pages.every(page => page.active === false)) {
+    pages[0].active = true;
+  }
 
 	return pages;
 };

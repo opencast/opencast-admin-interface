@@ -82,42 +82,42 @@ const RenderWorkflowConfig = (props) => {
 const renderInputByType = (field, key, formik) => {
 	switch (field.type) {
 		case "checkbox":
-			return <RenderCheckbox field={field} key={key} formik={formik} />;
+			return <RenderCheckbox field={field} key={key} keyVar={key} formik={formik} />;
 		case "radio":
-			return <RenderRadio field={field} key={key} formik={formik} />;
+			return <RenderRadio field={field} key={key} keyVar={key} formik={formik} />;
 		case "number":
-			return <RenderNumber field={field} key={key} formik={formik} />;
+			return <RenderNumber field={field} key={key} keyVar={key} formik={formik} />;
 		case "text":
-			return <RenderText field={field} key={key} formik={formik} />;
+			return <RenderText field={field} key={key} keyVar={key} formik={formik} />;
     case "datetime-local":
-            return <RenderDatetimeLocal field={field} key={key} formik={formik} />;
+      return <RenderDatetimeLocal field={field} key={key} keyVar={key} formik={formik} />;
 		default:
 			return "";
 	}
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderDatetimeLocal = ({ field, key, formik }) => {
+const RenderDatetimeLocal = ({ field, keyVar, formik }) => {
   field.value = undefined;
 
-    return <RenderField field={field} key={key} formik={formik} />;
+    return <RenderField field={field} key={keyVar} keyVar={keyVar} formik={formik} />;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderCheckbox = ({ field, key, formik }) => {
+const RenderCheckbox = ({ field, keyVar, formik }) => {
   field.defaultValue = field.value;
   field.value = undefined;
 
-    return <RenderField field={field} key={key} formik={formik} />;
+    return <RenderField field={field} key={keyVar} keyVar={keyVar} formik={formik} />;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderRadio = ({ field, key, formik }) => {
-    return <RenderField field={field} key={key} formik={formik} />;
+const RenderRadio = ({ field, keyVar, formik }) => {
+    return <RenderField field={field} key={keyVar} keyVar={keyVar} formik={formik} />;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderNumber = ({ field, key, formik }) => {
+const RenderNumber = ({ field, keyVar, formik }) => {
 	// validate that value of number is between max and min
 // @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	const validate = (value) => {
@@ -131,24 +131,24 @@ const RenderNumber = ({ field, key, formik }) => {
   field.defaultValue = field.value;
   field.value = undefined;
 
-    return <RenderField field={field} key={key} formik={formik} validate={validate}/>;
+    return <RenderField field={field} key={keyVar} keyVar={keyVar} formik={formik} validate={validate}/>;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderText = ({ field, key, formik }) => {
+const RenderText = ({ field, keyVar, formik }) => {
   field.value = undefined;
 
-    return <RenderField field={field} key={key} formik={formik} />;
+    return <RenderField field={field} key={keyVar} keyVar={keyVar} formik={formik} />;
 };
 
 const RenderField : React.FC<{
   field: any,
-  key: any,
+  keyVar: any,
   formik: any,
   validate?: (value: any) => string | undefined,
 }> = ({
   field,
-  key,
+  keyVar,
   formik,
   validate = undefined
 }) => {
@@ -161,7 +161,7 @@ const RenderField : React.FC<{
   const renderField = () => {
     if (field.value) {
       return(
-                <Field
+        <Field
           id={uuid}
           defaultValue={field.defaultValue}
           value={field.value}
@@ -192,7 +192,7 @@ const RenderField : React.FC<{
   }
 
 	return (
-		<li key={key}>
+		<li key={keyVar}>
 			{renderField()}
 			<label htmlFor={uuid}>{field.label}</label>
 			{/* if input has an additional fieldset or further configuration inputs

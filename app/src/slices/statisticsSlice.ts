@@ -1,4 +1,5 @@
-import axios from "axios";
+import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios';
 import moment from "moment";
 import {
 	createChartOptions,
@@ -6,84 +7,69 @@ import {
 } from "../utils/statisticsUtils";
 import { getHttpHeaders } from "../utils/resourceUtils";
 import { getStatistics } from "../selectors/statisticsSelectors";
-import {
-	loadStatisticsFailure,
-	loadStatisticsInProgress,
-	loadStatisticsSuccess,
-	updateStatisticsFailure,
-	updateStatisticsSuccess,
-} from "../actions/statisticsActions";
+import { RootState } from '../store';
+
+/**
+ * This file contains redux reducer for actions affecting the state of statistics
+ */
+// TODO: proper typing
+type Statistics = {
+	title: string
+	description: string,
+	providerId: string,
+	providerType: string,
+	from: string,
+	to: string,
+	dataResolution: string[],
+	timeMode: any,
+	options: any,
+	csvUrl: any,
+	values: any,
+	labels: any,
+	totalValue: any,
+}
+
+type StatisticsState = {
+	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	error: SerializedError | null,
+	statusUpdate: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	errorUpdate: SerializedError | null,
+	statistics: Statistics[],
+	hasStatisticsError: boolean,
+}
+
+// Initial state of series details in redux store
+const initialState: StatisticsState = {
+	status: 'uninitialized',
+	error: null,
+	statusUpdate: 'uninitialized',
+	errorUpdate: null,
+	statistics: [],
+	hasStatisticsError: false,
+};
 
 /* thunks for fetching statistics data */
 
-// @ts-expect-error TS(7006): Parameter 'organizationId' implicitly has an 'any'... Remove this comment to see the full error message
-export const fetchStatisticsPageStatistics = (organizationId) => async (
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-	dispatch
-) => {
-	dispatch(
-		fetchStatistics(
-			organizationId,
-			"organization",
-			getStatistics,
-			loadStatisticsInProgress,
-			loadStatisticsSuccess,
-			loadStatisticsFailure
-		)
-	);
-};
+export const fetchStatisticsPageStatistics = createAsyncThunk('statistics/fetchStatisticsPageStatistics', async (organizationId: any, { getState }) => {
+	// get prior statistics
+	const state = getState();
+	const statistics = getStatistics(state as RootState);
 
-export const fetchStatisticsPageStatisticsValueUpdate = (
-// @ts-expect-error TS(7006): Parameter 'organizationId' implicitly has an 'any'... Remove this comment to see the full error message
-	organizationId,
-// @ts-expect-error TS(7006): Parameter 'providerId' implicitly has an 'any' typ... Remove this comment to see the full error message
-	providerId,
-// @ts-expect-error TS(7006): Parameter 'from' implicitly has an 'any' type.
-	from,
-// @ts-expect-error TS(7006): Parameter 'to' implicitly has an 'any' type.
-	to,
-// @ts-expect-error TS(7006): Parameter 'dataResolution' implicitly has an 'any'... Remove this comment to see the full error message
-	dataResolution,
-// @ts-expect-error TS(7006): Parameter 'timeMode' implicitly has an 'any' type.
-	timeMode
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-) => async (dispatch) => {
-	dispatch(
-		fetchStatisticsValueUpdate(
-			organizationId,
-			"organization",
-			providerId,
-			from,
-			to,
-			dataResolution,
-			timeMode,
-			getStatistics,
-			updateStatisticsSuccess,
-			updateStatisticsFailure
-		)
-	);
-};
+	return await fetchStatistics(organizationId, "organization", statistics)
+});
 
-export const fetchStatistics = (
-// @ts-expect-error TS(7006): Parameter 'resourceId' implicitly has an 'any' typ... Remove this comment to see the full error message
-	resourceId,
-// @ts-expect-error TS(7006): Parameter 'resourceType' implicitly has an 'any' t... Remove this comment to see the full error message
-	resourceType,
-// @ts-expect-error TS(7006): Parameter 'getStatistics' implicitly has an 'any' ... Remove this comment to see the full error message
-	getStatistics,
-// @ts-expect-error TS(7006): Parameter 'loadStatisticsInProgress' implicitly ha... Remove this comment to see the full error message
-	loadStatisticsInProgress,
-// @ts-expect-error TS(7006): Parameter 'loadStatisticsSuccess' implicitly has a... Remove this comment to see the full error message
-	loadStatisticsSuccess,
-// @ts-expect-error TS(7006): Parameter 'loadStatisticsFailure' implicitly has a... Remove this comment to see the full error message
-	loadStatisticsFailure
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-) => async (dispatch, getState) => {
-	dispatch(loadStatisticsInProgress());
+export const fetchStatisticsPageStatisticsValueUpdate = createAsyncThunk('statistics/fetchStatisticsPageStatisticsValueUpdate', async (params: {organizationId: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any}, { getState }) => {
+	const { organizationId, providerId, from, to, dataResolution, timeMode } = params;
 
 	// get prior statistics
 	const state = getState();
-	const statistics = getStatistics(state);
+	const statistics = getStatistics(state as RootState);
+
+	return await fetchStatisticsValueUpdate(organizationId, "organization", providerId, from, to, dataResolution, timeMode, statistics)
+});
+
+export const fetchStatistics = async (resourceId: any, resourceType: any, statistics: any) => {
+	let hasError = false;
 
 	// create url params
 	let params = new URLSearchParams();
@@ -118,7 +104,7 @@ export const fetchStatistics = (
 					let dataResolution;
 
 					/* if old values for this statistic exist, use old
-                    from (date), to (date), timeMode and dataResolution values, otherwise use defaults */
+					from (date), to (date), timeMode and dataResolution values, otherwise use defaults */
 					if (statistics.length > i) {
 						from = statistics[i].from;
 						to = statistics[i].to;
@@ -197,52 +183,35 @@ export const fetchStatistics = (
 						);
 
 						// put statistics list into redux store
-						dispatch(loadStatisticsSuccess(newStatistics, false));
+						statistics = newStatistics;
+						hasError = false;
 					}
 // @ts-expect-error TS(7005): Variable 'newStatistics' implicitly has an 'any[]'... Remove this comment to see the full error message
-					dispatch(loadStatisticsSuccess(newStatistics, false));
+					statistics = newStatistics;
+					hasError = false;
 				})
 				.catch((response) => {
 					// put unfinished statistics list into redux store but set flag that an error occurred
 // @ts-expect-error TS(7005): Variable 'newStatistics' implicitly has an 'any[]'... Remove this comment to see the full error message
-					dispatch(loadStatisticsSuccess(newStatistics, true));
+					statistics = newStatistics;
+					hasError = true;
 					console.error(response);
 				});
 		})
-		.catch((response) => {
-			// getting statistics from API failed
-			dispatch(loadStatisticsFailure(true));
-			console.error(response);
-		});
+
+		return { statistics, hasError };
 };
 
-export const fetchStatisticsValueUpdate = (
-// @ts-expect-error TS(7006): Parameter 'resourceId' implicitly has an 'any' typ... Remove this comment to see the full error message
-	resourceId,
-// @ts-expect-error TS(7006): Parameter 'resourceType' implicitly has an 'any' t... Remove this comment to see the full error message
-	resourceType,
-// @ts-expect-error TS(7006): Parameter 'providerId' implicitly has an 'any' typ... Remove this comment to see the full error message
-	providerId,
-// @ts-expect-error TS(7006): Parameter 'from' implicitly has an 'any' type.
-	from,
-// @ts-expect-error TS(7006): Parameter 'to' implicitly has an 'any' type.
-	to,
-// @ts-expect-error TS(7006): Parameter 'dataResolution' implicitly has an 'any'... Remove this comment to see the full error message
-	dataResolution,
-// @ts-expect-error TS(7006): Parameter 'timeMode' implicitly has an 'any' type.
-	timeMode,
-// @ts-expect-error TS(7006): Parameter 'getStatistics' implicitly has an 'any' ... Remove this comment to see the full error message
-	getStatistics,
-// @ts-expect-error TS(7006): Parameter 'updateStatisticsSuccess' implicitly has... Remove this comment to see the full error message
-	updateStatisticsSuccess,
-// @ts-expect-error TS(7006): Parameter 'updateStatisticsFailure' implicitly has... Remove this comment to see the full error message
-	updateStatisticsFailure
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-) => async (dispatch, getState) => {
-	// get prior statistics
-	const state = getState();
-	const statistics = getStatistics(state);
-
+export const fetchStatisticsValueUpdate = async (
+	resourceId: any,
+	resourceType: any,
+	providerId: any,
+	from: any,
+	to: any,
+	dataResolution: any,
+	timeMode: any,
+	statistics: any,
+) =>  {
 	// settings for this statistic of this resource for value request
 	const statisticsValueRequest = [
 		{
@@ -260,8 +229,9 @@ export const fetchStatisticsValueUpdate = (
 		data: JSON.stringify(statisticsValueRequest),
 	});
 
+	let newStatistics
 	// request statistic values from API
-	axios
+	await axios
 		.post("/admin-ng/statistics/data.json", requestData, requestHeaders)
 		.then((dataResponse) => {
 			// if only one element is in the response (as expected), get the response
@@ -301,17 +271,60 @@ export const fetchStatisticsValueUpdate = (
 
 				// put updated statistic into statistics list
 // @ts-expect-error TS(7006): Parameter 'oldStat' implicitly has an 'any' type.
-				const newStatistics = statistics.map((oldStat) =>
+				newStatistics = statistics.map((oldStat) =>
 					oldStat === stat ? statistic : oldStat
 				);
-
-				// put updates statistics list into redux store
-				dispatch(updateStatisticsSuccess(newStatistics));
 			}
 		})
-		.catch((response) => {
-			// getting new statistic values from API failed
-			dispatch(updateStatisticsFailure());
-			console.error(response);
-		});
+
+	// put updates statistics list into redux store
+	return newStatistics
 };
+
+
+
+const statisticsSlice = createSlice({
+	name: 'statistics',
+	initialState,
+	reducers: {},
+	// These are used for thunks
+	extraReducers: builder => {
+		builder
+			.addCase(fetchStatisticsPageStatistics.pending, (state) => {
+				state.status = 'loading';
+			})
+			.addCase(fetchStatisticsPageStatistics.fulfilled, (state, action: PayloadAction<{
+				statistics: StatisticsState["statistics"],
+				hasError: StatisticsState["hasStatisticsError"]
+			}>) => {
+				state.status = 'succeeded';
+				const statistics = action.payload;
+				state.statistics = statistics.statistics;
+				state.hasStatisticsError = statistics.hasError;
+			})
+			.addCase(fetchStatisticsPageStatistics.rejected, (state, action) => {
+				state.status = 'failed';
+				state.hasStatisticsError = true;
+				state.error = action.error;
+			})
+			.addCase(fetchStatisticsPageStatisticsValueUpdate.pending, (state) => {
+				state.statusUpdate = 'loading';
+			})
+			.addCase(fetchStatisticsPageStatisticsValueUpdate.fulfilled, (state, action: PayloadAction<
+				any
+			>) => {
+				state.statusUpdate = 'succeeded';
+				const statistics = action.payload;
+				state.statistics = statistics;
+			})
+			.addCase(fetchStatisticsPageStatisticsValueUpdate.rejected, (state, action) => {
+				state.statusUpdate = 'failed';
+				state.errorUpdate = action.error;
+			});
+	}
+});
+
+// export const {} = statisticsSlice.actions;
+
+// Export the slice reducer as the default export
+export default statisticsSlice.reducer;
