@@ -15,7 +15,6 @@ import {
 	loadServersIntoTable,
 	loadServicesIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchJobs } from "../../thunks/jobThunks";
 import { fetchServices } from "../../thunks/serviceThunks";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
@@ -27,6 +26,7 @@ import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchServers } from "../../slices/serverSlice";
+import { fetchJobs } from "../../slices/jobSlice";
 
 /**
  * This component renders the table view of servers
@@ -36,8 +36,6 @@ const Servers = ({
 	loadingServersIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
 	loadingFilters,
-// @ts-expect-error TS(7031): Binding element 'loadingJobs' implicitly has an 'a... Remove this comment to see the full error message
-	loadingJobs,
 // @ts-expect-error TS(7031): Binding element 'loadingJobsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingJobsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingServices' implicitly has a... Remove this comment to see the full error message
@@ -77,7 +75,7 @@ const Servers = ({
 		resetOffset();
 
 		// Fetching jobs from server
-		loadingJobs();
+		dispatch(fetchJobs());
 
 		// Load jobs into table
 		loadingJobsIntoTable();
@@ -191,7 +189,6 @@ const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
 	loadingServersIntoTable: () => dispatch(loadServersIntoTable()),
-	loadingJobs: () => dispatch(fetchJobs()),
 	loadingJobsIntoTable: () => dispatch(loadJobsIntoTable()),
 	loadingServices: () => dispatch(fetchServices()),
 	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),

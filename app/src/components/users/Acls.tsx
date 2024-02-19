@@ -7,7 +7,7 @@ import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
 import NewResourceModal from "../shared/NewResourceModal";
-import { aclsTemplateMap } from "../../configs/tableConfigs/aclsTableConfig";
+import { aclsTemplateMap } from "../../configs/tableConfigs/aclsTableMap";
 import { fetchFilters } from "../../thunks/tableFilterThunks";
 import { fetchUsers } from "../../thunks/userThunks";
 import {
