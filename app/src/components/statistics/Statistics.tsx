@@ -9,7 +9,7 @@ import MainNav from "../shared/MainNav";
 import TimeSeriesStatistics from "../shared/TimeSeriesStatistics";
 import {
 	getStatistics,
-	hasStatistics,
+	hasStatistics as getHasStatistics,
 	hasStatisticsError,
 	isFetchingStatistics,
 } from "../../selectors/statisticsSelectors";
@@ -17,29 +17,16 @@ import {
 	getOrgId,
 	getUserInformation,
 } from "../../selectors/userInfoSelectors";
+import { hasAccess } from "../../utils/utils";
+import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
+import { fetchUserInfo } from "../../slices/userInfoSlice";
+import { useAppDispatch, useAppSelector } from "../../store";
 import {
 	fetchStatisticsPageStatistics,
 	fetchStatisticsPageStatisticsValueUpdate,
-} from "../../thunks/statisticsThunks";
-import { hasAccess } from "../../utils/utils";
-import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
-import { useAppDispatch, useAppSelector } from "../../store";
-import { fetchUserInfo } from "../../slices/userInfoSlice";
+} from "../../slices/statisticsSlice";
 
-const Statistics = ({
-// @ts-expect-error TS(7031): Binding element 'statistics' implicitly has an 'an... Remove this comment to see the full error message
-	statistics,
-// @ts-expect-error TS(7031): Binding element 'isLoadingStatistics' implicitly h... Remove this comment to see the full error message
-	isLoadingStatistics,
-// @ts-expect-error TS(7031): Binding element 'hasStatistics' implicitly has an ... Remove this comment to see the full error message
-	hasStatistics,
-// @ts-expect-error TS(7031): Binding element 'hasError' implicitly has an 'any'... Remove this comment to see the full error message
-	hasError,
-// @ts-expect-error TS(7031): Binding element 'loadStatistics' implicitly has an... Remove this comment to see the full error message
-	loadStatistics,
-// @ts-expect-error TS(7031): Binding element 'recalculateStatistics' implicitly... Remove this comment to see the full error message
-	recalculateStatistics,
-}) => {
+const Statistics: React.FC = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
@@ -47,11 +34,22 @@ const Statistics = ({
 
 	const organizationId = useAppSelector(state => getOrgId(state));
 	const user = useAppSelector(state => getUserInformation(state));
+	const statistics = useAppSelector(state => getStatistics(state));
+	const hasStatistics = useAppSelector(state => getHasStatistics(state));
+	const hasError = useAppSelector(state => hasStatisticsError(state));
+	const isLoadingStatistics = useAppSelector(state => isFetchingStatistics(state));
+
+	dispatch(fetchStatisticsPageStatisticsValueUpdate)
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const fetchStatisticsPageStatisticsValueUpdateWrapper = (organizationId: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any) => {
+		dispatch(fetchStatisticsPageStatisticsValueUpdate({organizationId, providerId, from, to, dataResolution, timeMode}))
+	}
 
 	useEffect(() => {
 		// fetch user information for organization id, then fetch statistics
-		dispatch(fetchUserInfo()).then((e) => {
-			loadStatistics(organizationId).then();
+// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
+		fetchUserInfo().then((e) => {
+			dispatch(fetchStatisticsPageStatistics(organizationId)).then();
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -119,7 +117,6 @@ const Statistics = ({
 							</div>
 						) : (
 							/* iterates over the different available statistics */
-// @ts-expect-error TS(7006): Parameter 'stat' implicitly has an 'any' type.
 							statistics.map((stat, key) => (
 								<div className="obj" key={key}>
 									{/* title of statistic */}
@@ -138,7 +135,7 @@ const Statistics = ({
 												timeMode={stat.timeMode}
 												dataResolution={stat.dataResolution}
 												statDescription={stat.description}
-												onChange={recalculateStatistics}
+												onChange={fetchStatisticsPageStatisticsValueUpdateWrapper}
 												exportUrl={stat.csvUrl}
 												exportFileName={statisticsCsvFileName}
 												totalValue={stat.totalValue}
@@ -166,42 +163,12 @@ const Statistics = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	hasStatistics: hasStatistics(state),
-	isLoadingStatistics: isFetchingStatistics(state),
-	statistics: getStatistics(state),
-	hasError: hasStatisticsError(state),
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'organizationId' implicitly has an 'any'... Remove this comment to see the full error message
-	loadStatistics: (organizationId) =>
-		dispatch(fetchStatisticsPageStatistics(organizationId)),
-	recalculateStatistics: (
-// @ts-expect-error TS(7006): Parameter 'organizationId' implicitly has an 'any'... Remove this comment to see the full error message
-		organizationId,
-// @ts-expect-error TS(7006): Parameter 'providerId' implicitly has an 'any' typ... Remove this comment to see the full error message
-		providerId,
-// @ts-expect-error TS(7006): Parameter 'from' implicitly has an 'any' type.
-		from,
-// @ts-expect-error TS(7006): Parameter 'to' implicitly has an 'any' type.
-		to,
-// @ts-expect-error TS(7006): Parameter 'dataResolution' implicitly has an 'any'... Remove this comment to see the full error message
-		dataResolution,
-// @ts-expect-error TS(7006): Parameter 'timeMode' implicitly has an 'any' type.
-		timeMode
-	) =>
-		dispatch(
-			fetchStatisticsPageStatisticsValueUpdate(
-				organizationId,
-				providerId,
-				from,
-				to,
-				dataResolution,
-				timeMode
-			)
-		),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Statistics);

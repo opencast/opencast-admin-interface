@@ -8,7 +8,7 @@ import {
 import axios from "axios";
 import { relativeDateSpanToFilterValue } from "../utils/dateUtils";
 import { setOffset } from "../actions/tableActions";
-import { fetchEvents } from "./eventThunks";
+import { fetchEvents } from "../slices/eventSlice";
 import { fetchServices } from "./serviceThunks";
 
 /**

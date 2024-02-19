@@ -6,9 +6,10 @@ import {
 	resetFilterValues,
 } from "../../actions/tableFilterActions";
 import { connect } from "react-redux";
-import { fetchEvents } from "../../thunks/eventThunks";
 import { loadEventsIntoTable } from "../../thunks/tableThunks";
 import { fetchStats } from "../../thunks/tableFilterThunks";
+import { useAppDispatch } from "../../store";
+import { fetchEvents } from "../../slices/eventSlice";
 
 /**
  * This component renders the status bar of the event view and filters depending on these
@@ -22,14 +23,13 @@ const Stats = ({
 	filterMap,
 // @ts-expect-error TS(7031): Binding element 'editFilterValue' implicitly has a... Remove this comment to see the full error message
 	editFilterValue,
-// @ts-expect-error TS(7031): Binding element 'loadEvents' implicitly has an 'an... Remove this comment to see the full error message
-	loadEvents,
 // @ts-expect-error TS(7031): Binding element 'loadEventsIntoTable' implicitly h... Remove this comment to see the full error message
 	loadEventsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'resetFilterMap' implicitly has an... Remove this comment to see the full error message
 	resetFilterMap,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	// Filter with value of clicked status
 // @ts-expect-error TS(7006): Parameter 'stats' implicitly has an 'any' type.
@@ -45,7 +45,7 @@ const Stats = ({
 				editFilterValue(filter.name, filterValue);
 			}
 		});
-		await loadEvents();
+		await dispatch(fetchEvents());
 		loadEventsIntoTable();
 	};
 
@@ -108,7 +108,6 @@ const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'filterName' implicitly has an 'any' typ... Remove this comment to see the full error message
 	editFilterValue: (filterName, value) =>
 		dispatch(editFilterValue(filterName, value)),
-	loadEvents: () => dispatch(fetchEvents()),
 	loadEventsIntoTable: () => dispatch(loadEventsIntoTable()),
 	resetFilterMap: () => dispatch(resetFilterValues()),
 });

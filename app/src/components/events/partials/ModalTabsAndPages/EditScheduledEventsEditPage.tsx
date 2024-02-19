@@ -7,10 +7,6 @@ import Notifications from "../../../shared/Notifications";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getTimezoneOffset, hasAccess } from "../../../../utils/utils";
 import { hours, minutes, weekdays } from "../../../../configs/modalConfig";
-import {
-	checkForSchedulingConflicts,
-	fetchScheduling,
-} from "../../../../thunks/eventThunks";
 import { addNotification } from "../../../../thunks/notificationThunks";
 import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
@@ -20,7 +16,11 @@ import {
 } from "../../../../selectors/eventSelectors";
 import { checkSchedulingConflicts } from "../../../../utils/bulkActionUtils";
 import DropDown from "../../../shared/DropDown";
-import { useAppSelector } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import {
+	checkForSchedulingConflicts,
+	fetchScheduling,
+} from "../../../../slices/eventSlice";
 
 /**
  * This component renders the edit page for scheduled events of the corresponding bulk action
@@ -38,20 +38,21 @@ const EditScheduledEventsEditPage = ({
 	conflictState: { conflicts, setConflicts },
 // @ts-expect-error TS(7031): Binding element 'setPageCompleted' implicitly has ... Remove this comment to see the full error message
 	setPageCompleted,
-// @ts-expect-error TS(7031): Binding element 'checkForSchedulingConflicts' impl... Remove this comment to see the full error message
-	checkForSchedulingConflicts,
 // @ts-expect-error TS(7031): Binding element 'addNotification' implicitly has a... Remove this comment to see the full error message
 	addNotification,
 // @ts-expect-error TS(7031): Binding element 'removeNotificationWizardForm' imp... Remove this comment to see the full error message
 	removeNotificationWizardForm,
-// @ts-expect-error TS(7031): Binding element 'fetchSchedulingData' implicitly h... Remove this comment to see the full error message
-	fetchSchedulingData,
-// @ts-expect-error TS(7031): Binding element 'loading' implicitly has an 'any' ... Remove this comment to see the full error message
-	loading,
-// @ts-expect-error TS(7031): Binding element 'seriesOptions' implicitly has an ... Remove this comment to see the full error message
-	seriesOptions,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
+
+	const loading = useAppSelector(state => isLoadingScheduling(state));
+	const seriesOptions = useAppSelector(state => getSchedulingSeriesOptions(state));
+
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const checkForSchedulingConflictsWrapper = (events: any) => {
+		dispatch(checkForSchedulingConflicts(events));
+	}
 
 	const user = useAppSelector(state => getUserInformation(state));
 
@@ -66,11 +67,11 @@ const EditScheduledEventsEditPage = ({
 			);
 
 		// Fetch data about series and schedule info of chosen events from backend
-		fetchSchedulingData(
-			formik.values.events,
-			fetchEventInfos,
-			formik.setFieldValue
-		);
+		dispatch(fetchScheduling({
+			events: formik.values.events,
+			fetchNewScheduling:fetchEventInfos,
+			setFormikValue: formik.setFieldValue
+	}));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formik.values.events]);
 
@@ -461,7 +462,7 @@ const EditScheduledEventsEditPage = ({
 							await checkSchedulingConflicts(
 								formik.values,
 								setConflicts,
-								checkForSchedulingConflicts,
+								checkForSchedulingConflictsWrapper,
 								addNotification
 							)
 						) {
@@ -498,23 +499,15 @@ const EditScheduledEventsEditPage = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	loading: isLoadingScheduling(state),
-	seriesOptions: getSchedulingSeriesOptions(state),
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'events' implicitly has an 'any' type.
-	checkForSchedulingConflicts: (events) =>
-		dispatch(checkForSchedulingConflicts(events)),
 // @ts-expect-error TS(7006): Parameter 'type' implicitly has an 'any' type.
 	addNotification: (type, key, duration, parameter, context) =>
 		dispatch(addNotification(type, key, duration, parameter, context)),
 	removeNotificationWizardForm: () => dispatch(removeNotificationWizardForm()),
-// @ts-expect-error TS(7006): Parameter 'events' implicitly has an 'any' type.
-	fetchSchedulingData: (events, fetchNewScheduling, setFieldValue) =>
-		dispatch(fetchScheduling(events, fetchNewScheduling, setFieldValue)),
 });
 
 export default connect(
