@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
 import GeneralDetailsTab from "../wizards/GeneralDetailsTab";
 import ConfigurationDetailsTab from "../wizards/ConfigurationDetailsTab";
 import CapabilitiesDetailsTab from "../wizards/CapabilitiesDetailsTab";
 import { getRecordingDetails } from "../../../../selectors/recordingDetailsSelectors";
 import ModalNavigation from "../../../shared/modals/ModalNavigation";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component manages the pages of the recording details
  */
-const RecordingsDetails = ({
-    agent
-}: any) => {
+const RecordingsDetails: React.FC = () => {
 	const [page, setPage] = useState(0);
+
+	const agent = useAppSelector(state => getRecordingDetails(state));
 
 	// information about tabs
 	const tabs = [
@@ -52,10 +52,4 @@ const RecordingsDetails = ({
 	);
 };
 
-// get current state out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	agent: getRecordingDetails(state),
-});
-
-export default connect(mapStateToProps)(RecordingsDetails);
+export default RecordingsDetails;

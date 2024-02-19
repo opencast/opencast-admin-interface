@@ -1,6 +1,7 @@
+import { RootState } from "../store";
+
 /**
  * This file contains selectors regarding jobs
  */
-
-export const getJobs = (state: any) => state.jobs.results;
-export const getTotalJobs = (state: any) => state.jobs.total;
+export const getJobs = (state: RootState) => state.jobs.results;
+export const getTotalJobs = (state: RootState) => state.jobs.total;

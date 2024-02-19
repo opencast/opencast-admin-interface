@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { renderValidDate } from "../../../utils/dateUtils";
 
 /**
  * This component renders the creation date cells of series in the table view
@@ -13,7 +14,7 @@ const SeriesDateTimeCell = ({
 		// Link template for creation date of series
 		<span>
 			{t("dateFormats.dateTime.short", {
-				dateTime: new Date(row.creation_date),
+				dateTime: renderValidDate(row.creation_date),
 			})}
 		</span>
 	);
