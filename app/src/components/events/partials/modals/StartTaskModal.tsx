@@ -62,7 +62,7 @@ const StartTaskModal = ({
 			)
 		) {
 // @ts-expect-error TS(2339): Property 'worflow' does not exist on type '{}'.
-			errors.worflow = "Workflow not selected!";
+			errors.workflow = "Workflow not selected!";
 		}
 		return errors;
 	};
