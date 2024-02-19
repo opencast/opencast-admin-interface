@@ -29,7 +29,6 @@ export const fetchUserInfo = () => async (dispatch) => {
 	} catch (e) {
 		console.error(e);
 		dispatch(loadUserInfoFailure());
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 		dispatch(addNotification("error", "PROBLEM_ON_START"));
 	}
 };

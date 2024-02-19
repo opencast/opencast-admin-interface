@@ -155,12 +155,10 @@ export const postNewSeries = (values, metadataInfo, extendedMetadata) => async (
 		})
 		.then((response) => {
 			console.info(response);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "SERIES_ADDED"));
 		})
 		.catch((response) => {
 			console.error(response);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "SERIES_NOT_SAVED"));
 		});
 };
@@ -195,13 +193,11 @@ export const deleteSeries = (id) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			// add success notification
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "SERIES_DELETED"));
 		})
 		.catch((res) => {
 			console.error(res);
 			// add error notification
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "SERIES_NOT_DELETED"));
 		});
 };
@@ -222,13 +218,11 @@ export const deleteMultipleSeries = (series) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			//add success notification
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "SERIES_DELETED"));
 		})
 		.catch((res) => {
 			console.error(res);
 			//add error notification
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "SERIES_NOT_DELETED"));
 		});
 };
