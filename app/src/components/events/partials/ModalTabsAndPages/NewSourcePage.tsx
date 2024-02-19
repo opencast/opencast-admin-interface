@@ -13,7 +13,6 @@ import RenderField from "../../../shared/wizard/RenderField";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
 import { connect } from "react-redux";
 import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
-import { checkConflicts } from "../../../../thunks/eventThunks";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
 import { hours, minutes, weekdays } from "../../../../configs/modalConfig";
 import DateFnsUtils from "@date-io/date-fns";
@@ -42,6 +41,7 @@ import {
 } from "../../../../utils/dateUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchRecordings } from "../../../../slices/recordingSlice";
+import { checkConflicts } from "../../../../slices/eventSlice";
 
 // Style to bring date picker pop up to front
 const theme = createMuiTheme({
@@ -68,8 +68,6 @@ const NewSourcePage = ({
 	user,
 // @ts-expect-error TS(7031): Binding element 'removeNotificationWizardForm' imp... Remove this comment to see the full error message
 	removeNotificationWizardForm,
-// @ts-expect-error TS(7031): Binding element 'checkConflicts' implicitly has an... Remove this comment to see the full error message
-	checkConflicts,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -205,7 +203,7 @@ const NewSourcePage = ({
 					disabled={!(formik.dirty && formik.isValid)}
 					onClick={async () => {
 						removeOldNotifications();
-						const noConflicts = await checkConflicts(formik.values);
+						const noConflicts = await dispatch(checkConflicts(formik.values));
 						if (noConflicts) {
 							nextPage(formik.values);
 						}
@@ -745,8 +743,6 @@ const mapStateToProps = (state) => ({
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
 	removeNotificationWizardForm: () => dispatch(removeNotificationWizardForm()),
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	checkConflicts: (values) => dispatch(checkConflicts(values)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewSourcePage);
