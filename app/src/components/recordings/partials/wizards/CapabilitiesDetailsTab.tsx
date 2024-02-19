@@ -1,12 +1,15 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { RecordingDetails } from "../../../../slices/recordingDetailsSlice";
 
 /**
  * This component renders details about the capabilities of a recording/capture agent
  */
-const CapabilitiesDetailsTab = ({
-    agent
-}: any) => {
+const CapabilitiesDetailsTab: React.FC<{
+	agent: RecordingDetails
+}> = ({
+	agent
+}) => {
 	const { t } = useTranslation();
 
 	return (
@@ -25,7 +28,6 @@ const CapabilitiesDetailsTab = ({
 								<table className="main-tbl">
 									<tbody>
 										{/* Render table row for each capability item*/}
-{/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}
 										{agent.capabilities.map((item, key) => (
 											<tr key={key}>
 												<td>{item.key}</td>
