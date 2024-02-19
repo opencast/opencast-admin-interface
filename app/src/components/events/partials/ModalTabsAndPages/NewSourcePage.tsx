@@ -13,7 +13,6 @@ import { getRecordings } from "../../../../selectors/recordingSelectors";
 import { fetchRecordings } from "../../../../thunks/recordingThunks";
 import { connect } from "react-redux";
 import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
-import { checkConflicts } from "../../../../thunks/eventThunks";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
 import { hours, minutes, weekdays } from "../../../../configs/modalConfig";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
@@ -40,6 +39,8 @@ import {
 	changeStartMinuteMultiple,
 } from "../../../../utils/dateUtils";
 import { parseISO } from "date-fns";
+import { useAppDispatch } from "../../../../store";
+import { checkConflicts } from "../../../../slices/eventSlice";
 
 /**
  * This component renders the source page for new events in the new event wizard.
@@ -59,10 +60,9 @@ const NewSourcePage = ({
 	user,
 // @ts-expect-error TS(7031): Binding element 'removeNotificationWizardForm' imp... Remove this comment to see the full error message
 	removeNotificationWizardForm,
-// @ts-expect-error TS(7031): Binding element 'checkConflicts' implicitly has an... Remove this comment to see the full error message
-	checkConflicts,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		// Load recordings that can be used for input
@@ -193,7 +193,7 @@ const NewSourcePage = ({
 					disabled={!(formik.dirty && formik.isValid)}
 					onClick={async () => {
 						removeOldNotifications();
-						const noConflicts = await checkConflicts(formik.values);
+						const noConflicts = await dispatch(checkConflicts(formik.values));
 						if (noConflicts) {
 							nextPage(formik.values);
 						}
@@ -725,8 +725,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	loadingInputDevices: () => dispatch(fetchRecordings("inputs")),
 	removeNotificationWizardForm: () => dispatch(removeNotificationWizardForm()),
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	checkConflicts: (values) => dispatch(checkConflicts(values)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewSourcePage);

@@ -19,7 +19,6 @@ import {
 	loadEventsIntoTable,
 	loadSeriesIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchEvents } from "../../thunks/eventThunks";
 import { fetchFilters, fetchStats } from "../../thunks/tableFilterThunks";
 import { getTotalSeries, isShowActions } from "../../selectors/seriesSeletctor";
 import { editTextFilter } from "../../actions/tableFilterActions";
@@ -33,6 +32,8 @@ import { showActions } from "../../actions/seriesActions";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { GlobalHotKeys } from "react-hotkeys";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
+import { useAppDispatch } from "../../store";
+import { fetchEvents } from "../../slices/eventSlice";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef();
@@ -47,8 +48,6 @@ const Series = ({
 	loadingSeries,
 // @ts-expect-error TS(7031): Binding element 'loadingSeriesIntoTable' implicitl... Remove this comment to see the full error message
 	loadingSeriesIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingEvents' implicitly has an ... Remove this comment to see the full error message
-	loadingEvents,
 // @ts-expect-error TS(7031): Binding element 'loadingEventsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingEventsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'series' implicitly has an 'any' t... Remove this comment to see the full error message
@@ -73,6 +72,7 @@ const Series = ({
 	currentFilterType,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 	const [displayActionMenu, setActionMenu] = useState(false);
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewSeriesModal, setNewSeriesModal] = useState(false);
@@ -88,7 +88,7 @@ const Series = ({
 		loadingStats();
 
 		// Fetching events from server
-		loadingEvents();
+		dispatch(fetchEvents());
 
 		// Load events into table
 		loadingEventsIntoTable();
@@ -284,7 +284,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	loadingSeries: () => dispatch(fetchSeries()),
 	loadingSeriesIntoTable: () => dispatch(loadSeriesIntoTable()),
-	loadingEvents: () => dispatch(fetchEvents()),
 	loadingEventsIntoTable: () => dispatch(loadEventsIntoTable()),
 // @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
