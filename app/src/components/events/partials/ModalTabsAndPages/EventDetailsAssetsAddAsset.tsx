@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import Notifications from "../../../shared/Notifications";
 import { style_button_spacing } from "../../../../utils/eventDetailsUtils";
@@ -25,7 +24,6 @@ const EventDetailsAssetsAddAsset = ({
 
 	// Get upload assets that are not of type track
 	const uploadAssets = uploadAssetOptions.filter(
-// @ts-expect-error TS(7006): Parameter 'asset' implicitly has an 'any' type.
 		(asset) => asset.type !== "track"
 	);
 
@@ -85,7 +83,6 @@ const EventDetailsAssetsAddAsset = ({
 														</td>
 													</tr>
 												) : (
-// @ts-expect-error TS(7006): Parameter 'asset' implicitly has an 'any' type.
 													uploadAssets.map((asset, key) => (
 														<tr key={key}>
 															<td>

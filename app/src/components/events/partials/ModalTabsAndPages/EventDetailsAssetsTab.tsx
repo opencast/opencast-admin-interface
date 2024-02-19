@@ -10,7 +10,7 @@ import {
 } from "../../../../selectors/eventDetailsSelectors";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
-import { isFetchingAssetUploadOptions } from "../../../../selectors/eventSelectors";
+import { isFetchingAssetUploadOptions as getIsFetchingAssetUploadOptions } from "../../../../selectors/eventSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
 	fetchAssetAttachments,
@@ -30,8 +30,6 @@ const EventDetailsAssetsTab = ({
 	t,
 // @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
-// @ts-expect-error TS(7031): Binding element 'isFetchingAssetUploadOptions' imp... Remove this comment to see the full error message
-	isFetchingAssetUploadOptions,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
 }) => {
@@ -41,6 +39,7 @@ const EventDetailsAssetsTab = ({
 	const uploadAssetOptions = useAppSelector(state => getUploadAssetOptions(state));
 	const isFetching = useAppSelector(state => isFetchingAssets(state));
 	const transactionsReadOnly = useAppSelector(state => isTransactionReadOnly(state));
+	const isFetchingAssetUploadOptions = useAppSelector(state => getIsFetchingAssetUploadOptions(state));
 
 	useEffect(() => {
 		removeNotificationWizardForm();
@@ -242,7 +241,6 @@ const EventDetailsAssetsTab = ({
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
 	user: getUserInformation(state),
-	isFetchingAssetUploadOptions: isFetchingAssetUploadOptions(state),
 });
 
 // Mapping actions to dispatch

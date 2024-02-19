@@ -58,7 +58,6 @@ const EventDetails : React.FC<{
 	close?: any,
 	captureAgents?: any,
 	user?: any,
-	fetchAssetUploadOptions?: any,
 	removeNotificationWizardForm?: any,
 	policyChanged: any,
 	setPolicyChanged: any,
@@ -68,7 +67,6 @@ const EventDetails : React.FC<{
 	close,
 	captureAgents,
 	user,
-	fetchAssetUploadOptions,
 	removeNotificationWizardForm,
 	policyChanged,
 	setPolicyChanged,
@@ -81,7 +79,7 @@ const EventDetails : React.FC<{
 		dispatch(fetchMetadata(eventId)).then();
 		dispatch(fetchSchedulingInfo(eventId)).then();
 		dispatch(fetchEventStatistics(eventId)).then();
-		fetchAssetUploadOptions().then();
+		dispatch(fetchAssetUploadOptions()).then();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -398,7 +396,6 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-	fetchAssetUploadOptions: () => dispatch(fetchAssetUploadOptions()),
 	removeNotificationWizardForm: () => dispatch(removeNotificationWizardForm()),
 });
 
