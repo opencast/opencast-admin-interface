@@ -14,9 +14,8 @@ import {
 	loadThemesIntoTable,
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchEvents } from "../../thunks/eventThunks";
+import { fetchEvents } from "../../slices/eventSlice";
 import { fetchRecordings } from "../../thunks/recordingThunks";
-import { fetchJobs } from "../../thunks/jobThunks";
 import { fetchUsers } from "../../thunks/userThunks";
 import { fetchThemes } from "../../thunks/themeThunks";
 import { fetchFilters, fetchStats } from "../../thunks/tableFilterThunks";
@@ -27,9 +26,11 @@ import { fetchSeries } from "../../thunks/seriesThunks";
 import { fetchServers } from "../../thunks/serverThunks";
 import { fetchServices } from "../../thunks/serviceThunks";
 import { fetchGroups } from "../../thunks/groupThunks";
-import { fetchAcls } from "../../thunks/aclThunks";
 import { GlobalHotKeys } from "react-hotkeys";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
+import { fetchAcls } from "../../slices/aclSlice";
+import { useAppDispatch } from "../../store";
+import { fetchJobs } from "../../slices/jobSlice";
 
 /**
  * This component renders the main navigation that opens when the burger button is clicked
@@ -39,8 +40,6 @@ const MainNav = ({
 	isOpen,
 // @ts-expect-error TS(7031): Binding element 'toggleMenu' implicitly has an 'an... Remove this comment to see the full error message
 	toggleMenu,
-// @ts-expect-error TS(7031): Binding element 'loadingEvents' implicitly has an ... Remove this comment to see the full error message
-	loadingEvents,
 // @ts-expect-error TS(7031): Binding element 'loadingEventsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingEventsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingSeries' implicitly has an ... Remove this comment to see the full error message
@@ -53,8 +52,6 @@ const MainNav = ({
 	loadingRecordings,
 // @ts-expect-error TS(7031): Binding element 'loadingRecordingsIntoTable' impli... Remove this comment to see the full error message
 	loadingRecordingsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingJobs' implicitly has an 'a... Remove this comment to see the full error message
-	loadingJobs,
 // @ts-expect-error TS(7031): Binding element 'loadingJobsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingJobsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingServers' implicitly has an... Remove this comment to see the full error message
@@ -73,8 +70,6 @@ const MainNav = ({
 	loadingGroups,
 // @ts-expect-error TS(7031): Binding element 'loadingGroupsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingGroupsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingAcls' implicitly has an 'a... Remove this comment to see the full error message
-	loadingAcls,
 // @ts-expect-error TS(7031): Binding element 'loadingAclsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingAclsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingThemes' implicitly has an ... Remove this comment to see the full error message
@@ -89,6 +84,7 @@ const MainNav = ({
 	loadingFilters,
 }) => {
 	const { t } = useTranslation();
+        const dispatch = useAppDispatch();
 	let navigate = useNavigate();
 
 	const loadEvents = () => {
@@ -101,7 +97,7 @@ const MainNav = ({
 		loadingStats();
 
 		// Fetching events from server
-		loadingEvents();
+		// dispatch(fetchEvents());
 
 		// Load events into table
 		loadingEventsIntoTable();
@@ -140,7 +136,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching jobs from server
-		loadingJobs();
+		dispatch(fetchJobs());
 
 		// Load jobs into table
 		loadingJobsIntoTable();
@@ -205,7 +201,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching acls from server
-		loadingAcls();
+        dispatch(fetchAcls());
 
 		// Load acls into table
 		loadingAclsIntoTable();
@@ -343,7 +339,6 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-	loadingEvents: () => dispatch(fetchEvents()),
 	loadingEventsIntoTable: () => dispatch(loadEventsIntoTable()),
 	loadingSeries: () => dispatch(fetchSeries()),
 	loadingSeriesIntoTable: () => dispatch(loadSeriesIntoTable()),
@@ -351,7 +346,6 @@ const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 	loadingRecordings: () => dispatch(fetchRecordings()),
 	loadingRecordingsIntoTable: () => dispatch(loadRecordingsIntoTable()),
-	loadingJobs: () => dispatch(fetchJobs()),
 	loadingJobsIntoTable: () => dispatch(loadJobsIntoTable()),
 	loadingServers: () => dispatch(fetchServers()),
 	loadingServersIntoTable: () => dispatch(loadServersIntoTable()),
@@ -361,7 +355,6 @@ const mapDispatchToProps = (dispatch) => ({
 	loadingUsersIntoTable: () => dispatch(loadUsersIntoTable()),
 	loadingGroups: () => dispatch(fetchGroups()),
 	loadingGroupsIntoTable: () => dispatch(loadGroupsIntoTable()),
-	loadingAcls: () => dispatch(fetchAcls()),
 	loadingAclsIntoTable: () => dispatch(loadAclsIntoTable()),
 	loadingThemes: () => dispatch(fetchThemes()),
 	loadingThemesIntoTable: () => dispatch(loadThemesIntoTable()),

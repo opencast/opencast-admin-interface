@@ -9,7 +9,6 @@ import {
 import CustomStepIcon from "./CustomStepIcon";
 import { checkAcls } from "../../../thunks/aclThunks";
 import { connect } from "react-redux";
-import { checkConflicts } from "../../../thunks/eventThunks";
 
 const WizardStepperEvent = ({
 // @ts-expect-error TS(7031): Binding element 'steps' implicitly has an 'any' ty... Remove this comment to see the full error message
@@ -26,8 +25,6 @@ const WizardStepperEvent = ({
 	setCompleted,
 // @ts-expect-error TS(7031): Binding element 'checkAcls' implicitly has an 'any... Remove this comment to see the full error message
 	checkAcls,
-// @ts-expect-error TS(7031): Binding element 'checkConflicts' implicitly has an... Remove this comment to see the full error message
-	checkConflicts,
 }) => {
 	const { t } = useTranslation();
 
@@ -84,8 +81,6 @@ const WizardStepperEvent = ({
 const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'acls' implicitly has an 'any' type.
 	checkAcls: (acls) => dispatch(checkAcls(acls)),
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	checkConflicts: (values) => dispatch(checkConflicts(values)),
 });
 
 export default connect(null, mapDispatchToProps)(WizardStepperEvent);

@@ -139,7 +139,7 @@ const DetailsExtendedMetadataTab = ({
 																		<td className="editable">
 																			{/* Render single value or multi value editable input */}
 																			{field.type === "mixed_text" &&
-																			field.collection.length !== 0 ? (
+																			field.collection?.length !== 0 ? (
 																				<Field
 																					name={field.id}
 																					fieldInfo={field}

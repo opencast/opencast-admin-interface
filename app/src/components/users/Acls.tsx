@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import MainNav from "../shared/MainNav";
 import { Link } from "react-router-dom";
@@ -8,7 +7,7 @@ import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
 import NewResourceModal from "../shared/NewResourceModal";
-import { aclsTemplateMap } from "../../configs/tableConfigs/aclsTableConfig";
+import { aclsTemplateMap } from "../../configs/tableConfigs/aclsTableMap";
 import { fetchFilters } from "../../thunks/tableFilterThunks";
 import { fetchUsers } from "../../thunks/userThunks";
 import {
@@ -17,7 +16,6 @@ import {
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
 import { fetchGroups } from "../../thunks/groupThunks";
-import { fetchAcls } from "../../thunks/aclThunks";
 import { getTotalAcls } from "../../selectors/aclSelectors";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
@@ -27,81 +25,63 @@ import Footer from "../Footer";
 import { hasAccess } from "../../utils/utils";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { fetchAcls } from "../../slices/aclSlice";
 
 /**
  * This component renders the table view of acls
  */
-const Acls = ({
-// @ts-expect-error TS(7031): Binding element 'loadingAcls' implicitly has an 'a... Remove this comment to see the full error message
-	loadingAcls,
-// @ts-expect-error TS(7031): Binding element 'loadingAclsIntoTable' implicitly ... Remove this comment to see the full error message
-	loadingAclsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'acls' implicitly has an 'any' typ... Remove this comment to see the full error message
-	acls,
-// @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
-	loadingFilters,
-// @ts-expect-error TS(7031): Binding element 'loadingUsers' implicitly has an '... Remove this comment to see the full error message
-	loadingUsers,
-// @ts-expect-error TS(7031): Binding element 'loadingUsersIntoTable' implicitly... Remove this comment to see the full error message
-	loadingUsersIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingGroups' implicitly has an ... Remove this comment to see the full error message
-	loadingGroups,
-// @ts-expect-error TS(7031): Binding element 'loadingGroupsIntoTable' implicitl... Remove this comment to see the full error message
-	loadingGroupsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'resetTextFilter' implicitly has a... Remove this comment to see the full error message
-	resetTextFilter,
-// @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
-	resetOffset,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
-// @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
-	currentFilterType,
-}) => {
+const Acls: React.FC = () => {
 	const { t } = useTranslation();
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewAclModal, setNewAclModal] = useState(false);
 
+        const dispatch = useAppDispatch();
+        const acls = useAppSelector(state => getTotalAcls(state));
+	const user = useAppSelector(state => getUserInformation(state));
+        const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
+
 	const loadAcls = async () => {
 		// Fetching acls from server
-		await loadingAcls();
+		await dispatch(fetchAcls());
 
 		// Load acls into table
-		loadingAclsIntoTable();
+		dispatch(loadAclsIntoTable());
 	};
 
 	const loadUsers = () => {
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching users from server
-		loadingUsers();
+		dispatch(fetchUsers());
 
 		// Load users into table
-		loadingUsersIntoTable();
+		dispatch(loadUsersIntoTable());
 	};
 
 	const loadGroups = () => {
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching groups from server
-		loadingGroups();
+		dispatch(fetchGroups());
 
 		// Load groups into table
-		loadingGroupsIntoTable();
+		dispatch(loadGroupsIntoTable());
 	};
 
 	useEffect(() => {
 		if ("acls" !== currentFilterType) {
-			loadingFilters("acls");
+			dispatch(fetchFilters("acls"));
 		}
 
-		resetTextFilter();
+		dispatch(editTextFilter(""));
 
 		// Load acls on mount
 		loadAcls().then((r) => console.info(r));
 
-		// Fetch ACLs every minute
+		// Fetch Acls every minute
 		let fetchAclInterval = setInterval(loadAcls, 5000);
 
 		return () => clearInterval(fetchAclInterval);
@@ -185,8 +165,8 @@ const Acls = ({
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={loadingAcls}
-						loadResourceIntoTable={loadingAclsIntoTable}
+						loadResource={() => dispatch(fetchAcls())}
+						loadResourceIntoTable={() => dispatch(loadAclsIntoTable())}
 						resource={"acls"}
 					/>
 					<h1>{t("USERS.ACLS.TABLE.CAPTION")}</h1>
@@ -200,27 +180,4 @@ const Acls = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	acls: getTotalAcls(state),
-	user: getUserInformation(state),
-	currentFilterType: getCurrentFilterResource(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
-	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
-	loadingAcls: () => dispatch(fetchAcls()),
-	loadingAclsIntoTable: () => dispatch(loadAclsIntoTable()),
-	loadingUsers: () => dispatch(fetchUsers()),
-	loadingUsersIntoTable: () => dispatch(loadUsersIntoTable()),
-	loadingGroups: () => dispatch(fetchGroups()),
-	loadingGroupsIntoTable: () => dispatch(loadGroupsIntoTable()),
-	resetTextFilter: () => dispatch(editTextFilter("")),
-	resetOffset: () => dispatch(setOffset(0)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Acls);
+export default Acls;

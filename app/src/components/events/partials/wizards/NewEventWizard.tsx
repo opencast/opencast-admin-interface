@@ -20,8 +20,8 @@ import {
 	getEventMetadata,
 	getExtendedEventMetadata,
 } from "../../../../selectors/eventSelectors";
-import { postNewEvent } from "../../../../thunks/eventThunks";
-import { connect } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { postNewEvent } from "../../../../slices/eventSlice";
 
 // Get info about the current language and its date locale
 const currentLanguage = getCurrentLanguageInformation();
@@ -29,18 +29,17 @@ const currentLanguage = getCurrentLanguageInformation();
 /**
  * This component manages the pages of the new event wizard and the submission of values
  */
-const NewEventWizard = ({
-// @ts-expect-error TS(7031): Binding element 'metadataFields' implicitly has an... Remove this comment to see the full error message
-	metadataFields,
-// @ts-expect-error TS(7031): Binding element 'extendedMetadata' implicitly has ... Remove this comment to see the full error message
-	extendedMetadata,
-// @ts-expect-error TS(7031): Binding element 'close' implicitly has an 'any' ty... Remove this comment to see the full error message
+const NewEventWizard: React.FC<{
+	close: () => void
+}> = ({
 	close,
-// @ts-expect-error TS(7031): Binding element 'postNewEvent' implicitly has an '... Remove this comment to see the full error message
-	postNewEvent,
-// @ts-expect-error TS(7031): Binding element 'uploadAssetOptions' implicitly ha... Remove this comment to see the full error message
-	uploadAssetOptions,
 }) => {
+	const dispatch = useAppDispatch();
+
+	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
+	const metadataFields = useAppSelector(state => getEventMetadata(state));
+	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
+
 	const initialValues = getInitialValues(
 		metadataFields,
 		extendedMetadata,
@@ -73,7 +72,6 @@ const NewEventWizard = ({
 			translation: "EVENTS.EVENTS.NEW.UPLOAD_ASSET.CAPTION",
 			name: "upload-asset",
 			hidden:
-// @ts-expect-error TS(7006): Parameter 'asset' implicitly has an 'any' type.
 				uploadAssetOptions.filter((asset) => asset.type !== "track").length ===
 				0,
 		},
@@ -129,7 +127,7 @@ const NewEventWizard = ({
 	const handleSubmit = (values) => {
 // @ts-expect-error TS(2339): Property 'submitForm' does not exist on type 'neve... Remove this comment to see the full error message
 		workflowPanelRef.current?.submitForm();
-		const response = postNewEvent(values, metadataFields, extendedMetadata);
+		const response = dispatch(postNewEvent({values, metadataInfo: metadataFields, extendedMetadata}));
 		console.info(response);
 		close();
 	};
@@ -316,19 +314,4 @@ const getInitialValues = (
 	return initialValues;
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	metadataFields: getEventMetadata(state),
-	extendedMetadata: getExtendedEventMetadata(state),
-	uploadAssetOptions: getAssetUploadOptions(state),
-});
-
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	postNewEvent: (values, metadataFields, extendedMetadata) =>
-		dispatch(postNewEvent(values, metadataFields, extendedMetadata)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(NewEventWizard);
+export default NewEventWizard;
