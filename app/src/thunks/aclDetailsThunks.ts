@@ -121,12 +121,10 @@ export const updateAclDetails = (values, aclId) => async (dispatch) => {
 		.put(`/admin-ng/acl/${aclId}`, data)
 		.then((response) => {
 			console.info(response);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "ACL_UPDATED"));
 		})
 		.catch((response) => {
 			console.error(response);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "ACL_NOT_SAVED"));
 		});
 };

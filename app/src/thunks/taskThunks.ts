@@ -33,12 +33,10 @@ export const postTasks = (values: any) => async (dispatch: any) => {
 		})
 		.then((response) => {
 			console.info(response);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "TASK_CREATED"));
 		})
 		.catch((response) => {
 			console.error(response);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "TASK_NOT_CREATED"));
 		});
 };
