@@ -58,12 +58,11 @@ const StartTaskModal = ({
 			steps[page].name !== "general" &&
 			!(
 				!!values.workflow &&
-				values.workflow !== "" &&
-				values.configuration && Object.keys(values.configuration).length === 0
+				values.workflow !== ""
 			)
 		) {
 // @ts-expect-error TS(2339): Property 'worflow' does not exist on type '{}'.
-			errors.worflow = "Workflow not selected!";
+			errors.workflow = "Workflow not selected!";
 		}
 		return errors;
 	};

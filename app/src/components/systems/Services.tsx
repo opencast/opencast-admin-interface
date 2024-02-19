@@ -9,7 +9,6 @@ import MainNav from "../shared/MainNav";
 import Notifications from "../shared/Notifications";
 import { servicesTemplateMap } from "../../configs/tableConfigs/servicesTableMap";
 import { fetchFilters } from "../../thunks/tableFilterThunks";
-import { fetchJobs } from "../../thunks/jobThunks";
 import {
 	loadJobsIntoTable,
 	loadServersIntoTable,
@@ -26,6 +25,7 @@ import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
+import { fetchJobs } from "../../slices/jobSlice";
 import { fetchServices } from "../../slices/serviceSlice";
 
 /**
@@ -36,8 +36,6 @@ const Services = ({
 	loadingServicesIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
 	loadingFilters,
-// @ts-expect-error TS(7031): Binding element 'loadingJobs' implicitly has an 'a... Remove this comment to see the full error message
-	loadingJobs,
 // @ts-expect-error TS(7031): Binding element 'loadingJobsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingJobsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingServers' implicitly has an... Remove this comment to see the full error message
@@ -77,7 +75,7 @@ const Services = ({
 		resetOffset();
 
 		// Fetching jobs from server
-		loadingJobs();
+		dispatch(fetchJobs());
 
 		// Load jobs into table
 		loadingJobsIntoTable();
@@ -191,7 +189,6 @@ const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
 	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
-	loadingJobs: () => dispatch(fetchJobs()),
 	loadingJobsIntoTable: () => dispatch(loadJobsIntoTable()),
 	loadingServers: () => dispatch(fetchServers()),
 	loadingServersIntoTable: () => dispatch(loadServersIntoTable()),
