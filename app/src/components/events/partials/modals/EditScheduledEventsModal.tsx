@@ -6,10 +6,6 @@ import WizardStepper from "../../../shared/wizard/WizardStepper";
 import EditScheduledEventsGeneralPage from "../ModalTabsAndPages/EditScheduledEventsGeneralPage";
 import EditScheduledEventsEditPage from "../ModalTabsAndPages/EditScheduledEventsEditPage";
 import EditScheduledEventsSummaryPage from "../ModalTabsAndPages/EditScheduledEventsSummaryPage";
-import {
-	checkForSchedulingConflicts,
-	updateScheduledEventsBulk,
-} from "../../../../thunks/eventThunks";
 import { connect } from "react-redux";
 import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { fetchRecordings } from "../../../../thunks/recordingThunks";
@@ -21,6 +17,10 @@ import {
 	checkValidityUpdateScheduleEventSelection,
 } from "../../../../utils/bulkActionUtils";
 import { useAppDispatch } from "../../../../store";
+import {
+	checkForSchedulingConflicts,
+	updateScheduledEventsBulk,
+} from "../../../../slices/eventSlice";
 
 /**
  * This component manages the pages of the edit scheduled bulk action
@@ -28,12 +28,8 @@ import { useAppDispatch } from "../../../../store";
 const EditScheduledEventsModal = ({
 // @ts-expect-error TS(7031): Binding element 'close' implicitly has an 'any' ty... Remove this comment to see the full error message
 	close,
-// @ts-expect-error TS(7031): Binding element 'updateScheduledEventsBulk' implic... Remove this comment to see the full error message
-	updateScheduledEventsBulk,
 // @ts-expect-error TS(7031): Binding element 'loadingInputDevices' implicitly h... Remove this comment to see the full error message
 	loadingInputDevices,
-// @ts-expect-error TS(7031): Binding element 'checkForSchedulingConflicts' impl... Remove this comment to see the full error message
-	checkForSchedulingConflicts,
 // @ts-expect-error TS(7031): Binding element 'inputDevices' implicitly has an '... Remove this comment to see the full error message
 	inputDevices,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
@@ -41,6 +37,11 @@ const EditScheduledEventsModal = ({
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
+
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const checkForSchedulingConflictsWrapper = (events: any) => {
+		dispatch(checkForSchedulingConflicts(events));
+	}
 
 	const initialValues = initialFormValuesEditScheduledEvents;
 
@@ -89,8 +90,8 @@ const EditScheduledEventsModal = ({
 			return checkSchedulingConflicts(
 				values,
 				setConflicts,
-				checkForSchedulingConflicts,
-				dispatch,
+				checkForSchedulingConflictsWrapper,
+				dispatch
 			).then((result) => {
 				const errors = {};
 				if (!result) {
@@ -108,7 +109,7 @@ const EditScheduledEventsModal = ({
 	const handleSubmit = (values) => {
 		// Only update events if there are changes
 		if (values.changedEvents.length > 0) {
-			const response = updateScheduledEventsBulk(values);
+			const response = dispatch(updateScheduledEventsBulk(values));
 			console.info(response);
 		}
 		close();
@@ -191,12 +192,6 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'events' implicitly has an 'any' type.
-	checkForSchedulingConflicts: (events) =>
-		dispatch(checkForSchedulingConflicts(events)),
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	updateScheduledEventsBulk: (values) =>
-		dispatch(updateScheduledEventsBulk(values)),
 	loadingInputDevices: () => dispatch(fetchRecordings("inputs")),
 });
 
