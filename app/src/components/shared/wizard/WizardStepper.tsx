@@ -74,7 +74,7 @@ const WizardStepper = ({
 							</StepLabel>
 						</StepButton>
 					</Step>
-				) : null
+				) : <></>
 			)}
 		</Stepper>
 	);

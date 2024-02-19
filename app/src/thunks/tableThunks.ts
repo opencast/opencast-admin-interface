@@ -19,8 +19,9 @@ import {
 } from "../actions/tableActions";
 import {
 	setEventColumns,
-	showActions as showEventsActions,
-} from "../actions/eventActions";
+	setShowActions as showEventsActions,
+	fetchEvents,
+} from "../slices/eventSlice";
 import {
 	setSeriesColumns,
 	showActions as showSeriesActions,
@@ -32,24 +33,21 @@ import {
 	getTablePages,
 	getTablePagination,
 } from "../selectors/tableSelectors";
-import { fetchEvents } from "./eventThunks";
 import { fetchSeries } from "./seriesThunks";
 import { fetchRecordings } from "./recordingThunks";
-import { fetchJobs } from "./jobThunks";
+import { fetchJobs, setJobColumns } from "../slices/jobSlice";
 import { fetchServers } from "./serverThunks";
 import { fetchServices } from "./serviceThunks";
 import { fetchUsers } from "./userThunks";
 import { fetchGroups } from "../slices/groupSlice";
 import { fetchThemes } from "./themeThunks";
 import { setRecordingsColumns } from "../actions/recordingActions";
-import { setJobColumns } from "../actions/jobActions";
 import { setServerColumns } from "../actions/serverActions";
 import { setUserColumns } from "../actions/userActions";
 import { setGroupColumns } from "../slices/groupSlice";
 import { fetchAcls, setAclColumns } from "../slices/aclSlice";
 import { setThemeColumns } from "../actions/themeActions";
 import { setServicesColumns } from "../actions/serviceActions";
-import { useAppDispatch } from "../store";
 
 /**
  * This file contains methods/thunks used to manage the table in the main view and its state changes
@@ -407,7 +405,6 @@ export const loadThemesIntoTable = () => (dispatch, getState) => {
 // Navigate between pages
 // @ts-expect-error TS(7006): Parameter 'pageNumber' implicitly has an 'any' typ... Remove this comment to see the full error message
 export const goToPage = (pageNumber) => async (dispatch, getState) => {
-        const appDispatch = useAppDispatch();
 	dispatch(deselectAll());
 	dispatch(setOffset(pageNumber));
 
@@ -462,7 +459,7 @@ export const goToPage = (pageNumber) => async (dispatch, getState) => {
 			break;
 		}
 		case "acls": {
-			await appDispatch(fetchAcls());
+			await dispatch(fetchAcls());
 			dispatch(loadAclsIntoTable());
 			break;
 		}
@@ -477,7 +474,6 @@ export const goToPage = (pageNumber) => async (dispatch, getState) => {
 // Update pages for example if page size was changed
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const updatePages = () => async (dispatch, getState) => {
-        const appDispatch = useAppDispatch();
 	const state = getState();
 
 	const pagination = getTablePagination(state);
@@ -534,7 +530,7 @@ export const updatePages = () => async (dispatch, getState) => {
 			break;
 		}
 		case "acls": {
-			await appDispatch(fetchAcls());
+			await dispatch(fetchAcls());
 			dispatch(loadAclsIntoTable());
 			break;
 		}
@@ -699,6 +695,10 @@ const calculatePages = (numberOfPages, offset) => {
 			active: i === offset,
 		});
 	}
+
+  if (pages.every(page => page.active === false)) {
+    pages[0].active = true;
+  }
 
 	return pages;
 };
