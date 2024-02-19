@@ -11,6 +11,7 @@ import MetadataSummaryTable from "./summaryTables/MetadataSummaryTable";
 import MetadataExtendedSummaryTable from "./summaryTables/MetadataExtendedSummaryTable";
 import AccessSummaryTable from "./summaryTables/AccessSummaryTable";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component renders the summary page for new events in the new event wizard.
@@ -24,20 +25,17 @@ const NewEventSummary = ({
 	metaDataExtendedHidden,
 // @ts-expect-error TS(7031): Binding element 'assetUploadHidden' implicitly has... Remove this comment to see the full error message
 	assetUploadHidden,
-// @ts-expect-error TS(7031): Binding element 'metadataEvents' implicitly has an... Remove this comment to see the full error message
-	metadataEvents,
-// @ts-expect-error TS(7031): Binding element 'extendedMetadata' implicitly has ... Remove this comment to see the full error message
-	extendedMetadata,
 // @ts-expect-error TS(7031): Binding element 'workflowDef' implicitly has an 'a... Remove this comment to see the full error message
 	workflowDef,
-// @ts-expect-error TS(7031): Binding element 'uploadAssetOptions' implicitly ha... Remove this comment to see the full error message
-	uploadAssetOptions,
 }) => {
 	const { t } = useTranslation();
 
+	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
+	const metadataEvents = useAppSelector(state => getEventMetadata(state));
+	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
+
 	// Get upload assets that are not of type track
 	const uploadAssetsOptionsNonTrack = uploadAssetOptions.filter(
-// @ts-expect-error TS(7006): Parameter 'asset' implicitly has an 'any' type.
 		(asset) => asset.type !== "track"
 	);
 
@@ -304,10 +302,7 @@ const NewEventSummary = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	metadataEvents: getEventMetadata(state),
-	extendedMetadata: getExtendedEventMetadata(state),
 	workflowDef: getWorkflowDef(state),
-	uploadAssetOptions: getAssetUploadOptions(state),
 });
 
 export default connect(mapStateToProps)(NewEventSummary);
