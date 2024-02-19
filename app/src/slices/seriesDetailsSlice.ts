@@ -19,7 +19,7 @@ import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
 import {
 	fetchStatistics,
 	fetchStatisticsValueUpdate,
-} from "../thunks/statisticsThunks";
+} from "./statisticsSlice";
 import { RootState } from '../store';
 
 /**
@@ -382,23 +382,27 @@ export const updateSeriesTheme = createAsyncThunk('seriesDetails/updateSeriesThe
 		});
 });
 
+// TODO: FIX STATISTICS WHEN MODERNIZING REDUX TOOLKIT FOR EVENTS
+
 // thunks for statistics
 // This is probably not the optimal way to update these thunks to reduxToolkit, but
 // it works for now
 
 // @ts-expect-error TS(7006): Parameter 'seriesId' implicitly has an 'any' type.
 export const fetchSeriesStatistics = (seriesId) => async (dispatch) => {
-	dispatch(
-		fetchStatistics(
-			seriesId,
-			"series",
-			getStatistics,
-			setDoNothing,
-			setSeriesStatistics,	// setSeriesStatisticsAndStatisticsError
-			setSeriesStatisticsError
-		)
-	);
+	// dispatch(
+	// 	fetchStatistics(
+	// 		seriesId,
+	// 		"series",
+	// 		getStatistics,
+	// 		setDoNothing,
+	// 		setSeriesStatistics,	// setSeriesStatisticsAndStatisticsError
+	// 		setSeriesStatisticsError
+	// 	)
+	// );
 };
+
+// TODO: FIX STATISTICS WHEN MODERNIZING REDUX TOOLKIT FOR EVENTS
 
 export const fetchSeriesStatisticsValueUpdate = (
 // @ts-expect-error TS(7006): Parameter 'seriesId' implicitly has an 'any' type.
@@ -415,20 +419,20 @@ export const fetchSeriesStatisticsValueUpdate = (
 	timeMode
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 ) => async (dispatch) => {
-	dispatch(
-		fetchStatisticsValueUpdate(
-			seriesId,
-			"series",
-			providerId,
-			from,
-			to,
-			dataResolution,
-			timeMode,
-			getStatistics,
-			setSeriesStatistics,
-			setDoNothing,
-		)
-	);
+	// dispatch(
+	// 	fetchStatisticsValueUpdate(
+	// 		seriesId,
+	// 		"series",
+	// 		providerId,
+	// 		from,
+	// 		to,
+	// 		dataResolution,
+	// 		timeMode,
+	// 		getStatistics,
+	// 		setSeriesStatistics,
+	// 		setDoNothing,
+	// 	)
+	// );
 };
 
 // Reducer for series details

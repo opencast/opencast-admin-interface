@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import { deleteEvent } from "../../../thunks/eventThunks";
 import { connect } from "react-redux";
 import EventDetailsModal from "./modals/EventDetailsModal";
 import EmbeddingCodeModal from "./modals/EmbeddingCodeModal";
@@ -16,6 +15,7 @@ import {
 	fetchSeriesDetailsMetadata,
 	fetchSeriesDetailsTheme,
 } from "../../../slices/seriesDetailsSlice";
+import { deleteEvent } from "../../../slices/eventSlice";
 
 /**
  * This component renders the action cells of events in the table view
@@ -23,8 +23,6 @@ import {
 const EventActionCell = ({
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
-// @ts-expect-error TS(7031): Binding element 'deleteEvent' implicitly has an 'a... Remove this comment to see the full error message
-	deleteEvent,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
 }) => {
@@ -43,7 +41,7 @@ const EventActionCell = ({
 
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	const deletingEvent = (id) => {
-		deleteEvent(id);
+		dispatch(deleteEvent(id));
 	};
 
 	const hideEmbeddingCodeModal = () => {
@@ -244,8 +242,6 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	deleteEvent: (id) => dispatch(deleteEvent(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventActionCell);
