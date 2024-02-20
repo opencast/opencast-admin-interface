@@ -41,15 +41,7 @@ function changeLanguage(code) {
 }
 
 function logout() {
-	axios
-		.get("/j_spring_security_logout")
-		.then((response) => {
-			console.info(response);
-			window.location.reload();
-		})
-		.catch((response) => {
-			console.error(response);
-		});
+	window.location.href = "/j_spring_security_logout";
 }
 
 /**
