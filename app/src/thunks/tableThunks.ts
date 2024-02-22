@@ -40,13 +40,12 @@ import { fetchServers } from "./serverThunks";
 import { fetchServices } from "./serviceThunks";
 import { fetchUsers } from "./userThunks";
 import { fetchGroups } from "./groupThunks";
-import { fetchThemes } from "./themeThunks";
+import { fetchThemes, setThemeColumns } from "../slices/themeSlice";
 import { setRecordingsColumns } from "../actions/recordingActions";
 import { setServerColumns } from "../actions/serverActions";
 import { setUserColumns } from "../actions/userActions";
 import { setGroupColumns } from "../actions/groupActions";
 import { fetchAcls, setAclColumns } from "../slices/aclSlice";
-import { setThemeColumns } from "../actions/themeActions";
 import { setServicesColumns } from "../actions/serviceActions";
 
 /**

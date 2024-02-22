@@ -17,7 +17,7 @@ import {
 import { fetchEvents } from "../../slices/eventSlice";
 import { fetchRecordings } from "../../thunks/recordingThunks";
 import { fetchUsers } from "../../thunks/userThunks";
-import { fetchThemes } from "../../thunks/themeThunks";
+import { fetchThemes } from "../../slices/themeSlice";
 import { fetchFilters, fetchStats } from "../../thunks/tableFilterThunks";
 import { setOffset } from "../../actions/tableActions";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
@@ -72,8 +72,6 @@ const MainNav = ({
 	loadingGroupsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingAclsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingAclsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingThemes' implicitly has an ... Remove this comment to see the full error message
-	loadingThemes,
 // @ts-expect-error TS(7031): Binding element 'loadingThemesIntoTable' implicitl... Remove this comment to see the full error message
 	loadingThemesIntoTable,
 // @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
@@ -214,7 +212,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching themes from server
-		loadingThemes();
+		dispatch(fetchThemes());
 
 		// Load themes into table
 		loadingThemesIntoTable();
@@ -356,7 +354,6 @@ const mapDispatchToProps = (dispatch) => ({
 	loadingGroups: () => dispatch(fetchGroups()),
 	loadingGroupsIntoTable: () => dispatch(loadGroupsIntoTable()),
 	loadingAclsIntoTable: () => dispatch(loadAclsIntoTable()),
-	loadingThemes: () => dispatch(fetchThemes()),
 	loadingThemesIntoTable: () => dispatch(loadThemesIntoTable()),
 	resetOffset: () => dispatch(setOffset(0)),
 // @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
