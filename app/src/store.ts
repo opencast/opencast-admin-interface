@@ -18,7 +18,7 @@ import acls from "./slices/aclSlice";
 import themes from "./reducers/themeReducers";
 import health from "./reducers/healthReducers";
 import { notifications } from "./reducers/notificationReducers";
-import workflows from "./reducers/workflowReducers";
+import workflows from "./slices/workflowSlice";
 import eventDetails from "./reducers/eventDeatilsReducers";
 import seriesDetails from "./reducers/seriesDetailsReducers";
 import recordingDetails from "./slices/recordingDetailsSlice";

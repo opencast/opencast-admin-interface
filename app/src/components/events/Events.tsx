@@ -100,7 +100,7 @@ const Events = ({
 		loadingStats();
 
 		// Fetching events from server
-		// await dispatch(fetchEvents());
+		await dispatch(fetchEvents());
 
 		// Load events into table
 		loadingEventsIntoTable();
