@@ -11,11 +11,6 @@ import NewResourceModal from "../shared/NewResourceModal";
 import DeleteSeriesModal from "./partials/modals/DeleteSeriesModal";
 import { seriesTemplateMap } from "../../configs/tableConfigs/seriesTableMap";
 import {
-	fetchSeries,
-	fetchSeriesMetadata,
-	fetchSeriesThemes,
-} from "../../thunks/seriesThunks";
-import {
 	loadEventsIntoTable,
 	loadSeriesIntoTable,
 } from "../../thunks/tableThunks";
@@ -28,12 +23,17 @@ import Header from "../Header";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
-import { showActions } from "../../actions/seriesActions";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { GlobalHotKeys } from "react-hotkeys";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchEvents } from "../../slices/eventSlice";
+import {
+	fetchSeries,
+	fetchSeriesMetadata,
+	fetchSeriesThemes,
+	showActionsSeries,
+} from "../../slices/seriesSlice";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef();
@@ -42,30 +42,18 @@ const containerAction = React.createRef();
  * This component renders the table view of series
  */
 const Series = ({
-// @ts-expect-error TS(7031): Binding element 'showActions' implicitly has an 'a... Remove this comment to see the full error message
-	showActions,
-// @ts-expect-error TS(7031): Binding element 'loadingSeries' implicitly has an ... Remove this comment to see the full error message
-	loadingSeries,
 // @ts-expect-error TS(7031): Binding element 'loadingSeriesIntoTable' implicitl... Remove this comment to see the full error message
 	loadingSeriesIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingEventsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingEventsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'series' implicitly has an 'any' t... Remove this comment to see the full error message
-	series,
 // @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
 	loadingFilters,
 // @ts-expect-error TS(7031): Binding element 'loadingStats' implicitly has an '... Remove this comment to see the full error message
 	loadingStats,
-// @ts-expect-error TS(7031): Binding element 'loadingSeriesMetadata' implicitly... Remove this comment to see the full error message
-	loadingSeriesMetadata,
-// @ts-expect-error TS(7031): Binding element 'loadingSeriesThemes' implicitly h... Remove this comment to see the full error message
-	loadingSeriesThemes,
 // @ts-expect-error TS(7031): Binding element 'resetTextFilter' implicitly has a... Remove this comment to see the full error message
 	resetTextFilter,
 // @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
 	resetOffset,
-// @ts-expect-error TS(7031): Binding element 'setShowActions' implicitly has an... Remove this comment to see the full error message
-	setShowActions,
 // @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
 	currentFilterType,
 }) => {
@@ -79,6 +67,14 @@ const Series = ({
   const user = useAppSelector(state => getUserInformation(state));
 
 	let location = useLocation();
+
+	const series = useAppSelector(state => getTotalSeries(state));
+	const showActions = useAppSelector(state => isShowActions(state));
+
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const fetchSeriesWrapper = () => {
+		dispatch(fetchSeries())
+	}
 
 	const loadEvents = () => {
 		// Reset the current page to first page
@@ -96,7 +92,7 @@ const Series = ({
 
 	const loadSeries = async () => {
 		//fetching series from server
-		await loadingSeries();
+		await dispatch(fetchSeries());
 
 		//load series into table
 		loadingSeriesIntoTable();
@@ -110,7 +106,7 @@ const Series = ({
 		resetTextFilter();
 
 		// disable actions button
-		setShowActions(false);
+		dispatch(showActionsSeries(false));
 
 		// Load events on mount
 		loadSeries().then((r) => console.info(r));
@@ -151,8 +147,8 @@ const Series = ({
 	};
 
 	const showNewSeriesModal = async () => {
-		await loadingSeriesMetadata();
-		await loadingSeriesThemes();
+		await dispatch(fetchSeriesMetadata());
+		await dispatch(fetchSeriesThemes());
 
 		setNewSeriesModal(true);
 	};
@@ -254,7 +250,7 @@ const Series = ({
 						</div>
 						{/* Include filters component */}
 						<TableFilters
-							loadResource={loadingSeries}
+							loadResource={fetchSeriesWrapper}
 							loadResourceIntoTable={loadingSeriesIntoTable}
 							resource={"series"}
 						/>
@@ -273,26 +269,19 @@ const Series = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	series: getTotalSeries(state),
-	showActions: isShowActions(state),
 	currentFilterType: getCurrentFilterResource(state),
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-	loadingSeries: () => dispatch(fetchSeries()),
 	loadingSeriesIntoTable: () => dispatch(loadSeriesIntoTable()),
 	loadingEventsIntoTable: () => dispatch(loadEventsIntoTable()),
 // @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
 	loadingStats: () => dispatch(fetchStats()),
-	loadingSeriesMetadata: () => dispatch(fetchSeriesMetadata()),
-	loadingSeriesThemes: () => dispatch(fetchSeriesThemes()),
 	resetTextFilter: () => dispatch(editTextFilter("")),
 	resetOffset: () => dispatch(setOffset(0)),
-// @ts-expect-error TS(7006): Parameter 'isShowing' implicitly has an 'any' type... Remove this comment to see the full error message
-	setShowActions: (isShowing) => dispatch(showActions(isShowing)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Series);
