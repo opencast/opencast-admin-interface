@@ -1,4 +1,3 @@
-import GroupsActionsCell from "../../components/users/partials/GroupsActionsCell";
 import { TableConfig } from "./aclsTableConfig";
 
 /**
@@ -38,13 +37,4 @@ export const groupsTableConfig: TableConfig = {
 	resource: "groups",
 	category: "users",
 	multiSelect: false,
-};
-
-/**
- * This map contains the mapping between the template strings above and the corresponding react component.
- * This helps to render different templates of cells more dynamically. Even empty needed, because Table component
- * uses template map.
- */
-export const groupsTemplateMap = {
-	GroupsActionsCell: GroupsActionsCell,
 };
