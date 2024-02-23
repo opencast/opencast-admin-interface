@@ -56,12 +56,10 @@ export const updateThemeDetails = (id, values) => async (dispatch) => {
 		})
 		.then((response) => {
 			console.info(response);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("success", "THEME_CREATED"));
 		})
 		.catch((response) => {
 			console.error(response);
-// @ts-expect-error TS(2554): Expected 5 arguments, but got 2.
 			dispatch(addNotification("error", "THEME_NOT_CREATED"));
 		});
 };
