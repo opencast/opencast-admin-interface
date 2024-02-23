@@ -3,14 +3,14 @@ import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import ConfirmModal from "../../shared/ConfirmModal";
 import ThemeDetailsModal from "./wizard/ThemeDetailsModal";
-import { deleteTheme } from "../../../thunks/themeThunks";
-import { getUserInformation } from "../../../selectors/userInfoSelectors";
-import { hasAccess } from "../../../utils/utils";
-import { useAppDispatch } from "../../../store";
 import {
 	fetchThemeDetails,
 	fetchUsage,
 } from "../../../slices/themeDetailsSlice";
+import { getUserInformation } from "../../../selectors/userInfoSelectors";
+import { hasAccess } from "../../../utils/utils";
+import { useAppDispatch } from "../../../store";
+import { deleteTheme } from "../../../slices/themeSlice";
 
 /**
  * This component renders the action cells of themes in the table view
@@ -18,8 +18,6 @@ import {
 const ThemesActionsCell = ({
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
-// @ts-expect-error TS(7031): Binding element 'deleteTheme' implicitly has an 'a... Remove this comment to see the full error message
-	deleteTheme,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
 }) => {
@@ -46,7 +44,7 @@ const ThemesActionsCell = ({
 
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	const deletingTheme = (id) => {
-		deleteTheme(id);
+		dispatch(deleteTheme(id));
 	};
 
 	return (
@@ -101,8 +99,6 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	deleteTheme: (id) => dispatch(deleteTheme(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ThemesActionsCell);
