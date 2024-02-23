@@ -6,29 +6,29 @@ import {
 	getSeriesExtendedMetadata,
 	getSeriesMetadata,
 } from "../../../../selectors/seriesSeletctor";
-import { connect } from "react-redux";
 import NewMetadataPage from "../ModalTabsAndPages/NewMetadataPage";
 import NewMetadataExtendedPage from "../ModalTabsAndPages/NewMetadataExtendedPage";
 import NewAccessPage from "../ModalTabsAndPages/NewAccessPage";
-import { postNewSeries } from "../../../../thunks/seriesThunks";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
 import { initialFormValuesNewSeries } from "../../../../configs/modalConfig";
 import { NewSeriesSchema } from "../../../../utils/validate";
 import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { postNewSeries } from "../../../../slices/seriesSlice";
 
 /**
  * This component manages the pages of the new series wizard and the submission of values
  */
-const NewSeriesWizard = ({
-// @ts-expect-error TS(7031): Binding element 'metadataFields' implicitly has an... Remove this comment to see the full error message
-	metadataFields,
-// @ts-expect-error TS(7031): Binding element 'extendedMetadata' implicitly has ... Remove this comment to see the full error message
-	extendedMetadata,
-// @ts-expect-error TS(7031): Binding element 'close' implicitly has an 'any' ty... Remove this comment to see the full error message
+const NewSeriesWizard: React.FC<{
+	close: () => void
+}> = ({
 	close,
-// @ts-expect-error TS(7031): Binding element 'postNewSeries' implicitly has an ... Remove this comment to see the full error message
-	postNewSeries,
 }) => {
+	const dispatch = useAppDispatch();
+
+	const metadataFields = useAppSelector(state => getSeriesMetadata(state));
+	const extendedMetadata = useAppSelector(state => getSeriesExtendedMetadata(state));
+
 	const initialValues = getInitialValues(metadataFields, extendedMetadata);
 
 	const [page, setPage] = useState(0);
@@ -40,6 +40,7 @@ const NewSeriesWizard = ({
 		{
 			translation: "EVENTS.SERIES.NEW.METADATA.CAPTION",
 			name: "metadata",
+			hidden: false,
 		},
 		{
 			translation: "EVENTS.EVENTS.DETAILS.TABS.EXTENDED-METADATA",
@@ -49,14 +50,17 @@ const NewSeriesWizard = ({
 		{
 			translation: "EVENTS.SERIES.NEW.ACCESS.CAPTION",
 			name: "access",
+			hidden: false,
 		},
 		{
 			translation: "EVENTS.SERIES.NEW.THEME.CAPTION",
 			name: "theme",
+			hidden: false,
 		},
 		{
 			translation: "EVENTS.SERIES.NEW.SUMMARY.CAPTION",
 			name: "summary",
+			hidden: false,
 		},
 	];
 
@@ -93,7 +97,7 @@ const NewSeriesWizard = ({
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
-		const response = postNewSeries(values, metadataFields, extendedMetadata);
+		const response = dispatch(postNewSeries({values, metadataInfo: metadataFields, extendedMetadata}));
 		console.info(response);
 		close();
 	};
@@ -191,18 +195,4 @@ const getInitialValues = (metadataFields, extendedMetadata) => {
 	return initialValues;
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	metadataFields: getSeriesMetadata(state),
-	extendedMetadata: getSeriesExtendedMetadata(state),
-});
-
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	postNewSeries: (values, metadataFields, extendedMetadata) =>
-		dispatch(postNewSeries(values, metadataFields, extendedMetadata)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(NewSeriesWizard);
+export default NewSeriesWizard;

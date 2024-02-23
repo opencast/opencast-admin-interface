@@ -90,7 +90,7 @@ import {
 	transformMetadataForUpdate,
 } from "../utils/resourceUtils";
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
-import { fetchWorkflowDef } from "./workflowThunks";
+import { fetchWorkflowDef } from "../slices/workflowSlice";
 import {
 	fetchStatistics,
 	fetchStatisticsValueUpdate,

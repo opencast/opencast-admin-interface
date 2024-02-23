@@ -21,7 +21,7 @@ import {
 	addNotification,
 } from "../slices/notificationSlice";
 import { getAssetUploadOptions, getSchedulingEditedEvents } from '../selectors/eventSelectors';
-import { fetchSeriesOptions } from '../thunks/seriesThunks';
+import { fetchSeriesOptions } from "../slices/seriesSlice";
 import { RootState } from '../store';
 import { fetchAssetUploadOptions } from '../thunks/assetsThunks';
 
