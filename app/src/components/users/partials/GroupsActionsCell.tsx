@@ -3,18 +3,17 @@ import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
 import GroupDetailsModal from "./modal/GroupDetailsModal";
-import { fetchGroupDetails } from "../../../thunks/groupDetailsThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch } from "../../../store";
 import { deleteGroup } from "../../../slices/groupSlice";
+import { fetchGroupDetails } from "../../../slices/groupDetailsSlice";
 
 /**
  * This component renders the action cells of groups in the table view
  */
 const GroupsActionsCell = ({
 	row,
-	fetchGroupDetails,
 	user
 }: any) => {
 	const { t } = useTranslation();
@@ -37,7 +36,7 @@ const GroupsActionsCell = ({
 	};
 
 	const showGroupDetails = async () => {
-		await fetchGroupDetails(row.id);
+		await dispatch(fetchGroupDetails(row.id));
 
 		setGroupDetails(true);
 	};
@@ -91,8 +90,6 @@ const mapStateToProps = (state) => ({
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'groupName' implicitly has an 'any' type... Remove this comment to see the full error message
-	fetchGroupDetails: (groupName) => dispatch(fetchGroupDetails(groupName)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupsActionsCell);
