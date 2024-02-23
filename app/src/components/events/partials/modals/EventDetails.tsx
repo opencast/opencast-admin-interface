@@ -47,6 +47,7 @@ import EventDetailsStatisticsTab from "../ModalTabsAndPages/EventDetailsStatisti
 import { fetchAssetUploadOptions } from "../../../../thunks/assetsThunks";
 import { hasAnyDeviceAccess } from "../../../../utils/resourceUtils";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
+import { useAppDispatch } from "../../../../store";
 
 /**
  * This component manages the pages of the event details
@@ -69,7 +70,6 @@ const EventDetails : React.FC<{
 	updateExtendedMetadata?: any,
 	loadScheduling?: any,
 	loadStatistics?: any,
-	fetchAssetUploadOptions?: any,
 	removeNotificationWizardForm?: any,
 	policyChanged: any,
 	setPolicyChanged: any,
@@ -91,19 +91,19 @@ const EventDetails : React.FC<{
 	updateExtendedMetadata,
 	loadScheduling,
 	loadStatistics,
-	fetchAssetUploadOptions,
 	removeNotificationWizardForm,
 	policyChanged,
 	setPolicyChanged,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		removeNotificationWizardForm();
 		loadMetadata(eventId).then();
 		loadScheduling(eventId).then();
 		loadStatistics(eventId).then();
-		fetchAssetUploadOptions().then();
+		dispatch(fetchAssetUploadOptions()).then();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -422,7 +422,6 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch(updateExtendedMetadata(id, values, catalog)),
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	loadStatistics: (id) => dispatch(fetchEventStatistics(id)),
-	fetchAssetUploadOptions: () => dispatch(fetchAssetUploadOptions()),
 	removeNotificationWizardForm: () => dispatch(removeNotificationWizardForm()),
 });
 

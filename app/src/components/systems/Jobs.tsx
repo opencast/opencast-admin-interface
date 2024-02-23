@@ -10,7 +10,6 @@ import Notifications from "../shared/Notifications";
 import { jobsTemplateMap } from "../../configs/tableConfigs/jobsTableConfig";
 import { getTotalJobs } from "../../selectors/jobSelectors";
 import { fetchFilters } from "../../thunks/tableFilterThunks";
-import { fetchJobs } from "../../thunks/jobThunks";
 import {
 	loadJobsIntoTable,
 	loadServersIntoTable,
@@ -26,17 +25,15 @@ import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { fetchJobs } from "../../slices/jobSlice";
 
 /**
  * This component renders the table view of jobs
  */
 const Jobs = ({
-// @ts-expect-error TS(7031): Binding element 'loadingJobs' implicitly has an 'a... Remove this comment to see the full error message
-	loadingJobs,
 // @ts-expect-error TS(7031): Binding element 'loadingJobsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingJobsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'jobs' implicitly has an 'any' typ... Remove this comment to see the full error message
-	jobs,
 // @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
 	loadingFilters,
 // @ts-expect-error TS(7031): Binding element 'loadingServers' implicitly has an... Remove this comment to see the full error message
@@ -57,11 +54,19 @@ const Jobs = ({
 	currentFilterType,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
+
+	const jobs = useAppSelector(state => getTotalJobs(state));
+
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const fetchJobsWrapper = () => {
+		dispatch(fetchJobs())
+	}
 
 	const loadJobs = async () => {
 		// Fetching jobs from server
-		await loadingJobs();
+		await dispatch(fetchJobs());
 
 		// Load jobs into table
 		loadingJobsIntoTable();
@@ -158,7 +163,7 @@ const Jobs = ({
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={loadingJobs}
+						loadResource={fetchJobsWrapper}
 						loadResourceIntoTable={loadingJobsIntoTable}
 						resource={"jobs"}
 					/>
@@ -176,7 +181,6 @@ const Jobs = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	jobs: getTotalJobs(state),
 	user: getUserInformation(state),
 	currentFilterType: getCurrentFilterResource(state),
 });
@@ -186,7 +190,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
-	loadingJobs: () => dispatch(fetchJobs()),
 	loadingJobsIntoTable: () => dispatch(loadJobsIntoTable()),
 	loadingServers: () => dispatch(fetchServers()),
 	loadingServersIntoTable: () => dispatch(loadServersIntoTable()),

@@ -36,7 +36,7 @@ import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
 import {
 	fetchStatistics,
 	fetchStatisticsValueUpdate,
-} from "./statisticsThunks";
+} from "../slices/statisticsSlice";
 
 // fetch metadata of certain series from server
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
@@ -376,20 +376,22 @@ export const updateSeriesTheme = (id, values) => async (dispatch, getState) => {
 
 // thunks for statistics
 
+// TODO: BROKEN! FIX THIS WHEN MODERNIZING REDUX TOOLKIT FOR EVENTS
 // @ts-expect-error TS(7006): Parameter 'seriesId' implicitly has an 'any' type.
 export const fetchSeriesStatistics = (seriesId) => async (dispatch) => {
-	dispatch(
-		fetchStatistics(
-			seriesId,
-			"series",
-			getStatistics,
-			loadSeriesStatisticsInProgress,
-			loadSeriesStatisticsSuccess,
-			loadSeriesStatisticsFailure
-		)
-	);
+	// dispatch(
+	// 	fetchStatistics(
+	// 		seriesId,
+	// 		"series",
+	// 		getStatistics,
+	// 		loadSeriesStatisticsInProgress,
+	// 		loadSeriesStatisticsSuccess,
+	// 		loadSeriesStatisticsFailure
+	// 	)
+	// );
 };
 
+// TODO: BROKEN! FIX THIS WHEN MODERNIZING REDUX TOOLKIT FOR EVENTS
 export const fetchSeriesStatisticsValueUpdate = (
 // @ts-expect-error TS(7006): Parameter 'seriesId' implicitly has an 'any' type.
 	seriesId,
@@ -405,18 +407,18 @@ export const fetchSeriesStatisticsValueUpdate = (
 	timeMode
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 ) => async (dispatch) => {
-	dispatch(
-		fetchStatisticsValueUpdate(
-			seriesId,
-			"series",
-			providerId,
-			from,
-			to,
-			dataResolution,
-			timeMode,
-			getStatistics,
-			updateSeriesStatisticsSuccess,
-			updateSeriesStatisticsFailure
-		)
-	);
+	// dispatch(
+	// 	fetchStatisticsValueUpdate(
+	// 		seriesId,
+	// 		"series",
+	// 		providerId,
+	// 		from,
+	// 		to,
+	// 		dataResolution,
+	// 		timeMode,
+	// 		getStatistics,
+	// 		updateSeriesStatisticsSuccess,
+	// 		updateSeriesStatisticsFailure
+	// 	)
+	// );
 };

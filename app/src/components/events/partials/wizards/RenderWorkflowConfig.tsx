@@ -1,28 +1,34 @@
 import React from "react";
-import { connect } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { Field } from "formik";
 import {
 	getWorkflowDefById,
-	makeGetWorkflowDefById,
 } from "../../../../selectors/workflowSelectors";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component renders the configuration panel for the selected workflow in the processing step of the new event
  * wizard chosen via dropdown.
- * Here, props is used instead of {} containing name of each prop because props are needed in the selector for finding
- * the workflow definition with the matching id. In this case props need to be considered in mapStateToProps and
- * therefore {} containing names of props not works.
  */
-// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-const RenderWorkflowConfig = (props) => {
+const RenderWorkflowConfig: React.FC<{
+	workflowId: string
+	formik: any	//TODO: Add type
+	displayDescription?: any
+}> = ({
+	workflowId,
+	formik,
+	displayDescription
+}) => {
+
+	const workflowDef = useAppSelector(state => getWorkflowDefById(state, workflowId));
+
 	// Get html for configuration panel
-	const configPanel = !!props.configuration_panel_json
-		? props.configuration_panel_json
+	const configPanel = !!workflowDef && workflowDef.configuration_panel_json
+		? workflowDef.configuration_panel_json
 		: [];
-	const description = !!props.description ? props.description : "";
-	const displayDescription = !!props.displayDescription;
-	let formik = props.formik;
+	const description = !!workflowDef && workflowDef.description
+		? workflowDef.description
+		: "";
 
 	const descriptionBoxStyle = {
 		margin: "15px 0 0 0",
@@ -49,10 +55,9 @@ const RenderWorkflowConfig = (props) => {
 				</div>
 			)}
 
-			{configPanel.length > 0 && (
+			{Array.isArray(configPanel) && configPanel.length > 0 && (
 				<form>
 					<div id="workflow-configuration">
-{/* @ts-expect-error TS(7006): Parameter 'configOption' implicitly has an 'any' t... Remove this comment to see the full error message */}
 						{configPanel.map((configOption, key) => (
 							<fieldset key={key}>
 								{!!configOption.legend && (
@@ -88,35 +93,30 @@ const renderInputByType = (field, key, formik) => {
 			return <RenderNumber field={field} key={key} formik={formik} />;
 		case "text":
 			return <RenderText field={field} key={key} formik={formik} />;
-    case "datetime-local":
-            return <RenderDatetimeLocal field={field} key={key} formik={formik} />;
+		case "datetime-local":
+			return <RenderDatetimeLocal field={field} key={key} formik={formik} />;
 		default:
 			return "";
 	}
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderDatetimeLocal = ({ field, key, formik }) => {
-  field.value = undefined;
-
-    return <RenderField field={field} key={key} formik={formik} />;
+const RenderDatetimeLocal = ({ field, formik }) => {
+		return <RenderField field={field} formik={formik} />;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderCheckbox = ({ field, key, formik }) => {
-  field.defaultValue = field.value;
-  field.value = undefined;
-
-    return <RenderField field={field} key={key} formik={formik} />;
+const RenderCheckbox = ({ field, formik }) => {
+		return <RenderField field={field} formik={formik} />;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderRadio = ({ field, key, formik }) => {
-    return <RenderField field={field} key={key} formik={formik} />;
+const RenderRadio = ({ field, formik }) => {
+		return <RenderField field={field} formik={formik} />;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderNumber = ({ field, key, formik }) => {
+const RenderNumber = ({ field, formik }) => {
 	// validate that value of number is between max and min
 // @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	const validate = (value) => {
@@ -127,75 +127,49 @@ const RenderNumber = ({ field, key, formik }) => {
 		return error;
 	};
 
-  field.defaultValue = field.value;
-  field.value = undefined;
-
-    return <RenderField field={field} key={key} formik={formik} validate={validate}/>;
+		return <RenderField field={field} formik={formik} validate={validate}/>;
 };
 
 // @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderText = ({ field, key, formik }) => {
-  field.value = undefined;
-
-    return <RenderField field={field} key={key} formik={formik} />;
+const RenderText = ({ field, formik }) => {
+		return <RenderField field={field} formik={formik} />;
 };
 
 const RenderField : React.FC<{
-  field: any,
-  key: any,
-  formik: any,
-  validate?: (value: any) => string | undefined,
+	field: any,
+	formik: any,
+	validate?: (value: any) => string | undefined,
 }> = ({
-  field,
-  key,
-  formik,
-  validate = undefined
+	field,
+	formik,
+	validate = undefined
 }) => {
 	// id used for Field and label
 	const uuid = uuidv4();
 	const disabled = !!field.disabled ? field.disabled : false;
 
-  // Only set value to *anything* if there is actually a value to be had
-  // Otherwise it empties the displayed value when switching between tabs
-  const renderField = () => {
-    if (field.value) {
-      return(
-                <Field
-          id={uuid}
-          defaultValue={field.defaultValue}
-          value={field.value}
-          validate={validate}
-          className="configField"
-          name={"configuration." + field.name}
-          disabled={disabled}
-          type={field.type}
-          min={field.min}
-          max={field.max}
-        />
-      )
-    } else {
-      return(
-                <Field
-          id={uuid}
-          defaultValue={field.defaultValue}
-          validate={validate}
-          className="configField"
-          name={"configuration." + field.name}
-          disabled={disabled}
-          type={field.type}
-          min={field.min}
-          max={field.max}
-        />
-      )
-    }
-  }
+	const renderField = () => {
+			return(
+				<Field
+					id={uuid}
+					defaultValue={field.defaultValue}
+					validate={validate}
+					className="configField"
+					name={"configuration." + field.name}
+					disabled={disabled}
+					type={field.type}
+					min={field.min}
+					max={field.max}
+				/>
+			)
+	}
 
 	return (
-		<li key={key}>
+		<li>
 			{renderField()}
 			<label htmlFor={uuid}>{field.label}</label>
 			{/* if input has an additional fieldset or further configuration inputs
-            then render again by input type*/}
+						then render again by input type*/}
 			{!!field.fieldset && !!formik.values.configuration[field.name] && (
 				<ul className="workflow-configuration-subpanel">
 {/* @ts-expect-error TS(7006): Parameter 'f' implicitly has an 'any' type. */}
@@ -206,11 +180,4 @@ const RenderField : React.FC<{
 	);
 }
 
-// Getting state data out of redux store
-const mapStateToProps = () => {
-	getWorkflowDefById();
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-	return (state, props) => makeGetWorkflowDefById(state, props);
-};
-
-export default connect(mapStateToProps)(RenderWorkflowConfig);
+export default RenderWorkflowConfig;
