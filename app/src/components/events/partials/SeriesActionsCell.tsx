@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import {
-	checkForEventsDeleteSeriesModal,
-	deleteSeries,
-} from "../../../thunks/seriesThunks";
 import { connect } from "react-redux";
 import SeriesDetailsModal from "./modals/SeriesDetailsModal";
 import {
@@ -21,6 +17,10 @@ import {
 	isSeriesDeleteAllowed,
 } from "../../../selectors/seriesSeletctor";
 import { useAppDispatch, useAppSelector } from "../../../store";
+import {
+	checkForEventsDeleteSeriesModal,
+	deleteSeries,
+} from "../../../slices/seriesSlice";
 
 /**
  * This component renders the action cells of series in the table view
@@ -28,10 +28,6 @@ import { useAppDispatch, useAppSelector } from "../../../store";
 const SeriesActionsCell = ({
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
-// @ts-expect-error TS(7031): Binding element 'deleteSeries' implicitly has an '... Remove this comment to see the full error message
-	deleteSeries,
-// @ts-expect-error TS(7031): Binding element 'checkDeleteAllowed' implicitly ha... Remove this comment to see the full error message
-	checkDeleteAllowed,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
 }) => {
@@ -49,14 +45,14 @@ const SeriesActionsCell = ({
 	};
 
 	const showDeleteConfirmation = async () => {
-		await checkDeleteAllowed(row.id);
+		await dispatch(checkForEventsDeleteSeriesModal(row.id));
 
 		setDeleteConfirmation(true);
 	};
 
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	const deletingSeries = (id) => {
-		deleteSeries(id);
+		dispatch(deleteSeries(id));
 	};
 
 	const hideSeriesDetailsModal = () => {
@@ -132,10 +128,6 @@ const mapStateToProps = (state) => ({
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	deleteSeries: (id) => dispatch(deleteSeries(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	checkDeleteAllowed: (id) => dispatch(checkForEventsDeleteSeriesModal(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SeriesActionsCell);
