@@ -1,16 +1,16 @@
 import axios from "axios";
 import {
 	loadServicesFailure,
+	loadServicesInProgress,
 	loadServicesSuccess,
 } from "../actions/serviceActions";
-import { loadSeriesInProgress } from "../actions/seriesActions";
 import { getURLParams } from "../utils/resourceUtils";
 
 // fetch services from server
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 export const fetchServices = () => async (dispatch, getState) => {
 	try {
-		dispatch(loadSeriesInProgress());
+		dispatch(loadServicesInProgress());
 
 		const state = getState();
 		let params = getURLParams(state);
