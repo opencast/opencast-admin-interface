@@ -56,6 +56,7 @@ const NewEventWizard: React.FC<{
 		{
 			translation: "EVENTS.EVENTS.NEW.METADATA.CAPTION",
 			name: "metadata",
+			hidden: false,
 		},
 		{
 			translation: "EVENTS.EVENTS.DETAILS.TABS.EXTENDED-METADATA",
@@ -65,6 +66,7 @@ const NewEventWizard: React.FC<{
 		{
 			translation: "EVENTS.EVENTS.NEW.SOURCE.CAPTION",
 			name: "source",
+			hidden: false,
 		},
 		{
 			translation: "EVENTS.EVENTS.NEW.UPLOAD_ASSET.CAPTION",
@@ -76,14 +78,17 @@ const NewEventWizard: React.FC<{
 		{
 			translation: "EVENTS.EVENTS.NEW.PROCESSING.CAPTION",
 			name: "processing",
+			hidden: false,
 		},
 		{
 			translation: "EVENTS.EVENTS.NEW.ACCESS.CAPTION",
 			name: "access",
+			hidden: false,
 		},
 		{
 			translation: "EVENTS.EVENTS.NEW.SUMMARY.CAPTION",
 			name: "summary",
+			hidden: false,
 		},
 	];
 

@@ -16,10 +16,10 @@ import {
 	weekdays,
 	WORKFLOW_UPLOAD_ASSETS_NON_TRACK,
 } from "../configs/modalConfig";
-import { addNotification } from '../thunks/notificationThunks';
+import { addNotification, addNotificationWithId } from "../thunks/notificationThunks";
 import { removeNotification } from '../actions/notificationActions';
 import { getAssetUploadOptions, getSchedulingEditedEvents } from '../selectors/eventSelectors';
-import { fetchSeriesOptions } from '../thunks/seriesThunks';
+import { fetchSeriesOptions } from "../slices/seriesSlice";
 import { RootState } from '../store';
 import { fetchAssetUploadOptions } from '../thunks/assetsThunks';
 

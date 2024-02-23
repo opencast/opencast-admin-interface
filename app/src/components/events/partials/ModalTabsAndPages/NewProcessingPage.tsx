@@ -1,33 +1,33 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { connect } from "react-redux";
-import { fetchWorkflowDef } from "../../../../thunks/workflowThunks";
 import { getWorkflowDef } from "../../../../selectors/workflowSelectors";
 import RenderWorkflowConfig from "../wizards/RenderWorkflowConfig";
 import { setDefaultConfig } from "../../../../utils/workflowPanelUtils";
 import DropDown from "../../../shared/DropDown";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { fetchWorkflowDef } from "../../../../slices/workflowSlice";
 
 /**
  * This component renders the processing page for new events in the new event wizard.
  */
-const NewProcessingPage = ({
-// @ts-expect-error TS(7031): Binding element 'previousPage' implicitly has an '... Remove this comment to see the full error message
+const NewProcessingPage: React.FC<{
+	previousPage: any	//TODO: Add type
+	nextPage: any	//TODO: Add type
+	formik: any	//TODO: Add type
+}> = ({
 	previousPage,
-// @ts-expect-error TS(7031): Binding element 'nextPage' implicitly has an 'any'... Remove this comment to see the full error message
 	nextPage,
-// @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
 	formik,
-// @ts-expect-error TS(7031): Binding element 'loadingWorkflowDef' implicitly ha... Remove this comment to see the full error message
-	loadingWorkflowDef,
-// @ts-expect-error TS(7031): Binding element 'workflowDef' implicitly has an 'a... Remove this comment to see the full error message
-	workflowDef,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
+
+	const workflowDef = useAppSelector(state => getWorkflowDef(state));
 
 	useEffect(() => {
 		// Load workflow definitions for selecting
-		loadingWorkflowDef();
+		dispatch(fetchWorkflowDef("default"));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -68,17 +68,10 @@ const NewProcessingPage = ({
 										<DropDown
 											value={formik.values.processingWorkflow}
 											text={
-												!!workflowDef.find(
-// @ts-expect-error TS(7006): Parameter 'workflow' implicitly has an 'any' type.
+												workflowDef.find(
 													(workflow) =>
 														formik.values.processingWorkflow === workflow.id
-												)
-													? workflowDef.find(
-// @ts-expect-error TS(7006): Parameter 'workflow' implicitly has an 'any' type.
-															(workflow) =>
-																formik.values.processingWorkflow === workflow.id
-													  ).title
-													: ""
+												)?.title ?? ""
 											}
 											options={workflowDef}
 											type={"workflow"}
@@ -147,16 +140,4 @@ const NewProcessingPage = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	workflowDef: getWorkflowDef(state),
-});
-
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
-	loadingWorkflowDef: () => dispatch(fetchWorkflowDef()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(NewProcessingPage);
+export default NewProcessingPage;
