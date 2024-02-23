@@ -2,31 +2,34 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Formik } from "formik";
 import cn from "classnames";
-import { connect } from "react-redux";
 import GroupMetadataPage from "../wizard/GroupMetadataPage";
 import GroupRolesPage from "../wizard/GroupRolesPage";
 import GroupUsersPage from "../wizard/GroupUsersPage";
 import { EditGroupSchema } from "../../../../utils/validate";
 import { getGroupDetails } from "../../../../selectors/groupDetailsSelectors";
-import { updateGroupDetails } from "../../../../thunks/groupDetailsThunks";
 import ModalNavigation from "../../../shared/modals/ModalNavigation";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { updateGroupDetails } from "../../../../slices/groupDetailsSlice";
 
 /**
  * This component manages the pages of the group details
  */
-const GroupDetails = ({
-    close,
-    groupDetails,
-    updateGroupDetails
-}: any) => {
+const GroupDetails: React.FC<{
+	close: () => void
+}> = ({
+	close,
+}) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const [page, setPage] = useState(0);
+
+	const groupDetails = useAppSelector(state => getGroupDetails(state));
 
 	// transform roles for use in SelectContainer
 	let roleNames = [];
 	for (let i = 0; i < groupDetails.roles.length; i++) {
-		if (groupDetails.roles[i].type !== "GROUP") {
+		if (!groupDetails.roles[i].startsWith("ROLE_GROUP")) {
 			roleNames.push({
 				name: groupDetails.roles[i],
 			});
@@ -64,7 +67,7 @@ const GroupDetails = ({
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
-		updateGroupDetails(values, groupDetails.id);
+		dispatch(updateGroupDetails({values: values, groupId: groupDetails.id}));
 		close();
 	};
 
@@ -109,18 +112,4 @@ const GroupDetails = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	groupDetails: getGroupDetails(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	updateGroupDetails: (values, groupName) =>
-		dispatch(updateGroupDetails(values, groupName)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(GroupDetails);
+export default GroupDetails;
