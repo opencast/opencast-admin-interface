@@ -1,24 +1,26 @@
 import React, { useEffect } from "react";
 import { Formik } from "formik";
-import { connect } from "react-redux";
 import GeneralPage from "./GeneralPage";
 import BumperPage from "./BumperPage";
 import TitleSlidePage from "./TitleSlidePage";
 import WatermarkPage from "./WatermarkPage";
 import ThemeSummaryPage from "./ThemeSummaryPage";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
-import { postNewTheme } from "../../../../thunks/themeThunks";
 import { initialFormValuesNewThemes } from "../../../../configs/modalConfig";
 import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { NewThemeSchema } from "../../../../utils/validate";
+import { useAppDispatch } from "../../../../store";
+import { postNewTheme } from "../../../../slices/themeSlice";
 
 /**
  * This component manages the pages of the new theme wizard and the submission of values
  */
-const NewThemeWizard = ({
-    close,
-    postNewTheme
-}: any) => {
+const NewThemeWizard: React.FC<{
+	close: () => void
+}> = ({
+	close,
+}) => {
+	const dispatch = useAppDispatch();
 	const initialValues = initialFormValuesNewThemes;
 
 	const [
@@ -64,7 +66,7 @@ const NewThemeWizard = ({
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
-		postNewTheme(values);
+		dispatch(postNewTheme(values));
 		close();
 	};
 
@@ -143,11 +145,4 @@ const NewThemeWizard = ({
 	);
 };
 
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	postNewTheme: (values) => dispatch(postNewTheme(values)),
-});
-
-export default connect(null, mapDispatchToProps)(NewThemeWizard);
+export default NewThemeWizard;
