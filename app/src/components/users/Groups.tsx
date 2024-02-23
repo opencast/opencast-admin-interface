@@ -9,7 +9,7 @@ import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
 import NewResourceModal from "../shared/NewResourceModal";
 import { getTotalGroups } from "../../selectors/groupSelectors";
-import { groupsTemplateMap } from "../../configs/tableConfigs/groupsTableConfig";
+import { groupsTemplateMap } from "../../configs/tableConfigs/groupsTableMap";
 import { fetchFilters } from "../../thunks/tableFilterThunks";
 import {
 	loadAclsIntoTable,

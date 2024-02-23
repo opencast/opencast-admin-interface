@@ -3,18 +3,20 @@ import { useTranslation } from "react-i18next";
 import { getSelectedRows } from "../../../../selectors/tableSelectors";
 import { connect } from "react-redux";
 import cn from "classnames";
+import { useAppDispatch } from "../../../../store";
 import {
 	deleteMultipleSeries,
 	getSeriesConfig,
 	hasEvents,
-} from "../../../../thunks/seriesThunks";
+} from "../../../../slices/seriesSlice";
 
 /**
  * This component manges the delete series bulk action
  */
 // @ts-expect-error TS(7031): Binding element 'close' implicitly has an 'any' ty... Remove this comment to see the full error message
-const DeleteSeriesModal = ({ close, selectedRows, deleteMultipleSeries }) => {
+const DeleteSeriesModal = ({ close, selectedRows }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const [allChecked, setAllChecked] = useState(true);
 	const [selectedSeries, setSelectedSeries] = useState(selectedRows);
@@ -42,7 +44,7 @@ const DeleteSeriesModal = ({ close, selectedRows, deleteMultipleSeries }) => {
 	}, []);
 
 	const deleteSelectedSeries = () => {
-		deleteMultipleSeries(selectedSeries);
+		dispatch(deleteMultipleSeries(selectedSeries));
 		close();
 	};
 
@@ -230,9 +232,7 @@ const mapStateToProps = (state) => ({
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'selectedSeries' implicitly has an 'any'... Remove this comment to see the full error message
-	deleteMultipleSeries: (selectedSeries) =>
-		dispatch(deleteMultipleSeries(selectedSeries)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeleteSeriesModal);
