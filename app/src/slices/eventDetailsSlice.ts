@@ -1,7 +1,6 @@
 import { PayloadAction, SerializedError, createAsyncThunk, createSlice, unwrapResult } from '@reduxjs/toolkit'
 import axios from 'axios';
-import { removeNotificationWizardForm } from "../actions/notificationActions";
-import { addNotification } from "../thunks/notificationThunks";
+import { addNotification, removeNotificationWizardForm } from "../slices/notificationSlice";
 import {
 	createPolicy,
 	getHttpHeaders,
@@ -9,7 +8,7 @@ import {
 	transformMetadataForUpdate,
 } from "../utils/resourceUtils";
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
-import { fetchWorkflowDef } from "../thunks/workflowThunks";
+import { fetchWorkflowDef } from "../slices/workflowSlice";
 import {
 	getMetadata,
 	getExtendedMetadata,
@@ -23,8 +22,9 @@ import {
 	getAssetUploadWorkflow,
 } from "../selectors/eventSelectors";
 import { calculateDuration } from "../utils/dateUtils";
-import { fetchRecordings } from "../thunks/recordingThunks";
+import { fetchRecordings } from "../slices/recordingSlice";
 import { getRecordings } from "../selectors/recordingSelectors";
+import { Workflow as WorkflowDefinitions} from "../slices/workflowSlice";
 import { RootState } from '../store';
 
 type MetadataField = {
@@ -279,16 +279,7 @@ type EventDetailsState = {
 		workflowId: string,
 		description?: string,
 	},
-	// TODO: Import this from the workflowSlice
-	workflowDefinitions: {
-		configuration_panel: string,
-		configuration_panel_json: string,
-		description: string,
-		displayOrder: 100,
-		id: string,
-		tags: string[],
-		title: string
-	}[],
+	workflowDefinitions: WorkflowDefinitions[],
 	baseWorkflow: any,	// TODO: proper typing
 	workflowOperations: {
 		entries: {
@@ -642,13 +633,13 @@ export const fetchAssets = createAsyncThunk('eventDetails/fetchAssets', async (e
 
 	if (transactionsReadOnly) {
 		dispatch(
-			addNotification(
-				"warning",
-				"ACTIVE_TRANSACTION",
-				-1,
-				null,
-				NOTIFICATION_CONTEXT
-			)
+			addNotification({
+				type: "warning",
+				key: "ACTIVE_TRANSACTION",
+				duration: -1,
+				parameter: null,
+				context: NOTIFICATION_CONTEXT
+			})
 		);
 	}
 
@@ -949,7 +940,7 @@ export const fetchSchedulingInfo = createAsyncThunk('eventDetails/fetchSchedulin
 		// get data from API about capture agents
 		await dispatch(fetchRecordings("inputs"));
 
-		const state = getState();
+		const state = getState() as RootState;
 		const captureAgents = getRecordings(state);
 
 		const startDate = new Date(schedulingResponse.start);
@@ -959,14 +950,19 @@ export const fetchSchedulingInfo = createAsyncThunk('eventDetails/fetchSchedulin
 			endDate
 		);
 
-		let device = {
+		let device: {
+			id: string,
+			inputs: string[],
+			inputMethods: string[],
+			name: string,
+		} = {
 			id: "",
 			name: "",
 			inputs: [],
+			inputMethods: [],
 		};
 
 		const agent = captureAgents.find(
-// @ts-expect-error TS(7006): Parameter 'agent' implicitly has an 'any' type.
 			(agent) => agent.id === schedulingResponse.agentId
 		);
 		if (!!agent) {
@@ -1018,14 +1014,18 @@ export const saveSchedulingInfo = createAsyncThunk('eventDetails/saveSchedulingI
 	const state = getState() as RootState;
 	const oldSource = getSchedulingSource(state as RootState);
 	const captureAgents = getRecordings(state);
-	let device = {
+	let device: {
+		id: string,
+		inputs: string[],
+		inputMethods: string[],
+		name: string,
+	} = {
 		id: "",
 		name: "",
 		inputs: [],
 		inputMethods: [],
 	};
 
-// @ts-expect-error TS(7006): Parameter 'agent' implicitly has an 'any' type.
 	const agent = captureAgents.find((agent) => agent.id === values.captureAgent);
 	if (!!agent) {
 		device = {
@@ -1083,13 +1083,12 @@ export const saveSchedulingInfo = createAsyncThunk('eventDetails/saveSchedulingI
 		})
 		.catch((response) => {
 			dispatch(
-				addNotification(
-					"error",
-					"EVENTS_NOT_UPDATED",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "error",
+					key: "EVENTS_NOT_UPDATED",
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 			throw (response);
 		});
@@ -1108,13 +1107,13 @@ const now = new Date();
 if (endDate < now) {
 	dispatch(removeNotificationWizardForm());
 	dispatch(
-		addNotification(
-			"error",
-			"CONFLICT_IN_THE_PAST",
-			-1,
-			null,
-			NOTIFICATION_CONTEXT
-		)
+		addNotification({
+			type: "error",
+			key: "CONFLICT_IN_THE_PAST",
+			duration: -1,
+			parameter: null,
+			context: NOTIFICATION_CONTEXT
+		})
 	);
 	hasSchedulingConflicts = true;
 } else {
@@ -1139,13 +1138,13 @@ if (endDate < now) {
 			if (responseStatus === 409) {
 				//conflict detected, add notification and get conflict specifics
 				dispatch(
-					addNotification(
-						"error",
-						"CONFLICT_DETECTED",
-						-1,
-						null,
-						NOTIFICATION_CONTEXT
-					)
+					addNotification({
+						type: "error",
+						key: "CONFLICT_DETECTED",
+						duration:-1,
+						parameter: null,
+						context: NOTIFICATION_CONTEXT
+					})
 				);
 				const conflictsResponse = response.data;
 
@@ -1170,13 +1169,13 @@ if (endDate < now) {
 			if (responseStatus === 409) {
 				//conflict detected, add notification and get conflict specifics
 				dispatch(
-					addNotification(
-						"error",
-						"CONFLICT_DETECTED",
-						-1,
-						null,
-						NOTIFICATION_CONTEXT
-					)
+					addNotification({
+						type: "error",
+						key: "CONFLICT_DETECTED",
+						duration:-1,
+						parameter: null,
+						context: NOTIFICATION_CONTEXT
+					})
 				);
 				const conflictsResponse = error.response.data;
 
@@ -1230,7 +1229,7 @@ export const fetchWorkflows = createAsyncThunk('eventDetails/fetchWorkflows', as
 
 		await dispatch(fetchWorkflowDef("event-details"));
 
-		const state = getState();
+		const state = getState() as RootState;
 
 		const workflowDefinitions = getWorkflowDef(state);
 
@@ -1270,25 +1269,25 @@ export const performWorkflowAction = createAsyncThunk('eventDetails/performWorkf
 		)
 		.then((response) => {
 			dispatch(
-				addNotification(
-					"success",
-					"EVENTS_PROCESSING_ACTION_" + action,
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "success",
+					key: "EVENTS_PROCESSING_ACTION_" + action,
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 			close();
 		})
 		.catch((response) => {
 			dispatch(
-				addNotification(
-					"error",
-					"EVENTS_PROCESSING_ACTION_NOT_" + action,
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "error",
+					key: "EVENTS_PROCESSING_ACTION_NOT_" + action,
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 			throw (response)
 		});
@@ -1301,13 +1300,13 @@ export const deleteWorkflow = createAsyncThunk('eventDetails/deleteWorkflow', as
 		.delete(`/admin-ng/event/${eventId}/workflows/${workflowId}`)
 		.then((response) => {
 			dispatch(
-				addNotification(
-					"success",
-					"EVENTS_PROCESSING_DELETE_WORKFLOW",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "success",
+					key: "EVENTS_PROCESSING_DELETE_WORKFLOW",
+					duration: -1,
+					parameter:null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 
 			const state = getState();
@@ -1321,13 +1320,13 @@ export const deleteWorkflow = createAsyncThunk('eventDetails/deleteWorkflow', as
 		})
 		.catch((response) => {
 			dispatch(
-				addNotification(
-					"error",
-					"EVENTS_PROCESSING_DELETE_WORKFLOW_FAILED",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "error",
+					key: "EVENTS_PROCESSING_DELETE_WORKFLOW_FAILED",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 			throw (response);
 		});
@@ -1466,7 +1465,7 @@ export const fetchHasActiveTransactions = createAsyncThunk('eventDetails/fetchHa
 export const updateAssets = createAsyncThunk('eventDetails/updateAssets', async (params: {values: any, eventId: any}, { dispatch, getState }) => {
 	const { values, eventId } = params;
 	// get asset upload options from redux store
-	const state = getState();
+	const state = getState() as RootState;
 	const uploadAssetOptions = getAssetUploadOptions(state);
 	const uploadAssetWorkflow = getAssetUploadWorkflow(state);
 
@@ -1477,7 +1476,6 @@ export const updateAssets = createAsyncThunk('eventDetails/updateAssets', async 
 		options: [],
 	};
 
-// @ts-expect-error TS(7006): Parameter 'option' implicitly has an 'any' type.
 	uploadAssetOptions.forEach((option) => {
 		if (!!values[option.id]) {
 			formData.append(option.id + ".0", values[option.id]);
@@ -1501,18 +1499,23 @@ export const updateAssets = createAsyncThunk('eventDetails/updateAssets', async 
 		.then((response) => {
 			console.info(response);
 			dispatch(
-				addNotification("success", "EVENTS_UPDATED", null, NOTIFICATION_CONTEXT)
+				addNotification({
+					type: "success",
+					key: "EVENTS_UPDATED",
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 		})
 		.catch((response) => {
 			console.error(response);
 			dispatch(
-				addNotification(
-					"error",
-					"EVENTS_NOT_UPDATED",
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "error",
+					key: "EVENTS_NOT_UPDATED",
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 		});
 });
@@ -1531,26 +1534,26 @@ export const saveAccessPolicies = createAsyncThunk('eventDetails/saveAccessPolic
 		.then((response) => {
 			console.info(response);
 			dispatch(
-				addNotification(
-					"info",
-					"SAVED_ACL_RULES",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "info",
+					key: "SAVED_ACL_RULES",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 			return true;
 		})
 		.catch((response) => {
 			console.error(response);
 			dispatch(
-				addNotification(
-					"error",
-					"ACL_NOT_SAVED",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "error",
+					key: "ACL_NOT_SAVED",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 			return false;
 		});
@@ -1609,13 +1612,13 @@ export const saveWorkflowConfig = createAsyncThunk('eventDetails/saveWorkflowCon
 		.catch((response) => {
 			console.error(response);
 			dispatch(
-				addNotification(
-					"error",
-					"EVENTS_NOT_UPDATED",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "error",
+					key: "EVENTS_NOT_UPDATED",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 		});
 });
