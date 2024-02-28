@@ -11,7 +11,7 @@ import series from "./slices/seriesSlice";
 import recordings from "./reducers/recordingReducer";
 import jobs from "./slices/jobSlice";
 import servers from "./reducers/serverReducer";
-import services from "./reducers/serviceReducer";
+import services from "./slices/serviceSlice";
 import users from "./reducers/userReducers";
 import groups from "./slices/groupSlice";
 import acls from "./slices/aclSlice";

@@ -23,7 +23,7 @@ import { setOffset } from "../../actions/tableActions";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { fetchServers } from "../../thunks/serverThunks";
-import { fetchServices } from "../../thunks/serviceThunks";
+import { fetchServices } from "../../slices/serviceSlice";
 import { fetchGroups } from "../../slices/groupSlice";
 import { GlobalHotKeys } from "react-hotkeys";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
@@ -56,8 +56,6 @@ const MainNav = ({
 	loadingServers,
 // @ts-expect-error TS(7031): Binding element 'loadingServersIntoTable' implicit... Remove this comment to see the full error message
 	loadingServersIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingServices' implicitly has a... Remove this comment to see the full error message
-	loadingServices,
 // @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
 	loadingServicesIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingUsers' implicitly has an '... Remove this comment to see the full error message
@@ -156,7 +154,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching services from server
-		loadingServices();
+		dispatch(fetchServices());
 
 		// Load services into table
 		loadingServicesIntoTable();
@@ -342,7 +340,6 @@ const mapDispatchToProps = (dispatch) => ({
 	loadingJobsIntoTable: () => dispatch(loadJobsIntoTable()),
 	loadingServers: () => dispatch(fetchServers()),
 	loadingServersIntoTable: () => dispatch(loadServersIntoTable()),
-	loadingServices: () => dispatch(fetchServices()),
 	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
 	loadingUsers: () => dispatch(fetchUsers()),
 	loadingUsersIntoTable: () => dispatch(loadUsersIntoTable()),
