@@ -2,8 +2,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
-import { connect } from "react-redux";
 import { hasAccess } from "../../../utils/utils";
+import { useAppSelector } from "../../../store";
 
 /**
  * This component renders the navigation in details modals
@@ -12,9 +12,10 @@ const ModalNavigation = ({
     tabInformation,
     page,
     openTab,
-    user
 }: any) => {
 	const { t } = useTranslation();
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	return (
 		<nav className="modal-nav" id="modal-nav">
@@ -35,10 +36,4 @@ const ModalNavigation = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
-});
-
-export default connect(mapStateToProps)(ModalNavigation);
+export default ModalNavigation;

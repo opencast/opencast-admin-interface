@@ -1,6 +1,8 @@
 // Check if an event is scheduled and therefore editable
 import { hasDeviceAccess } from "./resourceUtils";
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
+import { useAppDispatch } from "../store";
+import { addNotification } from "../slices/notificationSlice";
 
 // Check if event is scheduled and therefore the schedule is editable
 export const isScheduleEditable = (event: any) => {
@@ -71,8 +73,8 @@ export const checkSchedulingConflicts = async (
 	setConflicts,
 // @ts-expect-error TS(7006): Parameter 'checkConflicts' implicitly has an 'any'... Remove this comment to see the full error message
 	checkConflicts,
-// @ts-expect-error TS(7006): Parameter 'addNotification' implicitly has an 'any... Remove this comment to see the full error message
-	addNotification
+// @ts-expect-error TS(7006):
+	dispatch,
 ) => {
 	// Check if each start is before end
 	for (let i = 0; i < formikValues.editedEvents.length; i++) {
@@ -93,13 +95,13 @@ export const checkSchedulingConflicts = async (
 		);
 
 		if (startTime > endTime) {
-			addNotification(
-				"error",
-				"CONFLICT_END_BEFORE_START",
-				-1,
-				null,
-				NOTIFICATION_CONTEXT
-			);
+			dispatch(addNotification({
+				type: "error",
+				key: "CONFLICT_END_BEFORE_START",
+				duration: -1,
+				parameter: null,
+				context: NOTIFICATION_CONTEXT
+			}));
 			return false;
 		}
 	}

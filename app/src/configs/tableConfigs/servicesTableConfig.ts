@@ -1,7 +1,3 @@
-import MeanRunTimeCell from "../../components/systems/partials/MeanRunTimeCell";
-import MeanQueueTimeCell from "../../components/systems/partials/MeanQueueTimeCell";
-import ServicesActionCell from "../../components/systems/partials/ServicesActionsCell";
-
 /**
  * Config that contains the columns and further information regarding services. These are the information that never or hardly changes.
  * That's why it is hard coded here and not fetched from server.
@@ -72,15 +68,4 @@ export const servicesTableConfig = {
 	resource: "services",
 	category: "systems",
 	multiSelect: false,
-};
-
-/**
- * This map contains the mapping between the template strings above and the corresponding react component.
- * This helps to render different templates of cells more dynamically. Even empty needed, because Table component
- * uses template map.
- */
-export const servicesTemplateMap = {
-	MeanRunTimeCell: MeanRunTimeCell,
-	MeanQueueTimeCell: MeanQueueTimeCell,
-	ServicesActionsCell: ServicesActionCell,
 };

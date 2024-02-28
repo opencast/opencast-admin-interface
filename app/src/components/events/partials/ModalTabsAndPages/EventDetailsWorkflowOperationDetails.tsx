@@ -7,8 +7,9 @@ import {
 	getWorkflowOperations,
 	isFetchingWorkflowOperationDetails,
 } from "../../../../selectors/eventDetailsSelectors";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
+import { useAppDispatch } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the workflow operation details for the workflows tab of the event details modal
@@ -25,9 +26,11 @@ const EventDetailsWorkflowOperationDetails = ({
 // @ts-expect-error TS(7031): Binding element 'isFetching' implicitly has an 'an... Remove this comment to see the full error message
 	isFetching,
 }) => {
+	const dispatch = useAppDispatch();
+
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
 	const openSubTab = (tabType) => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		setHierarchy(tabType);
 	};
 
