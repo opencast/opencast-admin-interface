@@ -41,12 +41,13 @@ import {
 	fetchSchedulingInfo,
 	fetchEventStatistics,
 } from "../../../../thunks/eventDetailsThunks";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import EventDetailsStatisticsTab from "../ModalTabsAndPages/EventDetailsStatisticsTab";
 import { fetchAssetUploadOptions } from "../../../../thunks/assetsThunks";
 import { hasAnyDeviceAccess } from "../../../../utils/resourceUtils";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the pages of the event details
@@ -62,15 +63,12 @@ const EventDetails : React.FC<{
 	isLoadingScheduling?: any,
 	hasStatistics?: any,
 	isLoadingStatistics?: any,
-	captureAgents?: any,
 	user?: any,
 	loadMetadata?: any,
 	updateMetadata?: any,
 	updateExtendedMetadata?: any,
 	loadScheduling?: any,
 	loadStatistics?: any,
-	fetchAssetUploadOptions?: any,
-	removeNotificationWizardForm?: any,
 	policyChanged: any,
 	setPolicyChanged: any,
 }>= ({
@@ -84,32 +82,32 @@ const EventDetails : React.FC<{
 	isLoadingScheduling,
 	hasStatistics,
 	isLoadingStatistics,
-	captureAgents,
 	user,
 	loadMetadata,
 	updateMetadata,
 	updateExtendedMetadata,
 	loadScheduling,
 	loadStatistics,
-	fetchAssetUploadOptions,
-	removeNotificationWizardForm,
 	policyChanged,
 	setPolicyChanged,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		loadMetadata(eventId).then();
 		loadScheduling(eventId).then();
 		loadStatistics(eventId).then();
-		fetchAssetUploadOptions().then();
+		dispatch(fetchAssetUploadOptions()).then();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const [page, setPage] = useState(tabIndex);
 	const [workflowTabHierarchy, setWorkflowTabHierarchy] = useState("entry");
 	const [assetsTabHierarchy, setAssetsTabHierarchy] = useState("entry");
+
+	const captureAgents = useAppSelector(state => getRecordings(state));
 
 	const tabs = [
 		{
@@ -172,7 +170,7 @@ const EventDetails : React.FC<{
 
 // @ts-expect-error TS(7006): Parameter 'tabNr' implicitly has an 'any' type.
 	const openTab = (tabNr) => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		setWorkflowTabHierarchy("entry");
 		setAssetsTabHierarchy("entry");
 		setPage(tabNr);
@@ -404,7 +402,6 @@ const mapStateToProps = (state) => ({
 	isLoadingScheduling: isFetchingScheduling(state),
 	hasStatistics: hasStatistics(state),
 	isLoadingStatistics: isFetchingStatistics(state),
-	captureAgents: getRecordings(state),
 	user: getUserInformation(state),
 });
 
@@ -422,8 +419,6 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch(updateExtendedMetadata(id, values, catalog)),
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	loadStatistics: (id) => dispatch(fetchEventStatistics(id)),
-	fetchAssetUploadOptions: () => dispatch(fetchAssetUploadOptions()),
-	removeNotificationWizardForm: () => dispatch(removeNotificationWizardForm()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventDetails);
