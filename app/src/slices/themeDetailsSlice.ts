@@ -1,7 +1,7 @@
 import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { buildThemeBody } from '../utils/resourceUtils';
-import { addNotification } from '../thunks/notificationThunks';
+import { addNotification } from '../slices/notificationSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of a theme
@@ -100,11 +100,11 @@ export const updateThemeDetails = createAsyncThunk('themeDetails/updateThemeDeta
 		})
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "THEME_CREATED"));
+			dispatch(addNotification({type: "success", key: "THEME_CREATED"}));
 		})
 		.catch((response) => {
 			console.error(response);
-			dispatch(addNotification("error", "THEME_NOT_CREATED"));
+			dispatch(addNotification({type: "error", key: "THEME_NOT_CREATED"}));
 		});
 });
 

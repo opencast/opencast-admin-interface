@@ -1,6 +1,6 @@
 import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
-import { addNotification } from '../thunks/notificationThunks';
+import { addNotification } from '../slices/notificationSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of information about current user
@@ -82,7 +82,7 @@ export const fetchUserInfo = createAsyncThunk('UserInfo/fetchUserInfo', async (_
 		})
 		.catch((response) => {
 			console.error(response);
-			dispatch(addNotification("error", "USER_NOT_SAVED"));
+			dispatch(addNotification({type: "error", key: "USER_NOT_SAVED"}));
 		});
 
 	return res;
