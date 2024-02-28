@@ -9,7 +9,6 @@ import {
 import CustomStepIcon from "./CustomStepIcon";
 import { checkAcls } from "../../../thunks/aclThunks";
 import { connect } from "react-redux";
-import { checkConflicts } from "../../../thunks/eventThunks";
 
 const WizardStepperEvent = ({
 // @ts-expect-error TS(7031): Binding element 'steps' implicitly has an 'any' ty... Remove this comment to see the full error message
@@ -26,8 +25,6 @@ const WizardStepperEvent = ({
 	setCompleted,
 // @ts-expect-error TS(7031): Binding element 'checkAcls' implicitly has an 'any... Remove this comment to see the full error message
 	checkAcls,
-// @ts-expect-error TS(7031): Binding element 'checkConflicts' implicitly has an... Remove this comment to see the full error message
-	checkConflicts,
 }) => {
 	const { t } = useTranslation();
 
@@ -36,35 +33,24 @@ const WizardStepperEvent = ({
 // @ts-expect-error TS(7006): Parameter 'key' implicitly has an 'any' type.
 	const handleOnClick = async (key) => {
 		if (isSummaryReachable(key, steps, completed)) {
-			if (steps[page].name === "source") {
-				let dateCheck = await checkConflicts(formik.values);
-				if (!dateCheck) {
-					return;
+
+			if (completed[key]) {
+				await setPage(key);
+			}
+
+			let previousPageIndex = key - 1 > 0 ? key - 1 : 0;
+			while (previousPageIndex >= 0) {
+				if (steps[previousPageIndex].hidden) {
+					previousPageIndex = previousPageIndex - 1;
+				} else {
+					break;
 				}
 			}
-
-			if (
-				steps[page].name === "processing" &&
-				!formik.values.processingWorkflow
-			) {
-				return;
-			}
-
-			let aclCheck = await checkAcls(formik.values.acls);
-			if (!aclCheck) {
-				return;
-			}
-
-			if (formik.isValid) {
-				let updatedCompleted = completed;
-				updatedCompleted[page] = true;
-				setCompleted(updatedCompleted);
+			if (completed[previousPageIndex]) {
 				await setPage(key);
 			}
 		}
 	};
-
-	const disabled = !(formik.dirty && formik.isValid);
 
 	return (
 		<Stepper
@@ -79,7 +65,7 @@ const WizardStepperEvent = ({
 			{steps.map((label, key) =>
 				!label.hidden ? (
 					<Step key={label.translation} completed={completed[key]}>
-						<StepButton onClick={() => handleOnClick(key)} disabled={disabled}>
+						<StepButton onClick={() => handleOnClick(key)}>
 							<StepLabel StepIconComponent={CustomStepIcon}>
 								{t(label.translation)}
 							</StepLabel>
@@ -95,8 +81,6 @@ const WizardStepperEvent = ({
 const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'acls' implicitly has an 'any' type.
 	checkAcls: (acls) => dispatch(checkAcls(acls)),
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	checkConflicts: (values) => dispatch(checkConflicts(values)),
 });
 
 export default connect(null, mapDispatchToProps)(WizardStepperEvent);

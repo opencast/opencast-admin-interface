@@ -7,7 +7,8 @@ import {
 	fetchSeriesDetailsAcls,
 	updateSeriesAccess,
 } from "../../../../thunks/seriesDetailsThunks";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
+import { useAppDispatch } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the access policy tab of the series details modal
@@ -29,9 +30,11 @@ const SeriesDetailsAccessTab = ({
 	setPolicyChanged,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
