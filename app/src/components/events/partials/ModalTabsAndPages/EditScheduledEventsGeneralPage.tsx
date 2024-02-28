@@ -12,6 +12,7 @@ import {
 	isAllScheduleEditable,
 	isScheduleEditable,
 } from "../../../../utils/bulkActionUtils";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component renders the table overview of selected events in edit scheduled events bulk action
@@ -23,10 +24,10 @@ const EditScheduledEventsGeneralPage = ({
 	formik,
 // @ts-expect-error TS(7031): Binding element 'selectedRows' implicitly has an '... Remove this comment to see the full error message
 	selectedRows,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const [
 		selectedEvents,
@@ -158,7 +159,6 @@ const EditScheduledEventsGeneralPage = ({
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
 	selectedRows: getSelectedRows(state),
-	user: getUserInformation(state),
 });
 
 export default connect(mapStateToProps)(EditScheduledEventsGeneralPage);

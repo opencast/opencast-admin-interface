@@ -18,6 +18,7 @@ import Notifications from "../../../shared/Notifications";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
 import DropDown from "../../../shared/DropDown";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component manages the comment tab of the event details modal
@@ -47,8 +48,6 @@ const EventDetailsCommentsTab = ({
 	isSavingCommentReply,
 // @ts-expect-error TS(7031): Binding element 'commentReasons' implicitly has an... Remove this comment to see the full error message
 	commentReasons,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	useEffect(() => {
 // @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
@@ -64,6 +63,8 @@ const EventDetailsCommentsTab = ({
 
 	const [newCommentText, setNewCommentText] = useState("");
 	const [commentReason, setCommentReason] = useState("");
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 // @ts-expect-error TS(7006): Parameter 'commentText' implicitly has an 'any' ty... Remove this comment to see the full error message
 	const saveComment = (commentText, commentReason) => {
@@ -404,7 +405,6 @@ const mapStateToProps = (state) => ({
 	isFetchingComments: isFetchingComments(state),
 	isSavingComment: isSavingComment(state),
 	isSavingCommentReply: isSavingCommentReply(state),
-	user: getUserInformation(state),
 });
 
 // Mapping actions to dispatch

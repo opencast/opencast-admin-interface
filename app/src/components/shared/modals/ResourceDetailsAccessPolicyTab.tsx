@@ -9,9 +9,7 @@ import {
 } from "../../../thunks/aclThunks";
 import Notifications from "../Notifications";
 import { Formik, Field, FieldArray } from "formik";
-import { addNotification } from "../../../thunks/notificationThunks";
 import { NOTIFICATION_CONTEXT } from "../../../configs/modalConfig";
-import { removeNotificationWizardForm } from "../../../actions/notificationActions";
 import {
 	createPolicy,
 	prepareAccessPolicyRulesForPost,
@@ -20,6 +18,8 @@ import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import DropDown from "../DropDown";
 import { filterRoles, getAclTemplateText } from "../../../utils/aclUtils";
+import { useAppDispatch, useAppSelector } from "../../../store";
+import { removeNotificationWizardForm, addNotification } from "../../../slices/notificationSlice";
 
 /**
  * This component manages the access policy tab of resource details modals
@@ -33,14 +33,11 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 	fetchAccessPolicies: any,
 	saveNewAccessPolicies: any,
 	descriptionText: any,
-	addNotification: any,
 	fetchAclTemplates: any,
 	fetchRoles: any,
-	removeNotificationWizardForm: any,
 	buttonText: any,
 	saveButtonText: any,
 	editAccessRole: any,
-	user: any,
 	policyChanged: any,
 	setPolicyChanged: any,
 }> = ({
@@ -52,17 +49,15 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 	fetchAccessPolicies,
 	saveNewAccessPolicies,
 	descriptionText,
-	addNotification,
 	fetchAclTemplates,
 	fetchRoles,
-	removeNotificationWizardForm,
 	buttonText,
 	saveButtonText,
 	editAccessRole,
-	user,
 	policyChanged,
 	setPolicyChanged,
 }) => {
+	const dispatch = useAppDispatch();
 	const baseAclId = "";
 
 	// list of policy templates
@@ -83,9 +78,11 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 	// this state tracks, whether data is currently being fetched
 	const [loading, setLoading] = useState(false);
 
+	const user = useAppSelector(state => getUserInformation(state));
+
 	/* fetch initial values from backend */
 	useEffect(() => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		async function fetchData() {
 			setLoading(true);
 			const responseTemplates = await fetchAclTemplates();
@@ -108,13 +105,13 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 					fetchTransactionResult.active === undefined ||
 					fetchTransactionResult.active
 				) {
-					addNotification(
-						"warning",
-						"ACTIVE_TRANSACTION",
-						-1,
-						null,
-						NOTIFICATION_CONTEXT
-					);
+					dispatch(addNotification({
+						type: "warning",
+						key: "ACTIVE_TRANSACTION",
+						duration: -1,
+						parameter: null,
+						context: NOTIFICATION_CONTEXT
+					}));
 				}
 			}
 			setLoading(false);
@@ -135,30 +132,30 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 	 * if the policies are valid, the new policies are saved in the backend */
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const saveAccess = (values) => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		const { roleWithFullRightsExists, allRulesValid } = validatePolicies(
 			values
 		);
 		const access = prepareAccessPolicyRulesForPost(values.policies);
 
 		if (!allRulesValid) {
-			addNotification(
-				"warning",
-				"INVALID_ACL_RULES",
-				-1,
-				null,
-				NOTIFICATION_CONTEXT
-			);
+			dispatch(addNotification({
+				type: "warning",
+				key: "INVALID_ACL_RULES",
+				duration: -1,
+				parameter: null,
+				context: NOTIFICATION_CONTEXT
+			}));
 		}
 
 		if (!roleWithFullRightsExists) {
-			addNotification(
-				"warning",
-				"MISSING_ACL_RULES",
-				-1,
-				null,
-				NOTIFICATION_CONTEXT
-			);
+			dispatch(addNotification({
+				type: "warning",
+				key: "MISSING_ACL_RULES",
+				duration: -1,
+				parameter: null,
+				context: NOTIFICATION_CONTEXT
+			}));
 		}
 
 		if (allRulesValid && roleWithFullRightsExists) {
@@ -663,18 +660,14 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'type' implicitly has an 'any' type.
-	addNotification: (type, key, duration, parameter, context) =>
-		dispatch(addNotification(type, key, duration, parameter, context)),
 	fetchRoles: () => fetchRolesWithTarget("ACL"),
 	fetchAclTemplates: () => fetchAclTemplates(),
-	removeNotificationWizardForm: () => dispatch(removeNotificationWizardForm()),
 });
 
 export default connect(

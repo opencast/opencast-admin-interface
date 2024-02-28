@@ -1,12 +1,15 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { RecordingDetails } from "../../../../slices/recordingDetailsSlice";
 
 /**
  * This component renders details about a recording/capture agent
  */
-const GeneralDetailsTab = ({
-    agent
-}: any) => {
+const GeneralDetailsTab: React.FC<{
+	agent: RecordingDetails
+}> = ({
+	agent
+}) => {
 	const { t } = useTranslation();
 
 	return (

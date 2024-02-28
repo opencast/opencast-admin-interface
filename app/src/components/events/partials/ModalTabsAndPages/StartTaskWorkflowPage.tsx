@@ -1,35 +1,35 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import RenderWorkflowConfig from "../wizards/RenderWorkflowConfig";
-import { fetchWorkflowDef } from "../../../../thunks/workflowThunks";
 import { getWorkflowDef } from "../../../../selectors/workflowSelectors";
-import { connect } from "react-redux";
 import cn from "classnames";
 import { setDefaultConfig } from "../../../../utils/workflowPanelUtils";
 import DropDown from "../../../shared/DropDown";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { fetchWorkflowDef } from "../../../../slices/workflowSlice";
 
 /**
  * This component renders the workflow selection for start task bulk action
  */
-const StartTaskWorkflowPage = ({
-// @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
+const StartTaskWorkflowPage: React.FC<{
+	formik: any	//TODO: Add type
+	previousPage: any	//TODO: Add type
+	nextPage: any	//TODO: Add type
+	setPageCompleted: any	//TODO: Add type
+}> = ({
 	formik,
-// @ts-expect-error TS(7031): Binding element 'previousPage' implicitly has an '... Remove this comment to see the full error message
 	previousPage,
-// @ts-expect-error TS(7031): Binding element 'nextPage' implicitly has an 'any'... Remove this comment to see the full error message
 	nextPage,
-// @ts-expect-error TS(7031): Binding element 'setPageCompleted' implicitly has ... Remove this comment to see the full error message
 	setPageCompleted,
-// @ts-expect-error TS(7031): Binding element 'loadingWorkflowDef' implicitly ha... Remove this comment to see the full error message
-	loadingWorkflowDef,
-// @ts-expect-error TS(7031): Binding element 'workflowDef' implicitly has an 'a... Remove this comment to see the full error message
-	workflowDef,
 }) => {
 	const { t } = useTranslation();
 
+	const dispatch = useAppDispatch();
+	const workflowDef = useAppSelector(state => getWorkflowDef(state));
+
 	useEffect(() => {
 		// Load workflow definitions for selecting
-		loadingWorkflowDef();
+		dispatch(fetchWorkflowDef("default"));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -59,17 +59,10 @@ const StartTaskWorkflowPage = ({
 										<DropDown
 											value={formik.values.workflow}
 											text={
-												!!workflowDef.find(
-// @ts-expect-error TS(7006): Parameter 'workflowDef' implicitly has an 'any' ty... Remove this comment to see the full error message
+												workflowDef.find(
 													(workflowDef) =>
 														workflowDef.id === formik.values.workflow
-												)
-													? workflowDef.find(
-// @ts-expect-error TS(7006): Parameter 'workflowDef' implicitly has an 'any' ty... Remove this comment to see the full error message
-															(workflowDef) =>
-																workflowDef.id === formik.values.workflow
-													  ).title
-													: ""
+												)?.title ?? ""
 											}
 											options={workflowDef}
 											type={"workflow"}
@@ -142,19 +135,4 @@ const StartTaskWorkflowPage = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	workflowDef: getWorkflowDef(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	loadingWorkflowDef: () => dispatch(fetchWorkflowDef("tasks")),
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(StartTaskWorkflowPage);
+export default StartTaskWorkflowPage;

@@ -16,6 +16,7 @@ import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
 import DropDown from "../../../shared/DropDown";
 import { filterRoles, getAclTemplateText } from "../../../../utils/aclUtils";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component renders the access page for new events and series in the wizards.
@@ -29,8 +30,6 @@ const NewAccessPage = ({
 	formik,
 // @ts-expect-error TS(7031): Binding element 'editAccessRole' implicitly has an... Remove this comment to see the full error message
 	editAccessRole,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'checkAcls' implicitly has an 'any... Remove this comment to see the full error message
 	checkAcls,
 }) => {
@@ -41,6 +40,8 @@ const NewAccessPage = ({
 	const [aclActions, setAclActions] = useState([]);
 	const [roles, setRoles] = useState([]);
 	const [loading, setLoading] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	useEffect(() => {
 		// fetch data about roles, acl templates and actions from backend
@@ -351,7 +352,7 @@ const NewAccessPage = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.

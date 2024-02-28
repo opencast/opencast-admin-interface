@@ -11,12 +11,14 @@ import {
 } from "../../../../utils/utils";
 import cn from "classnames";
 import RenderField from "../../../shared/wizard/RenderField";
+import RenderMultiField from "../../../shared/wizard/RenderMultiField";
+import { getUserInformation } from "../../../../selectors/userInfoSelectors";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
 	postEditMetadata,
 	updateBulkMetadata,
-} from "../../../../thunks/eventThunks";
-import RenderMultiField from "../../../shared/wizard/RenderMultiField";
-import { getUserInformation } from "../../../../selectors/userInfoSelectors";
+} from "../../../../slices/eventSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 // Get info about the current language and its date locale
 const currentLanguage = getCurrentLanguageInformation();
@@ -29,18 +31,17 @@ const EditMetadataEventsModal = ({
 	close,
 // @ts-expect-error TS(7031): Binding element 'selectedRows' implicitly has an '... Remove this comment to see the full error message
 	selectedRows,
-// @ts-expect-error TS(7031): Binding element 'updateBulkMetadata' implicitly ha... Remove this comment to see the full error message
-	updateBulkMetadata,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const [selectedEvents] = useState(selectedRows);
 	const [metadataFields, setMetadataFields] = useState({});
 	const [loading, setLoading] = useState(true);
 	const [fatalError, setFatalError] = useState({});
 	const [fetchedValues, setFetchedValues] = useState(null);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	useEffect(() => {
 		async function fetchData() {
@@ -53,18 +54,21 @@ const EditMetadataEventsModal = ({
 
 			// Get merged metadata from backend
 // @ts-expect-error TS(7005): Variable 'eventIds' implicitly has an 'any[]' type... Remove this comment to see the full error message
-			const responseMetadataFields = await postEditMetadata(eventIds);
-
-			// Set fatal error if response contains error
-			if (!!responseMetadataFields.fatalError) {
-				setFatalError(responseMetadataFields);
-			} else {
-				// Set initial values and save metadata field infos in state
-				let initialValues = getInitialValues(responseMetadataFields);
-// @ts-expect-error TS(2345): Argument of type '{}' is not assignable to paramet... Remove this comment to see the full error message
-				setFetchedValues(initialValues);
-				setMetadataFields(responseMetadataFields);
-			}
+			// const responseMetadataFields = await dispatch(postEditMetadata(eventIds))
+			await dispatch(postEditMetadata(eventIds))
+			.then(unwrapResult)
+			.then((result) => {
+				// Set fatal error if response contains error
+				if (!!result.fatalError) {
+					setFatalError(result);
+				} else {
+					// Set initial values and save metadata field infos in state
+					let initialValues = getInitialValues(result);
+	// @ts-expect-error TS(2345): Argument of type '{}' is not assignable to paramet... Remove this comment to see the full error message
+					setFetchedValues(initialValues);
+					setMetadataFields(result);
+				}
+			});
 			setLoading(false);
 		}
 		fetchData();
@@ -73,7 +77,7 @@ const EditMetadataEventsModal = ({
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
-		const response = updateBulkMetadata(metadataFields, values);
+		const response = dispatch(updateBulkMetadata({metadataFields, values}));
 		console.info(response);
 		close();
 	};
@@ -344,14 +348,10 @@ const getInitialValues = (metadataFields) => {
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
 	selectedRows: getSelectedRows(state),
-	user: getUserInformation(state),
 });
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'metadataFields' implicitly has an 'any'... Remove this comment to see the full error message
-	updateBulkMetadata: (metadataFields, values) =>
-		dispatch(updateBulkMetadata(metadataFields, values)),
 });
 export default connect(
 	mapStateToProps,

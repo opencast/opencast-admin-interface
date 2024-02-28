@@ -1,9 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import { getSeriesThemes } from "../../../../selectors/seriesSeletctor";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import DropDown from "../../../shared/DropDown";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component renders the theme page for new series in the new series wizard.
@@ -12,16 +12,21 @@ const NewThemePage = ({
     formik,
     nextPage,
     previousPage,
-    seriesThemes
 }: any) => {
 	const { t } = useTranslation();
 
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	const getDescription = (id) => {
-// @ts-expect-error TS(7006): Parameter 'theme' implicitly has an 'any' type.
+	const seriesThemes = useAppSelector(state => getSeriesThemes(state));
+
+	const getDescription = (id: string) => {
 		const theme = seriesThemes.find((theme) => theme.id === id);
 
-		return theme.description;
+		return theme?.description;
+	};
+
+	const getName = (id: string) => {
+		const theme = seriesThemes.find((theme) => theme.id === id);
+
+		return theme?.name;
 	};
 
 	return (
@@ -44,16 +49,7 @@ const NewThemePage = ({
 														<DropDown
 															value={formik.values.theme}
 															text={
-																!!seriesThemes.find(
-// @ts-expect-error TS(7006): Parameter 'theme' implicitly has an 'any' type.
-																	(theme) => formik.values.theme === theme.id
-																)
-																	? seriesThemes.find(
-// @ts-expect-error TS(7006): Parameter 'theme' implicitly has an 'any' type.
-																			(theme) =>
-																				formik.values.theme === theme.id
-																	  ).name
-																	: ""
+																getName(formik.values.theme) ? getName(formik.values.theme) : ""
 															}
 															options={seriesThemes}
 															type={"newTheme"}
@@ -92,9 +88,4 @@ const NewThemePage = ({
 	);
 };
 
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	seriesThemes: getSeriesThemes(state),
-});
-
-export default connect(mapStateToProps)(NewThemePage);
+export default NewThemePage;
