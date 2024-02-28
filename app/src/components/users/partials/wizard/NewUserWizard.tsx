@@ -7,8 +7,9 @@ import NewUserGeneralTab from "./NewUserGeneralTab";
 import UserRolesTab from "./UserRolesTab";
 import { initialFormValuesNewUser } from "../../../../configs/modalConfig";
 import { getUsernames } from "../../../../selectors/userSelectors";
-import { postNewUser } from "../../../../thunks/userThunks";
 import { NewUserSchema } from "../../../../utils/validate";
+import { postNewUser } from "../../../../slices/userSlice";
+import { useAppDispatch } from "../../../../store";
 
 /**
  * This component renders the new user wizard
@@ -16,9 +17,9 @@ import { NewUserSchema } from "../../../../utils/validate";
 const NewUserWizard = ({
     close,
     usernames,
-    postNewUser
 }: any) => {
 	const { t } = useTranslation();
+  const dispatch = useAppDispatch();
 
 	const navStyle = {
 		left: "0px",
@@ -35,7 +36,7 @@ const NewUserWizard = ({
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
-		const response = postNewUser(values);
+		const response = dispatch(postNewUser(values));
 		console.info(response);
 		close();
 	};
@@ -111,8 +112,6 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	postNewUser: (values) => dispatch(postNewUser(values)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewUserWizard);

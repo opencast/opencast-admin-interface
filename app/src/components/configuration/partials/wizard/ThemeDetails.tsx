@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import cn from "classnames";
 import { Formik } from "formik";
 import GeneralPage from "./GeneralPage";
@@ -12,33 +11,32 @@ import {
 	getThemeUsage,
 } from "../../../../selectors/themeDetailsSelectors";
 import UsagePage from "./UsagePage";
-import { updateThemeDetails } from "../../../../thunks/themeDetailsThunks";
 import ModalNavigation from "../../../shared/modals/ModalNavigation";
 import { NewThemeSchema } from "../../../../utils/validate";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { updateThemeDetails } from "../../../../slices/themeDetailsSlice";
 
 /**
  * This component manages the pages of the theme details
  */
 const ThemeDetails : React.FC<{
-  close: any,
-  themeDetails: any,
-  themeUsage: any,
-  updateTheme: any,
+	close: () => void,
 }> = ({
   close,
-  themeDetails,
-  themeUsage,
-  updateTheme
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const [page, setPage] = useState(0);
+
+	const themeDetails = useAppSelector(state => getThemeDetails(state));
+	const themeUsage = useAppSelector(state => getThemeUsage(state));
 
 	// set initial values for formik form
 	const initialValues = {
 		...themeDetails,
 		titleSlideMode:
-			themeDetails.titleSlideActive && !!themeDetails.titleSlideBackgroundName
+			themeDetails.titleSlideActive && !!themeDetails.titleSlideBackground
 				? "upload"
 				: "extract",
 	};
@@ -83,7 +81,7 @@ const ThemeDetails : React.FC<{
 	// update theme
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
-		updateTheme(themeDetails.id, values);
+		dispatch(updateThemeDetails({id: themeDetails.id, values: values}));
 		close();
 	};
 
@@ -137,18 +135,4 @@ const ThemeDetails : React.FC<{
 	);
 };
 
-// get current state out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	themeDetails: getThemeDetails(state),
-	themeUsage: getThemeUsage(state),
-});
-
-// map actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	updateTheme: (id, values) => dispatch(updateThemeDetails(id, values)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ThemeDetails);
+export default ThemeDetails;
