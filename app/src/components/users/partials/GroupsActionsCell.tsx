@@ -2,25 +2,26 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import { deleteGroup } from "../../../thunks/groupThunks";
 import GroupDetailsModal from "./modal/GroupDetailsModal";
-import { fetchGroupDetails } from "../../../thunks/groupDetailsThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
+import { useAppDispatch, useAppSelector  } from "../../../store";
+import { deleteGroup } from "../../../slices/groupSlice";
+import { fetchGroupDetails } from "../../../slices/groupDetailsSlice";
 
 /**
  * This component renders the action cells of groups in the table view
  */
 const GroupsActionsCell = ({
-    row,
-    deleteGroup,
-    fetchGroupDetails,
-    user
+	row,
 }: any) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayGroupDetails, setGroupDetails] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
 		setDeleteConfirmation(false);
@@ -28,7 +29,7 @@ const GroupsActionsCell = ({
 
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	const deletingGroup = (id) => {
-		deleteGroup(id);
+		dispatch(deleteGroup(id));
 	};
 
 	const hideGroupDetails = () => {
@@ -36,7 +37,7 @@ const GroupsActionsCell = ({
 	};
 
 	const showGroupDetails = async () => {
-		await fetchGroupDetails(row.id);
+		await dispatch(fetchGroupDetails(row.id));
 
 		setGroupDetails(true);
 	};
@@ -83,15 +84,11 @@ const GroupsActionsCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	deleteGroup: (id) => dispatch(deleteGroup(id)),
-// @ts-expect-error TS(7006): Parameter 'groupName' implicitly has an 'any' type... Remove this comment to see the full error message
-	fetchGroupDetails: (groupName) => dispatch(fetchGroupDetails(groupName)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupsActionsCell);

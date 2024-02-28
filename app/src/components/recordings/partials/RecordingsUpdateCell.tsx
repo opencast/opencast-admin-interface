@@ -12,7 +12,7 @@ const RecordingsUpdateCell = ({
 
 	return (
 		<span>
-			{t("dateFormats.dateTime.short", { dateTime: renderValidDate(row.update) })}
+			{t("dateFormats.dateTime.short", { dateTime: renderValidDate(row.updated) })}
 		</span>
 	);
 };

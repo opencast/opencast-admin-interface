@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import { deleteEvent } from "../../../thunks/eventThunks";
 import { connect } from "react-redux";
 import EventDetailsModal from "./modals/EventDetailsModal";
 import EmbeddingCodeModal from "./modals/EmbeddingCodeModal";
@@ -15,6 +14,8 @@ import {
 	fetchSeriesDetailsMetadata,
 	fetchSeriesDetailsTheme,
 } from "../../../thunks/seriesDetailsThunks";
+import { useAppDispatch, useAppSelector } from "../../../store";
+import { deleteEvent } from "../../../slices/eventSlice";
 
 /**
  * This component renders the action cells of events in the table view
@@ -22,8 +23,6 @@ import {
 const EventActionCell = ({
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
-// @ts-expect-error TS(7031): Binding element 'deleteEvent' implicitly has an 'a... Remove this comment to see the full error message
-	deleteEvent,
 // @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsMetadata' impli... Remove this comment to see the full error message
 	fetchSeriesDetailsMetadata,
 // @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsAcls' implicitl... Remove this comment to see the full error message
@@ -34,10 +33,9 @@ const EventActionCell = ({
 	fetchSeriesDetailsTheme,
 // @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsThemeNames' imp... Remove this comment to see the full error message
 	fetchSeriesDetailsThemeNames,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayEventDetailsModal, setEventDetailsModal] = useState(false);
@@ -45,13 +43,15 @@ const EventActionCell = ({
 	const [eventDetailsTabIndex, setEventDetailsTabIndex] = useState(0);
 	const [displayEmbeddingCodeModal, setEmbeddingCodeModal] = useState(false);
 
+	const user = useAppSelector(state => getUserInformation(state));
+
 	const hideDeleteConfirmation = () => {
 		setDeleteConfirmation(false);
 	};
 
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	const deletingEvent = (id) => {
-		deleteEvent(id);
+		dispatch(deleteEvent(id));
 	};
 
 	const hideEmbeddingCodeModal = () => {
@@ -237,14 +237,12 @@ const EventActionCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	deleteEvent: (id) => dispatch(deleteEvent(id)),
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	fetchSeriesDetailsMetadata: (id) => dispatch(fetchSeriesDetailsMetadata(id)),
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
