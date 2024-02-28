@@ -21,12 +21,12 @@ import {
 } from "../../../../selectors/eventDetailsSelectors";
 import Notifications from "../../../shared/Notifications";
 import RenderWorkflowConfig from "../wizards/RenderWorkflowConfig";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess, parseBooleanInObject } from "../../../../utils/utils";
 import { setDefaultConfig } from "../../../../utils/workflowPanelUtils";
 import DropDown from "../../../shared/DropDown";
-import { useAppSelector } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the workflows tab of the event details modal
@@ -44,8 +44,6 @@ const EventDetailsWorkflowTab = ({
 	baseWorkflow,
 // @ts-expect-error TS(7031): Binding element 'saveWorkflowConfig' implicitly ha... Remove this comment to see the full error message
 	saveWorkflowConfig,
-// @ts-expect-error TS(7031): Binding element 'removeNotificationWizardForm' imp... Remove this comment to see the full error message
-	removeNotificationWizardForm,
 // @ts-expect-error TS(7031): Binding element 'workflow' implicitly has an 'any'... Remove this comment to see the full error message
 	workflow,
 // @ts-expect-error TS(7031): Binding element 'workflows' implicitly has an 'any... Remove this comment to see the full error message
@@ -72,6 +70,7 @@ const EventDetailsWorkflowTab = ({
 	deleteWf,
 }) => {
 	const user = useAppSelector(state => getUserInformation(state));
+	const dispatch = useAppDispatch();
 
 	const isRoleWorkflowEdit = hasAccess(
 		"ROLE_UI_EVENTS_DETAILS_WORKFLOWS_EDIT",
@@ -83,7 +82,7 @@ const EventDetailsWorkflowTab = ({
 	);
 
 	useEffect(() => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 // @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
 		loadWorkflows(eventId).then((r) => {});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -114,7 +113,7 @@ const EventDetailsWorkflowTab = ({
 // @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
 		loadWorkflowDetails(eventId, workflowId).then((r) => {});
 		setHierarchy(tabType);
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 	};
 
 	const hasCurrentAgentAccess = () => {
@@ -550,7 +549,6 @@ const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	saveWorkflowConfig: (values, eventId) =>
 		dispatch(saveWorkflowConfig(values, eventId)),
-	removeNotificationWizardForm: () => dispatch(removeNotificationWizardForm()),
 });
 
 export default connect(

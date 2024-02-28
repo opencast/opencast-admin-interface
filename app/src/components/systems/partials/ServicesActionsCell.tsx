@@ -1,11 +1,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { fetchServices, restartService } from "../../../thunks/serviceThunks";
 import { loadServicesIntoTable } from "../../../thunks/tableThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
-import { useAppSelector } from "../../../store";
+import { useAppDispatch, useAppSelector } from "../../../store";
+import { fetchServices, restartService } from "../../../slices/serviceSlice";
 
 /**
  * This component renders the action cells of services in the table view
@@ -19,12 +19,13 @@ const ServicesActionCell = ({
 	loadServicesIntoTable,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const user = useAppSelector(state => getUserInformation(state));
 
 	const onClickRestart = async () => {
-		await restartService(row.hostname, row.name);
-		await loadServices();
+		await dispatch(restartService({host: row.hostname, serviceType: row.name}));
+		await dispatch(fetchServices());
 		loadServicesIntoTable();
 	};
 
@@ -50,7 +51,6 @@ const mapStateToProps = (state) => ({
 // mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-	loadServices: () => dispatch(fetchServices()),
 	loadServicesIntoTable: () => dispatch(loadServicesIntoTable()),
 });
 

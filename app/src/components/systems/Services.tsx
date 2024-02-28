@@ -14,8 +14,6 @@ import {
 	loadServersIntoTable,
 	loadServicesIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchServices } from "../../thunks/serviceThunks";
-import { fetchServers } from "../../thunks/serverThunks";
 import { getTotalServices } from "../../selectors/serviceSelector";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
@@ -26,24 +24,20 @@ import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
+import { fetchServers } from "../../slices/serverSlice";
 import { fetchJobs } from "../../slices/jobSlice";
+import { fetchServices } from "../../slices/serviceSlice";
 
 /**
  * This component renders the table view of services
  */
 const Services = ({
-// @ts-expect-error TS(7031): Binding element 'loadingServices' implicitly has a... Remove this comment to see the full error message
-	loadingServices,
 // @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
 	loadingServicesIntoTable,
-// @ts-expect-error TS(7031): Binding element 'services' implicitly has an 'any'... Remove this comment to see the full error message
-	services,
 // @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
 	loadingFilters,
 // @ts-expect-error TS(7031): Binding element 'loadingJobsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingJobsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingServers' implicitly has an... Remove this comment to see the full error message
-	loadingServers,
 // @ts-expect-error TS(7031): Binding element 'loadingServersIntoTable' implicit... Remove this comment to see the full error message
 	loadingServersIntoTable,
 // @ts-expect-error TS(7031): Binding element 'resetTextFilter' implicitly has a... Remove this comment to see the full error message
@@ -58,10 +52,16 @@ const Services = ({
 	const [displayNavigation, setNavigation] = useState(false);
 
 	const user = useAppSelector(state => getUserInformation(state));
+	const services = useAppSelector(state => getTotalServices(state));
+
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const fetchServicesWrapper = () => {
+		dispatch(fetchServices())
+	}
 
 	const loadServices = async () => {
 		// Fetching services from server
-		await loadingServices();
+		await dispatch(fetchServices());
 
 		// Load services into table
 		loadingServicesIntoTable();
@@ -83,7 +83,7 @@ const Services = ({
 		resetOffset();
 
 		// Fetching servers from server
-		loadingServers();
+		dispatch(fetchServers());
 
 		// Load servers into table
 		loadingServersIntoTable();
@@ -158,7 +158,7 @@ const Services = ({
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={loadingServices}
+						loadResource={fetchServicesWrapper}
 						loadResourceIntoTable={loadingServicesIntoTable}
 						resource={"services"}
 					/>
@@ -176,7 +176,6 @@ const Services = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	services: getTotalServices(state),
 	currentFilterType: getCurrentFilterResource(state),
 });
 
@@ -185,7 +184,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
-	loadingServices: () => dispatch(fetchServices()),
 	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
 	loadingJobsIntoTable: () => dispatch(loadJobsIntoTable()),
 	loadingServers: () => dispatch(fetchServers()),

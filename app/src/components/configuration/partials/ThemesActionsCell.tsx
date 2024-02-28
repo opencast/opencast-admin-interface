@@ -6,7 +6,7 @@ import ThemeDetailsModal from "./wizard/ThemeDetailsModal";
 import {
 	fetchThemeDetails,
 	fetchUsage,
-} from "../../../thunks/themeDetailsThunks";
+} from "../../../slices/themeDetailsSlice";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../store";
@@ -18,10 +18,6 @@ import { deleteTheme } from "../../../slices/themeSlice";
 const ThemesActionsCell = ({
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
-// @ts-expect-error TS(7031): Binding element 'fetchThemeDetails' implicitly has... Remove this comment to see the full error message
-	fetchThemeDetails,
-// @ts-expect-error TS(7031): Binding element 'fetchUsage' implicitly has an 'an... Remove this comment to see the full error message
-	fetchUsage,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -40,8 +36,8 @@ const ThemesActionsCell = ({
 	};
 
 	const showThemeDetails = async () => {
-		await fetchThemeDetails(row.id);
-		await fetchUsage(row.id);
+		await dispatch(fetchThemeDetails(row.id));
+		await dispatch(fetchUsage(row.id));
 
 		setThemeDetails(true);
 	};
@@ -103,10 +99,6 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchThemeDetails: (id) => dispatch(fetchThemeDetails(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchUsage: (id) => dispatch(fetchUsage(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ThemesActionsCell);

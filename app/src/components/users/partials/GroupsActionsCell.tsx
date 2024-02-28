@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import { deleteGroup } from "../../../thunks/groupThunks";
 import GroupDetailsModal from "./modal/GroupDetailsModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
-import { useAppDispatch, useAppSelector } from "../../../store";
+import { useAppDispatch, useAppSelector  } from "../../../store";
+import { deleteGroup } from "../../../slices/groupSlice";
 import { fetchGroupDetails } from "../../../slices/groupDetailsSlice";
 
 /**
@@ -14,7 +14,6 @@ import { fetchGroupDetails } from "../../../slices/groupDetailsSlice";
  */
 const GroupsActionsCell = ({
 	row,
-	deleteGroup,
 }: any) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -30,7 +29,7 @@ const GroupsActionsCell = ({
 
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	const deletingGroup = (id) => {
-		deleteGroup(id);
+		dispatch(deleteGroup(id));
 	};
 
 	const hideGroupDetails = () => {
@@ -92,8 +91,6 @@ const mapStateToProps = (state) => ({
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	deleteGroup: (id) => dispatch(deleteGroup(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupsActionsCell);

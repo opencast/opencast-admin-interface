@@ -10,11 +10,11 @@ import {
 	fetchWorkflowOperations,
 } from "../../../../thunks/eventDetailsThunks";
 import { formatDuration } from "../../../../utils/eventDetailsUtils";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import { hasAccess } from "../../../../utils/utils";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
-import { useAppSelector } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the workflow details for the workflows tab of the event details modal
@@ -36,10 +36,11 @@ const EventDetailsWorkflowDetails = ({
 	fetchErrors,
 }) => {
 	const user = useAppSelector(state => getUserInformation(state));
+	const dispatch = useAppDispatch();
 
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
 	const openSubTab = (tabType) => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		setHierarchy(tabType);
 		if (tabType === "workflow-operations") {
 // @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
