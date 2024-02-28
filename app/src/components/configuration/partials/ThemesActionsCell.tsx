@@ -6,10 +6,10 @@ import ThemeDetailsModal from "./wizard/ThemeDetailsModal";
 import {
 	fetchThemeDetails,
 	fetchUsage,
-} from "../../../thunks/themeDetailsThunks";
+} from "../../../slices/themeDetailsSlice";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
-import { useAppDispatch } from "../../../store";
+import { useAppDispatch, useAppSelector } from "../../../store";
 import { deleteTheme } from "../../../slices/themeSlice";
 
 /**
@@ -18,18 +18,14 @@ import { deleteTheme } from "../../../slices/themeSlice";
 const ThemesActionsCell = ({
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
-// @ts-expect-error TS(7031): Binding element 'fetchThemeDetails' implicitly has... Remove this comment to see the full error message
-	fetchThemeDetails,
-// @ts-expect-error TS(7031): Binding element 'fetchUsage' implicitly has an 'an... Remove this comment to see the full error message
-	fetchUsage,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayThemeDetails, setThemeDetails] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
 		setDeleteConfirmation(false);
@@ -40,8 +36,8 @@ const ThemesActionsCell = ({
 	};
 
 	const showThemeDetails = async () => {
-		await fetchThemeDetails(row.id);
-		await fetchUsage(row.id);
+		await dispatch(fetchThemeDetails(row.id));
+		await dispatch(fetchUsage(row.id));
 
 		setThemeDetails(true);
 	};
@@ -97,16 +93,12 @@ const ThemesActionsCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchThemeDetails: (id) => dispatch(fetchThemeDetails(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchUsage: (id) => dispatch(fetchUsage(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ThemesActionsCell);

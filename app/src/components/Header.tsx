@@ -57,10 +57,6 @@ function logout() {
  * Component that renders the header and the navigation in the upper right corner.
  */
 const Header = ({
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
-// @ts-expect-error TS(7031): Binding element 'orgProperties' implicitly has an ... Remove this comment to see the full error message
-	orgProperties,
 // @ts-expect-error TS(7031): Binding element 'setSpecificServiceFilter' implici... Remove this comment to see the full error message
 	setSpecificServiceFilter,
 // @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
@@ -78,6 +74,8 @@ const Header = ({
 
 	const healthStatus = useAppSelector(state => getHealthStatus(state));
 	const errorCounter = useAppSelector(state => getErrorCount(state));
+	const user = useAppSelector(state => getUserInformation(state));
+	const orgProperties = useAppSelector(state => getOrgProperties(state));
 
 	const loadHealthStatus = async () => {
 		await dispatch(fetchHealthStatus());
@@ -447,8 +445,6 @@ const MenuUser = () => {
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
-	orgProperties: getOrgProperties(state),
 });
 
 // Mapping actions to dispatch

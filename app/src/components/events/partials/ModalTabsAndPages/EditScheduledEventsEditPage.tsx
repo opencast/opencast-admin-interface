@@ -7,8 +7,6 @@ import Notifications from "../../../shared/Notifications";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getTimezoneOffset, hasAccess } from "../../../../utils/utils";
 import { hours, minutes, weekdays } from "../../../../configs/modalConfig";
-import { addNotification } from "../../../../thunks/notificationThunks";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import {
 	getSchedulingSeriesOptions,
@@ -17,6 +15,7 @@ import {
 import { checkSchedulingConflicts } from "../../../../utils/bulkActionUtils";
 import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import {
 	checkForSchedulingConflicts,
 	fetchScheduling,
@@ -38,12 +37,6 @@ const EditScheduledEventsEditPage = ({
 	conflictState: { conflicts, setConflicts },
 // @ts-expect-error TS(7031): Binding element 'setPageCompleted' implicitly has ... Remove this comment to see the full error message
 	setPageCompleted,
-// @ts-expect-error TS(7031): Binding element 'addNotification' implicitly has a... Remove this comment to see the full error message
-	addNotification,
-// @ts-expect-error TS(7031): Binding element 'removeNotificationWizardForm' imp... Remove this comment to see the full error message
-	removeNotificationWizardForm,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -55,6 +48,8 @@ const EditScheduledEventsEditPage = ({
 	const checkForSchedulingConflictsWrapper = (events: any) => {
 		dispatch(checkForSchedulingConflicts(events));
 	}
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	useEffect(() => {
 		const fetchEventInfos =
@@ -457,13 +452,13 @@ const EditScheduledEventsEditPage = ({
 					})}
 					disabled={!(formik.dirty && formik.isValid)}
 					onClick={async () => {
-						removeNotificationWizardForm();
+						dispatch(removeNotificationWizardForm());
 						if (
 							await checkSchedulingConflicts(
 								formik.values,
 								setConflicts,
 								checkForSchedulingConflictsWrapper,
-								addNotification
+								dispatch
 							)
 						) {
 							nextPage(formik.values);
@@ -499,16 +494,12 @@ const EditScheduledEventsEditPage = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'type' implicitly has an 'any' type.
-	addNotification: (type, key, duration, parameter, context) =>
-		dispatch(addNotification(type, key, duration, parameter, context)),
-	removeNotificationWizardForm: () => dispatch(removeNotificationWizardForm()),
+
 });
 
 export default connect(
