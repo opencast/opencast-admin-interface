@@ -67,13 +67,12 @@ const EventDetailsSchedulingTab = ({
 	hasSchedulingProperties,
 // @ts-expect-error TS(7031): Binding element 'checkingConflicts' implicitly has... Remove this comment to see the full error message
 	checkingConflicts,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'checkConflicts' implicitly has an... Remove this comment to see the full error message
 	checkConflicts,
 // @ts-expect-error TS(7031): Binding element 'saveSchedulingInfo' implicitly ha... Remove this comment to see the full error message
 	saveSchedulingInfo,
 }) => {
+	const user = useAppSelector(state => getUserInformation(state));
 	const dispatch = useAppDispatch();
 
 	const captureAgents = useAppSelector(state => getRecordings(state));
@@ -729,7 +728,6 @@ const EventDetailsSchedulingTab = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
 	hasSchedulingProperties: getSchedulingProperties(state),
 	source: getSchedulingSource(state),
 	conflicts: getSchedulingConflicts(state),

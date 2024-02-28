@@ -37,8 +37,6 @@ const EditScheduledEventsEditPage = ({
 	conflictState: { conflicts, setConflicts },
 // @ts-expect-error TS(7031): Binding element 'setPageCompleted' implicitly has ... Remove this comment to see the full error message
 	setPageCompleted,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -50,6 +48,8 @@ const EditScheduledEventsEditPage = ({
 	const checkForSchedulingConflictsWrapper = (events: any) => {
 		dispatch(checkForSchedulingConflicts(events));
 	}
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	useEffect(() => {
 		const fetchEventInfos =
@@ -494,7 +494,6 @@ const EditScheduledEventsEditPage = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
 });
 
 // Mapping actions to dispatch

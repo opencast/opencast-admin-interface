@@ -31,8 +31,6 @@ const Recordings = ({
 	loadingFilters,
 // @ts-expect-error TS(7031): Binding element 'resetTextFilter' implicitly has a... Remove this comment to see the full error message
 	resetTextFilter,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
 	currentFilterType,
 }) => {
@@ -40,6 +38,7 @@ const Recordings = ({
 	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 
+	const user = useAppSelector(state => getUserInformation(state));
 	const recordings = useAppSelector(state => getTotalRecordings(state));
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
@@ -120,7 +119,6 @@ const Recordings = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
 	currentFilterType: getCurrentFilterResource(state),
 });
 

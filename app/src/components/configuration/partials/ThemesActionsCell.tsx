@@ -9,7 +9,7 @@ import {
 } from "../../../slices/themeDetailsSlice";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
-import { useAppDispatch } from "../../../store";
+import { useAppDispatch, useAppSelector } from "../../../store";
 import { deleteTheme } from "../../../slices/themeSlice";
 
 /**
@@ -18,14 +18,14 @@ import { deleteTheme } from "../../../slices/themeSlice";
 const ThemesActionsCell = ({
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayThemeDetails, setThemeDetails] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
 		setDeleteConfirmation(false);
@@ -93,7 +93,7 @@ const ThemesActionsCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // Mapping actions to dispatch

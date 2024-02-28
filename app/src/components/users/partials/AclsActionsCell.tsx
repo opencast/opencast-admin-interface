@@ -6,7 +6,7 @@ import { deleteAcl } from "../../../thunks/aclThunks";
 import AclDetailsModal from "./modal/AclDetailsModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
-import { useAppDispatch } from "../../../store";
+import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchAclDetails } from "../../../slices/aclDetailsSlice";
 
 /**
@@ -15,13 +15,14 @@ import { fetchAclDetails } from "../../../slices/aclDetailsSlice";
 const AclsActionsCell = ({
 	row,
 	deleteAcl,
-	user
 }: any) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayAclDetails, setAclDetails] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
 		setDeleteConfirmation(false);
@@ -85,7 +86,7 @@ const AclsActionsCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.

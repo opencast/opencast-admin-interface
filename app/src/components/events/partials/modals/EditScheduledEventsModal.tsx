@@ -6,7 +6,6 @@ import WizardStepper from "../../../shared/wizard/WizardStepper";
 import EditScheduledEventsGeneralPage from "../ModalTabsAndPages/EditScheduledEventsGeneralPage";
 import EditScheduledEventsEditPage from "../ModalTabsAndPages/EditScheduledEventsEditPage";
 import EditScheduledEventsSummaryPage from "../ModalTabsAndPages/EditScheduledEventsSummaryPage";
-import { connect } from "react-redux";
 import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
@@ -28,8 +27,6 @@ import { fetchRecordings } from "../../../../slices/recordingSlice";
 const EditScheduledEventsModal = ({
 // @ts-expect-error TS(7031): Binding element 'close' implicitly has an 'any' ty... Remove this comment to see the full error message
 	close,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -54,6 +51,8 @@ const EditScheduledEventsModal = ({
 
 	// for edit page: conflicts with other events
 	const [conflicts, setConflicts] = useState([]);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	useEffect(() => {
 		// Load recordings that can be used for input
@@ -179,19 +178,4 @@ const EditScheduledEventsModal = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EditScheduledEventsModal);
+export default EditScheduledEventsModal;

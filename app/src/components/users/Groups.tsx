@@ -45,8 +45,6 @@ const Groups = ({
 	resetTextFilter,
 // @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
 	resetOffset,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
 	currentFilterType,
 }) => {
@@ -55,6 +53,7 @@ const Groups = ({
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewGroupModal, setNewGroupModal] = useState(false);
 
+	const user = useAppSelector(state => getUserInformation(state));
 	const groups = useAppSelector(state => getTotalGroups(state));
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
@@ -204,7 +203,6 @@ const Groups = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
 	currentFilterType: getCurrentFilterResource(state),
 });
 

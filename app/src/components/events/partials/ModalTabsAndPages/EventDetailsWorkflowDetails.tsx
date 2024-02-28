@@ -13,7 +13,7 @@ import { formatDuration } from "../../../../utils/eventDetailsUtils";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import { hasAccess } from "../../../../utils/utils";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
-import { useAppDispatch } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
@@ -34,9 +34,8 @@ const EventDetailsWorkflowDetails = ({
 	fetchOperations,
 // @ts-expect-error TS(7031): Binding element 'fetchErrors' implicitly has an 'a... Remove this comment to see the full error message
 	fetchErrors,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
+	const user = useAppSelector(state => getUserInformation(state));
 	const dispatch = useAppDispatch();
 
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
@@ -368,7 +367,6 @@ const EventDetailsWorkflowDetails = ({
 const mapStateToProps = (state) => ({
 	workflowData: getWorkflow(state),
 	isFetching: isFetchingWorkflowDetails(state),
-	user: getUserInformation(state),
 });
 
 // Mapping actions to dispatch

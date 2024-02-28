@@ -5,7 +5,7 @@ import ConfirmModal from "../../shared/ConfirmModal";
 import GroupDetailsModal from "./modal/GroupDetailsModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
-import { useAppDispatch } from "../../../store";
+import { useAppDispatch, useAppSelector  } from "../../../store";
 import { deleteGroup } from "../../../slices/groupSlice";
 import { fetchGroupDetails } from "../../../slices/groupDetailsSlice";
 
@@ -14,13 +14,14 @@ import { fetchGroupDetails } from "../../../slices/groupDetailsSlice";
  */
 const GroupsActionsCell = ({
 	row,
-	user
 }: any) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayGroupDetails, setGroupDetails] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
 		setDeleteConfirmation(false);
@@ -85,7 +86,7 @@ const GroupsActionsCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.

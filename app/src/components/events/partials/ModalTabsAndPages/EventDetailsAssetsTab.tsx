@@ -50,11 +50,10 @@ const EventDetailsAssetsTab = ({
 	uploadAssetOptions,
 // @ts-expect-error TS(7031): Binding element 'isFetching' implicitly has an 'an... Remove this comment to see the full error message
 	isFetching,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const dispatch = useAppDispatch();
 
+	const user = useAppSelector(state => getUserInformation(state));
 	const isFetchingAssetUploadOptions = useAppSelector(state => getIsFetchingAssetUploadOptions(state));
 
 	useEffect(() => {
@@ -268,7 +267,6 @@ const mapStateToProps = (state) => ({
 	transactionsReadOnly: isTransactionReadOnly(state),
 	uploadAssetOptions: getUploadAssetOptions(state),
 	assetUploadWorkflowDefId: getWorkflow(state).id,
-	user: getUserInformation(state),
 });
 
 // Mapping actions to dispatch

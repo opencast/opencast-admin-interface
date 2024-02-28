@@ -25,7 +25,7 @@ import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess, parseBooleanInObject } from "../../../../utils/utils";
 import { setDefaultConfig } from "../../../../utils/workflowPanelUtils";
 import DropDown from "../../../shared/DropDown";
-import { useAppDispatch } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
@@ -68,9 +68,8 @@ const EventDetailsWorkflowTab = ({
 	performWorkflowAction,
 // @ts-expect-error TS(7031): Binding element 'deleteWf' implicitly has an 'any'... Remove this comment to see the full error message
 	deleteWf,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
+	const user = useAppSelector(state => getUserInformation(state));
 	const dispatch = useAppDispatch();
 
 	const isRoleWorkflowEdit = hasAccess(
@@ -529,7 +528,6 @@ const mapStateToProps = (state) => ({
 	workflowConfiguration: getWorkflowConfiguration(state),
 	performingWorkflowAction: performingWorkflowAction(state),
 	deletingWorkflow: deletingWorkflow(state),
-	user: getUserInformation(state),
 });
 
 // Mapping actions to dispatch

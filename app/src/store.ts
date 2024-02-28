@@ -26,7 +26,7 @@ import recordingDetails from "./slices/recordingDetailsSlice";
 import groupDetails from "./slices/groupDetailsSlice";
 import aclDetails from "./slices/aclDetailsSlice";
 import themeDetails from "./slices/themeDetailsSlice";
-import userInfo from "./reducers/userInfoReducer";
+import userInfo from "./slices/userInfoSlice";
 import statistics from "./slices/statisticsSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";

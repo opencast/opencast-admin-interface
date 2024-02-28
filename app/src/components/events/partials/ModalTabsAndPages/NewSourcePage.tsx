@@ -11,7 +11,6 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Field, FieldArray } from "formik";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
-import { connect } from "react-redux";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
 import { hours, minutes, weekdays } from "../../../../configs/modalConfig";
 import DateFnsUtils from "@date-io/date-fns";
@@ -64,12 +63,11 @@ const NewSourcePage = ({
 	nextPage,
 // @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
 	formik,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
+	const user = useAppSelector(state => getUserInformation(state));
 	const inputDevices = useAppSelector(state => getRecordings(state));
 
 	useEffect(() => {
@@ -731,15 +729,4 @@ const Schedule = ({ formik, inputDevices }) => {
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(NewSourcePage);
+export default NewSourcePage;

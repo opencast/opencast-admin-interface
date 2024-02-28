@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { loadServersIntoTable } from "../../../thunks/tableThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
-import { useAppDispatch } from "../../../store";
+import { useAppDispatch, useAppSelector } from "../../../store";
 import {
 	fetchServers,
 	setServerMaintenance,
@@ -17,9 +17,8 @@ const ServersMaintenanceCell = ({
 	row,
 // @ts-expect-error TS(7031): Binding element 'loadServersIntoTable' implicitly ... Remove this comment to see the full error message
 	loadServersIntoTable,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
+	const user = useAppSelector(state => getUserInformation(state));
 	const dispatch = useAppDispatch();
 
 // @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
@@ -46,7 +45,7 @@ const ServersMaintenanceCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // mapping actions to dispatch

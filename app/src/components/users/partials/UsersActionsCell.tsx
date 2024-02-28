@@ -6,7 +6,7 @@ import UserDetailsModal from "./modal/UserDetailsModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { deleteUser } from "../../../slices/userSlice";
-import { useAppDispatch } from "../../../store";
+import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchUserDetails } from "../../../slices/userDetailsSlice";
 
 /**
@@ -14,13 +14,14 @@ import { fetchUserDetails } from "../../../slices/userDetailsSlice";
  */
 const UsersActionCell = ({
     row,
-    user
 }: any) => {
 	const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayUserDetails, setUserDetails] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
 		setDeleteConfirmation(false);
@@ -85,7 +86,7 @@ const UsersActionCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // Mapping actions to dispatch
