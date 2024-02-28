@@ -7,28 +7,29 @@ import Notifications from "../../../shared/Notifications";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
-import { connect } from "react-redux";
 import { hasAccess, isJson } from "../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component renders metadata details of a certain event or series
  */
-const DetailsMetadataTab = ({
-// @ts-expect-error TS(7031): Binding element 'metadataFields' implicitly has an... Remove this comment to see the full error message
+const DetailsMetadataTab: React.FC<{
+	metadataFields: any,	//TODO: Type this
+	updateResource: any,	//TODO: Type this
+	resourceId: any,	//TODO: Type this
+	header: any,	//TODO: Type this
+	editAccessRole: any,	//TODO: Type this
+}> = ({
 	metadataFields,
-// @ts-expect-error TS(7031): Binding element 'updateResource' implicitly has an... Remove this comment to see the full error message
 	updateResource,
-// @ts-expect-error TS(7031): Binding element 'resourceId' implicitly has an 'an... Remove this comment to see the full error message
 	resourceId,
-// @ts-expect-error TS(7031): Binding element 'header' implicitly has an 'any' t... Remove this comment to see the full error message
 	header,
-// @ts-expect-error TS(7031): Binding element 'editAccessRole' implicitly has an... Remove this comment to see the full error message
 	editAccessRole,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
@@ -187,10 +188,4 @@ const DetailsMetadataTab = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
-});
-
-export default connect(mapStateToProps)(DetailsMetadataTab);
+export default DetailsMetadataTab;

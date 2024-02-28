@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SelectContainer from "../../../shared/wizard/SelectContainer";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
-import { fetchUsersAndUsernames } from "../../../../thunks/userThunks";
+import { fetchUsersAndUsernames } from "../../../../slices/userSlice";
 
 /**
  * This component renders the user selection page of the new group wizard and group details wizard

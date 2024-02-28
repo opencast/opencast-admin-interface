@@ -8,12 +8,10 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { Field, Formik } from "formik";
 import Notifications from "../../../shared/Notifications";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import {
 	checkConflicts,
 	saveSchedulingInfo,
 } from "../../../../thunks/eventDetailsThunks";
-import { addNotification } from "../../../../thunks/notificationThunks";
 import {
 	getSchedulingConflicts,
 	getSchedulingProperties,
@@ -46,6 +44,11 @@ import {
 } from "../../../../utils/resourceUtils";
 import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 import DropDown from "../../../shared/DropDown";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import {
+	removeNotificationWizardForm,
+	addNotification,
+} from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the main assets tab of event details modal
@@ -61,23 +64,20 @@ const EventDetailsSchedulingTab = ({
 	conflicts,
 // @ts-expect-error TS(7031): Binding element 'hasSchedulingProperties' implicit... Remove this comment to see the full error message
 	hasSchedulingProperties,
-// @ts-expect-error TS(7031): Binding element 'captureAgents' implicitly has an ... Remove this comment to see the full error message
-	captureAgents,
 // @ts-expect-error TS(7031): Binding element 'checkingConflicts' implicitly has... Remove this comment to see the full error message
 	checkingConflicts,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'checkConflicts' implicitly has an... Remove this comment to see the full error message
 	checkConflicts,
 // @ts-expect-error TS(7031): Binding element 'saveSchedulingInfo' implicitly ha... Remove this comment to see the full error message
 	saveSchedulingInfo,
-// @ts-expect-error TS(7031): Binding element 'removeNotificationWizardForm' imp... Remove this comment to see the full error message
-	removeNotificationWizardForm,
-// @ts-expect-error TS(7031): Binding element 'addNotification' implicitly has a... Remove this comment to see the full error message
-	addNotification,
 }) => {
+	const user = useAppSelector(state => getUserInformation(state));
+	const dispatch = useAppDispatch();
+
+	const captureAgents = useAppSelector(state => getRecordings(state));
+
 	useEffect(() => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		checkConflicts(
 			eventId,
 			source.start.date,
@@ -175,7 +175,7 @@ const EventDetailsSchedulingTab = ({
 	// submits the formik form
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const submitForm = async (values) => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		const startDate = makeDate(
 			values.scheduleStartDate,
 			values.scheduleStartHour,
@@ -192,13 +192,13 @@ const EventDetailsSchedulingTab = ({
 				if (r) {
 					saveSchedulingInfo(eventId, values, startDate, endDate).then();
 				} else {
-					addNotification(
-						"error",
-						"EVENTS_NOT_UPDATED",
-						-1,
-						null,
-						NOTIFICATION_CONTEXT
-					);
+					dispatch(addNotification({
+						type: "error",
+						key: "EVENTS_NOT_UPDATED",
+						duration: -1,
+						parameter: null,
+						context: NOTIFICATION_CONTEXT
+					}));
 				}
 			}
 		);
@@ -727,12 +727,10 @@ const EventDetailsSchedulingTab = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
 	hasSchedulingProperties: getSchedulingProperties(state),
 	source: getSchedulingSource(state),
 	conflicts: getSchedulingConflicts(state),
 	checkingConflicts: isCheckingConflicts(state),
-	captureAgents: getRecordings(state),
 });
 
 // Mapping actions to dispatch
@@ -744,10 +742,6 @@ const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
 	saveSchedulingInfo: (eventId, values, startDate, endDate) =>
 		dispatch(saveSchedulingInfo(eventId, values, startDate, endDate)),
-	removeNotificationWizardForm: () => dispatch(removeNotificationWizardForm()),
-// @ts-expect-error TS(7006): Parameter 'type' implicitly has an 'any' type.
-	addNotification: (type, key, duration, parameter, context) =>
-		dispatch(addNotification(type, key, duration, parameter, context)),
 });
 
 export default connect(

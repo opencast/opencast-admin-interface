@@ -9,6 +9,7 @@ import { updateSeriesTheme } from "../../../../thunks/seriesDetailsThunks";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
 import DropDown from "../../../shared/DropDown";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component renders the tab for editing the theme of a certain series
@@ -22,10 +23,10 @@ const SeriesDetailsThemeTab = ({
 	themeNames,
 // @ts-expect-error TS(7031): Binding element 'updateTheme' implicitly has an 'a... Remove this comment to see the full error message
 	updateTheme,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
@@ -129,7 +130,7 @@ const SeriesDetailsThemeTab = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
