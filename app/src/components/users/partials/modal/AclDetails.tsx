@@ -6,23 +6,25 @@ import { connect } from "react-redux";
 import AclAccessPage from "../wizard/AclAccessPage";
 import AclMetadataPage from "../wizard/AclMetadataPage";
 import { getAclDetails } from "../../../../selectors/aclDetailsSelectors";
-import { updateAclDetails } from "../../../../thunks/aclDetailsThunks";
 import { NewAclSchema } from "../../../../utils/validate";
 import ModalNavigation from "../../../shared/modals/ModalNavigation";
 import { checkAcls } from "../../../../thunks/aclThunks";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { updateAclDetails } from "../../../../slices/aclDetailsSlice";
 
 /**
  * This component manages the pages of the acl details modal
  */
 const AclDetails = ({
-    close,
-    aclDetails,
-    updateAclDetails,
-    checkAcls
+	close,
+	checkAcls
 }: any) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const [page, setPage] = useState(0);
+
+	const aclDetails = useAppSelector(state => getAclDetails(state));
 
 	// set initial values
 	const initialValues = {
@@ -52,7 +54,7 @@ const AclDetails = ({
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
-		updateAclDetails(values, aclDetails.id);
+		dispatch(updateAclDetails({values: values, aclId: aclDetails.id}));
 		close();
 	};
 
@@ -110,15 +112,12 @@ const AclDetails = ({
 // getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	aclDetails: getAclDetails(state),
+
 });
 
 // mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	updateAclDetails: (values, aclId) =>
-		dispatch(updateAclDetails(values, aclId)),
 // @ts-expect-error TS(7006): Parameter 'acls' implicitly has an 'any' type.
 	checkAcls: (acls) => dispatch(checkAcls(acls)),
 });

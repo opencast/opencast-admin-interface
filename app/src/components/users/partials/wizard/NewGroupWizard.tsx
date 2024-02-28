@@ -1,23 +1,26 @@
 import React, { useEffect } from "react";
 import { Formik } from "formik";
-import { connect } from "react-redux";
 import { initialFormValuesNewGroup } from "../../../../configs/modalConfig";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
 import GroupMetadataPage from "./GroupMetadataPage";
 import GroupRolesPage from "./GroupRolesPage";
 import GroupUsersPage from "./GroupUsersPage";
 import NewGroupSummaryPage from "./NewGroupSummaryPage";
-import { postNewGroup } from "../../../../thunks/groupThunks";
 import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { NewGroupSchema } from "../../../../utils/validate";
+import { useAppDispatch } from "../../../../store";
+import { postNewGroup } from "../../../../slices/groupSlice";
 
 /**
  * This component renders the new group wizard
  */
-const NewGroupWizard = ({
-    close,
-    postNewGroup
-}: any) => {
+const NewGroupWizard: React.FC<{
+	close: () => void
+}> = ({
+	close,
+}) => {
+	const dispatch = useAppDispatch();
+
 	const initialValues = initialFormValuesNewGroup;
 
 	const [
@@ -55,7 +58,7 @@ const NewGroupWizard = ({
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
-		const response = postNewGroup(values);
+		const response = dispatch(postNewGroup(values));
 		console.info(response);
 		close();
 	};
@@ -120,10 +123,4 @@ const NewGroupWizard = ({
 	);
 };
 
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	postNewGroup: (values) => dispatch(postNewGroup(values)),
-});
-
-export default connect(null, mapDispatchToProps)(NewGroupWizard);
+export default NewGroupWizard;
