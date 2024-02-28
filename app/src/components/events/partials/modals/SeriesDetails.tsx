@@ -23,6 +23,7 @@ import SeriesDetailsStatisticTab from "../ModalTabsAndPages/SeriesDetailsStatist
 import SeriesDetailsFeedsTab from "../ModalTabsAndPages/SeriesDetailsFeedsTab";
 import DetailsMetadataTab from "../ModalTabsAndPages/DetailsMetadataTab";
 import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsExtendedMetadataTab";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component manages the tabs of the series details modal
@@ -42,8 +43,6 @@ const SeriesDetails = ({
 	themeNames,
 // @ts-expect-error TS(7031): Binding element 'hasStatistics' implicitly has an ... Remove this comment to see the full error message
 	hasStatistics,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'updateSeries' implicitly has an '... Remove this comment to see the full error message
 	updateSeries,
 // @ts-expect-error TS(7031): Binding element 'updateExtendedMetadata' implicitl... Remove this comment to see the full error message
@@ -63,6 +62,8 @@ const SeriesDetails = ({
 	}, []);
 
 	const [page, setPage] = useState(0);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	// information about each tab
 	const tabs = [
@@ -193,7 +194,6 @@ const mapStateToProps = (state) => ({
 	feeds: getSeriesDetailsFeeds(state),
 	theme: getSeriesDetailsTheme(state),
 	themeNames: getSeriesDetailsThemeNames(state),
-	user: getUserInformation(state),
 	hasStatistics: hasStatistics(state),
 });
 

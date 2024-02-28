@@ -16,10 +16,12 @@ import {
 	weekdays,
 	WORKFLOW_UPLOAD_ASSETS_NON_TRACK,
 } from "../configs/modalConfig";
-import { addNotification } from '../thunks/notificationThunks';
-import { removeNotification } from '../actions/notificationActions';
+import {
+	removeNotification,
+	addNotification,
+} from "../slices/notificationSlice";
 import { getAssetUploadOptions, getSchedulingEditedEvents } from '../selectors/eventSelectors';
-import { fetchSeriesOptions } from '../thunks/seriesThunks';
+import { fetchSeriesOptions } from "../slices/seriesSlice";
 import { RootState } from '../store';
 import { fetchAssetUploadOptions } from '../thunks/assetsThunks';
 
@@ -320,7 +322,7 @@ export const updateBulkMetadata = createAsyncThunk('events/updateBulkMetadata', 
 		.then((res) => {
 			console.info(res);
 			dispatch(
-				addNotification("success", "BULK_METADATA_UPDATE.ALL_EVENTS_UPDATED")
+				addNotification({type: "success", key: "BULK_METADATA_UPDATE.ALL_EVENTS_UPDATED"})
 			);
 		})
 		.catch((err) => {
@@ -331,34 +333,34 @@ export const updateBulkMetadata = createAsyncThunk('events/updateBulkMetadata', 
 				// if this error data is undefined then an unexpected error occurred
 				if (!err.data) {
 					dispatch(
-						addNotification("error", "BULK_METADATA_UPDATE.UNEXPECTED_ERROR")
+						addNotification({type: "error", key: "BULK_METADATA_UPDATE.UNEXPECTED_ERROR"})
 					);
 				} else {
 					if (err.data.updated && err.data.updated.length === 0) {
 						dispatch(
-							addNotification("error", "BULK_METADATA_UPDATE.NO_EVENTS_UPDATED")
+							addNotification({type: "error", key: "BULK_METADATA_UPDATE.NO_EVENTS_UPDATED"})
 						);
 					}
 					if (err.data.updateFailures && err.data.updateFailures.length > 0) {
 						dispatch(
-							addNotification(
-								"warning",
-								"BULK_METADATA_UPDATE.SOME_EVENTS_NOT_UPDATED"
-							)
+							addNotification({
+								type: "warning",
+								key: "BULK_METADATA_UPDATE.SOME_EVENTS_NOT_UPDATED"
+							})
 						);
 					}
 					if (err.data.notFound && err.data.notFound.length > 0) {
 						dispatch(
-							addNotification(
-								"warning",
-								"BULK_ACTIONS.EDIT_EVENTS_METADATA.REQUEST_ERRORS.NOT_FOUND"
-							)
+							addNotification({
+								type: "warning",
+								key:"BULK_ACTIONS.EDIT_EVENTS_METADATA.REQUEST_ERRORS.NOT_FOUND"
+							})
 						);
 					}
 				}
 			} else {
 				dispatch(
-					addNotification("error", "BULK_METADATA_UPDATE.UNEXPECTED_ERROR")
+					addNotification({type: "error", key: "BULK_METADATA_UPDATE.UNEXPECTED_ERROR"})
 				);
 			}
 		});
@@ -544,11 +546,16 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 
 	// Process bar notification
 	var config = {
-		// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
+	// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 		onUploadProgress: function(progressEvent) {
 			var percentCompleted = (progressEvent.loaded * 100) / progressEvent.total;
-			// @ts-expect-error TS(2554): Expected 6 arguments, but got 5.
-			dispatch(addNotificationWithId(-42000, "success", "EVENTS_UPLOAD_STARTED", -1, { "progress": percentCompleted.toFixed(2) } ))
+			dispatch(addNotification({
+				id: -42000,
+				type: "success",
+				key: "EVENTS_UPLOAD_STARTED",
+				duration: -1,
+				parameter: { "progress": percentCompleted.toFixed(2) }
+			}))
 			if (percentCompleted >= 100) {
 				dispatch(removeNotification(-42000))
 			}
@@ -562,11 +569,11 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 		.post("/admin-ng/event/new", formData, config)
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "EVENTS_CREATED"));
+			dispatch(addNotification({type: "success", key: "EVENTS_CREATED"}));
 		})
 		.catch((response) => {
 			console.error(response);
-			dispatch(addNotification("error", "EVENTS_NOT_CREATED"));
+			dispatch(addNotification({type: "error", key: "EVENTS_NOT_CREATED"}));
 		});
 });
 
@@ -578,17 +585,17 @@ export const deleteEvent = createAsyncThunk('events/deleteEvent', async (id: any
 		.then((res) => {
 			// add success notification depending on status code
 			if (res.status === 200) {
-				dispatch(addNotification("success", "EVENT_DELETED"));
+				dispatch(addNotification({type: "success", key: "EVENT_DELETED"}));
 			} else {
-				dispatch(addNotification("success", "EVENT_WILL_BE_DELETED"));
+				dispatch(addNotification({type: "success", key: "EVENT_WILL_BE_DELETED"}));
 			}
 		})
 		.catch((res) => {
 			// add error notification depending on status code
 			if (res.status === 401) {
-				dispatch(addNotification("error", "EVENTS_NOT_DELETED_NOT_AUTHORIZED"));
+				dispatch(addNotification({type: "error", key: "EVENTS_NOT_DELETED_NOT_AUTHORIZED"}));
 			} else {
-				dispatch(addNotification("error", "EVENTS_NOT_DELETED"));
+				dispatch(addNotification({type: "error", key: "EVENTS_NOT_DELETED"}));
 			}
 		});
 });
@@ -607,12 +614,12 @@ export const deleteMultipleEvent = createAsyncThunk('events/deleteMultipleEvent'
 		.then((res) => {
 			console.info(res);
 			//add success notification
-			dispatch(addNotification("success", "EVENTS_DELETED"));
+			dispatch(addNotification({type: "success", key: "EVENTS_DELETED"}));
 		})
 		.catch((res) => {
 			console.error(res);
 			//add error notification
-			dispatch(addNotification("error", "EVENTS_NOT_DELETED"));
+			dispatch(addNotification({type: "error", key: "EVENTS_NOT_DELETED"}));
 		});
 });
 
@@ -705,12 +712,12 @@ export const updateScheduledEventsBulk = createAsyncThunk('events/updateSchedule
 
 		if (!eventChanges || !originalEvent) {
 			dispatch(
-				addNotification(
-					"error",
-					"EVENTS_NOT_UPDATED_ID",
-					10,
-					values.changedEvents[i]
-				)
+				addNotification({
+					type: "error",
+					key: "EVENTS_NOT_UPDATED_ID",
+					duration: 10,
+					parameter: values.changedEvents[i]
+				})
 			);
 			return;
 		}
@@ -770,11 +777,11 @@ export const updateScheduledEventsBulk = createAsyncThunk('events/updateSchedule
 		.put("/admin-ng/event/bulk/update", formData)
 		.then((res) => {
 			console.info(res);
-			dispatch(addNotification("success", "EVENTS_UPDATED_ALL"));
+			dispatch(addNotification({type: "success", key: "EVENTS_UPDATED_ALL"}));
 		})
 		.catch((res) => {
 			console.error(res);
-			dispatch(addNotification("error", "EVENTS_NOT_UPDATED_ALL"));
+			dispatch(addNotification({type: "error", key: "EVENTS_NOT_UPDATED_ALL"}));
 		});
 });
 
@@ -804,13 +811,13 @@ export const checkConflicts = (values) => async (dispatch) => {
 		// If start date of event is smaller than today --> Event is in past
 		if (values.sourceMode === "SCHEDULE_SINGLE" && startDate < new Date()) {
 			dispatch(
-				addNotification(
-					"error",
-					"CONFLICT_ALREADY_ENDED",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "error",
+					key: "CONFLICT_ALREADY_ENDED",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 			check = false;
 		}
@@ -822,13 +829,13 @@ export const checkConflicts = (values) => async (dispatch) => {
 		// if start date is higher than end date --> end date is before start date
 		if (startDate > endDate) {
 			dispatch(
-				addNotification(
-					"error",
-					"CONFLICT_END_BEFORE_START",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "error",
+					key: "CONFLICT_END_BEFORE_START",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 			check = false;
 		}
@@ -853,13 +860,13 @@ export const checkConflicts = (values) => async (dispatch) => {
 		// If conflicts with already scheduled events detected --> need to change times/date
 		if (conflicts && conflicts.length > 0) {
 			dispatch(
-				addNotification(
-					"error",
-					"CONFLICT_DETECTED",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "error",
+					key: "CONFLICT_DETECTED",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 			check = false;
 			return conflicts;
@@ -976,13 +983,13 @@ export const checkForSchedulingConflicts = (events) => async (dispatch) => {
 		.catch((res) => {
 			if (res.status === 409) {
 				dispatch(
-					addNotification(
-						"error",
-						"CONFLICT_BULK_DETECTED",
-						-1,
-						null,
-						NOTIFICATION_CONTEXT
-					)
+					addNotification({
+						type: "error",
+						key: "CONFLICT_BULK_DETECTED",
+						duration: -1,
+						parameter: null,
+						context: NOTIFICATION_CONTEXT
+					})
 				);
 				response = res.data;
 			}
