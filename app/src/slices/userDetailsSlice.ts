@@ -1,6 +1,6 @@
 import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
-import { addNotification } from "../thunks/notificationThunks";
+import { addNotification } from '../slices/notificationSlice';
 import { buildUserBody } from "../utils/resourceUtils";
 
 /**
@@ -50,11 +50,11 @@ export const updateUserDetails = createAsyncThunk('userDetails/updateUserDetails
 		.put(`/admin-ng/users/${username}.json`, data)
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "USER_UPDATED"));
+			dispatch(addNotification({type: "success", key: "USER_UPDATED"}));
 		})
 		.catch((response) => {
 			console.error(response);
-			dispatch(addNotification("error", "USER_NOT_SAVED"));
+			dispatch(addNotification({type: "error", key: "USER_NOT_SAVED"}));
 		});
 });
 

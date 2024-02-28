@@ -2,7 +2,7 @@ import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@
 import { themesTableConfig } from "../configs/tableConfigs/themesTableConfig";
 import axios from 'axios';
 import { buildThemeBody, getURLParams } from '../utils/resourceUtils';
-import { addNotification } from '../thunks/notificationThunks';
+import { addNotification } from '../slices/notificationSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of themes
@@ -86,11 +86,11 @@ export const postNewTheme = createAsyncThunk('theme/postNewTheme', async (values
 		// Since we want to dispatch, we have to handle responses in our thunk
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "THEME_CREATED"));
+			dispatch(addNotification({type: "success", key: "THEME_CREATED"}));
 		})
 		.catch((response) => {
 			console.error(response);
-			dispatch(addNotification("error", "THEME_NOT_CREATED"));
+			dispatch(addNotification({type: "error", key: "THEME_NOT_CREATED"}));
 		});
 });
 
@@ -101,12 +101,12 @@ export const deleteTheme = createAsyncThunk('theme/deleteTheme', async (id: any,
 		.then((res) => {
 			console.info(res);
 			// add success notification
-			dispatch(addNotification("success", "THEME_DELETED"));
+			dispatch(addNotification({type: "success", key: "THEME_DELETED"}));
 		})
 		.catch((res) => {
 			console.error(res);
 			// add error notification
-			dispatch(addNotification("error", "THEME_NOT_DELETED"));
+			dispatch(addNotification({type: "error", key: "THEME_NOT_DELETED"}));
 		});
 });
 

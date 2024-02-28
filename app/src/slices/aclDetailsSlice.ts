@@ -1,7 +1,7 @@
 import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { prepareAccessPolicyRulesForPost } from '../utils/resourceUtils';
-import { addNotification } from '../thunks/notificationThunks';
+import { addNotification } from '../slices/notificationSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of details of an ACL
@@ -134,11 +134,11 @@ export const updateAclDetails = createAsyncThunk('aclDetails/updateAclDetails', 
 		.put(`/admin-ng/acl/${aclId}`, data)
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "ACL_UPDATED"));
+			dispatch(addNotification({type: "success", key: "ACL_UPDATED"}));
 		})
 		.catch((response) => {
 			console.error(response);
-			dispatch(addNotification("error", "ACL_NOT_SAVED"));
+			dispatch(addNotification({type: "error", key: "ACL_NOT_SAVED"}));
 		});
 });
 

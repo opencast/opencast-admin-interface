@@ -1,7 +1,7 @@
 import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { buildGroupBody } from '../utils/resourceUtils';
-import { addNotification } from '../thunks/notificationThunks';
+import { addNotification } from '../slices/notificationSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of details of a group
@@ -69,14 +69,14 @@ export const updateGroupDetails = createAsyncThunk('groupDetails/updateGroupDeta
 		.put(`/admin-ng/groups/${groupId}`, data)
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "GROUP_UPDATED"));
+			dispatch(addNotification({type: "success", key: "GROUP_UPDATED"}));
 		})
 		.catch((response) => {
 			console.error(response);
 			if (response.status === 409) {
-				dispatch(addNotification("error", "GROUP_CONFLICT"));
+				dispatch(addNotification({type: "error", key: "GROUP_CONFLICT"}));
 			} else {
-				dispatch(addNotification("error", "GROUP_NOT_SAVED"));
+				dispatch(addNotification({type: "error", key: "GROUP_NOT_SAVED"}));
 			}
 		});
 });

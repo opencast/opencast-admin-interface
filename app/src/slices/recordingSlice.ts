@@ -2,7 +2,7 @@ import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@
 import { recordingsTableConfig } from '../configs/tableConfigs/recordingsTableConfig';
 import axios from 'axios';
 import { getURLParams } from '../utils/resourceUtils';
-import { addNotification } from '../thunks/notificationThunks';
+import { addNotification } from '../slices/notificationSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of recordings
@@ -99,17 +99,17 @@ export const deleteRecording = createAsyncThunk('recordings/deleteRecording', as
 		.then((res) => {
 			console.info(res);
 			// add success notification
-			dispatch(addNotification("success", "LOCATION_DELETED"));
+			dispatch(addNotification({type: "success", key: "LOCATION_DELETED"}));
 		})
 		.catch((res) => {
 			console.error(res);
 			// add error notification depending on status code
 			if (res.status === 401) {
 				dispatch(
-					addNotification("error", "LOCATION_NOT_DELETED_NOT_AUTHORIZED")
+					addNotification({type: "error", key: "LOCATION_NOT_DELETED_NOT_AUTHORIZED"})
 				);
 			} else {
-				dispatch(addNotification("error", "LOCATION_NOT_DELETED"));
+				dispatch(addNotification({type: "error", key: "LOCATION_NOT_DELETED"}));
 			}
 		});
 });
