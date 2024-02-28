@@ -7,7 +7,7 @@ import EmbeddingCodeModal from "./modals/EmbeddingCodeModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import SeriesDetailsModal from "./modals/SeriesDetailsModal";
-import { useAppDispatch } from "../../../store";
+import { useAppDispatch, useAppSelector } from "../../../store";
 import {
 	fetchSeriesDetailsThemeNames,
 	fetchSeriesDetailsAcls,
@@ -23,8 +23,6 @@ import { deleteEvent } from "../../../slices/eventSlice";
 const EventActionCell = ({
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -34,6 +32,8 @@ const EventActionCell = ({
 	const [displaySeriesDetailsModal, setSeriesDetailsModal] = useState(false);
 	const [eventDetailsTabIndex, setEventDetailsTabIndex] = useState(0);
 	const [displayEmbeddingCodeModal, setEmbeddingCodeModal] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
 		setDeleteConfirmation(false);
@@ -236,7 +236,7 @@ const EventActionCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // Mapping actions to dispatch

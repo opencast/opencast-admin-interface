@@ -32,8 +32,6 @@ const Themes = ({
 	loadingFilters,
 // @ts-expect-error TS(7031): Binding element 'resetTextFilter' implicitly has a... Remove this comment to see the full error message
 	resetTextFilter,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
 	currentFilterType,
 }) => {
@@ -42,6 +40,7 @@ const Themes = ({
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewThemesModal, setNewThemesModal] = useState(false);
 
+	const user = useAppSelector(state => getUserInformation(state));
 	const themes = useAppSelector(state => getTotalThemes(state));
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
@@ -151,7 +150,6 @@ const Themes = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
 	currentFilterType: getCurrentFilterResource(state),
 });
 

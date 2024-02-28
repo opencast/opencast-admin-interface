@@ -28,8 +28,6 @@ import {
 const SeriesActionsCell = ({
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -37,6 +35,7 @@ const SeriesActionsCell = ({
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displaySeriesDetailsModal, setSeriesDetailsModal] = useState(false);
 
+	const user = useAppSelector(state => getUserInformation(state));
 	const hasEvents = useAppSelector(state => getSeriesHasEvents(state));
 	const deleteAllowed = useAppSelector(state => isSeriesDeleteAllowed(state));
 
@@ -123,7 +122,6 @@ const SeriesActionsCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
 });
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.

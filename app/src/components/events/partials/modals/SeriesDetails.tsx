@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import {
@@ -31,8 +30,6 @@ import {
 const SeriesDetails = ({
 // @ts-expect-error TS(7031): Binding element 'seriesId' implicitly has an 'any'... Remove this comment to see the full error message
 	seriesId,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'policyChanged' implicitly has an ... Remove this comment to see the full error message
 	policyChanged,
 // @ts-expect-error TS(7031): Binding element 'setPolicyChanged' implicitly has ... Remove this comment to see the full error message
@@ -62,6 +59,8 @@ const SeriesDetails = ({
 	}, []);
 
 	const [page, setPage] = useState(0);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	// information about each tab
 	const tabs = [
@@ -185,15 +184,4 @@ const SeriesDetails = ({
 	);
 };
 
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SeriesDetails);
+export default SeriesDetails;

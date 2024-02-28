@@ -6,7 +6,7 @@ import {
 	fetchSeriesDetailsAcls,
 	updateSeriesAccess,
 } from "../../../../slices/seriesDetailsSlice";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 
 /**
@@ -36,7 +36,8 @@ const SeriesDetailsAccessTab = ({
 	}
 
 	useEffect(() => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
