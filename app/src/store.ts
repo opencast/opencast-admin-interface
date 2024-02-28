@@ -25,7 +25,7 @@ import recordingDetails from "./slices/recordingDetailsSlice";
 import userDetails from "./reducers/userDetailsReducer";
 import groupDetails from "./slices/groupDetailsSlice";
 import aclDetails from "./slices/aclDetailsSlice";
-import themeDetails from "./reducers/themeDetailsReducer";
+import themeDetails from "./slices/themeDetailsSlice";
 import userInfo from "./reducers/userInfoReducer";
 import statistics from "./slices/statisticsSlice";
 import { configureStore } from "@reduxjs/toolkit";
