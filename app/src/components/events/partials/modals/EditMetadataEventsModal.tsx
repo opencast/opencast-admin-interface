@@ -13,7 +13,7 @@ import cn from "classnames";
 import RenderField from "../../../shared/wizard/RenderField";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
-import { useAppDispatch } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
 	postEditMetadata,
 	updateBulkMetadata,
@@ -31,8 +31,6 @@ const EditMetadataEventsModal = ({
 	close,
 // @ts-expect-error TS(7031): Binding element 'selectedRows' implicitly has an '... Remove this comment to see the full error message
 	selectedRows,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -42,6 +40,8 @@ const EditMetadataEventsModal = ({
 	const [loading, setLoading] = useState(true);
 	const [fatalError, setFatalError] = useState({});
 	const [fetchedValues, setFetchedValues] = useState(null);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	useEffect(() => {
 		async function fetchData() {
@@ -348,7 +348,6 @@ const getInitialValues = (metadataFields) => {
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
 	selectedRows: getSelectedRows(state),
-	user: getUserInformation(state),
 });
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.

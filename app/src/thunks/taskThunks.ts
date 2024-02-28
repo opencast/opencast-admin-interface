@@ -1,5 +1,5 @@
 import axios from "axios";
-import { addNotification } from "./notificationThunks";
+import { addNotification } from "../slices/notificationSlice";
 
 export const postTasks = (values: any) => async (dispatch: any) => {
 	let configuration = {};
@@ -33,10 +33,10 @@ export const postTasks = (values: any) => async (dispatch: any) => {
 		})
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "TASK_CREATED"));
+			dispatch(addNotification({type: "success", key: "TASK_CREATED"}));
 		})
 		.catch((response) => {
 			console.error(response);
-			dispatch(addNotification("error", "TASK_NOT_CREATED"));
+			dispatch(addNotification({type: "error", key: "TASK_NOT_CREATED"}));
 		});
 };

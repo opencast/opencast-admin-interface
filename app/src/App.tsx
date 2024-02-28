@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import Events from "./components/events/Events";
@@ -13,18 +12,18 @@ import Servers from "./components/systems/Servers";
 import Services from "./components/systems/Services";
 import Groups from "./components/users/Groups";
 import Acls from "./components/users/Acls";
-import { fetchOcVersion, fetchUserInfo } from "./thunks/userInfoThunks";
+import { useAppDispatch } from "./store";
+import { fetchOcVersion, fetchUserInfo } from "./slices/userInfoSlice";
 
-function App({
-    loadingUserInfo,
-    loadingOcVersion
-}: any) {
+function App() {
+	const dispatch = useAppDispatch();
 	useEffect(() => {
 		// Load information about current user on mount
-		loadingUserInfo();
+		dispatch(fetchUserInfo());
 		// Load information about current opencast version on mount
-		loadingOcVersion();
-	}, [loadingOcVersion, loadingUserInfo]);
+		dispatch(fetchOcVersion());
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<HashRouter>
@@ -63,10 +62,4 @@ function App({
 	);
 }
 
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	loadingUserInfo: () => dispatch(fetchUserInfo()),
-	loadingOcVersion: () => dispatch(fetchOcVersion()),
-});
-
-export default connect(null, mapDispatchToProps)(App);
+export default App;

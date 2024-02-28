@@ -81,8 +81,10 @@ import {
 	updateCommentInProgress,
 	updateCommentDone,
 } from "../actions/eventDetailsActions";
-import { removeNotificationWizardForm } from "../actions/notificationActions";
-import { addNotification } from "./notificationThunks";
+import {
+	removeNotificationWizardForm,
+	addNotification
+} from "../slices/notificationSlice";
 import {
 	createPolicy,
 	getHttpHeaders,
@@ -90,7 +92,7 @@ import {
 	transformMetadataForUpdate,
 } from "../utils/resourceUtils";
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
-import { fetchWorkflowDef } from "./workflowThunks";
+import { fetchWorkflowDef } from "../slices/workflowSlice";
 import {
 	fetchStatistics,
 	fetchStatisticsValueUpdate,
@@ -111,7 +113,7 @@ import {
 	getAssetUploadWorkflow,
 } from "../selectors/eventSelectors";
 import { calculateDuration } from "../utils/dateUtils";
-import { fetchRecordings } from "./recordingThunks";
+import { fetchRecordings } from "../slices/recordingSlice";
 import { getRecordings } from "../selectors/recordingSelectors";
 
 // thunks for metadata
@@ -283,13 +285,13 @@ export const fetchAssets = (eventId) => async (dispatch) => {
 		);
 		if (transactionsReadOnly) {
 			dispatch(
-				addNotification(
-					"warning",
-					"ACTIVE_TRANSACTION",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "warning",
+					key: "ACTIVE_TRANSACTION",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 		}
 	} catch (e) {
@@ -579,18 +581,23 @@ export const updateAssets = (values, eventId) => async (dispatch, getState) => {
 		.then((response) => {
 			console.info(response);
 			dispatch(
-				addNotification("success", "EVENTS_UPDATED", null, NOTIFICATION_CONTEXT)
+				addNotification({
+					type: "success",
+					key: "EVENTS_UPDATED",
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 		})
 		.catch((response) => {
 			console.error(response);
 			dispatch(
-				addNotification(
-					"error",
-					"EVENTS_NOT_UPDATED",
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "error",
+					key: "EVENTS_NOT_UPDATED",
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 		});
 };
@@ -611,26 +618,26 @@ export const saveAccessPolicies = (eventId, policies) => async (dispatch) => {
 		.then((response) => {
 			console.info(response);
 			dispatch(
-				addNotification(
-					"info",
-					"SAVED_ACL_RULES",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "info",
+					key: "SAVED_ACL_RULES",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 			return true;
 		})
 		.catch((response) => {
 			console.error(response);
 			dispatch(
-				addNotification(
-					"error",
-					"ACL_NOT_SAVED",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "error",
+					key: "ACL_NOT_SAVED",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 			return false;
 		});
@@ -867,14 +874,19 @@ export const fetchSchedulingInfo = (eventId) => async (dispatch, getState) => {
 			endDate
 		);
 
-		let device = {
+		let device: {
+			id: string,
+			name: string,
+			inputs: string[],
+			inputMethods: string[],
+		} = {
 			id: "",
 			name: "",
 			inputs: [],
+			inputMethods: [],
 		};
 
 		const agent = captureAgents.find(
-// @ts-expect-error TS(7006): Parameter 'agent' implicitly has an 'any' type.
 			(agent) => agent.id === schedulingResponse.agentId
 		);
 		if (!!agent) {
@@ -938,13 +950,13 @@ export const checkConflicts = (eventId, startDate, endDate, deviceId) => async (
 	if (endDate < now) {
 		dispatch(removeNotificationWizardForm());
 		dispatch(
-			addNotification(
-				"error",
-				"CONFLICT_IN_THE_PAST",
-				-1,
-				null,
-				NOTIFICATION_CONTEXT
-			)
+			addNotification({
+				type: "error",
+				key: "CONFLICT_IN_THE_PAST",
+				duration: -1,
+				parameter: null,
+				context: NOTIFICATION_CONTEXT
+			})
 		);
 // @ts-expect-error TS(7005): Variable 'conflicts' implicitly has an 'any[]' typ... Remove this comment to see the full error message
 		dispatch(checkConflictsSuccess(conflicts));
@@ -971,13 +983,13 @@ export const checkConflicts = (eventId, startDate, endDate, deviceId) => async (
 				if (responseStatus === 409) {
 					//conflict detected, add notification and get conflict specifics
 					dispatch(
-						addNotification(
-							"error",
-							"CONFLICT_DETECTED",
-							-1,
-							null,
-							NOTIFICATION_CONTEXT
-						)
+						addNotification({
+							type: "error",
+							key: "CONFLICT_DETECTED",
+							duration:-1,
+							parameter: null,
+							context: NOTIFICATION_CONTEXT
+						})
 					);
 					const conflictsResponse = response.data;
 
@@ -1008,13 +1020,13 @@ export const checkConflicts = (eventId, startDate, endDate, deviceId) => async (
 				if (responseStatus === 409) {
 					//conflict detected, add notification and get conflict specifics
 					dispatch(
-						addNotification(
-							"error",
-							"CONFLICT_DETECTED",
-							-1,
-							null,
-							NOTIFICATION_CONTEXT
-						)
+						addNotification({
+							type: "error",
+							key: "CONFLICT_DETECTED",
+							duration: -1,
+							parameter: null,
+							context: NOTIFICATION_CONTEXT
+						})
 					);
 					const conflictsResponse = error.response.data;
 
@@ -1056,7 +1068,6 @@ export const saveSchedulingInfo = (
 	const captureAgents = getRecordings(state);
 	let device = {};
 
-// @ts-expect-error TS(7006): Parameter 'agent' implicitly has an 'any' type.
 	const agent = captureAgents.find((agent) => agent.id === values.captureAgent);
 	if (!!agent) {
 		device = {
@@ -1118,13 +1129,13 @@ export const saveSchedulingInfo = (
 		.catch((response) => {
 			console.error(response);
 			dispatch(
-				addNotification(
-					"error",
-					"EVENTS_NOT_UPDATED",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "error",
+					key: "EVENTS_NOT_UPDATED",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 			dispatch(saveEventSchedulingFailure());
 		});
@@ -1138,7 +1149,7 @@ export const fetchWorkflows = (eventId) => async (dispatch, getState) => {
 		dispatch(loadEventWorkflowsInProgress());
 
 		// todo: show notification if there are active transactions
-		// dispatch(addNotification('warning', 'ACTIVE_TRANSACTION', -1, null, NOTIFICATION_CONTEXT));
+		// dispatch(addNotification({'warning', 'ACTIVE_TRANSACTION', -1, null, NOTIFICATION_CONTEXT));
 
 		const data = await axios.get(`/admin-ng/event/${eventId}/workflows.json`);
 		const workflowsData = await data.data;
@@ -1248,13 +1259,13 @@ export const saveWorkflowConfig = (values, eventId) => async (dispatch) => {
 		.catch((response) => {
 			console.error(response);
 			dispatch(
-				addNotification(
-					"error",
-					"EVENTS_NOT_UPDATED",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "error",
+					key: "EVENTS_NOT_UPDATED",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 		});
 };
@@ -1292,26 +1303,26 @@ export const performWorkflowAction = (
 		)
 		.then((response) => {
 			dispatch(
-				addNotification(
-					"success",
-					"EVENTS_PROCESSING_ACTION_" + action,
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "success",
+					key: "EVENTS_PROCESSING_ACTION_" + action,
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 			close();
 			dispatch(doEventWorkflowActionSuccess());
 		})
 		.catch((response) => {
 			dispatch(
-				addNotification(
-					"error",
-					"EVENTS_PROCESSING_ACTION_NOT_" + action,
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "error",
+					key: "EVENTS_PROCESSING_ACTION_NOT_" + action,
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 			dispatch(doEventWorkflowActionFailure());
 		});
@@ -1330,13 +1341,13 @@ export const deleteWorkflow = (eventId, workflowId) => async (
 		.delete(`/admin-ng/event/${eventId}/workflows/${workflowId}`)
 		.then((response) => {
 			dispatch(
-				addNotification(
-					"success",
-					"EVENTS_PROCESSING_DELETE_WORKFLOW",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "success",
+					key: "EVENTS_PROCESSING_DELETE_WORKFLOW",
+					duration: -1,
+					parameter:null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 
 			const state = getState();
@@ -1355,13 +1366,13 @@ export const deleteWorkflow = (eventId, workflowId) => async (
 		})
 		.catch((response) => {
 			dispatch(
-				addNotification(
-					"error",
-					"EVENTS_PROCESSING_DELETE_WORKFLOW_FAILED",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "error",
+					key: "EVENTS_PROCESSING_DELETE_WORKFLOW_FAILED",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 			dispatch(deleteEventWorkflowFailure());
 		});

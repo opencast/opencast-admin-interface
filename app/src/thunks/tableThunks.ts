@@ -23,31 +23,26 @@ import {
 	fetchEvents,
 } from "../slices/eventSlice";
 import {
-	setSeriesColumns,
-	showActions as showSeriesActions,
-} from "../actions/seriesActions";
-import {
 	getPageOffset,
 	getResourceType,
 	getSelectedRows,
 	getTablePages,
 	getTablePagination,
 } from "../selectors/tableSelectors";
-import { fetchSeries } from "./seriesThunks";
-import { fetchRecordings } from "./recordingThunks";
+import {
+	fetchSeries,
+	setSeriesColumns,
+	showActionsSeries,
+} from "../slices/seriesSlice";
 import { fetchJobs, setJobColumns } from "../slices/jobSlice";
-import { fetchServers } from "./serverThunks";
-import { fetchServices } from "./serviceThunks";
-import { fetchUsers } from "./userThunks";
-import { fetchGroups } from "./groupThunks";
-import { fetchThemes } from "./themeThunks";
-import { setRecordingsColumns } from "../actions/recordingActions";
-import { setServerColumns } from "../actions/serverActions";
-import { setUserColumns } from "../actions/userActions";
-import { setGroupColumns } from "../actions/groupActions";
+import { fetchServers, setServerColumns } from "../slices/serverSlice";
+import { fetchServices, setServiceColumns } from "../slices/serviceSlice";
+import { fetchUsers, setUserColumns } from "../slices/userSlice";
+import { fetchGroups } from "../slices/groupSlice";
+import { fetchThemes, setThemeColumns } from "../slices/themeSlice";
+import { setRecordingsColumns } from "../slices/recordingSlice";
+import { setGroupColumns } from "../slices/groupSlice";
 import { fetchAcls, setAclColumns } from "../slices/aclSlice";
-import { setThemeColumns } from "../actions/themeActions";
-import { setServicesColumns } from "../actions/serviceActions";
 
 /**
  * This file contains methods/thunks used to manage the table in the main view and its state changes
@@ -555,7 +550,7 @@ export const changeAllSelected = (selected) => (dispatch, getState) => {
 				break;
 			}
 			case "series": {
-				dispatch(showSeriesActions(true));
+				dispatch(showActionsSeries(true));
 				break;
 			}
 		}
@@ -568,7 +563,7 @@ export const changeAllSelected = (selected) => (dispatch, getState) => {
 				break;
 			}
 			case "series": {
-				dispatch(showSeriesActions(false));
+				dispatch(showActionsSeries(false));
 				break;
 			}
 		}
@@ -608,9 +603,9 @@ export const changeColumnSelection = (updatedColumns) => async (
 			await dispatch(setSeriesColumns(updatedColumns));
 
 			if (getSelectedRows(state).length > 0) {
-				dispatch(showSeriesActions(true));
+				dispatch(showActionsSeries(true));
 			} else {
-				dispatch(showSeriesActions(false));
+				dispatch(showActionsSeries(false));
 			}
 
 			dispatch(loadSeriesIntoTable());
@@ -632,7 +627,7 @@ export const changeColumnSelection = (updatedColumns) => async (
 			break;
 		}
 		case "services": {
-			await dispatch(setServicesColumns(updatedColumns));
+			await dispatch(setServiceColumns(updatedColumns));
 			dispatch(loadServicesIntoTable());
 			break;
 		}
@@ -678,9 +673,9 @@ export const changeRowSelection = (id, selected) => (dispatch, getState) => {
 		}
 		case "series": {
 			if (getSelectedRows(state).length > 0) {
-				dispatch(showSeriesActions(true));
+				dispatch(showActionsSeries(true));
 			} else {
-				dispatch(showSeriesActions(false));
+				dispatch(showActionsSeries(false));
 			}
 			break;
 		}

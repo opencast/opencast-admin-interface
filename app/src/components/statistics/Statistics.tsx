@@ -19,26 +19,21 @@ import {
 } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
-import { fetchUserInfo } from "../../thunks/userInfoThunks";
+import { fetchUserInfo } from "../../slices/userInfoSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
 	fetchStatisticsPageStatistics,
 	fetchStatisticsPageStatisticsValueUpdate,
 } from "../../slices/statisticsSlice";
 
-const Statistics = ({
-// @ts-expect-error TS(7031): Binding element 'organizationId' implicitly has an... Remove this comment to see the full error message
-	organizationId,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
-// @ts-expect-error TS(7031): Binding element 'fetchUserInfo' implicitly has an ... Remove this comment to see the full error message
-	fetchUserInfo,
-}) => {
+const Statistics: React.FC = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const [displayNavigation, setNavigation] = useState(false);
 
+	const organizationId = useAppSelector(state => getOrgId(state));
+	const user = useAppSelector(state => getUserInformation(state));
 	const statistics = useAppSelector(state => getStatistics(state));
 	const hasStatistics = useAppSelector(state => getHasStatistics(state));
 	const hasError = useAppSelector(state => hasStatisticsError(state));
@@ -168,14 +163,12 @@ const Statistics = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	organizationId: getOrgId(state),
-	user: getUserInformation(state),
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-	fetchUserInfo: () => dispatch(fetchUserInfo()),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Statistics);
