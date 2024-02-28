@@ -10,14 +10,11 @@ import Notifications from "../shared/Notifications";
 import { jobsTemplateMap } from "../../configs/tableConfigs/jobsTableConfig";
 import { getTotalJobs } from "../../selectors/jobSelectors";
 import { fetchFilters } from "../../thunks/tableFilterThunks";
-import { fetchJobs } from "../../thunks/jobThunks";
 import {
 	loadJobsIntoTable,
 	loadServersIntoTable,
 	loadServicesIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchServers } from "../../thunks/serverThunks";
-import { fetchServices } from "../../thunks/serviceThunks";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
@@ -26,42 +23,45 @@ import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { fetchJobs } from "../../slices/jobSlice";
+import { fetchServers } from "../../slices/serverSlice";
+import { fetchServices } from "../../slices/serviceSlice";
 
 /**
  * This component renders the table view of jobs
  */
 const Jobs = ({
-// @ts-expect-error TS(7031): Binding element 'loadingJobs' implicitly has an 'a... Remove this comment to see the full error message
-	loadingJobs,
 // @ts-expect-error TS(7031): Binding element 'loadingJobsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingJobsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'jobs' implicitly has an 'any' typ... Remove this comment to see the full error message
-	jobs,
 // @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
 	loadingFilters,
-// @ts-expect-error TS(7031): Binding element 'loadingServers' implicitly has an... Remove this comment to see the full error message
-	loadingServers,
 // @ts-expect-error TS(7031): Binding element 'loadingServersIntoTable' implicit... Remove this comment to see the full error message
 	loadingServersIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingServices' implicitly has a... Remove this comment to see the full error message
-	loadingServices,
 // @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
 	loadingServicesIntoTable,
 // @ts-expect-error TS(7031): Binding element 'resetTextFilter' implicitly has a... Remove this comment to see the full error message
 	resetTextFilter,
 // @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
 	resetOffset,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
 	currentFilterType,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
+	const jobs = useAppSelector(state => getTotalJobs(state));
+
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const fetchJobsWrapper = () => {
+		dispatch(fetchJobs())
+	}
 
 	const loadJobs = async () => {
 		// Fetching jobs from server
-		await loadingJobs();
+		await dispatch(fetchJobs());
 
 		// Load jobs into table
 		loadingJobsIntoTable();
@@ -72,7 +72,7 @@ const Jobs = ({
 		resetOffset();
 
 		// Fetching servers from server
-		loadingServers();
+		dispatch(fetchServers());
 
 		// Load servers into table
 		loadingServersIntoTable();
@@ -83,7 +83,7 @@ const Jobs = ({
 		resetOffset();
 
 		// Fetching services from server
-		loadingServices();
+		dispatch(fetchServices());
 
 		// Load services into table
 		loadingServicesIntoTable();
@@ -158,7 +158,7 @@ const Jobs = ({
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={loadingJobs}
+						loadResource={fetchJobsWrapper}
 						loadResourceIntoTable={loadingJobsIntoTable}
 						resource={"jobs"}
 					/>
@@ -176,8 +176,6 @@ const Jobs = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	jobs: getTotalJobs(state),
-	user: getUserInformation(state),
 	currentFilterType: getCurrentFilterResource(state),
 });
 
@@ -186,11 +184,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
-	loadingJobs: () => dispatch(fetchJobs()),
 	loadingJobsIntoTable: () => dispatch(loadJobsIntoTable()),
-	loadingServers: () => dispatch(fetchServers()),
 	loadingServersIntoTable: () => dispatch(loadServersIntoTable()),
-	loadingServices: () => dispatch(fetchServices()),
 	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
 	resetTextFilter: () => dispatch(editTextFilter("")),
 	resetOffset: () => dispatch(setOffset(0)),
