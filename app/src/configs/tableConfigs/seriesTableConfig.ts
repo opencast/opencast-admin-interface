@@ -1,9 +1,3 @@
-import SeriesTitleCell from "../../components/events/partials/SeriesTitleCell";
-import SeriesCreatorsCell from "../../components/events/partials/SeriesCreatorsCell";
-import SeriesContributorsCell from "../../components/events/partials/SeriesContributorsCell";
-import SeriesDateTimeCell from "../../components/events/partials/SeriesDateTimeCell";
-import SeriesActionsCell from "../../components/events/partials/SeriesActionsCell";
-
 /**
  * Config that contains the columns and further information regarding series. These are the information that never or hardly changes.
  * That's why it is hard coded here and not fetched from server.
@@ -50,16 +44,4 @@ export const seriesTableConfig = {
 	resource: "series",
 	category: "events",
 	multiSelect: true,
-};
-
-/**
- * This map contains the mapping between the template strings above and the corresponding react component.
- * This helps to render different templates of cells more dynamically
- */
-export const seriesTemplateMap = {
-	SeriesTitleCell: SeriesTitleCell,
-	SeriesCreatorsCell: SeriesCreatorsCell,
-	SeriesContributorsCell: SeriesContributorsCell,
-	SeriesDateTimeCell: SeriesDateTimeCell,
-	SeriesActionsCell: SeriesActionsCell,
 };
