@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
 import {
 	getComments,
 	getCommentReasons,
@@ -29,8 +28,6 @@ const EventDetailsCommentsTab = ({
 	header,
 // @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
 	t,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const dispatch = useAppDispatch();
 
@@ -52,6 +49,8 @@ const EventDetailsCommentsTab = ({
 
 	const [newCommentText, setNewCommentText] = useState("");
 	const [commentReason, setCommentReason] = useState("");
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 // @ts-expect-error TS(7006): Parameter 'commentText' implicitly has an 'any' ty... Remove this comment to see the full error message
 	const saveComment = (commentText, commentReason) => {
@@ -378,19 +377,4 @@ const EventDetailsCommentsTab = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EventDetailsCommentsTab);
+export default EventDetailsCommentsTab;

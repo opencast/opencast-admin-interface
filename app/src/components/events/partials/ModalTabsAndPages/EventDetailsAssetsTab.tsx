@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
-import { connect } from "react-redux";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import {
 	getAssets,
 	getUploadAssetOptions,
@@ -10,8 +8,9 @@ import {
 } from "../../../../selectors/eventDetailsSelectors";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
-import { isFetchingAssetUploadOptions as getIsFetchingAssetUploadOptions } from "../../../../selectors/eventSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { isFetchingAssetUploadOptions as getIsFetchingAssetUploadOptions } from "../../../../selectors/eventSelectors";
 import {
 	fetchAssetAttachments,
 	fetchAssetCatalogs,
@@ -30,11 +29,10 @@ const EventDetailsAssetsTab = ({
 	t,
 // @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const dispatch = useAppDispatch();
 
+	const user = useAppSelector(state => getUserInformation(state));
 	const assets = useAppSelector(state => getAssets(state));
 	const uploadAssetOptions = useAppSelector(state => getUploadAssetOptions(state));
 	const isFetching = useAppSelector(state => isFetchingAssets(state));
@@ -42,8 +40,10 @@ const EventDetailsAssetsTab = ({
 	const isFetchingAssetUploadOptions = useAppSelector(state => getIsFetchingAssetUploadOptions(state));
 
 	useEffect(() => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		dispatch(fetchAssets(eventId)).then();
+
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -55,7 +55,7 @@ const EventDetailsAssetsTab = ({
 		bool1 = false,
 		bool2 = true
 	) => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		if (subTabName === "asset-attachments") {
 			dispatch(fetchAssetAttachments(eventId)).then();
 		} else if (subTabName === "asset-attachments") {
@@ -237,19 +237,5 @@ const EventDetailsAssetsTab = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
-});
 
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EventDetailsAssetsTab);
+export default EventDetailsAssetsTab;

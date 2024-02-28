@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
 import { Formik } from "formik";
 import {
 	deletingWorkflow as getDeletingWorkflow,
@@ -13,7 +12,6 @@ import {
 } from "../../../../selectors/eventDetailsSelectors";
 import Notifications from "../../../shared/Notifications";
 import RenderWorkflowConfig from "../wizards/RenderWorkflowConfig";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess, parseBooleanInObject } from "../../../../utils/utils";
 import { setDefaultConfig } from "../../../../utils/workflowPanelUtils";
@@ -27,6 +25,7 @@ import {
 	saveWorkflowConfig,
 	updateWorkflow,
 } from "../../../../slices/eventDetailsSlice";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the workflows tab of the event details modal
@@ -40,13 +39,10 @@ const EventDetailsWorkflowTab = ({
 	close,
 // @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
-// @ts-expect-error TS(7031): Binding element 'removeNotificationWizardForm' imp... Remove this comment to see the full error message
-	removeNotificationWizardForm,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const dispatch = useAppDispatch();
 
+	const user = useAppSelector(state => getUserInformation(state));
 	const deletingWorkflow = useAppSelector(state => getDeletingWorkflow(state));
 	const baseWorkflow = useAppSelector(state => getBaseWorkflow(state));
 	const workflow = useAppSelector(state => getWorkflow(state));
@@ -66,7 +62,7 @@ const EventDetailsWorkflowTab = ({
 	);
 
 	useEffect(() => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		dispatch(fetchWorkflows(eventId)).then();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -95,7 +91,7 @@ const EventDetailsWorkflowTab = ({
 	const openSubTab = (tabType, workflowId) => {
 		dispatch(fetchWorkflowDetails({eventId, workflowId})).then();
 		setHierarchy(tabType);
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 	};
 
 	const hasCurrentAgentAccess = () => {
@@ -502,19 +498,4 @@ const EventDetailsWorkflowTab = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	removeNotificationWizardForm: () => dispatch(removeNotificationWizardForm()),
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EventDetailsWorkflowTab);
+export default EventDetailsWorkflowTab;

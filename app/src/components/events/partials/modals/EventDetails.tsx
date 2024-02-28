@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { connect } from "react-redux";
 import { hasAccess } from "../../../../utils/utils";
 import EventDetailsCommentsTab from "../ModalTabsAndPages/EventDetailsCommentsTab";
 import EventDetailsAccessPolicyTab from "../ModalTabsAndPages/EventDetailsAccessPolicyTab";
@@ -34,7 +33,6 @@ import {
 	hasStatistics as getHasStatistics,
 	isFetchingStatistics,
 } from "../../../../selectors/eventDetailsSelectors";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import EventDetailsStatisticsTab from "../ModalTabsAndPages/EventDetailsStatisticsTab";
 import { fetchAssetUploadOptions } from "../../../../thunks/assetsThunks";
@@ -48,6 +46,7 @@ import {
 	fetchSchedulingInfo,
 	fetchEventStatistics,
 } from "../../../../slices/eventDetailsSlice";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the pages of the event details
@@ -56,18 +55,12 @@ const EventDetails : React.FC<{
   tabIndex: any,
 	eventId: any,
 	close?: any,
-	captureAgents?: any,
-	user?: any,
-	removeNotificationWizardForm?: any,
 	policyChanged: any,
 	setPolicyChanged: any,
 }>= ({
 	tabIndex,
 	eventId,
 	close,
-	captureAgents,
-	user,
-	removeNotificationWizardForm,
 	policyChanged,
 	setPolicyChanged,
 }) => {
@@ -75,7 +68,7 @@ const EventDetails : React.FC<{
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		dispatch(fetchMetadata(eventId)).then();
 		dispatch(fetchSchedulingInfo(eventId)).then();
 		dispatch(fetchEventStatistics(eventId)).then();
@@ -95,6 +88,7 @@ const EventDetails : React.FC<{
 		dispatch(updateExtendedMetadata({eventId: id, values, catalog}));
 	}
 
+	const user = useAppSelector(state => getUserInformation(state));
 	const metadata = useAppSelector(state => getMetadata(state));
 	const extendedMetadata = useAppSelector(state => getExtendedMetadata(state));
 	const isLoadingMetadata = useAppSelector(state => isFetchingMetadata(state));
@@ -102,6 +96,7 @@ const EventDetails : React.FC<{
 	const isLoadingScheduling = useAppSelector(state => isFetchingScheduling(state));
 	const hasStatistics = useAppSelector(state => getHasStatistics(state));
 	const isLoadingStatistics = useAppSelector(state => isFetchingStatistics(state));
+	const captureAgents = useAppSelector(state => getRecordings(state));
 
 	const tabs = [
 		{
@@ -164,7 +159,7 @@ const EventDetails : React.FC<{
 
 // @ts-expect-error TS(7006): Parameter 'tabNr' implicitly has an 'any' type.
 	const openTab = (tabNr) => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		setWorkflowTabHierarchy("entry");
 		setAssetsTabHierarchy("entry");
 		setPage(tabNr);
@@ -386,17 +381,4 @@ const EventDetails : React.FC<{
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	captureAgents: getRecordings(state),
-	user: getUserInformation(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	removeNotificationWizardForm: () => dispatch(removeNotificationWizardForm()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(EventDetails);
+export default EventDetails;

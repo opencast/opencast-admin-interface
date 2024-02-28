@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import EventDetails from "./EventDetails";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
+import { useAppDispatch } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component renders the modal for displaying event details
@@ -19,6 +20,7 @@ const EventDetailsModal = ({
 	eventId,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	// tracks, whether the policies are different to the initial value
 	const [policyChanged, setPolicyChanged] = useState(false);
@@ -31,7 +33,7 @@ const EventDetailsModal = ({
 	const close = () => {
 		if (!policyChanged || confirmUnsaved()) {
 			setPolicyChanged(false);
-			removeNotificationWizardForm();
+			dispatch(removeNotificationWizardForm());
 			handleClose();
 		}
 	};

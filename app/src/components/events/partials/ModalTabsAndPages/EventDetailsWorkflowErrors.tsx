@@ -5,9 +5,9 @@ import {
 	getWorkflowErrors,
 	isFetchingWorkflowErrors,
 } from "../../../../selectors/eventDetailsSelectors";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import { useAppDispatch, useAppSelector } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { fetchWorkflowErrorDetails } from "../../../../slices/eventDetailsSlice";
 
 /**
@@ -43,7 +43,7 @@ const EventDetailsWorkflowErrors = ({
 
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
 	const openSubTab = (tabType, errorId: number | null = null) => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		setHierarchy(tabType);
 		if (tabType === "workflow-error-details") {
 			dispatch(fetchWorkflowErrorDetails({eventId, workflowId: workflow.wiid, errorId})).then();

@@ -1,12 +1,10 @@
 import React from "react";
-import { connect } from "react-redux";
 import Notifications from "../../../shared/Notifications";
 import {
 	getWorkflow,
 	isFetchingWorkflowDetails,
 } from "../../../../selectors/eventDetailsSelectors";
 import { formatDuration } from "../../../../utils/eventDetailsUtils";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import { hasAccess } from "../../../../utils/utils";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
@@ -15,6 +13,7 @@ import {
 	fetchWorkflowErrors,
 	fetchWorkflowOperations,
 } from "../../../../slices/eventDetailsSlice";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the workflow details for the workflows tab of the event details modal
@@ -26,17 +25,16 @@ const EventDetailsWorkflowDetails = ({
 	t,
 // @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const dispatch = useAppDispatch();
 
+	const user = useAppSelector(state => getUserInformation(state));
 	const workflowData = useAppSelector(state => getWorkflow(state));
 	const isFetching = useAppSelector(state => isFetchingWorkflowDetails(state));
 
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
 	const openSubTab = (tabType) => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		setHierarchy(tabType);
 		if (tabType === "workflow-operations") {
 			dispatch(fetchWorkflowOperations({eventId, workflowId: workflowData.wiid})).then();
@@ -356,19 +354,4 @@ const EventDetailsWorkflowDetails = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EventDetailsWorkflowDetails);
+export default EventDetailsWorkflowDetails;
