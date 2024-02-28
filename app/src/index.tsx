@@ -8,7 +8,7 @@ import * as serviceWorker from "./serviceWorker";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { Provider } from "react-redux";
-import { configureStore } from "./store";
+import store from "./store";
 
 // import i18n (needs to be bundled)
 import "./i18n/i18n";
@@ -17,8 +17,6 @@ import "./i18n/i18n";
 import "font-awesome/css/font-awesome.min.css";
 import "react-datepicker/dist/react-datepicker.css";
 
-// create redux store
-const store = configureStore();
 // todo: comment persistent stuff in, only out commented because for debugging purposes
 const persistor = persistStore(store);
 

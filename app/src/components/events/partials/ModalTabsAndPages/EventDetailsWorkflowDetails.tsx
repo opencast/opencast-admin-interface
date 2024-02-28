@@ -10,10 +10,11 @@ import {
 	fetchWorkflowOperations,
 } from "../../../../thunks/eventDetailsThunks";
 import { formatDuration } from "../../../../utils/eventDetailsUtils";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import { hasAccess } from "../../../../utils/utils";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the workflow details for the workflows tab of the event details modal
@@ -33,12 +34,13 @@ const EventDetailsWorkflowDetails = ({
 	fetchOperations,
 // @ts-expect-error TS(7031): Binding element 'fetchErrors' implicitly has an 'a... Remove this comment to see the full error message
 	fetchErrors,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
+	const user = useAppSelector(state => getUserInformation(state));
+	const dispatch = useAppDispatch();
+
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
 	const openSubTab = (tabType) => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		setHierarchy(tabType);
 		if (tabType === "workflow-operations") {
 // @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
@@ -193,7 +195,8 @@ const EventDetailsWorkflowDetails = ({
 									<div className="obj-container">
 										<table className="main-tbl">
 											<tbody>
-												{Object.entries(workflowData.configuration).map(
+												{workflowData && workflowData.configuration &&
+                          Object.entries(workflowData.configuration).map(
 													([confKey, confValue], key) => (
 														<tr key={key}>
 															<td>{confKey}</td>
@@ -364,7 +367,6 @@ const EventDetailsWorkflowDetails = ({
 const mapStateToProps = (state) => ({
 	workflowData: getWorkflow(state),
 	isFetching: isFetchingWorkflowDetails(state),
-	user: getUserInformation(state),
 });
 
 // Mapping actions to dispatch

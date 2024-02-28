@@ -36,14 +36,14 @@ const PublishCell = ({
 	}, []);
 
 	return (
-		<div className="popover-wrapper" ref={containerPublications}>
+		<div className="popover-wrapper">
 			{row.publications.length ? (
 				<>
 					<button className="button-like-anchor popover-wrapper__trigger">
 						<span onClick={() => setShowPopup(!showPopup)}>{t("YES")}</span>
 					</button>
 					{showPopup && (
-						<div className="js-popover popover">
+						<div className="js-popover popover" ref={containerPublications}>
 							<div className="popover__header" />
 							<div className="popover__content">
 								{/* Show a list item for each publication of an event that isn't hidden*/}
@@ -58,8 +58,6 @@ const PublishCell = ({
 												target="_blank"
                         rel='noreferrer'
 												key={key}
-// @ts-expect-error TS(2322): Type '{ children: Element; href: any; className: s... Remove this comment to see the full error message
-												enabled
 											>
 												<span>{t(publication.name)}</span>
 											</a>

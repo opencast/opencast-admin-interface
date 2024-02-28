@@ -14,22 +14,23 @@ import {
 	loadThemesIntoTable,
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchEvents } from "../../thunks/eventThunks";
-import { fetchRecordings } from "../../thunks/recordingThunks";
-import { fetchJobs } from "../../thunks/jobThunks";
-import { fetchUsers } from "../../thunks/userThunks";
-import { fetchThemes } from "../../thunks/themeThunks";
+import { fetchThemes } from "../../slices/themeSlice";
 import { fetchFilters, fetchStats } from "../../thunks/tableFilterThunks";
 import { setOffset } from "../../actions/tableActions";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
-import { fetchSeries } from "../../thunks/seriesThunks";
-import { fetchServers } from "../../thunks/serverThunks";
-import { fetchServices } from "../../thunks/serviceThunks";
-import { fetchGroups } from "../../thunks/groupThunks";
-import { fetchAcls } from "../../thunks/aclThunks";
+import { fetchServices } from "../../slices/serviceSlice";
+import { fetchGroups } from "../../slices/groupSlice";
 import { GlobalHotKeys } from "react-hotkeys";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
+import { fetchAcls } from "../../slices/aclSlice";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { fetchRecordings } from "../../slices/recordingSlice";
+import { fetchUsers } from "../../slices/userSlice";
+import { fetchServers } from "../../slices/serverSlice";
+import { fetchSeries } from "../../slices/seriesSlice";
+import { fetchJobs } from "../../slices/jobSlice";
+import { fetchEvents } from "../../slices/eventSlice";
 
 /**
  * This component renders the main navigation that opens when the burger button is clicked
@@ -39,57 +40,38 @@ const MainNav = ({
 	isOpen,
 // @ts-expect-error TS(7031): Binding element 'toggleMenu' implicitly has an 'an... Remove this comment to see the full error message
 	toggleMenu,
-// @ts-expect-error TS(7031): Binding element 'loadingEvents' implicitly has an ... Remove this comment to see the full error message
-	loadingEvents,
 // @ts-expect-error TS(7031): Binding element 'loadingEventsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingEventsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingSeries' implicitly has an ... Remove this comment to see the full error message
-	loadingSeries,
 // @ts-expect-error TS(7031): Binding element 'loadingSeriesIntoTable' implicitl... Remove this comment to see the full error message
 	loadingSeriesIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingStats' implicitly has an '... Remove this comment to see the full error message
 	loadingStats,
-// @ts-expect-error TS(7031): Binding element 'loadingRecordings' implicitly has... Remove this comment to see the full error message
-	loadingRecordings,
 // @ts-expect-error TS(7031): Binding element 'loadingRecordingsIntoTable' impli... Remove this comment to see the full error message
 	loadingRecordingsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingJobs' implicitly has an 'a... Remove this comment to see the full error message
-	loadingJobs,
 // @ts-expect-error TS(7031): Binding element 'loadingJobsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingJobsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingServers' implicitly has an... Remove this comment to see the full error message
-	loadingServers,
 // @ts-expect-error TS(7031): Binding element 'loadingServersIntoTable' implicit... Remove this comment to see the full error message
 	loadingServersIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingServices' implicitly has a... Remove this comment to see the full error message
-	loadingServices,
 // @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
 	loadingServicesIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingUsers' implicitly has an '... Remove this comment to see the full error message
-	loadingUsers,
 // @ts-expect-error TS(7031): Binding element 'loadingUsersIntoTable' implicitly... Remove this comment to see the full error message
 	loadingUsersIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingGroups' implicitly has an ... Remove this comment to see the full error message
-	loadingGroups,
 // @ts-expect-error TS(7031): Binding element 'loadingGroupsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingGroupsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingAcls' implicitly has an 'a... Remove this comment to see the full error message
-	loadingAcls,
 // @ts-expect-error TS(7031): Binding element 'loadingAclsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingAclsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingThemes' implicitly has an ... Remove this comment to see the full error message
-	loadingThemes,
 // @ts-expect-error TS(7031): Binding element 'loadingThemesIntoTable' implicitl... Remove this comment to see the full error message
 	loadingThemesIntoTable,
 // @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
 	resetOffset,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
 	loadingFilters,
 }) => {
 	const { t } = useTranslation();
+        const dispatch = useAppDispatch();
 	let navigate = useNavigate();
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const loadEvents = () => {
 		loadingFilters("events");
@@ -101,7 +83,7 @@ const MainNav = ({
 		loadingStats();
 
 		// Fetching events from server
-		loadingEvents();
+		dispatch(fetchEvents());
 
 		// Load events into table
 		loadingEventsIntoTable();
@@ -114,7 +96,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching series from server
-		loadingSeries();
+		dispatch(fetchSeries());
 
 		// Load series into table
 		loadingSeriesIntoTable();
@@ -127,7 +109,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching recordings from server
-		loadingRecordings();
+		dispatch(fetchRecordings(undefined));
 
 		// Load recordings into table
 		loadingRecordingsIntoTable();
@@ -140,7 +122,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching jobs from server
-		loadingJobs();
+		dispatch(fetchJobs());
 
 		// Load jobs into table
 		loadingJobsIntoTable();
@@ -153,7 +135,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching servers from server
-		loadingServers();
+		dispatch(fetchServers());
 
 		// Load servers into table
 		loadingServersIntoTable();
@@ -166,7 +148,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching services from server
-		loadingServices();
+		dispatch(fetchServices());
 
 		// Load services into table
 		loadingServicesIntoTable();
@@ -179,7 +161,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching users from server
-		loadingUsers();
+		dispatch(fetchUsers());
 
 		// Load users into table
 		loadingUsersIntoTable();
@@ -192,7 +174,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching groups from server
-		loadingGroups();
+		dispatch(fetchGroups());
 
 		// Load groups into table
 		loadingGroupsIntoTable();
@@ -205,7 +187,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching acls from server
-		loadingAcls();
+        dispatch(fetchAcls());
 
 		// Load acls into table
 		loadingAclsIntoTable();
@@ -218,7 +200,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching themes from server
-		loadingThemes();
+		dispatch(fetchThemes());
 
 		// Load themes into table
 		loadingThemesIntoTable();
@@ -337,33 +319,22 @@ const MainNav = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-	loadingEvents: () => dispatch(fetchEvents()),
 	loadingEventsIntoTable: () => dispatch(loadEventsIntoTable()),
-	loadingSeries: () => dispatch(fetchSeries()),
 	loadingSeriesIntoTable: () => dispatch(loadSeriesIntoTable()),
 	loadingStats: () => dispatch(fetchStats()),
-// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
-	loadingRecordings: () => dispatch(fetchRecordings()),
 	loadingRecordingsIntoTable: () => dispatch(loadRecordingsIntoTable()),
-	loadingJobs: () => dispatch(fetchJobs()),
 	loadingJobsIntoTable: () => dispatch(loadJobsIntoTable()),
-	loadingServers: () => dispatch(fetchServers()),
 	loadingServersIntoTable: () => dispatch(loadServersIntoTable()),
-	loadingServices: () => dispatch(fetchServices()),
 	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
-	loadingUsers: () => dispatch(fetchUsers()),
 	loadingUsersIntoTable: () => dispatch(loadUsersIntoTable()),
-	loadingGroups: () => dispatch(fetchGroups()),
 	loadingGroupsIntoTable: () => dispatch(loadGroupsIntoTable()),
-	loadingAcls: () => dispatch(fetchAcls()),
 	loadingAclsIntoTable: () => dispatch(loadAclsIntoTable()),
-	loadingThemes: () => dispatch(fetchThemes()),
 	loadingThemesIntoTable: () => dispatch(loadThemesIntoTable()),
 	resetOffset: () => dispatch(setOffset(0)),
 // @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
