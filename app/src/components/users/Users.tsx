@@ -15,7 +15,6 @@ import {
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
 import { fetchFilters } from "../../thunks/tableFilterThunks";
-import { fetchGroups } from "../../thunks/groupThunks";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
@@ -27,6 +26,7 @@ import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { fetchAcls } from "../../slices/aclSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchUsers } from "../../slices/userSlice";
+import { fetchGroups } from "../../slices/groupSlice";
 
 /**
  * This component renders the table view of users

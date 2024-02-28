@@ -36,16 +36,14 @@ import {
 } from "../slices/seriesSlice";
 import { fetchRecordings } from "./recordingThunks";
 import { fetchJobs, setJobColumns } from "../slices/jobSlice";
-import { fetchServers } from "./serverThunks";
-import { fetchServices } from "./serviceThunks";
-import { fetchGroups } from "./groupThunks";
+import { fetchServers, setServerColumns } from "../slices/serverSlice";
+import { fetchServices, setServiceColumns } from "../slices/serviceSlice";
+import { fetchUsers, setUserColumns } from "../slices/userSlice";
+import { fetchGroups } from "../slices/groupSlice";
 import { fetchThemes, setThemeColumns } from "../slices/themeSlice";
 import { setRecordingsColumns } from "../actions/recordingActions";
-import { setServerColumns } from "../actions/serverActions";
-import { setGroupColumns } from "../actions/groupActions";
+import { setGroupColumns } from "../slices/groupSlice";
 import { fetchAcls, setAclColumns } from "../slices/aclSlice";
-import { setServicesColumns } from "../actions/serviceActions";
-import { fetchUsers, setUserColumns } from "../slices/userSlice";
 
 /**
  * This file contains methods/thunks used to manage the table in the main view and its state changes
@@ -627,7 +625,7 @@ export const changeColumnSelection = (updatedColumns) => async (
 			break;
 		}
 		case "services": {
-			await dispatch(setServicesColumns(updatedColumns));
+			await dispatch(setServiceColumns(updatedColumns));
 			dispatch(loadServicesIntoTable());
 			break;
 		}

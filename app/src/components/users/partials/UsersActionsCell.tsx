@@ -3,18 +3,17 @@ import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import ConfirmModal from "../../shared/ConfirmModal";
 import UserDetailsModal from "./modal/UserDetailsModal";
-import { fetchUserDetails } from "../../../thunks/userDetailsThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { deleteUser } from "../../../slices/userSlice";
 import { useAppDispatch } from "../../../store";
+import { fetchUserDetails } from "../../../slices/userDetailsSlice";
 
 /**
  * This component renders the action cells of users in the table view
  */
 const UsersActionCell = ({
     row,
-    fetchUserDetails,
     user
 }: any) => {
 	const { t } = useTranslation();
@@ -33,7 +32,7 @@ const UsersActionCell = ({
 	};
 
 	const showUserDetails = async () => {
-		await fetchUserDetails(row.username);
+		await dispatch(fetchUserDetails(row.username));
 
 		setUserDetails(true);
 	};
@@ -92,8 +91,6 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'username' implicitly has an 'any' type.
-	fetchUserDetails: (username) => dispatch(fetchUserDetails(username)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersActionCell);
