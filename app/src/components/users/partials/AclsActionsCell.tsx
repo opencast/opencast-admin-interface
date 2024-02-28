@@ -4,20 +4,21 @@ import { connect } from "react-redux";
 import ConfirmModal from "../../shared/ConfirmModal";
 import { deleteAcl } from "../../../thunks/aclThunks";
 import AclDetailsModal from "./modal/AclDetailsModal";
-import { fetchAclDetails } from "../../../thunks/aclDetailsThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
+import { useAppDispatch } from "../../../store";
+import { fetchAclDetails } from "../../../slices/aclDetailsSlice";
 
 /**
  * This component renders the action cells of acls in the table view
  */
 const AclsActionsCell = ({
-    row,
-    deleteAcl,
-    fetchAclDetails,
-    user
+	row,
+	deleteAcl,
+	user
 }: any) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayAclDetails, setAclDetails] = useState(false);
@@ -36,7 +37,7 @@ const AclsActionsCell = ({
 	};
 
 	const showAclDetails = async () => {
-		await fetchAclDetails(row.id);
+		await dispatch(fetchAclDetails(row.id));
 
 		setAclDetails(true);
 	};
@@ -91,8 +92,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	deleteAcl: (id) => dispatch(deleteAcl(id)),
-// @ts-expect-error TS(7006): Parameter 'aclId' implicitly has an 'any' type.
-	fetchAclDetails: (aclId) => dispatch(fetchAclDetails(aclId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AclsActionsCell);
