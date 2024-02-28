@@ -12,7 +12,7 @@ import {
 	transformToIdValueArray,
 	transformToObjectArray,
 } from "../utils/utils";
-import { addNotification } from "../thunks/notificationThunks";
+import { addNotification } from '../slices/notificationSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of series
@@ -205,11 +205,11 @@ export const postNewSeries = createAsyncThunk('series/postNewSeries', async (par
 		})
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "SERIES_ADDED"));
+			dispatch(addNotification({type: "success", key: "SERIES_ADDED"}));
 		})
 		.catch((response) => {
 			console.error(response);
-			dispatch(addNotification("error", "SERIES_NOT_SAVED"));
+			dispatch(addNotification({type: "error", key: "SERIES_NOT_SAVED"}));
 		});
 });
 
@@ -241,12 +241,12 @@ export const deleteSeries = createAsyncThunk('series/deleteSeries', async (id: a
 		.then((res) => {
 			console.info(res);
 			// add success notification
-			dispatch(addNotification("success", "SERIES_DELETED"));
+			dispatch(addNotification({type: "success", key: "SERIES_DELETED"}));
 		})
 		.catch((res) => {
 			console.error(res);
 			// add error notification
-			dispatch(addNotification("error", "SERIES_NOT_DELETED"));
+			dispatch(addNotification({type: "error", key: "SERIES_NOT_DELETED"}));
 		});
 });
 
@@ -265,12 +265,12 @@ export const deleteMultipleSeries = createAsyncThunk('series/deleteMultipleSerie
 		.then((res) => {
 			console.info(res);
 			//add success notification
-			dispatch(addNotification("success", "SERIES_DELETED"));
+			dispatch(addNotification({type: "success", key: "SERIES_DELETED"}));
 		})
 		.catch((res) => {
 			console.error(res);
 			//add error notification
-			dispatch(addNotification("error", "SERIES_NOT_DELETED"));
+			dispatch(addNotification({type: "error", key: "SERIES_NOT_DELETED"}));
 		});
 });
 

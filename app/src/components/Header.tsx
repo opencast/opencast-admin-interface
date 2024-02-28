@@ -22,6 +22,7 @@ import { overflowStyle } from "../utils/componentStyles";
 import RegistrationModal from "./shared/RegistrationModal";
 import HotKeyCheatSheet from "./shared/HotKeyCheatSheet";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useAppSelector } from "../store";
 
 // Get code, flag and name of the current language
 const currentLanguage = getCurrentLanguageInformation();
@@ -62,10 +63,6 @@ const Header = ({
 	healthStatus,
 // @ts-expect-error TS(7031): Binding element 'errorCounter' implicitly has an '... Remove this comment to see the full error message
 	errorCounter,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
-// @ts-expect-error TS(7031): Binding element 'orgProperties' implicitly has an ... Remove this comment to see the full error message
-	orgProperties,
 // @ts-expect-error TS(7031): Binding element 'setSpecificServiceFilter' implici... Remove this comment to see the full error message
 	setSpecificServiceFilter,
 // @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
@@ -79,6 +76,9 @@ const Header = ({
 	const [displayMenuHelp, setMenuHelp] = useState(false);
 	const [displayRegistrationModal, setRegistrationModal] = useState(false);
 	const [displayHotKeyCheatSheet, setHotKeyCheatSheet] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
+	const orgProperties = useAppSelector(state => getOrgProperties(state));
 
 	const loadHealthStatus = async () => {
 		await loadingHealthStatus();
@@ -452,8 +452,6 @@ const MenuUser = () => {
 const mapStateToProps = (state) => ({
 	healthStatus: getHealthStatus(state),
 	errorCounter: getErrorCount(state),
-	user: getUserInformation(state),
-	orgProperties: getOrgProperties(state),
 });
 
 // Mapping actions to dispatch
