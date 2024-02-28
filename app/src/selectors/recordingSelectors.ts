@@ -1,6 +1,7 @@
+import { RootState } from "../store";
+
 /**
  * This file contains selectors regarding recordings
  */
-
-export const getRecordings = (state: any) => state.recordings.results;
-export const getTotalRecordings = (state: any) => state.recordings.total;
+export const getRecordings = (state: RootState) => state.recordings.results;
+export const getTotalRecordings = (state: RootState) => state.recordings.total;

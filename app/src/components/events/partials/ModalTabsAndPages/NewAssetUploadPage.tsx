@@ -1,8 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
-import { connect } from "react-redux";
 import { getAssetUploadOptions } from "../../../../selectors/eventSelectors";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component renders the asset upload page of the new event wizard
@@ -15,14 +15,13 @@ const NewAssetUploadPage = ({
 	nextPage,
 // @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
 	formik,
-// @ts-expect-error TS(7031): Binding element 'uploadAssetOptions' implicitly ha... Remove this comment to see the full error message
-	uploadAssetOptions,
 }) => {
 	const { t } = useTranslation();
 
+	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
+
 	// Get upload assets that are not of type track
 	const uploadAssets = uploadAssetOptions.filter(
-// @ts-expect-error TS(7006): Parameter 'asset' implicitly has an 'any' type.
 		(asset) => asset.type !== "track"
 	);
 
@@ -57,7 +56,6 @@ const NewAssetUploadPage = ({
 												</td>
 											</tr>
 										) : (
-// @ts-expect-error TS(7006): Parameter 'asset' implicitly has an 'any' type.
 											uploadAssets.map((asset, key) => (
 												<tr key={key}>
 													<td>
@@ -122,10 +120,5 @@ const NewAssetUploadPage = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	uploadAssetOptions: getAssetUploadOptions(state),
-});
 
-export default connect(mapStateToProps)(NewAssetUploadPage);
+export default NewAssetUploadPage;
