@@ -9,7 +9,6 @@ import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
 import { recordingsTemplateMap } from "../../configs/tableConfigs/recordingsTableMap";
 import { getTotalRecordings } from "../../selectors/recordingSelectors";
-import { fetchRecordings } from "../../thunks/recordingThunks";
 import { loadRecordingsIntoTable } from "../../thunks/tableThunks";
 import { fetchFilters } from "../../thunks/tableFilterThunks";
 import { editTextFilter } from "../../actions/tableFilterActions";
@@ -19,17 +18,15 @@ import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { fetchRecordings } from "../../slices/recordingSlice";
 
 /**
  * This component renders the table view of recordings
  */
 const Recordings = ({
-// @ts-expect-error TS(7031): Binding element 'loadingRecordings' implicitly has... Remove this comment to see the full error message
-	loadingRecordings,
 // @ts-expect-error TS(7031): Binding element 'loadingRecordingsIntoTable' impli... Remove this comment to see the full error message
 	loadingRecordingsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'recordings' implicitly has an 'an... Remove this comment to see the full error message
-	recordings,
 // @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
 	loadingFilters,
 // @ts-expect-error TS(7031): Binding element 'resetTextFilter' implicitly has a... Remove this comment to see the full error message
@@ -40,11 +37,19 @@ const Recordings = ({
 	currentFilterType,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
+
+	const recordings = useAppSelector(state => getTotalRecordings(state));
+
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const fetchRecordingsWrapper = () => {
+		dispatch(fetchRecordings(undefined))
+	}
 
 	const loadRecordings = async () => {
 		// Fetching recordings from server
-		await loadingRecordings();
+		await dispatch(fetchRecordings(undefined));
 
 		// Load recordings into table
 		loadingRecordingsIntoTable();
@@ -96,7 +101,7 @@ const Recordings = ({
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={loadingRecordings}
+						loadResource={fetchRecordingsWrapper}
 						loadResourceIntoTable={loadingRecordingsIntoTable}
 						resource={"recordings"}
 					/>
@@ -115,7 +120,6 @@ const Recordings = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	recordings: getTotalRecordings(state),
 	user: getUserInformation(state),
 	currentFilterType: getCurrentFilterResource(state),
 });
@@ -123,8 +127,6 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
-	loadingRecordings: () => dispatch(fetchRecordings()),
 	loadingRecordingsIntoTable: () => dispatch(loadRecordingsIntoTable()),
 // @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),

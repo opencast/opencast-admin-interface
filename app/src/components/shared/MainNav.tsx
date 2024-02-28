@@ -14,8 +14,6 @@ import {
 	loadThemesIntoTable,
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchEvents } from "../../slices/eventSlice";
-import { fetchRecordings } from "../../thunks/recordingThunks";
 import { fetchThemes } from "../../slices/themeSlice";
 import { fetchFilters, fetchStats } from "../../thunks/tableFilterThunks";
 import { setOffset } from "../../actions/tableActions";
@@ -27,10 +25,12 @@ import { GlobalHotKeys } from "react-hotkeys";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { fetchAcls } from "../../slices/aclSlice";
 import { useAppDispatch } from "../../store";
+import { fetchRecordings } from "../../slices/recordingSlice";
 import { fetchUsers } from "../../slices/userSlice";
 import { fetchServers } from "../../slices/serverSlice";
 import { fetchSeries } from "../../slices/seriesSlice";
 import { fetchJobs } from "../../slices/jobSlice";
+import { fetchEvents } from "../../slices/eventSlice";
 
 /**
  * This component renders the main navigation that opens when the burger button is clicked
@@ -46,8 +46,6 @@ const MainNav = ({
 	loadingSeriesIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingStats' implicitly has an '... Remove this comment to see the full error message
 	loadingStats,
-// @ts-expect-error TS(7031): Binding element 'loadingRecordings' implicitly has... Remove this comment to see the full error message
-	loadingRecordings,
 // @ts-expect-error TS(7031): Binding element 'loadingRecordingsIntoTable' impli... Remove this comment to see the full error message
 	loadingRecordingsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingJobsIntoTable' implicitly ... Remove this comment to see the full error message
@@ -111,7 +109,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching recordings from server
-		loadingRecordings();
+		dispatch(fetchRecordings(undefined));
 
 		// Load recordings into table
 		loadingRecordingsIntoTable();
@@ -330,8 +328,6 @@ const mapDispatchToProps = (dispatch) => ({
 	loadingEventsIntoTable: () => dispatch(loadEventsIntoTable()),
 	loadingSeriesIntoTable: () => dispatch(loadSeriesIntoTable()),
 	loadingStats: () => dispatch(fetchStats()),
-// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
-	loadingRecordings: () => dispatch(fetchRecordings()),
 	loadingRecordingsIntoTable: () => dispatch(loadRecordingsIntoTable()),
 	loadingJobsIntoTable: () => dispatch(loadJobsIntoTable()),
 	loadingServersIntoTable: () => dispatch(loadServersIntoTable()),

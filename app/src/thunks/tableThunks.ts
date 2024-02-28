@@ -34,14 +34,13 @@ import {
 	setSeriesColumns,
 	showActionsSeries,
 } from "../slices/seriesSlice";
-import { fetchRecordings } from "./recordingThunks";
 import { fetchJobs, setJobColumns } from "../slices/jobSlice";
 import { fetchServers, setServerColumns } from "../slices/serverSlice";
 import { fetchServices, setServiceColumns } from "../slices/serviceSlice";
 import { fetchUsers, setUserColumns } from "../slices/userSlice";
 import { fetchGroups } from "../slices/groupSlice";
 import { fetchThemes, setThemeColumns } from "../slices/themeSlice";
-import { setRecordingsColumns } from "../actions/recordingActions";
+import { setRecordingsColumns } from "../slices/recordingSlice";
 import { setGroupColumns } from "../slices/groupSlice";
 import { fetchAcls, setAclColumns } from "../slices/aclSlice";
 

@@ -47,7 +47,7 @@ import EventDetailsStatisticsTab from "../ModalTabsAndPages/EventDetailsStatisti
 import { fetchAssetUploadOptions } from "../../../../thunks/assetsThunks";
 import { hasAnyDeviceAccess } from "../../../../utils/resourceUtils";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
-import { useAppDispatch } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 
 /**
  * This component manages the pages of the event details
@@ -63,7 +63,6 @@ const EventDetails : React.FC<{
 	isLoadingScheduling?: any,
 	hasStatistics?: any,
 	isLoadingStatistics?: any,
-	captureAgents?: any,
 	user?: any,
 	loadMetadata?: any,
 	updateMetadata?: any,
@@ -84,7 +83,6 @@ const EventDetails : React.FC<{
 	isLoadingScheduling,
 	hasStatistics,
 	isLoadingStatistics,
-	captureAgents,
 	user,
 	loadMetadata,
 	updateMetadata,
@@ -110,6 +108,8 @@ const EventDetails : React.FC<{
 	const [page, setPage] = useState(tabIndex);
 	const [workflowTabHierarchy, setWorkflowTabHierarchy] = useState("entry");
 	const [assetsTabHierarchy, setAssetsTabHierarchy] = useState("entry");
+
+	const captureAgents = useAppSelector(state => getRecordings(state));
 
 	const tabs = [
 		{
@@ -404,7 +404,6 @@ const mapStateToProps = (state) => ({
 	isLoadingScheduling: isFetchingScheduling(state),
 	hasStatistics: hasStatistics(state),
 	isLoadingStatistics: isFetchingStatistics(state),
-	captureAgents: getRecordings(state),
 	user: getUserInformation(state),
 });
 

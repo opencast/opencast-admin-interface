@@ -109,7 +109,7 @@ import {
 	getAssetUploadWorkflow,
 } from "../selectors/eventSelectors";
 import { calculateDuration } from "../utils/dateUtils";
-import { fetchRecordings } from "./recordingThunks";
+import { fetchRecordings } from "../slices/recordingSlice";
 import { getRecordings } from "../selectors/recordingSelectors";
 
 // thunks for metadata
@@ -835,14 +835,19 @@ export const fetchSchedulingInfo = (eventId) => async (dispatch, getState) => {
 			endDate
 		);
 
-		let device = {
+		let device: {
+			id: string,
+			name: string,
+			inputs: string[],
+			inputMethods: string[],
+		} = {
 			id: "",
 			name: "",
 			inputs: [],
+			inputMethods: [],
 		};
 
 		const agent = captureAgents.find(
-// @ts-expect-error TS(7006): Parameter 'agent' implicitly has an 'any' type.
 			(agent) => agent.id === schedulingResponse.agentId
 		);
 		if (!!agent) {
@@ -1024,7 +1029,6 @@ export const saveSchedulingInfo = (
 	const captureAgents = getRecordings(state);
 	let device = {};
 
-// @ts-expect-error TS(7006): Parameter 'agent' implicitly has an 'any' type.
 	const agent = captureAgents.find((agent) => agent.id === values.captureAgent);
 	if (!!agent) {
 		device = {
