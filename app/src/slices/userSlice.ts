@@ -3,7 +3,7 @@ import { usersTableConfig } from "../configs/tableConfigs/usersTableConfig";
 import axios from 'axios';
 import { transformToIdValueArray } from "../utils/utils";
 import { buildUserBody, getURLParams } from "../utils/resourceUtils";
-import { addNotification } from '../thunks/notificationThunks';
+import { addNotification } from '../slices/notificationSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of users
@@ -73,11 +73,11 @@ export const postNewUser = createAsyncThunk('users/postNewUser', async (values: 
 		// Since we want to dispatch, we have to handle responses in our thunk
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "USER_ADDED"));
+			dispatch(addNotification({type: "success", key: "USER_ADDED"}));
 		})
 		.catch((response) => {
 			console.error(response);
-			dispatch(addNotification("error", "USER_NOT_SAVED"));
+			dispatch(addNotification({type: "error", key: "USER_NOT_SAVED"}));
 		});
 });
 
@@ -89,12 +89,12 @@ export const deleteUser = createAsyncThunk('users/deleteUser', async (id: any, {
 		.then((res) => {
 			console.info(res);
 			// add success notification
-			dispatch(addNotification("success", "USER_DELETED"));
+			dispatch(addNotification({type: "success", key: "USER_DELETED"}));
 		})
 		.catch((res) => {
 			console.error(res);
 			// add error notification
-			dispatch(addNotification("error", "USER_NOT_DELETED"));
+			dispatch(addNotification({type: "error", key: "USER_NOT_DELETED"}));
 		});
 });
 
