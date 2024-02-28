@@ -6,31 +6,31 @@ import {
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { setHidden } from "../../actions/notificationActions";
 import {
 	NOTIFICATION_CONTEXT,
 	NOTIFICATION_CONTEXT_ACCESS,
 } from "../../configs/modalConfig";
+import { useAppDispatch } from "../../store";
+import { setHidden } from "../../slices/notificationSlice";
 
 /**
  * This component renders notifications about occurred errors, warnings and info
  */
 const Notifications : React.FC<{
-  setNotificationHidden: any,
   notifications: any,
   globalPosition: any,
   context?: any,
 }> = ({
-	setNotificationHidden,
 	notifications,
 	globalPosition,
 	context,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	const closeNotification = (id) => {
-		setNotificationHidden(id, true);
+		dispatch(setHidden({id: id, isHidden: true}));
 	};
 
 // @ts-expect-error TS(7006): Parameter 'notification' implicitly has an 'any' t... Remove this comment to see the full error message
@@ -104,8 +104,7 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	setNotificationHidden: (id, isHidden) => dispatch(setHidden(id, isHidden)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notifications);

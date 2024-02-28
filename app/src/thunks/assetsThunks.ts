@@ -1,19 +1,14 @@
 import axios from "axios";
 import { getAssetUploadOptions } from "../selectors/eventSelectors";
-import {
-	loadAssetUploadOptionsFailure,
-	loadAssetUploadOptionsInProgress,
-	loadAssetUploadOptionsSuccess,
-	setAssetUploadWorkflow,
-} from "../actions/assetActions";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 // thunks for assets, especially for getting asset options
 
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-export const fetchAssetUploadOptions = () => async (dispatch, getState) => {
+export const fetchAssetUploadOptions = createAsyncThunk('assets/fetchAssetUploadOptionsAsyncThunk', async (_, { getState }) => {
 	// get old asset upload options
 	const state = getState();
-	const assetUploadOptions = getAssetUploadOptions(state);
+	const assetUploadOptions = getAssetUploadOptions(state as RootState);
 
 	const sourcePrefix = "EVENTS.EVENTS.NEW.SOURCE.UPLOAD";
 	const assetPrefix = "EVENTS.EVENTS.NEW.UPLOAD_ASSET.OPTION";
@@ -21,14 +16,13 @@ export const fetchAssetUploadOptions = () => async (dispatch, getState) => {
 
 	// only fetch asset upload options, if they haven't been fetched yet
 	if (!(assetUploadOptions.length !== 0 && assetUploadOptions.length !== 0)) {
-		dispatch(loadAssetUploadOptionsInProgress());
+		let workflow;
+		let newAssetUploadOptions: any[] = [];
 
 		// request asset upload options from API
-		axios
+		await axios
 			.get("/admin-ng/resources/eventUploadAssetOptions.json")
 			.then((dataResponse) => {
-				const assetUploadOptions = [];
-
 				// iterate over response and only use non-comment lines
 				for (const [optionKey, optionJson] of Object.entries(
 					dataResponse.data
@@ -48,20 +42,15 @@ export const fetchAssetUploadOptions = () => async (dispatch, getState) => {
 								showAs: isSourceOption ? "source" : "uploadAsset",
 							};
 
-							assetUploadOptions.push(option);
+							newAssetUploadOptions.push(option);
 						} else if (optionKey.indexOf(workflowPrefix) >= 0) {
 							// if the line is the upload asset workflow id, set the asset upload workflow
-							dispatch(setAssetUploadWorkflow(optionJson));
+							workflow = optionJson;
 						}
 					}
 				}
-
-				dispatch(loadAssetUploadOptionsSuccess(assetUploadOptions));
 			})
-			.catch((response) => {
-				// getting asset upload options from API failed
-				dispatch(loadAssetUploadOptionsFailure());
-				console.error(response);
-			});
+
+		return { workflow, newAssetUploadOptions };
 	}
-};
+});
