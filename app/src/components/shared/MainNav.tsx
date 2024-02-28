@@ -16,7 +16,6 @@ import {
 } from "../../thunks/tableThunks";
 import { fetchEvents } from "../../slices/eventSlice";
 import { fetchRecordings } from "../../thunks/recordingThunks";
-import { fetchUsers } from "../../thunks/userThunks";
 import { fetchThemes } from "../../slices/themeSlice";
 import { fetchFilters, fetchStats } from "../../thunks/tableFilterThunks";
 import { setOffset } from "../../actions/tableActions";
@@ -28,6 +27,7 @@ import { GlobalHotKeys } from "react-hotkeys";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { fetchAcls } from "../../slices/aclSlice";
 import { useAppDispatch } from "../../store";
+import { fetchUsers } from "../../slices/userSlice";
 import { fetchServers } from "../../slices/serverSlice";
 import { fetchSeries } from "../../slices/seriesSlice";
 import { fetchJobs } from "../../slices/jobSlice";
@@ -56,8 +56,6 @@ const MainNav = ({
 	loadingServersIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
 	loadingServicesIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingUsers' implicitly has an '... Remove this comment to see the full error message
-	loadingUsers,
 // @ts-expect-error TS(7031): Binding element 'loadingUsersIntoTable' implicitly... Remove this comment to see the full error message
 	loadingUsersIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingGroupsIntoTable' implicitl... Remove this comment to see the full error message
@@ -165,7 +163,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching users from server
-		loadingUsers();
+		dispatch(fetchUsers());
 
 		// Load users into table
 		loadingUsersIntoTable();
@@ -338,7 +336,6 @@ const mapDispatchToProps = (dispatch) => ({
 	loadingJobsIntoTable: () => dispatch(loadJobsIntoTable()),
 	loadingServersIntoTable: () => dispatch(loadServersIntoTable()),
 	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
-	loadingUsers: () => dispatch(fetchUsers()),
 	loadingUsersIntoTable: () => dispatch(loadUsersIntoTable()),
 	loadingGroupsIntoTable: () => dispatch(loadGroupsIntoTable()),
 	loadingAclsIntoTable: () => dispatch(loadAclsIntoTable()),

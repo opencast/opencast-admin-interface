@@ -9,7 +9,6 @@ import Notifications from "../shared/Notifications";
 import NewResourceModal from "../shared/NewResourceModal";
 import { aclsTemplateMap } from "../../configs/tableConfigs/aclsTableMap";
 import { fetchFilters } from "../../thunks/tableFilterThunks";
-import { fetchUsers } from "../../thunks/userThunks";
 import {
 	loadAclsIntoTable,
 	loadGroupsIntoTable,
@@ -26,6 +25,7 @@ import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchAcls } from "../../slices/aclSlice";
+import { fetchUsers } from "../../slices/userSlice";
 import { fetchGroups } from "../../slices/groupSlice";
 
 /**
@@ -36,10 +36,10 @@ const Acls: React.FC = () => {
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewAclModal, setNewAclModal] = useState(false);
 
-        const dispatch = useAppDispatch();
-        const acls = useAppSelector(state => getTotalAcls(state));
+	const dispatch = useAppDispatch();
+	const acls = useAppSelector(state => getTotalAcls(state));
 	const user = useAppSelector(state => getUserInformation(state));
-        const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
+	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	const loadAcls = async () => {
 		// Fetching acls from server

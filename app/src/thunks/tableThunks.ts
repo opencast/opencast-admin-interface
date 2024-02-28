@@ -38,11 +38,10 @@ import { fetchRecordings } from "./recordingThunks";
 import { fetchJobs, setJobColumns } from "../slices/jobSlice";
 import { fetchServers, setServerColumns } from "../slices/serverSlice";
 import { fetchServices, setServiceColumns } from "../slices/serviceSlice";
-import { fetchUsers } from "./userThunks";
+import { fetchUsers, setUserColumns } from "../slices/userSlice";
 import { fetchGroups } from "../slices/groupSlice";
 import { fetchThemes, setThemeColumns } from "../slices/themeSlice";
 import { setRecordingsColumns } from "../actions/recordingActions";
-import { setUserColumns } from "../actions/userActions";
 import { setGroupColumns } from "../slices/groupSlice";
 import { fetchAcls, setAclColumns } from "../slices/aclSlice";
 
