@@ -1,12 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import {
-	fetchServers,
-	setServerMaintenance,
-} from "../../../thunks/serverThunks";
 import { loadServersIntoTable } from "../../../thunks/tableThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
+import { useAppDispatch } from "../../../store";
+import {
+	fetchServers,
+	setServerMaintenance,
+} from "../../../slices/serverSlice";
 
 /**
  * This component renders the maintenance cells of servers in the table view
@@ -14,17 +15,17 @@ import { hasAccess } from "../../../utils/utils";
 const ServersMaintenanceCell = ({
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
-// @ts-expect-error TS(7031): Binding element 'loadServers' implicitly has an 'a... Remove this comment to see the full error message
-	loadServers,
 // @ts-expect-error TS(7031): Binding element 'loadServersIntoTable' implicitly ... Remove this comment to see the full error message
 	loadServersIntoTable,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
 }) => {
+	const dispatch = useAppDispatch();
+
 // @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
 	const onClickCheckbox = async (e) => {
-		await setServerMaintenance(row.hostname, e.target.checked);
-		await loadServers();
+		await dispatch(setServerMaintenance({host: row.hostname, maintenance: e.target.checked}));
+		await dispatch(fetchServers());
 		loadServersIntoTable();
 	};
 
@@ -51,7 +52,6 @@ const mapStateToProps = (state) => ({
 // mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-	loadServers: () => dispatch(fetchServers()),
 	loadServersIntoTable: () => dispatch(loadServersIntoTable()),
 });
 
