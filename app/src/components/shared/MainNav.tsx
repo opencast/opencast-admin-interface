@@ -24,7 +24,7 @@ import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { fetchServers } from "../../thunks/serverThunks";
 import { fetchServices } from "../../thunks/serviceThunks";
-import { fetchGroups } from "../../thunks/groupThunks";
+import { fetchGroups } from "../../slices/groupSlice";
 import { GlobalHotKeys } from "react-hotkeys";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { fetchAcls } from "../../slices/aclSlice";
@@ -64,8 +64,6 @@ const MainNav = ({
 	loadingUsers,
 // @ts-expect-error TS(7031): Binding element 'loadingUsersIntoTable' implicitly... Remove this comment to see the full error message
 	loadingUsersIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingGroups' implicitly has an ... Remove this comment to see the full error message
-	loadingGroups,
 // @ts-expect-error TS(7031): Binding element 'loadingGroupsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingGroupsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingAclsIntoTable' implicitly ... Remove this comment to see the full error message
@@ -184,7 +182,7 @@ const MainNav = ({
 		resetOffset();
 
 		// Fetching groups from server
-		loadingGroups();
+		dispatch(fetchGroups());
 
 		// Load groups into table
 		loadingGroupsIntoTable();
@@ -348,7 +346,6 @@ const mapDispatchToProps = (dispatch) => ({
 	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
 	loadingUsers: () => dispatch(fetchUsers()),
 	loadingUsersIntoTable: () => dispatch(loadUsersIntoTable()),
-	loadingGroups: () => dispatch(fetchGroups()),
 	loadingGroupsIntoTable: () => dispatch(loadGroupsIntoTable()),
 	loadingAclsIntoTable: () => dispatch(loadAclsIntoTable()),
 	loadingThemesIntoTable: () => dispatch(loadThemesIntoTable()),
