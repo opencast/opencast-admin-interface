@@ -7,8 +7,9 @@ import {
 	isFetchingWorkflowErrors,
 } from "../../../../selectors/eventDetailsSelectors";
 import { fetchWorkflowErrorDetails } from "../../../../thunks/eventDetailsThunks";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
+import { useAppDispatch } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the workflow errors for the workflows tab of the event details modal
@@ -29,6 +30,8 @@ const EventDetailsWorkflowErrors = ({
 // @ts-expect-error TS(7031): Binding element 'fetchErrorDetails' implicitly has... Remove this comment to see the full error message
 	fetchErrorDetails,
 }) => {
+	const dispatch = useAppDispatch();
+
 // @ts-expect-error TS(7006): Parameter 'severity' implicitly has an 'any' type.
 	const severityColor = (severity) => {
 		switch (severity.toUpperCase()) {
@@ -45,7 +48,7 @@ const EventDetailsWorkflowErrors = ({
 
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
 	const openSubTab = (tabType, errorId = null) => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		setHierarchy(tabType);
 		if (tabType === "workflow-error-details") {
 // @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.

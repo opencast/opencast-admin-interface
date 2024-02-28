@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 import React, { useRef, useState } from "react";
 import axios from "axios";
-import { connect } from "react-redux";
-import { addNotification } from "../../../thunks/notificationThunks";
 import { NOTIFICATION_CONTEXT } from "../../../configs/modalConfig";
+import { useAppDispatch } from "../../../store";
+import { addNotification } from "../../../slices/notificationSlice";
 
 /**
  * This component renders a custom file upload button in wizards.
@@ -16,7 +16,6 @@ const FileUpload : React.FC<{
 	fileId: any,
 	fileName: any,
 	formik: any,
-	addNotification: any,
 	isEdit: any,
 }> = ({
 	descriptionKey,
@@ -26,10 +25,10 @@ const FileUpload : React.FC<{
 	fileId,
 	fileName,
 	formik,
-	addNotification,
 	isEdit,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	// Temporary storage for uploaded file
 	const [file, setFile] = useState({});
@@ -70,13 +69,13 @@ const FileUpload : React.FC<{
 				}
 			})
 			.catch((res) => {
-				addNotification(
-					"error",
-					"NOTIFICATIONS.BUMPER_UPLOAD_ERROR",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				);
+				dispatch(addNotification({
+					type: "error",
+					key: "NOTIFICATIONS.BUMPER_UPLOAD_ERROR",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				}));
 			});
 	};
 
@@ -169,11 +168,4 @@ const FileUpload : React.FC<{
 	);
 };
 
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'type' implicitly has an 'any' type.
-	addNotification: (type, key, duration, parameter, context) =>
-		dispatch(addNotification(type, key, duration, parameter, context)),
-});
-
-export default connect(null, mapDispatchToProps)(FileUpload);
+export default FileUpload;

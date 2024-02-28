@@ -5,7 +5,6 @@ import {
 	getEventMetadata,
 	getExtendedEventMetadata,
 } from "../../../../selectors/eventSelectors";
-import { connect } from "react-redux";
 import { getWorkflowDef } from "../../../../selectors/workflowSelectors";
 import MetadataSummaryTable from "./summaryTables/MetadataSummaryTable";
 import MetadataExtendedSummaryTable from "./summaryTables/MetadataExtendedSummaryTable";
@@ -26,14 +25,13 @@ const NewEventSummary = ({
 	metaDataExtendedHidden,
 // @ts-expect-error TS(7031): Binding element 'assetUploadHidden' implicitly has... Remove this comment to see the full error message
 	assetUploadHidden,
-// @ts-expect-error TS(7031): Binding element 'workflowDef' implicitly has an 'a... Remove this comment to see the full error message
-	workflowDef,
 }) => {
 	const { t } = useTranslation();
 
 	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
 	const metadataEvents = useAppSelector(state => getEventMetadata(state));
 	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
+	const workflowDef = useAppSelector(state => getWorkflowDef(state));
 
 	// Get upload assets that are not of type track
 	const uploadAssetsOptionsNonTrack = uploadAssetOptions.filter(
@@ -60,7 +58,6 @@ const NewEventSummary = ({
 
 	// Get additional information about chosen workflow definition
 	const workflowDefinition = workflowDef.find(
-// @ts-expect-error TS(7006): Parameter 'workflow' implicitly has an 'any' type.
 		(workflow) => workflow.id === formik.values.processingWorkflow
 	);
 
@@ -295,10 +292,4 @@ const NewEventSummary = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	workflowDef: getWorkflowDef(state),
-});
-
-export default connect(mapStateToProps)(NewEventSummary);
+export default NewEventSummary;

@@ -1,18 +1,20 @@
 import React from "react";
-import { connect } from "react-redux";
 import {
 	getOrgProperties,
 	getUserInformation,
 } from "../selectors/userInfoSelectors";
 import { hasAccess } from "../utils/utils";
+import { useAppSelector } from "../store";
 
 /**
  * Component that renders the footer
  */
 
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-const Footer = ({ user, orgProperties }) => {
+const Footer: React.FC = () => {
 	const feedbackUrlPropertyId = "org.opencastproject.admin.feedback.url";
+
+	const user = useAppSelector(state => getUserInformation(state));
+	const orgProperties = useAppSelector(state => getOrgProperties(state));
 
 	return (
 		<footer id="main-footer">
@@ -37,11 +39,4 @@ const Footer = ({ user, orgProperties }) => {
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
-	orgProperties: getOrgProperties(state),
-});
-
-export default connect(mapStateToProps)(Footer);
+export default Footer;

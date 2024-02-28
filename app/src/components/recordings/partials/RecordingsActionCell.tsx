@@ -3,10 +3,10 @@ import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import ConfirmModal from "../../shared/ConfirmModal";
 import RecordingDetailsModal from "./modal/RecordingDetailsModal";
-import { deleteRecording } from "../../../thunks/recordingThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
-import { useAppDispatch } from "../../../store";
+import { useAppDispatch, useAppSelector } from "../../../store";
+import { deleteRecording } from "../../../slices/recordingSlice";
 import { fetchRecordingDetails } from "../../../slices/recordingDetailsSlice";
 
 /**
@@ -15,16 +15,14 @@ import { fetchRecordingDetails } from "../../../slices/recordingDetailsSlice";
 const RecordingsActionCell = ({
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
-// @ts-expect-error TS(7031): Binding element 'deleteRecording' implicitly has a... Remove this comment to see the full error message
-	deleteRecording,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayRecordingDetails, setRecordingDetails] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
 		setDeleteConfirmation(false);
@@ -42,7 +40,7 @@ const RecordingsActionCell = ({
 
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	const deletingRecording = (id) => {
-		deleteRecording(id);
+		dispatch(deleteRecording(id));
 	};
 
 	return (
@@ -90,14 +88,12 @@ const RecordingsActionCell = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	deleteRecording: (id) => dispatch(deleteRecording(id)),
 });
 
 export default connect(

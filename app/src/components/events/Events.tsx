@@ -18,7 +18,6 @@ import {
 	loadEventsIntoTable,
 	loadSeriesIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchSeries } from "../../thunks/seriesThunks";
 import { fetchFilters, fetchStats } from "../../thunks/tableFilterThunks";
 import {
 	getTotalEvents,
@@ -42,6 +41,7 @@ import {
 	fetchEvents,
 	setShowActions,
 } from "../../slices/eventSlice";
+import { fetchSeries } from "../../slices/seriesSlice";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef();
@@ -52,8 +52,6 @@ const containerAction = React.createRef();
 const Events = ({
 // @ts-expect-error TS(7031): Binding element 'loadingEventsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingEventsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingSeries' implicitly has an ... Remove this comment to see the full error message
-	loadingSeries,
 // @ts-expect-error TS(7031): Binding element 'loadingSeriesIntoTable' implicitl... Remove this comment to see the full error message
 	loadingSeriesIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
@@ -64,8 +62,6 @@ const Events = ({
 	resetTextFilter,
 // @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
 	resetOffset,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 // @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
 	currentFilterType,
 }) => {
@@ -84,6 +80,7 @@ const Events = ({
 		false
 	);
 
+	const user = useAppSelector(state => getUserInformation(state));
 	const showActions = useAppSelector(state => isShowActions(state));
 	const events = useAppSelector(state => getTotalEvents(state));
 	const isFetchingAssetUploadOptions = useAppSelector(state => getIsFetchingAssetUploadOptions(state));
@@ -100,7 +97,7 @@ const Events = ({
 		loadingStats();
 
 		// Fetching events from server
-		// await dispatch(fetchEvents());
+		await dispatch(fetchEvents());
 
 		// Load events into table
 		loadingEventsIntoTable();
@@ -111,7 +108,7 @@ const Events = ({
 		resetOffset();
 
 		//fetching series from server
-		loadingSeries();
+		dispatch(fetchSeries());
 
 		//load series into table
 		loadingSeriesIntoTable();
@@ -344,7 +341,6 @@ const Events = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
 	currentFilterType: getCurrentFilterResource(state),
 });
 
@@ -352,7 +348,6 @@ const mapStateToProps = (state) => ({
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
 	loadingEventsIntoTable: () => dispatch(loadEventsIntoTable()),
-	loadingSeries: () => dispatch(fetchSeries()),
 	loadingSeriesIntoTable: () => dispatch(loadSeriesIntoTable()),
 // @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
