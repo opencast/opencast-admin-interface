@@ -15,7 +15,6 @@ import {
 	checkSchedulingConflicts,
 	checkValidityUpdateScheduleEventSelection,
 } from "../../../../utils/bulkActionUtils";
-import { addNotification } from "../../../../thunks/notificationThunks";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
 	checkForSchedulingConflicts,
@@ -29,8 +28,6 @@ import { fetchRecordings } from "../../../../slices/recordingSlice";
 const EditScheduledEventsModal = ({
 // @ts-expect-error TS(7031): Binding element 'close' implicitly has an 'any' ty... Remove this comment to see the full error message
 	close,
-// @ts-expect-error TS(7031): Binding element 'addNotification' implicitly has a... Remove this comment to see the full error message
-	addNotification,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
 }) => {
@@ -91,7 +88,7 @@ const EditScheduledEventsModal = ({
 				values,
 				setConflicts,
 				checkForSchedulingConflictsWrapper,
-				addNotification
+				dispatch
 			).then((result) => {
 				const errors = {};
 				if (!result) {
@@ -191,9 +188,7 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'type' implicitly has an 'any' type.
-	addNotification: (type, key, duration, parameter, context) =>
-		dispatch(addNotification(type, key, duration, parameter, context)),
+
 });
 
 export default connect(

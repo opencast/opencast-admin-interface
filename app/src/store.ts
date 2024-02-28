@@ -17,7 +17,7 @@ import groups from "./slices/groupSlice";
 import acls from "./slices/aclSlice";
 import themes from "./slices/themeSlice";
 import health from "./reducers/healthReducers";
-import { notifications } from "./reducers/notificationReducers";
+import notifications from "./slices/notificationSlice";
 import workflows from "./slices/workflowSlice";
 import eventDetails from "./reducers/eventDeatilsReducers";
 import seriesDetails from "./reducers/seriesDetailsReducers";

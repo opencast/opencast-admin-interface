@@ -12,7 +12,6 @@ import { Field, FieldArray } from "formik";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
 import { connect } from "react-redux";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
 import { hours, minutes, weekdays } from "../../../../configs/modalConfig";
 import DateFnsUtils from "@date-io/date-fns";
@@ -41,6 +40,7 @@ import {
 } from "../../../../utils/dateUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchRecordings } from "../../../../slices/recordingSlice";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { checkConflicts } from "../../../../slices/eventSlice";
 
 // Style to bring date picker pop up to front
@@ -66,8 +66,6 @@ const NewSourcePage = ({
 	formik,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
-// @ts-expect-error TS(7031): Binding element 'removeNotificationWizardForm' imp... Remove this comment to see the full error message
-	removeNotificationWizardForm,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -87,7 +85,7 @@ const NewSourcePage = ({
 	// Remove old notifications of context event-form
 	// Helps to prevent multiple notifications for same problem
 	const removeOldNotifications = () => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 	};
 
 	const scheduleOptionAvailable = () => {
@@ -742,7 +740,6 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-	removeNotificationWizardForm: () => dispatch(removeNotificationWizardForm()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewSourcePage);

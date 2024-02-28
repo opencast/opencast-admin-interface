@@ -41,13 +41,13 @@ import {
 	fetchSchedulingInfo,
 	fetchEventStatistics,
 } from "../../../../thunks/eventDetailsThunks";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import EventDetailsStatisticsTab from "../ModalTabsAndPages/EventDetailsStatisticsTab";
 import { fetchAssetUploadOptions } from "../../../../thunks/assetsThunks";
 import { hasAnyDeviceAccess } from "../../../../utils/resourceUtils";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the pages of the event details
@@ -69,7 +69,6 @@ const EventDetails : React.FC<{
 	updateExtendedMetadata?: any,
 	loadScheduling?: any,
 	loadStatistics?: any,
-	removeNotificationWizardForm?: any,
 	policyChanged: any,
 	setPolicyChanged: any,
 }>= ({
@@ -89,7 +88,6 @@ const EventDetails : React.FC<{
 	updateExtendedMetadata,
 	loadScheduling,
 	loadStatistics,
-	removeNotificationWizardForm,
 	policyChanged,
 	setPolicyChanged,
 }) => {
@@ -97,7 +95,7 @@ const EventDetails : React.FC<{
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		loadMetadata(eventId).then();
 		loadScheduling(eventId).then();
 		loadStatistics(eventId).then();
@@ -172,7 +170,7 @@ const EventDetails : React.FC<{
 
 // @ts-expect-error TS(7006): Parameter 'tabNr' implicitly has an 'any' type.
 	const openTab = (tabNr) => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		setWorkflowTabHierarchy("entry");
 		setAssetsTabHierarchy("entry");
 		setPage(tabNr);
@@ -421,7 +419,6 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch(updateExtendedMetadata(id, values, catalog)),
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	loadStatistics: (id) => dispatch(fetchEventStatistics(id)),
-	removeNotificationWizardForm: () => dispatch(removeNotificationWizardForm()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventDetails);
