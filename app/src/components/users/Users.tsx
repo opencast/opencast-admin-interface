@@ -17,7 +17,6 @@ import {
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
 import { fetchFilters } from "../../thunks/tableFilterThunks";
-import { fetchGroups } from "../../thunks/groupThunks";
 import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
@@ -28,6 +27,7 @@ import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { fetchAcls } from "../../slices/aclSlice";
 import { useAppDispatch } from "../../store";
+import { fetchGroups } from "../../slices/groupSlice";
 
 /**
  * This component renders the table view of users
@@ -41,8 +41,6 @@ const Users = ({
 	users,
 // @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
 	loadingFilters,
-// @ts-expect-error TS(7031): Binding element 'loadingGroups' implicitly has an ... Remove this comment to see the full error message
-	loadingGroups,
 // @ts-expect-error TS(7031): Binding element 'loadingGroupsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingGroupsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingAclsIntoTable' implicitly ... Remove this comment to see the full error message
@@ -74,7 +72,7 @@ const Users = ({
 		resetOffset();
 
 		// Fetching groups from server
-		loadingGroups();
+		dispatch(fetchGroups());
 
 		// Load groups into table
 		loadingGroupsIntoTable();
@@ -215,7 +213,6 @@ const mapDispatchToProps = (dispatch) => ({
 	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
 	loadingUsers: () => dispatch(fetchUsers()),
 	loadingUsersIntoTable: () => dispatch(loadUsersIntoTable()),
-	loadingGroups: () => dispatch(fetchGroups()),
 	loadingGroupsIntoTable: () => dispatch(loadGroupsIntoTable()),
 	loadingAclsIntoTable: () => dispatch(loadAclsIntoTable()),
 	resetTextFilter: () => dispatch(editTextFilter("")),

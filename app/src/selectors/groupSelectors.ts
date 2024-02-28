@@ -1,6 +1,7 @@
+import { RootState } from "../store";
+
 /**
  * This file contains selectors regarding groups
  */
-
-export const getGroups = (state: any) => state.groups.results;
-export const getTotalGroups = (state: any) => state.groups.total;
+export const getGroups = (state: RootState) => state.groups.results;
+export const getTotalGroups = (state: RootState) => state.groups.total;
