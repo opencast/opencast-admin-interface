@@ -16,23 +16,22 @@ import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
 import DropDown from "../../../shared/DropDown";
 import { filterRoles, getAclTemplateText } from "../../../../utils/aclUtils";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component renders the access policy page in the new ACL wizard and in the ACL details modal
  */
 const AclAccessPage : React.FC<{
-  previousPage: any,
-	nextPage: any,
-	formik: any,
-	isEdit?: any,
-	user: any,
-	checkAcls: any,
+	previousPage: any,	//TODO: Type this
+	nextPage: any,	//TODO: Type this
+	formik: any,	//TODO: Type this
+	isEdit?: any,	//TODO: Type this
+	checkAcls: any,	//TODO: Type this
 }> = ({
 	previousPage,
 	nextPage,
 	formik,
 	isEdit,
-	user,
 	checkAcls,
 }) => {
 	const { t } = useTranslation();
@@ -41,6 +40,8 @@ const AclAccessPage : React.FC<{
 	const [aclActions, setAclActions] = useState([]);
 	const [roles, setRoles] = useState([]);
 	const [loading, setLoading] = useState(false);
+
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const isAccess =
 		hasAccess("ROLE_UI_SERIES_DETAILS_ACL_EDIT", user) || !isEdit;
@@ -375,7 +376,7 @@ const AclAccessPage : React.FC<{
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	user: getUserInformation(state),
+
 });
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.

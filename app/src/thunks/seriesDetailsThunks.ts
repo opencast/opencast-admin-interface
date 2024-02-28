@@ -26,7 +26,7 @@ import {
 	getSeriesDetailsThemeNames,
 	getStatistics,
 } from "../selectors/seriesDetailsSelectors";
-import { addNotification } from "./notificationThunks";
+import { addNotification } from "../slices/notificationSlice";
 import {
 	createPolicy,
 	transformMetadataCollection,
@@ -85,13 +85,13 @@ export const fetchSeriesDetailsAcls = (id) => async (dispatch) => {
 
 		if (!!response.series_access.locked) {
 			dispatch(
-				addNotification(
-					"warning",
-					"SERIES_ACL_LOCKED",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "warning",
+					key: "SERIES_ACL_LOCKED",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 		}
 
@@ -317,26 +317,26 @@ export const updateSeriesAccess = (id, policies) => async (dispatch) => {
 		.then((res) => {
 			console.info(res);
 			dispatch(
-				addNotification(
-					"info",
-					"SAVED_ACL_RULES",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "info",
+					key: "SAVED_ACL_RULES",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 			return true;
 		})
 		.catch((res) => {
 			console.error(res);
 			dispatch(
-				addNotification(
-					"error",
-					"ACL_NOT_SAVED",
-					-1,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "error",
+					key: "ACL_NOT_SAVED",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 			return false;
 		});
@@ -361,13 +361,13 @@ export const updateSeriesTheme = (id, values) => async (dispatch, getState) => {
 
 			dispatch(setSeriesDetailsTheme(seriesTheme));
 			dispatch(
-				addNotification(
-					"warning",
-					"SERIES_THEME_REPROCESS_EXISTING_EVENTS",
-					10,
-					null,
-					NOTIFICATION_CONTEXT
-				)
+				addNotification({
+					type: "warning",
+					key: "SERIES_THEME_REPROCESS_EXISTING_EVENTS",
+					duration: 10,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				})
 			);
 		})
 		.catch((response) => {
