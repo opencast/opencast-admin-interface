@@ -1,6 +1,3 @@
-import UsersActionCell from "../../components/users/partials/UsersActionsCell";
-import UsersRolesCell from "../../components/users/partials/UsersRolesCell";
-
 /**
  * Config that contains the columns and further information regarding users. These are the information that never or hardly changes.
  * That's why it is hard coded here and not fetched from server.
@@ -51,12 +48,3 @@ export const usersTableConfig = {
 	multiSelect: false,
 };
 
-/**
- * This map contains the mapping between the template strings above and the corresponding react component.
- * This helps to render different templates of cells more dynamically. Even empty needed, because Table component
- * uses template map.
- */
-export const usersTemplateMap = {
-	UsersActionsCell: UsersActionCell,
-	UsersRolesCell: UsersRolesCell,
-};

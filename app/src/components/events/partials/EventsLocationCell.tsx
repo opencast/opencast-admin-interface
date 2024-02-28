@@ -3,8 +3,9 @@ import { useTranslation } from "react-i18next";
 import { getFilters } from "../../../selectors/tableFilterSelectors";
 import { editFilterValue } from "../../../actions/tableFilterActions";
 import { connect } from "react-redux";
-import { fetchEvents } from "../../../thunks/eventThunks";
 import { loadEventsIntoTable } from "../../../thunks/tableThunks";
+import { useAppDispatch } from "../../../store";
+import { fetchEvents } from "../../../slices/eventSlice";
 
 /**
  * This component renders the location cells of events in the table view
@@ -16,12 +17,11 @@ const EventsLocationCell = ({
 	filterMap,
 // @ts-expect-error TS(7031): Binding element 'editFilterValue' implicitly has a... Remove this comment to see the full error message
 	editFilterValue,
-// @ts-expect-error TS(7031): Binding element 'loadEvents' implicitly has an 'an... Remove this comment to see the full error message
-	loadEvents,
 // @ts-expect-error TS(7031): Binding element 'loadEventsIntoTable' implicitly h... Remove this comment to see the full error message
 	loadEventsIntoTable,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	// Filter with value of current cell
 // @ts-expect-error TS(7006): Parameter 'location' implicitly has an 'any' type.
@@ -30,7 +30,7 @@ const EventsLocationCell = ({
 		let filter = filterMap.find(({ name }) => name === "location");
 		if (!!filter) {
 			editFilterValue(filter.name, location);
-			loadEvents();
+			dispatch(fetchEvents());
 			loadEventsIntoTable();
 		}
 	};
@@ -60,7 +60,6 @@ const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'filterName' implicitly has an 'any' typ... Remove this comment to see the full error message
 	editFilterValue: (filterName, value) =>
 		dispatch(editFilterValue(filterName, value)),
-	loadEvents: () => dispatch(fetchEvents()),
 	loadEventsIntoTable: () => dispatch(loadEventsIntoTable()),
 });
 

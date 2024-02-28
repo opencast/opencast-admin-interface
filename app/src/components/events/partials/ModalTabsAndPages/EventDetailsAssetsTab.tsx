@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
 import { connect } from "react-redux";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import {
 	fetchAssetAttachments,
 	fetchAssetCatalogs,
@@ -19,7 +18,9 @@ import {
 import { getWorkflow } from "../../../../selectors/eventDetailsSelectors";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
-import { isFetchingAssetUploadOptions } from "../../../../selectors/eventSelectors";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { isFetchingAssetUploadOptions as getIsFetchingAssetUploadOptions } from "../../../../selectors/eventSelectors";
 
 /**
  * This component manages the main assets tab of event details modal
@@ -49,13 +50,14 @@ const EventDetailsAssetsTab = ({
 	uploadAssetOptions,
 // @ts-expect-error TS(7031): Binding element 'isFetching' implicitly has an 'an... Remove this comment to see the full error message
 	isFetching,
-// @ts-expect-error TS(7031): Binding element 'isFetchingAssetUploadOptions' imp... Remove this comment to see the full error message
-	isFetchingAssetUploadOptions,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
-	user,
 }) => {
+	const dispatch = useAppDispatch();
+
+	const user = useAppSelector(state => getUserInformation(state));
+	const isFetchingAssetUploadOptions = useAppSelector(state => getIsFetchingAssetUploadOptions(state));
+
 	useEffect(() => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 // @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
 		fetchAssets(eventId).then((r) => {});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -69,7 +71,7 @@ const EventDetailsAssetsTab = ({
 		bool1 = false,
 		bool2 = true
 	) => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		if (subTabName === "asset-attachments") {
 // @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
 			fetchAttachments(eventId).then((r) => {});
@@ -265,8 +267,6 @@ const mapStateToProps = (state) => ({
 	transactionsReadOnly: isTransactionReadOnly(state),
 	uploadAssetOptions: getUploadAssetOptions(state),
 	assetUploadWorkflowDefId: getWorkflow(state).id,
-	user: getUserInformation(state),
-	isFetchingAssetUploadOptions: isFetchingAssetUploadOptions(state),
 });
 
 // Mapping actions to dispatch

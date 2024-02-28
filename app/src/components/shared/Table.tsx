@@ -1,13 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 // @ts-expect-error TS(7016): Could not find a declaration file for module 'styl... Remove this comment to see the full error message
 import styled from "styled-components";
 import {
 	getPageOffset,
 	getTable,
+	getTableDirection,
 	getTablePages,
 	getTablePagination,
 	getTableRows,
+	getTableSorting,
 } from "../../selectors/tableSelectors";
 import {
 	reverseTable,
@@ -89,6 +91,10 @@ const Table = ({
 	pagination,
 // @ts-expect-error TS(7031): Binding element 'rows' implicitly has an 'any' typ... Remove this comment to see the full error message
 	rows,
+// @ts-expect-error TS(7031): Binding element 'rows' implicitly has an 'any' typ... Remove this comment to see the full error message
+	sortBy,
+// @ts-expect-error TS(7031): Binding element 'rows' implicitly has an 'any' typ... Remove this comment to see the full error message
+	reverse,
 }) => {
 	// Size options for pagination
 	const sizeOptions = [10, 20, 50, 100];
@@ -111,8 +117,6 @@ const Table = ({
 	// State of dropdown menu
 	const [showPageSizes, setShowPageSizes] = useState(false);
 	const [displayEditTableViewModal, setEditTableViewModal] = useState(false);
-
-	const { resources, requestSort, sortConfig } = useSortRows(rows);
 
 	useEffect(() => {
 		// Function for handling clicks outside of an open dropdown menu
@@ -159,13 +163,14 @@ const Table = ({
 		return pageOffset < pages.length - 1;
 	};
 
-// @ts-expect-error TS(7006): Parameter 'colName' implicitly has an 'any' type.
-	const sortByColumn = (colName) => {
-		const direction = requestSort(colName);
+	const sortByColumn = (colName: string) => {
 		setSortBy(colName);
-		// Usually we could just use *sortConfig* here, but it seems that does not
-		// get updated until the next rerender
+		let direction = "ASC";
+		if (reverse && reverse === "ASC") {
+			direction = "DESC";
+		}
 		reverseTable(direction);
+		updatePages();
 	};
 
 	const showEditTableViewModal = async () => {
@@ -220,18 +225,15 @@ const Table = ({
 								<th
 									key={key}
 									className={cn({
-// @ts-expect-error TS(2339): Property 'key' does not exist on type 'never'.
-										"col-sort": !!sortConfig && column.name === sortConfig.key,
+										"col-sort": !!sortBy && column.name === sortBy,
 										sortable: true,
 									})}
 									onClick={() => sortByColumn(column.name)}
 								>
 									<span>
 										<span>{t(column.label)}</span>
-{/* @ts-expect-error TS(2339): Property 'key' does not exist on type 'never'. */}
-										{!!sortConfig && column.name === sortConfig.key ? (
-// @ts-expect-error TS(2339): Property 'direction' does not exist on type 'never'.
-											<SortActiveIcon order={sortConfig.direction} />
+										{!!sortBy && column.name === sortBy ? (
+											<SortActiveIcon order={reverse} />
 										) : (
 											<SortIcon />
 										)}
@@ -260,7 +262,8 @@ const Table = ({
 					) : (
 						!table.loading &&
 						//Repeat for each row in table.rows
-						resources.map((row, key) => (
+// @ts-expect-error TS(2339):
+						rows.map((row, key) => (
 							<tr key={key}>
 								{/* Show if multi selection is possible */}
 								{/* Checkbox for selection of row */}
@@ -411,45 +414,6 @@ const getDirectAccessiblePages = (pages, pagination) => {
 	return directAccessible;
 };
 
-// @ts-expect-error TS(7006): Parameter 'resources' implicitly has an 'any' type... Remove this comment to see the full error message
-const useSortRows = (resources, config = null) => {
-	const [sortConfig, setSortConfig] = useState(config);
-
-	const sortedResources = useMemo(() => {
-		let sortableResources = [...resources];
-		if (sortConfig !== null) {
-			sortableResources.sort((a, b) => {
-// @ts-expect-error TS(2339): Property 'key' does not exist on type 'never'.
-				if (a[sortConfig.key] < b[sortConfig.key]) {
-// @ts-expect-error TS(2339): Property 'direction' does not exist on type 'never... Remove this comment to see the full error message
-					return sortConfig.direction === "ASC" ? -1 : 1;
-				}
-// @ts-expect-error TS(2339): Property 'key' does not exist on type 'never'.
-				if (a[sortConfig.key] > b[sortConfig.key]) {
-// @ts-expect-error TS(2339): Property 'direction' does not exist on type 'never... Remove this comment to see the full error message
-					return sortConfig.direction === "ASC" ? 1 : -1;
-				}
-				return 0;
-			});
-		}
-		return sortableResources;
-	}, [resources, sortConfig]);
-
-// @ts-expect-error TS(7006): Parameter 'key' implicitly has an 'any' type.
-	const requestSort = (key) => {
-		let direction = "ASC";
-// @ts-expect-error TS(2339): Property 'key' does not exist on type 'never'.
-		if (sortConfig && sortConfig.key && sortConfig.direction === "ASC") {
-			direction = "DESC";
-		}
-// @ts-expect-error TS(2345): Argument of type '{ key: any; direction: string; }... Remove this comment to see the full error message
-		setSortConfig({ key, direction });
-		return direction;
-	};
-
-	return { resources: sortedResources, requestSort, sortConfig };
-};
-
 // Apply a column template and render corresponding components
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 const ColumnTemplate = ({ row, column, templateMap }) => {
@@ -465,6 +429,8 @@ const mapStateToProps = (state) => ({
 	pages: getTablePages(state),
 	pagination: getTablePagination(state),
 	rows: getTableRows(state),
+	sortBy: getTableSorting(state),
+	reverse: getTableDirection(state),
 });
 
 // Mapping actions to dispatch
