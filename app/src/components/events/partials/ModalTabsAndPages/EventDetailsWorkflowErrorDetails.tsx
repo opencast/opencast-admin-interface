@@ -7,8 +7,9 @@ import {
 } from "../../../../selectors/eventDetailsSelectors";
 import { fetchWorkflowErrorDetails } from "../../../../thunks/eventDetailsThunks";
 import { error_detail_style } from "../../../../utils/eventDetailsUtils";
-import { removeNotificationWizardForm } from "../../../../actions/notificationActions";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
+import { useAppDispatch } from "../../../../store";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the workflow error details for the workflows tab of the event details modal
@@ -20,9 +21,11 @@ const EventDetailsWorkflowErrorDetails = ({
     errorDetails,
     isFetching
 }: any) => {
+	const dispatch = useAppDispatch();
+
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
 	const openSubTab = (tabType) => {
-		removeNotificationWizardForm();
+		dispatch(removeNotificationWizardForm());
 		setHierarchy(tabType);
 	};
 
