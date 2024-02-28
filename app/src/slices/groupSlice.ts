@@ -2,7 +2,7 @@ import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@
 import { groupsTableConfig } from '../configs/tableConfigs/groupsTableConfig';
 import axios from 'axios';
 import { buildGroupBody, getURLParams } from '../utils/resourceUtils';
-import { addNotification } from '../thunks/notificationThunks';
+import { addNotification } from '../slices/notificationSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of groups
@@ -69,14 +69,14 @@ export const postNewGroup = createAsyncThunk('groups/postNewGroup', async (value
 		})
 		.then((response) => {
 			console.info(response);
-			dispatch(addNotification("success", "GROUP_ADDED"));
+			dispatch(addNotification({type: "success", key: "GROUP_ADDED"}));
 		})
 		.catch((response) => {
 			console.error(response);
 			if (response.status === 409) {
-				dispatch(addNotification("error", "GROUP_CONFLICT"));
+				dispatch(addNotification({type: "error", key: "GROUP_CONFLICT"}));
 			} else {
-				dispatch(addNotification("error", "GROUP_NOT_SAVED"));
+				dispatch(addNotification({type: "error", key: "GROUP_NOT_SAVED"}));
 			}
 		});
 });
@@ -88,12 +88,12 @@ export const deleteGroup = createAsyncThunk('groups/deleteGroup', async (id: any
 		.then((res) => {
 			console.info(res);
 			// add success notification
-			dispatch(addNotification("success", "GROUP_DELETED"));
+			dispatch(addNotification({type: "success", key: "GROUP_DELETED"}));
 		})
 		.catch((res) => {
 			console.error(res);
 			// add error notification
-			dispatch(addNotification("error", "GROUP_NOT_DELETED"));
+			dispatch(addNotification({type: "error", key: "GROUP_NOT_DELETED"}));
 		});
 });
 
