@@ -11,7 +11,6 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Field, FieldArray } from "formik";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
-import { fetchRecordings } from "../../../../thunks/recordingThunks";
 import { connect } from "react-redux";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
 import { hours, minutes, weekdays } from "../../../../configs/modalConfig";
@@ -39,7 +38,8 @@ import {
 	changeStartMinute,
 	changeStartMinuteMultiple,
 } from "../../../../utils/dateUtils";
-import { useAppDispatch } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { fetchRecordings } from "../../../../slices/recordingSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { checkConflicts } from "../../../../slices/eventSlice";
 
@@ -64,19 +64,17 @@ const NewSourcePage = ({
 	nextPage,
 // @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
 	formik,
-// @ts-expect-error TS(7031): Binding element 'loadingInputDevices' implicitly h... Remove this comment to see the full error message
-	loadingInputDevices,
-// @ts-expect-error TS(7031): Binding element 'inputDevices' implicitly has an '... Remove this comment to see the full error message
-	inputDevices,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
+	const inputDevices = useAppSelector(state => getRecordings(state));
+
 	useEffect(() => {
 		// Load recordings that can be used for input
-		loadingInputDevices();
+		dispatch(fetchRecordings("inputs"));
 
 		// validate form because dependent default values need to be checked
 // @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
@@ -736,14 +734,12 @@ const Schedule = ({ formik, inputDevices }) => {
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	inputDevices: getRecordings(state),
 	user: getUserInformation(state),
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-	loadingInputDevices: () => dispatch(fetchRecordings("inputs")),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewSourcePage);

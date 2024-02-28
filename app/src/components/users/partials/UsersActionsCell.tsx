@@ -2,22 +2,22 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import ConfirmModal from "../../shared/ConfirmModal";
-import { deleteUser } from "../../../thunks/userThunks";
 import UserDetailsModal from "./modal/UserDetailsModal";
-import { fetchUserDetails } from "../../../thunks/userDetailsThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
+import { deleteUser } from "../../../slices/userSlice";
+import { useAppDispatch } from "../../../store";
+import { fetchUserDetails } from "../../../slices/userDetailsSlice";
 
 /**
  * This component renders the action cells of users in the table view
  */
 const UsersActionCell = ({
     row,
-    deleteUser,
-    fetchUserDetails,
     user
 }: any) => {
 	const { t } = useTranslation();
+  const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayUserDetails, setUserDetails] = useState(false);
@@ -28,11 +28,11 @@ const UsersActionCell = ({
 
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	const deletingUser = (id) => {
-		deleteUser(id);
+		dispatch(deleteUser(id));
 	};
 
 	const showUserDetails = async () => {
-		await fetchUserDetails(row.username);
+		await dispatch(fetchUserDetails(row.username));
 
 		setUserDetails(true);
 	};
@@ -91,10 +91,6 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	deleteUser: (id) => dispatch(deleteUser(id)),
-// @ts-expect-error TS(7006): Parameter 'username' implicitly has an 'any' type.
-	fetchUserDetails: (username) => dispatch(fetchUserDetails(username)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersActionCell);

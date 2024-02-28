@@ -45,7 +45,7 @@ import {
 } from "../../../../utils/resourceUtils";
 import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 import DropDown from "../../../shared/DropDown";
-import { useAppDispatch } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
 	removeNotificationWizardForm,
 	addNotification,
@@ -65,8 +65,6 @@ const EventDetailsSchedulingTab = ({
 	conflicts,
 // @ts-expect-error TS(7031): Binding element 'hasSchedulingProperties' implicit... Remove this comment to see the full error message
 	hasSchedulingProperties,
-// @ts-expect-error TS(7031): Binding element 'captureAgents' implicitly has an ... Remove this comment to see the full error message
-	captureAgents,
 // @ts-expect-error TS(7031): Binding element 'checkingConflicts' implicitly has... Remove this comment to see the full error message
 	checkingConflicts,
 // @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
@@ -77,6 +75,8 @@ const EventDetailsSchedulingTab = ({
 	saveSchedulingInfo,
 }) => {
 	const dispatch = useAppDispatch();
+
+	const captureAgents = useAppSelector(state => getRecordings(state));
 
 	useEffect(() => {
 		dispatch(removeNotificationWizardForm());
@@ -734,7 +734,6 @@ const mapStateToProps = (state) => ({
 	source: getSchedulingSource(state),
 	conflicts: getSchedulingConflicts(state),
 	checkingConflicts: isCheckingConflicts(state),
-	captureAgents: getRecordings(state),
 });
 
 // Mapping actions to dispatch
