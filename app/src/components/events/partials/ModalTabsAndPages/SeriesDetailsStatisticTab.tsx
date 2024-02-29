@@ -22,7 +22,7 @@ const SeriesDetailsStatisticTab = ({
 
 		// TODO: Get rid of the wrappers when modernizing redux is done
 		const fetchSeriesStatisticsValueUpdateWrapper = (seriesId: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any) => {
-			dispatch(fetchSeriesStatisticsValueUpdate(seriesId, providerId, from, to, dataResolution, timeMode));
+			dispatch(fetchSeriesStatisticsValueUpdate({seriesId, providerId, from, to, dataResolution, timeMode}));
 		}
 
 	/* generates file name for download-link for a statistic */

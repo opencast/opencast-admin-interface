@@ -6,6 +6,7 @@ import {
 	getSeriesDetailsExtendedMetadata,
 	getSeriesDetailsMetadata,
 	getSeriesDetailsThemeNames,
+	getStatistics,
 } from "../selectors/seriesDetailsSelectors";
 import { addNotification } from "../slices/notificationSlice";
 import {
@@ -16,6 +17,7 @@ import {
 import { transformToIdValueArray } from "../utils/utils";
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
 import { RootState } from '../store';
+import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of a series
@@ -59,6 +61,10 @@ type SeriesDetailsState = {
 	errorTheme: SerializedError | null,
 	statusThemeNames: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorThemeNames: SerializedError | null,
+	statusStatistics: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	errorStatistics: SerializedError | null,
+	statusStatisticsValue: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	errorStatisticsValue: SerializedError | null,
   metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	feeds: Feed[],
@@ -66,7 +72,7 @@ type SeriesDetailsState = {
 	theme: string,
 	themeNames: { id: string, value: string }[],
 	fetchingStatisticsInProgress: boolean,
-	statistics: any[],
+	statistics: Statistics[],
 	hasStatisticsError: boolean,
 }
 
@@ -82,6 +88,10 @@ const initialState: SeriesDetailsState = {
 	errorTheme: null,
 	statusThemeNames: 'uninitialized',
 	errorThemeNames: null,
+	statusStatistics: 'uninitialized',
+	errorStatistics: null,
+	statusStatisticsValue: 'uninitialized',
+	errorStatisticsValue: null,
 	metadata: {
 		title: "",
 		flavor: "",
@@ -383,52 +393,42 @@ export const updateSeriesTheme = createAsyncThunk('seriesDetails/updateSeriesThe
 // This is probably not the optimal way to update these thunks to reduxToolkit, but
 // it works for now
 
-// @ts-expect-error TS(7006): Parameter 'seriesId' implicitly has an 'any' type.
-export const fetchSeriesStatistics = (seriesId) => async (dispatch) => {
-	// dispatch(
-	// 	fetchStatistics(
-	// 		seriesId,
-	// 		"series",
-	// 		getStatistics,
-	// 		setDoNothing,
-	// 		setSeriesStatistics,	// setSeriesStatisticsAndStatisticsError
-	// 		setSeriesStatisticsError
-	// 	)
-	// );
-};
+export const fetchSeriesStatistics = createAsyncThunk('seriesDetails/fetchSeriesStatistics', async (seriesId: any, {getState}) => {
+	// get prior statistics
+	const state = getState();
+	const statistics = getStatistics(state as RootState);
+
+	return await (
+		fetchStatistics(
+			seriesId,
+			"series",
+			statistics,
+		)
+	);
+});
 
 // TODO: FIX STATISTICS WHEN MODERNIZING REDUX TOOLKIT FOR EVENTS
 
-export const fetchSeriesStatisticsValueUpdate = (
-// @ts-expect-error TS(7006): Parameter 'seriesId' implicitly has an 'any' type.
-	seriesId,
-// @ts-expect-error TS(7006): Parameter 'providerId' implicitly has an 'any' typ... Remove this comment to see the full error message
-	providerId,
-// @ts-expect-error TS(7006): Parameter 'from' implicitly has an 'any' type.
-	from,
-// @ts-expect-error TS(7006): Parameter 'to' implicitly has an 'any' type.
-	to,
-// @ts-expect-error TS(7006): Parameter 'dataResolution' implicitly has an 'any'... Remove this comment to see the full error message
-	dataResolution,
-// @ts-expect-error TS(7006): Parameter 'timeMode' implicitly has an 'any' type.
-	timeMode
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-) => async (dispatch) => {
-	// dispatch(
-	// 	fetchStatisticsValueUpdate(
-	// 		seriesId,
-	// 		"series",
-	// 		providerId,
-	// 		from,
-	// 		to,
-	// 		dataResolution,
-	// 		timeMode,
-	// 		getStatistics,
-	// 		setSeriesStatistics,
-	// 		setDoNothing,
-	// 	)
-	// );
-};
+export const fetchSeriesStatisticsValueUpdate = createAsyncThunk('seriesDetails/fetchSeriesStatisticsValueUpdate', async (params: {seriesId: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any}, {getState}) => {
+	const {seriesId, providerId, from, to, dataResolution, timeMode } = params;
+
+	// get prior statistics
+	const state = getState();
+	const statistics = getStatistics(state as RootState);
+
+	return await (
+		fetchStatisticsValueUpdate(
+			seriesId,
+			"series",
+			providerId,
+			from,
+			to,
+			dataResolution,
+			timeMode,
+			statistics,
+		)
+	);
+});
 
 // Reducer for series details
 const seriesDetailsSlice = createSlice({
@@ -450,16 +450,6 @@ const seriesDetailsSlice = createSlice({
 		>) {
 			state.extendedMetadata = action.payload;
 		},
-		// This was intended for use in statisticsThunks.ts, but since it has
-		// different parameters we can't use it there yet.
-		// TODO: Employ this after Modernizing redux is complete.
-		// setSeriesStatisticsAndStatisticsError(state, action: PayloadAction<{
-		// 	statistics: SeriesDetailsState["statistics"],
-		// 	hasStatisticsError: SeriesDetailsState["hasStatisticsError"],
-		// }>) {
-		// 	state.statistics = action.payload.statistics ?? [];
-		// 	state.hasStatisticsError = action.payload.hasStatisticsError;
-		// },
 		setSeriesStatisticsError(state, action: PayloadAction<
 			SeriesDetailsState["hasStatisticsError"]
 		>) {
@@ -549,6 +539,35 @@ const seriesDetailsSlice = createSlice({
 				state.statusThemeNames = 'failed';
 				state.errorThemeNames = action.error;
 			})
+			.addCase(fetchSeriesStatistics.pending, (state) => {
+				state.statusStatistics = 'loading';
+			})
+			.addCase(fetchSeriesStatistics.fulfilled, (state, action: PayloadAction<{
+				statistics: SeriesDetailsState["statistics"],
+				hasError: SeriesDetailsState["hasStatisticsError"]
+			}>) => {
+				state.statusStatistics = 'succeeded';
+				const seriesDetailsStatistics = action.payload;
+				state.statistics = seriesDetailsStatistics.statistics;
+				state.hasStatisticsError = seriesDetailsStatistics.hasError;
+			})
+			.addCase(fetchSeriesStatistics.rejected, (state, action) => {
+				state.statusStatistics = 'failed';
+				state.errorStatistics = action.error;
+			})
+			.addCase(fetchSeriesStatisticsValueUpdate.pending, (state) => {
+				state.statusStatisticsValue = 'loading';
+			})
+			.addCase(fetchSeriesStatisticsValueUpdate.fulfilled, (state, action: PayloadAction<
+				any
+			>) => {
+				state.statusStatisticsValue = 'succeeded';
+				state.statistics = action.payload;
+			})
+			.addCase(fetchSeriesStatisticsValueUpdate.rejected, (state, action) => {
+				state.statusStatisticsValue = 'failed';
+				state.errorStatisticsValue = action.error;
+			})
 	}
 });
 
@@ -556,7 +575,6 @@ export const {
 	setSeriesDetailsTheme,
 	setSeriesDetailsMetadata,
 	setSeriesDetailsExtendedMetadata,
-	// setSeriesStatisticsAndStatisticsError,
 	setSeriesStatisticsError,
 	setSeriesStatistics,
 	setDoNothing,

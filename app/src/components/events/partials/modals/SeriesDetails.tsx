@@ -54,7 +54,7 @@ const SeriesDetails = ({
 	}
 
 	useEffect(() => {
-		dispatch(fetchSeriesStatistics(seriesId)).then();
+		dispatch(fetchSeriesStatistics(seriesId));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
