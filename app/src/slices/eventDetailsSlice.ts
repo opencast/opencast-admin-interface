@@ -15,6 +15,7 @@ import {
 	getSchedulingSource,
 	getWorkflowDefinitions,
 	getWorkflows,
+	getStatistics,
 } from "../selectors/eventDetailsSelectors";
 import { getWorkflowDef } from "../selectors/workflowSelectors";
 import {
@@ -26,6 +27,7 @@ import { fetchRecordings } from "../slices/recordingSlice";
 import { getRecordings } from "../selectors/recordingSelectors";
 import { Workflow as WorkflowDefinitions} from "../slices/workflowSlice";
 import { RootState } from '../store';
+import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 
 type MetadataField = {
 	id: string,
@@ -130,6 +132,8 @@ type EventDetailsState = {
 	errorWorkflowErrorDetails: SerializedError | null,
 	statusStatistics: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorStatistics: SerializedError | null,
+	statusStatisticsValue: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	errorStatisticsValue: SerializedError | null,
 	eventId: string,
 	metadata: {
 		title: string,	// translation key
@@ -338,7 +342,7 @@ type EventDetailsState = {
 		url: string,
 		description?: string,
 	}[],
-	statistics: any[],	// TODO: proper typing
+	statistics: Statistics[],
 	hasStatisticsError: boolean,
 }
 
@@ -398,6 +402,8 @@ const initialState: EventDetailsState = {
 	errorWorkflowErrorDetails: null,
 	statusStatistics: 'uninitialized',
 	errorStatistics: null,
+	statusStatisticsValue: 'uninitialized',
+	errorStatisticsValue: null,
 	eventId: "",
 	metadata: {
 		title: "",
@@ -1369,35 +1375,39 @@ export const fetchWorkflowErrorDetails = createAsyncThunk('eventDetails/fetchWor
 });
 
 // TODO: Fix this after the modernization of statisticsThunks happened
-export const fetchEventStatistics = createAsyncThunk('eventDetails/fetchEventStatistics', async (eventId: any, { dispatch }) => {
-	// dispatch(
-	// 	fetchStatistics(
-	// 		eventId,
-	// 		"episode",
-	// 		getStatistics,
-	// 		loadEventStatisticsInProgress,
-	// 		loadEventStatisticsSuccess,
-	// 		loadEventStatisticsFailure
-	// 	)
-	// );
+export const fetchEventStatistics = createAsyncThunk('eventDetails/fetchEventStatistics', async (eventId: any, { getState }) => {
+	// get prior statistics
+	const state = getState();
+	const statistics = getStatistics(state as RootState);
+
+	return await (
+		fetchStatistics(
+			eventId,
+			"episode",
+			statistics,
+		)
+	);
 });
 
 // TODO: Fix this after the modernization of statisticsThunks happened
-export const fetchEventStatisticsValueUpdate = createAsyncThunk('eventDetails/fetchEventStatisticsValueUpdate', async (params: {eventId: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any}, { dispatch }) => {
-	// dispatch(
-	// 	fetchStatisticsValueUpdate(
-	// 		eventId,
-	// 		"episode",
-	// 		providerId,
-	// 		from,
-	// 		to,
-	// 		dataResolution,
-	// 		timeMode,
-	// 		getStatistics,
-	// 		updateEventStatisticsSuccess,
-	// 		updateEventStatisticsFailure
-	// 	)
-	// );
+export const fetchEventStatisticsValueUpdate = createAsyncThunk('eventDetails/fetchEventStatisticsValueUpdate', async (params: {eventId: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any}, { getState }) => {
+	const { eventId, providerId, from, to, dataResolution, timeMode } = params;
+	// get prior statistics
+	const state = getState();
+	const statistics = getStatistics(state as RootState);
+
+	return await (
+		fetchStatisticsValueUpdate(
+			eventId,
+			"episode",
+			providerId,
+			from,
+			to,
+			dataResolution,
+			timeMode,
+			statistics,
+		)
+	);
 });
 
 export const updateMetadata = createAsyncThunk('eventDetails/updateMetadata', async (params: {eventId: any, values: any}, { dispatch, getState }) => {
@@ -2216,25 +2226,40 @@ const eventDetailsSlice = createSlice({
 				// todo: probably needs a Notification to the user
 				console.error(action.error);
 			})
-			// // fetchEventStatistics
-			// .addCase(fetchEventStatistics.pending, (state) => {
-			// 	state.statusStatistics = 'loading';
-			// })
-			// .addCase(fetchEventStatistics.fulfilled, (state, action: PayloadAction<{
-			// 	statistics: EventDetailsState["statistics"],
-			// 	hasStatisticsError: EventDetailsState["hasStatisticsError"],
-			// }>) => {
-			// 	state.statusStatistics = 'succeeded';
-			// 	const eventDetails = action.payload;
-			// 	state.statistics = eventDetails.statistics;
-			// 	state.hasStatisticsError = eventDetails.hasStatisticsError;
-			// })
+			// fetchEventStatistics
+			.addCase(fetchEventStatistics.pending, (state) => {
+				state.statusStatistics = 'loading';
+			})
+			.addCase(fetchEventStatistics.fulfilled, (state, action: PayloadAction<{
+				statistics: EventDetailsState["statistics"],
+				hasError: EventDetailsState["hasStatisticsError"],
+			}>) => {
+				state.statusStatistics = 'succeeded';
+				const eventDetails = action.payload;
+				state.statistics = eventDetails.statistics;
+				state.hasStatisticsError = eventDetails.hasError;
+			})
 			.addCase(fetchEventStatistics.rejected, (state, action) => {
 				state.statusStatistics = 'failed';
 				state.statistics = [];
-				// TODO: Type this
-				// state.hasStatisticsError = action.payload.hasStatisticsError;
+				state.hasStatisticsError = true;
 				state.errorStatistics = action.error;
+				console.error(action.error);
+			})
+			//fetchEventStatisticsValueUpdate
+			.addCase(fetchEventStatisticsValueUpdate.pending, (state) => {
+				state.statusStatistics = 'loading';
+			})
+			.addCase(fetchEventStatisticsValueUpdate.fulfilled, (state, action: PayloadAction<
+				any
+			>) => {
+				state.statusStatisticsValue = 'succeeded';
+				state.statistics = action.payload;
+			})
+			.addCase(fetchEventStatisticsValueUpdate.rejected, (state, action) => {
+				state.statusStatisticsValue = 'failed';
+				state.statistics = [];
+				state.errorStatisticsValue = action.error;
 				console.error(action.error);
 			})
 			.addCase(updateMetadata.rejected, (state, action) => {
