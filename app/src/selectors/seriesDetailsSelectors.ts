@@ -1,27 +1,21 @@
+import { RootState } from "../store";
+
 /**
  * This file contains selectors regarding details of a certain series
  */
-export const getSeriesDetailsMetadata = (state: any) => state.seriesDetails.metadata;
-export const getSeriesDetailsExtendedMetadata = (state: any) => state.seriesDetails.extendedMetadata;
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-export const getSeriesDetailsAcl = (state) => state.seriesDetails.acl;
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-export const getSeriesDetailsFeeds = (state) => state.seriesDetails.feeds;
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-export const getSeriesDetailsTheme = (state) => state.seriesDetails.theme;
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-export const getSeriesDetailsThemeNames = (state) =>
+export const getSeriesDetailsMetadata = (state: RootState) => state.seriesDetails.metadata;
+export const getSeriesDetailsExtendedMetadata = (state: RootState) => state.seriesDetails.extendedMetadata;
+export const getSeriesDetailsAcl = (state: RootState) => state.seriesDetails.acl;
+export const getSeriesDetailsFeeds = (state: RootState) => state.seriesDetails.feeds;
+export const getSeriesDetailsTheme = (state: RootState) => state.seriesDetails.theme;
+export const getSeriesDetailsThemeNames = (state: RootState) =>
 	state.seriesDetails.themeNames;
 
 /* selectors for statistics */
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-export const hasStatistics = (state) =>
+export const hasStatistics = (state: RootState) =>
 	state.seriesDetails.statistics.length > 0;
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-export const getStatistics = (state) => state.seriesDetails.statistics;
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-export const hasStatisticsError = (state) =>
+export const getStatistics = (state: RootState) => state.seriesDetails.statistics;
+export const hasStatisticsError = (state: RootState) =>
 	state.seriesDetails.hasStatisticsError;
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-export const isFetchingStatistics = (state) =>
+export const isFetchingStatistics = (state: RootState) =>
 	state.seriesDetails.fetchingStatisticsInProgress;

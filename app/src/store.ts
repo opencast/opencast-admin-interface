@@ -20,7 +20,7 @@ import health from "./reducers/healthReducers";
 import notifications from "./slices/notificationSlice";
 import workflows from "./slices/workflowSlice";
 import eventDetails from "./reducers/eventDeatilsReducers";
-import seriesDetails from "./reducers/seriesDetailsReducers";
+import seriesDetails from "./slices/seriesDetailsSlice";
 import userDetails from "./slices/userDetailsSlice";
 import recordingDetails from "./slices/recordingDetailsSlice";
 import groupDetails from "./slices/groupDetailsSlice";

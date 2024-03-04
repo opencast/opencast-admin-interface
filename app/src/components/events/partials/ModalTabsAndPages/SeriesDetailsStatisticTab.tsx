@@ -4,23 +4,26 @@ import {
 	getStatistics,
 	hasStatisticsError,
 } from "../../../../selectors/seriesDetailsSelectors";
-import { fetchSeriesStatisticsValueUpdate } from "../../../../thunks/seriesDetailsThunks";
-import { connect } from "react-redux";
+import { fetchSeriesStatisticsValueUpdate } from "../../../../slices/seriesDetailsSlice";
 import TimeSeriesStatistics from "../../../shared/TimeSeriesStatistics";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 
 const SeriesDetailsStatisticTab = ({
 // @ts-expect-error TS(7031): Binding element 'seriesId' implicitly has an 'any'... Remove this comment to see the full error message
 	seriesId,
 // @ts-expect-error TS(7031): Binding element 'header' implicitly has an 'any' t... Remove this comment to see the full error message
 	header,
-// @ts-expect-error TS(7031): Binding element 'statistics' implicitly has an 'an... Remove this comment to see the full error message
-	statistics,
-// @ts-expect-error TS(7031): Binding element 'hasError' implicitly has an 'any'... Remove this comment to see the full error message
-	hasError,
-// @ts-expect-error TS(7031): Binding element 'recalculateStatistics' implicitly... Remove this comment to see the full error message
-	recalculateStatistics,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
+
+	const statistics = useAppSelector(state => getStatistics(state));
+	const hasError = useAppSelector(state => hasStatisticsError(state));
+
+		// TODO: Get rid of the wrappers when modernizing redux is done
+		const fetchSeriesStatisticsValueUpdateWrapper = (seriesId: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any) => {
+			dispatch(fetchSeriesStatisticsValueUpdate({seriesId, providerId, from, to, dataResolution, timeMode}));
+		}
 
 	/* generates file name for download-link for a statistic */
 // @ts-expect-error TS(7006): Parameter 'statsTitle' implicitly has an 'any' typ... Remove this comment to see the full error message
@@ -45,7 +48,6 @@ const SeriesDetailsStatisticTab = ({
 						</div>
 					) : (
 						/* iterates over the different available statistics */
-// @ts-expect-error TS(7006): Parameter 'stat' implicitly has an 'any' type.
 						statistics.map((stat, key) => (
 							<div className="obj" key={key}>
 								{/* title of statistic */}
@@ -64,7 +66,7 @@ const SeriesDetailsStatisticTab = ({
 											timeMode={stat.timeMode}
 											dataResolution={stat.dataResolution}
 											statDescription={stat.description}
-											onChange={recalculateStatistics}
+											onChange={fetchSeriesStatisticsValueUpdateWrapper}
 											exportUrl={stat.csvUrl}
 											exportFileName={statisticsCsvFileName}
 											totalValue={stat.totalValue}
@@ -87,44 +89,4 @@ const SeriesDetailsStatisticTab = ({
 		</div>
 	);
 };
-
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	statistics: getStatistics(state),
-	hasError: hasStatisticsError(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	recalculateStatistics: (
-// @ts-expect-error TS(7006): Parameter 'seriesId' implicitly has an 'any' type.
-		seriesId,
-// @ts-expect-error TS(7006): Parameter 'providerId' implicitly has an 'any' typ... Remove this comment to see the full error message
-		providerId,
-// @ts-expect-error TS(7006): Parameter 'from' implicitly has an 'any' type.
-		from,
-// @ts-expect-error TS(7006): Parameter 'to' implicitly has an 'any' type.
-		to,
-// @ts-expect-error TS(7006): Parameter 'dataResolution' implicitly has an 'any'... Remove this comment to see the full error message
-		dataResolution,
-// @ts-expect-error TS(7006): Parameter 'timeMode' implicitly has an 'any' type.
-		timeMode
-	) =>
-		dispatch(
-			fetchSeriesStatisticsValueUpdate(
-				seriesId,
-				providerId,
-				from,
-				to,
-				dataResolution,
-				timeMode
-			)
-		),
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(SeriesDetailsStatisticTab);
+export default SeriesDetailsStatisticTab;

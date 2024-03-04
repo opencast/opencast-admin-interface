@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import ResourceDetailsAccessPolicyTab from "../../../shared/modals/ResourceDetailsAccessPolicyTab";
 import { getSeriesDetailsAcl } from "../../../../selectors/seriesDetailsSelectors";
 import {
 	fetchSeriesDetailsAcls,
 	updateSeriesAccess,
-} from "../../../../thunks/seriesDetailsThunks";
-import { useAppDispatch } from "../../../../store";
+} from "../../../../slices/seriesDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 
 /**
  * This component manages the access policy tab of the series details modal
@@ -18,12 +17,6 @@ const SeriesDetailsAccessTab = ({
 	seriesId,
 // @ts-expect-error TS(7031): Binding element 'header' implicitly has an 'any' t... Remove this comment to see the full error message
 	header,
-// @ts-expect-error TS(7031): Binding element 'policies' implicitly has an 'any'... Remove this comment to see the full error message
-	policies,
-// @ts-expect-error TS(7031): Binding element 'fetchAccessPolicies' implicitly h... Remove this comment to see the full error message
-	fetchAccessPolicies,
-// @ts-expect-error TS(7031): Binding element 'saveNewAccessPolicies' implicitly... Remove this comment to see the full error message
-	saveNewAccessPolicies,
 // @ts-expect-error TS(7031): Binding element 'policyChanged' implicitly has an ... Remove this comment to see the full error message
 	policyChanged,
 // @ts-expect-error TS(7031): Binding element 'setPolicyChanged' implicitly has ... Remove this comment to see the full error message
@@ -31,6 +24,16 @@ const SeriesDetailsAccessTab = ({
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
+
+	const policies = useAppSelector(state => getSeriesDetailsAcl(state));
+
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const fetchSeriesDetailsAclsWrapper = (id: any) => {
+		dispatch(fetchSeriesDetailsAcls(id));
+	}
+	const updateSeriesAccessWrapper = (id: any, policies: any) => {
+		dispatch(updateSeriesAccess({id, policies}));
+	}
 
 	useEffect(() => {
 		dispatch(removeNotificationWizardForm());
@@ -46,8 +49,8 @@ const SeriesDetailsAccessTab = ({
 			saveButtonText={"SAVE"}
 			descriptionText={t("EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION")}
 			policies={policies}
-			fetchAccessPolicies={fetchAccessPolicies}
-			saveNewAccessPolicies={saveNewAccessPolicies}
+			fetchAccessPolicies={fetchSeriesDetailsAclsWrapper}
+			saveNewAccessPolicies={updateSeriesAccessWrapper}
 			editAccessRole={"ROLE_UI_SERIES_DETAILS_ACL_EDIT"}
 			policyChanged={policyChanged}
 			setPolicyChanged={setPolicyChanged}
@@ -55,23 +58,4 @@ const SeriesDetailsAccessTab = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	policies: getSeriesDetailsAcl(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchAccessPolicies: (id) => dispatch(fetchSeriesDetailsAcls(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	saveNewAccessPolicies: (id, policies) =>
-		dispatch(updateSeriesAccess(id, policies)),
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(SeriesDetailsAccessTab);
+export default SeriesDetailsAccessTab;
