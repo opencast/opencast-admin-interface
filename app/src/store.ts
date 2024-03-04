@@ -19,7 +19,7 @@ import themes from "./slices/themeSlice";
 import health from "./slices/healthSlice";
 import notifications from "./slices/notificationSlice";
 import workflows from "./slices/workflowSlice";
-import eventDetails from "./reducers/eventDeatilsReducers";
+import eventDetails from "./slices/eventDetailsSlice";
 import seriesDetails from "./slices/seriesDetailsSlice";
 import userDetails from "./slices/userDetailsSlice";
 import recordingDetails from "./slices/recordingDetailsSlice";

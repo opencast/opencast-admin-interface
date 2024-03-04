@@ -12,7 +12,7 @@ type ConfigurationPanelField = {
 	description?: string,
 }
 
-type Workflow = {
+export type Workflow = {
 	configuration_panel: string,	//XML
 	configuration_panel_json: string | ConfigurationPanelField[],	// 'string' will always be the empty string
 	description: string,

@@ -1,12 +1,12 @@
 import React from "react";
-import { connect } from "react-redux";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import Notifications from "../../../shared/Notifications";
 import {
 	getAssetPublications,
-	isFetchingAssets,
+	isFetchingAssetPublications,
 } from "../../../../selectors/eventDetailsSelectors";
-import { fetchAssetPublicationDetails } from "../../../../thunks/eventDetailsThunks";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { fetchAssetPublicationDetails } from "../../../../slices/eventDetailsSlice";
 
 /**
  * This component manages the publications sub-tab for assets tab of event details modal
@@ -15,15 +15,16 @@ const EventDetailsAssetPublications = ({
     eventId,
     t,
     setHierarchy,
-    publications,
-    isFetching,
-    loadPublicationDetails
 }: any) => {
+	const dispatch = useAppDispatch();
+
+	const publications = useAppSelector(state => getAssetPublications(state));
+	const isFetching = useAppSelector(state => isFetchingAssetPublications(state));
+
 // @ts-expect-error TS(7006): Parameter 'subTabName' implicitly has an 'any' typ... Remove this comment to see the full error message
 	const openSubTab = (subTabName, publicationId = "") => {
 		if (subTabName === "publication-details") {
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
-			loadPublicationDetails(eventId, publicationId).then((r) => {});
+			dispatch(fetchAssetPublicationDetails({eventId, publicationId})).then();
 		}
 		setHierarchy(subTabName);
 	};
@@ -82,7 +83,6 @@ const EventDetailsAssetPublications = ({
 								</thead>
 								<tbody>
 									{isFetching ||
-// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
 										publications.map((item, key) => (
 											<tr key={key}>
 												<td>{item.id}</td>
@@ -118,22 +118,4 @@ const EventDetailsAssetPublications = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	isFetching: isFetchingAssets(state),
-	publications: getAssetPublications(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	loadPublicationDetails: (eventId, publicationId) =>
-		dispatch(fetchAssetPublicationDetails(eventId, publicationId)),
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EventDetailsAssetPublications);
+export default EventDetailsAssetPublications;
