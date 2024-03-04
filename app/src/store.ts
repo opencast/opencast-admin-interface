@@ -16,7 +16,7 @@ import users from "./slices/userSlice";
 import groups from "./slices/groupSlice";
 import acls from "./slices/aclSlice";
 import themes from "./slices/themeSlice";
-import health from "./reducers/healthReducers";
+import health from "./slices/healthSlice";
 import notifications from "./slices/notificationSlice";
 import workflows from "./slices/workflowSlice";
 import eventDetails from "./slices/eventDetailsSlice";
