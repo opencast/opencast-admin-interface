@@ -1,4 +1,3 @@
-import { connect } from "react-redux";
 import React, { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
 import {
@@ -6,10 +5,10 @@ import {
 	getWorkflowOperations,
 	isFetchingWorkflowOperations,
 } from "../../../../selectors/eventDetailsSelectors";
-import { fetchWorkflowOperationDetails, fetchWorkflowOperations } from "../../../../thunks/eventDetailsThunks";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
-import { useAppDispatch } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { fetchWorkflowOperationDetails, fetchWorkflowOperations } from "../../../../slices/eventDetailsSlice";
 
 /**
  * This component manages the workflow operations for the workflows tab of the event details modal
@@ -21,22 +20,16 @@ const EventDetailsWorkflowOperations = ({
 	t,
 // @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
-// @ts-expect-error TS(7031): Binding element 'workflowId' implicitly has an 'an... Remove this comment to see the full error message
-	workflowId,
-// @ts-expect-error TS(7031): Binding element 'operations' implicitly has an 'an... Remove this comment to see the full error message
-	operations,
-// @ts-expect-error TS(7031): Binding element 'isFetching' implicitly has an 'an... Remove this comment to see the full error message
-	isFetching,
-  // @ts-expect-error TS(7031): Binding element 'fetchOperationDetails' implicitly... Remove this comment to see the full error message
-	fetchOperations,
-// @ts-expect-error TS(7031): Binding element 'fetchOperationDetails' implicitly... Remove this comment to see the full error message
-	fetchOperationDetails,
 }) => {
 	const dispatch = useAppDispatch();
 
+	const workflow = useAppSelector(state => getWorkflow(state));
+	const operations = useAppSelector(state => getWorkflowOperations(state));
+	const isFetching = useAppSelector(state => isFetchingWorkflowOperations(state));
+
   const loadWorkflowOperations = async () => {
 		// Fetching workflow operations from server
-		await fetchOperations(eventId, workflowId);
+		await fetchWorkflowOperations({eventId, workflowId: workflow.wiid});
 	};
 
   useEffect(() => {
@@ -49,12 +42,11 @@ const EventDetailsWorkflowOperations = ({
 	}, []);
 
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
-	const openSubTab = (tabType, operationId = null) => {
+	const openSubTab = (tabType, operationId: number | null = null) => {
 		dispatch(removeNotificationWizardForm());
 		setHierarchy(tabType);
 		if (tabType === "workflow-operation-details") {
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
-			fetchOperationDetails(eventId, workflowId, operationId).then((r) => {});
+			dispatch(fetchWorkflowOperationDetails({eventId, workflowId: workflow.wiid, operationId})).then();
 		}
 	};
 
@@ -118,7 +110,6 @@ const EventDetailsWorkflowOperations = ({
 										</thead>
 										<tbody>
 											{/* workflow operation details */}
-{/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}
 											{operations.entries.map((item, key) => (
 												<tr key={key}>
 													<td>{t(item.status)}</td>
@@ -154,25 +145,4 @@ const EventDetailsWorkflowOperations = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	workflowId: getWorkflow(state).wiid,
-	operations: getWorkflowOperations(state),
-	isFetching: isFetchingWorkflowOperations(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-  fetchOperations: (eventId: string, workflowId: string) =>
-    dispatch(fetchWorkflowOperations(eventId, workflowId)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	fetchOperationDetails: (eventId, workflowId, operationId) =>
-		dispatch(fetchWorkflowOperationDetails(eventId, workflowId, operationId)),
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EventDetailsWorkflowOperations);
+export default EventDetailsWorkflowOperations;
