@@ -22,6 +22,7 @@ import {
 } from "../../../../selectors/eventSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { postNewEvent } from "../../../../slices/eventSlice";
+import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 
 // Get info about the current language and its date locale
 const currentLanguage = getCurrentLanguageInformation();
@@ -39,11 +40,13 @@ const NewEventWizard: React.FC<{
 	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
 	const metadataFields = useAppSelector(state => getEventMetadata(state));
 	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const initialValues = getInitialValues(
 		metadataFields,
 		extendedMetadata,
-		uploadAssetOptions
+		uploadAssetOptions,
+		user
 	);
 	let workflowPanelRef = React.useRef();
 
@@ -237,7 +240,9 @@ const getInitialValues = (
 // @ts-expect-error TS(7006): Parameter 'extendedMetadata' implicitly has an 'an... Remove this comment to see the full error message
 	extendedMetadata,
 // @ts-expect-error TS(7006): Parameter 'uploadAssetOptions' implicitly has an '... Remove this comment to see the full error message
-	uploadAssetOptions
+	uploadAssetOptions,
+// @ts-expect-error TS(7006): Parameter 'uploadAssetOptions' implicitly has an '... Remove this comment to see the full error message
+	user
 ) => {
 	// Transform metadata fields provided by backend (saved in redux)
 	let initialValues = getInitialMetadataFieldValues(
@@ -310,6 +315,16 @@ const getInitialValues = (
 	initialValues["scheduleEndHour"] = (defaultDate.getHours() + 1).toString();
 // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 	initialValues["scheduleEndMinute"] = "55";
+
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+	initialValues["acls"] = [
+		{
+			role: user.userRole,
+			read: true,
+			write: true,
+			actions: [],
+		},
+	];
 
 	return initialValues;
 };
