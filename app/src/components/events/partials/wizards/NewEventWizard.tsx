@@ -273,6 +273,8 @@ const getInitialValues = (
 	if (!!uploadAssetOptions) {
 // @ts-expect-error TS(2339): Property 'uploadAssetsTrack' does not exist on typ... Remove this comment to see the full error message
 		initialValues.uploadAssetsTrack = [];
+		// Sort by displayOrder
+		uploadAssetOptions = uploadAssetOptions.slice().sort((a: any, b: any) => a.displayOrder - b.displayOrder)
 		// initial value of upload asset needs to be null, because object (file) is saved there
 // @ts-expect-error TS(7006): Parameter 'option' implicitly has an 'any' type.
 		uploadAssetOptions.forEach((option) => {
