@@ -1,12 +1,13 @@
 import React from "react";
-import { connect } from "react-redux";
+import { getPolicies } from "../../../../selectors/eventDetailsSelectors";
+import ResourceDetailsAccessPolicyTab from "../../../shared/modals/ResourceDetailsAccessPolicyTab";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
 	fetchAccessPolicies,
 	fetchHasActiveTransactions,
 	saveAccessPolicies,
-} from "../../../../thunks/eventDetailsThunks";
-import { getPolicies } from "../../../../selectors/eventDetailsSelectors";
-import ResourceDetailsAccessPolicyTab from "../../../shared/modals/ResourceDetailsAccessPolicyTab";
+} from "../../../../slices/eventDetailsSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 /**
  * This component manages the access policy tab of the event details modal
@@ -18,19 +19,26 @@ const EventDetailsAccessPolicyTab = ({
 	header,
 // @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
 	t,
-// @ts-expect-error TS(7031): Binding element 'policies' implicitly has an 'any'... Remove this comment to see the full error message
-	policies,
-// @ts-expect-error TS(7031): Binding element 'fetchAccessPolicies' implicitly h... Remove this comment to see the full error message
-	fetchAccessPolicies,
-// @ts-expect-error TS(7031): Binding element 'fetchHasActiveTransactions' impli... Remove this comment to see the full error message
-	fetchHasActiveTransactions,
-// @ts-expect-error TS(7031): Binding element 'saveNewAccessPolicies' implicitly... Remove this comment to see the full error message
-	saveNewAccessPolicies,
 // @ts-expect-error TS(7031): Binding element 'policyChanged' implicitly has an ... Remove this comment to see the full error message
 	policyChanged,
 // @ts-expect-error TS(7031): Binding element 'setPolicyChanged' implicitly has ... Remove this comment to see the full error message
 	setPolicyChanged,
 }) => {
+	const dispatch = useAppDispatch();
+
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const fetchAccessPoliciesWrapper = (eventId: any) => {
+		dispatch(fetchAccessPolicies(eventId));
+	}
+	const fetchHasActiveTransactionsWrapper = async(eventId: any) => {
+		return await dispatch(fetchHasActiveTransactions(eventId)).then(unwrapResult);
+	}
+	const saveNewAccessPoliciesWrapper = async(eventId: any, policies: any) => {
+		dispatch(saveAccessPolicies({eventId, policies}));
+	}
+
+	const policies = useAppSelector(state => getPolicies(state));
+
 	return (
 		<ResourceDetailsAccessPolicyTab
 			resourceId={eventId}
@@ -39,9 +47,9 @@ const EventDetailsAccessPolicyTab = ({
 			saveButtonText={"SAVE"}
 			t={t}
 			policies={policies}
-			fetchAccessPolicies={fetchAccessPolicies}
-			fetchHasActiveTransactions={fetchHasActiveTransactions}
-			saveNewAccessPolicies={saveNewAccessPolicies}
+			fetchAccessPolicies={fetchAccessPoliciesWrapper}
+			fetchHasActiveTransactions={fetchHasActiveTransactionsWrapper}
+			saveNewAccessPolicies={saveNewAccessPoliciesWrapper}
 			descriptionText={t("EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION")}
 			editAccessRole={"ROLE_UI_EVENTS_DETAILS_ACL_EDIT"}
 			policyChanged={policyChanged}
@@ -50,26 +58,4 @@ const EventDetailsAccessPolicyTab = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	policies: getPolicies(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	fetchAccessPolicies: (eventId) => dispatch(fetchAccessPolicies(eventId)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	fetchHasActiveTransactions: (eventId) =>
-		dispatch(fetchHasActiveTransactions(eventId)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	saveNewAccessPolicies: (eventId, policies) =>
-		dispatch(saveAccessPolicies(eventId, policies)),
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EventDetailsAccessPolicyTab);
+export default EventDetailsAccessPolicyTab;

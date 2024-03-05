@@ -1,12 +1,11 @@
 import React from "react";
-import { connect } from "react-redux";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import Notifications from "../../../shared/Notifications";
 import { style_button_spacing } from "../../../../utils/eventDetailsUtils";
 import { Formik } from "formik";
-import { updateAssets } from "../../../../thunks/eventDetailsThunks";
 import { getAssetUploadOptions } from "../../../../selectors/eventSelectors";
-import { useAppSelector } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { updateAssets } from "../../../../slices/eventDetailsSlice";
 
 /**
  * This component manages the add asset sub-tab for assets tab of event details modal
@@ -18,9 +17,8 @@ const EventDetailsAssetsAddAsset = ({
 	t,
 // @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
-// @ts-expect-error TS(7031): Binding element 'updateAssets' implicitly has an '... Remove this comment to see the full error message
-	updateAssets,
 }) => {
+	const dispatch = useAppDispatch();
 
 	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
 
@@ -36,7 +34,7 @@ const EventDetailsAssetsAddAsset = ({
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	function saveAssets(values) {
-		updateAssets(values, eventId);
+		dispatch(updateAssets({values, eventId}));
 	}
 
 // @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
@@ -163,19 +161,4 @@ const EventDetailsAssetsAddAsset = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	updateAssets: (values, eventId) => dispatch(updateAssets(values, eventId)),
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EventDetailsAssetsAddAsset);
+export default EventDetailsAssetsAddAsset;
