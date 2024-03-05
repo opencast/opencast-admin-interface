@@ -13,7 +13,7 @@ import { RootState } from '../store';
  * This file contains redux reducer for actions affecting the state of statistics
  */
 // TODO: proper typing
-type Statistics = {
+export type Statistics = {
 	title: string
 	description: string,
 	providerId: string,

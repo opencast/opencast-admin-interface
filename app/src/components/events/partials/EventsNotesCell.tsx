@@ -1,7 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { deleteComment, saveComment, updateComment } from "../../../thunks/eventDetailsThunks";
+import {
+	deleteComment as deleteOneComment,
+	saveComment as saveNewComment,
+	updateComment as updateNewComment } from "../../../slices/eventDetailsSlice";
 import { updatePages } from "../../../thunks/tableThunks";
+import { useAppDispatch } from "../../../store";
 
 /**
  * This component renders the location cells of events in the table view
@@ -10,15 +14,11 @@ const EventsNotesCell = ({
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
 	// @ts-expect-error TS(7031):
-	saveNewComment,
-	// @ts-expect-error TS(7031):
-	updateNewComment,
-	// @ts-expect-error TS(7031):
-	deleteOneComment,
-	// @ts-expect-error TS(7031):
 	updatePages,
 }) => {
 	const notesCommentReason = 'EVENTS.EVENTS.DETAILS.COMMENTS.REASONS.ADMINUI_NOTES';
+
+	const dispatch = useAppDispatch();
 
 	// Return early if comments are not loaded yet
 	if (!row.comments) {
@@ -32,7 +32,7 @@ const EventsNotesCell = ({
 		if (!event.target.value || !row.id) {
 			return;
 		}
-		saveNewComment(row.id, event.target.value, notesCommentReason)
+		dispatch(saveNewComment({eventId: row.id, commentText: event.target.value, commentReason: notesCommentReason}))
 		.then(() => {
 			updatePages();
 		});
@@ -42,7 +42,7 @@ const EventsNotesCell = ({
 		if (!event.target.value || !row.id || !commentId) {
 			return;
 		}
-		updateNewComment(row.id, commentId, event.target.value, notesCommentReason)
+		dispatch(updateNewComment({eventId: row.id, commentId, commentText: event.target.value, commentReason: notesCommentReason}))
 	}
 
 	const deleteComment = (event: React.FocusEvent<HTMLTextAreaElement>, commentId: any) => {
@@ -50,7 +50,7 @@ const EventsNotesCell = ({
 			return;
 		}
 		if (event.target.value === "") {
-			deleteOneComment(row.id, commentId)
+			dispatch(deleteOneComment({eventId: row.id, commentId}))
 			.then(() => {
 				updatePages();
 			});
@@ -91,15 +91,6 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-	// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	saveNewComment: (eventId, commentText, commentReason) =>
-		dispatch(saveComment(eventId, commentText, commentReason)),
-	// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	updateNewComment: (eventId, commentId, commentText, commentReason) =>
-		dispatch(updateComment(eventId, commentId, commentText, commentReason)),
-	// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	deleteOneComment: (eventId, commentId) =>
-		dispatch(deleteComment(eventId, commentId)),
 	updatePages: () => dispatch(updatePages()),
 });
 

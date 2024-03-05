@@ -1,14 +1,12 @@
-import { connect } from "react-redux";
 import React from "react";
 import Notifications from "../../../shared/Notifications";
 import {
 	getWorkflowErrorDetails,
 	isFetchingWorkflowErrorDetails,
 } from "../../../../selectors/eventDetailsSelectors";
-import { fetchWorkflowErrorDetails } from "../../../../thunks/eventDetailsThunks";
 import { error_detail_style } from "../../../../utils/eventDetailsUtils";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
-import { useAppDispatch } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
@@ -18,10 +16,11 @@ const EventDetailsWorkflowErrorDetails = ({
     eventId,
     t,
     setHierarchy,
-    errorDetails,
-    isFetching
 }: any) => {
 	const dispatch = useAppDispatch();
+
+	const errorDetails = useAppSelector(state => getWorkflowErrorDetails(state));
+	const isFetching = useAppSelector(state => isFetchingWorkflowErrorDetails(state));
 
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
 	const openSubTab = (tabType) => {
@@ -148,7 +147,6 @@ const EventDetailsWorkflowErrorDetails = ({
 
 											{/* list of technical error details */}
 											<td>
-{/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}
 												{errorDetails.details.map((item, key) => (
 													<div key={key}>
 														<h3>{item.name}</h3>
@@ -170,22 +168,4 @@ const EventDetailsWorkflowErrorDetails = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	errorDetails: getWorkflowErrorDetails(state),
-	isFetching: isFetchingWorkflowErrorDetails(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	fetchErrorDetails: (eventId, workflowId, operationId) =>
-		dispatch(fetchWorkflowErrorDetails(eventId, workflowId, operationId)),
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EventDetailsWorkflowErrorDetails);
+export default EventDetailsWorkflowErrorDetails;
