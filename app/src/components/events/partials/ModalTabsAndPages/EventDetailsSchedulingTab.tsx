@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import cn from "classnames";
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'loda... Remove this comment to see the full error message
 import _ from "lodash";
 import { DatePicker } from "@material-ui/pickers";
 import { createTheme, ThemeProvider } from "@material-ui/core";
