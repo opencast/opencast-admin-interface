@@ -1,3 +1,5 @@
+import { TableConfig } from "./aclsTableConfig";
+
 /**
  * Config that contains the columns and further information regarding servers. These are the information that never or hardly changes.
  * That's why it is hard coded here and not fetched from server.
@@ -8,7 +10,7 @@
  * - category type (here: systems)
  * - is multi select possible?
  */
-export const serversTableConfig = {
+export const serversTableConfig: TableConfig = {
 	columns: [
 		{
 			template: "ServersStatusCell",

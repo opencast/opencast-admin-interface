@@ -91,10 +91,6 @@ const SeriesDetails = ({
 			name: "statistics",
 			hidden: !hasStatistics,
 		},
-		{
-			tabNameTranslation: "Feeds",
-			name: "feeds",
-		},
 	];
 
 // @ts-expect-error TS(7006): Parameter 'tabNr' implicitly has an 'any' type.
@@ -133,7 +129,7 @@ const SeriesDetails = ({
 				)}
 				{feeds.length > 0 && (
 					<button className={"button-like-anchor " + cn({ active: page === 5 })} onClick={() => openTab(5)}>
-						{t(tabs[5].tabNameTranslation)}
+						{"Feeds"}
 					</button>
 				)}
 			</nav>
