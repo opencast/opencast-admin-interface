@@ -1,15 +1,15 @@
 import React from "react";
-import { connect } from "react-redux";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import Notifications from "../../../shared/Notifications";
 import {
 	getAssetMediaDetails,
-	isFetchingAssets,
+	isFetchingAssetMediaDetails,
 } from "../../../../selectors/eventDetailsSelectors";
 import {
 	formatDuration,
 	humanReadableBytesFilter,
 } from "../../../../utils/eventDetailsUtils";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component manages the media details sub-tab for assets tab of event details modal
@@ -21,11 +21,10 @@ const EventDetailsAssetMediaDetails = ({
 	t,
 // @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
-// @ts-expect-error TS(7031): Binding element 'media' implicitly has an 'any' ty... Remove this comment to see the full error message
-	media,
-// @ts-expect-error TS(7031): Binding element 'isFetching' implicitly has an 'an... Remove this comment to see the full error message
-	isFetching,
 }) => {
+	const media = useAppSelector(state => getAssetMediaDetails(state));
+	const isFetching = useAppSelector(state => isFetchingAssetMediaDetails(state));
+
 // @ts-expect-error TS(7006): Parameter 'subTabName' implicitly has an 'any' typ... Remove this comment to see the full error message
 	const openSubTab = (subTabName) => {
 		setHierarchy(subTabName);
@@ -242,7 +241,6 @@ const EventDetailsAssetMediaDetails = ({
 										</thead>
 										<tbody>
 											{!!media.streams.audio &&
-// @ts-expect-error TS(7006): Parameter 'audioStream' implicitly has an 'any' ty... Remove this comment to see the full error message
 												media.streams.audio.map((audioStream, key) => (
 													<tr>
 														<td>{key}</td>
@@ -333,7 +331,6 @@ const EventDetailsAssetMediaDetails = ({
 										</thead>
 										<tbody>
 											{!!media.streams.video &&
-// @ts-expect-error TS(7006): Parameter 'videoStream' implicitly has an 'any' ty... Remove this comment to see the full error message
 												media.streams.video.map((videoStream, key) => (
 													<tr>
 														<td>{key}</td>
@@ -398,11 +395,4 @@ const EventDetailsAssetMediaDetails = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	isFetching: isFetchingAssets(state),
-	media: getAssetMediaDetails(state),
-});
-
-export default connect(mapStateToProps)(EventDetailsAssetMediaDetails);
+export default EventDetailsAssetMediaDetails;

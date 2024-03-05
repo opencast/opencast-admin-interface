@@ -1,15 +1,10 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
 import cn from "classnames";
 // @ts-expect-error TS(7016): Could not find a declaration file for module 'loda... Remove this comment to see the full error message
 import _ from "lodash";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Field, Formik } from "formik";
 import Notifications from "../../../shared/Notifications";
-import {
-	checkConflicts,
-	saveSchedulingInfo,
-} from "../../../../thunks/eventDetailsThunks";
 import {
 	getSchedulingConflicts,
 	getSchedulingProperties,
@@ -44,6 +39,10 @@ import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
+	checkConflicts,
+	saveSchedulingInfo,
+} from "../../../../slices/eventDetailsSlice";
+import {
 	removeNotificationWizardForm,
 	addNotification,
 } from "../../../../slices/notificationSlice";
@@ -56,33 +55,32 @@ const EventDetailsSchedulingTab = ({
 	eventId,
 // @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
 	t,
-// @ts-expect-error TS(7031): Binding element 'source' implicitly has an 'any' t... Remove this comment to see the full error message
-	source,
-// @ts-expect-error TS(7031): Binding element 'conflicts' implicitly has an 'any... Remove this comment to see the full error message
-	conflicts,
-// @ts-expect-error TS(7031): Binding element 'hasSchedulingProperties' implicit... Remove this comment to see the full error message
-	hasSchedulingProperties,
-// @ts-expect-error TS(7031): Binding element 'checkingConflicts' implicitly has... Remove this comment to see the full error message
-	checkingConflicts,
-// @ts-expect-error TS(7031): Binding element 'checkConflicts' implicitly has an... Remove this comment to see the full error message
-	checkConflicts,
-// @ts-expect-error TS(7031): Binding element 'saveSchedulingInfo' implicitly ha... Remove this comment to see the full error message
-	saveSchedulingInfo,
 }) => {
-	const user = useAppSelector(state => getUserInformation(state));
 	const dispatch = useAppDispatch();
 
+	const user = useAppSelector(state => getUserInformation(state));
+	const conflicts = useAppSelector(state => getSchedulingConflicts(state));
+	const hasSchedulingProperties = useAppSelector(state => getSchedulingProperties(state));
+	const source = useAppSelector(state => getSchedulingSource(state));
+	const checkingConflicts = useAppSelector(state => isCheckingConflicts(state));
 	const captureAgents = useAppSelector(state => getRecordings(state));
+
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const checkConflictsWrapper = (eventId: any, startDate: any, endDate: any, deviceId: any) => {
+		dispatch(checkConflicts({eventId, startDate, endDate, deviceId}));
+	}
+
+	const sourceStartDate = new Date(source.start.date);
+	const endStartDate = new Date(source.start.date);
 
 	useEffect(() => {
 		dispatch(removeNotificationWizardForm());
-		checkConflicts(
+		dispatch(checkConflicts({
 			eventId,
-			source.start.date,
-			source.end.date,
-			source.device.id
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
-		).then((r) => {});
+			startDate: sourceStartDate,
+			endDate: endStartDate,
+			deviceId: source.device.id
+		})).then();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -173,11 +171,10 @@ const EventDetailsSchedulingTab = ({
 			values.scheduleEndHour,
 			values.scheduleEndMinute
 		);
-		checkConflicts(eventId, startDate, endDate, values.captureAgent).then(
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
+		dispatch(checkConflicts({eventId, startDate, endDate, deviceId: values.captureAgent})).then(
 			(r) => {
 				if (r) {
-					saveSchedulingInfo(eventId, values, startDate, endDate).then();
+					dispatch(saveSchedulingInfo({eventId, values, startDate, endDate})).then();
 				} else {
 					dispatch(addNotification({
 						type: "error",
@@ -226,7 +223,6 @@ const EventDetailsSchedulingTab = ({
 						conflicts.length > 0 && (
 							<table className="main-tbl scheduling-conflict">
 								<tbody>
-{/* @ts-expect-error TS(7006): Parameter 'conflict' implicitly has an 'any' type. */}
 									{conflicts.map((conflict, key) => (
 										<tr key={key}>
 											<td>{conflict.title}</td>
@@ -293,22 +289,22 @@ const EventDetailsSchedulingTab = ({
 																/* date picker for start date */
 																<DatePicker
 																	name="scheduleStartDate"
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
 																	tabIndex={"1"}
 																	value={new Date(formik.values.scheduleStartDate)}
+// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
 																	onChange={(value) =>
 																		changeStartDate(
 																			value,
 																			formik.values,
 																			formik.setFieldValue,
 																			eventId,
-																			checkConflicts
+																			checkConflictsWrapper
 																		)
 																	}
 																/>
 															) : (
 																<>
-																	{source.start.date.toLocaleDateString(
+																	{sourceStartDate.toLocaleDateString(
 // @ts-expect-error TS(2532): Object is possibly 'undefined'.
 																		currentLanguage.dateLocale.code
 																	)}
@@ -343,7 +339,7 @@ const EventDetailsSchedulingTab = ({
 																			formik.values,
 																			formik.setFieldValue,
 																			eventId,
-																			checkConflicts
+																			checkConflictsWrapper
 																		)
 																	}
 																	placeholder={t(
@@ -372,7 +368,7 @@ const EventDetailsSchedulingTab = ({
 																			formik.values,
 																			formik.setFieldValue,
 																			eventId,
-																			checkConflicts
+																			checkConflictsWrapper
 																		)
 																	}
 																	placeholder={t(
@@ -419,7 +415,7 @@ const EventDetailsSchedulingTab = ({
 																			formik.values,
 																			formik.setFieldValue,
 																			eventId,
-																			checkConflicts
+																			checkConflictsWrapper
 																		)
 																	}
 																	placeholder={t("WIZARD.DURATION.HOURS")}
@@ -448,7 +444,7 @@ const EventDetailsSchedulingTab = ({
 																			formik.values,
 																			formik.setFieldValue,
 																			eventId,
-																			checkConflicts
+																			checkConflictsWrapper
 																		)
 																	}
 																	placeholder={t("WIZARD.DURATION.MINUTES")}
@@ -493,7 +489,7 @@ const EventDetailsSchedulingTab = ({
 																			formik.values,
 																			formik.setFieldValue,
 																			eventId,
-																			checkConflicts
+																			checkConflictsWrapper
 																		)
 																	}
 																	placeholder={t(
@@ -522,7 +518,7 @@ const EventDetailsSchedulingTab = ({
 																			formik.values,
 																			formik.setFieldValue,
 																			eventId,
-																			checkConflicts
+																			checkConflictsWrapper
 																		)
 																	}
 																	placeholder={t(
@@ -703,27 +699,4 @@ const EventDetailsSchedulingTab = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	hasSchedulingProperties: getSchedulingProperties(state),
-	source: getSchedulingSource(state),
-	conflicts: getSchedulingConflicts(state),
-	checkingConflicts: isCheckingConflicts(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	checkConflicts: (eventId, startDate, endDate, deviceId) =>
-		dispatch(checkConflicts(eventId, startDate, endDate, deviceId)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	saveSchedulingInfo: (eventId, values, startDate, endDate) =>
-		dispatch(saveSchedulingInfo(eventId, values, startDate, endDate)),
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EventDetailsSchedulingTab);
+export default EventDetailsSchedulingTab;

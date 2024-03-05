@@ -1,12 +1,12 @@
 import React from "react";
-import { connect } from "react-redux";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import Notifications from "../../../shared/Notifications";
 import {
 	getAssetCatalogs,
-	isFetchingAssets,
+	isFetchingAssetCatalogs,
 } from "../../../../selectors/eventDetailsSelectors";
-import { fetchAssetCatalogDetails } from "../../../../thunks/eventDetailsThunks";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { fetchAssetCatalogDetails } from "../../../../slices/eventDetailsSlice";
 
 /**
  * This component manages the catalogs sub-tab for assets tab of event details modal
@@ -18,18 +18,16 @@ const EventDetailsAssetCatalogs = ({
 	t,
 // @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
-// @ts-expect-error TS(7031): Binding element 'catalogs' implicitly has an 'any'... Remove this comment to see the full error message
-	catalogs,
-// @ts-expect-error TS(7031): Binding element 'isFetching' implicitly has an 'an... Remove this comment to see the full error message
-	isFetching,
-// @ts-expect-error TS(7031): Binding element 'loadCatalogDetails' implicitly ha... Remove this comment to see the full error message
-	loadCatalogDetails,
 }) => {
+	const dispatch = useAppDispatch();
+
+	const catalogs = useAppSelector(state => getAssetCatalogs(state));
+	const isFetching = useAppSelector(state => isFetchingAssetCatalogs(state));
+
 // @ts-expect-error TS(7006): Parameter 'subTabName' implicitly has an 'any' typ... Remove this comment to see the full error message
 	const openSubTab = (subTabName, catalogId = "") => {
 		if (subTabName === "catalog-details") {
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
-			loadCatalogDetails(eventId, catalogId).then((r) => {});
+			dispatch(fetchAssetCatalogDetails({eventId, catalogId})).then();
 		}
 		setHierarchy(subTabName);
 	};
@@ -91,7 +89,6 @@ const EventDetailsAssetCatalogs = ({
 								</thead>
 								<tbody>
 									{isFetching ||
-// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
 										catalogs.map((item, key) => (
 											<tr key={key}>
 												<td>{item.id}</td>
@@ -128,22 +125,4 @@ const EventDetailsAssetCatalogs = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	isFetching: isFetchingAssets(state),
-	catalogs: getAssetCatalogs(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	loadCatalogDetails: (eventId, catalogId) =>
-		dispatch(fetchAssetCatalogDetails(eventId, catalogId)),
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EventDetailsAssetCatalogs);
+export default EventDetailsAssetCatalogs;
