@@ -27,7 +27,7 @@ type UserInfoUser = {
 	username: string,
 }
 
-type UserInfoState = {
+export type UserInfoState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
 	statusOcVersion: 'uninitialized' | 'loading' | 'succeeded' | 'failed',

@@ -1,5 +1,5 @@
 import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { aclsTableConfig } from "../configs/tableConfigs/aclsTableConfig";
+import { TableConfig, aclsTableConfig } from "../configs/tableConfigs/aclsTableConfig";
 import axios from 'axios';
 import { getURLParams } from '../utils/resourceUtils';
 
@@ -23,7 +23,7 @@ type AclsState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
 	results: AclResult[],
-	columns: any,			 // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],
 	total: number,
 	count: number,
 	offset: number,
