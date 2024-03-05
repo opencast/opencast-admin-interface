@@ -1,5 +1,6 @@
 import JobsStartedCell from "../../components/systems/partials/JobsStartedCell";
 import JobsSubmittedCell from "../../components/systems/partials/JobsSubmittedCell";
+import { TableConfig } from "./aclsTableConfig";
 
 /**
  * Config that contains the columns and further information regarding jobs. These are the information that never or hardly changes.
@@ -11,7 +12,7 @@ import JobsSubmittedCell from "../../components/systems/partials/JobsSubmittedCe
  * - category type (here: systems)
  * - is multi select possible?
  */
-export const jobsTableConfig = {
+export const jobsTableConfig: TableConfig = {
 	columns: [
 		{
 			name: "id",
