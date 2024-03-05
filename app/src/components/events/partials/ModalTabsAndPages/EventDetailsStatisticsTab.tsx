@@ -3,9 +3,9 @@ import {
 	getStatistics,
 	hasStatisticsError,
 } from "../../../../selectors/eventDetailsSelectors";
-import { connect } from "react-redux";
 import TimeSeriesStatistics from "../../../shared/TimeSeriesStatistics";
-import { fetchEventStatisticsValueUpdate } from "../../../../thunks/eventDetailsThunks";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { fetchEventStatisticsValueUpdate } from "../../../../slices/eventDetailsSlice";
 
 /**
  * This component manages the statistics tab of the event details modal
@@ -17,13 +17,17 @@ const EventDetailsStatisticsTab = ({
 	header,
 // @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
 	t,
-// @ts-expect-error TS(7031): Binding element 'statistics' implicitly has an 'an... Remove this comment to see the full error message
-	statistics,
-// @ts-expect-error TS(7031): Binding element 'hasError' implicitly has an 'any'... Remove this comment to see the full error message
-	hasError,
-// @ts-expect-error TS(7031): Binding element 'recalculateStatistics' implicitly... Remove this comment to see the full error message
-	recalculateStatistics,
 }) => {
+	const dispatch = useAppDispatch();
+
+	const statistics = useAppSelector(state => getStatistics(state));
+	const hasError = useAppSelector(state => hasStatisticsError(state));
+
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const fetchEventStatisticsValueUpdateWrapper = (eventId: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any) => {
+		dispatch(fetchEventStatisticsValueUpdate({eventId, providerId, from, to, dataResolution, timeMode}));
+	}
+
 	/* generates file name for download-link for a statistic */
 // @ts-expect-error TS(7006): Parameter 'statsTitle' implicitly has an 'any' typ... Remove this comment to see the full error message
 	const statisticsCsvFileName = (statsTitle) => {
@@ -47,7 +51,6 @@ const EventDetailsStatisticsTab = ({
 						</div>
 					) : (
 						/* iterates over the different available statistics */
-// @ts-expect-error TS(7006): Parameter 'stat' implicitly has an 'any' type.
 						statistics.map((stat, key) => (
 							<div className="obj" key={key}>
 								{/* title of statistic */}
@@ -66,7 +69,7 @@ const EventDetailsStatisticsTab = ({
 											timeMode={stat.timeMode}
 											dataResolution={stat.dataResolution}
 											statDescription={stat.description}
-											onChange={recalculateStatistics}
+											onChange={fetchEventStatisticsValueUpdateWrapper}
 											exportUrl={stat.csvUrl}
 											exportFileName={statisticsCsvFileName}
 											totalValue={stat.totalValue}
@@ -90,43 +93,4 @@ const EventDetailsStatisticsTab = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	statistics: getStatistics(state),
-	hasError: hasStatisticsError(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	recalculateStatistics: (
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-		eventId,
-// @ts-expect-error TS(7006): Parameter 'providerId' implicitly has an 'any' typ... Remove this comment to see the full error message
-		providerId,
-// @ts-expect-error TS(7006): Parameter 'from' implicitly has an 'any' type.
-		from,
-// @ts-expect-error TS(7006): Parameter 'to' implicitly has an 'any' type.
-		to,
-// @ts-expect-error TS(7006): Parameter 'dataResolution' implicitly has an 'any'... Remove this comment to see the full error message
-		dataResolution,
-// @ts-expect-error TS(7006): Parameter 'timeMode' implicitly has an 'any' type.
-		timeMode
-	) =>
-		dispatch(
-			fetchEventStatisticsValueUpdate(
-				eventId,
-				providerId,
-				from,
-				to,
-				dataResolution,
-				timeMode
-			)
-		),
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EventDetailsStatisticsTab);
+export default EventDetailsStatisticsTab;
