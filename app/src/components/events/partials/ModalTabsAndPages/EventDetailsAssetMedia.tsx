@@ -1,12 +1,12 @@
 import React from "react";
-import { connect } from "react-redux";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import Notifications from "../../../shared/Notifications";
 import {
 	getAssetMedia,
-	isFetchingAssets,
+	isFetchingAssetMedia,
 } from "../../../../selectors/eventDetailsSelectors";
-import { fetchAssetMediaDetails } from "../../../../thunks/eventDetailsThunks";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { fetchAssetMediaDetails } from "../../../../slices/eventDetailsSlice";
 
 /**
  * This component manages the media sub-tab for assets tab of event details modal
@@ -18,18 +18,16 @@ const EventDetailsAssetMedia = ({
 	t,
 // @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
-// @ts-expect-error TS(7031): Binding element 'media' implicitly has an 'any' ty... Remove this comment to see the full error message
-	media,
-// @ts-expect-error TS(7031): Binding element 'isFetching' implicitly has an 'an... Remove this comment to see the full error message
-	isFetching,
-// @ts-expect-error TS(7031): Binding element 'loadMediaDetails' implicitly has ... Remove this comment to see the full error message
-	loadMediaDetails,
 }) => {
+	const dispatch = useAppDispatch();
+
+	const media = useAppSelector(state => getAssetMedia(state));
+	const isFetching = useAppSelector(state => isFetchingAssetMedia(state));
+
 // @ts-expect-error TS(7006): Parameter 'subTabName' implicitly has an 'any' typ... Remove this comment to see the full error message
 	const openSubTab = (subTabName, mediaId = "") => {
 		if (subTabName === "media-details") {
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
-			loadMediaDetails(eventId, mediaId).then((r) => {});
+			dispatch(fetchAssetMediaDetails({eventId, mediaId})).then();
 		}
 		setHierarchy(subTabName);
 	};
@@ -79,7 +77,6 @@ const EventDetailsAssetMedia = ({
 								</thead>
 								<tbody>
 									{isFetching ||
-// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
 										media.map((item, key) => (
 											<tr key={key}>
 												<td>
@@ -116,22 +113,4 @@ const EventDetailsAssetMedia = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	isFetching: isFetchingAssets(state),
-	media: getAssetMedia(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	loadMediaDetails: (eventId, mediaId) =>
-		dispatch(fetchAssetMediaDetails(eventId, mediaId)),
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EventDetailsAssetMedia);
+export default EventDetailsAssetMedia;

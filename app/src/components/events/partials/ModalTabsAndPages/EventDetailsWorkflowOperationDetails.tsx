@@ -1,14 +1,11 @@
-import { connect } from "react-redux";
 import React from "react";
 import Notifications from "../../../shared/Notifications";
 import {
-	getWorkflow,
 	getWorkflowOperationDetails,
-	getWorkflowOperations,
 	isFetchingWorkflowOperationDetails,
 } from "../../../../selectors/eventDetailsSelectors";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
-import { useAppDispatch } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
@@ -21,12 +18,11 @@ const EventDetailsWorkflowOperationDetails = ({
 	t,
 // @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
-// @ts-expect-error TS(7031): Binding element 'operationDetails' implicitly has ... Remove this comment to see the full error message
-	operationDetails,
-// @ts-expect-error TS(7031): Binding element 'isFetching' implicitly has an 'an... Remove this comment to see the full error message
-	isFetching,
 }) => {
 	const dispatch = useAppDispatch();
+
+	const operationDetails = useAppSelector(state => getWorkflowOperationDetails(state));
+	const isFetching = useAppSelector(state => isFetchingWorkflowOperationDetails(state));
 
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
 	const openSubTab = (tabType) => {
@@ -215,13 +211,4 @@ const EventDetailsWorkflowOperationDetails = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	workflowId: getWorkflow(state).wiid,
-	operations: getWorkflowOperations(state),
-	isFetching: isFetchingWorkflowOperationDetails(state),
-	operationDetails: getWorkflowOperationDetails(state),
-});
-
-export default connect(mapStateToProps)(EventDetailsWorkflowOperationDetails);
+export default EventDetailsWorkflowOperationDetails;
