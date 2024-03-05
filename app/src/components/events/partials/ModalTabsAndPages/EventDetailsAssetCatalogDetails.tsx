@@ -1,12 +1,12 @@
 import React from "react";
-import { connect } from "react-redux";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import Notifications from "../../../shared/Notifications";
 import {
 	getAssetCatalogDetails,
-	isFetchingAssets,
+	isFetchingAssetCatalogDetails,
 } from "../../../../selectors/eventDetailsSelectors";
 import { humanReadableBytesFilter } from "../../../../utils/eventDetailsUtils";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component manages the catalog details sub-tab for assets tab of event details modal
@@ -18,11 +18,10 @@ const EventDetailsAssetCatalogDetails = ({
 	t,
 // @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
-// @ts-expect-error TS(7031): Binding element 'catalog' implicitly has an 'any' ... Remove this comment to see the full error message
-	catalog,
-// @ts-expect-error TS(7031): Binding element 'isFetching' implicitly has an 'an... Remove this comment to see the full error message
-	isFetching,
 }) => {
+	const catalog = useAppSelector(state => getAssetCatalogDetails(state));
+	const isFetching = useAppSelector(state => isFetchingAssetCatalogDetails(state));
+
 // @ts-expect-error TS(7006): Parameter 'subTabName' implicitly has an 'any' typ... Remove this comment to see the full error message
 	const openSubTab = (subTabName) => {
 		setHierarchy(subTabName);
@@ -157,11 +156,4 @@ const EventDetailsAssetCatalogDetails = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	isFetching: isFetchingAssets(state),
-	catalog: getAssetCatalogDetails(state),
-});
-
-export default connect(mapStateToProps)(EventDetailsAssetCatalogDetails);
+export default EventDetailsAssetCatalogDetails;

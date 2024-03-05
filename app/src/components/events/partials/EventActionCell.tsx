@@ -7,14 +7,14 @@ import EmbeddingCodeModal from "./modals/EmbeddingCodeModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import SeriesDetailsModal from "./modals/SeriesDetailsModal";
+import { useAppDispatch, useAppSelector } from "../../../store";
 import {
-	fetchNamesOfPossibleThemes,
+	fetchSeriesDetailsThemeNames,
 	fetchSeriesDetailsAcls,
 	fetchSeriesDetailsFeeds,
 	fetchSeriesDetailsMetadata,
 	fetchSeriesDetailsTheme,
-} from "../../../thunks/seriesDetailsThunks";
-import { useAppDispatch, useAppSelector } from "../../../store";
+} from "../../../slices/seriesDetailsSlice";
 import { deleteEvent } from "../../../slices/eventSlice";
 
 /**
@@ -23,16 +23,6 @@ import { deleteEvent } from "../../../slices/eventSlice";
 const EventActionCell = ({
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsMetadata' impli... Remove this comment to see the full error message
-	fetchSeriesDetailsMetadata,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsAcls' implicitl... Remove this comment to see the full error message
-	fetchSeriesDetailsAcls,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsFeeds' implicit... Remove this comment to see the full error message
-	fetchSeriesDetailsFeeds,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsTheme' implicit... Remove this comment to see the full error message
-	fetchSeriesDetailsTheme,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsThemeNames' imp... Remove this comment to see the full error message
-	fetchSeriesDetailsThemeNames,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -79,11 +69,11 @@ const EventActionCell = ({
 	};
 
 	const onClickSeriesDetails = async () => {
-		await fetchSeriesDetailsMetadata(row.series.id);
-		await fetchSeriesDetailsAcls(row.series.id);
-		await fetchSeriesDetailsFeeds(row.series.id);
-		await fetchSeriesDetailsTheme(row.series.id);
-		await fetchSeriesDetailsThemeNames();
+		await dispatch(fetchSeriesDetailsMetadata(row.series.id));
+		await dispatch(fetchSeriesDetailsAcls(row.series.id));
+		await dispatch(fetchSeriesDetailsFeeds(row.series.id));
+		await dispatch(fetchSeriesDetailsTheme(row.series.id));
+		await dispatch(fetchSeriesDetailsThemeNames());
 
 		showSeriesDetailsModal();
 	};
@@ -252,15 +242,6 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchSeriesDetailsMetadata: (id) => dispatch(fetchSeriesDetailsMetadata(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchSeriesDetailsAcls: (id) => dispatch(fetchSeriesDetailsAcls(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchSeriesDetailsFeeds: (id) => dispatch(fetchSeriesDetailsFeeds(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchSeriesDetailsTheme: (id) => dispatch(fetchSeriesDetailsTheme(id)),
-	fetchSeriesDetailsThemeNames: () => dispatch(fetchNamesOfPossibleThemes()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventActionCell);
