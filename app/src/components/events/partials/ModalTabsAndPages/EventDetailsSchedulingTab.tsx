@@ -212,13 +212,13 @@ const EventDetailsSchedulingTab = ({
 
 		return {
 			scheduleStartDate: startDate.setHours(0, 0, 0),
-			scheduleStartHour: makeTwoDigits(source.start.hour),
-			scheduleStartMinute: makeTwoDigits(source.start.minute),
-			scheduleDurationHours: makeTwoDigits(source.duration.hour),
-			scheduleDurationMinutes: makeTwoDigits(source.duration.minute),
+			scheduleStartHour: source.start.hour ? makeTwoDigits(source.start.hour) : "",
+			scheduleStartMinute: source.start.minute ? makeTwoDigits(source.start.minute) : "",
+			scheduleDurationHours: source.duration.hour ? makeTwoDigits(source.duration.hour) : "",
+			scheduleDurationMinutes: source.duration.minute ? makeTwoDigits(source.duration.minute): "",
 			scheduleEndDate: endDate.setHours(0, 0, 0),
-			scheduleEndHour: makeTwoDigits(source.end.hour),
-			scheduleEndMinute: makeTwoDigits(source.end.minute),
+			scheduleEndHour: source.end.hour ? makeTwoDigits(source.end.hour): "",
+			scheduleEndMinute: source.end.minute ? makeTwoDigits(source.end.minute): "",
 			captureAgent: source.device.name,
 			inputs: inputs.filter((input) => input !== ""),
 		};
@@ -403,8 +403,8 @@ const EventDetailsSchedulingTab = ({
 															)}
 															{!hasAccessRole && (
 																<td>
-																	{makeTwoDigits(source.start.hour)}:
-																	{makeTwoDigits(source.start.minute)}
+																	{source.start.hour ? makeTwoDigits(source.start.hour) : ""}:
+																	{source.start.minute ? makeTwoDigits(source.start.minute) : ""}
 																</td>
 															)}
 														</tr>
@@ -477,8 +477,8 @@ const EventDetailsSchedulingTab = ({
 															)}
 															{!hasAccessRole && (
 																<td>
-																	{makeTwoDigits(source.duration.hour)}:
-																	{makeTwoDigits(source.duration.minute)}
+																	{source.duration.hour ? makeTwoDigits(source.duration.hour) : ""}:
+																	{source.duration.minute ? makeTwoDigits(source.duration.minute): ""}
 																</td>
 															)}
 														</tr>
@@ -566,8 +566,8 @@ const EventDetailsSchedulingTab = ({
 															)}
 															{!hasAccessRole && (
 																<td>
-																	{makeTwoDigits(source.end.hour)}:
-																	{makeTwoDigits(source.end.minute)}
+																	{source.end.hour ? makeTwoDigits(source.end.hour) : ""}:
+																	{source.end.minute ? makeTwoDigits(source.end.minute): ""}
 																	{formik.values.scheduleEndDate.toString() !==
 																		formik.values.scheduleStartDate.toString() && (
 																		<span>
