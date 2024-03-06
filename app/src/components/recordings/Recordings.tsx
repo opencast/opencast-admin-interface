@@ -10,8 +10,7 @@ import Notifications from "../shared/Notifications";
 import { recordingsTemplateMap } from "../../configs/tableConfigs/recordingsTableMap";
 import { getTotalRecordings } from "../../selectors/recordingSelectors";
 import { loadRecordingsIntoTable } from "../../thunks/tableThunks";
-import { fetchFilters } from "../../thunks/tableFilterThunks";
-import { editTextFilter } from "../../actions/tableFilterActions";
+import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
 import Header from "../Header";
 import Footer from "../Footer";
@@ -27,18 +26,13 @@ import { fetchRecordings } from "../../slices/recordingSlice";
 const Recordings = ({
 // @ts-expect-error TS(7031): Binding element 'loadingRecordingsIntoTable' impli... Remove this comment to see the full error message
 	loadingRecordingsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
-	loadingFilters,
-// @ts-expect-error TS(7031): Binding element 'resetTextFilter' implicitly has a... Remove this comment to see the full error message
-	resetTextFilter,
-// @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
-	currentFilterType,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 
 	const user = useAppSelector(state => getUserInformation(state));
+	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 	const recordings = useAppSelector(state => getTotalRecordings(state));
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
@@ -56,10 +50,11 @@ const Recordings = ({
 
 	useEffect(() => {
 		if ("recordings" !== currentFilterType) {
-			loadingFilters("recordings");
+			dispatch(fetchFilters("recordings"));
 		}
 
-		resetTextFilter();
+		// Reset text filter
+		dispatch(editTextFilter(""));
 
 		// Load recordings on mount
 		loadRecordings().then((r) => console.info(r));
@@ -119,16 +114,12 @@ const Recordings = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	currentFilterType: getCurrentFilterResource(state),
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
 	loadingRecordingsIntoTable: () => dispatch(loadRecordingsIntoTable()),
-// @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
-	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
-	resetTextFilter: () => dispatch(editTextFilter("")),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Recordings);

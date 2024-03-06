@@ -11,6 +11,7 @@ import { NewUser } from "../slices/userSlice";
 import { Recording } from "../slices/recordingSlice";
 import { UserInfoState } from "../slices/userInfoSlice";
 import { hasAccess } from "./utils";
+import { RootState } from "../store";
 
 /**
  * This file contains methods that are needed in more than one resource thunk
@@ -27,10 +28,7 @@ export const getHttpHeaders = () => {
 
 // prepare URL params for getting resources
 export const getURLParams = (
-	state: {
-		tableFilters: any,	// TODO: Type these after modernizing redux is done
-		table: any,
-	}
+	state: RootState
 ) => {
 	// get filter map from state
 	let filters = [];

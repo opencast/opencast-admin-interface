@@ -14,9 +14,8 @@ import {
 	loadEventsIntoTable,
 	loadSeriesIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchFilters, fetchStats } from "../../thunks/tableFilterThunks";
+import { fetchFilters, fetchStats, editTextFilter } from "../../slices/tableFilterSlice";
 import { getTotalSeries, isShowActions } from "../../selectors/seriesSeletctor";
-import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
 import Header from "../Header";
@@ -46,16 +45,8 @@ const Series = ({
 	loadingSeriesIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingEventsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingEventsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
-	loadingFilters,
-// @ts-expect-error TS(7031): Binding element 'loadingStats' implicitly has an '... Remove this comment to see the full error message
-	loadingStats,
-// @ts-expect-error TS(7031): Binding element 'resetTextFilter' implicitly has a... Remove this comment to see the full error message
-	resetTextFilter,
 // @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
 	resetOffset,
-// @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
-	currentFilterType,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -65,6 +56,7 @@ const Series = ({
 	const [displayDeleteSeriesModal, setDeleteSeriesModal] = useState(false);
 
   const user = useAppSelector(state => getUserInformation(state));
+	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	let location = useLocation();
 
@@ -81,7 +73,7 @@ const Series = ({
 		resetOffset();
 
 		// Fetching stats from server
-		loadingStats();
+		dispatch(fetchStats());
 
 		// Fetching events from server
 		dispatch(fetchEvents());
@@ -100,10 +92,11 @@ const Series = ({
 
 	useEffect(() => {
 		if ("series" !== currentFilterType) {
-			loadingFilters("series");
+			dispatch(fetchFilters("series"))
 		}
 
-		resetTextFilter();
+		// Reset text filer
+		dispatch(editTextFilter(""));
 
 		// disable actions button
 		dispatch(showActionsSeries(false));
@@ -265,7 +258,6 @@ const Series = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	currentFilterType: getCurrentFilterResource(state),
 });
 
 // Mapping actions to dispatch
@@ -273,10 +265,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	loadingSeriesIntoTable: () => dispatch(loadSeriesIntoTable()),
 	loadingEventsIntoTable: () => dispatch(loadEventsIntoTable()),
-// @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
-	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
-	loadingStats: () => dispatch(fetchStats()),
-	resetTextFilter: () => dispatch(editTextFilter("")),
 	resetOffset: () => dispatch(setOffset(0)),
 });
 

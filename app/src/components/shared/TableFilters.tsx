@@ -3,56 +3,32 @@ import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
-	getCurrentFilterResource,
 	getFilters,
 	getSecondFilter,
 	getSelectedFilter,
 	getTextFilter,
 } from "../../selectors/tableFilterSelectors";
 import {
+	FilterData,
 	editFilterValue,
-	editSecondFilter,
 	editSelectedFilter,
 	editTextFilter,
 	removeSecondFilter,
 	removeSelectedFilter,
 	removeTextFilter,
 	resetFilterValues,
-} from "../../actions/tableFilterActions";
+} from "../../slices/tableFilterSlice";
 import TableFilterProfiles from "./TableFilterProfiles";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { GlobalHotKeys } from "react-hotkeys";
 import { getResourceType } from "../../selectors/tableSelectors";
-import { fetchFilters } from "../../thunks/tableFilterThunks";
-import { parseISO } from "date-fns";
 import moment from "moment";
+import { useAppDispatch, useAppSelector } from "../../store";
 
 /**
  * This component renders the table filters in the upper right corner of the table
  */
 const TableFilters = ({
-// @ts-expect-error TS(7031): Binding element 'filterMap' implicitly has an 'any... Remove this comment to see the full error message
-	filterMap,
-// @ts-expect-error TS(7031): Binding element 'textFilter' implicitly has an 'an... Remove this comment to see the full error message
-	textFilter,
-// @ts-expect-error TS(7031): Binding element 'selectedFilter' implicitly has an... Remove this comment to see the full error message
-	selectedFilter,
-// @ts-expect-error TS(7031): Binding element 'secondFilter' implicitly has an '... Remove this comment to see the full error message
-	secondFilter,
-// @ts-expect-error TS(7031): Binding element 'onChangeTextFilter' implicitly ha... Remove this comment to see the full error message
-	onChangeTextFilter,
-// @ts-expect-error TS(7031): Binding element 'removeTextFilter' implicitly has ... Remove this comment to see the full error message
-	removeTextFilter,
-// @ts-expect-error TS(7031): Binding element 'editSelectedFilter' implicitly ha... Remove this comment to see the full error message
-	editSelectedFilter,
-// @ts-expect-error TS(7031): Binding element 'removeSelectedFilter' implicitly ... Remove this comment to see the full error message
-	removeSelectedFilter,
-// @ts-expect-error TS(7031): Binding element 'removeSecondFilter' implicitly ha... Remove this comment to see the full error message
-	removeSecondFilter,
-// @ts-expect-error TS(7031): Binding element 'resetFilterMap' implicitly has an... Remove this comment to see the full error message
-	resetFilterMap,
-// @ts-expect-error TS(7031): Binding element 'editFilterValue' implicitly has a... Remove this comment to see the full error message
-	editFilterValue,
 // @ts-expect-error TS(7031): Binding element 'loadResource' implicitly has an '... Remove this comment to see the full error message
 	loadResource,
 // @ts-expect-error TS(7031): Binding element 'loadResourceIntoTable' implicitly... Remove this comment to see the full error message
@@ -61,6 +37,12 @@ const TableFilters = ({
 	resource,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
+
+	const filterMap = useAppSelector(state => getFilters(state));
+	const secondFilter = useAppSelector(state => getSecondFilter(state));
+	const selectedFilter = useAppSelector(state => getSelectedFilter(state));
+	const textFilter = useAppSelector(state => getTextFilter(state));
 
 	// Variables for showing different dialogs depending on what was clicked
 	const [showFilterSelector, setFilterSelector] = useState(false);
@@ -76,12 +58,12 @@ const TableFilters = ({
 		setStartDate(undefined);
 		setEndDate(undefined);
 
-		removeTextFilter();
-		removeSelectedFilter();
-		removeSelectedFilter();
+		dispatch(removeTextFilter());
+		dispatch(removeSelectedFilter());
+		dispatch(removeSelectedFilter());
 
 		// Set all values of the filters in filterMap back to ""
-		resetFilterMap();
+		dispatch(resetFilterValues())
 
 		// Reload resources when filters are removed
 		await loadResource();
@@ -97,7 +79,7 @@ const TableFilters = ({
 			setEndDate(undefined);
 		}
 
-		editFilterValue(filter.name, "");
+		dispatch(editFilterValue({filterName: filter.name, value: ""}));
 
 		// Reload resources when filter is removed
 		await loadResource();
@@ -111,22 +93,23 @@ const TableFilters = ({
 		const itemValue = e.target.value;
 
 		if (itemName === "textFilter") {
-			onChangeTextFilter(itemValue);
+			dispatch(editTextFilter(itemValue));
 		}
 
 		if (itemName === "selectedFilter") {
-			editSelectedFilter(itemValue);
+			dispatch(editSelectedFilter(itemValue))
 		}
 
 		// If the change is in secondFilter (filter is picked) then the selected value is saved in filterMap
 		// and the filter selections are cleared
 		if (itemName === "secondFilter") {
-// @ts-expect-error TS(7031): Binding element 'name' implicitly has an 'any' typ... Remove this comment to see the full error message
 			let filter = filterMap.find(({ name }) => name === selectedFilter);
-			editFilterValue(filter.name, itemValue);
-			setFilterSelector(false);
-			removeSelectedFilter();
-			removeSecondFilter();
+			if (!!filter) {
+				dispatch(editFilterValue({filterName: filter.name, value: itemValue}));
+				setFilterSelector(false);
+				dispatch(removeSelectedFilter());
+				dispatch(removeSecondFilter());
+			}
 		}
 		// Reload of resource
 		await loadResource();
@@ -134,7 +117,11 @@ const TableFilters = ({
 	};
 
 	// Set the sate of startDate and endDate picked with datepicker
-	const handleDatepickerChange = async (date: Date, isStart = false) => {
+	const handleDatepickerChange = async (date: Date | null, isStart = false) => {
+		if (date === null) {
+			return;
+		}
+
 		if (isStart) {
 			date.setHours(0);
 			date.setMinutes(0);
@@ -151,7 +138,11 @@ const TableFilters = ({
 	// If both dates are set, set the value for the startDate filter
 	// If the just changed, it can be passed here so we don't have wait a render
 	// cycle for the useState state to update
-	const handleDatepickerConfirm = async (date?: Date, isStart = false) => {
+	const handleDatepickerConfirm = async (date?: Date | null, isStart = false) => {
+		if (date === null) {
+			return;
+		}
+
 		let myStartDate = startDate;
 		let myEndDate = endDate;
 		if (date && isStart) {
@@ -168,17 +159,18 @@ const TableFilters = ({
 		}
 
 		if (myStartDate && myEndDate && moment(myStartDate).isValid() && moment(myEndDate).isValid()) {
-// @ts-expect-error TS(7031): Binding element 'name' implicitly has an 'any' typ... Remove this comment to see the full error message
 			let filter = filterMap.find(({ name }) => name === selectedFilter);
-			await editFilterValue(
-				filter.name,
-				myStartDate.toISOString() + "/" + myEndDate.toISOString()
-			);
-			setFilterSelector(false);
-			removeSelectedFilter();
-			// Reload of resource
-			await loadResource();
-			loadResourceIntoTable();
+			if (filter) {
+				dispatch(editFilterValue({
+					filterName: filter.name,
+					value: myStartDate.toISOString() + "/" + myEndDate.toISOString()
+				}));
+				setFilterSelector(false);
+				dispatch(removeSelectedFilter());
+				// Reload of resource
+				await loadResource();
+				loadResourceIntoTable();
+			}
 		}
 
 		if (myStartDate && isStart && !endDate) {
@@ -276,10 +268,8 @@ const TableFilters = ({
 											</option>
 											{filterMap
 												.filter(
-// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 													(filter) => filter.name !== "presentersBibliographic"
 												)
-// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 												.map((filter, key) => (
 													<option key={key} value={filter.name}>
 														{t(filter.label).substr(0, 40)}
@@ -308,7 +298,6 @@ const TableFilters = ({
 							)}
 
 							{/* Show for each selected filter a blue label containing its name and option */}
-{/* @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type. */}
 							{filterMap.map((filter, key) => {
 								if (!!filter.value) {
 									return (
@@ -382,30 +371,34 @@ const TableFilters = ({
  * In case of select, a second selection is shown. In case of period, datepicker are shown.
  */
 const FilterSwitch = ({
-// @ts-expect-error TS(7031): Binding element 'filterMap' implicitly has an 'any... Remove this comment to see the full error message
 	filterMap,
-// @ts-expect-error TS(7031): Binding element 'selectedFilter' implicitly has an... Remove this comment to see the full error message
 	selectedFilter,
-// @ts-expect-error TS(7031): Binding element 'handleChange' implicitly has an '... Remove this comment to see the full error message
 	handleChange,
-	// @ts-expect-error TS(7031):
 	startDate,
-	// @ts-expect-error TS(7031):
 	endDate,
-// @ts-expect-error TS(7031): Binding element 'handleDate' implicitly has an 'an... Remove this comment to see the full error message
 	handleDate,
-// @ts-expect-error TS(7031): Binding element 'handleDate' implicitly has an 'an... Remove this comment to see the full error message
 	handleDateConfirm,
-// @ts-expect-error TS(7031): Binding element 'secondFilter' implicitly has an '... Remove this comment to see the full error message
 	secondFilter,
+} : {
+	filterMap: FilterData[],
+	selectedFilter: string,
+	handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void,
+	startDate: Date | undefined,
+	endDate: Date | undefined,
+	handleDate: (date: Date | null, isStart?: boolean) => void,
+	handleDateConfirm: (date: Date | undefined | null, isStart?: boolean) => void,
+	secondFilter: string,
 }) => {
 	const { t } = useTranslation();
 
 	const startDateRef = useRef<HTMLInputElement>(null);
 	const endDateRef = useRef<HTMLInputElement>(null);
 
-// @ts-expect-error TS(7031): Binding element 'name' implicitly has an 'any' typ... Remove this comment to see the full error message
 	let filter = filterMap.find(({ name }) => name === selectedFilter);
+	if (!filter) {
+		return null;
+	}
+
 	// eslint-disable-next-line default-case
 	switch (filter.type) {
 		case "select":
@@ -434,7 +427,6 @@ const FilterSwitch = ({
 								<option value="" disabled>
 									{t("TABLE_FILTERS.FILTER_VALUE_SELECTION.PLACEHOLDER")}
 								</option>
-{/* @ts-expect-error TS(7006): Parameter 'option' implicitly has an 'any' type. */}
 								{filter.options.map((option, key) => (
 									<option key={key} value={option.value}>
 										{t(option.label).substr(0, 40)}
@@ -464,7 +456,6 @@ const FilterSwitch = ({
 							<option value="" disabled>
 								{t("TABLE_FILTERS.FILTER_VALUE_SELECTION.PLACEHOLDER")}
 							</option>
-{/* @ts-expect-error TS(7006): Parameter 'option' implicitly has an 'any' type. */}
 							{filter.options.map((option, key) => (
 								<option key={key} value={option.value}>
 									{option.label.substr(0, 40)}
@@ -484,11 +475,11 @@ const FilterSwitch = ({
 						className="small-search start-date"
 						value={startDate ?? {}}
 						format="dd/MM/yyyy"
-						onChange={(date) => handleDate(date, true)}
+						onChange={(date) => handleDate(date as Date | null, true)}
 						// FixMe: onAccept does not trigger if the already set value is the same as the selected value
 						// This prevents us from confirming from confirming our filter, if someone wants to selected the same
 						// day for both start and end date (since we automatically set one to the other)
-						onAccept={(e) => {handleDateConfirm(e, true)}}
+						onAccept={(e) => {handleDateConfirm(e as Date | null, true)}}
 						slotProps={{
 							textField: {
 								onKeyDown: (event) => {
@@ -507,9 +498,9 @@ const FilterSwitch = ({
 						className="small-search end-date"
 						value={endDate ?? {}}
 						format="dd/MM/yyyy"
-						onChange={(date) => handleDate(date)}
+						onChange={(date) => handleDate(date as Date | null)}
 						// FixMe: See above
-						onAccept={(e) => handleDateConfirm(e, false)}
+						onAccept={(e) => handleDateConfirm(e as Date | null, false)}
 						slotProps={{
 							textField: {
 								onKeyDown: (event) => {
@@ -535,32 +526,13 @@ const FilterSwitch = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	textFilter: getTextFilter(state),
-	filterMap: getFilters(state),
-	selectedFilter: getSelectedFilter(state),
-	secondFilter: getSecondFilter(state),
 	resourceType: getResourceType(state),
-	filterResourceType: getCurrentFilterResource(state),
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'textFilter' implicitly has an 'any' typ... Remove this comment to see the full error message
-	onChangeTextFilter: (textFilter) => dispatch(editTextFilter(textFilter)),
-	removeTextFilter: () => dispatch(removeTextFilter()),
-// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
-	editSelectedFilter: (filter) => dispatch(editSelectedFilter(filter)),
-	removeSelectedFilter: () => dispatch(removeSelectedFilter()),
-// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
-	editSecondFilter: (filter) => dispatch(editSecondFilter(filter)),
-	removeSecondFilter: () => dispatch(removeSecondFilter()),
-	resetFilterMap: () => dispatch(resetFilterValues()),
-// @ts-expect-error TS(7006): Parameter 'filterName' implicitly has an 'any' typ... Remove this comment to see the full error message
-	editFilterValue: (filterName, value) =>
-		dispatch(editFilterValue(filterName, value)),
-// @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
-	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableFilters);

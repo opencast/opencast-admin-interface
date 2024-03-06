@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import cn from "classnames";
 import { getFilterProfiles } from "../../selectors/tableFilterProfilesSelectors";
 import {
 	cancelEditFilterProfile,
 	createFilterProfile,
-	editFilterProfile,
 	removeFilterProfile,
 } from "../../slices/tableFilterProfilesSlice";
 import { getFilters } from "../../selectors/tableFilterSelectors";
-import { loadFilterProfile } from "../../actions/tableFilterActions";
+import { loadFilterProfile } from "../../slices/tableFilterSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
 
 /**
@@ -22,10 +20,6 @@ const TableFiltersProfiles = ({
 	showFilterSettings,
 // @ts-expect-error TS(7031): Binding element 'setFilterSettings' implicitly has... Remove this comment to see the full error message
 	setFilterSettings,
-// @ts-expect-error TS(7031): Binding element 'filterMap' implicitly has an 'any... Remove this comment to see the full error message
-	filterMap,
-// @ts-expect-error TS(7031): Binding element 'loadFilterProfile' implicitly has... Remove this comment to see the full error message
-	loadFilterProfile,
 // @ts-expect-error TS(7031): Binding element 'loadResource' implicitly has an '... Remove this comment to see the full error message
 	loadResource,
 // @ts-expect-error TS(7031): Binding element 'loadResourceIntoTable' implicitly... Remove this comment to see the full error message
@@ -36,6 +30,7 @@ const TableFiltersProfiles = ({
 	const dispatch = useAppDispatch();
 
 	const profiles = useAppSelector(state => getFilterProfiles(state));
+	const filterMap = useAppSelector(state => getFilters(state));
 
 	// State for switching between list of profiles and saving/editing dialog
 	const [settingsMode, setSettingsMode] = useState(true);
@@ -118,7 +113,7 @@ const TableFiltersProfiles = ({
 
 // @ts-expect-error TS(7006): Parameter 'filterMap' implicitly has an 'any' type... Remove this comment to see the full error message
 	const chooseFilterProfile = (filterMap) => {
-		loadFilterProfile(filterMap);
+		dispatch(loadFilterProfile(filterMap));
 
 		// Reload resources when filters are removed
 		loadResource();
@@ -248,20 +243,6 @@ const TableFiltersProfiles = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	filterMap: getFilters(state),
-});
 
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'filterMap' implicitly has an 'any' type... Remove this comment to see the full error message
-	loadFilterProfile: (filterMap) => dispatch(loadFilterProfile(filterMap)),
-});
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(TableFiltersProfiles);
+export default TableFiltersProfiles;
