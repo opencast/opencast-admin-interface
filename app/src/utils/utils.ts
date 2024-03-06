@@ -77,7 +77,7 @@ export const transformToIdValueArray = (data: {[key: string | number]: any}) => 
    }
 ]
  */
-export const transformToObjectArray = (data: {[key: string | number]: object}) => {
+export const transformToObjectArray = (data: {[key: string | number]: any}) => {
 	return Object.keys(data).map((key) => {
 		return {
 			id: key,
