@@ -1,16 +1,29 @@
 import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { aclsTableConfig } from "../configs/tableConfigs/aclsTableConfig";
+import { TableConfig, aclsTableConfig } from "../configs/tableConfigs/aclsTableConfig";
 import axios from 'axios';
 import { getURLParams } from '../utils/resourceUtils';
 
 /**
  * This file contains redux reducer for actions affecting the state of acls
  */
+type AclResult = {
+	acl: {
+		ace: {
+			action: string,
+			allow: boolean,
+			role: string,
+		}[]
+	}
+	id: number,
+	name: string,
+	organizationId: string,
+}
+
 type AclsState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
-	results: any[],		 // TODO: proper typing
-	columns: any,			 // TODO: proper typing, derive from `initialColumns`
+	results: AclResult[],
+	columns: TableConfig["columns"],
 	total: number,
 	count: number,
 	offset: number,

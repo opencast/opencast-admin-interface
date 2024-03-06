@@ -1,5 +1,6 @@
 import languages from "../i18n/languages";
 import i18n from "../i18n/i18n";
+import { UserInfoState } from "../slices/userInfoSlice";
 
 /**
  * This File contains methods that are needed in more than one places
@@ -9,15 +10,10 @@ export const getTimezoneOffset = () => {
 	let d = new Date();
 	let offset = d.getTimezoneOffset() * -1;
 
-	if (offset >= 0) {
-		return "+" + offset / 60;
-	}
-
 	return offset / 60;
 };
 
-// @ts-expect-error TS(7006): Parameter 'offset' implicitly has an 'any' type.
-export const getTimezoneString = (offset) => {
+export const getTimezoneString = (offset: number) => {
 	return "UTC" + (offset < 0 ? "-" : "+") + offset;
 };
 
@@ -32,8 +28,7 @@ export const getCurrentLanguageInformation = () => {
 };
 
 // fills an array from 00 to number of elements specified
-// @ts-expect-error TS(7006): Parameter 'numberOfElements' implicitly has an 'an... Remove this comment to see the full error message
-export const initArray = (numberOfElements) => {
+export const initArray = (numberOfElements: number) => {
 	let i,
 		result = [];
 	for (i = 0; i < numberOfElements; i++) {
@@ -46,8 +41,7 @@ export const initArray = (numberOfElements) => {
 };
 
 // insert leading 0 for numbers smaller 10
-// @ts-expect-error TS(7006): Parameter 'number' implicitly has an 'any' type.
-export const makeTwoDigits = (number) => {
+export const makeTwoDigits = (number: number) => {
 	if (number < 10) {
 		return "0" + number;
 	} else {
@@ -59,8 +53,7 @@ export const makeTwoDigits = (number) => {
  * transforms an object of form { id1: value1, id2: value2 }
  * to [{id: id1, value: value1},{id: id2, value: value2}]
  */
-// @ts-expect-error TS(7006): Parameter 'data' implicitly has an 'any' type.
-export const transformToIdValueArray = (data) => {
+export const transformToIdValueArray = (data: {[key: string | number]: any}) => {
 	return Object.keys(data).map((key) => {
 		return {
 			id: key,
@@ -84,8 +77,7 @@ export const transformToIdValueArray = (data) => {
    }
 ]
  */
-// @ts-expect-error TS(7006): Parameter 'data' implicitly has an 'any' type.
-export const transformToObjectArray = (data) => {
+export const transformToObjectArray = (data: {[key: string | number]: any}) => {
 	return Object.keys(data).map((key) => {
 		return {
 			id: key,
@@ -98,12 +90,10 @@ export const transformToObjectArray = (data) => {
  * iterates trough all attributes in an object and switches 'true'- and 'false'-Strings
  * to their corresponding boolean value. All other values stay the same.
  */
-// @ts-expect-error TS(7006): Parameter 'baseObject' implicitly has an 'any' typ... Remove this comment to see the full error message
-export const parseBooleanInObject = (baseObject) => {
-	let parsedObject = {};
+export const parseBooleanInObject = (baseObject: {[key: string]: any}) => {
+	let parsedObject: {[key: string]: any} = {};
 
 	Object.keys(baseObject).forEach((config) => {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 		parsedObject[config] = parseValueForBooleanStrings(baseObject[config]);
 	});
 
@@ -114,8 +104,7 @@ export const parseBooleanInObject = (baseObject) => {
  * switches 'true'- and 'false'-Strings
  * to their corresponding boolean value. All other kinds of values stay the same.
  */
-// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
-export const parseValueForBooleanStrings = (value) => {
+export const parseValueForBooleanStrings = (value: any) => {
 	let parsedValue = value;
 	if (parsedValue === "true") {
 		parsedValue = true;
@@ -129,14 +118,12 @@ export const parseValueForBooleanStrings = (value) => {
 /*
  * checks if a user is admin or has the required role to access an ui element
  */
-// @ts-expect-error TS(7006): Parameter 'role' implicitly has an 'any' type.
-export const hasAccess = (role, userInfo) => {
+export const hasAccess = (role: string, userInfo: UserInfoState) => {
 	return !!(userInfo.isAdmin || userInfo.roles.includes(role));
 };
 
 // checks, if a String is proper JSON
-// @ts-expect-error TS(7006): Parameter 'text' implicitly has an 'any' type.
-export const isJson = (text) => {
+export const isJson = (text: string) => {
 	try {
 		const json = JSON.parse(text);
 		const type = Object.prototype.toString.call(json);
