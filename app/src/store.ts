@@ -3,7 +3,7 @@ import storage from "redux-persist/lib/storage";
 // @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import autoMergeLevel2 from "redux-persist/lib";
 import { combineReducers } from "redux";
-import tableFilters from "./reducers/tableFilterReducers";
+import tableFilters from "./slices/tableFilterSlice";
 import tableFilterProfiles from "./reducers/tableFilterProfilesReducer";
 import events from "./slices/eventSlice";
 import table from "./reducers/tableReducers";

@@ -15,7 +15,7 @@ import {
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
 import { fetchThemes } from "../../slices/themeSlice";
-import { fetchFilters, fetchStats } from "../../thunks/tableFilterThunks";
+import { fetchFilters, fetchStats } from "../../slices/tableFilterSlice";
 import { setOffset } from "../../actions/tableActions";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
@@ -44,8 +44,6 @@ const MainNav = ({
 	loadingEventsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingSeriesIntoTable' implicitl... Remove this comment to see the full error message
 	loadingSeriesIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingStats' implicitly has an '... Remove this comment to see the full error message
-	loadingStats,
 // @ts-expect-error TS(7031): Binding element 'loadingRecordingsIntoTable' impli... Remove this comment to see the full error message
 	loadingRecordingsIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingJobsIntoTable' implicitly ... Remove this comment to see the full error message
@@ -64,8 +62,6 @@ const MainNav = ({
 	loadingThemesIntoTable,
 // @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
 	resetOffset,
-// @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
-	loadingFilters,
 }) => {
 	const { t } = useTranslation();
         const dispatch = useAppDispatch();
@@ -74,13 +70,13 @@ const MainNav = ({
 	const user = useAppSelector(state => getUserInformation(state));
 
 	const loadEvents = () => {
-		loadingFilters("events");
+		dispatch(fetchFilters("events"));
 
 		// Reset the current page to first page
 		resetOffset();
 
 		// Fetching stats from server
-		loadingStats();
+		dispatch(fetchStats());
 
 		// Fetching events from server
 		dispatch(fetchEvents());
@@ -90,7 +86,7 @@ const MainNav = ({
 	};
 
 	const loadSeries = () => {
-		loadingFilters("series");
+		dispatch(fetchFilters("series"));
 
 		// Reset the current page to first page
 		resetOffset();
@@ -103,7 +99,7 @@ const MainNav = ({
 	};
 
 	const loadRecordings = () => {
-		loadingFilters("recordings");
+		dispatch(fetchFilters("recordings"));
 
 		// Reset the current page to first page
 		resetOffset();
@@ -116,7 +112,7 @@ const MainNav = ({
 	};
 
 	const loadJobs = () => {
-		loadingFilters("jobs");
+		dispatch(fetchFilters("jobs"));
 
 		// Reset the current page to first page
 		resetOffset();
@@ -129,7 +125,7 @@ const MainNav = ({
 	};
 
 	const loadServers = () => {
-		loadingFilters("servers");
+		dispatch(fetchFilters("servers"));
 
 		// Reset the current page to first page
 		resetOffset();
@@ -142,7 +138,7 @@ const MainNav = ({
 	};
 
 	const loadServices = () => {
-		loadingFilters("services");
+		dispatch(fetchFilters("services"));
 
 		// Reset the current page to first page
 		resetOffset();
@@ -155,7 +151,7 @@ const MainNav = ({
 	};
 
 	const loadUsers = () => {
-		loadingFilters("users");
+		dispatch(fetchFilters("users"));
 
 		// Reset the current page to first page
 		resetOffset();
@@ -168,7 +164,7 @@ const MainNav = ({
 	};
 
 	const loadGroups = () => {
-		loadingFilters("groups");
+		dispatch(fetchFilters("groups"));
 
 		// Reset the current page to first page
 		resetOffset();
@@ -181,7 +177,7 @@ const MainNav = ({
 	};
 
 	const loadAcls = () => {
-		loadingFilters("acls");
+		dispatch(fetchFilters("acls"));
 
 		// Reset the current page to first page
 		resetOffset();
@@ -194,7 +190,7 @@ const MainNav = ({
 	};
 
 	const loadThemes = () => {
-		loadingFilters("themes");
+		dispatch(fetchFilters("themes"));
 
 		// Reset the current page to first page
 		resetOffset();
@@ -327,7 +323,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	loadingEventsIntoTable: () => dispatch(loadEventsIntoTable()),
 	loadingSeriesIntoTable: () => dispatch(loadSeriesIntoTable()),
-	loadingStats: () => dispatch(fetchStats()),
 	loadingRecordingsIntoTable: () => dispatch(loadRecordingsIntoTable()),
 	loadingJobsIntoTable: () => dispatch(loadJobsIntoTable()),
 	loadingServersIntoTable: () => dispatch(loadServersIntoTable()),
@@ -337,8 +332,6 @@ const mapDispatchToProps = (dispatch) => ({
 	loadingAclsIntoTable: () => dispatch(loadAclsIntoTable()),
 	loadingThemesIntoTable: () => dispatch(loadThemesIntoTable()),
 	resetOffset: () => dispatch(setOffset(0)),
-// @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
-	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainNav);

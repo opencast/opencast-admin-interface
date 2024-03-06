@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import {
-	getCurrentFilterResource,
 	getFilters,
 	getSecondFilter,
 	getSelectedFilter,
@@ -12,47 +11,24 @@ import {
 } from "../../selectors/tableFilterSelectors";
 import {
 	editFilterValue,
-	editSecondFilter,
 	editSelectedFilter,
 	editTextFilter,
 	removeSecondFilter,
 	removeSelectedFilter,
 	removeTextFilter,
 	resetFilterValues,
-} from "../../actions/tableFilterActions";
+} from "../../slices/tableFilterSlice";
 import TableFilterProfiles from "./TableFilterProfiles";
 import { getCurrentLanguageInformation } from "../../utils/utils";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { GlobalHotKeys } from "react-hotkeys";
 import { getResourceType } from "../../selectors/tableSelectors";
-import { fetchFilters } from "../../thunks/tableFilterThunks";
+import { useAppDispatch, useAppSelector } from "../../store";
 
 /**
  * This component renders the table filters in the upper right corner of the table
  */
 const TableFilters = ({
-// @ts-expect-error TS(7031): Binding element 'filterMap' implicitly has an 'any... Remove this comment to see the full error message
-	filterMap,
-// @ts-expect-error TS(7031): Binding element 'textFilter' implicitly has an 'an... Remove this comment to see the full error message
-	textFilter,
-// @ts-expect-error TS(7031): Binding element 'selectedFilter' implicitly has an... Remove this comment to see the full error message
-	selectedFilter,
-// @ts-expect-error TS(7031): Binding element 'secondFilter' implicitly has an '... Remove this comment to see the full error message
-	secondFilter,
-// @ts-expect-error TS(7031): Binding element 'onChangeTextFilter' implicitly ha... Remove this comment to see the full error message
-	onChangeTextFilter,
-// @ts-expect-error TS(7031): Binding element 'removeTextFilter' implicitly has ... Remove this comment to see the full error message
-	removeTextFilter,
-// @ts-expect-error TS(7031): Binding element 'editSelectedFilter' implicitly ha... Remove this comment to see the full error message
-	editSelectedFilter,
-// @ts-expect-error TS(7031): Binding element 'removeSelectedFilter' implicitly ... Remove this comment to see the full error message
-	removeSelectedFilter,
-// @ts-expect-error TS(7031): Binding element 'removeSecondFilter' implicitly ha... Remove this comment to see the full error message
-	removeSecondFilter,
-// @ts-expect-error TS(7031): Binding element 'resetFilterMap' implicitly has an... Remove this comment to see the full error message
-	resetFilterMap,
-// @ts-expect-error TS(7031): Binding element 'editFilterValue' implicitly has a... Remove this comment to see the full error message
-	editFilterValue,
 // @ts-expect-error TS(7031): Binding element 'loadResource' implicitly has an '... Remove this comment to see the full error message
 	loadResource,
 // @ts-expect-error TS(7031): Binding element 'loadResourceIntoTable' implicitly... Remove this comment to see the full error message
@@ -61,6 +37,12 @@ const TableFilters = ({
 	resource,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
+
+	const filterMap = useAppSelector(state => getFilters(state));
+	const secondFilter = useAppSelector(state => getSecondFilter(state));
+	const selectedFilter = useAppSelector(state => getSelectedFilter(state));
+	const textFilter = useAppSelector(state => getTextFilter(state));
 
 	// Variables for showing different dialogs depending on what was clicked
 	const [showFilterSelector, setFilterSelector] = useState(false);
@@ -72,12 +54,12 @@ const TableFilters = ({
 
 	// Remove all selected filters, no filter should be "active" anymore
 	const removeFilters = async () => {
-		removeTextFilter();
-		removeSelectedFilter();
-		removeSelectedFilter();
+		dispatch(removeTextFilter());
+		dispatch(removeSelectedFilter());
+		dispatch(removeSelectedFilter());
 
 		// Set all values of the filters in filterMap back to ""
-		resetFilterMap();
+		dispatch(resetFilterValues())
 
 		// Reload resources when filters are removed
 		await loadResource();
@@ -87,7 +69,7 @@ const TableFilters = ({
 	// Remove a certain filter
 // @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 	const removeFilter = async (filter) => {
-		editFilterValue(filter.name, "");
+		dispatch(editFilterValue({filterName: filter.name, value: ""}));
 
 		// Reload resources when filter is removed
 		await loadResource();
@@ -101,22 +83,23 @@ const TableFilters = ({
 		const itemValue = e.target.value;
 
 		if (itemName === "textFilter") {
-			onChangeTextFilter(itemValue);
+			dispatch(editTextFilter(itemValue));
 		}
 
 		if (itemName === "selectedFilter") {
-			editSelectedFilter(itemValue);
+			dispatch(editSelectedFilter(itemValue))
 		}
 
 		// If the change is in secondFilter (filter is picked) then the selected value is saved in filterMap
 		// and the filter selections are cleared
 		if (itemName === "secondFilter") {
-// @ts-expect-error TS(7031): Binding element 'name' implicitly has an 'any' typ... Remove this comment to see the full error message
 			let filter = filterMap.find(({ name }) => name === selectedFilter);
-			editFilterValue(filter.name, itemValue);
-			setFilterSelector(false);
-			removeSelectedFilter();
-			removeSecondFilter();
+			if (!!filter) {
+				dispatch(editFilterValue({filterName: filter.name, value: itemValue}));
+				setFilterSelector(false);
+				dispatch(removeSelectedFilter());
+				dispatch(removeSecondFilter());
+			}
 		}
 		// Reload of resource
 		await loadResource();
@@ -134,17 +117,18 @@ const TableFilters = ({
 
 		// When both dates set, then set the value for this filter
 		if (!isStart) {
-// @ts-expect-error TS(7031): Binding element 'name' implicitly has an 'any' typ... Remove this comment to see the full error message
 			let filter = filterMap.find(({ name }) => name === selectedFilter);
-			await editFilterValue(
-				filter.name,
-				startDate.toISOString() + "/" + date.toISOString()
-			);
-			setFilterSelector(false);
-			removeSelectedFilter();
-			// Reload of resource
-			await loadResource();
-			loadResourceIntoTable();
+			if (!!filter) {
+				await dispatch(editFilterValue({
+					filterName: filter.name,
+					value: startDate.toISOString() + "/" + date.toISOString()
+				}));
+				setFilterSelector(false);
+				dispatch(removeSelectedFilter());
+				// Reload of resource
+				await loadResource();
+				loadResourceIntoTable();
+			}
 		}
 	};
 
@@ -230,10 +214,8 @@ const TableFilters = ({
 											</option>
 											{filterMap
 												.filter(
-// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 													(filter) => filter.name !== "presentersBibliographic"
 												)
-// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 												.map((filter, key) => (
 													<option key={key} value={filter.name}>
 														{t(filter.label).substr(0, 40)}
@@ -261,7 +243,6 @@ const TableFilters = ({
 							)}
 
 							{/* Show for each selected filter a blue label containing its name and option */}
-{/* @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type. */}
 							{filterMap.map((filter, key) => {
 								if (!!filter.value) {
 									return (
@@ -464,32 +445,13 @@ const FilterSwitch = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	textFilter: getTextFilter(state),
-	filterMap: getFilters(state),
-	selectedFilter: getSelectedFilter(state),
-	secondFilter: getSecondFilter(state),
 	resourceType: getResourceType(state),
-	filterResourceType: getCurrentFilterResource(state),
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'textFilter' implicitly has an 'any' typ... Remove this comment to see the full error message
-	onChangeTextFilter: (textFilter) => dispatch(editTextFilter(textFilter)),
-	removeTextFilter: () => dispatch(removeTextFilter()),
-// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
-	editSelectedFilter: (filter) => dispatch(editSelectedFilter(filter)),
-	removeSelectedFilter: () => dispatch(removeSelectedFilter()),
-// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
-	editSecondFilter: (filter) => dispatch(editSecondFilter(filter)),
-	removeSecondFilter: () => dispatch(removeSecondFilter()),
-	resetFilterMap: () => dispatch(resetFilterValues()),
-// @ts-expect-error TS(7006): Parameter 'filterName' implicitly has an 'any' typ... Remove this comment to see the full error message
-	editFilterValue: (filterName, value) =>
-		dispatch(editFilterValue(filterName, value)),
-// @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
-	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableFilters);

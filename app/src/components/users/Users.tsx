@@ -14,8 +14,7 @@ import {
 	loadGroupsIntoTable,
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchFilters } from "../../thunks/tableFilterThunks";
-import { editTextFilter } from "../../actions/tableFilterActions";
+import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
 import { setOffset } from "../../actions/tableActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
 import Header from "../Header";
@@ -81,6 +80,7 @@ const Users: React.FC = () => {
 			dispatch(fetchFilters("users"));
 		}
 
+		// Reset text filter
 		dispatch(editTextFilter(""));
 
 		// Load users on mount
