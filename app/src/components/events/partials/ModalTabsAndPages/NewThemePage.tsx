@@ -59,7 +59,7 @@ const NewThemePage = ({
 																formik.setFieldValue("theme", element.value)
 															}
 															placeholder={t("EVENTS.SERIES.NEW.THEME.LABEL")}
-															tabIndex={"1"}
+															tabIndex={1}
 														/>
 													</div>
 												</p>

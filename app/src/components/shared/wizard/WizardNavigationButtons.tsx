@@ -39,8 +39,7 @@ const WizardNavigationButtons : React.FC<{
 						onClick={() => {
 							formik.handleSubmit();
 						}}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-						tabIndex="100"
+						tabIndex={100}
 					>
 						{t("WIZARD.CREATE")}
 					</button>
@@ -52,8 +51,7 @@ const WizardNavigationButtons : React.FC<{
 						onClick={() => {
 							nextPage(formik.values);
 						}}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-						tabIndex="100"
+						tabIndex={100}
 					>
 						{t("WIZARD.NEXT_STEP")}
 					</button>
@@ -62,8 +60,7 @@ const WizardNavigationButtons : React.FC<{
 					<button
 						className="cancel"
 						onClick={() => previousPage(formik.values, false)}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-						tabIndex="101"
+						tabIndex={101}
 					>
 						{t("WIZARD.BACK")}
 					</button>

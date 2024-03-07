@@ -83,7 +83,7 @@ const NewProcessingPage: React.FC<{
 											placeholder={t(
 												"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW"
 											)}
-											tabIndex={"99"}
+											tabIndex={99}
 										/>
 									</div>
 								) : (
@@ -125,8 +125,7 @@ const NewProcessingPage: React.FC<{
 					onClick={() => {
 						nextPage(formik.values);
 					}}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-					tabIndex="100"
+					tabIndex={100}
 				>
 					{t("WIZARD.NEXT_STEP")}
 				</button>

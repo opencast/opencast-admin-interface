@@ -129,7 +129,7 @@ const AclAccessPage : React.FC<{
 																				placeholder={t(
 																					"USERS.ACLS.NEW.ACCESS.ACCESS_POLICY.LABEL"
 																				)}
-																				tabIndex={"1"}
+																				tabIndex={1}
 																				autoFocus={true}
 																			/>
 																		</div>
@@ -351,16 +351,14 @@ const AclAccessPage : React.FC<{
 									nextPage(formik.values);
 								}
 							}}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-							tabIndex="100"
+							tabIndex={100}
 						>
 							{t("WIZARD.NEXT_STEP")}
 						</button>
 						<button
 							className="cancel"
 							onClick={() => previousPage(formik.values, false)}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-							tabIndex="101"
+							tabIndex={101}
 						>
 							{t("WIZARD.BACK")}
 						</button>
