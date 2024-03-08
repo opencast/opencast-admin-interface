@@ -464,8 +464,7 @@ const EditScheduledEventsEditPage = ({
 							nextPage(formik.values);
 						}
 					}}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-					tabIndex="100"
+					tabIndex={100}
 				>
 					{t("WIZARD.NEXT_STEP")}
 				</button>
@@ -479,8 +478,7 @@ const EditScheduledEventsEditPage = ({
 							setPageCompleted([]);
 						}
 					}}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-					tabIndex="101"
+					tabIndex={101}
 				>
 					{t("WIZARD.BACK")}
 				</button>
