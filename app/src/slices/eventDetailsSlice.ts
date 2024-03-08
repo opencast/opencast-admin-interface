@@ -28,6 +28,7 @@ import { getRecordings } from "../selectors/recordingSelectors";
 import { Workflow as WorkflowDefinitions} from "../slices/workflowSlice";
 import { RootState } from '../store';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
+import { Ace, TransformedAcl, TransformedAcls } from './aclDetailsSlice';
 
 type MetadataField = {
 	id: string,
@@ -558,7 +559,7 @@ const initialState: EventDetailsState = {
 };
 
 
-export const fetchMetadata = createAsyncThunk('eventDetails/fetchMetadata', async (eventId: any) => {
+export const fetchMetadata = createAsyncThunk('eventDetails/fetchMetadata', async (eventId: string) => {
 	const metadataRequest = await axios.get(`/admin-ng/event/${eventId}/metadata.json`);
 	const metadataResponse = await metadataRequest.data;
 
@@ -604,7 +605,7 @@ export const fetchMetadata = createAsyncThunk('eventDetails/fetchMetadata', asyn
 	return { metadata, extendedMetadata }
 });
 
-export const fetchAssets = createAsyncThunk('eventDetails/fetchAssets', async (eventId: any, { dispatch }) => {
+export const fetchAssets = createAsyncThunk('eventDetails/fetchAssets', async (eventId: string, { dispatch }) => {
 	const assetsRequest = await axios.get(
 		`/admin-ng/event/${eventId}/asset/assets.json`
 	);
@@ -685,7 +686,7 @@ const formatUploadAssetOptions = (optionsData: object) => {
 	return optionsResult;
 };
 
-export const fetchAssetAttachments = createAsyncThunk('eventDetails/fetchAssetAttachments', async (eventId: any) => {
+export const fetchAssetAttachments = createAsyncThunk('eventDetails/fetchAssetAttachments', async (eventId: string) => {
 	let params = new URLSearchParams();
 	params.append("id1", "attachment");
 
@@ -696,7 +697,10 @@ export const fetchAssetAttachments = createAsyncThunk('eventDetails/fetchAssetAt
 	return await attachmentsRequest.data;
 });
 
-export const fetchAssetAttachmentDetails = createAsyncThunk('eventDetails/fetchAssetAttachmentDetails', async (params: {eventId: any, attachmentId: any}) => {
+export const fetchAssetAttachmentDetails = createAsyncThunk('eventDetails/fetchAssetAttachmentDetails', async (params: {
+	eventId: string,
+	attachmentId: string
+}) => {
 	const { eventId, attachmentId } = params;
 	let searchParams = new URLSearchParams();
 	searchParams.append("id1", "attachment");
@@ -708,7 +712,7 @@ export const fetchAssetAttachmentDetails = createAsyncThunk('eventDetails/fetchA
 	return await attachmentDetailsRequest.data;
 });
 
-export const fetchAssetCatalogs = createAsyncThunk('eventDetails/fetchAssetCatalogs', async (eventId: any) => {
+export const fetchAssetCatalogs = createAsyncThunk('eventDetails/fetchAssetCatalogs', async (eventId: string) => {
 	let params = new URLSearchParams();
 	params.append("id1", "catalog");
 
@@ -719,7 +723,10 @@ export const fetchAssetCatalogs = createAsyncThunk('eventDetails/fetchAssetCatal
 	return await catalogsRequest.data;
 });
 
-export const fetchAssetCatalogDetails = createAsyncThunk('eventDetails/fetchAssetCatalogDetails', async (params: {eventId: any, catalogId: any}) => {
+export const fetchAssetCatalogDetails = createAsyncThunk('eventDetails/fetchAssetCatalogDetails', async (params: {
+	eventId: string,
+	catalogId: string
+}) => {
 	const { eventId, catalogId } = params;
 	let searchParams = new URLSearchParams();
 	searchParams.append("id1", "catalog");
@@ -731,7 +738,7 @@ export const fetchAssetCatalogDetails = createAsyncThunk('eventDetails/fetchAsse
 	return await catalogDetailsRequest.data;
 });
 
-export const fetchAssetMedia = createAsyncThunk('eventDetails/fetchAssetMedia', async (eventId: any) => {
+export const fetchAssetMedia = createAsyncThunk('eventDetails/fetchAssetMedia', async (eventId: string) => {
 	let params = new URLSearchParams();
 	params.append("id1", "media");
 
@@ -756,7 +763,10 @@ export const fetchAssetMedia = createAsyncThunk('eventDetails/fetchAssetMedia', 
 	return media;
 });
 
-export const fetchAssetMediaDetails = createAsyncThunk('eventDetails/fetchAssetMediaDetails', async (params: {eventId: any, mediaId: any}) => {
+export const fetchAssetMediaDetails = createAsyncThunk('eventDetails/fetchAssetMediaDetails', async (params: {
+	eventId: string,
+	mediaId: string
+}) => {
 	const { eventId, mediaId } = params;
 	let searchParams = new URLSearchParams();
 	searchParams.append("id1", "media");
@@ -785,7 +795,7 @@ export const fetchAssetMediaDetails = createAsyncThunk('eventDetails/fetchAssetM
 	return mediaDetails;
 });
 
-export const fetchAssetPublications = createAsyncThunk('eventDetails/fetchAssetPublications', async (eventId: any) => {
+export const fetchAssetPublications = createAsyncThunk('eventDetails/fetchAssetPublications', async (eventId: string) => {
 	let params = new URLSearchParams();
 	params.append("id1", "publication");
 
@@ -796,7 +806,10 @@ export const fetchAssetPublications = createAsyncThunk('eventDetails/fetchAssetP
 	return await publicationsRequest.data;
 });
 
-export const fetchAssetPublicationDetails = createAsyncThunk('eventDetails/fetchAssetPublicationDetails', async (params: {eventId: any, publicationId: any}) => {
+export const fetchAssetPublicationDetails = createAsyncThunk('eventDetails/fetchAssetPublicationDetails', async (params: {
+	eventId: string,
+	publicationId: string
+}) => {
 	const { eventId, publicationId } = params;
 	let searchParams = new URLSearchParams();
 	searchParams.append("id1", "publication");
@@ -808,41 +821,36 @@ export const fetchAssetPublicationDetails = createAsyncThunk('eventDetails/fetch
 	return await publicationDetailsRequest.data;
 });
 
-export const fetchAccessPolicies = createAsyncThunk('eventDetails/fetchAccessPolicies', async (eventId: any) => {
+export const fetchAccessPolicies = createAsyncThunk('eventDetails/fetchAccessPolicies', async (eventId: string) => {
 	const policyData = await axios.get(
 		`/admin-ng/event/${eventId}/access.json`
 	);
 	let accessPolicies = await policyData.data;
 
-	let policies: any[] = [];
+	let policies: TransformedAcls = [];
 	if (!!accessPolicies.episode_access) {
 		const json = JSON.parse(accessPolicies.episode_access.acl).acl.ace;
-		let newPolicies = {};
-		let policyRoles = [];
+		let newPolicies: { [key: string]: TransformedAcl } = {};
+		let policyRoles: string[] = [];
 		for (let i = 0; i < json.length; i++) {
-			const policy = json[i];
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+			const policy: Ace = json[i];
 			if (!newPolicies[policy.role]) {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 				newPolicies[policy.role] = createPolicy(policy.role);
 				policyRoles.push(policy.role);
 			}
 			if (policy.action === "read" || policy.action === "write") {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 				newPolicies[policy.role][policy.action] = policy.allow;
-			} else if (policy.allow === true || policy.allow === "true") {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+			} else if (policy.allow === true) { //|| policy.allow === "true") {
 				newPolicies[policy.role].actions.push(policy.action);
 			}
 		}
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 		policies = policyRoles.map((role) => newPolicies[role]);
 	}
 
 	return policies;
 });
 
-export const fetchComments = createAsyncThunk('eventDetails/fetchComments', async (eventId: any) => {
+export const fetchComments = createAsyncThunk('eventDetails/fetchComments', async (eventId: string) => {
 	const commentsData = await axios.get(`/admin-ng/event/${eventId}/comments`);
 	const comments = await commentsData.data;
 
@@ -854,7 +862,7 @@ export const fetchComments = createAsyncThunk('eventDetails/fetchComments', asyn
 	return { comments, commentReasons }
 });
 
-export const fetchEventPublications = createAsyncThunk('eventDetails/fetchEventPublications', async (eventId: any, { dispatch }) => {
+export const fetchEventPublications = createAsyncThunk('eventDetails/fetchEventPublications', async (eventId: string) => {
 	let data = await axios.get(`/admin-ng/event/${eventId}/publications.json`);
 
 	let publications = await data.data;
@@ -899,7 +907,11 @@ export const fetchEventPublications = createAsyncThunk('eventDetails/fetchEventP
 	return publications.publications;
 });
 
-export const saveComment = createAsyncThunk('eventDetails/saveComment', async (params: {eventId: any, commentText: any, commentReason: any}, { dispatch }) => {
+export const saveComment = createAsyncThunk('eventDetails/saveComment', async (params: {
+	eventId: string,
+	commentText: string,
+	commentReason: string
+}) => {
 	const { eventId, commentText, commentReason } = params;
 	let headers = getHttpHeaders();
 
@@ -917,13 +929,18 @@ export const saveComment = createAsyncThunk('eventDetails/saveComment', async (p
 	return true;
 });
 
-export const saveCommentReply = createAsyncThunk('eventDetails/saveCommentReply', async (params: {eventId: any, commentId: any, replyText: any, commentResolved: any}) => {
+export const saveCommentReply = createAsyncThunk('eventDetails/saveCommentReply', async (params: {
+	eventId: string,
+	commentId: string,
+	replyText: string,
+	commentResolved: boolean
+}) => {
 	const { eventId, commentId, replyText, commentResolved } = params;
 	let headers = getHttpHeaders();
 
 	let data = new URLSearchParams();
 	data.append("text", replyText);
-	data.append("resolved", commentResolved);
+	data.append("resolved", String(commentResolved));
 
 	const commentReply = await axios.post(
 		`/admin-ng/event/${eventId}/comment/${commentId}/reply`,
@@ -936,7 +953,7 @@ export const saveCommentReply = createAsyncThunk('eventDetails/saveCommentReply'
 	return true;
 });
 
-export const fetchSchedulingInfo = createAsyncThunk('eventDetails/fetchSchedulingInfo', async (eventId: any, { dispatch, getState }) => {
+export const fetchSchedulingInfo = createAsyncThunk('eventDetails/fetchSchedulingInfo', async (eventId: string, { dispatch, getState }) => {
 		// get data from API about event scheduling
 		const schedulingRequest = await axios.get(
 			`/admin-ng/event/${eventId}/scheduling.json`
@@ -1014,7 +1031,23 @@ export const fetchSchedulingInfo = createAsyncThunk('eventDetails/fetchSchedulin
 		return source;
 });
 
-export const saveSchedulingInfo = createAsyncThunk('eventDetails/saveSchedulingInfo', async (params: {eventId: any, values: any, startDate: any, endDate: any}, { dispatch, getState }) => {
+export const saveSchedulingInfo = createAsyncThunk('eventDetails/saveSchedulingInfo', async (params: {
+	eventId: string,
+	values: {
+		captureAgent: string,
+		inputs: string[],
+		scheduleDurationHours: string,
+		scheduleDurationMinutes: string,
+		scheduleEndDate: string,
+		scheduleEndHour: string,
+		scheduleEndMinute: string,
+		scheduleStartDate: string,
+		scheduleStartHour: string,
+		scheduleStartMinute: string,
+	},
+	startDate: Date,
+	endDate: Date
+}, { dispatch, getState }) => {
 	const { eventId, values, startDate, endDate } = params;
 
 	const state = getState() as RootState;
@@ -1044,12 +1077,12 @@ export const saveSchedulingInfo = createAsyncThunk('eventDetails/saveSchedulingI
 		...oldSource,
 		agentId: device.id,
 		start: {
-			date: startDate,
+			date: startDate.toISOString(),
 			hour: parseInt(values.scheduleStartHour),
 			minute: parseInt(values.scheduleStartMinute),
 		},
 		end: {
-			date: endDate,
+			date: endDate.toISOString(),
 			hour: parseInt(values.scheduleEndHour),
 			minute: parseInt(values.scheduleEndMinute),
 		},
@@ -1104,7 +1137,12 @@ export const saveSchedulingInfo = createAsyncThunk('eventDetails/saveSchedulingI
 
 // TODO: This does not return a boolean anymore. Fix this in usage, make users
 // get their info from the state
-export const checkConflicts = createAsyncThunk('eventDetails/checkConflicts', async (params: {eventId: any, startDate: any, endDate: any, deviceId: any}, { dispatch }) => {
+export const checkConflicts = createAsyncThunk('eventDetails/checkConflicts', async (params: {
+	eventId: string,
+	startDate: Date,
+	endDate: Date,
+	deviceId: string
+}, { dispatch }) => {
 const { eventId, startDate, endDate, deviceId } = params;
 const conflicts: any[] = [];
 let hasSchedulingConflicts = false;
@@ -1129,7 +1167,7 @@ if (endDate < now) {
 	const conflictTimeFrame = {
 		id: eventId,
 		start: startDate.toISOString(),
-		duration: endDate - startDate,
+		duration: endDate.getTime() - startDate.getTime(),
 		device: deviceId,
 		end: endDate.toISOString(),
 	};
@@ -1203,7 +1241,7 @@ if (endDate < now) {
 	return { conflicts, hasSchedulingConflicts };
 });
 
-export const fetchWorkflows = createAsyncThunk('eventDetails/fetchWorkflows', async (eventId: any, { dispatch, getState }) => {
+export const fetchWorkflows = createAsyncThunk('eventDetails/fetchWorkflows', async (eventId: string, { dispatch, getState }) => {
 	// todo: show notification if there are active transactions
 	// dispatch(addNotification('warning', 'ACTIVE_TRANSACTION', -1, null, NOTIFICATION_CONTEXT));
 
@@ -1245,7 +1283,10 @@ export const fetchWorkflows = createAsyncThunk('eventDetails/fetchWorkflows', as
 	return workflows;
 });
 
-export const fetchWorkflowDetails = createAsyncThunk('eventDetails/fetchWorkflowDetails', async (params: {eventId: any, workflowId: any}, { getState }) => {
+export const fetchWorkflowDetails = createAsyncThunk('eventDetails/fetchWorkflowDetails', async (params: {
+	eventId: string,
+	workflowId: string
+}) => {
 	const { eventId, workflowId } = params;
 	const data = await axios.get(
 		`/admin-ng/event/${eventId}/workflows/${workflowId}.json`
@@ -1253,7 +1294,12 @@ export const fetchWorkflowDetails = createAsyncThunk('eventDetails/fetchWorkflow
 	return await data.data;
 });
 
-export const performWorkflowAction = createAsyncThunk('eventDetails/performWorkflowAction', async (params: {eventId: any, workflowId: any, action: any, close: any}, { dispatch }) => {
+export const performWorkflowAction = createAsyncThunk('eventDetails/performWorkflowAction', async (params: {
+	eventId: string,
+	workflowId: string,
+	action: string,
+	close: () => void,
+}, { dispatch }) => {
 	const { eventId, workflowId, action, close} = params;
 	let headers = {
 		headers: {
@@ -1299,7 +1345,10 @@ export const performWorkflowAction = createAsyncThunk('eventDetails/performWorkf
 		});
 });
 
-export const deleteWorkflow = createAsyncThunk('eventDetails/deleteWorkflow', async (params: {eventId: any, workflowId: any}, { dispatch, getState }) => {
+export const deleteWorkflow = createAsyncThunk('eventDetails/deleteWorkflow', async (params: {
+	eventId: string,
+	workflowId: number
+}, { dispatch, getState }) => {
 	const { eventId, workflowId } = params;
 
 	const workflowEntries = await axios
@@ -1340,7 +1389,10 @@ export const deleteWorkflow = createAsyncThunk('eventDetails/deleteWorkflow', as
 	return workflowEntries;
 });
 
-export const fetchWorkflowOperations = createAsyncThunk('eventDetails/fetchWorkflowOperations', async (params: {eventId: any, workflowId: any}) => {
+export const fetchWorkflowOperations = createAsyncThunk('eventDetails/fetchWorkflowOperations', async (params: {
+	eventId: string,
+	workflowId: string
+}) => {
 	const { eventId, workflowId } = params;
 	const data = await axios.get(
 		`/admin-ng/event/${eventId}/workflows/${workflowId}/operations.json`
@@ -1349,7 +1401,11 @@ export const fetchWorkflowOperations = createAsyncThunk('eventDetails/fetchWorkf
 	return { entries: workflowOperationsData };
 });
 
-export const fetchWorkflowOperationDetails = createAsyncThunk('eventDetails/fetchWorkflowOperationDetails', async (params: {eventId: any, workflowId: any, operationId: any}) => {
+export const fetchWorkflowOperationDetails = createAsyncThunk('eventDetails/fetchWorkflowOperationDetails', async (params: {
+	eventId: string,
+	workflowId: string,
+	operationId?: number
+}) => {
 	const { eventId, workflowId, operationId } = params;
 	const data = await axios.get(
 		`/admin-ng/event/${eventId}/workflows/${workflowId}/operations/${operationId}`
@@ -1357,7 +1413,10 @@ export const fetchWorkflowOperationDetails = createAsyncThunk('eventDetails/fetc
 	return await data.data;
 });
 
-export const fetchWorkflowErrors = createAsyncThunk('eventDetails/fetchWorkflowErrors', async (params: {eventId: any, workflowId: any}) => {
+export const fetchWorkflowErrors = createAsyncThunk('eventDetails/fetchWorkflowErrors', async (params: {
+	eventId: string,
+	workflowId: string
+}) => {
 	const { eventId, workflowId } = params;
 	const data = await axios.get(
 		`/admin-ng/event/${eventId}/workflows/${workflowId}/errors.json`
@@ -1366,7 +1425,11 @@ export const fetchWorkflowErrors = createAsyncThunk('eventDetails/fetchWorkflowE
 	return { entries: workflowErrorsData };
 });
 
-export const fetchWorkflowErrorDetails = createAsyncThunk('eventDetails/fetchWorkflowErrorDetails', async (params: {eventId: any, workflowId: any, errorId: any}) => {
+export const fetchWorkflowErrorDetails = createAsyncThunk('eventDetails/fetchWorkflowErrorDetails', async (params: {
+	eventId: string,
+	workflowId: string,
+	errorId?: number
+}) => {
 	const { eventId, workflowId, errorId } = params;
 	const data = await axios.get(
 		`/admin-ng/event/${eventId}/workflows/${workflowId}/errors/${errorId}.json`
@@ -1375,7 +1438,7 @@ export const fetchWorkflowErrorDetails = createAsyncThunk('eventDetails/fetchWor
 });
 
 // TODO: Fix this after the modernization of statisticsThunks happened
-export const fetchEventStatistics = createAsyncThunk('eventDetails/fetchEventStatistics', async (eventId: any, { getState }) => {
+export const fetchEventStatistics = createAsyncThunk('eventDetails/fetchEventStatistics', async (eventId: string, { getState }) => {
 	// get prior statistics
 	const state = getState();
 	const statistics = getStatistics(state as RootState);
@@ -1390,7 +1453,14 @@ export const fetchEventStatistics = createAsyncThunk('eventDetails/fetchEventSta
 });
 
 // TODO: Fix this after the modernization of statisticsThunks happened
-export const fetchEventStatisticsValueUpdate = createAsyncThunk('eventDetails/fetchEventStatisticsValueUpdate', async (params: {eventId: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any}, { getState }) => {
+export const fetchEventStatisticsValueUpdate = createAsyncThunk('eventDetails/fetchEventStatisticsValueUpdate', async (params: {
+	eventId: string,
+	providerId: string,
+	from: string,
+	to: string,
+	dataResolution: string[],
+	timeMode: any
+}, { getState }) => {
 	const { eventId, providerId, from, to, dataResolution, timeMode } = params;
 	// get prior statistics
 	const state = getState();
@@ -1410,7 +1480,10 @@ export const fetchEventStatisticsValueUpdate = createAsyncThunk('eventDetails/fe
 	);
 });
 
-export const updateMetadata = createAsyncThunk('eventDetails/updateMetadata', async (params: {eventId: any, values: any}, { dispatch, getState }) => {
+export const updateMetadata = createAsyncThunk('eventDetails/updateMetadata', async (params: {
+	eventId: string,
+	values: { [key: string]: any }
+}, { dispatch, getState }) => {
 	const { eventId, values } = params;
 
 	let metadataInfos = getMetadata(getState() as RootState);
@@ -1431,7 +1504,15 @@ export const updateMetadata = createAsyncThunk('eventDetails/updateMetadata', as
 	dispatch(setEventMetadata(eventMetadata));
 });
 
-export const updateExtendedMetadata = createAsyncThunk('eventDetails/updateExtendedMetadata', async (params: {eventId: any, values: any, catalog: any}, { dispatch, getState }) => {
+export const updateExtendedMetadata = createAsyncThunk('eventDetails/updateExtendedMetadata', async (params: {
+	eventId: string,
+	values: { [key: string]: any },
+	catalog: {
+		flavor: string,
+		title: string,
+		fields: { [key: string]: any }[]
+	}
+}, { dispatch, getState }) => {
 	const { eventId, values, catalog } = params;
 
 	const { fields, data, headers } = transformMetadataForUpdate(
@@ -1464,7 +1545,7 @@ export const updateExtendedMetadata = createAsyncThunk('eventDetails/updateExten
 	dispatch(setExtendedEventMetadata(newExtendedMetadata));
 });
 
-export const fetchHasActiveTransactions = createAsyncThunk('eventDetails/fetchHasActiveTransactions', async (eventId: any) => {
+export const fetchHasActiveTransactions = createAsyncThunk('eventDetails/fetchHasActiveTransactions', async (eventId: string) => {
 	const transactionsData = await axios.get(
 		`/admin-ng/event/${eventId}/hasActiveTransaction`
 	);
@@ -1472,7 +1553,10 @@ export const fetchHasActiveTransactions = createAsyncThunk('eventDetails/fetchHa
 	return hasActiveTransactions;
 });
 
-export const updateAssets = createAsyncThunk('eventDetails/updateAssets', async (params: {values: any, eventId: any}, { dispatch, getState }) => {
+export const updateAssets = createAsyncThunk('eventDetails/updateAssets', async (params: {
+	values: { [key: string]: string },
+	eventId: string
+}, { dispatch, getState }) => {
 	const { values, eventId } = params;
 	// get asset upload options from redux store
 	const state = getState() as RootState;
@@ -1530,7 +1614,10 @@ export const updateAssets = createAsyncThunk('eventDetails/updateAssets', async 
 		});
 });
 
-export const saveAccessPolicies = createAsyncThunk('eventDetails/saveAccessPolicies', async (params: {eventId: any, policies: any}, { dispatch }) => {
+export const saveAccessPolicies = createAsyncThunk('eventDetails/saveAccessPolicies', async (params: {
+	eventId: string,
+	policies: { [key: string]: TransformedAcl }
+}, { dispatch }) => {
 	const { eventId, policies } = params;
 	const headers = getHttpHeaders();
 
@@ -1569,7 +1656,10 @@ export const saveAccessPolicies = createAsyncThunk('eventDetails/saveAccessPolic
 		});
 });
 
-export const deleteComment = createAsyncThunk('eventDetails/deleteComment', async (params: {eventId: any, commentId: any}) => {
+export const deleteComment = createAsyncThunk('eventDetails/deleteComment', async (params: {
+	eventId: string,
+	commentId: number
+}) => {
 	const { eventId, commentId } = params;
 	const commentDeleted = await axios.delete(
 		`/admin-ng/event/${eventId}/comment/${commentId}`
@@ -1578,7 +1668,11 @@ export const deleteComment = createAsyncThunk('eventDetails/deleteComment', asyn
 	return true;
 });
 
-export const deleteCommentReply = createAsyncThunk('eventDetails/deleteCommentReply', async (params: {eventId: any, commentId: any, replyId: any}) => {
+export const deleteCommentReply = createAsyncThunk('eventDetails/deleteCommentReply', async (params: {
+	eventId: string,
+	commentId: number,
+	replyId: number
+}) => {
 	const { eventId, commentId, replyId } = params;
 	const commentReplyDeleted = await axios.delete(
 		`/admin-ng/event/${eventId}/comment/${commentId}/${replyId}`
@@ -1588,7 +1682,7 @@ export const deleteCommentReply = createAsyncThunk('eventDetails/deleteCommentRe
 	return true;
 });
 
-export const updateWorkflow = createAsyncThunk('eventDetails/updateWorkflow', async (workflowId: any, { dispatch, getState }) => {
+export const updateWorkflow = createAsyncThunk('eventDetails/updateWorkflow', async (workflowId: string, { dispatch, getState }) => {
 	const state = getState();
 	const workflowDefinitions = getWorkflowDefinitions(state as RootState);
 	const workflowDef = workflowDefinitions.find((def) => def.id === workflowId);
@@ -1601,7 +1695,13 @@ export const updateWorkflow = createAsyncThunk('eventDetails/updateWorkflow', as
 	);
 });
 
-export const saveWorkflowConfig = createAsyncThunk('eventDetails/saveWorkflowConfig', async (params: {values: any, eventId: any}, { dispatch }) => {
+export const saveWorkflowConfig = createAsyncThunk('eventDetails/saveWorkflowConfig', async (params: {
+	values: {
+		workflowDefinition: string,
+		configuration: { [key: string]: any }
+	},
+	eventId: string
+}, { dispatch }) => {
 	const { values, eventId } = params;
 	let jsonData = {
 		id: values.workflowDefinition,

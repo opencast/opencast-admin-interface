@@ -45,8 +45,8 @@ const EditScheduledEventsEditPage = ({
 	const seriesOptions = useAppSelector(state => getSchedulingSeriesOptions(state));
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
-	const checkForSchedulingConflictsWrapper = (events: any) => {
-		dispatch(checkForSchedulingConflicts(events));
+	const checkForSchedulingConflictsWrapper = async(events: any) => {
+		return dispatch(checkForSchedulingConflicts(events));
 	}
 
 	const user = useAppSelector(state => getUserInformation(state));
