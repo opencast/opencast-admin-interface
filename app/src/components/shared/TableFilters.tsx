@@ -136,8 +136,14 @@ const TableFilters = ({
 	// Set the sate of startDate and endDate picked with datepicker
 	const handleDatepickerChange = async (date: Date, isStart = false) => {
 		if (isStart) {
+			date.setHours(0);
+			date.setMinutes(0);
+			date.setSeconds(0);
 			setStartDate(date);
 		} else {
+			date.setHours(23);
+			date.setMinutes(59);
+			date.setSeconds(59);
 			setEndDate(date);
 		}
 	};
@@ -176,10 +182,18 @@ const TableFilters = ({
 		}
 
 		if (myStartDate && isStart && !endDate) {
-			setEndDate(myStartDate);
+			let tmp = new Date(myStartDate.getTime());
+			tmp.setHours(23);
+			tmp.setMinutes(59);
+			tmp.setSeconds(59);
+			setEndDate(tmp);
 		}
 		if (myEndDate && !isStart && !startDate) {
-			setStartDate(myEndDate);
+			let tmp = new Date(myEndDate.getTime());
+			tmp.setHours(0);
+			tmp.setMinutes(0);
+			tmp.setSeconds(0);
+			setStartDate(tmp);
 		}
 	}
 
@@ -482,7 +496,7 @@ const FilterSwitch = ({
 						onAccept={(e) => {handleDateConfirm(e, true)}}
 						// onAccept does not trigger if the value did not change, therefore
 						// we also need to callback in onClose
-						onClose={() => handleDateConfirm()}
+						// onClose={() => handleDateConfirm()}
 						slotProps={{
 							textField: {
 								onKeyDown: (event) => {
@@ -505,7 +519,7 @@ const FilterSwitch = ({
 						onAccept={(e) => handleDateConfirm(e, false)}
 						// onAccept does not trigger if the value did not change, therefore
 						// we also need to callback in onClose
-						onClose={() => handleDateConfirm()}
+						// onClose={() => handleDateConfirm()}
 						slotProps={{
 							textField: {
 								onKeyDown: (event) => {
