@@ -493,10 +493,10 @@ const FilterSwitch = ({
 						value={startDate ?? {}}
 						format="dd/MM/yyyy"
 						onChange={(date) => handleDate(date, true)}
+						// FixMe: onAccept does not trigger if the already set value is the same as the selected value
+						// This prevents us from confirming from confirming our filter, if someone wants to selected the same
+						// day for both start and end date (since we automatically set one to the other)
 						onAccept={(e) => {handleDateConfirm(e, true)}}
-						// onAccept does not trigger if the value did not change, therefore
-						// we also need to callback in onClose
-						// onClose={() => handleDateConfirm()}
 						slotProps={{
 							textField: {
 								onKeyDown: (event) => {
@@ -516,10 +516,8 @@ const FilterSwitch = ({
 						value={endDate ?? {}}
 						format="dd/MM/yyyy"
 						onChange={(date) => handleDate(date)}
+						// FixMe: See above
 						onAccept={(e) => handleDateConfirm(e, false)}
-						// onAccept does not trigger if the value did not change, therefore
-						// we also need to callback in onClose
-						// onClose={() => handleDateConfirm()}
 						slotProps={{
 							textField: {
 								onKeyDown: (event) => {
