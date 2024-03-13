@@ -5,12 +5,15 @@ import {
 } from "../selectors/userInfoSelectors";
 import { hasAccess } from "../utils/utils";
 import { useAppSelector } from "../store";
+import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 /**
  * Component that renders the footer
  */
 
 const Footer: React.FC = () => {
+	const { t } = useTranslation();
 	const feedbackUrlPropertyId = "org.opencastproject.admin.feedback.url";
 
 	const user = useAppSelector(state => getUserInformation(state));
@@ -19,15 +22,20 @@ const Footer: React.FC = () => {
 	return (
 		<footer id="main-footer">
 			<div className="default-footer">
-				{/* Only render if a version is set */}
-				{!!user.ocVersion && (
-					<div className="meta">
-						Opencast {user.ocVersion.version}
-						{hasAccess("ROLE_ADMIN", user) && (
-							<span> - {user.ocVersion.buildNumber || "undefined"}</span>
-						)}
-					</div>
-				)}
+				<ul>
+					{/* Only render if a version is set */}
+					{!!user.ocVersion && (
+						<li>
+							Opencast {user.ocVersion.version}
+							{hasAccess("ROLE_ADMIN", user) && (
+								<span> - {user.ocVersion.buildNumber || "undefined"}</span>
+							)}
+						</li>
+					)}
+					<li><Link to="/about/imprint">{t("IMPRINT")}</Link></li>
+					<li><Link to="/about/privacy">{t("PRIVACY")}</Link></li>
+				</ul>
+
 				{/* Only render if a feedback URL is set*/}
 				{!!orgProperties && !!orgProperties[feedbackUrlPropertyId] && (
 					<div className="feedback-btn" id="feedback-btn">

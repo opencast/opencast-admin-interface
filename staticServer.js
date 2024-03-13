@@ -50,6 +50,10 @@ app.use(
     "/workflow",
     express.static(path.join(__dirname, "test/app/GET/workflow"))
 );
+app.use(
+    "/ui",
+    express.static(path.join(__dirname, "test/app/GET/ui"))
+);
 app.use("/app/styles",
     express.static(path.join(__dirname, "app/src/styles"))
 );

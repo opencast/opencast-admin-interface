@@ -2149,5 +2149,7 @@
 			"medium": "{{time, h:mm:ss a}}",
 			"full": "{{time, h:mm:ss a z}}"
 		}
-	}
+	},
+	"IMPRINT": "Imprint",
+	"PRIVACY": "Privacy statement"
 }
