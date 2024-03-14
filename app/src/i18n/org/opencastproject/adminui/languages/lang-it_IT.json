@@ -2145,5 +2145,7 @@
 			"medium": "{{time, H.mm.ss}}",
 			"full": "{{time, H.mm.ss z}}"
 		}
-	}
+	},
+	"IMPRINT": "Impronta",
+	"PRIVACY": "Informativa sulla privacy"
 }

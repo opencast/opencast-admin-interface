@@ -2145,5 +2145,7 @@
 			"medium": "{{time, H:mm:ss}}",
 			"full": "{{time, HH'H'mm'' z}}"
 		}
-	}
+	},
+	"IMPRINT": "Pie de imprenta",
+	"PRIVACY": "Política de privacidad"
 }
