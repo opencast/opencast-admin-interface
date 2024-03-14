@@ -12,8 +12,7 @@ import Servers from "./components/systems/Servers";
 import Services from "./components/systems/Services";
 import Groups from "./components/users/Groups";
 import Acls from "./components/users/Acls";
-import Imprint from "./components/about/Imprint";
-import Privacy from "./components/about/Privacy";
+import About from "./components/About";
 import { useAppDispatch } from "./store";
 import { fetchOcVersion, fetchUserInfo } from "./slices/userInfoSlice";
 
@@ -54,9 +53,9 @@ function App() {
 
 				<Route path={"/statistics/organization"} element={<Statistics />} />
 
-				<Route path={"/about/imprint"} element={<Imprint />} />
+				<Route path={"/about/imprint"} element={<About />} />
 
-				<Route path={"/about/privacy"} element={<Privacy />} />
+				<Route path={"/about/privacy"} element={<About />} />
 
 				<Route
 					path={"*"}
