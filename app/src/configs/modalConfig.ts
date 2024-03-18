@@ -1,6 +1,7 @@
 // All fields for new event form that are fix and not depending on response of backend
 // InitialValues of Formik form (others computed dynamically depending on responses from backend)
 import { initArray } from "../utils/utils";
+import { EditedEvents, Event } from "../slices/eventSlice";
 
 // Context for notifications shown in modals
 export const NOTIFICATION_CONTEXT = "modal-form";
@@ -144,7 +145,11 @@ export const initialFormValuesStartTask = {
 	configuration: {},
 };
 
-export const initialFormValuesEditScheduledEvents = {
+export const initialFormValuesEditScheduledEvents: {
+	events: Event[],
+	editedEvents: EditedEvents[],
+	changedEvents: string[],
+} = {
 	events: [],
 	editedEvents: [],
 	changedEvents: [],

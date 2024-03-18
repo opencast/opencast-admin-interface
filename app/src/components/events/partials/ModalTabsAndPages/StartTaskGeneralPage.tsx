@@ -10,12 +10,27 @@ import {
 	isStartable,
 	isTaskStartable,
 } from "../../../../utils/bulkActionUtils";
+import { FormikProps } from "formik";
+import {
+	Event,
+} from "../../../../slices/eventSlice";
 
 /**
  * This component renders the table overview of selected events in start task bulk action
  */
+interface RequiredFormProps {
+	events: Event[],
+}
+
+const StartTaskGeneralPage = <T extends RequiredFormProps>({
+	formik,
+	nextPage,
 // @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
-const StartTaskGeneralPage = ({ formik, nextPage, selectedRows }) => {
+	selectedRows
+}: {
+	formik: FormikProps<T>,
+	nextPage: (values: T) => void,
+}) => {
 	const { t } = useTranslation();
 
 	const [

@@ -13,17 +13,24 @@ import {
 	isScheduleEditable,
 } from "../../../../utils/bulkActionUtils";
 import { useAppSelector } from "../../../../store";
+import { FormikProps } from "formik";
+import { Event } from "../../../../slices/eventSlice";
 
 /**
  * This component renders the table overview of selected events in edit scheduled events bulk action
  */
-const EditScheduledEventsGeneralPage = ({
-// @ts-expect-error TS(7031): Binding element 'nextPage' implicitly has an 'any'... Remove this comment to see the full error message
+interface RequiredFormProps {
+	events: Event[],
+}
+
+const EditScheduledEventsGeneralPage = <T extends RequiredFormProps>({
 	nextPage,
-// @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
 	formik,
 // @ts-expect-error TS(7031): Binding element 'selectedRows' implicitly has an '... Remove this comment to see the full error message
 	selectedRows,
+}: {
+	formik: FormikProps<T>,
+	nextPage: (values: T) => void,
 }) => {
 	const { t } = useTranslation();
 

@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { connect } from "react-redux";
-import { Field, FieldArray } from "formik";
+import { Field, FieldArray, FormikProps } from "formik";
 import Notifications from "../../../shared/Notifications";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getTimezoneOffset, hasAccess } from "../../../../utils/utils";
@@ -17,6 +16,8 @@ import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import {
+	Event,
+	EditedEvents,
 	checkForSchedulingConflicts,
 	fetchScheduling,
 } from "../../../../slices/eventSlice";
@@ -24,19 +25,25 @@ import {
 /**
  * This component renders the edit page for scheduled events of the corresponding bulk action
  */
-const EditScheduledEventsEditPage = ({
-// @ts-expect-error TS(7031): Binding element 'previousPage' implicitly has an '... Remove this comment to see the full error message
-	previousPage,
-// @ts-expect-error TS(7031): Binding element 'nextPage' implicitly has an 'any'... Remove this comment to see the full error message
-	nextPage,
-// @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
+interface RequiredFormProps {
+	events: Event[],
+	editedEvents: EditedEvents[],
+}
+
+const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 	formik,
-// @ts-expect-error TS(7031): Binding element 'inputDevices' implicitly has an '... Remove this comment to see the full error message
-	inputDevices,
-// @ts-expect-error TS(7031): Binding element 'conflicts' implicitly has an 'any... Remove this comment to see the full error message
-	conflictState: { conflicts, setConflicts },
-// @ts-expect-error TS(7031): Binding element 'setPageCompleted' implicitly has ... Remove this comment to see the full error message
+	nextPage,
+	previousPage,
 	setPageCompleted,
+	inputDevices,
+	conflictState: { conflicts, setConflicts },
+}: {
+	formik: FormikProps<T>,
+	nextPage: (values: T) => void,
+	previousPage: (values: T) => void,
+	setPageCompleted: (rec: Record<number, boolean>) => void,
+	inputDevices: { user: any, inputDevices: any },
+	conflictState: { conflicts: any, setConflicts: any },
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -53,11 +60,9 @@ const EditScheduledEventsEditPage = ({
 
 	useEffect(() => {
 		const fetchEventInfos =
-			formik.values.editedEvents.length !== formik.values.events ||
+			formik.values.editedEvents.length !== formik.values.events.length ||
 			formik.values.events.some(
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 				(event) =>
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
 					!formik.values.editedEvents.find((e) => e.eventId === event.id)
 			);
 
@@ -123,7 +128,6 @@ const EditScheduledEventsEditPage = ({
 										{
 											/*todo: in old UI this was grouped by weekday, which is also stated in the description in the div above
                                         now there isn't any grouping and there is one div per event -> find out, if that is okay and adapt again if necessary */
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 											formik.values.editedEvents.map((event, key) => (
 												<div className="obj tbl-details">
 													<header>{event.title}</header>
@@ -472,7 +476,7 @@ const EditScheduledEventsEditPage = ({
 				<button
 					className="cancel"
 					onClick={() => {
-						previousPage(formik.values, false);
+						previousPage(formik.values);
 						if (!formik.isValid) {
 							// set page as not filled out
 							setPageCompleted([]);
@@ -489,18 +493,4 @@ const EditScheduledEventsEditPage = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EditScheduledEventsEditPage);
+export default EditScheduledEventsEditPage;

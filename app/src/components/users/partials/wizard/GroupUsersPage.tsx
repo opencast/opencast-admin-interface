@@ -2,16 +2,22 @@ import React, { useEffect, useState } from "react";
 import SelectContainer from "../../../shared/wizard/SelectContainer";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { fetchUsersAndUsernames } from "../../../../slices/userSlice";
+import { FormikProps } from "formik";
 
 /**
  * This component renders the user selection page of the new group wizard and group details wizard
  */
-const GroupUsersPage = ({
-    previousPage,
-    nextPage,
-    formik,
-    isEdit
-}: any) => {
+const GroupUsersPage = <T,>({
+	formik,
+	nextPage,
+	previousPage,
+	isEdit
+}: {
+	formik: FormikProps<T>,
+	nextPage?: (values: T) => void,
+	previousPage?: (values: T) => void,
+	isEdit?: boolean,
+}) => {
 	// users that can be chosen by user
 	const [users, setUsers] = useState([]);
 	// flag for API call

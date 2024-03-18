@@ -1,30 +1,27 @@
 import { useEffect, useState } from "react";
 
-export const usePageFunctions = (initialPage: any, initialValues: any) => {
+export const usePageFunctions = <initialValuesType>(initialPage: number, initialValues: initialValuesType) => {
 	const [page, setPage] = useState(initialPage);
 	const [snapshot, setSnapshot] = useState(initialValues);
-	const [pageCompleted, setPageCompleted] = useState({});
+	const [pageCompleted, setPageCompleted] = useState<{ [key: number]: boolean }>({});
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const nextPage = (values) => {
+	const nextPage = (values: initialValuesType) => {
 		setSnapshot(values);
 
 		// set page as completely filled out
 		let updatedPageCompleted = pageCompleted;
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 		updatedPageCompleted[page] = true;
 		setPageCompleted(updatedPageCompleted);
 
 		setPage(page + 1);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const previousPage = (values) => {
+	const previousPage = (values: initialValuesType) => {
 		setSnapshot(values);
 		setPage(page - 1);
 	};
 
-	return [
+	return {
 		snapshot,
 		page,
 		nextPage,
@@ -32,7 +29,7 @@ export const usePageFunctions = (initialPage: any, initialValues: any) => {
 		setPage,
 		pageCompleted,
 		setPageCompleted,
-	];
+	};
 };
 
 // @ts-expect-error TS(7006): Parameter 'formik' implicitly has an 'any' type.
