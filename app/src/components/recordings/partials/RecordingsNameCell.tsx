@@ -1,9 +1,10 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { setSpecificEventFilter } from "../../../thunks/tableFilterThunks";
+import { setSpecificEventFilter } from "../../../slices/tableFilterSlice";
 import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { connect } from "react-redux";
+import { useAppDispatch } from "../../../store";
 
 /**
  * This component renders the name cells of recordings in the table view
@@ -13,10 +14,9 @@ const RecordingsNameCell = ({
 	row,
 // @ts-expect-error TS(7031): Binding element 'loadingEventsIntoTable' implicitl... Remove this comment to see the full error message
 	loadingEventsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'setSpecificEventFilter' implicitl... Remove this comment to see the full error message
-	setSpecificEventFilter,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 // @ts-expect-error TS(7006): Parameter 'locationName' implicitly has an 'any' t... Remove this comment to see the full error message
 	const redirectToEvents = async (locationName) => {
@@ -24,7 +24,7 @@ const RecordingsNameCell = ({
 		await loadingEventsIntoTable();
 
 		// set the location filter value of events to location name
-		await setSpecificEventFilter("location", locationName);
+		await dispatch(setSpecificEventFilter({ filter: "location", filterValue: locationName }));
 	};
 
 	return (
@@ -43,9 +43,6 @@ const RecordingsNameCell = ({
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
 	loadingEventsIntoTable: () => dispatch(loadEventsIntoTable()),
-// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
-	setSpecificEventFilter: (filter, filterValue) =>
-		dispatch(setSpecificEventFilter(filter, filterValue)),
 });
 
 export default connect(null, mapDispatchToProps)(RecordingsNameCell);
