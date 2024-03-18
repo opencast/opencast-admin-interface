@@ -16,7 +16,6 @@ const SeriesDetailsModal = ({
 	const [policyChanged, setPolicyChanged] = useState(false);
 
 	const confirmUnsaved = () => {
-// @ts-expect-error TS(2345): Argument of type 'DefaultTFuncReturn' is not assig... Remove this comment to see the full error message
 		return window.confirm(t("CONFIRMATIONS.WARNINGS.UNSAVED_CHANGES"));
 	};
 

@@ -52,7 +52,6 @@ const ThemesActionsCell = ({
 				<button
 					onClick={() => showThemeDetails()}
 					className="button-like-anchor more"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("CONFIGURATION.THEMES.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
@@ -70,7 +69,6 @@ const ThemesActionsCell = ({
 				<button
 					onClick={() => setDeleteConfirmation(true)}
 					className="button-like-anchor remove ng-scope ng-isolate-scope"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("CONFIGURATION.THEMES.TABLE.TOOLTIP.DELETE")}
 				/>
 			)}

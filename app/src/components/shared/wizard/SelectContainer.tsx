@@ -200,7 +200,6 @@ const SelectContainer = ({
 									className="search"
 									disabled={!manageable}
 									style={manageable ? {} : disabledStyle}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 									placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
 									onChange={(e) => handleChangeSearch(e.target.value)}
 									value={searchField}

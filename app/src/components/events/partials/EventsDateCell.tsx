@@ -39,7 +39,6 @@ const EventsDateCell = ({
 		// Link template for start date of event
 		<button
 			className="button-like-anchor crosslink"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 			title={t("EVENTS.EVENTS.TABLE.TOOLTIP.START")}
 			onClick={() => addFilter(row.date)}
 		>
