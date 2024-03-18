@@ -33,12 +33,12 @@ const StartTaskGeneralPage = <T extends RequiredFormProps>({
 }) => {
 	const { t } = useTranslation();
 
-	const [
+	const {
 		selectedEvents,
 		allChecked,
 		onChangeSelected,
 		onChangeAllSelected,
-	] = useSelectionChanges(formik, selectedRows);
+	} = useSelectionChanges(formik, selectedRows);
 
 	useEffect(() => {
 		// Set field value for formik on mount, because initially all events are selected
@@ -67,7 +67,6 @@ const StartTaskGeneralPage = <T extends RequiredFormProps>({
 								{t("BULK_ACTIONS.SCHEDULE_TASK.GENERAL.CAPTION")}
 								<span className="header-value">
 									{t("BULK_ACTIONS.SCHEDULE_TASK.GENERAL.SUMMARY", {
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
 										count: selectedEvents.filter((e) => e.selected === true)
 											.length,
 									})}
@@ -98,7 +97,6 @@ const StartTaskGeneralPage = <T extends RequiredFormProps>({
 									</thead>
 									<tbody>
 										{/* Repeat for each event chosen */}
-{/* @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type. */}
 										{selectedEvents.map((event, key) => (
 											<tr
 												key={key}

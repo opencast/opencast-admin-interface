@@ -36,12 +36,12 @@ const EditScheduledEventsGeneralPage = <T extends RequiredFormProps>({
 
 	const user = useAppSelector(state => getUserInformation(state));
 
-	const [
+	const {
 		selectedEvents,
 		allChecked,
 		onChangeSelected,
 		onChangeAllSelected,
-	] = useSelectionChanges(formik, selectedRows);
+	} = useSelectionChanges(formik, selectedRows);
 
 	useEffect(() => {
 		// Set field value for formik on mount, because initially all events are selected
@@ -99,7 +99,6 @@ const EditScheduledEventsGeneralPage = <T extends RequiredFormProps>({
 									</thead>
 									<tbody>
 										{/* Repeat for each selected event */}
-{/* @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type. */}
 										{selectedEvents.map((event, key) => (
 											<tr
 												key={key}
