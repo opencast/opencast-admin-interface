@@ -1,23 +1,14 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
 import { Formik } from "formik";
 import {
-	deleteWorkflow,
-	fetchWorkflowDetails,
-	fetchWorkflows,
-	performWorkflowAction,
-	saveWorkflowConfig,
-	updateWorkflow,
-} from "../../../../thunks/eventDetailsThunks";
-import {
-	deletingWorkflow,
+	deletingWorkflow as getDeletingWorkflow,
 	getBaseWorkflow,
 	getWorkflow,
 	getWorkflowConfiguration,
 	getWorkflowDefinitions,
 	getWorkflows,
 	isFetchingWorkflows,
-	performingWorkflowAction,
+	performingWorkflowAction as getPerformingWorkflowAction,
 } from "../../../../selectors/eventDetailsSelectors";
 import Notifications from "../../../shared/Notifications";
 import RenderWorkflowConfig from "../wizards/RenderWorkflowConfig";
@@ -26,6 +17,14 @@ import { hasAccess, parseBooleanInObject } from "../../../../utils/utils";
 import { setDefaultConfig } from "../../../../utils/workflowPanelUtils";
 import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
+import {
+	deleteWorkflow as deleteWf,
+	fetchWorkflowDetails,
+	fetchWorkflows,
+	performWorkflowAction,
+	saveWorkflowConfig,
+	updateWorkflow,
+} from "../../../../slices/eventDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
@@ -40,37 +39,18 @@ const EventDetailsWorkflowTab = ({
 	close,
 // @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
-// @ts-expect-error TS(7031): Binding element 'baseWorkflow' implicitly has an '... Remove this comment to see the full error message
-	baseWorkflow,
-// @ts-expect-error TS(7031): Binding element 'saveWorkflowConfig' implicitly ha... Remove this comment to see the full error message
-	saveWorkflowConfig,
-// @ts-expect-error TS(7031): Binding element 'workflow' implicitly has an 'any'... Remove this comment to see the full error message
-	workflow,
-// @ts-expect-error TS(7031): Binding element 'workflows' implicitly has an 'any... Remove this comment to see the full error message
-	workflows,
-// @ts-expect-error TS(7031): Binding element 'isLoading' implicitly has an 'any... Remove this comment to see the full error message
-	isLoading,
-// @ts-expect-error TS(7031): Binding element 'workflowDefinitions' implicitly h... Remove this comment to see the full error message
-	workflowDefinitions,
-// @ts-expect-error TS(7031): Binding element 'workflowConfiguration' implicitly... Remove this comment to see the full error message
-	workflowConfiguration,
-// @ts-expect-error TS(7031): Binding element 'performingWorkflowAction' implici... Remove this comment to see the full error message
-	performingWorkflowAction,
-// @ts-expect-error TS(7031): Binding element 'deletingWorkflow' implicitly has ... Remove this comment to see the full error message
-	deletingWorkflow,
-// @ts-expect-error TS(7031): Binding element 'loadWorkflows' implicitly has an ... Remove this comment to see the full error message
-	loadWorkflows,
-// @ts-expect-error TS(7031): Binding element 'updateWorkflow' implicitly has an... Remove this comment to see the full error message
-	updateWorkflow,
-// @ts-expect-error TS(7031): Binding element 'loadWorkflowDetails' implicitly h... Remove this comment to see the full error message
-	loadWorkflowDetails,
-// @ts-expect-error TS(7031): Binding element 'performWorkflowAction' implicitly... Remove this comment to see the full error message
-	performWorkflowAction,
-// @ts-expect-error TS(7031): Binding element 'deleteWf' implicitly has an 'any'... Remove this comment to see the full error message
-	deleteWf,
 }) => {
-	const user = useAppSelector(state => getUserInformation(state));
 	const dispatch = useAppDispatch();
+
+	const user = useAppSelector(state => getUserInformation(state));
+	const deletingWorkflow = useAppSelector(state => getDeletingWorkflow(state));
+	const baseWorkflow = useAppSelector(state => getBaseWorkflow(state));
+	const workflow = useAppSelector(state => getWorkflow(state));
+	const workflowConfiguration = useAppSelector(state => getWorkflowConfiguration(state));
+	const workflowDefinitions = useAppSelector(state => getWorkflowDefinitions(state));
+	const workflows = useAppSelector(state => getWorkflows(state));
+	const isLoading = useAppSelector(state => isFetchingWorkflows(state));
+	const performingWorkflowAction = useAppSelector(state => getPerformingWorkflowAction(state));
 
 	const isRoleWorkflowEdit = hasAccess(
 		"ROLE_UI_EVENTS_DETAILS_WORKFLOWS_EDIT",
@@ -83,8 +63,7 @@ const EventDetailsWorkflowTab = ({
 
 	useEffect(() => {
 		dispatch(removeNotificationWizardForm());
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
-		loadWorkflows(eventId).then((r) => {});
+		dispatch(fetchWorkflows(eventId)).then();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -97,21 +76,20 @@ const EventDetailsWorkflowTab = ({
 // @ts-expect-error TS(7006): Parameter 'workflowId' implicitly has an 'any' typ... Remove this comment to see the full error message
 	const workflowAction = (workflowId, action) => {
 		if (!performingWorkflowAction) {
-			performWorkflowAction(eventId, workflowId, action, close);
+			dispatch(performWorkflowAction({eventId, workflowId, action, close}));
 		}
 	};
 
 // @ts-expect-error TS(7006): Parameter 'workflowId' implicitly has an 'any' typ... Remove this comment to see the full error message
 	const deleteWorkflow = (workflowId) => {
 		if (!deletingWorkflow) {
-			deleteWf(eventId, workflowId);
+			dispatch(deleteWf({eventId, workflowId}));
 		}
 	};
 
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
 	const openSubTab = (tabType, workflowId) => {
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
-		loadWorkflowDetails(eventId, workflowId).then((r) => {});
+		dispatch(fetchWorkflowDetails({eventId, workflowId})).then();
 		setHierarchy(tabType);
 		dispatch(removeNotificationWizardForm());
 	};
@@ -133,11 +111,17 @@ const EventDetailsWorkflowTab = ({
 
 		changeFormikValue("configuration", currentConfiguration);
 		changeFormikValue("workflowDefinition", value);
-		updateWorkflow(value);
+		dispatch(updateWorkflow(value));
 	};
 
 	const setInitialValues = () => {
-		let initialConfig = parseBooleanInObject(baseWorkflow.configuration);
+		let initialConfig = undefined;
+
+		// TODO: Scheduled events are missing configuration for their workflow
+		// Figure out why the config is missing
+		if (baseWorkflow.configuration) {
+			initialConfig = parseBooleanInObject(baseWorkflow.configuration);
+		}
 
 		return {
 			workflowDefinition: !!workflow.workflowId
@@ -149,7 +133,7 @@ const EventDetailsWorkflowTab = ({
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
-		saveWorkflowConfig(values, eventId);
+		dispatch(saveWorkflowConfig({values, eventId}));
 	};
 
 	return (
@@ -220,9 +204,7 @@ const EventDetailsWorkflowTab = ({
 											<tbody>
 												{isLoading ||
 													workflows.entries.map((
-// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
 														item,
-// @ts-expect-error TS(7006): Parameter 'key' implicitly has an 'any' type.
 														key /*orderBy:'submitted':true track by $index"*/
 													) => (
 														<tr key={key}>
@@ -364,11 +346,10 @@ const EventDetailsWorkflowTab = ({
 																					}
 																					text={
 																						workflowDefinitions.find(
-// @ts-expect-error TS(7006): Parameter 'workflowDef' implicitly has an 'any' ty... Remove this comment to see the full error message
 																							(workflowDef) =>
 																								workflowDef.id ===
 																								formik.values.workflowDefinition
-																						).title
+																						)?.title ?? ""
 																					}
 																					options={
 																						!!workflowDefinitions &&
@@ -395,7 +376,7 @@ const EventDetailsWorkflowTab = ({
 																									"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW_EMPTY"
 																							  )
 																					}
-																					tabIndex={"5"}
+																					tabIndex={5}
 																					disabled={
 																						!hasCurrentAgentAccess() ||
 																						!isRoleWorkflowEdit
@@ -517,41 +498,4 @@ const EventDetailsWorkflowTab = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	workflow: getWorkflow(state),
-	workflows: getWorkflows(state),
-	baseWorkflow: getBaseWorkflow(state),
-	isLoading: isFetchingWorkflows(state),
-	workflowDefinitions: getWorkflowDefinitions(state),
-	workflowConfiguration: getWorkflowConfiguration(state),
-	performingWorkflowAction: performingWorkflowAction(state),
-	deletingWorkflow: deletingWorkflow(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	loadWorkflows: (eventId) => dispatch(fetchWorkflows(eventId)),
-// @ts-expect-error TS(7006): Parameter 'workflow' implicitly has an 'any' type.
-	updateWorkflow: (workflow) => dispatch(updateWorkflow(workflow)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	loadWorkflowDetails: (eventId, workflowId) =>
-		dispatch(fetchWorkflowDetails(eventId, workflowId)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	performWorkflowAction: (eventId, workflowId, action, close) =>
-		dispatch(performWorkflowAction(eventId, workflowId, action, close)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	deleteWf: (eventId, workflowId) =>
-		dispatch(deleteWorkflow(eventId, workflowId)),
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	saveWorkflowConfig: (values, eventId) =>
-		dispatch(saveWorkflowConfig(values, eventId)),
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EventDetailsWorkflowTab);
+export default EventDetailsWorkflowTab;

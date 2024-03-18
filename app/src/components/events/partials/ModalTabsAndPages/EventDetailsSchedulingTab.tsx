@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
 import cn from "classnames";
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'loda... Remove this comment to see the full error message
 import _ from "lodash";
 import { DatePicker } from "@material-ui/pickers";
 import { createTheme, ThemeProvider } from "@material-ui/core";
@@ -9,10 +7,6 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { Field, Formik } from "formik";
 import Notifications from "../../../shared/Notifications";
-import {
-	checkConflicts,
-	saveSchedulingInfo,
-} from "../../../../thunks/eventDetailsThunks";
 import {
 	getSchedulingConflicts,
 	getSchedulingProperties,
@@ -47,6 +41,10 @@ import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
+	checkConflicts,
+	saveSchedulingInfo,
+} from "../../../../slices/eventDetailsSlice";
+import {
 	removeNotificationWizardForm,
 	addNotification,
 } from "../../../../slices/notificationSlice";
@@ -59,33 +57,32 @@ const EventDetailsSchedulingTab = ({
 	eventId,
 // @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
 	t,
-// @ts-expect-error TS(7031): Binding element 'source' implicitly has an 'any' t... Remove this comment to see the full error message
-	source,
-// @ts-expect-error TS(7031): Binding element 'conflicts' implicitly has an 'any... Remove this comment to see the full error message
-	conflicts,
-// @ts-expect-error TS(7031): Binding element 'hasSchedulingProperties' implicit... Remove this comment to see the full error message
-	hasSchedulingProperties,
-// @ts-expect-error TS(7031): Binding element 'checkingConflicts' implicitly has... Remove this comment to see the full error message
-	checkingConflicts,
-// @ts-expect-error TS(7031): Binding element 'checkConflicts' implicitly has an... Remove this comment to see the full error message
-	checkConflicts,
-// @ts-expect-error TS(7031): Binding element 'saveSchedulingInfo' implicitly ha... Remove this comment to see the full error message
-	saveSchedulingInfo,
 }) => {
-	const user = useAppSelector(state => getUserInformation(state));
 	const dispatch = useAppDispatch();
 
+	const user = useAppSelector(state => getUserInformation(state));
+	const conflicts = useAppSelector(state => getSchedulingConflicts(state));
+	const hasSchedulingProperties = useAppSelector(state => getSchedulingProperties(state));
+	const source = useAppSelector(state => getSchedulingSource(state));
+	const checkingConflicts = useAppSelector(state => isCheckingConflicts(state));
 	const captureAgents = useAppSelector(state => getRecordings(state));
+
+	// TODO: Get rid of the wrappers when modernizing redux is done
+	const checkConflictsWrapper = (eventId: any, startDate: any, endDate: any, deviceId: any) => {
+		dispatch(checkConflicts({eventId, startDate, endDate, deviceId}));
+	}
+
+	const sourceStartDate = new Date(source.start.date);
+	const endStartDate = new Date(source.start.date);
 
 	useEffect(() => {
 		dispatch(removeNotificationWizardForm());
-		checkConflicts(
+		dispatch(checkConflicts({
 			eventId,
-			source.start.date,
-			source.end.date,
-			source.device.id
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
-		).then((r) => {});
+			startDate: sourceStartDate,
+			endDate: endStartDate,
+			deviceId: source.device.id
+		})).then();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -187,11 +184,10 @@ const EventDetailsSchedulingTab = ({
 			values.scheduleEndHour,
 			values.scheduleEndMinute
 		);
-		checkConflicts(eventId, startDate, endDate, values.captureAgent).then(
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
+		dispatch(checkConflicts({eventId, startDate, endDate, deviceId: values.captureAgent})).then(
 			(r) => {
 				if (r) {
-					saveSchedulingInfo(eventId, values, startDate, endDate).then();
+					dispatch(saveSchedulingInfo({eventId, values, startDate, endDate})).then();
 				} else {
 					dispatch(addNotification({
 						type: "error",
@@ -216,13 +212,13 @@ const EventDetailsSchedulingTab = ({
 
 		return {
 			scheduleStartDate: startDate.setHours(0, 0, 0),
-			scheduleStartHour: makeTwoDigits(source.start.hour),
-			scheduleStartMinute: makeTwoDigits(source.start.minute),
-			scheduleDurationHours: makeTwoDigits(source.duration.hour),
-			scheduleDurationMinutes: makeTwoDigits(source.duration.minute),
+			scheduleStartHour: source.start.hour ? makeTwoDigits(source.start.hour) : "",
+			scheduleStartMinute: source.start.minute ? makeTwoDigits(source.start.minute) : "",
+			scheduleDurationHours: source.duration.hour ? makeTwoDigits(source.duration.hour) : "",
+			scheduleDurationMinutes: source.duration.minute ? makeTwoDigits(source.duration.minute): "",
 			scheduleEndDate: endDate.setHours(0, 0, 0),
-			scheduleEndHour: makeTwoDigits(source.end.hour),
-			scheduleEndMinute: makeTwoDigits(source.end.minute),
+			scheduleEndHour: source.end.hour ? makeTwoDigits(source.end.hour): "",
+			scheduleEndMinute: source.end.minute ? makeTwoDigits(source.end.minute): "",
 			captureAgent: source.device.name,
 			inputs: inputs.filter((input) => input !== ""),
 		};
@@ -240,7 +236,6 @@ const EventDetailsSchedulingTab = ({
 						conflicts.length > 0 && (
 							<table className="main-tbl scheduling-conflict">
 								<tbody>
-{/* @ts-expect-error TS(7006): Parameter 'conflict' implicitly has an 'any' type. */}
 									{conflicts.map((conflict, key) => (
 										<tr key={key}>
 											<td>{conflict.title}</td>
@@ -313,8 +308,7 @@ const EventDetailsSchedulingTab = ({
 																	<ThemeProvider theme={theme}>
 																		<DatePicker
 																			name="scheduleStartDate"
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-																			tabIndex={"1"}
+																			tabIndex={1}
 																			value={formik.values.scheduleStartDate}
 																			onChange={(value) =>
 																				changeStartDate(
@@ -322,14 +316,14 @@ const EventDetailsSchedulingTab = ({
 																					formik.values,
 																					formik.setFieldValue,
 																					eventId,
-																					checkConflicts
+																					checkConflictsWrapper
 																				)
 																			}
 																		/>
 																	</ThemeProvider>
 																) : (
 																	<>
-																		{source.start.date.toLocaleDateString(
+																		{sourceStartDate.toLocaleDateString(
 // @ts-expect-error TS(2532): Object is possibly 'undefined'.
 																			currentLanguage.dateLocale.code
 																		)}
@@ -364,13 +358,13 @@ const EventDetailsSchedulingTab = ({
 																				formik.values,
 																				formik.setFieldValue,
 																				eventId,
-																				checkConflicts
+																				checkConflictsWrapper
 																			)
 																		}
 																		placeholder={t(
 																			"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
 																		)}
-																		tabIndex={"2"}
+																		tabIndex={2}
 																		disabled={
 																			!accessAllowed(formik.values.captureAgent)
 																		}
@@ -393,13 +387,13 @@ const EventDetailsSchedulingTab = ({
 																				formik.values,
 																				formik.setFieldValue,
 																				eventId,
-																				checkConflicts
+																				checkConflictsWrapper
 																			)
 																		}
 																		placeholder={t(
 																			"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
 																		)}
-																		tabIndex={"3"}
+																		tabIndex={3}
 																		disabled={
 																			!accessAllowed(formik.values.captureAgent)
 																		}
@@ -408,8 +402,8 @@ const EventDetailsSchedulingTab = ({
 															)}
 															{!hasAccessRole && (
 																<td>
-																	{makeTwoDigits(source.start.hour)}:
-																	{makeTwoDigits(source.start.minute)}
+																	{source.start.hour ? makeTwoDigits(source.start.hour) : ""}:
+																	{source.start.minute ? makeTwoDigits(source.start.minute) : ""}
 																</td>
 															)}
 														</tr>
@@ -440,11 +434,11 @@ const EventDetailsSchedulingTab = ({
 																				formik.values,
 																				formik.setFieldValue,
 																				eventId,
-																				checkConflicts
+																				checkConflictsWrapper
 																			)
 																		}
 																		placeholder={t("WIZARD.DURATION.HOURS")}
-																		tabIndex={"4"}
+																		tabIndex={4}
 																		disabled={
 																			!accessAllowed(formik.values.captureAgent)
 																		}
@@ -469,11 +463,11 @@ const EventDetailsSchedulingTab = ({
 																				formik.values,
 																				formik.setFieldValue,
 																				eventId,
-																				checkConflicts
+																				checkConflictsWrapper
 																			)
 																		}
 																		placeholder={t("WIZARD.DURATION.MINUTES")}
-																		tabIndex={"5"}
+																		tabIndex={5}
 																		disabled={
 																			!accessAllowed(formik.values.captureAgent)
 																		}
@@ -482,8 +476,8 @@ const EventDetailsSchedulingTab = ({
 															)}
 															{!hasAccessRole && (
 																<td>
-																	{makeTwoDigits(source.duration.hour)}:
-																	{makeTwoDigits(source.duration.minute)}
+																	{source.duration.hour ? makeTwoDigits(source.duration.hour) : ""}:
+																	{source.duration.minute ? makeTwoDigits(source.duration.minute): ""}
 																</td>
 															)}
 														</tr>
@@ -514,13 +508,13 @@ const EventDetailsSchedulingTab = ({
 																				formik.values,
 																				formik.setFieldValue,
 																				eventId,
-																				checkConflicts
+																				checkConflictsWrapper
 																			)
 																		}
 																		placeholder={t(
 																			"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
 																		)}
-																		tabIndex={"6"}
+																		tabIndex={6}
 																		disabled={
 																			!accessAllowed(formik.values.captureAgent)
 																		}
@@ -543,13 +537,13 @@ const EventDetailsSchedulingTab = ({
 																				formik.values,
 																				formik.setFieldValue,
 																				eventId,
-																				checkConflicts
+																				checkConflictsWrapper
 																			)
 																		}
 																		placeholder={t(
 																			"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
 																		)}
-																		tabIndex={"7"}
+																		tabIndex={7}
 																		disabled={
 																			!accessAllowed(formik.values.captureAgent)
 																		}
@@ -571,8 +565,8 @@ const EventDetailsSchedulingTab = ({
 															)}
 															{!hasAccessRole && (
 																<td>
-																	{makeTwoDigits(source.end.hour)}:
-																	{makeTwoDigits(source.end.minute)}
+																	{source.end.hour ? makeTwoDigits(source.end.hour) : ""}:
+																	{source.end.minute ? makeTwoDigits(source.end.minute): ""}
 																	{formik.values.scheduleEndDate.toString() !==
 																		formik.values.scheduleStartDate.toString() && (
 																		<span>
@@ -621,7 +615,7 @@ const EventDetailsSchedulingTab = ({
 																		placeholder={t(
 																			"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"
 																		)}
-																		tabIndex={"8"}
+																		tabIndex={8}
 																		disabled={
 																			!accessAllowed(formik.values.captureAgent)
 																		}
@@ -725,27 +719,4 @@ const EventDetailsSchedulingTab = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	hasSchedulingProperties: getSchedulingProperties(state),
-	source: getSchedulingSource(state),
-	conflicts: getSchedulingConflicts(state),
-	checkingConflicts: isCheckingConflicts(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	checkConflicts: (eventId, startDate, endDate, deviceId) =>
-		dispatch(checkConflicts(eventId, startDate, endDate, deviceId)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	saveSchedulingInfo: (eventId, values, startDate, endDate) =>
-		dispatch(saveSchedulingInfo(eventId, values, startDate, endDate)),
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EventDetailsSchedulingTab);
+export default EventDetailsSchedulingTab;

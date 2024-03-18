@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import {
-	fetchComments,
-	saveComment,
-	saveCommentReply,
-	deleteComment,
-	deleteCommentReply,
-} from "../../../../thunks/eventDetailsThunks";
 import {
 	getComments,
 	getCommentReasons,
-	isFetchingComments,
-	isSavingComment,
-	isSavingCommentReply,
+	isSavingComment as getIsSavingComment,
+	isSavingCommentReply as getIsSavingCommentReply,
 } from "../../../../selectors/eventDetailsSelectors";
 import Notifications from "../../../shared/Notifications";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
 import DropDown from "../../../shared/DropDown";
-import { useAppSelector } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import {
+	fetchComments,
+	saveComment as saveNewComment,
+	saveCommentReply as saveNewCommentReply,
+	deleteComment as deleteOneComment,
+	deleteCommentReply,
+} from "../../../../slices/eventDetailsSlice";
 
 /**
  * This component manages the comment tab of the event details modal
@@ -30,28 +28,16 @@ const EventDetailsCommentsTab = ({
 	header,
 // @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
 	t,
-// @ts-expect-error TS(7031): Binding element 'loadComments' implicitly has an '... Remove this comment to see the full error message
-	loadComments,
-// @ts-expect-error TS(7031): Binding element 'saveNewComment' implicitly has an... Remove this comment to see the full error message
-	saveNewComment,
-// @ts-expect-error TS(7031): Binding element 'saveNewCommentReply' implicitly h... Remove this comment to see the full error message
-	saveNewCommentReply,
-// @ts-expect-error TS(7031): Binding element 'deleteOneComment' implicitly has ... Remove this comment to see the full error message
-	deleteOneComment,
-// @ts-expect-error TS(7031): Binding element 'deleteCommentReply' implicitly ha... Remove this comment to see the full error message
-	deleteCommentReply,
-// @ts-expect-error TS(7031): Binding element 'comments' implicitly has an 'any'... Remove this comment to see the full error message
-	comments,
-// @ts-expect-error TS(7031): Binding element 'isSavingComment' implicitly has a... Remove this comment to see the full error message
-	isSavingComment,
-// @ts-expect-error TS(7031): Binding element 'isSavingCommentReply' implicitly ... Remove this comment to see the full error message
-	isSavingCommentReply,
-// @ts-expect-error TS(7031): Binding element 'commentReasons' implicitly has an... Remove this comment to see the full error message
-	commentReasons,
 }) => {
+	const dispatch = useAppDispatch();
+
+	const comments = useAppSelector(state => getComments(state));
+	const commentReasons = useAppSelector(state => getCommentReasons(state));
+	const isSavingComment = useAppSelector(state => getIsSavingComment(state));
+	const isSavingCommentReply = useAppSelector(state => getIsSavingCommentReply(state));
+
 	useEffect(() => {
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
-		loadComments(eventId).then((r) => console.info(r));
+		dispatch(fetchComments(eventId)).then((r: any) => console.info(r));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -68,10 +54,9 @@ const EventDetailsCommentsTab = ({
 
 // @ts-expect-error TS(7006): Parameter 'commentText' implicitly has an 'any' ty... Remove this comment to see the full error message
 	const saveComment = (commentText, commentReason) => {
-// @ts-expect-error TS(7006): Parameter 'successful' implicitly has an 'any' typ... Remove this comment to see the full error message
-		saveNewComment(eventId, commentText, commentReason).then((successful) => {
+		dispatch(saveNewComment({eventId, commentText, commentReason})).then((successful) => {
 			if (successful) {
-				loadComments(eventId);
+				dispatch(fetchComments(eventId));
 				setNewCommentText("");
 				setCommentReason("");
 			}
@@ -95,11 +80,10 @@ const EventDetailsCommentsTab = ({
 
 // @ts-expect-error TS(7006): Parameter 'originalComment' implicitly has an 'any... Remove this comment to see the full error message
 	const saveReply = (originalComment, reply, isResolved) => {
-		saveNewCommentReply(eventId, originalComment.id, reply, isResolved).then(
-// @ts-expect-error TS(7006): Parameter 'success' implicitly has an 'any' type.
+		dispatch(saveNewCommentReply({eventId, commentId: originalComment.id, replyText: reply, commentResolved: isResolved})).then(
 			(success) => {
 				if (success) {
-					loadComments(eventId);
+					dispatch(fetchComments(eventId));
 					exitReplyMode();
 				}
 			}
@@ -108,20 +92,18 @@ const EventDetailsCommentsTab = ({
 
 // @ts-expect-error TS(7006): Parameter 'comment' implicitly has an 'any' type.
 	const deleteComment = (comment) => {
-// @ts-expect-error TS(7006): Parameter 'success' implicitly has an 'any' type.
-		deleteOneComment(eventId, comment.id).then((success) => {
+		dispatch(deleteOneComment({eventId, commentId: comment.id})).then((success) => {
 			if (success) {
-				loadComments(eventId);
+				dispatch(fetchComments(eventId));
 			}
 		});
 	};
 
 // @ts-expect-error TS(7006): Parameter 'comment' implicitly has an 'any' type.
 	const deleteReply = (comment, reply) => {
-// @ts-expect-error TS(7006): Parameter 'success' implicitly has an 'any' type.
-		deleteCommentReply(eventId, comment.id, reply.id).then((success) => {
+		dispatch(deleteCommentReply({eventId, commentId: comment.id, replyId: reply.id})).then((success) => {
 			if (success) {
-				loadComments(eventId);
+				dispatch(fetchComments(eventId));
 			}
 		});
 	};
@@ -138,7 +120,6 @@ const EventDetailsCommentsTab = ({
 							<div className="comment-container">
 								{
 									/* all comments listed below each other */
-// @ts-expect-error TS(7006): Parameter 'comment' implicitly has an 'any' type.
 									comments.map((comment, key) => (
 										/* one comment */
 										<div
@@ -200,7 +181,6 @@ const EventDetailsCommentsTab = ({
 
 											{
 												/* all replies to this comment listed below each other */
-// @ts-expect-error TS(7006): Parameter 'reply' implicitly has an 'any' type.
 												comment.replies.map((reply, replyKey) => (
 													<div className="comment is-reply" key={replyKey}>
 														<hr />
@@ -278,7 +258,7 @@ const EventDetailsCommentsTab = ({
 												placeholder={t(
 													"EVENTS.EVENTS.DETAILS.COMMENTS.SELECTPLACEHOLDER"
 												)}
-												tabIndex={"5"}
+												tabIndex={5}
 											/>
 										</div>
 
@@ -397,36 +377,4 @@ const EventDetailsCommentsTab = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	comments: getComments(state),
-	commentReasons: getCommentReasons(state),
-	isFetchingComments: isFetchingComments(state),
-	isSavingComment: isSavingComment(state),
-	isSavingCommentReply: isSavingCommentReply(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	loadComments: (eventId) => dispatch(fetchComments(eventId)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	saveNewComment: (eventId, commentText, commentReason) =>
-		dispatch(saveComment(eventId, commentText, commentReason)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	saveNewCommentReply: (eventId, commentId, replyText, commentResolved) =>
-		dispatch(saveCommentReply(eventId, commentId, replyText, commentResolved)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	deleteOneComment: (eventId, commentId) =>
-		dispatch(deleteComment(eventId, commentId)),
-// @ts-expect-error TS(7006): Parameter 'eventId' implicitly has an 'any' type.
-	deleteCommentReply: (eventId, commentId, replyId) =>
-		dispatch(deleteCommentReply(eventId, commentId, replyId)),
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EventDetailsCommentsTab);
+export default EventDetailsCommentsTab;

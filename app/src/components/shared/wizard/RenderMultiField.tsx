@@ -142,7 +142,6 @@ const EditMultiSelect = ({
 						value={inputValue}
 						onKeyDown={(e) => handleKeyDown(e)}
 						onChange={(e) => handleChange(e)}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 						placeholder={t("EDITABLE.MULTI.PLACEHOLDER")}
 						list="data-list"
 						autoFocus={true}
@@ -199,7 +198,6 @@ const EditMultiValue = ({
 					onKeyDown={(e) => handleKeyDown(e)}
 					onChange={(e) => handleChange(e)}
 					value={inputValue}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					placeholder={t("EDITABLE.MULTI.PLACEHOLDER")}
 				/>
 			</div>

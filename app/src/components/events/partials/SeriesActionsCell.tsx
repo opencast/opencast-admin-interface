@@ -4,12 +4,12 @@ import ConfirmModal from "../../shared/ConfirmModal";
 import { connect } from "react-redux";
 import SeriesDetailsModal from "./modals/SeriesDetailsModal";
 import {
-	fetchNamesOfPossibleThemes,
+	fetchSeriesDetailsThemeNames,
 	fetchSeriesDetailsAcls,
 	fetchSeriesDetailsFeeds,
 	fetchSeriesDetailsMetadata,
 	fetchSeriesDetailsTheme,
-} from "../../../thunks/seriesDetailsThunks";
+} from "../../../slices/seriesDetailsSlice";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import {
@@ -28,16 +28,6 @@ import {
 const SeriesActionsCell = ({
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsMetadata' impli... Remove this comment to see the full error message
-	fetchSeriesDetailsMetadata,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsAcls' implicitl... Remove this comment to see the full error message
-	fetchSeriesDetailsAcls,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsFeeds' implicit... Remove this comment to see the full error message
-	fetchSeriesDetailsFeeds,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsTheme' implicit... Remove this comment to see the full error message
-	fetchSeriesDetailsTheme,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsThemeNames' imp... Remove this comment to see the full error message
-	fetchSeriesDetailsThemeNames,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -69,11 +59,11 @@ const SeriesActionsCell = ({
 	};
 
 	const showSeriesDetailsModal = async () => {
-		await fetchSeriesDetailsMetadata(row.id);
-		await fetchSeriesDetailsAcls(row.id);
-		await fetchSeriesDetailsFeeds(row.id);
-		await fetchSeriesDetailsTheme(row.id);
-		await fetchSeriesDetailsThemeNames();
+		await dispatch(fetchSeriesDetailsMetadata(row.id));
+		await dispatch(fetchSeriesDetailsAcls(row.id));
+		await dispatch(fetchSeriesDetailsFeeds(row.id));
+		await dispatch(fetchSeriesDetailsTheme(row.id));
+		await dispatch(fetchSeriesDetailsThemeNames());
 
 		setSeriesDetailsModal(true);
 	};
@@ -85,7 +75,6 @@ const SeriesActionsCell = ({
 				<button
 					onClick={() => showSeriesDetailsModal()}
 					className="button-like-anchor more-series"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
@@ -103,7 +92,6 @@ const SeriesActionsCell = ({
 				<button
 					onClick={() => showDeleteConfirmation()}
 					className="button-like-anchor remove"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.SERIES.TABLE.TOOLTIP.DELETE")}
 				/>
 			)}
@@ -136,15 +124,6 @@ const mapStateToProps = (state) => ({
 
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchSeriesDetailsMetadata: (id) => dispatch(fetchSeriesDetailsMetadata(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchSeriesDetailsAcls: (id) => dispatch(fetchSeriesDetailsAcls(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchSeriesDetailsFeeds: (id) => dispatch(fetchSeriesDetailsFeeds(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchSeriesDetailsTheme: (id) => dispatch(fetchSeriesDetailsTheme(id)),
-	fetchSeriesDetailsThemeNames: () => dispatch(fetchNamesOfPossibleThemes()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SeriesActionsCell);

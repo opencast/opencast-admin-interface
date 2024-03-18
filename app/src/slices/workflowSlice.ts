@@ -12,7 +12,7 @@ type ConfigurationPanelField = {
 	description?: string,
 }
 
-type Workflow = {
+export type Workflow = {
 	configuration_panel: string,	//XML
 	configuration_panel_json: string | ConfigurationPanelField[],	// 'string' will always be the empty string
 	description: string,
@@ -38,7 +38,7 @@ const initialState: WorkflowState = {
 };
 
 // fetch workflow definitions from server
-export const fetchWorkflowDef = createAsyncThunk('workflow/fetchWorkflowDef', async (type: any) => {
+export const fetchWorkflowDef = createAsyncThunk('workflow/fetchWorkflowDef', async (type: string) => {
 	let urlParams;
 
 	switch (type) {

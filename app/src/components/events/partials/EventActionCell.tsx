@@ -7,14 +7,14 @@ import EmbeddingCodeModal from "./modals/EmbeddingCodeModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import SeriesDetailsModal from "./modals/SeriesDetailsModal";
+import { useAppDispatch, useAppSelector } from "../../../store";
 import {
-	fetchNamesOfPossibleThemes,
+	fetchSeriesDetailsThemeNames,
 	fetchSeriesDetailsAcls,
 	fetchSeriesDetailsFeeds,
 	fetchSeriesDetailsMetadata,
 	fetchSeriesDetailsTheme,
-} from "../../../thunks/seriesDetailsThunks";
-import { useAppDispatch, useAppSelector } from "../../../store";
+} from "../../../slices/seriesDetailsSlice";
 import { deleteEvent } from "../../../slices/eventSlice";
 
 /**
@@ -23,16 +23,6 @@ import { deleteEvent } from "../../../slices/eventSlice";
 const EventActionCell = ({
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsMetadata' impli... Remove this comment to see the full error message
-	fetchSeriesDetailsMetadata,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsAcls' implicitl... Remove this comment to see the full error message
-	fetchSeriesDetailsAcls,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsFeeds' implicit... Remove this comment to see the full error message
-	fetchSeriesDetailsFeeds,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsTheme' implicit... Remove this comment to see the full error message
-	fetchSeriesDetailsTheme,
-// @ts-expect-error TS(7031): Binding element 'fetchSeriesDetailsThemeNames' imp... Remove this comment to see the full error message
-	fetchSeriesDetailsThemeNames,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -79,11 +69,11 @@ const EventActionCell = ({
 	};
 
 	const onClickSeriesDetails = async () => {
-		await fetchSeriesDetailsMetadata(row.series.id);
-		await fetchSeriesDetailsAcls(row.series.id);
-		await fetchSeriesDetailsFeeds(row.series.id);
-		await fetchSeriesDetailsTheme(row.series.id);
-		await fetchSeriesDetailsThemeNames();
+		await dispatch(fetchSeriesDetailsMetadata(row.series.id));
+		await dispatch(fetchSeriesDetailsAcls(row.series.id));
+		await dispatch(fetchSeriesDetailsFeeds(row.series.id));
+		await dispatch(fetchSeriesDetailsTheme(row.series.id));
+		await dispatch(fetchSeriesDetailsThemeNames());
 
 		showSeriesDetailsModal();
 	};
@@ -132,7 +122,6 @@ const EventActionCell = ({
 				<button
 					onClick={() => onClickEventDetails()}
 					className="button-like-anchor more"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
@@ -142,7 +131,6 @@ const EventActionCell = ({
 				<button
 					onClick={() => onClickSeriesDetails()}
 					className="button-like-anchor more-series"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
@@ -153,7 +141,6 @@ const EventActionCell = ({
 				<button
 					onClick={() => setDeleteConfirmation(true)}
 					className="button-like-anchor remove"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.DELETE")}
 				/>
 			)}
@@ -174,7 +161,6 @@ const EventActionCell = ({
 				<a
 					href={`/editor-ui/index.html?id=${row.id}`}
 					className="cut"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={
 						row.needs_cutting
 							? t("EVENTS.EVENTS.TABLE.TOOLTIP.EDITOR_NEEDS_CUTTING")
@@ -189,7 +175,6 @@ const EventActionCell = ({
 			{row.has_comments && !row.has_open_comments && (
 				<button
 					onClick={() => onClickComments()}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.COMMENTS")}
 					className="button-like-anchor comments"
 				/>
@@ -199,7 +184,6 @@ const EventActionCell = ({
 			{row.has_comments && row.has_open_comments && (
 				<button
 					onClick={() => onClickComments()}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.COMMENTS")}
 					className="button-like-anchor comments-open"
 				/>
@@ -210,7 +194,6 @@ const EventActionCell = ({
 			{row.workflow_state === "PAUSED" &&
 				hasAccess("ROLE_UI_EVENTS_DETAILS_WORKFLOWS_EDIT", user) && (
 					<button
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 						title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PAUSED_WORKFLOW")}
 						onClick={() => onClickWorkflow()}
 						className="button-like-anchor fa fa-warning"
@@ -221,7 +204,6 @@ const EventActionCell = ({
 			{hasAccess("ROLE_UI_EVENTS_DETAILS_ASSETS_VIEW", user) && (
 				<button
 					onClick={() => onClickAssets()}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.ASSETS")}
 					className="button-like-anchor fa fa-folder-open"
 				/>
@@ -230,7 +212,6 @@ const EventActionCell = ({
 			{hasAccess("ROLE_UI_EVENTS_EMBEDDING_CODE_VIEW", user) && (
 				<button
 					onClick={() => showEmbeddingCodeModal()}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.EMBEDDING_CODE")}
 					className="button-like-anchor fa fa-link"
 				/>
@@ -252,15 +233,6 @@ const mapStateToProps = (state) => ({
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchSeriesDetailsMetadata: (id) => dispatch(fetchSeriesDetailsMetadata(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchSeriesDetailsAcls: (id) => dispatch(fetchSeriesDetailsAcls(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchSeriesDetailsFeeds: (id) => dispatch(fetchSeriesDetailsFeeds(id)),
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	fetchSeriesDetailsTheme: (id) => dispatch(fetchSeriesDetailsTheme(id)),
-	fetchSeriesDetailsThemeNames: () => dispatch(fetchNamesOfPossibleThemes()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventActionCell);

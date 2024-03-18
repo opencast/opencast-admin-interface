@@ -8,7 +8,6 @@ import languages from "../i18n/languages";
 // @ts-expect-error TS(2307): Cannot find module '../img/opencast-white.svg' or ... Remove this comment to see the full error message
 import opencastLogo from "../img/opencast-white.svg";
 import { GlobalHotKeys } from "react-hotkeys";
-import { fetchHealthStatus } from "../thunks/healthThunks";
 import { setSpecificServiceFilter } from "../thunks/tableFilterThunks";
 import { loadServicesIntoTable } from "../thunks/tableThunks";
 import { getErrorCount, getHealthStatus } from "../selectors/healthSelectors";
@@ -22,7 +21,8 @@ import { getCurrentLanguageInformation, hasAccess } from "../utils/utils";
 import { overflowStyle } from "../utils/componentStyles";
 import RegistrationModal from "./shared/RegistrationModal";
 import HotKeyCheatSheet from "./shared/HotKeyCheatSheet";
-import { useAppSelector } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
+import { fetchHealthStatus } from "../slices/healthSlice";
 
 // Get code, flag and name of the current language
 const currentLanguage = getCurrentLanguageInformation();
@@ -42,33 +42,20 @@ function changeLanguage(code) {
 }
 
 function logout() {
-	axios
-		.get("/j_spring_security_logout")
-		.then((response) => {
-			console.info(response);
-			window.location.reload();
-		})
-		.catch((response) => {
-			console.error(response);
-		});
+	window.location.href = "/j_spring_security_logout";
 }
 
 /**
  * Component that renders the header and the navigation in the upper right corner.
  */
 const Header = ({
-// @ts-expect-error TS(7031): Binding element 'loadingHealthStatus' implicitly h... Remove this comment to see the full error message
-	loadingHealthStatus,
-// @ts-expect-error TS(7031): Binding element 'healthStatus' implicitly has an '... Remove this comment to see the full error message
-	healthStatus,
-// @ts-expect-error TS(7031): Binding element 'errorCounter' implicitly has an '... Remove this comment to see the full error message
-	errorCounter,
 // @ts-expect-error TS(7031): Binding element 'setSpecificServiceFilter' implici... Remove this comment to see the full error message
 	setSpecificServiceFilter,
 // @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
 	loadingServicesIntoTable,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 	// State for opening (true) and closing (false) the dropdown menus for language, notification, help and user
 	const [displayMenuLang, setMenuLang] = useState(false);
 	const [displayMenuUser, setMenuUser] = useState(false);
@@ -77,11 +64,13 @@ const Header = ({
 	const [displayRegistrationModal, setRegistrationModal] = useState(false);
 	const [displayHotKeyCheatSheet, setHotKeyCheatSheet] = useState(false);
 
+	const healthStatus = useAppSelector(state => getHealthStatus(state));
+	const errorCounter = useAppSelector(state => getErrorCount(state));
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
 
 	const loadHealthStatus = async () => {
-		await loadingHealthStatus();
+		await dispatch(fetchHealthStatus());
 	};
 
 	const hideMenuHelp = () => {
@@ -145,7 +134,7 @@ const Header = ({
 		// Fetching health status information at mount
 		loadHealthStatus().then((r) => console.info(r));
 		// Fetch health status every minute
-		setInterval(loadingHealthStatus, 5000);
+		setInterval(() => dispatch(fetchHealthStatus()), 5000);
 
 		// Event listener for handle a click outside of dropdown menu
 		window.addEventListener("mousedown", handleClickOutside);
@@ -177,7 +166,6 @@ const Header = ({
 					<div className="nav-dd lang-dd" id="lang-dd" ref={containerLang}>
 						<div
 							className="lang"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 							title={t("LANGUAGE")}
 							onClick={() => setMenuLang(!displayMenuLang)}
 						>
@@ -193,7 +181,7 @@ const Header = ({
                     otherwise the app crashes */}
 					{!!orgProperties &&
 						!!orgProperties["org.opencastproject.admin.mediamodule.url"] && (
-							<div className="nav-dd" title={t<string>("MEDIAMODULE")}>
+							<div className="nav-dd" title={t("MEDIAMODULE")}>
 								<a
 									href={
 										orgProperties["org.opencastproject.admin.mediamodule.url"]
@@ -218,7 +206,6 @@ const Header = ({
 						<div
 							className="nav-dd info-dd"
 							id="info-dd"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 							title={t("SYSTEM_NOTIFICATIONS")}
 // @ts-expect-error TS(2322): Type 'RefObject<unknown>' is not assignable to typ... Remove this comment to see the full error message
 							ref={containerNotify}
@@ -448,14 +435,11 @@ const MenuUser = () => {
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	healthStatus: getHealthStatus(state),
-	errorCounter: getErrorCount(state),
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-	loadingHealthStatus: () => dispatch(fetchHealthStatus()),
 	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
 // @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 	setSpecificServiceFilter: (filter, filterValue) =>

@@ -49,7 +49,6 @@ const GroupsActionsCell = ({
 				<button
 					onClick={() => showGroupDetails()}
 					className="button-like-anchor more"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("USERS.GROUPS.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
@@ -64,7 +63,6 @@ const GroupsActionsCell = ({
 				<button
 					onClick={() => setDeleteConfirmation(true)}
 					className="button-like-anchor remove"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("USERS.GROUPS.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
