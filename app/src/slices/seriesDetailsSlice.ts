@@ -17,6 +17,7 @@ import { transformToIdValueArray } from "../utils/utils";
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
 import { RootState } from '../store';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
+import { Ace, TransformedAcl, TransformedAcls } from './aclDetailsSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of a series
@@ -107,7 +108,7 @@ const initialState: SeriesDetailsState = {
 };
 
 // fetch metadata of certain series from server
-export const fetchSeriesDetailsMetadata = createAsyncThunk('seriesDetails/fetchSeriesDetailsMetadata', async (id: any) => {
+export const fetchSeriesDetailsMetadata = createAsyncThunk('seriesDetails/fetchSeriesDetailsMetadata', async (id: string) => {
 	const res = await axios.get(`/admin-ng/series/${id}/metadata.json`);
 	const metadataResponse = res.data;
 
@@ -129,7 +130,7 @@ export const fetchSeriesDetailsMetadata = createAsyncThunk('seriesDetails/fetchS
 });
 
 // fetch acls of certain series from server
-export const fetchSeriesDetailsAcls = createAsyncThunk('seriesDetails/fetchSeriesDetailsAcls', async (id: any, {dispatch}) => {
+export const fetchSeriesDetailsAcls = createAsyncThunk('seriesDetails/fetchSeriesDetailsAcls', async (id: string, {dispatch}) => {
 	const res = await axios.get(`/admin-ng/series/${id}/access.json`);
 	const response = res.data;
 
@@ -145,29 +146,22 @@ export const fetchSeriesDetailsAcls = createAsyncThunk('seriesDetails/fetchSerie
 		);
 	}
 
-	let seriesAcls: any[] = [];
+	let seriesAcls: TransformedAcls = [];
 	if (!!response.series_access) {
 		const json = JSON.parse(response.series_access.acl).acl.ace;
-		let policies = {};
-// @ts-expect-error TS(7034): Variable 'policyRoles' implicitly has type 'any[]'... Remove this comment to see the full error message
-		let policyRoles = [];
-// @ts-expect-error TS(7006): Parameter 'policy' implicitly has an 'any' type.
-		json.forEach((policy) => {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+		let policies: { [key: string]: TransformedAcl } = {};
+		let policyRoles: string[] = [];
+		json.forEach((policy: Ace) => {
 			if (!policies[policy.role]) {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 				policies[policy.role] = createPolicy(policy.role);
 				policyRoles.push(policy.role);
 			}
 			if (policy.action === "read" || policy.action === "write") {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 				policies[policy.role][policy.action] = policy.allow;
-			} else if (policy.allow === true || policy.allow === "true") {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+			} else if (policy.allow === true) { //|| policy.allow === "true") {
 				policies[policy.role].actions.push(policy.action);
 			}
 		});
-// @ts-expect-error TS(7005): Variable 'policyRoles' implicitly has an 'any[]' t... Remove this comment to see the full error message
 		seriesAcls = policyRoles.map((role) => policies[role]);
 	}
 
@@ -175,7 +169,7 @@ export const fetchSeriesDetailsAcls = createAsyncThunk('seriesDetails/fetchSerie
 });
 
 // fetch feeds of certain series from server
-export const fetchSeriesDetailsFeeds = createAsyncThunk('seriesDetails/fetchSeriesDetailsFeeds', async (id: any) => {
+export const fetchSeriesDetailsFeeds = createAsyncThunk('seriesDetails/fetchSeriesDetailsFeeds', async (id: string) => {
 	const res = await axios.get("/admin-ng/feeds/feeds");
 	const feedsResponse = res.data;
 
@@ -214,7 +208,7 @@ export const fetchSeriesDetailsFeeds = createAsyncThunk('seriesDetails/fetchSeri
 });
 
 // fetch theme of certain series from server
-export const fetchSeriesDetailsTheme = createAsyncThunk('seriesDetails/fetchSeriesDetailsTheme', async (id: any) => {
+export const fetchSeriesDetailsTheme = createAsyncThunk('seriesDetails/fetchSeriesDetailsTheme', async (id: string) => {
 	const res = await axios.get(`/admin-ng/series/${id}/theme.json`);
 	const themeResponse = res.data;
 
@@ -241,7 +235,22 @@ export const fetchSeriesDetailsThemeNames = createAsyncThunk('seriesDetails/fetc
 });
 
 // update series with new metadata
-export const updateSeriesMetadata = createAsyncThunk('seriesDetails/updateSeriesMetadata', async (params: {id: any, values: any}, {dispatch, getState}) => {
+export const updateSeriesMetadata = createAsyncThunk('seriesDetails/updateSeriesMetadata', async (params: {
+	id: string,
+	values: {
+		contributor: string[],
+		createdBy: string,
+		creator: string[],
+		description: String,
+		identifier: string,
+		language: string,
+		license: string,
+		publisher: string[],
+		rightsHolder: string,
+		subject: string,
+		title: string,
+	}
+}, {dispatch, getState}) => {
 	const { id, values } = params;
 	let metadataInfos = getSeriesDetailsMetadata(getState() as RootState);
 
@@ -262,7 +271,15 @@ export const updateSeriesMetadata = createAsyncThunk('seriesDetails/updateSeries
 });
 
 // update series with new metadata
-export const updateExtendedSeriesMetadata = createAsyncThunk('seriesDetails/updateExtendedSeriesMetadata', async (params: {id: any, values: any, catalog: any}, {dispatch, getState}) => {
+export const updateExtendedSeriesMetadata = createAsyncThunk('seriesDetails/updateExtendedSeriesMetadata', async (params: {
+	id: string,
+	values: { [key: string]: any },
+	catalog: {
+		flavor: string,
+		title: string,
+		fields: { [key: string]: any }[]
+	}
+}, {dispatch, getState}) => {
 	const { id, values, catalog } = params;
 
 	const { fields, data, headers } = transformMetadataForUpdate(
@@ -296,14 +313,16 @@ export const updateExtendedSeriesMetadata = createAsyncThunk('seriesDetails/upda
 	dispatch(setSeriesDetailsExtendedMetadata(newExtendedMetadata));
 });
 
-export const updateSeriesAccess = createAsyncThunk('seriesDetails/updateSeriesAccess', async (params: {id: any, policies: any}, {dispatch}) => {
+export const updateSeriesAccess = createAsyncThunk('seriesDetails/updateSeriesAccess', async (params: {
+	id: string,
+	policies: { [key: string]: TransformedAcl }
+}, {dispatch}) => {
 	const { id, policies } = params;
 
 	let data = new URLSearchParams();
 
 	data.append("acl", JSON.stringify(policies));
-// @ts-expect-error TS(2345): Argument of type 'boolean' is not assignable to pa... Remove this comment to see the full error message
-	data.append("override", true);
+	data.append("override", String(true));
 
 	return axios
 		.post(`/admin-ng/series/${id}/access`, data, {
@@ -339,7 +358,10 @@ export const updateSeriesAccess = createAsyncThunk('seriesDetails/updateSeriesAc
 		});
 });
 
-export const updateSeriesTheme = createAsyncThunk('seriesDetails/updateSeriesTheme', async (params: {id: any, values: any}, {dispatch, getState}) => {
+export const updateSeriesTheme = createAsyncThunk('seriesDetails/updateSeriesTheme', async (params: {
+	id: string,
+	values: { theme: string},
+}, {dispatch, getState}) => {
 	const { id, values } = params;
 
 	let themeNames = getSeriesDetailsThemeNames(getState() as RootState);
@@ -386,13 +408,8 @@ export const updateSeriesTheme = createAsyncThunk('seriesDetails/updateSeriesThe
 		});
 });
 
-// TODO: FIX STATISTICS WHEN MODERNIZING REDUX TOOLKIT FOR EVENTS
-
 // thunks for statistics
-// This is probably not the optimal way to update these thunks to reduxToolkit, but
-// it works for now
-
-export const fetchSeriesStatistics = createAsyncThunk('seriesDetails/fetchSeriesStatistics', async (seriesId: any, {getState}) => {
+export const fetchSeriesStatistics = createAsyncThunk('seriesDetails/fetchSeriesStatistics', async (seriesId: string, {getState}) => {
 	// get prior statistics
 	const state = getState();
 	const statistics = getStatistics(state as RootState);
@@ -406,9 +423,14 @@ export const fetchSeriesStatistics = createAsyncThunk('seriesDetails/fetchSeries
 	);
 });
 
-// TODO: FIX STATISTICS WHEN MODERNIZING REDUX TOOLKIT FOR EVENTS
-
-export const fetchSeriesStatisticsValueUpdate = createAsyncThunk('seriesDetails/fetchSeriesStatisticsValueUpdate', async (params: {seriesId: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any}, {getState}) => {
+export const fetchSeriesStatisticsValueUpdate = createAsyncThunk('seriesDetails/fetchSeriesStatisticsValueUpdate', async (params: {
+	seriesId: string,
+	providerId: string,
+	from: string,
+	to: string,
+	dataResolution: string[],
+	timeMode: any
+}, {getState}) => {
 	const {seriesId, providerId, from, to, dataResolution, timeMode } = params;
 
 	// get prior statistics

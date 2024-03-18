@@ -42,15 +42,7 @@ function changeLanguage(code) {
 }
 
 function logout() {
-	axios
-		.get("/j_spring_security_logout")
-		.then((response) => {
-			console.info(response);
-			window.location.reload();
-		})
-		.catch((response) => {
-			console.error(response);
-		});
+	window.location.href = "/j_spring_security_logout";
 }
 
 /**
@@ -174,7 +166,6 @@ const Header = ({
 					<div className="nav-dd lang-dd" id="lang-dd" ref={containerLang}>
 						<div
 							className="lang"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 							title={t("LANGUAGE")}
 							onClick={() => setMenuLang(!displayMenuLang)}
 						>
@@ -190,7 +181,7 @@ const Header = ({
                     otherwise the app crashes */}
 					{!!orgProperties &&
 						!!orgProperties["org.opencastproject.admin.mediamodule.url"] && (
-							<div className="nav-dd" title={t<string>("MEDIAMODULE")}>
+							<div className="nav-dd" title={t("MEDIAMODULE")}>
 								<a
 									href={
 										orgProperties["org.opencastproject.admin.mediamodule.url"]
@@ -215,7 +206,6 @@ const Header = ({
 						<div
 							className="nav-dd info-dd"
 							id="info-dd"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 							title={t("SYSTEM_NOTIFICATIONS")}
 // @ts-expect-error TS(2322): Type 'RefObject<unknown>' is not assignable to typ... Remove this comment to see the full error message
 							ref={containerNotify}

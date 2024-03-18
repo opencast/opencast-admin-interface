@@ -1,7 +1,5 @@
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
-import autoMergeLevel2 from "redux-persist/lib";
 import { combineReducers } from "redux";
 import tableFilters from "./reducers/tableFilterReducers";
 import tableFilterProfiles from "./reducers/tableFilterProfilesReducer";
@@ -30,26 +28,39 @@ import userInfo from "./slices/userInfoSlice";
 import statistics from "./slices/statisticsSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 
 /**
  * This File contains the configuration for the store used by the reducers all over the app
  */
 
+// Configuration for persisting states in store
+const eventsPersistConfig = { key: "events", storage, whitelist: ["columns"] }
+const seriesPersistConfig = { key: "series", storage, whitelist: ["columns"] }
+const recordingsPersistConfig = { key: "recordings", storage, whitelist: ["columns"] }
+const jobsPersistConfig = { key: "jobs", storage, whitelist: ["columns"] }
+const serversPersistConfig = { key: "servers", storage, whitelist: ["columns"] }
+const servicesPersistConfig = { key: "services", storage, whitelist: ["columns"] }
+const usersPersistConfig = { key: "users", storage, whitelist: ["columns"] }
+const groupsPersistConfig = { key: "groups", storage, whitelist: ["columns"] }
+const aclsPersistConfig = { key: "acls", storage, whitelist: ["columns"] }
+const themesPersistConfig = { key: "themes", storage, whitelist: ["columns"] }
+
 // form reducer and all other reducers used in this app
 const reducers = combineReducers({
 	tableFilters,
 	tableFilterProfiles,
-	events,
-	series,
+	events: persistReducer(eventsPersistConfig, events),
+	series: persistReducer(seriesPersistConfig, series),
 	table,
-	recordings,
-	jobs,
-	servers,
-	services,
-	users,
-	groups,
-	acls,
-	themes,
+	recordings: persistReducer(recordingsPersistConfig, series),
+	jobs: persistReducer(jobsPersistConfig, series),
+	servers: persistReducer(serversPersistConfig, series),
+	services: persistReducer(servicesPersistConfig, series),
+	users: persistReducer(usersPersistConfig, series),
+	groups: persistReducer(groupsPersistConfig, series),
+	acls: persistReducer(aclsPersistConfig, series),
+	themes: persistReducer(themesPersistConfig, series),
 	health,
 	notifications,
 	workflows,
@@ -66,12 +77,15 @@ const reducers = combineReducers({
 
 // Configuration for persisting store
 const persistConfig = {
-	key: "opencast",
+	key: "root",
 	storage,
 	stateReconciler: autoMergeLevel2,
+	whitelist: ["tableFilters"],
 };
 
-const persistedReducer = persistReducer(persistConfig, reducers);
+// With updates to redux, persistReducer is not properly typed anymore, so
+// this overwrites the typing with 'any's to avoid errors
+const persistedReducer = persistReducer<any, any>(persistConfig, reducers);
 
 const store = configureStore({
   reducer: persistedReducer,
