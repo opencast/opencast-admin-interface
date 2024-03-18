@@ -29,7 +29,7 @@ const RenderField = ({
 	const { t } = useTranslation();
 
 	// Indicator if currently edit mode is activated
-	const [editMode, setEditMode] = useClickOutsideField(childRef, isFirstField);
+	const {editMode, setEditMode} = useClickOutsideField(childRef, isFirstField);
 
 	// Handle key down event and check if pressed key leads to leaving edit mode
 // @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.

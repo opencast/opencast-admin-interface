@@ -97,16 +97,17 @@ export const useSelectionChanges = <T extends RequiredFormProps>(
 	};
 };
 
-// @ts-expect-error TS(7006): Parameter 'childRef' implicitly has an 'any' type.
-export const useClickOutsideField = (childRef, isFirstField) => {
+export const useClickOutsideField = (
+	childRef: React.RefObject<HTMLDivElement>,
+	isFirstField?: boolean,
+) => {
 	// Indicator if currently edit mode is activated
 	const [editMode, setEditMode] = useState(isFirstField);
 
 	useEffect(() => {
 		// Handle click outside the field and leave edit mode
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-		const handleClickOutside = (e) => {
-			if (childRef.current && !childRef.current.contains(e.target)) {
+		const handleClickOutside = (e: MouseEvent) => {
+			if (childRef.current && !childRef.current.contains(e.target as Node)) {
 				setEditMode(false);
 			}
 		};
@@ -125,5 +126,5 @@ export const useClickOutsideField = (childRef, isFirstField) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [editMode]);
 
-	return [editMode, setEditMode];
+	return {editMode, setEditMode};
 };
