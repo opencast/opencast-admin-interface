@@ -4,6 +4,7 @@ import axios from 'axios';
 import { transformToIdValueArray } from "../utils/utils";
 import { buildUserBody, getURLParams } from "../utils/resourceUtils";
 import { addNotification } from '../slices/notificationSlice';
+import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 
 /**
  * This file contains redux reducer for actions affecting the state of users
@@ -21,7 +22,7 @@ type UsersState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
 	results: UserResult[],
-	columns: any,			 // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],
 	total: number,
 	count: number,
 	offset: number,
@@ -58,7 +59,7 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async (_, { getSt
 });
 
 // new user to backend
-export const postNewUser = createAsyncThunk('users/postNewUser', async (values: any, {dispatch}) => {
+export const postNewUser = createAsyncThunk('users/postNewUser', async (values: UserResult, {dispatch}) => {
 	// get URL params used for post request
 	let data = buildUserBody(values);
 
@@ -82,7 +83,7 @@ export const postNewUser = createAsyncThunk('users/postNewUser', async (values: 
 });
 
 // delete user with provided id
-export const deleteUser = createAsyncThunk('users/deleteUser', async (id: any, {dispatch}) => {
+export const deleteUser = createAsyncThunk('users/deleteUser', async (id: string, {dispatch}) => {
 	// API call for deleting an user
 	axios
 		.delete(`/admin-ng/users/${id}.json`)

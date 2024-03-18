@@ -25,7 +25,7 @@ const GroupMetadataPage = ({
 								<i className="required">*</i>
 							</label>
 							<Field
-								tabIndex="1"
+								tabIndex={1}
 								type="text"
 								autoFocus={!isEdit}
 								placeholder={t("USERS.GROUPS.DETAILS.FORM.NAME")}
@@ -36,7 +36,7 @@ const GroupMetadataPage = ({
 							<label>{t("USERS.GROUPS.DETAILS.FORM.DESCRIPTION")}</label>
 							<Field
 								as="textarea"
-								tabIndex="2"
+								tabIndex={2}
 								placeholder={t("USERS.GROUPS.DETAILS.FORM.DESCRIPTION")}
 								name="description"
 							/>

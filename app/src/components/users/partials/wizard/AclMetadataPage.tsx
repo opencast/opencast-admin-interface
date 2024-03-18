@@ -33,7 +33,7 @@ const AclMetadataPage = ({
 														<Field
 															className="hidden-input"
 															name="name"
-															tabIndex="1"
+															tabIndex={1}
 															autoFocus={!isEdit}
 															placeholder={t(
 																"USERS.ACLS.NEW.METADATA.NAME.PLACEHOLDER"
