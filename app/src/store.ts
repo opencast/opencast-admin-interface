@@ -83,9 +83,7 @@ const persistConfig = {
 	whitelist: ["tableFilters"],
 };
 
-// With updates to redux, persistReducer is not properly typed anymore, so
-// this overwrites the typing with 'any's to avoid errors
-const persistedReducer = persistReducer<any, any>(persistConfig, reducers);
+const persistedReducer = persistReducer<ReturnType<typeof reducers>>(persistConfig, reducers);
 
 const store = configureStore({
   reducer: persistedReducer,
