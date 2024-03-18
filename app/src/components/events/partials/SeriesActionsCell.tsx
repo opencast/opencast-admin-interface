@@ -75,7 +75,6 @@ const SeriesActionsCell = ({
 				<button
 					onClick={() => showSeriesDetailsModal()}
 					className="button-like-anchor more-series"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
@@ -93,7 +92,6 @@ const SeriesActionsCell = ({
 				<button
 					onClick={() => showDeleteConfirmation()}
 					className="button-like-anchor remove"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("EVENTS.SERIES.TABLE.TOOLTIP.DELETE")}
 				/>
 			)}
