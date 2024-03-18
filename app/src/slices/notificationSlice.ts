@@ -42,7 +42,14 @@ const initialState: NotificationState = {
 // Counter for id of notifications
 let nextNotificationId = 0;
 
-export const addNotification = createAsyncThunk('notifications/addNotification', async (params: {type: OurNotification["type"], key: OurNotification["key"], duration?: OurNotification["duration"], parameter?: OurNotification["parameter"], context?: OurNotification["context"], id?: OurNotification["id"]}, {dispatch, getState}) => {
+export const addNotification = createAsyncThunk('notifications/addNotification', async (params: {
+	type: OurNotification["type"],
+	key: OurNotification["key"],
+	duration?: OurNotification["duration"],
+	parameter?: OurNotification["parameter"],
+	context?: OurNotification["context"],
+	id?: OurNotification["id"]
+}, {dispatch, getState}) => {
 	let { type, key, duration, parameter, context, id } = params
 	if (!duration) {
 		// fall back to defaults

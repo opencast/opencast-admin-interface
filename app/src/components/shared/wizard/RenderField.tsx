@@ -262,7 +262,7 @@ const EditableSingleSelect = ({
 // @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 				handleChange={(element) => setFieldValue(field.name, element.value)}
 				placeholder={`-- ${t("SELECT_NO_OPTION_SELECTED")} --`}
-				tabIndex={"10"}
+				tabIndex={10}
 				autoFocus={true}
 				defaultOpen={true}
 			/>

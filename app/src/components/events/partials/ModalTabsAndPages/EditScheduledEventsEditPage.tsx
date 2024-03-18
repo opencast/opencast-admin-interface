@@ -45,8 +45,8 @@ const EditScheduledEventsEditPage = ({
 	const seriesOptions = useAppSelector(state => getSchedulingSeriesOptions(state));
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
-	const checkForSchedulingConflictsWrapper = (events: any) => {
-		dispatch(checkForSchedulingConflicts(events));
+	const checkForSchedulingConflictsWrapper = async(events: any) => {
+		return dispatch(checkForSchedulingConflicts(events));
 	}
 
 	const user = useAppSelector(state => getUserInformation(state));
@@ -464,8 +464,7 @@ const EditScheduledEventsEditPage = ({
 							nextPage(formik.values);
 						}
 					}}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-					tabIndex="100"
+					tabIndex={100}
 				>
 					{t("WIZARD.NEXT_STEP")}
 				</button>
@@ -479,8 +478,7 @@ const EditScheduledEventsEditPage = ({
 							setPageCompleted([]);
 						}
 					}}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-					tabIndex="101"
+					tabIndex={101}
 				>
 					{t("WIZARD.BACK")}
 				</button>
