@@ -6,13 +6,22 @@ import { addNotification } from '../slices/notificationSlice';
 /**
  * This file contains redux reducer for actions affecting the state of details of an ACL
  */
-type IncomingAcl = {
-	ace: { allow: boolean, role: string, action: string }[]
+export type Ace = {
+	allow: boolean,
+	role: string,
+	action: string
 }
 
-type TransformedAcls = {
+type IncomingAcls = {
+	ace: Ace[]
+}
+
+export type TransformedAcl = {
   actions: string[], role: string, read: boolean, write: boolean
-}[]
+}
+
+
+export type TransformedAcls = TransformedAcl[]
 
 type AclDetailsState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
@@ -34,12 +43,12 @@ const initialState: AclDetailsState = {
 };
 
 // fetch details about a certain acl from server
-export const fetchAclDetails = createAsyncThunk('aclDetails/fetchAclDetails', async (aclId: any, {dispatch}) => {
+export const fetchAclDetails = createAsyncThunk('aclDetails/fetchAclDetails', async (aclId: number) => {
 	const res = await axios.get(`/admin-ng/acl/${aclId}`);
 
 	let aclDetails = res.data;
 
-	let acl: IncomingAcl = aclDetails.acl;
+	let acl: IncomingAcls = aclDetails.acl;
 	let transformedAcls: TransformedAcls = [];
 
 	// transform policies for further use
@@ -119,7 +128,13 @@ export const fetchAclDetails = createAsyncThunk('aclDetails/fetchAclDetails', as
 });
 
 // update details of a certain acl
-export const updateAclDetails = createAsyncThunk('aclDetails/updateAclDetails', async (params: {values: any, aclId: any}, {dispatch}) => {
+export const updateAclDetails = createAsyncThunk('aclDetails/updateAclDetails', async (params: {
+	values: {
+		name: string,
+		acls: TransformedAcls,
+	},
+	aclId: number,
+}, {dispatch}) => {
 	const { values, aclId } = params
 	// transform ACLs back to structure used by backend
 	let acls = prepareAccessPolicyRulesForPost(values.acls);

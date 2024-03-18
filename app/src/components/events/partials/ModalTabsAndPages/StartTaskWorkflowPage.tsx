@@ -74,7 +74,7 @@ const StartTaskWorkflowPage: React.FC<{
 											placeholder={t(
 												"EVENTS.EVENTS.DETAILS.PUBLICATIONS.SELECT_WORKFLOW"
 											)}
-											tabIndex={"99"}
+											tabIndex={99}
 										/>
 									</div>
 								)}
@@ -111,8 +111,7 @@ const StartTaskWorkflowPage: React.FC<{
 					onClick={() => {
 						nextPage(formik.values);
 					}}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-					tabIndex="100"
+					tabIndex={100}
 				>
 					{t("WIZARD.NEXT_STEP")}
 				</button>
@@ -125,8 +124,7 @@ const StartTaskWorkflowPage: React.FC<{
 							setPageCompleted([]);
 						}
 					}}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-					tabIndex="101"
+					tabIndex={101}
 				>
 					{t("WIZARD.BACK")}
 				</button>

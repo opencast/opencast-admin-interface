@@ -1,7 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Formik } from "formik";
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'loda... Remove this comment to see the full error message
 import _ from "lodash";
 import cn from "classnames";
 import { connect } from "react-redux";
@@ -74,7 +73,7 @@ const SeriesDetailsThemeTab = ({
 																formik.setFieldValue("theme", element.value)
 															}
 															placeholder={t("EVENTS.SERIES.NEW.THEME.LABEL")}
-															tabIndex={"8"}
+															tabIndex={8}
 															disabled={
 																!hasAccess(
 																	"ROLE_UI_SERIES_DETAILS_THEMES_EDIT",

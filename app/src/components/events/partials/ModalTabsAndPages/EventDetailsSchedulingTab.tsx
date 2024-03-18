@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import cn from "classnames";
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'loda... Remove this comment to see the full error message
 import _ from "lodash";
 import { DatePicker } from "@material-ui/pickers";
 import { createTheme, ThemeProvider } from "@material-ui/core";
@@ -213,13 +212,13 @@ const EventDetailsSchedulingTab = ({
 
 		return {
 			scheduleStartDate: startDate.setHours(0, 0, 0),
-			scheduleStartHour: makeTwoDigits(source.start.hour),
-			scheduleStartMinute: makeTwoDigits(source.start.minute),
-			scheduleDurationHours: makeTwoDigits(source.duration.hour),
-			scheduleDurationMinutes: makeTwoDigits(source.duration.minute),
+			scheduleStartHour: source.start.hour ? makeTwoDigits(source.start.hour) : "",
+			scheduleStartMinute: source.start.minute ? makeTwoDigits(source.start.minute) : "",
+			scheduleDurationHours: source.duration.hour ? makeTwoDigits(source.duration.hour) : "",
+			scheduleDurationMinutes: source.duration.minute ? makeTwoDigits(source.duration.minute): "",
 			scheduleEndDate: endDate.setHours(0, 0, 0),
-			scheduleEndHour: makeTwoDigits(source.end.hour),
-			scheduleEndMinute: makeTwoDigits(source.end.minute),
+			scheduleEndHour: source.end.hour ? makeTwoDigits(source.end.hour): "",
+			scheduleEndMinute: source.end.minute ? makeTwoDigits(source.end.minute): "",
 			captureAgent: source.device.name,
 			inputs: inputs.filter((input) => input !== ""),
 		};
@@ -309,8 +308,7 @@ const EventDetailsSchedulingTab = ({
 																	<ThemeProvider theme={theme}>
 																		<DatePicker
 																			name="scheduleStartDate"
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-																			tabIndex={"1"}
+																			tabIndex={1}
 																			value={formik.values.scheduleStartDate}
 																			onChange={(value) =>
 																				changeStartDate(
@@ -366,7 +364,7 @@ const EventDetailsSchedulingTab = ({
 																		placeholder={t(
 																			"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
 																		)}
-																		tabIndex={"2"}
+																		tabIndex={2}
 																		disabled={
 																			!accessAllowed(formik.values.captureAgent)
 																		}
@@ -395,7 +393,7 @@ const EventDetailsSchedulingTab = ({
 																		placeholder={t(
 																			"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
 																		)}
-																		tabIndex={"3"}
+																		tabIndex={3}
 																		disabled={
 																			!accessAllowed(formik.values.captureAgent)
 																		}
@@ -404,8 +402,8 @@ const EventDetailsSchedulingTab = ({
 															)}
 															{!hasAccessRole && (
 																<td>
-																	{makeTwoDigits(source.start.hour)}:
-																	{makeTwoDigits(source.start.minute)}
+																	{source.start.hour ? makeTwoDigits(source.start.hour) : ""}:
+																	{source.start.minute ? makeTwoDigits(source.start.minute) : ""}
 																</td>
 															)}
 														</tr>
@@ -440,7 +438,7 @@ const EventDetailsSchedulingTab = ({
 																			)
 																		}
 																		placeholder={t("WIZARD.DURATION.HOURS")}
-																		tabIndex={"4"}
+																		tabIndex={4}
 																		disabled={
 																			!accessAllowed(formik.values.captureAgent)
 																		}
@@ -469,7 +467,7 @@ const EventDetailsSchedulingTab = ({
 																			)
 																		}
 																		placeholder={t("WIZARD.DURATION.MINUTES")}
-																		tabIndex={"5"}
+																		tabIndex={5}
 																		disabled={
 																			!accessAllowed(formik.values.captureAgent)
 																		}
@@ -478,8 +476,8 @@ const EventDetailsSchedulingTab = ({
 															)}
 															{!hasAccessRole && (
 																<td>
-																	{makeTwoDigits(source.duration.hour)}:
-																	{makeTwoDigits(source.duration.minute)}
+																	{source.duration.hour ? makeTwoDigits(source.duration.hour) : ""}:
+																	{source.duration.minute ? makeTwoDigits(source.duration.minute): ""}
 																</td>
 															)}
 														</tr>
@@ -516,7 +514,7 @@ const EventDetailsSchedulingTab = ({
 																		placeholder={t(
 																			"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
 																		)}
-																		tabIndex={"6"}
+																		tabIndex={6}
 																		disabled={
 																			!accessAllowed(formik.values.captureAgent)
 																		}
@@ -545,7 +543,7 @@ const EventDetailsSchedulingTab = ({
 																		placeholder={t(
 																			"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
 																		)}
-																		tabIndex={"7"}
+																		tabIndex={7}
 																		disabled={
 																			!accessAllowed(formik.values.captureAgent)
 																		}
@@ -567,8 +565,8 @@ const EventDetailsSchedulingTab = ({
 															)}
 															{!hasAccessRole && (
 																<td>
-																	{makeTwoDigits(source.end.hour)}:
-																	{makeTwoDigits(source.end.minute)}
+																	{source.end.hour ? makeTwoDigits(source.end.hour) : ""}:
+																	{source.end.minute ? makeTwoDigits(source.end.minute): ""}
 																	{formik.values.scheduleEndDate.toString() !==
 																		formik.values.scheduleStartDate.toString() && (
 																		<span>
@@ -617,7 +615,7 @@ const EventDetailsSchedulingTab = ({
 																		placeholder={t(
 																			"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"
 																		)}
-																		tabIndex={"8"}
+																		tabIndex={8}
 																		disabled={
 																			!accessAllowed(formik.values.captureAgent)
 																		}

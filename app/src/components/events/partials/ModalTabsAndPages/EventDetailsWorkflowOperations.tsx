@@ -42,7 +42,7 @@ const EventDetailsWorkflowOperations = ({
 	}, []);
 
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
-	const openSubTab = (tabType, operationId: number | null = null) => {
+	const openSubTab = (tabType, operationId: number | undefined = undefined) => {
 		dispatch(removeNotificationWizardForm());
 		setHierarchy(tabType);
 		if (tabType === "workflow-operation-details") {

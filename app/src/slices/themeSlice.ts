@@ -3,6 +3,7 @@ import { themesTableConfig } from "../configs/tableConfigs/themesTableConfig";
 import axios from 'axios';
 import { buildThemeBody, getURLParams } from '../utils/resourceUtils';
 import { addNotification } from '../slices/notificationSlice';
+import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 
 /**
  * This file contains redux reducer for actions affecting the state of themes
@@ -33,7 +34,7 @@ type ThemeState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
 	results: Details[],
-	columns: any,			 // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],
 	total: number,
 	count: number,
 	offset: number,
@@ -71,7 +72,7 @@ export const fetchThemes = createAsyncThunk('theme/fetchThemes', async (_, { get
 });
 
 // post new theme to backend
-export const postNewTheme = createAsyncThunk('theme/postNewTheme', async (values: any, {dispatch}) => {
+export const postNewTheme = createAsyncThunk('theme/postNewTheme', async (values: Details, {dispatch}) => {
 	// get URL params used for post request
 	let data = buildThemeBody(values);
 
@@ -95,7 +96,7 @@ export const postNewTheme = createAsyncThunk('theme/postNewTheme', async (values
 });
 
 // delete theme with provided id
-export const deleteTheme = createAsyncThunk('theme/deleteTheme', async (id: any, {dispatch}) => {
+export const deleteTheme = createAsyncThunk('theme/deleteTheme', async (id: number, {dispatch}) => {
 	axios
 		.delete(`/admin-ng/themes/${id}`)
 		.then((res) => {

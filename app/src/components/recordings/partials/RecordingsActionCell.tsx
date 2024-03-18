@@ -49,7 +49,6 @@ const RecordingsActionCell = ({
 			{hasAccess("ROLE_UI_LOCATIONS_DETAILS_VIEW", user) && (
 				<button
 					className="button-like-anchor more"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DETAILS")}
 					onClick={() => showRecordingDetails()}
 				/>
@@ -66,7 +65,6 @@ const RecordingsActionCell = ({
 			{hasAccess("ROLE_UI_LOCATIONS_DELETE", user) && (
 				<button
 					className="button-like-anchor remove"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DELETE")}
 					onClick={() => setDeleteConfirmation(true)}
 				/>
