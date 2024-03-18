@@ -234,12 +234,12 @@ const MainNav = ({
 							{hasAccess("ROLE_UI_NAV_RECORDINGS_VIEW", user) &&
 								(hasAccess("ROLE_UI_EVENTS_VIEW", user) ? (
 									<Link to="/events/events" onClick={() => loadEvents()}>
-										<i className="events" title={t<string>("NAV.EVENTS.TITLE")} />
+										<i className="events" title={t("NAV.EVENTS.TITLE")} />
 									</Link>
 								) : (
 									hasAccess("ROLE_UI_SERIES_VIEW", user) && (
 										<Link to="/events/series" onClick={() => loadSeries()}>
-											<i className="events" title={t<string>("NAV.EVENTS.TITLE")} />
+											<i className="events" title={t("NAV.EVENTS.TITLE")} />
 										</Link>
 									)
 								))}
@@ -251,7 +251,6 @@ const MainNav = ({
 									>
 										<i
 											className="recordings"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 											title={t("NAV.CAPTUREAGENTS.TITLE")}
 										/>
 									</Link>
@@ -259,32 +258,32 @@ const MainNav = ({
 							{hasAccess("ROLE_UI_NAV_SYSTEMS_VIEW", user) &&
 								(hasAccess("ROLE_UI_JOBS_VIEW", user) ? (
 									<Link to="/systems/jobs" onClick={() => loadJobs()}>
-										<i className="systems" title={t<string>("NAV.SYSTEMS.TITLE")} />
+										<i className="systems" title={t("NAV.SYSTEMS.TITLE")} />
 									</Link>
 								) : hasAccess("ROLE_UI_SERVERS_VIEW", user) ? (
 									<Link to="/systems/servers" onClick={() => loadServers()}>
-										<i className="systems" title={t<string>("NAV.SYSTEMS.TITLE")} />
+										<i className="systems" title={t("NAV.SYSTEMS.TITLE")} />
 									</Link>
 								) : (
 									hasAccess("ROLE_UI_SERVICES_VIEW", user) && (
 										<Link to="/systems/services" onClick={() => loadServices()}>
-											<i className="systems" title={t<string>("NAV.SYSTEMS.TITLE")} />
+											<i className="systems" title={t("NAV.SYSTEMS.TITLE")} />
 										</Link>
 									)
 								))}
 							{hasAccess("ROLE_UI_NAV_ORGANIZATION_VIEW", user) &&
 								(hasAccess("ROLE_UI_USERS_VIEW", user) ? (
 									<Link to="/users/users" onClick={() => loadUsers()}>
-										<i className="users" title={t<string>("NAV.USERS.TITLE")} />
+										<i className="users" title={t("NAV.USERS.TITLE")} />
 									</Link>
 								) : hasAccess("ROLE_UI_GROUPS_VIEW", user) ? (
 									<Link to="/users/groups" onClick={() => loadGroups()}>
-										<i className="users" title={t<string>("NAV.USERS.TITLE")} />
+										<i className="users" title={t("NAV.USERS.TITLE")} />
 									</Link>
 								) : (
 									hasAccess("ROLE_UI_ACLS_VIEW", user) && (
 										<Link to="/users/acls" onClick={() => loadAcls()}>
-											<i className="users" title={t<string>("NAV.USERS.TITLE")} />
+											<i className="users" title={t("NAV.USERS.TITLE")} />
 										</Link>
 									)
 								))}
@@ -293,7 +292,6 @@ const MainNav = ({
 									<Link to="/configuration/themes" onClick={() => loadThemes()}>
 										<i
 											className="configuration"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 											title={t("NAV.CONFIGURATION.TITLE")}
 										/>
 									</Link>
@@ -303,7 +301,6 @@ const MainNav = ({
 									<Link to="/statistics/organization">
 										<i
 											className="statistics"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 											title={t("NAV.STATISTICS.TITLE")}
 										/>
 									</Link>
