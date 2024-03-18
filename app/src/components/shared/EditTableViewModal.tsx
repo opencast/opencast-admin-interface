@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Container, Draggable } from "@edorivai/react-smooth-dnd";
 import { arrayMoveImmutable } from "array-move";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
@@ -9,6 +8,7 @@ import {
 	getDeactivatedColumns,
 	getResourceType,
 } from "../../selectors/tableSelectors";
+import { DragDropContext, Droppable, OnDragEndResponder, Draggable as Draggablee } from "@hello-pangea/dnd";
 
 /**
  * This component renders the modal for editing which columns are shown in the table
@@ -34,11 +34,17 @@ const EditTableViewModal = ({
 
 	const [deactivatedCols, setDeactivatedColumns] = useState(deactivatedColumns);
 	const [activeCols, setActiveColumns] = useState(activeColumns);
+	const [isColsLoaded, setIsColsLoaded] = useState(false);
 
 	useEffect(() => {
-		setActiveColumns(activeColumns);
-		setDeactivatedColumns(deactivatedColumns);
-	}, [activeColumns, deactivatedColumns]);
+		if (!isColsLoaded) {
+			setActiveColumns(activeColumns);
+			setDeactivatedColumns(deactivatedColumns);
+			if (activeColumns.length !== 0 || deactivatedColumns.length !== 0) {
+				setIsColsLoaded(true)
+			}
+		}
+	}, [activeColumns, deactivatedColumns, isColsLoaded]);
 
 	// closes this modal
 	const close = () => {
@@ -76,11 +82,15 @@ const EditTableViewModal = ({
 	};
 
 	// change column order based on where column was dragged and dropped
-// @ts-expect-error TS(7031): Binding element 'removedIndex' implicitly has an '... Remove this comment to see the full error message
-	const onDrop = ({ removedIndex, addedIndex }) => {
-// @ts-expect-error TS(7006): Parameter 'columns' implicitly has an 'any' type.
-		setActiveColumns((columns) => arrayMoveImmutable(columns, removedIndex, addedIndex));
-	};
+	const onDragEnd: OnDragEndResponder = (result) => {
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    }
+
+		// @ts-expect-error TS(7006): Parameter 'columns' implicitly has an 'any' type.
+		setActiveColumns((columns) => arrayMoveImmutable(columns, result.source.index, result.destination.index));
+  }
 
 	return (
 		<>
@@ -156,28 +166,46 @@ const EditTableViewModal = ({
 											</header>
 											<ul className="drag-drop-items">
 												<li>
-													<Container
-														dragHandleSelector=".drag-handle"
-														lockAxis="y"
-														onDrop={onDrop}
+													<DragDropContext
+														onDragEnd={onDragEnd}
 													>
-{/* @ts-expect-error TS(7006): Parameter 'column' implicitly has an 'any' type. */}
-														{activeCols.map((column, key) =>
-															column ? (
-																<Draggable className="drag-item" key={key}>
-																	<div className="drag-handle">
-																		<div className="title">
-																			{t(column.label)}
-																		</div>
-																		<button
-																			className="button-like-anchor move-item remove"
-																			onClick={() => changeColumn(column, true)}
-																		/>
-																	</div>
-																</Draggable>
-															) : null
-														)}
-													</Container>
+														<Droppable droppableId="droppable">
+															{(provided, snapshot) => (
+																<div
+																	{...provided.droppableProps}
+																	ref={provided.innerRef}
+																	// style={}
+																>
+																	{/* @ts-expect-error TS(7006): Parameter 'column' implicitly has an 'any' type. */}
+																	{activeCols.filter(col => col).map((column, key) =>
+																		(
+																			<Draggablee key={column.name} draggableId={column.name} index={key}>
+																				{(provided, snapshot) => (
+																					<div
+																						ref={provided.innerRef}
+																						{...provided.draggableProps}
+																						{...provided.dragHandleProps}
+																						style={{...provided.draggableProps.style}}
+																						className="drag-item"
+																					>
+																						<div className="title">
+																							{t(column.label)}
+																						</div>
+																						<button
+																							className="button-like-anchor move-item remove"
+																							onClick={() => changeColumn(column, true)}
+																						/>
+																					</div>
+																				)}
+																			</Draggablee>
+																		)
+																	)}
+																	{provided.placeholder}
+																</div>
+															)}
+														</Droppable>
+													</DragDropContext>
+
 												</li>
 											</ul>
 										</div>
