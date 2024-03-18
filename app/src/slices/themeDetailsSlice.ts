@@ -72,7 +72,7 @@ const initialState: ThemeDetailsState = {
 };
 
 // fetch details of certain theme from server
-export const fetchThemeDetails = createAsyncThunk('themeDetails/fetchThemeDetails', async (id: any, {dispatch}) => {
+export const fetchThemeDetails = createAsyncThunk('themeDetails/fetchThemeDetails', async (id: number) => {
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -81,13 +81,16 @@ export const fetchThemeDetails = createAsyncThunk('themeDetails/fetchThemeDetail
 });
 
 // fetch usage of a certain theme
-export const fetchUsage = createAsyncThunk('themeDetails/fetchUsage', async (id: any, {dispatch}) => {
+export const fetchUsage = createAsyncThunk('themeDetails/fetchUsage', async (id: number) => {
 	const res = await axios.get(`/admin-ng/themes/${id}/usage.json`);
 	return res.data;
 });
 
 // update a certain theme
-export const updateThemeDetails = createAsyncThunk('themeDetails/updateThemeDetails', async (params: {id: any, values: any}, {dispatch}) => {
+export const updateThemeDetails = createAsyncThunk('themeDetails/updateThemeDetails', async (params: {
+	id: number,
+	values: Details
+}, {dispatch}) => {
 	const { values, id } = params
 	let data = buildThemeBody(values);
 

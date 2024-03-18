@@ -35,10 +35,10 @@ import {
 	changeStartMinute,
 	changeStartMinuteMultiple,
 } from "../../../../utils/dateUtils";
-import { parseISO } from "date-fns";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchRecordings } from "../../../../slices/recordingSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { parseISO } from "date-fns";
 import { checkConflicts } from "../../../../slices/eventSlice";
 
 /**
@@ -398,8 +398,8 @@ const Schedule = ({ formik, inputDevices }) => {
 											);
 										}
 									}}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-									tabIndex="4"
+									// @ts-expect-error TS(2322):
+									tabIndex={4}
 								/>
 							</td>
 						</tr>
@@ -422,8 +422,8 @@ const Schedule = ({ formik, inputDevices }) => {
 													formik.setFieldValue
 												)
 											}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-											tabIndex="5"
+											// @ts-expect-error TS(2322):
+											tabIndex={5}
 										/>
 									</td>
 								</tr>

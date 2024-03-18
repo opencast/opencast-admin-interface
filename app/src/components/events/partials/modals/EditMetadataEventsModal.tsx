@@ -12,6 +12,7 @@ import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
+	MetadataFieldSelected,
 	postEditMetadata,
 	updateBulkMetadata,
 } from "../../../../slices/eventSlice";
@@ -30,7 +31,15 @@ const EditMetadataEventsModal = ({
 	const dispatch = useAppDispatch();
 
 	const [selectedEvents] = useState(selectedRows);
-	const [metadataFields, setMetadataFields] = useState({});
+	const [metadataFields, setMetadataFields] = useState<{
+		merged: string[],
+		mergedMetadata: MetadataFieldSelected[],
+		notFound?: string[],
+		runningWorkflow?: string[],
+	}>({
+		merged: [],
+		mergedMetadata: []
+	});
 	const [loading, setLoading] = useState(true);
 	const [fatalError, setFatalError] = useState({});
 	const [fetchedValues, setFetchedValues] = useState(null);
@@ -60,7 +69,12 @@ const EditMetadataEventsModal = ({
 					let initialValues = getInitialValues(result);
 	// @ts-expect-error TS(2345): Argument of type '{}' is not assignable to paramet... Remove this comment to see the full error message
 					setFetchedValues(initialValues);
-					setMetadataFields(result);
+					setMetadataFields({
+						merged: result.merged,
+						mergedMetadata: result.mergedMetadata,
+						notFound: result.notFound,
+						runningWorkflow: result.runningWorkflow,
+					});
 				}
 			});
 			setLoading(false);
@@ -80,7 +94,6 @@ const EditMetadataEventsModal = ({
 	const onChangeSelected = (e, fieldId) => {
 		let selected = e.target.checked;
 		let fields = metadataFields;
-// @ts-expect-error TS(2339): Property 'mergedMetadata' does not exist on type '... Remove this comment to see the full error message
 		fields.mergedMetadata = metadataFields.mergedMetadata.map((field) => {
 			if (field.id === fieldId) {
 				return {
@@ -105,7 +118,6 @@ const EditMetadataEventsModal = ({
 // @ts-expect-error TS(2531): Object is possibly 'null'.
 		if (fetchedValues[field.id] !== formikValues[field.id]) {
 			let fields = metadataFields;
-// @ts-expect-error TS(2339): Property 'mergedMetadata' does not exist on type '... Remove this comment to see the full error message
 			fields.mergedMetadata = metadataFields.mergedMetadata.map((f) => {
 				if (f.id === field.id) {
 					return {
@@ -210,9 +222,7 @@ const EditMetadataEventsModal = ({
 															</tr>
 														</thead>
 														<tbody>
-{/* @ts-expect-error TS(2339): Property 'mergedMetadata' does not exist on type '... Remove this comment to see the full error message */}
 															{metadataFields.mergedMetadata.map(
-// @ts-expect-error TS(7006): Parameter 'metadata' implicitly has an 'any' type.
 																(metadata, key) =>
 																	!metadata.readOnly && (
 																		<tr

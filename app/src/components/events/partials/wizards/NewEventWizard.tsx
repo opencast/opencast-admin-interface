@@ -43,7 +43,7 @@ const NewEventWizard: React.FC<{
 
 	const [page, setPage] = useState(0);
 	const [snapshot, setSnapshot] = useState(initialValues);
-	const [pageCompleted, setPageCompleted] = useState({});
+	const [pageCompleted, setPageCompleted] = useState<{ [key: number]: boolean }>({});
 
 	// Caption of steps used by Stepper
 	const steps = [
@@ -95,7 +95,6 @@ const NewEventWizard: React.FC<{
 
 		// set page as completely filled out
 		let updatedPageCompleted = pageCompleted;
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 		updatedPageCompleted[page] = true;
 		setPageCompleted(updatedPageCompleted);
 
