@@ -288,9 +288,9 @@ const EventDetailsSchedulingTab = ({
 																/* date picker for start date */
 																<DatePicker
 																	name="scheduleStartDate"
+// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
 																	tabIndex={1}
 																	value={new Date(formik.values.scheduleStartDate)}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
 																	onChange={(value) =>
 																		changeStartDate(
 																			value,

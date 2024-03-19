@@ -383,7 +383,6 @@ const Schedule = ({ formik, inputDevices }) => {
 								<DatePicker
 									name="scheduleStartDate"
 									value={typeof formik.values.scheduleStartDate === "string" ? parseISO(formik.values.scheduleStartDate): formik.values.scheduleStartDate}
-									// @ts-expect-error TS(2322):
 									onChange={(value) => {
 										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
 											changeStartDateMultiple(
@@ -399,6 +398,7 @@ const Schedule = ({ formik, inputDevices }) => {
 											);
 										}
 									}}
+									// @ts-expect-error TS(2322):
 									tabIndex={4}
 								/>
 							</td>
@@ -415,7 +415,6 @@ const Schedule = ({ formik, inputDevices }) => {
 										<DatePicker
 											name="scheduleEndDate"
 											value={typeof formik.values.scheduleEndDate === "string" ? parseISO(formik.values.scheduleEndDate) : formik.values.scheduleEndDate}
-											// @ts-expect-error TS(2322):
 											onChange={(value) =>
 												changeEndDateMultiple(
 													value,
@@ -423,6 +422,7 @@ const Schedule = ({ formik, inputDevices }) => {
 													formik.setFieldValue
 												)
 											}
+											// @ts-expect-error TS(2322):
 											tabIndex={5}
 										/>
 									</td>
