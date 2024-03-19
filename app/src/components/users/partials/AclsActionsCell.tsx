@@ -50,7 +50,6 @@ const AclsActionsCell = ({
 				<button
 					onClick={() => showAclDetails()}
 					className="button-like-anchor more"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("USERS.ACLS.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
@@ -64,7 +63,6 @@ const AclsActionsCell = ({
 				<button
 					onClick={() => setDeleteConfirmation(true)}
 					className="button-like-anchor remove"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("USERS.ACLS.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
