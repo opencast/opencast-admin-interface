@@ -15,6 +15,7 @@ import { NewSeriesSchema } from "../../../../utils/validate";
 import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { postNewSeries } from "../../../../slices/seriesSlice";
+import NewTobiraPage from "../ModalTabsAndPages/NewTobiraPage";
 
 /**
  * This component manages the pages of the new series wizard and the submission of values
@@ -56,6 +57,11 @@ const NewSeriesWizard: React.FC<{
 			translation: "EVENTS.SERIES.NEW.THEME.CAPTION",
 			name: "theme",
 			hidden: false,
+		},
+		{
+			translation: "EVENTS.SERIES.NEW.TOBIRA.CAPTION",
+			name: "tobira",
+			hidden: false,	// TODO: Figure out condition for this to be true
 		},
 		{
 			translation: "EVENTS.SERIES.NEW.SUMMARY.CAPTION",
@@ -163,6 +169,13 @@ const NewSeriesWizard: React.FC<{
 									/>
 								)}
 								{page === 4 && (
+									<NewTobiraPage
+										formik={formik}
+										nextPage={nextPage}
+										previousPage={previousPage}
+									/>
+								)}
+								{page === 5 && (
 									<NewSeriesSummary
 										previousPage={previousPage}
 										formik={formik}
