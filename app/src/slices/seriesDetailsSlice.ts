@@ -65,6 +65,10 @@ type SeriesDetailsState = {
 	errorStatistics: SerializedError | null,
 	statusStatisticsValue: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorStatisticsValue: SerializedError | null,
+	statusTobiraPage: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	errorTobiraPage: SerializedError | null,
+	statusTobiraData: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	errorTobiraData: SerializedError | null,
   metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	feeds: Feed[],
@@ -74,6 +78,17 @@ type SeriesDetailsState = {
 	fetchingStatisticsInProgress: boolean,
 	statistics: Statistics[],
 	hasStatisticsError: boolean,
+	tobiraPage: any,
+	tobiraData: {
+		baseURL: string,
+		hostPages: {
+			title: string,
+			path: string,
+			ancestors: {
+				title: string,
+			}[],
+		}[],
+	},
 }
 
 // Initial state of series details in redux store
@@ -92,6 +107,10 @@ const initialState: SeriesDetailsState = {
 	errorStatistics: null,
 	statusStatisticsValue: 'uninitialized',
 	errorStatisticsValue: null,
+	statusTobiraPage: 'uninitialized',
+	errorTobiraPage: null,
+	statusTobiraData: 'uninitialized',
+	errorTobiraData: null,
 	metadata: {
 		title: "",
 		flavor: "",
@@ -105,6 +124,11 @@ const initialState: SeriesDetailsState = {
 	fetchingStatisticsInProgress: false,
 	statistics: [],
 	hasStatisticsError: false,
+	tobiraPage: undefined,
+	tobiraData: {
+		baseURL: "",
+		hostPages: [],
+	},
 };
 
 // fetch metadata of certain series from server
@@ -408,6 +432,22 @@ export const updateSeriesTheme = createAsyncThunk('seriesDetails/updateSeriesThe
 		});
 });
 
+// fetch metadata of certain series from server
+export const fetchSeriesDetailsTobiraNew = createAsyncThunk('seriesDetails/fetchSeriesDetailsTobiraNew', async () => {
+	const res = await axios.get(`/admin-ng/series/new/tobira/page`);
+	const data = res.data;
+
+	return JSON.parse(data);
+});
+
+// fetch metadata of certain series from server
+export const fetchSeriesDetailsTobira = createAsyncThunk('seriesDetails/fetchSeriesDetailsTobira', async (id: string) => {
+	const res = await axios.get(`/admin-ng/series/${id}/tobira/pages`);
+	const data = res.data;
+
+	return JSON.parse(data);
+});
+
 // thunks for statistics
 export const fetchSeriesStatistics = createAsyncThunk('seriesDetails/fetchSeriesStatistics', async (seriesId: string, {getState}) => {
 	// get prior statistics
@@ -559,6 +599,32 @@ const seriesDetailsSlice = createSlice({
 			.addCase(fetchSeriesDetailsThemeNames.rejected, (state, action) => {
 				state.statusThemeNames = 'failed';
 				state.errorThemeNames = action.error;
+			})
+			.addCase(fetchSeriesDetailsTobiraNew.pending, (state) => {
+				state.statusTobiraPage = 'loading';
+			})
+			.addCase(fetchSeriesDetailsTobiraNew.fulfilled, (state, action: PayloadAction<
+				SeriesDetailsState["tobiraPage"]
+			>) => {
+				state.statusTobiraPage = 'succeeded';
+				state.tobiraPage = action.payload;
+			})
+			.addCase(fetchSeriesDetailsTobiraNew.rejected, (state, action) => {
+				state.statusTobiraPage = 'failed';
+				state.errorTobiraPage = action.error;
+			})
+			.addCase(fetchSeriesDetailsTobira.pending, (state) => {
+				state.statusTobiraData = 'loading';
+			})
+			.addCase(fetchSeriesDetailsTobira.fulfilled, (state, action: PayloadAction<
+				SeriesDetailsState["tobiraData"]
+			>) => {
+				state.statusTobiraData = 'succeeded';
+				state.tobiraData = action.payload;
+			})
+			.addCase(fetchSeriesDetailsTobira.rejected, (state, action) => {
+				state.statusTobiraData = 'failed';
+				state.errorTobiraData = action.error;
 			})
 			.addCase(fetchSeriesStatistics.pending, (state) => {
 				state.statusStatistics = 'loading';

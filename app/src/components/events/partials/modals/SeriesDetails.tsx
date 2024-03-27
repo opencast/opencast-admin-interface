@@ -23,6 +23,7 @@ import {
 	updateExtendedSeriesMetadata,
 	updateSeriesMetadata,
 } from "../../../../slices/seriesDetailsSlice";
+import SeriesDetailsTobiraTab from "../ModalTabsAndPages/SeriesDetailsTobiraTab";
 
 /**
  * This component manages the tabs of the series details modal
@@ -86,6 +87,12 @@ const SeriesDetails = ({
 			name: "theme",
 		},
 		{
+			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.TOBIRA",
+			accessRole: "ROLE_UI_SERIES_DETAILS_TOBIRA_VIEW",
+			name: "tobira",
+			hidden: false, // TODO: Set to true if there no tobira data
+		},
+		{
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.STATISTICS",
 			accessRole: "ROLE_UI_SERIES_DETAILS_STATISTICS_VIEW",
 			name: "statistics",
@@ -127,8 +134,13 @@ const SeriesDetails = ({
 						{t(tabs[4].tabNameTranslation)}
 					</button>
 				)}
-				{feeds.length > 0 && (
+				{!tabs[5].hidden && hasAccess(tabs[5].accessRole, user) && (
 					<button className={"button-like-anchor " + cn({ active: page === 5 })} onClick={() => openTab(5)}>
+						{t(tabs[5].tabNameTranslation)}
+					</button>
+				)}
+				{feeds.length > 0 && (
+					<button className={"button-like-anchor " + cn({ active: page === 6 })} onClick={() => openTab(6)}>
 						{"Feeds"}
 					</button>
 				)}
@@ -169,12 +181,16 @@ const SeriesDetails = ({
 					/>
 				)}
 				{page === 4 && (
+					<SeriesDetailsTobiraTab
+					/>
+				)}
+				{page === 5 && (
 					<SeriesDetailsStatisticTab
 						seriesId={seriesId}
 						header={tabs[page].tabNameTranslation}
 					/>
 				)}
-				{page === 5 && <SeriesDetailsFeedsTab feeds={feeds} />}
+				{page === 6 && <SeriesDetailsFeedsTab feeds={feeds} />}
 			</div>
 		</>
 	);
