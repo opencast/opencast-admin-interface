@@ -251,10 +251,11 @@ const EventDetailsCommentsTab = ({
 												options={Object.entries(commentReasons)}
 												type={"comment"}
 												required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-												handleChange={(element) =>
-													setCommentReason(element.value)
-												}
+												handleChange={(element) => {
+													if (element) {
+														setCommentReason(element.value)
+													}
+												}}
 												placeholder={t(
 													"EVENTS.EVENTS.DETAILS.COMMENTS.SELECTPLACEHOLDER"
 												)}

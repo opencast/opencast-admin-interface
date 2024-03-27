@@ -10,29 +10,35 @@ import {
 } from "../../utils/dropDownUtils";
 import Select from "react-select";
 
+export type DropDownType = "language" | "isPartOf" | "captureAgent" | "aclRole" | "workflow" | "aclTemplate" | "newTheme" | "comment" | "theme" | "time";
+
 /**
  * This component provides a bar chart for visualising (statistics) data
  */
-const DropDown = ({
-// @ts-expect-error TS(7031): Binding element 'value' implicitly has an 'any' ty... Remove this comment to see the full error message
+const DropDown = <T,>({
 	value,
-// @ts-expect-error TS(7031): Binding element 'text' implicitly has an 'any' typ... Remove this comment to see the full error message
 	text,
-// @ts-expect-error TS(7031): Binding element 'options' implicitly has an 'any' ... Remove this comment to see the full error message
 	options,
-// @ts-expect-error TS(7031): Binding element 'type' implicitly has an 'any' typ... Remove this comment to see the full error message
 	type,
-// @ts-expect-error TS(7031): Binding element 'required' implicitly has an 'any'... Remove this comment to see the full error message
 	required,
-// @ts-expect-error TS(7031): Binding element 'handleChange' implicitly has an '... Remove this comment to see the full error message
 	handleChange,
-// @ts-expect-error TS(7031): Binding element 'placeholder' implicitly has an 'a... Remove this comment to see the full error message
 	placeholder,
-// @ts-expect-error TS(7031): Binding element 'tabIndex' implicitly has an 'any'... Remove this comment to see the full error message
 	tabIndex,
 	autoFocus = false,
 	defaultOpen = false,
 	disabled = false,
+}: {
+	value: T
+	text: string,
+	options: any[],
+	type: DropDownType
+	required: boolean,
+	handleChange: (option: {value: T, label: string} | null) => void
+	placeholder: string
+	tabIndex: number,
+	autoFocus?: boolean,
+	defaultOpen?: boolean,
+	disabled?: boolean,
 }) => {
 	const { t } = useTranslation();
 

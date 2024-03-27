@@ -49,15 +49,16 @@ const NewThemePage = ({
 														<DropDown
 															value={formik.values.theme}
 															text={
-																getName(formik.values.theme) ? getName(formik.values.theme) : ""
+																getName(formik.values.theme) ?? ""
 															}
 															options={seriesThemes}
 															type={"newTheme"}
 															required={false}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-															handleChange={(element) =>
-																formik.setFieldValue("theme", element.value)
-															}
+															handleChange={(element) => {
+																if (element) {
+																	formik.setFieldValue("theme", element.value)
+																}
+															}}
 															placeholder={t("EVENTS.SERIES.NEW.THEME.LABEL")}
 															tabIndex={1}
 														/>

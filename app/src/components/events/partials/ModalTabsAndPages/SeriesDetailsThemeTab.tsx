@@ -68,10 +68,11 @@ const SeriesDetailsThemeTab = ({
 															options={themeNames}
 															type={"theme"}
 															required={false}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-															handleChange={(element) =>
-																formik.setFieldValue("theme", element.value)
-															}
+															handleChange={(element) => {
+																if (element) {
+																	formik.setFieldValue("theme", element.value)
+																}
+															}}
 															placeholder={t("EVENTS.SERIES.NEW.THEME.LABEL")}
 															tabIndex={8}
 															disabled={

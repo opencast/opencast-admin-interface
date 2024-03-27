@@ -359,13 +359,14 @@ const EventDetailsWorkflowTab = ({
 																					}
 																					type={"workflow"}
 																					required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																					handleChange={(element) =>
-																						changeWorkflow(
-																							element.value,
-																							formik.setFieldValue
-																						)
-																					}
+																					handleChange={(element) => {
+																						if (element) {
+																							changeWorkflow(
+																								element.value,
+																								formik.setFieldValue
+																							)
+																						}
+																					}}
 																					placeholder={
 																						!!workflowDefinitions &&
 																						workflowDefinitions.length > 0
