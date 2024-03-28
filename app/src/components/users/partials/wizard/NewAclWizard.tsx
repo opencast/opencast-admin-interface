@@ -19,7 +19,7 @@ const NewAclWizard = ({
 }: any) => {
 	const initialValues = initialFormValuesNewAcl;
 
-	const [
+	const {
 		snapshot,
 		page,
 		nextPage,
@@ -27,7 +27,7 @@ const NewAclWizard = ({
 		setPage,
 		pageCompleted,
 		setPageCompleted,
-	] = usePageFunctions(0, initialValues);
+	} = usePageFunctions(0, initialValues);
 
 	const steps = [
 		{
@@ -83,12 +83,18 @@ const NewAclWizard = ({
 							/>
 							<div>
 								{page === 0 && (
-									<AclMetadataPage formik={formik} nextPage={nextPage} />
+									<AclMetadataPage
+										formik={formik}
+										nextPage={nextPage}
+									/>
 								)}
 								{page === 1 && (
 									<AclAccessPage
+									// @ts-expect-error: Type-checking gets confused by redux-connect in the child
 										formik={formik}
+										// @ts-expect-error: Type-checking gets confused by redux-connect in the child
 										nextPage={nextPage}
+										// @ts-expect-error: Type-checking gets confused by redux-connect in the child
 										previousPage={previousPage}
 									/>
 								)}

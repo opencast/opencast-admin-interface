@@ -1,18 +1,28 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Field } from "formik";
+import { Field, FormikProps } from "formik";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import FileUpload from "../../../shared/wizard/FileUpload";
 
 /**
  * This component renders the title slide page for new themes in the new theme wizard and for themes in themes details modal.
  */
-const TitleSlidePage = ({
-    formik,
-    nextPage,
-    previousPage,
-    isEdit
-}: any) => {
+interface RequiredFormProps {
+	titleSlideActive: boolean,
+	titleSlideMode: string,
+}
+
+const TitleSlidePage = <T extends RequiredFormProps>({
+	formik,
+	nextPage,
+	previousPage,
+	isEdit
+}: {
+	formik: FormikProps<T>,
+	nextPage?: (values: T) => void,
+	previousPage?: (values: T) => void,
+	isEdit?: boolean,
+}) => {
 	const { t } = useTranslation();
 
 	return (

@@ -4,16 +4,23 @@ import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButt
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
 import { getSchedulingSeriesOptions } from "../../../../selectors/eventSelectors";
 import { useAppSelector } from "../../../../store";
+import { FormikProps } from "formik";
+import { EditedEvents } from "../../../../slices/eventSlice";
 
 /**
  * This component renders the summary page of the edit scheduled bulk action
  */
-const EditScheduledEventsSummaryPage : React.FC<{
-  previousPage: any,
-	formik: any,
-}>= ({
+interface RequiredFormProps {
+	editedEvents: EditedEvents[],
+	changedEvents: string[],
+}
+
+const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 	previousPage,
 	formik,
+} : {
+	previousPage: (values: T) => void,
+	formik: FormikProps<T>,
 }) => {
 	const { t } = useTranslation();
 

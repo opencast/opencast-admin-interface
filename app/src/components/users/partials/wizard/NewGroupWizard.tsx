@@ -23,7 +23,7 @@ const NewGroupWizard: React.FC<{
 
 	const initialValues = initialFormValuesNewGroup;
 
-	const [
+	const {
 		snapshot,
 		page,
 		nextPage,
@@ -31,7 +31,7 @@ const NewGroupWizard: React.FC<{
 		setPage,
 		pageCompleted,
 		setPageCompleted,
-	] = usePageFunctions(0, initialValues);
+	} = usePageFunctions(0, initialValues);
 
 	// Caption of steps used by Stepper
 	const steps = [
@@ -92,7 +92,10 @@ const NewGroupWizard: React.FC<{
 							/>
 							<div>
 								{page === 0 && (
-									<GroupMetadataPage formik={formik} nextPage={nextPage} />
+									<GroupMetadataPage
+										formik={formik}
+										nextPage={nextPage}
+									/>
 								)}
 								{page === 1 && (
 									<GroupRolesPage

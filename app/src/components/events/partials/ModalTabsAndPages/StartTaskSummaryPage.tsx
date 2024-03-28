@@ -3,16 +3,23 @@ import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { getWorkflowDef } from "../../../../selectors/workflowSelectors";
 import { useAppSelector } from "../../../../store";
+import { FormikProps } from "formik";
 
 /**
  * This component renders the summary page of the start task bulk action
  */
-const StartTaskSummaryPage: React.FC<{
-	formik: any	//TODO: Add type
-	previousPage: any	//TODO: Add type
-}> = ({
+interface RequiredFormProps {
+	events: Event[],
+	workflow: string,
+	configuration: { [key: string]: string },
+}
+
+const StartTaskSummaryPage = <T extends RequiredFormProps>({
 	formik,
 	previousPage,
+} : {
+	formik: FormikProps<T>,
+	previousPage: (values: T) => void,
 }) => {
 	const { t } = useTranslation();
 

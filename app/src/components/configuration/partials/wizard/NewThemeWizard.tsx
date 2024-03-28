@@ -23,7 +23,7 @@ const NewThemeWizard: React.FC<{
 	const dispatch = useAppDispatch();
 	const initialValues = initialFormValuesNewThemes;
 
-	const [
+	const {
 		snapshot,
 		page,
 		nextPage,
@@ -31,7 +31,7 @@ const NewThemeWizard: React.FC<{
 		setPage,
 		pageCompleted,
 		setPageCompleted,
-	] = usePageFunctions(0, initialValues);
+	 } = usePageFunctions(0, initialValues);
 
 	// Caption of steps used by Stepper
 	const steps = [

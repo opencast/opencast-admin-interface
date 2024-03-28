@@ -19,8 +19,7 @@ const RenderMultiField = ({
 	showCheck = false,
 }) => {
 	// Indicator if currently edit mode is activated
-// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
-	const [editMode, setEditMode] = useClickOutsideField(childRef);
+	const {editMode, setEditMode} = useClickOutsideField(childRef);
 	// Temporary storage for value user currently types in
 	const [inputValue, setInputValue] = useState("");
 

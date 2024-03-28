@@ -2,20 +2,31 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import FileUpload from "../../../shared/wizard/FileUpload";
-import { Field } from "formik";
+import { Field, FormikProps } from "formik";
 import Notifications from "../../../shared/Notifications";
 
 /**
  * This component renders the bumper/trailer (depending on isTrailer flag) page for new themes in the new themes wizard
  * and for themes in themes details modal.
  */
-const BumperPage = ({
-    formik,
-    nextPage,
-    previousPage,
-    isTrailer,
-    isEdit
-}: any) => {
+interface RequiredFormProps {
+	bumperActive: boolean,
+	trailerActive: boolean,
+}
+
+const BumperPage = <T extends RequiredFormProps>({
+	formik,
+	nextPage,
+	previousPage,
+	isTrailer,
+	isEdit
+}: {
+	formik: FormikProps<T>,
+	nextPage?: (values: T) => void,
+	previousPage?: (values: T) => void,
+	isTrailer?: boolean,
+	isEdit?: boolean,
+}) => {
 	const { t } = useTranslation();
 
 	return (

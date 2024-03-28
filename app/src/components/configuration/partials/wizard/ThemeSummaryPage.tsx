@@ -1,14 +1,30 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { FormikProps } from "formik";
 
 /**
  * This component renders the summary page for new themes in the new theme wizard.
  */
-const ThemeSummaryPage = ({
-    formik,
-    previousPage
-}: any) => {
+interface RequiredFormProps {
+	bumperFile: string,
+	bumperFileName: string,
+	trailerFile: string,
+	trailerFileName: string,
+	titleSlideMode: string,
+	titleSlideBackground: string,
+	titleSlideBackgroundName: string,
+	watermarkFile: string,
+	watermarkFileName: string,
+}
+
+const ThemeSummaryPage = <T extends RequiredFormProps>({
+	formik,
+	previousPage
+}: {
+	formik: FormikProps<T>,
+	previousPage?: (values: T) => void,
+}) => {
 	const { t } = useTranslation();
 
 	return (

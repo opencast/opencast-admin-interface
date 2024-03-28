@@ -74,10 +74,9 @@ const AclDetails = ({
 						{page === 0 && <AclMetadataPage formik={formik} isEdit />}
 						{page === 1 && (
 							<AclAccessPage
+								// @ts-expect-error: Type-checking gets confused by redux-connect in the child
 								formik={formik}
 								isEdit
-// @ts-expect-error TS(2322): Type '{ formik: FormikProps<{ name: any; aclTempla... Remove this comment to see the full error message
-								accessRole={"ROLE_UI_SERIES_DETAILS_ACL_EDIT"}
 							/>
 						)}
 
