@@ -12,7 +12,7 @@ const OK = "OK";
 const MALFORMED_DATA = "Malformed Data";
 const ERROR = "error";
 
-type HealthStatus = {
+export type HealthStatus = {
 	name: string,
 	error: boolean,
 	status: string,

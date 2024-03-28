@@ -8,7 +8,7 @@ import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 /**
  * This file contains redux reducer for actions affecting the state of themes
  */
-type Details = {
+export type Details = {
 	bumperActive: boolean,
 	bumperFile: string,
 	creationDate: any,
