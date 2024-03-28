@@ -12,6 +12,7 @@ import Servers from "./components/systems/Servers";
 import Services from "./components/systems/Services";
 import Groups from "./components/users/Groups";
 import Acls from "./components/users/Acls";
+import About from "./components/About";
 import { useAppDispatch } from "./store";
 import { fetchOcVersion, fetchUserInfo } from "./slices/userInfoSlice";
 
@@ -51,6 +52,10 @@ function App() {
 				<Route path={"/configuration/themes"} element={<Themes />} />
 
 				<Route path={"/statistics/organization"} element={<Statistics />} />
+
+				<Route path={"/about/imprint"} element={<About />} />
+
+				<Route path={"/about/privacy"} element={<About />} />
 
 				<Route
 					path={"*"}

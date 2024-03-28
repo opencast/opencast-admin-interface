@@ -2145,5 +2145,7 @@
 			"medium": "{{time, HH:mm:ss}}",
 			"full": "{{time, HH:mm:ss z}}"
 		}
-	}
+	},
+	"IMPRINT": "חוֹתָם",
+	"PRIVACY": "הגנת מידע"
 }

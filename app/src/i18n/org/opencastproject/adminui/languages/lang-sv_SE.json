@@ -2145,5 +2145,7 @@
 			"medium": "{{time, HH:mm:ss}}",
 			"full": "{{time, [kl] H:mm z}}"
 		}
-	}
+	},
+	"IMPRINT": "Tryck",
+	"PRIVACY": "Integritetspolicy"
 }

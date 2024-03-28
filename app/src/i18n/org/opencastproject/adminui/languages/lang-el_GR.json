@@ -2145,5 +2145,7 @@
 			"medium": "{{time, h:mm:ss a}}",
 			"full": "{{time, h:mm:ss a z}}"
 		}
-	}
+	},
+	"IMPRINT": "Εκτύπωση",
+	"PRIVACY": "Πολιτική απορρήτου"
 }
