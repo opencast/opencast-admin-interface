@@ -90,7 +90,10 @@ export const transformToObjectArray = (data: {[key: string | number]: any}) => {
  * iterates trough all attributes in an object and switches 'true'- and 'false'-Strings
  * to their corresponding boolean value. All other values stay the same.
  */
-export const parseBooleanInObject = (baseObject: {[key: string]: any}) => {
+export const parseBooleanInObject = (baseObject: {[key: string]: any} | undefined) => {
+	if (typeof baseObject === "undefined") {
+		return baseObject
+	}
 	let parsedObject: {[key: string]: any} = {};
 
 	Object.keys(baseObject).forEach((config) => {

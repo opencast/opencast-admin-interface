@@ -104,7 +104,7 @@ const EventDetailsWorkflowTab = ({
 		let currentConfiguration = {};
 
 		if (value === baseWorkflow.workflowId) {
-			currentConfiguration = parseBooleanInObject(baseWorkflow.configuration);
+			currentConfiguration = parseBooleanInObject(baseWorkflow.configuration) ?? {};
 		} else {
 			currentConfiguration = setDefaultConfig(workflowDefinitions, value);
 		}
