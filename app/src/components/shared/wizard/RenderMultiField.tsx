@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { useClickOutsideField } from "../../../hooks/wizardHooks";
@@ -39,21 +39,33 @@ const RenderMultiField = ({
 		if (event.keyCode === 13 && inputValue !== "") {
 			event.preventDefault();
 
+			submitValue();
+		}
+	};
+
+	const submitValue = (alternativeInput?: string) => {
+
+		let newInputValue = inputValue
+		if (alternativeInput) {
+			newInputValue = alternativeInput
+		}
+
+		if (newInputValue !== "") {
 			// Flag if only values of collection are allowed or any value
 			if (onlyCollectionValues) {
 				// add input to formik field value if not already added and input in collection of possible values
 				if (
-					!fieldValue.find((e) => e === inputValue) &&
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-					fieldInfo.collection.find((e) => e.value === inputValue)
+					!fieldValue.find((e) => e === newInputValue) &&
+	// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
+					fieldInfo.collection.find((e) => e.value === newInputValue)
 				) {
-					fieldValue[fieldValue.length] = inputValue;
+					fieldValue[fieldValue.length] = newInputValue;
 					form.setFieldValue(field.name, fieldValue);
 				}
 			} else {
 				// add input to formik field value if not already added
-				if (!fieldValue.find((e) => e === inputValue)) {
-					fieldValue[fieldValue.length] = inputValue;
+				if (!fieldValue.find((e) => e === newInputValue)) {
+					fieldValue[fieldValue.length] = newInputValue;
 					form.setFieldValue(field.name, fieldValue);
 				}
 			}
@@ -61,7 +73,7 @@ const RenderMultiField = ({
 			// reset inputValue
 			setInputValue("");
 		}
-	};
+	}
 
 	// Remove item/value from inserted field values
 // @ts-expect-error TS(7006): Parameter 'key' implicitly has an 'any' type.
@@ -80,12 +92,11 @@ const RenderMultiField = ({
 						collection={fieldInfo.collection}
 						field={field}
 						fieldValue={fieldValue}
-// @ts-expect-error TS(2322): Type '{ collection: any; field: any; fieldValue: a... Remove this comment to see the full error message
-						setEditMode={setEditMode}
 						inputValue={inputValue}
 						removeItem={removeItem}
 						handleChange={handleChange}
 						handleKeyDown={handleKeyDown}
+						handleBlur={submitValue}
 					/>
 				) : (
 					fieldInfo.type === "mixed_text" && (
@@ -120,6 +131,8 @@ const EditMultiSelect = ({
 	handleKeyDown,
 // @ts-expect-error TS(7031): Binding element 'handleChange' implicitly has an '... Remove this comment to see the full error message
 	handleChange,
+	// @ts-expect-error TS(7031): Binding element 'handleChange' implicitly has an '... Remove this comment to see the full error message
+	handleBlur,
 // @ts-expect-error TS(7031): Binding element 'inputValue' implicitly has an 'an... Remove this comment to see the full error message
 	inputValue,
 // @ts-expect-error TS(7031): Binding element 'removeItem' implicitly has an 'an... Remove this comment to see the full error message
@@ -130,6 +143,17 @@ const EditMultiSelect = ({
 	fieldValue,
 }) => {
 	const { t } = useTranslation();
+
+	// onBlur does not get called if a component unmounts for some reason
+	// Instead, we achieve the same effect with useEffect
+	const textRef = useRef(inputValue);
+	React.useEffect( () => {
+		textRef.current = inputValue;
+	}, [inputValue])
+	React.useEffect( () => {
+		return () => handleBlur(textRef.current)
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	return (
 		<>
