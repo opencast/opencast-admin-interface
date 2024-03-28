@@ -4,6 +4,7 @@ import Notifications from "../../../shared/Notifications";
 import { style_button_spacing } from "../../../../utils/eventDetailsUtils";
 import { Formik } from "formik";
 import { getAssetUploadOptions } from "../../../../selectors/eventSelectors";
+import { translateOverrideFallback } from "../../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { updateAssets } from "../../../../slices/eventDetailsSlice";
 
@@ -87,9 +88,7 @@ const EventDetailsAssetsAddAsset = ({
 														<tr key={key}>
 															<td>
 																{" "}
-																{!!asset.displayOverride
-																	? t(asset.displayOverride)
-																	: t(asset.title)}
+																{translateOverrideFallback(asset, t)}
 																<span className="ui-helper-hidden">
                                   { // eslint-disable-next-line react/jsx-no-comment-textnodes
                                   } ({asset.type} "{asset.flavorType}//
