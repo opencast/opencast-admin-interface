@@ -8,6 +8,7 @@ import PublishedCell from "../../components/events/partials/PublishedCell";
 import EventsLocationCell from "../../components/events/partials/EventsLocationCell";
 import EventsEndCell from "../../components/events/partials/EventsEndCell";
 import EventsStartCell from "../../components/events/partials/EventsStartCell";
+import EventsNotesCell from "../../components/events/partials/EventsNotesCell";
 
 /**
  * This map contains the mapping between the template strings above and the corresponding react component.
@@ -24,4 +25,5 @@ export const eventsTemplateMap = {
 	EventsStatusCell: EventsStatusCell,
 	EventsTechnicalDateCell: EventsTechnicalDateCell,
 	PublishedCell: PublishedCell,
+	EventsNotesCell: EventsNotesCell,
 };
