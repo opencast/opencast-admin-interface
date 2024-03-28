@@ -945,7 +945,7 @@ export const checkConflicts = (values: {
 				  );
 
 		// If conflicts with already scheduled events detected --> need to change times/date
-		if (conflicts) {
+		if (conflicts && conflicts.length > 0) {
 			dispatch(
 				addNotification({
 					type: "error",
@@ -956,6 +956,7 @@ export const checkConflicts = (values: {
 				})
 			);
 			check = false;
+			return conflicts;
 		}
 	}
 	return check;
@@ -996,11 +997,35 @@ export const checkForConflicts = async (
 		})
 		.then((response) => {
 			status = response.status;
-			return status === 409;
+			const conflicts = [];
+			if (status === 409) {
+				const conflictsResponse = response.data;
+
+				for (const conflict of conflictsResponse) {
+					conflicts.push({
+						title: conflict.title,
+						start: conflict.start,
+						end: conflict.end,
+					});
+				}
+			}
+			return conflicts;
 		})
 		.catch((reason) => {
 			status = reason.response.status;
-			return status === 409;
+			const conflicts = [];
+			if (status === 409) {
+				const conflictsResponse = reason.response.data;
+
+				for (const conflict of conflictsResponse) {
+					conflicts.push({
+						title: conflict.title,
+						start: conflict.start,
+						end: conflict.end,
+					});
+				}
+			}
+			return conflicts;
 		});
 };
 

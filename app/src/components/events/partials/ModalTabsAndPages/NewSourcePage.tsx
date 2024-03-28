@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import Notifications from "../../../shared/Notifications";
@@ -58,6 +58,8 @@ const NewSourcePage = ({
 	const user = useAppSelector(state => getUserInformation(state));
 	const inputDevices = useAppSelector(state => getRecordings(state));
 
+	const [conflicts, setConflicts] = useState<{title: string, start: number, end: number}[]>([]);
+
 	useEffect(() => {
 		// Load recordings that can be used for input
 		dispatch(fetchRecordings("inputs"));
@@ -85,6 +87,32 @@ const NewSourcePage = ({
 					<div className="full-col">
 						{/*Show notifications with context events-form*/}
 						<Notifications context="not_corner" />
+
+            {
+              /*list of scheduling conflicts*/
+              conflicts.length > 0 && (
+                <table className="main-tbl scheduling-conflict">
+                  <tbody>
+                    {conflicts.map((conflict, key) => (
+                      <tr key={key}>
+                        <td>{conflict.title}</td>
+                        <td>
+                          {t("dateFormats.dateTime.medium", {
+                            dateTime: new Date(conflict.start),
+                          })}
+                        </td>
+                        <td>
+                          {t("dateFormats.dateTime.medium", {
+                            dateTime: new Date(conflict.end),
+                          })}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )
+            }
+
 						<div className="obj list-obj">
 							<header className="no-expand">
 								{t("EVENTS.EVENTS.NEW.SOURCE.SELECT_SOURCE")}
@@ -188,7 +216,11 @@ const NewSourcePage = ({
 					onClick={async () => {
 						removeOldNotifications();
 						const noConflicts = await dispatch(checkConflicts(formik.values));
-						if (noConflicts) {
+						if (Array.isArray(noConflicts)) {
+							setConflicts(noConflicts);
+						}
+						if ((typeof noConflicts == "boolean" && noConflicts)
+							|| (Array.isArray(noConflicts) && noConflicts.length === 0)) {
 							nextPage(formik.values);
 						}
 					}}
