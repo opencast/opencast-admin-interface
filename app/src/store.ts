@@ -2,7 +2,7 @@ import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer } fro
 import storage from "redux-persist/lib/storage";
 import { combineReducers } from "redux";
 import tableFilters from "./reducers/tableFilterReducers";
-import tableFilterProfiles from "./reducers/tableFilterProfilesReducer";
+import tableFilterProfiles from "./slices/tableFilterProfilesSlice";
 import events from "./slices/eventSlice";
 import table from "./reducers/tableReducers";
 import series from "./slices/seriesSlice";

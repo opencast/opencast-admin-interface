@@ -8,9 +8,10 @@ import {
 	createFilterProfile,
 	editFilterProfile,
 	removeFilterProfile,
-} from "../../actions/tableFilterProfilesActions";
+} from "../../slices/tableFilterProfilesSlice";
 import { getFilters } from "../../selectors/tableFilterSelectors";
 import { loadFilterProfile } from "../../actions/tableFilterActions";
+import { useAppDispatch, useAppSelector } from "../../store";
 
 /**
  * This component renders the table filter profiles in the upper right corner when clicked on settings icon of the
@@ -21,16 +22,8 @@ const TableFiltersProfiles = ({
 	showFilterSettings,
 // @ts-expect-error TS(7031): Binding element 'setFilterSettings' implicitly has... Remove this comment to see the full error message
 	setFilterSettings,
-// @ts-expect-error TS(7031): Binding element 'createFilterProfile' implicitly h... Remove this comment to see the full error message
-	createFilterProfile,
 // @ts-expect-error TS(7031): Binding element 'filterMap' implicitly has an 'any... Remove this comment to see the full error message
 	filterMap,
-// @ts-expect-error TS(7031): Binding element 'cancelEditFilterProfile' implicit... Remove this comment to see the full error message
-	cancelEditFilterProfile,
-// @ts-expect-error TS(7031): Binding element 'profiles' implicitly has an 'any'... Remove this comment to see the full error message
-	profiles,
-// @ts-expect-error TS(7031): Binding element 'removeFilterProfile' implicitly h... Remove this comment to see the full error message
-	removeFilterProfile,
 // @ts-expect-error TS(7031): Binding element 'loadFilterProfile' implicitly has... Remove this comment to see the full error message
 	loadFilterProfile,
 // @ts-expect-error TS(7031): Binding element 'loadResource' implicitly has an '... Remove this comment to see the full error message
@@ -40,6 +33,10 @@ const TableFiltersProfiles = ({
 // @ts-expect-error TS(7031): Binding element 'resource' implicitly has an 'any'... Remove this comment to see the full error message
 	resource,
 }) => {
+	const dispatch = useAppDispatch();
+
+	const profiles = useAppSelector(state => getFilterProfiles(state));
+
 	// State for switching between list of profiles and saving/editing dialog
 	const [settingsMode, setSettingsMode] = useState(true);
 
@@ -52,7 +49,6 @@ const TableFiltersProfiles = ({
 	const { t } = useTranslation();
 
 	const currentProfiles = profiles.filter(
-// @ts-expect-error TS(7006): Parameter 'profile' implicitly has an 'any' type.
 		(profile) => profile.resource === resource
 	);
 
@@ -65,7 +61,7 @@ const TableFiltersProfiles = ({
 				filterMap: filterMap,
 				resource: resource,
 			};
-			createFilterProfile(filterProfile);
+			dispatch(createFilterProfile(filterProfile));
 		}
 		setSettingsMode(!settingsMode);
 		resetStateValues();
@@ -77,15 +73,16 @@ const TableFiltersProfiles = ({
 		setCurrentlyEditing(profile);
 		setProfileName(profile.name);
 		setProfileDescription(profile.description);
-		removeFilterProfile(profile);
+		dispatch(removeFilterProfile(profile));
 		setValidName(true);
 	};
 
 	const cancelEditProfile = () => {
-		if (currentlyEditing !== "") {
-			createFilterProfile(currentlyEditing);
-		}
-		cancelEditFilterProfile();
+		// What was this achieving?
+		// if (currentlyEditing !== "") {
+		// 	dispatch(createFilterProfile(currentlyEditing));
+		// }
+		dispatch(cancelEditFilterProfile());
 		setSettingsMode(!settingsMode);
 		setFilterSettings(!showFilterSettings);
 		resetStateValues();
@@ -105,7 +102,6 @@ const TableFiltersProfiles = ({
 
 		if (itemName === "name") {
 			const isDuplicated = profiles.some(
-// @ts-expect-error TS(7006): Parameter 'profile' implicitly has an 'any' type.
 				(profile) => profile.name === itemValue
 			);
 			if (!isDuplicated) {
@@ -151,7 +147,6 @@ const TableFiltersProfiles = ({
 									<li>{t("TABLE_FILTERS.PROFILES.EMPTY")}</li>
 								) : (
 									// repeat for each profile in profiles filtered for currently shown resource (else-case)
-// @ts-expect-error TS(7006): Parameter 'profile' implicitly has an 'any' type.
 									currentProfiles.map((profile, key) => (
 										<li key={key}>
 											<button
@@ -169,7 +164,7 @@ const TableFiltersProfiles = ({
 											/>
 											{/* Remove icon to remove profile */}
 											<button
-												onClick={() => removeFilterProfile(profile)}
+												onClick={() => dispatch(removeFilterProfile(profile))}
 												title={t("TABLE_FILTERS.PROFILES.REMOVE")}
 												className="button-like-anchor icon remove"
 											/>
@@ -257,7 +252,6 @@ const TableFiltersProfiles = ({
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
 	filterMap: getFilters(state),
-	profiles: getFilterProfiles(state),
 });
 
 // Mapping actions to dispatch
@@ -265,16 +259,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'filterMap' implicitly has an 'any' type... Remove this comment to see the full error message
 	loadFilterProfile: (filterMap) => dispatch(loadFilterProfile(filterMap)),
-// @ts-expect-error TS(7006): Parameter 'filterProfile' implicitly has an 'any' ... Remove this comment to see the full error message
-	createFilterProfile: (filterProfile) =>
-		dispatch(createFilterProfile(filterProfile)),
-// @ts-expect-error TS(7006): Parameter 'filterProfile' implicitly has an 'any' ... Remove this comment to see the full error message
-	editFilterProfile: (filterProfile) =>
-		dispatch(editFilterProfile(filterProfile)),
-// @ts-expect-error TS(7006): Parameter 'filterProfile' implicitly has an 'any' ... Remove this comment to see the full error message
-	removeFilterProfile: (filterProfile) =>
-		dispatch(removeFilterProfile(filterProfile)),
-	cancelEditFilterProfile: () => dispatch(cancelEditFilterProfile()),
 });
 
 export default connect(
