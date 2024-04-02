@@ -247,7 +247,6 @@ const getInitialValues = (
 	// Transform additional metadata for source (provided by constant in newEventConfig)
 	if (!!sourceMetadata.UPLOAD) {
 		sourceMetadata.UPLOAD.metadata.forEach((field) => {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 			initialValues[field.id] = field.value;
 		});
 	}
@@ -255,7 +254,6 @@ const getInitialValues = (
 	if (!!sourceMetadata.SINGLE_SCHEDULE) {
 // @ts-expect-error TS(2339): Property 'SINGLE_SCHEDULE' does not exist on type ... Remove this comment to see the full error message
 		sourceMetadata.SINGLE_SCHEDULE.metadata.forEach((field) => {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 			initialValues[field.id] = field.value;
 		});
 	}
@@ -263,26 +261,22 @@ const getInitialValues = (
 	if (!!sourceMetadata.MULTIPLE_SCHEDULE) {
 // @ts-expect-error TS(2339): Property 'MULTIPLE_SCHEDULE' does not exist on typ... Remove this comment to see the full error message
 		sourceMetadata.MULTIPLE_SCHEDULE.metadata.forEach((field) => {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 			initialValues[field.id] = field.value;
 		});
 	}
 
 	// Add possible files that can be uploaded in source step
 	if (!!uploadAssetOptions) {
-// @ts-expect-error TS(2339): Property 'uploadAssetsTrack' does not exist on typ... Remove this comment to see the full error message
 		initialValues.uploadAssetsTrack = [];
 		// initial value of upload asset needs to be null, because object (file) is saved there
 // @ts-expect-error TS(7006): Parameter 'option' implicitly has an 'any' type.
 		uploadAssetOptions.forEach((option) => {
 			if (option.type === "track") {
-// @ts-expect-error TS(2339): Property 'uploadAssetsTrack' does not exist on typ... Remove this comment to see the full error message
 				initialValues.uploadAssetsTrack.push({
 					...option,
 					file: null,
 				});
 			} else {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 				initialValues[option.id] = null;
 			}
 		});
@@ -290,24 +284,17 @@ const getInitialValues = (
 
 	// Add all initial form values known upfront listed in newEventsConfig
 	for (const [key, value] of Object.entries(initialFormValuesNewEvents)) {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 		initialValues[key] = value;
 	}
 
 	const defaultDate = new Date();
 
 	// fill times with some default values
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 	initialValues["scheduleStartHour"] = (defaultDate.getHours() + 1).toString();
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 	initialValues["scheduleStartMinute"] = "00";
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 	initialValues["scheduleDurationHours"] = "00";
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 	initialValues["scheduleDurationMinutes"] = "55";
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 	initialValues["scheduleEndHour"] = (defaultDate.getHours() + 1).toString();
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 	initialValues["scheduleEndMinute"] = "55";
 
 	return initialValues;

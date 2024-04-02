@@ -1,26 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { FormikProps } from "formik";
 import Notifications from "../../../shared/Notifications";
 import { OurNotification, addNotification, removeNotificationWizardForm } from "../../../../slices/notificationSlice";
-import { useAppDispatch } from "../../../../store";
-import { fetchSeriesDetailsTobiraNew } from "../../../../slices/seriesDetailsSlice";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { TobiraPage, fetchSeriesDetailsTobiraNew, setErrorTobiraPage, setTobiraPage } from "../../../../slices/seriesSlice";
+import { getSeriesTobiraPage, getSeriesTobiraPageError } from "../../../../selectors/seriesSeletctor";
+import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 
 /**
  * This component renders the theme page for new series in the new series wizard.
  */
-type TobiraPage = {
-	title: string,
-	path: string,
-	subpages: string,
-	new: boolean,
-	blocks: any[],
-	segment: string,
-	children: TobiraPage[]
+type RequiredFormProps = {
+	breadcrumbs: TobiraPage[],
+	selectedPage: TobiraPage | undefined,
 }
 
-const NewTobiraPage = <T,>({
+const NewTobiraPage = <T extends RequiredFormProps>({
 	formik,
 	nextPage,
 	previousPage,
@@ -32,52 +29,11 @@ const NewTobiraPage = <T,>({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const [error, setError] = useState(false);
+	const error = useAppSelector(state => getSeriesTobiraPageError(state));
 	const [editing, setEditing] = useState(false);
-	const [selectedPage, setSelectedPage] = useState<TobiraPage | undefined>({
-		title: "Hello",
-		path: "Hello but selected",
-		subpages: "Link",
-		new: true,
-		blocks: [],
-		segment: "",
-		children: [],
-	})
-	const [currentPage, setCurrentPage] = useState<TobiraPage>({
-		title: "Hello",
-		path: "Hello but current",
-		subpages: "Link",
-		new: true,
-		blocks: [],
-		segment: "",
-		children: [{
-			title: "Child 1",
-			path: "mwahaha",
-			subpages: "Link",
-			new: true,
-			blocks: [],
-			segment: "",
-			children: []
-		}, {
-			title: "Child 2",
-			path: "nyehehe",
-			subpages: "Lonk",
-			new: false,
-			blocks: [],
-			segment: "",
-			children: []
-		}]
-	})
-	const [breadcrumbs, setBreadcrumbs] = useState<TobiraPage[]>([{
-		title: "BreadCrumb",
-		path: "Let's get this bread",
-		subpages: "Link",
-		new: false,
-		blocks: [],
-		segment: "Eins segment",
-		children: []
-	}])
+	const currentPage = useAppSelector(state => getSeriesTobiraPage(state));
 
+	console.log(currentPage)
 
 	const isValid = () => {
 		var valid = true;
@@ -100,8 +56,8 @@ const NewTobiraPage = <T,>({
 			}
 		}
 
-		check('info', 'TOBIRA_OVERRIDE_NAME', 'series-tobira-existing', function () {
-			return !!selectedPage && !!selectedPage.title;
+		check('info', 'TOBIRA_OVERRIDE_NAME', NOTIFICATION_CONTEXT, function () {
+			return !!formik.values.selectedPage && !!formik.values.selectedPage.title;
 		});
 
 		if (!editing) {
@@ -111,11 +67,11 @@ const NewTobiraPage = <T,>({
 
 		var newPage = currentPage.children[currentPage.children.length - 1];
 
-		check('warning', 'TOBIRA_NO_PATH_SEGMENT', 'series-tobira-new', function () {
+		check('warning', 'TOBIRA_NO_PATH_SEGMENT', NOTIFICATION_CONTEXT, function () {
 			return !newPage.segment;
 		});
 
-		check('warning', 'TOBIRA_PATH_SEGMENT_INVALID', 'series-tobira-new', function () {
+		check('warning', 'TOBIRA_PATH_SEGMENT_INVALID', NOTIFICATION_CONTEXT, function () {
 			return !!newPage.segment && (newPage.segment.length <= 1 || [
 				// eslint-disable-next-line no-control-regex
 				/[\u0000-\u001F\u007F-\u009F]/u,
@@ -127,7 +83,7 @@ const NewTobiraPage = <T,>({
 			}));
 		});
 
-		check('warning', 'TOBIRA_PATH_SEGMENT_UNIQUE', 'series-tobira-new', function () {
+		check('warning', 'TOBIRA_PATH_SEGMENT_UNIQUE', NOTIFICATION_CONTEXT, function () {
 			return currentPage.children.some(function (child: any) {
 				return child !== newPage && child.segment === newPage.segment;
 			});
@@ -137,7 +93,7 @@ const NewTobiraPage = <T,>({
 	}
 
 	const back = (index: number) => {
-		goto(breadcrumbs.splice(index)[0]);
+		goto(formik.values.breadcrumbs.splice(index)[0]);
 
 		toFormik();
 	}
@@ -146,17 +102,17 @@ const NewTobiraPage = <T,>({
 		if (!page || !page.new) {
 			stopEditing();
 		}
-		if (!page || selectedPage === page) {
-			setSelectedPage(undefined);
+		if (!page || formik.values.selectedPage === page) {
+			formik.setFieldValue("selectedPage", undefined);
 		} else {
-			setSelectedPage(page);
+			formik.setFieldValue("selectedPage", page);
 		}
 
 		toFormik();
 	}
 
 	const updatePath = (page: TobiraPage) => {
-		return breadcrumbs
+		return formik.values.breadcrumbs
 		.concat(page).map(function (page) {
 			return page.segment;
 		})
@@ -166,24 +122,36 @@ const NewTobiraPage = <T,>({
 	const goto = (page: TobiraPage) => {
 		function goto(page: TobiraPage) {
 			select(undefined);
-			setCurrentPage(page);
-			setBreadcrumbs(prevState => [...prevState, page])
+			// setCurrentPage(page);
+			dispatch(setTobiraPage(page));
+			formik.setFieldValue("breadcrumbs", [...formik.values.breadcrumbs, page]);
 		}
 
 		// clearNotifications('series-tobira');
 		dispatch(removeNotificationWizardForm());
-		setError(false);
+		setErrorTobiraPage(null);
 
 		if (page.new) {
 			goto(page)
 		} else {
 			//fetch tobira resource
-			dispatch(fetchSeriesDetailsTobiraNew())
-			// TODO: Error notifications
+			dispatch(fetchSeriesDetailsTobiraNew(page.path))
 		}
 
 		toFormik();
 	}
+
+	useEffect(() => {
+		// After changing to another page
+		if ( formik.values.breadcrumbs.length === 0 ||
+			(formik.values.breadcrumbs.length > 0 &&
+			formik.values.breadcrumbs[formik.values.breadcrumbs.length - 1].path !== currentPage.path)
+		) {
+			select(undefined);
+			formik.setFieldValue("breadcrumbs", [...formik.values.breadcrumbs, currentPage]);
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [currentPage]);
 
 	const addChild = () => {
 		setEditing(true);
@@ -194,12 +162,7 @@ const NewTobiraPage = <T,>({
 			blocks: [],
 			segment: "",
 		};
-		setCurrentPage(prevState => {
-			return {
-				...prevState,
-				children: [...prevState.children, newPage]
-			}
-		});
+		dispatch(setTobiraPage({ ...currentPage, children: [...currentPage.children, newPage]}));
 		select(newPage);
 
 		toFormik();
@@ -207,13 +170,10 @@ const NewTobiraPage = <T,>({
 
 	const stopEditing = () => {
 		if (editing) {
-			setCurrentPage(prevState => {
-				return {
-					...prevState,
-					children: prevState.children.splice(-1)
-				}
-			});
-			// currentPage.children.pop();
+			dispatch(setTobiraPage({
+				...currentPage,
+				children: currentPage.children.filter((_, idx) => idx !== currentPage.children.length - 1)
+			}));
 		}
 		setEditing(false);
 
@@ -221,23 +181,23 @@ const NewTobiraPage = <T,>({
 	};
 
 	const toFormik = () => {
-		var existingPages: any[] = [];
-		var newPages: any[] = [];
-		if (selectedPage) {
-			breadcrumbs.concat(selectedPage).forEach( function (page) {
-				if (page.new) {
-					newPages.push({
-						name: page.title,
-						pathSegment: page.segment,
-					});
-				} else {
-					existingPages.push(page);
-				}
-			});
+		// var existingPages: any[] = [];
+		// var newPages: any[] = [];
+		// if (formik.values.selectedPage) {
+		// 	formik.values.breadcrumbs.concat(formik.values.selectedPage).forEach( function (page) {
+		// 		if (page.new) {
+		// 			newPages.push({
+		// 				name: page.title,
+		// 				pathSegment: page.segment,
+		// 			});
+		// 		} else {
+		// 			existingPages.push(page);
+		// 		}
+		// 	});
 
-			formik.setFieldValue("tobira.parentPagePath", existingPages.pop().path);
-			formik.setFieldValue("tobira.newPages", newPages);
-		}
+		// 	formik.setFieldValue("tobira.parentPagePath", existingPages.pop().path);
+		// 	formik.setFieldValue("tobira.newPages", newPages);
+		// }
 	}
 
 
@@ -263,7 +223,7 @@ const NewTobiraPage = <T,>({
 														<span>{t("EVENTS.SERIES.NEW.TOBIRA.SELECT_PAGE")}</span>
 													</header>
 													<div className="breadcrumb">
-														{!!breadcrumbs && breadcrumbs.map((breadcrumb, key) => (
+														{!!formik.values.breadcrumbs && formik.values.breadcrumbs.map((breadcrumb, key) => (
 															<button
 																key={key}
 																className="button-like-anchor breadcrumb-link"
@@ -273,7 +233,7 @@ const NewTobiraPage = <T,>({
 															</button>
 														))}
 													</div>
-													<table className="main-tbl">
+													<table className="main-tbl highlight-hover">
 													<thead>
 														<tr>
 															<th>
@@ -300,7 +260,7 @@ const NewTobiraPage = <T,>({
 														</tr>
 													</thead>
 													<tbody>
-													{!!currentPage &&
+													{!!currentPage.children &&
 															currentPage.children.map((page, key) => (
 																<tr key={key}>
 																	<td>
@@ -308,30 +268,30 @@ const NewTobiraPage = <T,>({
 																			<input
 																				placeholder={t('EVENTS.SERIES.NEW.TOBIRA.PAGE_TITLE')}
 																				value={page.title}
-																				onChange={(e) => setCurrentPage(prevState => {
-																					return {
-																						...prevState,
-																						children: prevState.children.map((p, k) => {
-																							if (k === key) {
-																								return {
-																									...p,
-																									title: e.target.value,
-																								}
-																							}
-																							return {...p};
-																						})
-																					}
-																				})}
+																				onChange={(e) =>
+																					dispatch(setTobiraPage({
+																						...currentPage,
+																						children: currentPage.children.map((p, k) => {
+																										if (k === key) {
+																											let newPage = {
+																												...p,
+																												title: e.target.value,
+																											}
+
+																											formik.setFieldValue("selectedPage", newPage)
+
+																											return newPage;
+																										}
+																										return {...p};
+																									})
+																					}))
+																				}
 																			>
 																			</input>
 																		) : (
 																			<button
-																				className={'button-like-anchor tobira-selectable'}
-																				onClick={() => {
-																					if (page.blocks.length) {
-																						select(page)
-																					}
-																				}}
+																				className={'button-like-anchor ' + (!page.blocks?.length && 'tobira-selectable')}
+																				onClick={() => { page.blocks?.length || select(page) }}
 																			>
 																				{page.title}
 																			</button>
@@ -343,25 +303,28 @@ const NewTobiraPage = <T,>({
 																				<input
 																					placeholder={t('EVENTS.SERIES.NEW.TOBIRA.PATH_SEGMENT')}
 																					value={page.segment}
-																					onChange={(e) => setCurrentPage(prevState => {
-																						return {
-																							...prevState,
-																							children: prevState.children.map((p, k) => {
-																								if (k === key) {
-																									p.segment = e.target.value
-																									return {
-																										...p,
-																										path: updatePath(p),
-																										segment: e.target.value
+																					onChange={(e) => {
+																						dispatch(setTobiraPage({
+																							...currentPage,
+																							children: currentPage.children.map((p, k) => {
+																									if (k === key) {
+																										let newPage = {
+																											...p,
+																											path: updatePath(p),
+																											segment: e.target.value
+																										}
+
+																										formik.setFieldValue("selectedPage", newPage)
+
+																										return newPage;
 																									}
-																								}
-																								return {...p};
-																							})
-																						}
-																					})}
+																									return {...p};
+																								})
+																						}))
+																					}}
 																				></input>
 																			) : (
-																				<span>{page.segment}</span>
+																				<span style={{fontWeight: "inherit"}}>{page.segment}</span>
 																			)}
 																		</code>
 																	</td>
@@ -379,7 +342,7 @@ const NewTobiraPage = <T,>({
 																		<td>
 																			{ page.new &&
 																				<button
-																					ng-click="wizard.step.select(null)"
+																					onClick={() => select(undefined)}
 																					title={t('EVENTS.SERIES.NEW.TOBIRA.CANCEL')}
 																					className="button-like-anchor remove"
 																				>
@@ -406,11 +369,11 @@ const NewTobiraPage = <T,>({
 												</div>
 
 												<div className="obj-container padded">
-													{ (!!selectedPage && isValid()) && (
+													{ (!!formik.values.selectedPage && isValid()) && (
 														<p>
 															{t('EVENTS.SERIES.NEW.TOBIRA.SELECTED_PAGE')}:
 															<code className="tobira-path">
-																{selectedPage.path}
+																{formik.values.selectedPage.path}
 															</code>
 														</p>
 													)}

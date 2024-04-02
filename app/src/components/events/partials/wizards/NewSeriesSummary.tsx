@@ -75,6 +75,23 @@ const NewSeriesSummary = ({
 								</table>
 							</div>
 						)}
+
+						{/*Summary Tobira*/}
+						{!!formik.values.selectedPage && (
+							<div className="obj tbl-list">
+								<header className="no-expand">
+									{t("EVENTS.SERIES.NEW.TOBIRA.CAPTION")}
+								</header>
+								<table className="main-tbl">
+									<tbody>
+										<tr>
+											<td>{t("EVENTS.SERIES.NEW.TOBIRA.PATH_SEGMENT")}</td>
+											<td>{formik.values.selectedPage?.path}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						)}
 					</div>
 				</div>
 			</div>

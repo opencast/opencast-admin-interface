@@ -3,14 +3,15 @@ import Notifications from "../../../shared/Notifications";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { getSeriesDetailsTobiraData, getSeriesDetailsTobiraDataError } from "../../../../selectors/seriesDetailsSelectors";
 import { addNotification } from "../../../../slices/notificationSlice";
+import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 
 /**
  * This component renders the theme page for new series in the new series wizard.
  */
 const SeriesDetailsTobiraTab = ({
-
+	seriesId
 }: {
-
+	seriesId: string,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -28,8 +29,7 @@ const SeriesDetailsTobiraTab = ({
 	// 		}]
 	// 	}],
 	// };
-	const resourceId = "???";
-	const directTobiraLink = tobiraData.baseURL + '/!s/:' + resourceId;
+	const directTobiraLink = tobiraData.baseURL + '/!s/:' + seriesId;
 
 	const copyTobiraDirectLink = () => {
 		navigator.clipboard.writeText(directTobiraLink).then(function () {
@@ -38,7 +38,7 @@ const SeriesDetailsTobiraTab = ({
 				key: "TOBIRA_COPIED_DIRECT_LINK",
 				duration: 3000,
 				parameter: null,
-				context: 'series-tobira-details'
+				context: NOTIFICATION_CONTEXT
 			}));
 		}, function () {
 			dispatch(addNotification({
@@ -46,7 +46,7 @@ const SeriesDetailsTobiraTab = ({
 				key: "TOBIRA_FAILED_COPYING_DIRECT_LINK",
 				duration: 3000,
 				parameter: null,
-				context: 'series-tobira-details'
+				context: NOTIFICATION_CONTEXT
 			}));
 		});
 	}
@@ -94,15 +94,15 @@ const SeriesDetailsTobiraTab = ({
 															</td>
 														</tr>
 													}
-													{ tobiraData.hostPages.map((hostPage, key) => (
-														<tr key={key}>
+													{ tobiraData.hostPages.map((hostPage) => (
+														<tr key={hostPage.path}>
 															<td>
 																<a href={tobiraData.baseURL + hostPage.path}>
 																	{ hostPage.path !== '/' &&
 																		<div>
 																			<span className="tobira-page-separator">/</span>
 																			{ hostPage.ancestors.map((ancestor, key) => (
-																				<span>
+																				<span key={key}>
 																					{ancestor.title}
 																					<span className="tobira-page-separator">/</span>
 																				</span>

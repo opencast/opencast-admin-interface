@@ -1,5 +1,7 @@
 // All fields for new event form that are fix and not depending on response of backend
 // InitialValues of Formik form (others computed dynamically depending on responses from backend)
+import { TransformedAcl } from "../slices/aclDetailsSlice";
+import { TobiraPage } from "../slices/seriesSlice";
 import { initArray } from "../utils/utils";
 
 // Context for notifications shown in modals
@@ -75,7 +77,12 @@ export const WORKFLOW_UPLOAD_ASSETS_NON_TRACK = "publish-uploaded-assets";
 
 // All fields for new series form that are fix and not depending on response of backend
 // InitialValues of Formik form (others computed dynamically depending on responses from backend)
-export const initialFormValuesNewSeries = {
+export const initialFormValuesNewSeries: {
+	acls: TransformedAcl[],
+	theme: string,
+	breadcrumbs: TobiraPage[],
+	selectedPage: TobiraPage | undefined,
+} = {
 	acls: [
 		{
 			role: "ROLE_USER_ADMIN",
@@ -85,6 +92,8 @@ export const initialFormValuesNewSeries = {
 		},
 	],
 	theme: "",
+	breadcrumbs: [],
+	selectedPage: undefined,
 };
 
 // All fields for new theme form that are fix and not depending on response of backend

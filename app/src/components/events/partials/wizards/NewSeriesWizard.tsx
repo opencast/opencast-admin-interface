@@ -3,6 +3,8 @@ import { Formik } from "formik";
 import NewThemePage from "../ModalTabsAndPages/NewThemePage";
 import NewSeriesSummary from "./NewSeriesSummary";
 import {
+	getSeriesTobiraPage,
+	getSeriesTobiraPageStatus,
 	getSeriesExtendedMetadata,
 	getSeriesMetadata,
 } from "../../../../selectors/seriesSeletctor";
@@ -14,7 +16,8 @@ import { initialFormValuesNewSeries } from "../../../../configs/modalConfig";
 import { NewSeriesSchema } from "../../../../utils/validate";
 import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { postNewSeries } from "../../../../slices/seriesSlice";
+import { TobiraPage, postNewSeries } from "../../../../slices/seriesSlice";
+import { MetadataCatalog } from "../../../../slices/eventSlice";
 import NewTobiraPage from "../ModalTabsAndPages/NewTobiraPage";
 
 /**
@@ -29,8 +32,10 @@ const NewSeriesWizard: React.FC<{
 
 	const metadataFields = useAppSelector(state => getSeriesMetadata(state));
 	const extendedMetadata = useAppSelector(state => getSeriesExtendedMetadata(state));
+	const tobiraPage = useAppSelector(state => getSeriesTobiraPage(state));
+	const statusTobiraPage = useAppSelector(state => getSeriesTobiraPageStatus(state));
 
-	const initialValues = getInitialValues(metadataFields, extendedMetadata);
+	const initialValues = getInitialValues(metadataFields, extendedMetadata, tobiraPage);
 
 	const [page, setPage] = useState(0);
 	const [snapshot, setSnapshot] = useState(initialValues);
@@ -61,7 +66,7 @@ const NewSeriesWizard: React.FC<{
 		{
 			translation: "EVENTS.SERIES.NEW.TOBIRA.CAPTION",
 			name: "tobira",
-			hidden: false,	// TODO: Figure out condition for this to be true
+			hidden: statusTobiraPage !== "succeeded",	// TODO: Figure out condition for this to be true
 		},
 		{
 			translation: "EVENTS.SERIES.NEW.SUMMARY.CAPTION",
@@ -103,6 +108,26 @@ const NewSeriesWizard: React.FC<{
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
+
+		// // TObira
+		// var existingPages: any[] = [];
+		// var newPages: any[] = [];
+		// if (values.selectedPage) {
+		// 	values.breadcrumbs.concat(values.selectedPage).forEach( function (page: TobiraPage) {
+		// 		if (page.new) {
+		// 			newPages.push({
+		// 				name: page.title,
+		// 				pathSegment: page.segment,
+		// 			});
+		// 		} else {
+		// 			existingPages.push(page);
+		// 		}
+		// 	});
+
+		// 	values.setFieldValue("tobira.parentPagePath", existingPages.pop().path);
+		// 	values.setFieldValue("tobira.newPages", newPages);
+		// }
+
 		const response = dispatch(postNewSeries({values, metadataInfo: metadataFields, extendedMetadata}));
 		console.info(response);
 		close();
@@ -191,19 +216,32 @@ const NewSeriesWizard: React.FC<{
 	);
 };
 
-// @ts-expect-error TS(7006): Parameter 'metadataFields' implicitly has an 'any'... Remove this comment to see the full error message
-const getInitialValues = (metadataFields, extendedMetadata) => {
+const getInitialValues = (
+	metadataFields: MetadataCatalog,
+	extendedMetadata: MetadataCatalog[],
+	tobiraPage?: TobiraPage
+) => {
+	let initialValues = initialFormValuesNewSeries;
+
 	// Transform metadata fields provided by backend (saved in redux)
-	let initialValues = getInitialMetadataFieldValues(
+	let metadataInitialValues = getInitialMetadataFieldValues(
 		metadataFields,
 		extendedMetadata
 	);
 
-	// Add all initial form values known upfront listed in newSeriesConfig
-	for (const [key, value] of Object.entries(initialFormValuesNewSeries)) {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-		initialValues[key] = value;
-	}
+	initialValues = { ...initialValues, ...metadataInitialValues }
+
+	// // Add all initial form values known upfront listed in newSeriesConfig
+	// for (const [key, value] of Object.entries(initialFormValuesNewSeries)) {
+	// 	initialValues[key] = value;
+	// }
+
+	// Add tobira data if available
+	// initialValues["breadcrumbs"] = [];
+
+	// if (tobiraPage) {
+	// 	initialValues["breadcrumbs"] = [tobiraPage];
+	// }
 
 	return initialValues;
 };

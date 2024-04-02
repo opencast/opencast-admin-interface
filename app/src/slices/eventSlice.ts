@@ -102,7 +102,7 @@ type MetadataField = {
 
 export type MetadataFieldSelected = MetadataField & { selected: boolean }
 
-type MetadataCatalog = {
+export type MetadataCatalog = {
 	title: string,
 	flavor: string,
 	fields: MetadataField[],

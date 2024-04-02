@@ -182,6 +182,7 @@ const SeriesDetails = ({
 				)}
 				{page === 4 && (
 					<SeriesDetailsTobiraTab
+						seriesId={seriesId}
 					/>
 				)}
 				{page === 5 && (
