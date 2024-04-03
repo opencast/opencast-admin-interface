@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { FormikProps } from "formik";
 import Notifications from "../../../shared/Notifications";
-import { OurNotification, addNotification, removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { OurNotification, addNotification, removeNotificationByKey, removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { TobiraPage, fetchSeriesDetailsTobiraNew, setErrorTobiraPage, setTobiraPage } from "../../../../slices/seriesSlice";
 import { getSeriesTobiraPage, getSeriesTobiraPageError } from "../../../../selectors/seriesSeletctor";
@@ -29,15 +29,20 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const error = useAppSelector(state => getSeriesTobiraPageError(state));
+	const [isValid, setIsValid] = useState(false);
 	const [editing, setEditing] = useState(false);
+
+	const error = useAppSelector(state => getSeriesTobiraPageError(state));
 	const currentPage = useAppSelector(state => getSeriesTobiraPage(state));
 
-	console.log(currentPage)
-
-	const isValid = () => {
-		var valid = true;
-		function check(type: OurNotification["type"], key: OurNotification["key"], context: OurNotification["context"], callback: () => boolean) {
+	// Check if valid
+	useEffect(() => {
+		function check(
+			type: OurNotification["type"],
+			key: OurNotification["key"],
+			context: OurNotification["context"],
+			callback: () => boolean
+		) {
 			var toggle = callback();
 			if (toggle) {
 				dispatch(addNotification({
@@ -45,16 +50,21 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 					key: key,
 					duration: -1,
 					parameter: null,
-					context: context
+					context: context,
+					noDuplicates: true,
 				}));
 			} else {
-				dispatch(removeNotificationWizardForm());
+				dispatch(removeNotificationByKey({key, context}));
 			}
 
 			if (toggle && type !== 'info') {
-				valid = false;
+				return false;
 			}
+
+			return true;
 		}
+
+		var valid = true;
 
 		check('info', 'TOBIRA_OVERRIDE_NAME', NOTIFICATION_CONTEXT, function () {
 			return !!formik.values.selectedPage && !!formik.values.selectedPage.title;
@@ -62,7 +72,8 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 
 		if (!editing) {
 			dispatch(removeNotificationWizardForm());
-			return valid;
+			setIsValid(valid);
+			return;
 		}
 
 		var newPage = currentPage.children[currentPage.children.length - 1];
@@ -89,13 +100,11 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 			});
 		});
 
-		return valid;
-	}
+		setIsValid(valid);
+	}, [currentPage.children, dispatch, editing, formik.values.selectedPage])
 
 	const back = (index: number) => {
 		goto(formik.values.breadcrumbs.splice(index)[0]);
-
-		toFormik();
 	}
 
 	const select = (page: TobiraPage | undefined) => {
@@ -107,8 +116,6 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 		} else {
 			formik.setFieldValue("selectedPage", page);
 		}
-
-		toFormik();
 	}
 
 	const updatePath = (page: TobiraPage) => {
@@ -137,8 +144,6 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 			//fetch tobira resource
 			dispatch(fetchSeriesDetailsTobiraNew(page.path))
 		}
-
-		toFormik();
 	}
 
 	useEffect(() => {
@@ -164,8 +169,6 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 		};
 		dispatch(setTobiraPage({ ...currentPage, children: [...currentPage.children, newPage]}));
 		select(newPage);
-
-		toFormik();
 	}
 
 	const stopEditing = () => {
@@ -176,30 +179,7 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 			}));
 		}
 		setEditing(false);
-
-		toFormik();
 	};
-
-	const toFormik = () => {
-		// var existingPages: any[] = [];
-		// var newPages: any[] = [];
-		// if (formik.values.selectedPage) {
-		// 	formik.values.breadcrumbs.concat(formik.values.selectedPage).forEach( function (page) {
-		// 		if (page.new) {
-		// 			newPages.push({
-		// 				name: page.title,
-		// 				pathSegment: page.segment,
-		// 			});
-		// 		} else {
-		// 			existingPages.push(page);
-		// 		}
-		// 	});
-
-		// 	formik.setFieldValue("tobira.parentPagePath", existingPages.pop().path);
-		// 	formik.setFieldValue("tobira.newPages", newPages);
-		// }
-	}
-
 
 	return (
 		<>
@@ -329,7 +309,7 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 																		</code>
 																	</td>
 																	<td>
-																		{((!page.new || isValid()) && page.title) &&
+																		{((!page.new || isValid) && page.title) &&
 																		<button
 																			className="button-like-anchor details-link"
 																			onClick={() => goto(page)}
@@ -369,20 +349,18 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 												</div>
 
 												<div className="obj-container padded">
-													{ (!!formik.values.selectedPage && isValid()) && (
+													{ (!!formik.values.selectedPage && isValid) ? (
 														<p>
 															{t('EVENTS.SERIES.NEW.TOBIRA.SELECTED_PAGE')}:
 															<code className="tobira-path">
 																{formik.values.selectedPage.path}
 															</code>
 														</p>
-													)}
-													{ true && (
+													) : (
 														<p>
 															{t("EVENTS.SERIES.NEW.TOBIRA.NO_PAGE_SELECTED")}
 														</p>
 													)}
-
 												</div>
 											</>
 										)}

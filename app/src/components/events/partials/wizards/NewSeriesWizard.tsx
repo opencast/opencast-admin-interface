@@ -3,7 +3,6 @@ import { Formik } from "formik";
 import NewThemePage from "../ModalTabsAndPages/NewThemePage";
 import NewSeriesSummary from "./NewSeriesSummary";
 import {
-	getSeriesTobiraPage,
 	getSeriesTobiraPageStatus,
 	getSeriesExtendedMetadata,
 	getSeriesMetadata,
@@ -16,7 +15,7 @@ import { initialFormValuesNewSeries } from "../../../../configs/modalConfig";
 import { NewSeriesSchema } from "../../../../utils/validate";
 import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { TobiraPage, postNewSeries } from "../../../../slices/seriesSlice";
+import { postNewSeries } from "../../../../slices/seriesSlice";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
 import NewTobiraPage from "../ModalTabsAndPages/NewTobiraPage";
 
@@ -32,10 +31,9 @@ const NewSeriesWizard: React.FC<{
 
 	const metadataFields = useAppSelector(state => getSeriesMetadata(state));
 	const extendedMetadata = useAppSelector(state => getSeriesExtendedMetadata(state));
-	const tobiraPage = useAppSelector(state => getSeriesTobiraPage(state));
 	const statusTobiraPage = useAppSelector(state => getSeriesTobiraPageStatus(state));
 
-	const initialValues = getInitialValues(metadataFields, extendedMetadata, tobiraPage);
+	const initialValues = getInitialValues(metadataFields, extendedMetadata);
 
 	const [page, setPage] = useState(0);
 	const [snapshot, setSnapshot] = useState(initialValues);
@@ -108,26 +106,6 @@ const NewSeriesWizard: React.FC<{
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
-
-		// // TObira
-		// var existingPages: any[] = [];
-		// var newPages: any[] = [];
-		// if (values.selectedPage) {
-		// 	values.breadcrumbs.concat(values.selectedPage).forEach( function (page: TobiraPage) {
-		// 		if (page.new) {
-		// 			newPages.push({
-		// 				name: page.title,
-		// 				pathSegment: page.segment,
-		// 			});
-		// 		} else {
-		// 			existingPages.push(page);
-		// 		}
-		// 	});
-
-		// 	values.setFieldValue("tobira.parentPagePath", existingPages.pop().path);
-		// 	values.setFieldValue("tobira.newPages", newPages);
-		// }
-
 		const response = dispatch(postNewSeries({values, metadataInfo: metadataFields, extendedMetadata}));
 		console.info(response);
 		close();
@@ -219,7 +197,6 @@ const NewSeriesWizard: React.FC<{
 const getInitialValues = (
 	metadataFields: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
-	tobiraPage?: TobiraPage
 ) => {
 	let initialValues = initialFormValuesNewSeries;
 
@@ -230,18 +207,6 @@ const getInitialValues = (
 	);
 
 	initialValues = { ...initialValues, ...metadataInitialValues }
-
-	// // Add all initial form values known upfront listed in newSeriesConfig
-	// for (const [key, value] of Object.entries(initialFormValuesNewSeries)) {
-	// 	initialValues[key] = value;
-	// }
-
-	// Add tobira data if available
-	// initialValues["breadcrumbs"] = [];
-
-	// if (tobiraPage) {
-	// 	initialValues["breadcrumbs"] = [tobiraPage];
-	// }
 
 	return initialValues;
 };
