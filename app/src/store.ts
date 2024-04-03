@@ -53,14 +53,14 @@ const reducers = combineReducers({
 	events: persistReducer(eventsPersistConfig, events),
 	series: persistReducer(seriesPersistConfig, series),
 	table,
-	recordings: persistReducer(recordingsPersistConfig, series),
-	jobs: persistReducer(jobsPersistConfig, series),
-	servers: persistReducer(serversPersistConfig, series),
-	services: persistReducer(servicesPersistConfig, series),
-	users: persistReducer(usersPersistConfig, series),
-	groups: persistReducer(groupsPersistConfig, series),
-	acls: persistReducer(aclsPersistConfig, series),
-	themes: persistReducer(themesPersistConfig, series),
+	recordings: persistReducer(recordingsPersistConfig, recordings),
+	jobs: persistReducer(jobsPersistConfig, jobs),
+	servers: persistReducer(serversPersistConfig, servers),
+	services: persistReducer(servicesPersistConfig, services),
+	users: persistReducer(usersPersistConfig, users),
+	groups: persistReducer(groupsPersistConfig, groups),
+	acls: persistReducer(aclsPersistConfig, acls),
+	themes: persistReducer(themesPersistConfig, themes),
 	health,
 	notifications,
 	workflows,
@@ -83,9 +83,7 @@ const persistConfig = {
 	whitelist: ["tableFilters"],
 };
 
-// With updates to redux, persistReducer is not properly typed anymore, so
-// this overwrites the typing with 'any's to avoid errors
-const persistedReducer = persistReducer<any, any>(persistConfig, reducers);
+const persistedReducer = persistReducer<ReturnType<typeof reducers>>(persistConfig, reducers);
 
 const store = configureStore({
   reducer: persistedReducer,
