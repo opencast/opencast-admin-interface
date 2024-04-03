@@ -1073,7 +1073,7 @@ const eventSlice = createSlice({
 		setEventColumns(state, action: PayloadAction<
 			EventState["columns"]
 		>) {
-			state.columns = action.payload.updatedColumns;
+			state.columns = action.payload;
 		},
 		setShowActions(state, action: PayloadAction<
 			EventState["showActions"]
