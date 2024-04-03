@@ -2,18 +2,16 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import Notifications from "../../../shared/Notifications";
-import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
 	getCurrentLanguageInformation,
 	getTimezoneOffset,
 } from "../../../../utils/utils";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Field, FieldArray } from "formik";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
 import { hours, minutes, weekdays } from "../../../../configs/modalConfig";
-import DateFnsUtils from "@date-io/date-fns";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import {
 	filterDevicesForAccess,
@@ -40,18 +38,8 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchRecordings } from "../../../../slices/recordingSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { parseISO } from "date-fns";
 import { checkConflicts } from "../../../../slices/eventSlice";
-
-// Style to bring date picker pop up to front
-const theme = createMuiTheme({
-	props: {
-		MuiDialog: {
-			style: {
-				zIndex: "2147483550",
-			},
-		},
-	},
-});
 
 /**
  * This component renders the source page for new events in the new event wizard.
@@ -392,34 +380,27 @@ const Schedule = ({ formik, inputDevices }) => {
 								<i className="required">*</i>
 							</td>
 							<td>
-								<ThemeProvider theme={theme}>
-									<MuiPickersUtilsProvider
-										utils={DateFnsUtils}
-// @ts-expect-error TS(2532): Object is possibly 'undefined'.
-										locale={currentLanguage.dateLocale}
-									>
-										<DatePicker
-											name="scheduleStartDate"
-											value={formik.values.scheduleStartDate}
-											onChange={(value) => {
-												if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-													changeStartDateMultiple(
-														value,
-														formik.values,
-														formik.setFieldValue
-													);
-												} else {
-													changeStartDate(
-														value,
-														formik.values,
-														formik.setFieldValue
-													);
-												}
-											}}
-											tabIndex={4}
-										/>
-									</MuiPickersUtilsProvider>
-								</ThemeProvider>
+								<DatePicker
+									name="scheduleStartDate"
+									value={typeof formik.values.scheduleStartDate === "string" ? parseISO(formik.values.scheduleStartDate): formik.values.scheduleStartDate}
+									onChange={(value) => {
+										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+											changeStartDateMultiple(
+												value,
+												formik.values,
+												formik.setFieldValue
+											);
+										} else {
+											changeStartDate(
+												value,
+												formik.values,
+												formik.setFieldValue
+											);
+										}
+									}}
+									// @ts-expect-error TS(2322):
+									tabIndex={4}
+								/>
 							</td>
 						</tr>
 						{/* Render fields specific for multiple schedule (Only if this is current source mode)*/}
@@ -431,20 +412,19 @@ const Schedule = ({ formik, inputDevices }) => {
 										<i className="required">*</i>
 									</td>
 									<td>
-										<ThemeProvider theme={theme}>
-											<DatePicker
-												name="scheduleEndDate"
-												value={formik.values.scheduleEndDate}
-												onChange={(value) =>
-													changeEndDateMultiple(
-														value,
-														formik.values,
-														formik.setFieldValue
-													)
-												}
-												tabIndex={5}
-											/>
-										</ThemeProvider>
+										<DatePicker
+											name="scheduleEndDate"
+											value={typeof formik.values.scheduleEndDate === "string" ? parseISO(formik.values.scheduleEndDate) : formik.values.scheduleEndDate}
+											onChange={(value) =>
+												changeEndDateMultiple(
+													value,
+													formik.values,
+													formik.setFieldValue
+												)
+											}
+											// @ts-expect-error TS(2322):
+											tabIndex={5}
+										/>
 									</td>
 								</tr>
 								<tr>

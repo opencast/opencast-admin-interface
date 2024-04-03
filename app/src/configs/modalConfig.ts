@@ -24,14 +24,7 @@ export const initialFormValuesNewEvents = {
 	processingWorkflow: "",
 	configuration: {},
 	aclTemplate: "",
-	acls: [
-		{
-			role: "ROLE_USER_ADMIN",
-			read: true,
-			write: true,
-			actions: [],
-		},
-	],
+	acls: [],
 };
 
 // constants for hours and minutes (used in selection for start/end time and duration)
@@ -76,14 +69,7 @@ export const WORKFLOW_UPLOAD_ASSETS_NON_TRACK = "publish-uploaded-assets";
 // All fields for new series form that are fix and not depending on response of backend
 // InitialValues of Formik form (others computed dynamically depending on responses from backend)
 export const initialFormValuesNewSeries = {
-	acls: [
-		{
-			role: "ROLE_USER_ADMIN",
-			read: true,
-			write: true,
-			actions: [],
-		},
-	],
+	acls: [],
 	theme: "",
 };
 
