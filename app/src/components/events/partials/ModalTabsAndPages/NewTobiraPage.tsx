@@ -35,6 +35,8 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 	const error = useAppSelector(state => getSeriesTobiraPageError(state));
 	const currentPage = useAppSelector(state => getSeriesTobiraPage(state));
 
+	console.log(isValid)
+
 	// Check if valid
 	useEffect(() => {
 		function check(
@@ -66,7 +68,7 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 
 		var valid = true;
 
-		check('info', 'TOBIRA_OVERRIDE_NAME', NOTIFICATION_CONTEXT, function () {
+		valid = valid && check('info', 'TOBIRA_OVERRIDE_NAME', NOTIFICATION_CONTEXT, function () {
 			return !!formik.values.selectedPage && !!formik.values.selectedPage.title;
 		});
 
@@ -78,11 +80,11 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 
 		var newPage = currentPage.children[currentPage.children.length - 1];
 
-		check('warning', 'TOBIRA_NO_PATH_SEGMENT', NOTIFICATION_CONTEXT, function () {
+		valid = valid && check('warning', 'TOBIRA_NO_PATH_SEGMENT', NOTIFICATION_CONTEXT, function () {
 			return !newPage.segment;
 		});
 
-		check('warning', 'TOBIRA_PATH_SEGMENT_INVALID', NOTIFICATION_CONTEXT, function () {
+		valid = valid && check('warning', 'TOBIRA_PATH_SEGMENT_INVALID', NOTIFICATION_CONTEXT, function () {
 			return !!newPage.segment && (newPage.segment.length <= 1 || [
 				// eslint-disable-next-line no-control-regex
 				/[\u0000-\u001F\u007F-\u009F]/u,
@@ -94,7 +96,7 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 			}));
 		});
 
-		check('warning', 'TOBIRA_PATH_SEGMENT_UNIQUE', NOTIFICATION_CONTEXT, function () {
+		valid = valid && check('warning', 'TOBIRA_PATH_SEGMENT_UNIQUE', NOTIFICATION_CONTEXT, function () {
 			return currentPage.children.some(function (child: any) {
 				return child !== newPage && child.segment === newPage.segment;
 			});
@@ -377,6 +379,7 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 				formik={formik}
 				nextPage={nextPage}
 				previousPage={previousPage}
+				additionalValidation={!isValid}
 			/>
 		</>
 	);

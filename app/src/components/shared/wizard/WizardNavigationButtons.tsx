@@ -3,9 +3,10 @@ import { useTranslation } from "react-i18next";
 import cn from "classnames";
 
 const WizardNavigationButtons : React.FC<{
-  isFirst?: any,
-	isLast?: any,
-	noValidation?: any,
+	isFirst?: boolean,
+	isLast?: boolean,
+	noValidation?: boolean,					// Do not validate
+	additionalValidation?: boolean, // Custom validation. If your component does its own validation instead of using Yup
 	formik: any,
 	nextPage?: any,
 	previousPage?: any,
@@ -13,6 +14,7 @@ const WizardNavigationButtons : React.FC<{
 	isFirst,
 	isLast,
 	noValidation,
+	additionalValidation,
 	formik,
 	nextPage,
 	previousPage,
@@ -23,10 +25,10 @@ const WizardNavigationButtons : React.FC<{
 		? {}
 		: {
 				active: formik.dirty && formik.isValid,
-				inactive: !(formik.dirty && formik.isValid),
+				inactive: !(formik.dirty && formik.isValid) || additionalValidation,
 		  };
 
-	const disabled = !(formik.dirty && formik.isValid);
+	const disabled = !(formik.dirty && formik.isValid) || additionalValidation;
 
 	return (
 		<>
