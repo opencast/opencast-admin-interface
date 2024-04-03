@@ -328,7 +328,6 @@ const EventDetails : React.FC<{
 						(workflowTabHierarchy === "workflow-operations" && (
 							<EventDetailsWorkflowOperations
 								eventId={eventId}
-								t={t}
 								setHierarchy={setWorkflowTabHierarchy}
 							/>
 						)) ||
