@@ -1,10 +1,7 @@
 import React, { useEffect } from "react";
 import cn from "classnames";
 import _ from "lodash";
-import { DatePicker } from "@material-ui/pickers";
-import { createTheme, ThemeProvider } from "@material-ui/core";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Field, Formik } from "formik";
 import Notifications from "../../../shared/Notifications";
 import {
@@ -94,17 +91,6 @@ const EventDetailsSchedulingTab = ({
 
 	// Set timezone
 	const tz = getTimezoneString(offset);
-
-	// Style to bring date picker pop up to front
-	const theme = createTheme({
-		props: {
-			MuiDialog: {
-				style: {
-					zIndex: "2147483550",
-				},
-			},
-		},
-	});
 
 	// Variable and function for checking access rights
 	const hasAccessRole = hasAccess(
@@ -259,458 +245,451 @@ const EventDetailsSchedulingTab = ({
 					{
 						/* Scheduling configuration */
 						hasSchedulingProperties && (
-							/* Initialize form */
-							<MuiPickersUtilsProvider
-								utils={DateFnsUtils}
-// @ts-expect-error TS(2532): Object is possibly 'undefined'.
-								locale={currentLanguage.dateLocale}
+						/* Initialize form */
+							<Formik
+								enableReinitialize
+								initialValues={getInitialValues()}
+								onSubmit={(values) => submitForm(values).then((r) => {})}
 							>
-								<Formik
-									enableReinitialize
-									initialValues={getInitialValues()}
-									onSubmit={(values) => submitForm(values).then((r) => {})}
-								>
-									{(formik) => (
-										<div className="obj tbl-details">
-											<header>
-												<span>
-													{
-														t(
-															"EVENTS.EVENTS.DETAILS.SCHEDULING.CAPTION"
-														) /* Scheduling configuration */
-													}
-												</span>
-											</header>
-											<div className="obj-container">
-												<table className="main-tbl">
-													<tbody>
-														{/* time zone */}
-														<tr>
-															<td>
-																{t(
-																	"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.TIMEZONE"
-																)}
-															</td>
-															<td>{tz}</td>
-														</tr>
+								{(formik) => (
+									<div className="obj tbl-details">
+										<header>
+											<span>
+												{
+													t(
+														"EVENTS.EVENTS.DETAILS.SCHEDULING.CAPTION"
+													) /* Scheduling configuration */
+												}
+											</span>
+										</header>
+										<div className="obj-container">
+											<table className="main-tbl">
+												<tbody>
+													{/* time zone */}
+													<tr>
+														<td>
+															{t(
+																"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.TIMEZONE"
+															)}
+														</td>
+														<td>{tz}</td>
+													</tr>
 
-														{/* start date */}
-														<tr>
-															<td>
-																{t(
-																	"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_DATE"
-																)}
+													{/* start date */}
+													<tr>
+														<td>
+															{t(
+																"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_DATE"
+															)}
+														</td>
+														<td>
+															{hasAccessRole &&
+															accessAllowed(formik.values.captureAgent) ? (
+																/* date picker for start date */
+																<DatePicker
+																	name="scheduleStartDate"
+// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
+																	tabIndex={1}
+																	value={new Date(formik.values.scheduleStartDate)}
+																	onChange={(value) =>
+																		changeStartDate(
+																			value,
+																			formik.values,
+																			formik.setFieldValue,
+																			eventId,
+																			checkConflictsWrapper
+																		)
+																	}
+																/>
+															) : (
+																<>
+																	{sourceStartDate.toLocaleDateString(
+// @ts-expect-error TS(2532): Object is possibly 'undefined'.
+																		currentLanguage.dateLocale.code
+																	)}
+																</>
+															)}
+														</td>
+													</tr>
+
+													{/* start time */}
+													<tr>
+														<td>
+															{t(
+																"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_TIME"
+															)}
+														</td>
+														{hasAccessRole && (
+															<td className="editable">
+																{/* drop-down for hour
+																	*
+																	* This is the second input field.
+																	*/}
+																<DropDown
+																	value={formik.values.scheduleStartHour}
+																	text={formik.values.scheduleStartHour}
+																	options={hours}
+																	type={"time"}
+																	required={true}
+// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
+																	handleChange={(element) =>
+																		changeStartHour(
+																			element.value,
+																			formik.values,
+																			formik.setFieldValue,
+																			eventId,
+																			checkConflictsWrapper
+																		)
+																	}
+																	placeholder={t(
+																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
+																	)}
+																	tabIndex={2}
+																	disabled={
+																		!accessAllowed(formik.values.captureAgent)
+																	}
+																/>
+
+																{/* drop-down for minute
+																	*
+																	* This is the third input field.
+																	*/}
+																<DropDown
+																	value={formik.values.scheduleStartMinute}
+																	text={formik.values.scheduleStartMinute}
+																	options={minutes}
+																	type={"time"}
+																	required={true}
+// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
+																	handleChange={(element) =>
+																		changeStartMinute(
+																			element.value,
+																			formik.values,
+																			formik.setFieldValue,
+																			eventId,
+																			checkConflictsWrapper
+																		)
+																	}
+																	placeholder={t(
+																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
+																	)}
+																	tabIndex={3}
+																	disabled={
+																		!accessAllowed(formik.values.captureAgent)
+																	}
+																/>
 															</td>
+														)}
+														{!hasAccessRole && (
 															<td>
-																{hasAccessRole &&
-																accessAllowed(formik.values.captureAgent) ? (
-																	/* date picker for start date */
-																	<ThemeProvider theme={theme}>
-																		<DatePicker
-																			name="scheduleStartDate"
-																			tabIndex={1}
-																			value={formik.values.scheduleStartDate}
-																			onChange={(value) =>
-																				changeStartDate(
-																					value,
-																					formik.values,
-																					formik.setFieldValue,
-																					eventId,
-																					checkConflictsWrapper
-																				)
-																			}
-																		/>
-																	</ThemeProvider>
-																) : (
-																	<>
-																		{sourceStartDate.toLocaleDateString(
+																{source.start.hour ? makeTwoDigits(source.start.hour) : ""}:
+																{source.start.minute ? makeTwoDigits(source.start.minute) : ""}
+															</td>
+														)}
+													</tr>
+
+													{/* duration */}
+													<tr>
+														<td>
+															{t(
+																"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.DURATION"
+															)}
+														</td>
+														{hasAccessRole && (
+															<td className="editable">
+																{/* drop-down for hour
+																	*
+																	* This is the fourth input field.
+																	*/}
+																<DropDown
+																	value={formik.values.scheduleDurationHours}
+																	text={formik.values.scheduleDurationHours}
+																	options={hours}
+																	type={"time"}
+																	required={true}
+// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
+																	handleChange={(element) =>
+																		changeDurationHour(
+																			element.value,
+																			formik.values,
+																			formik.setFieldValue,
+																			eventId,
+																			checkConflictsWrapper
+																		)
+																	}
+																	placeholder={t("WIZARD.DURATION.HOURS")}
+																	tabIndex={4}
+																	disabled={
+																		!accessAllowed(formik.values.captureAgent)
+																	}
+																/>
+
+																{/* drop-down for minute
+																	*
+																	* This is the fifth input field.
+																	*/}
+																<DropDown
+																	value={
+																		formik.values.scheduleDurationMinutes
+																	}
+																	text={formik.values.scheduleDurationMinutes}
+																	options={minutes}
+																	type={"time"}
+																	required={true}
+// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
+																	handleChange={(element) =>
+																		changeDurationMinute(
+																			element.value,
+																			formik.values,
+																			formik.setFieldValue,
+																			eventId,
+																			checkConflictsWrapper
+																		)
+																	}
+																	placeholder={t("WIZARD.DURATION.MINUTES")}
+																	tabIndex={5}
+																	disabled={
+																		!accessAllowed(formik.values.captureAgent)
+																	}
+																/>
+															</td>
+														)}
+														{!hasAccessRole && (
+															<td>
+																{source.duration.hour ? makeTwoDigits(source.duration.hour) : ""}:
+																{source.duration.minute ? makeTwoDigits(source.duration.minute) : ""}
+															</td>
+														)}
+													</tr>
+
+													{/* end time */}
+													<tr>
+														<td>
+															{t(
+																"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.END_TIME"
+															)}
+														</td>
+														{hasAccessRole && (
+															<td className="editable">
+																{/* drop-down for hour
+																	*
+																	* This is the sixth input field.
+																	*/}
+																<DropDown
+																	value={formik.values.scheduleEndHour}
+																	text={formik.values.scheduleEndHour}
+																	options={hours}
+																	type={"time"}
+																	required={true}
+// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
+																	handleChange={(element) =>
+																		changeEndHour(
+																			element.value,
+																			formik.values,
+																			formik.setFieldValue,
+																			eventId,
+																			checkConflictsWrapper
+																		)
+																	}
+																	placeholder={t(
+																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
+																	)}
+																	tabIndex={6}
+																	disabled={
+																		!accessAllowed(formik.values.captureAgent)
+																	}
+																/>
+
+																{/* drop-down for minute
+																	*
+																	* This is the seventh input field.
+																	*/}
+																<DropDown
+																	value={formik.values.scheduleEndMinute}
+																	text={formik.values.scheduleEndMinute}
+																	options={minutes}
+																	type={"time"}
+																	required={true}
+// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
+																	handleChange={(element) =>
+																		changeEndMinute(
+																			element.value,
+																			formik.values,
+																			formik.setFieldValue,
+																			eventId,
+																			checkConflictsWrapper
+																		)
+																	}
+																	placeholder={t(
+																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
+																	)}
+																	tabIndex={7}
+																	disabled={
+																		!accessAllowed(formik.values.captureAgent)
+																	}
+																/>
+
+																{/* display end date if on different day to start date */}
+																{formik.values.scheduleEndDate.toString() !==
+																	formik.values.scheduleStartDate.toString() && (
+																	<span style={{ marginLeft: "10px" }}>
+																		{new Date(
+																			formik.values.scheduleEndDate
+																		).toLocaleDateString(
 // @ts-expect-error TS(2532): Object is possibly 'undefined'.
 																			currentLanguage.dateLocale.code
 																		)}
-																	</>
+																	</span>
 																)}
 															</td>
-														</tr>
-
-														{/* start time */}
-														<tr>
+														)}
+														{!hasAccessRole && (
 															<td>
-																{t(
-																	"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_TIME"
-																)}
-															</td>
-															{hasAccessRole && (
-																<td className="editable">
-																	{/* drop-down for hour
-																	 *
-																	 * This is the second input field.
-																	 */}
-																	<DropDown
-																		value={formik.values.scheduleStartHour}
-																		text={formik.values.scheduleStartHour}
-																		options={hours}
-																		type={"time"}
-																		required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																		handleChange={(element) =>
-																			changeStartHour(
-																				element.value,
-																				formik.values,
-																				formik.setFieldValue,
-																				eventId,
-																				checkConflictsWrapper
-																			)
-																		}
-																		placeholder={t(
-																			"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
-																		)}
-																		tabIndex={2}
-																		disabled={
-																			!accessAllowed(formik.values.captureAgent)
-																		}
-																	/>
-
-																	{/* drop-down for minute
-																	 *
-																	 * This is the third input field.
-																	 */}
-																	<DropDown
-																		value={formik.values.scheduleStartMinute}
-																		text={formik.values.scheduleStartMinute}
-																		options={minutes}
-																		type={"time"}
-																		required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																		handleChange={(element) =>
-																			changeStartMinute(
-																				element.value,
-																				formik.values,
-																				formik.setFieldValue,
-																				eventId,
-																				checkConflictsWrapper
-																			)
-																		}
-																		placeholder={t(
-																			"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
-																		)}
-																		tabIndex={3}
-																		disabled={
-																			!accessAllowed(formik.values.captureAgent)
-																		}
-																	/>
-																</td>
-															)}
-															{!hasAccessRole && (
-																<td>
-																	{source.start.hour ? makeTwoDigits(source.start.hour) : ""}:
-																	{source.start.minute ? makeTwoDigits(source.start.minute) : ""}
-																</td>
-															)}
-														</tr>
-
-														{/* duration */}
-														<tr>
-															<td>
-																{t(
-																	"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.DURATION"
-																)}
-															</td>
-															{hasAccessRole && (
-																<td className="editable">
-																	{/* drop-down for hour
-																	 *
-																	 * This is the fourth input field.
-																	 */}
-																	<DropDown
-																		value={formik.values.scheduleDurationHours}
-																		text={formik.values.scheduleDurationHours}
-																		options={hours}
-																		type={"time"}
-																		required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																		handleChange={(element) =>
-																			changeDurationHour(
-																				element.value,
-																				formik.values,
-																				formik.setFieldValue,
-																				eventId,
-																				checkConflictsWrapper
-																			)
-																		}
-																		placeholder={t("WIZARD.DURATION.HOURS")}
-																		tabIndex={4}
-																		disabled={
-																			!accessAllowed(formik.values.captureAgent)
-																		}
-																	/>
-
-																	{/* drop-down for minute
-																	 *
-																	 * This is the fifth input field.
-																	 */}
-																	<DropDown
-																		value={
-																			formik.values.scheduleDurationMinutes
-																		}
-																		text={formik.values.scheduleDurationMinutes}
-																		options={minutes}
-																		type={"time"}
-																		required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																		handleChange={(element) =>
-																			changeDurationMinute(
-																				element.value,
-																				formik.values,
-																				formik.setFieldValue,
-																				eventId,
-																				checkConflictsWrapper
-																			)
-																		}
-																		placeholder={t("WIZARD.DURATION.MINUTES")}
-																		tabIndex={5}
-																		disabled={
-																			!accessAllowed(formik.values.captureAgent)
-																		}
-																	/>
-																</td>
-															)}
-															{!hasAccessRole && (
-																<td>
-																	{source.duration.hour ? makeTwoDigits(source.duration.hour) : ""}:
-																	{source.duration.minute ? makeTwoDigits(source.duration.minute): ""}
-																</td>
-															)}
-														</tr>
-
-														{/* end time */}
-														<tr>
-															<td>
-																{t(
-																	"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.END_TIME"
-																)}
-															</td>
-															{hasAccessRole && (
-																<td className="editable">
-																	{/* drop-down for hour
-																	 *
-																	 * This is the sixth input field.
-																	 */}
-																	<DropDown
-																		value={formik.values.scheduleEndHour}
-																		text={formik.values.scheduleEndHour}
-																		options={hours}
-																		type={"time"}
-																		required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																		handleChange={(element) =>
-																			changeEndHour(
-																				element.value,
-																				formik.values,
-																				formik.setFieldValue,
-																				eventId,
-																				checkConflictsWrapper
-																			)
-																		}
-																		placeholder={t(
-																			"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
-																		)}
-																		tabIndex={6}
-																		disabled={
-																			!accessAllowed(formik.values.captureAgent)
-																		}
-																	/>
-
-																	{/* drop-down for minute
-																	 *
-																	 * This is the seventh input field.
-																	 */}
-																	<DropDown
-																		value={formik.values.scheduleEndMinute}
-																		text={formik.values.scheduleEndMinute}
-																		options={minutes}
-																		type={"time"}
-																		required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																		handleChange={(element) =>
-																			changeEndMinute(
-																				element.value,
-																				formik.values,
-																				formik.setFieldValue,
-																				eventId,
-																				checkConflictsWrapper
-																			)
-																		}
-																		placeholder={t(
-																			"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
-																		)}
-																		tabIndex={7}
-																		disabled={
-																			!accessAllowed(formik.values.captureAgent)
-																		}
-																	/>
-
-																	{/* display end date if on different day to start date */}
-																	{formik.values.scheduleEndDate.toString() !==
-																		formik.values.scheduleStartDate.toString() && (
-																		<span style={{ marginLeft: "10px" }}>
-																			{new Date(
-																				formik.values.scheduleEndDate
-																			).toLocaleDateString(
+																{source.end.hour ? makeTwoDigits(source.end.hour) : ""}:
+																{source.end.minute ? makeTwoDigits(source.end.minute) : ""}
+																{formik.values.scheduleEndDate.toString() !==
+																	formik.values.scheduleStartDate.toString() && (
+																	<span>
+																		{new Date(
+																			formik.values.scheduleEndDate
+																		).toLocaleDateString(
 // @ts-expect-error TS(2532): Object is possibly 'undefined'.
-																				currentLanguage.dateLocale.code
-																			)}
-																		</span>
-																	)}
-																</td>
-															)}
-															{!hasAccessRole && (
-																<td>
-																	{source.end.hour ? makeTwoDigits(source.end.hour) : ""}:
-																	{source.end.minute ? makeTwoDigits(source.end.minute): ""}
-																	{formik.values.scheduleEndDate.toString() !==
-																		formik.values.scheduleStartDate.toString() && (
-																		<span>
-																			{new Date(
-																				formik.values.scheduleEndDate
-																			).toLocaleDateString(
-// @ts-expect-error TS(2532): Object is possibly 'undefined'.
-																				currentLanguage.dateLocale.code
-																			)}
-																		</span>
-																	)}
-																</td>
-															)}
-														</tr>
-
-														{/* capture agent (aka. room or location) */}
-														<tr>
-															<td>
-																{t(
-																	"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"
+																			currentLanguage.dateLocale.code
+																		)}
+																	</span>
 																)}
 															</td>
-															{hasAccessRole && (
-																<td className="editable">
-																	{/* drop-down for capture agents (aka. rooms or locations)
-																	 *
-																	 * This is the eighth input field.
-																	 */}
-																	<DropDown
-																		value={formik.values.captureAgent}
-																		text={formik.values.captureAgent}
-																		options={filterDevicesForAccess(
-																			user,
-																			captureAgents
+														)}
+													</tr>
+
+													{/* capture agent (aka. room or location) */}
+													<tr>
+														<td>
+															{t(
+																"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"
+															)}
+														</td>
+														{hasAccessRole && (
+															<td className="editable">
+																{/* drop-down for capture agents (aka. rooms or locations)
+																	*
+																	* This is the eighth input field.
+																	*/}
+																<DropDown
+																	value={formik.values.captureAgent}
+																	text={formik.values.captureAgent}
+																	options={filterDevicesForAccess(
+																		user,
+																		captureAgents
 // @ts-expect-error TS(7006): Parameter 'a' implicitly has an 'any' type.
-																		).filter((a) => filterCaptureAgents(a))}
-																		type={"captureAgent"}
-																		required={true}
+																	).filter((a) => filterCaptureAgents(a))}
+																	type={"captureAgent"}
+																	required={true}
 // @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																		handleChange={(element) =>
-																			changeInputs(
-																				element.value,
-																				formik.setFieldValue
-																			)
-																		}
-																		placeholder={t(
-																			"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"
-																		)}
-																		tabIndex={8}
-																		disabled={
-																			!accessAllowed(formik.values.captureAgent)
-																		}
-																	/>
-																</td>
+																	handleChange={(element) =>
+																		changeInputs(
+																			element.value,
+																			formik.setFieldValue
+																		)
+																	}
+																	placeholder={t(
+																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"
+																	)}
+																	tabIndex={8}
+																	disabled={
+																		!accessAllowed(formik.values.captureAgent)
+																	}
+																/>
+															</td>
+														)}
+														{!hasAccessRole && <td>{source.device.name}</td>}
+													</tr>
+
+													{/* inputs */}
+													<tr>
+														<td>
+															{t(
+																"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.INPUTS"
 															)}
-															{!hasAccessRole && <td>{source.device.name}</td>}
-														</tr>
-
-														{/* inputs */}
-														<tr>
-															<td>
-																{t(
-																	"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.INPUTS"
-																)}
-															</td>
-															<td>
-																{!!formik.values.captureAgent &&
-																	!!getInputs(formik.values.captureAgent) &&
-																	getInputs(formik.values.captureAgent).length >
-																		0 &&
-																	(hasAccessRole &&
-																	accessAllowed(formik.values.captureAgent)
-																		? /* checkboxes for available inputs
-																		   *
-																		   * These are the input fields starting at 8.
-																		   */
-																		  getInputs(formik.values.captureAgent).map(
+														</td>
+														<td>
+															{!!formik.values.captureAgent &&
+																!!getInputs(formik.values.captureAgent) &&
+																getInputs(formik.values.captureAgent).length >
+																	0 &&
+																(hasAccessRole &&
+																accessAllowed(formik.values.captureAgent)
+																	? /* checkboxes for available inputs
+																			*
+																			* These are the input fields starting at 8.
+																			*/
+																		getInputs(formik.values.captureAgent).map(
 // @ts-expect-error TS(7006): Parameter 'inputMethod' implicitly has an 'any' ty... Remove this comment to see the full error message
-																				(inputMethod, key) => (
-																					<label key={key}>
-																						<Field
-																							name="inputs"
-																							type="checkbox"
-																							tabIndex={8 + key}
-																							value={inputMethod.id}
-																						/>
-																						{t(inputMethod.value)}
-																					</label>
-																				)
-																		  )
-																		: formik.values.inputs.map((input, key) => (
-																				<span key={key}>
-																					{t(
-																						getInputs(
-																							formik.values.captureAgent
-																						).find(
+																			(inputMethod, key) => (
+																				<label key={key}>
+																					<Field
+																						name="inputs"
+																						type="checkbox"
+																						tabIndex={8 + key}
+																						value={inputMethod.id}
+																					/>
+																					{t(inputMethod.value)}
+																				</label>
+																			)
+																		)
+																	: formik.values.inputs.map((input, key) => (
+																			<span key={key}>
+																				{t(
+																					getInputs(
+																						formik.values.captureAgent
+																					).find(
 // @ts-expect-error TS(7006): Parameter 'agent' implicitly has an 'any' type.
-																							(agent) => agent.id === input
-																						).value
-																					)}
-																					<br />
-																				</span>
-																		  )))}
-															</td>
-														</tr>
-													</tbody>
-												</table>
-											</div>
-
-											{/* Save and cancel buttons */}
-											{formik.dirty && (
-												<>
-													{/* Render buttons for updating scheduling */}
-													<footer style={{ padding: "15px" }}>
-														<button
-															type="submit"
-															onClick={() => formik.handleSubmit()}
-															disabled={!checkValidity(formik)}
-															className={cn("submit", {
-																active: checkValidity(formik),
-																inactive: !checkValidity(formik),
-															})}
-														>
-															{t("SAVE") /* Save */}
-														</button>
-														<button
-															className="cancel"
-															onClick={() => {
-																formik.resetForm({
-																	values: getInitialValues(),
-																});
-															}}
-														>
-															{t("CANCEL") /* Cancel */}
-														</button>
-													</footer>
-
-													<div className="btm-spacer" />
-												</>
-											)}
+																						(agent) => agent.id === input
+																					).value
+																				)}
+																				<br />
+																			</span>
+																		)))}
+														</td>
+													</tr>
+												</tbody>
+											</table>
 										</div>
-									)}
-								</Formik>
-							</MuiPickersUtilsProvider>
+
+										{/* Save and cancel buttons */}
+										{formik.dirty && (
+											<>
+												{/* Render buttons for updating scheduling */}
+												<footer style={{ padding: "15px" }}>
+													<button
+														type="submit"
+														onClick={() => formik.handleSubmit()}
+														disabled={!checkValidity(formik)}
+														className={cn("submit", {
+															active: checkValidity(formik),
+															inactive: !checkValidity(formik),
+														})}
+													>
+														{t("SAVE") /* Save */}
+													</button>
+													<button
+														className="cancel"
+														onClick={() => {
+															formik.resetForm({
+																values: getInitialValues(),
+															});
+														}}
+													>
+														{t("CANCEL") /* Cancel */}
+													</button>
+												</footer>
+
+												<div className="btm-spacer" />
+											</>
+										)}
+									</div>
+								)}
+							</Formik>
 						)
 					}
 				</div>

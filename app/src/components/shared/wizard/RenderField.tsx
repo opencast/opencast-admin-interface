@@ -1,16 +1,12 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import cn from "classnames";
 import { useClickOutsideField } from "../../../hooks/wizardHooks";
-import { getCurrentLanguageInformation, isJson } from "../../../utils/utils";
+import { isJson } from "../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../utils/resourceUtils";
 import DropDown from "../DropDown";
-
-// Get info about the current language and its date locale
-const currentLanguage = getCurrentLanguageInformation();
+import { parseISO } from "date-fns";
 
 const childRef = React.createRef<HTMLDivElement>();
 /**
@@ -55,6 +51,7 @@ const RenderField = ({
 					setEditMode={setEditMode}
 					form={form}
 					showCheck={showCheck}
+					handleKeyDown={handleKeyDown}
 				/>
 			)}
 			{metadataField.type === "text" &&
@@ -128,6 +125,7 @@ const RenderField = ({
 					editMode={editMode}
 					setEditMode={setEditMode}
 					showCheck={showCheck}
+					handleKeyDown={handleKeyDown}
 				/>
 			)}
 			{metadataField.type === "boolean" && (
@@ -182,36 +180,32 @@ const EditableDateValue = ({
 	setEditMode,
 // @ts-expect-error TS(7031): Binding element 'showCheck' implicitly has an 'any... Remove this comment to see the full error message
 	showCheck,
+// @ts-expect-error TS(7031):
+	handleKeyDown
 }) => {
 	const { t } = useTranslation();
 
-	const theme = createMuiTheme({
-		props: {
-			MuiDialog: {
-				style: {
-					zIndex: "2147483550",
-				},
-			},
-		},
-	});
-
 	return editMode ? (
 		<div>
-			<ThemeProvider theme={theme}>
-				<MuiPickersUtilsProvider
-					utils={DateFnsUtils}
-// @ts-expect-error TS(2532): Object is possibly 'undefined'.
-					locale={currentLanguage.dateLocale}
-				>
-					<DateTimePicker
-						name={field.name}
-						value={field.value}
-						onChange={(value) => setFieldValue(field.name, value)}
-						onClose={() => setEditMode(false)}
-						fullWidth
-					/>
-				</MuiPickersUtilsProvider>
-			</ThemeProvider>
+			<DateTimePicker
+				name={field.name}
+				value={typeof field.value === "string" ? parseISO(field.value) : field.value}
+				onChange={(value) => setFieldValue(field.name, value)}
+				onClose={() => setEditMode(false)}
+				slotProps={{
+					textField: {
+						fullWidth: true,
+						onKeyDown: (event) => {
+							if (event.key === "Enter") {
+								handleKeyDown(event, "date")
+							}
+						},
+						onBlur: (event) => {
+							setEditMode(false)
+						}
+					}
+				}}
+			/>
 		</div>
 	) : (
 		<div onClick={() => setEditMode(true)} className="show-edit">
@@ -394,36 +388,32 @@ const EditableSingleValueTime = ({
 	setEditMode,
 // @ts-expect-error TS(7031): Binding element 'showCheck' implicitly has an 'any... Remove this comment to see the full error message
 	showCheck,
+	// @ts-expect-error TS(7031): Binding element 'handleKeyDown' implicitly has an ... Remove this comment to see the full error message
+	handleKeyDown,
 }) => {
 	const { t } = useTranslation();
 
-	const theme = createMuiTheme({
-		props: {
-			MuiDialog: {
-				style: {
-					zIndex: "2147483550",
-				},
-			},
-		},
-	});
-
 	return editMode ? (
 		<div>
-			<ThemeProvider theme={theme}>
-				<MuiPickersUtilsProvider
-					utils={DateFnsUtils}
-// @ts-expect-error TS(2532): Object is possibly 'undefined'.
-					locale={currentLanguage.dateLocale}
-				>
-					<DateTimePicker
-						name={field.name}
-						value={field.value}
-						onChange={(value) => setFieldValue(field.name, value)}
-						onClose={() => setEditMode(false)}
-						fullWidth
-					/>
-				</MuiPickersUtilsProvider>
-			</ThemeProvider>
+			<DateTimePicker
+				name={field.name}
+				value={parseISO(field.value)}
+				onChange={(value) => setFieldValue(field.name, value)}
+				onClose={() => setEditMode(false)}
+				slotProps={{
+					textField: {
+						fullWidth: true,
+						onKeyDown: (event) => {
+							if (event.key === "Enter") {
+								handleKeyDown(event, "date")
+							}
+						},
+						onBlur: (event) => {
+							setEditMode(false)
+						}
+					}
+				}}
+			/>
 		</div>
 	) : (
 		<div onClick={() => setEditMode(true)} className="show-edit">
