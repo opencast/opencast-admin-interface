@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
-import { FormikProps } from "formik";
+import { Field, FormikProps } from "formik";
 import Notifications from "../../../shared/Notifications";
 import { OurNotification, addNotification, removeNotificationByKey, removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store";
@@ -34,8 +34,6 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 
 	const error = useAppSelector(state => getSeriesTobiraPageError(state));
 	const currentPage = useAppSelector(state => getSeriesTobiraPage(state));
-
-	console.log(isValid)
 
 	// Check if valid
 	useEffect(() => {
@@ -78,6 +76,10 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 			return;
 		}
 
+		if (currentPage.children.length === 0) {
+			setIsValid(valid);
+			return;
+		}
 		var newPage = currentPage.children[currentPage.children.length - 1];
 
 		valid = valid && check('warning', 'TOBIRA_NO_PATH_SEGMENT', NOTIFICATION_CONTEXT, function () {
@@ -97,7 +99,7 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 		});
 
 		valid = valid && check('warning', 'TOBIRA_PATH_SEGMENT_UNIQUE', NOTIFICATION_CONTEXT, function () {
-			return currentPage.children.some(function (child: any) {
+			return currentPage.children.some(function (child) {
 				return child !== newPage && child.segment === newPage.segment;
 			});
 		});
