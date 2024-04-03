@@ -26,14 +26,7 @@ export const initialFormValuesNewEvents = {
 	processingWorkflow: "",
 	configuration: {},
 	aclTemplate: "",
-	acls: [
-		{
-			role: "ROLE_USER_ADMIN",
-			read: true,
-			write: true,
-			actions: [],
-		},
-	],
+	acls: [],
 };
 
 // constants for hours and minutes (used in selection for start/end time and duration)

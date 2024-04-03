@@ -18,6 +18,8 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { postNewSeries } from "../../../../slices/seriesSlice";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
 import NewTobiraPage from "../ModalTabsAndPages/NewTobiraPage";
+import { getUserInformation } from "../../../../selectors/userInfoSelectors";
+import { UserInfoState } from "../../../../slices/userInfoSlice";
 
 /**
  * This component manages the pages of the new series wizard and the submission of values
@@ -32,8 +34,9 @@ const NewSeriesWizard: React.FC<{
 	const metadataFields = useAppSelector(state => getSeriesMetadata(state));
 	const extendedMetadata = useAppSelector(state => getSeriesExtendedMetadata(state));
 	const statusTobiraPage = useAppSelector(state => getSeriesTobiraPageStatus(state));
+	const user = useAppSelector(state => getUserInformation(state));
 
-	const initialValues = getInitialValues(metadataFields, extendedMetadata);
+	const initialValues = getInitialValues(metadataFields, extendedMetadata, user);
 
 	const [page, setPage] = useState(0);
 	const [snapshot, setSnapshot] = useState(initialValues);
@@ -197,6 +200,7 @@ const NewSeriesWizard: React.FC<{
 const getInitialValues = (
 	metadataFields: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
+	user: UserInfoState,
 ) => {
 	let initialValues = initialFormValuesNewSeries;
 
@@ -207,6 +211,15 @@ const getInitialValues = (
 	);
 
 	initialValues = { ...initialValues, ...metadataInitialValues }
+
+	initialValues["acls"] = [
+		{
+			role: user.userRole,
+			read: true,
+			write: true,
+			actions: [],
+		},
+	];
 
 	return initialValues;
 };
