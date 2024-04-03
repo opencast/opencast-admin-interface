@@ -115,7 +115,7 @@ const Series = ({
 		const handleClickOutside = (e: MouseEvent) => {
 			if (
 				containerAction.current &&
-				!containerAction.current.contains(e.target)
+				!containerAction.current.contains(e.target as Node)
 			) {
 				setActionMenu(false);
 			}
