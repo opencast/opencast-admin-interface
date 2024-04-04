@@ -16,15 +16,30 @@ import "./i18n/i18n";
 // import css files for certain libraries
 import "font-awesome/css/font-awesome.min.css";
 import "react-datepicker/dist/react-datepicker.css";
+import { ThemeProvider } from "@mui/material";
+import { createTheme } from '@mui/material/styles';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { getCurrentLanguageInformation } from "./utils/utils";
 
 // todo: comment persistent stuff in, only out commented because for debugging purposes
 const persistor = persistStore(store);
+
+const theme = createTheme({
+	zIndex: {
+		modal: 2147483550,
+	}
+})
 
 ReactDOM.render(
 	<React.StrictMode>
 		<Provider store={store}>
 			<PersistGate loading={<div>loading...</div>} persistor={persistor}>
-				<App />
+				<ThemeProvider theme={theme}>
+					<LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={getCurrentLanguageInformation()?.dateLocale}> {/*locale={getCurrentLanguageInformation()?.dateLocale}> */}
+						<App />
+					</LocalizationProvider>
+				</ThemeProvider>
 			</PersistGate>
 		</Provider>
 	</React.StrictMode>,

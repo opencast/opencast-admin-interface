@@ -7,9 +7,10 @@ import Notifications from "../../../shared/Notifications";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
-import { hasAccess, isJson } from "../../../../utils/utils";
+import { getCurrentLanguageInformation, hasAccess, isJson } from "../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
 import { useAppSelector } from "../../../../store";
+import { parseISO } from "date-fns";
 
 /**
  * This component renders metadata details of a certain event or series
@@ -30,6 +31,8 @@ const DetailsMetadataTab: React.FC<{
 	const { t } = useTranslation();
 
 	const user = useAppSelector(state => getUserInformation(state));
+	// Get info about the current language and its date locale
+	const currentLanguage = getCurrentLanguageInformation();
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
@@ -123,7 +126,11 @@ const DetailsMetadataTab: React.FC<{
 																			  )}
 																	</td>
 																) : (
-																	<td>{field.value}</td>
+																	<td>{
+																		field.type === "time" || field.type === "date"
+																			? parseISO(field.value).toLocaleString(currentLanguage?.dateLocale.code, { timeZone: 'UTC' })
+																			: field.value
+																	}</td>
 																)
 															) : (
 																<td className="editable">
