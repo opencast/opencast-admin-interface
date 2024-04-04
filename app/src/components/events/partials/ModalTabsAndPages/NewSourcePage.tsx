@@ -8,7 +8,7 @@ import {
 	getTimezoneOffset,
 } from "../../../../utils/utils";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
-import { Field, FieldArray } from "formik";
+import { Field, FieldArray, FormikProps } from "formik";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
@@ -38,7 +38,7 @@ import {
 	changeStartMinuteMultiple,
 } from "../../../../utils/dateUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { fetchRecordings } from "../../../../slices/recordingSlice";
+import { Recording, fetchRecordings } from "../../../../slices/recordingSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { checkConflicts } from "../../../../slices/eventSlice";
 
@@ -349,8 +349,24 @@ const Upload = ({ formik }) => {
 /*
  * Renders fields for providing information for schedule of event
  */
-// @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
-const Schedule = ({ formik, inputDevices }) => {
+const Schedule = <T extends {
+	location: string
+	scheduleStartDate: string
+	scheduleEndDate: string
+	sourceMode: string
+	scheduleStartHour: number
+	scheduleEndHour: number
+	scheduleStartMinute: number
+	scheduleEndMinute: number
+	scheduleDurationHours: number
+	scheduleDurationMinutes: number
+}>({
+	formik,
+	inputDevices
+}: {
+	formik: FormikProps<T>,
+	inputDevices: Recording[]
+}) => {
 	const { t } = useTranslation();
 
 	const currentLanguage = getCurrentLanguageInformation();
@@ -358,7 +374,6 @@ const Schedule = ({ formik, inputDevices }) => {
 	const renderInputDeviceOptions = () => {
 		if (!!formik.values.location) {
 			let inputDevice = inputDevices.find(
-// @ts-expect-error TS(7031): Binding element 'name' implicitly has an 'any' typ... Remove this comment to see the full error message
 				({ name }) => name === formik.values.location
 			);
 // @ts-expect-error TS(7006): Parameter 'input' implicitly has an 'any' type.
