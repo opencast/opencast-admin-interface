@@ -5,6 +5,7 @@ import {
 	getTableDirection,
 	getTableSorting,
 } from "../selectors/tableSelectors";
+import { NewUser } from "../slices/userSlice";
 import { hasAccess } from "./utils";
 
 /**
@@ -21,8 +22,12 @@ export const getHttpHeaders = () => {
 };
 
 // prepare URL params for getting resources
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-export const getURLParams = (state) => {
+export const getURLParams = (
+	state: {
+		tableFilters: any,	// TODO: Type these after modernizing redux is done
+		table: any,
+	}
+) => {
 	// get filter map from state
 	let filters = [];
 	let filterMap = getFilters(state);
@@ -64,8 +69,7 @@ export const getURLParams = (state) => {
 };
 
 // used for create URLSearchParams for API requests used to create/update user
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-export const buildUserBody = (values) => {
+export const buildUserBody = (values: NewUser) => {
 	let data = new URLSearchParams();
 	// fill form data with user inputs
 	data.append("username", values.username);

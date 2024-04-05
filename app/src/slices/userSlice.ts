@@ -5,16 +5,25 @@ import { transformToIdValueArray } from "../utils/utils";
 import { buildUserBody, getURLParams } from "../utils/resourceUtils";
 import { addNotification } from '../slices/notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
+import { RootState } from '../store';
 
 /**
  * This file contains redux reducer for actions affecting the state of users
  */
-type UserResult = {
+export type UserResult = {
 	email?: string,
 	manageable: boolean,
 	name: string,
 	provider: string,
 	roles: { name: string, type: string }[],
+	username: string,
+}
+
+export type NewUser = {
+	email: string,
+	name: string,
+	password: string,
+	roles: string,
 	username: string,
 }
 
@@ -50,7 +59,7 @@ const initialState: UsersState = {
 // fetch users from server
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state);
+	let params = getURLParams(state as RootState);
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -59,7 +68,7 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async (_, { getSt
 });
 
 // new user to backend
-export const postNewUser = createAsyncThunk('users/postNewUser', async (values: UserResult, {dispatch}) => {
+export const postNewUser = createAsyncThunk('users/postNewUser', async (values: NewUser, {dispatch}) => {
 	// get URL params used for post request
 	let data = buildUserBody(values);
 

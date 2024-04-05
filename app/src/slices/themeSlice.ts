@@ -4,6 +4,7 @@ import axios from 'axios';
 import { buildThemeBody, getURLParams } from '../utils/resourceUtils';
 import { addNotification } from '../slices/notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
+import { RootState } from '../store';
 
 /**
  * This file contains redux reducer for actions affecting the state of themes
@@ -62,7 +63,7 @@ const initialState: ThemeState = {
 // fetch themes from server
 export const fetchThemes = createAsyncThunk('theme/fetchThemes', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state);
+	let params = getURLParams(state as RootState);
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.

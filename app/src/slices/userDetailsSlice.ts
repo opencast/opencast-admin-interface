@@ -2,6 +2,7 @@ import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@
 import axios from 'axios';
 import { addNotification } from '../slices/notificationSlice';
 import { buildUserBody } from "../utils/resourceUtils";
+import { NewUser } from './userSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of details of a user
@@ -40,7 +41,7 @@ export const fetchUserDetails = createAsyncThunk('userDetails/fetchUserDetails',
 
 // update existing user with changed values
 export const updateUserDetails = createAsyncThunk('userDetails/updateUserDetails', async (params: {
-	values: UserDetailsState,
+	values: NewUser,
 	username: string
 }, {dispatch}) => {
 	const { username, values } = params
