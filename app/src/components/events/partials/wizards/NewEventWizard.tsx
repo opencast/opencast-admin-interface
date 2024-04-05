@@ -19,7 +19,7 @@ import {
 } from "../../../../selectors/eventSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { postNewEvent } from "../../../../slices/eventSlice";
-import { getUserInformation } from "../../../../selectors/userInfoSelectors";
+import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
 
 /**
  * This component manages the pages of the new event wizard and the submission of values
@@ -35,12 +35,20 @@ const NewEventWizard: React.FC<{
 	const metadataFields = useAppSelector(state => getEventMetadata(state));
 	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
 	const user = useAppSelector(state => getUserInformation(state));
+	const orgProperties = useAppSelector(state => getOrgProperties(state));
+
+	// Whether the ACL of a new event is initialized with the ACL of its series.
+	let initEventAclWithSeriesAcl = true
+	const ADMIN_INIT_EVENT_ACL_WITH_SERIES_ACL = "admin.init.event.acl.with.series.acl";
+	if (!!orgProperties && !!orgProperties[ADMIN_INIT_EVENT_ACL_WITH_SERIES_ACL]) {
+		initEventAclWithSeriesAcl = user.org.properties[ADMIN_INIT_EVENT_ACL_WITH_SERIES_ACL] === 'true';
+	}
 
 	const initialValues = getInitialValues(
 		metadataFields,
 		extendedMetadata,
 		uploadAssetOptions,
-		user
+		user,
 	);
 	let workflowPanelRef = React.useRef();
 
@@ -200,6 +208,7 @@ const NewEventWizard: React.FC<{
 										nextPage={nextPage}
 										formik={formik}
 										editAccessRole="ROLE_UI_SERIES_DETAILS_ACL_EDIT"
+										initEventAclWithSeriesAcl={initEventAclWithSeriesAcl}
 									/>
 								)}
 								{page === 6 && (
@@ -228,7 +237,7 @@ const getInitialValues = (
 // @ts-expect-error TS(7006): Parameter 'uploadAssetOptions' implicitly has an '... Remove this comment to see the full error message
 	uploadAssetOptions,
 // @ts-expect-error TS(7006): Parameter 'uploadAssetOptions' implicitly has an '... Remove this comment to see the full error message
-	user
+	user,
 ) => {
 	// Transform metadata fields provided by backend (saved in redux)
 	let initialValues = getInitialMetadataFieldValues(

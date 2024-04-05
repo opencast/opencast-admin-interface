@@ -155,6 +155,7 @@ const NewSeriesWizard: React.FC<{
 										previousPage={previousPage}
 										formik={formik}
 										editAccessRole="ROLE_UI_SERIES_DETAILS_ACL_EDIT"
+										initEventAclWithSeriesAcl={false}
 									/>
 								)}
 								{page === 3 && (
