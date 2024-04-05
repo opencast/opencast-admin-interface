@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { connect } from "react-redux";
 import { Field, FieldArray } from "formik";
 import Notifications from "../../../shared/Notifications";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import {
+	Role,
 	checkAcls,
 	fetchAclActions,
 	fetchAclTemplateById,
 	fetchAclTemplates,
 	fetchRolesWithTarget,
-} from "../../../../thunks/aclThunks";
+} from "../../../../slices/aclSlice";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
 import DropDown from "../../../shared/DropDown";
 import { filterRoles, getAclTemplateText } from "../../../../utils/aclUtils";
-import { useAppSelector } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 
 /**
  * This component renders the access policy page in the new ACL wizard and in the ACL details modal
@@ -26,19 +26,18 @@ const AclAccessPage : React.FC<{
 	nextPage: any,	//TODO: Type this
 	formik: any,	//TODO: Type this
 	isEdit?: any,	//TODO: Type this
-	checkAcls: any,	//TODO: Type this
 }> = ({
 	previousPage,
 	nextPage,
 	formik,
 	isEdit,
-	checkAcls,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
-	const [aclTemplates, setAclTemplates] = useState([]);
-	const [aclActions, setAclActions] = useState([]);
-	const [roles, setRoles] = useState([]);
+	const [aclTemplates, setAclTemplates] = useState<{ id: string, value: string }[]>([]);
+	const [aclActions, setAclActions] = useState<{ id: string, value: string }[]>([]);
+	const [roles, setRoles] = useState<Role[]>([]);
 	const [loading, setLoading] = useState(false);
 
 	const user = useAppSelector(state => getUserInformation(state));
@@ -51,10 +50,8 @@ const AclAccessPage : React.FC<{
 		async function fetchData() {
 			setLoading(true);
 			const responseTemplates = await fetchAclTemplates();
-// @ts-expect-error TS(2345): Argument of type '{ id: string; value: any; }[]' i... Remove this comment to see the full error message
 			setAclTemplates(responseTemplates);
 			const responseActions = await fetchAclActions();
-// @ts-expect-error TS(2345): Argument of type '{ id: string; value: any; }[]' i... Remove this comment to see the full error message
 			setAclActions(responseActions);
 			const responseRoles = await fetchRolesWithTarget("ACL");
 			setRoles(responseRoles);
@@ -71,7 +68,7 @@ const AclAccessPage : React.FC<{
 
 		formik.setFieldValue("acls", template);
 		formik.setFieldValue("aclTemplate", value);
-		await checkAcls(formik.values.acls);
+		await dispatch(checkAcls(formik.values.acls));
 	};
 
 	return (
@@ -306,7 +303,7 @@ const AclAccessPage : React.FC<{
 																									write: false,
 																									actions: [],
 																								});
-																								checkAcls(formik.values.acls);
+																								dispatch(checkAcls(formik.values.acls));
 																							}}
                                               className="button-like-anchor"
 																						>
@@ -347,7 +344,7 @@ const AclAccessPage : React.FC<{
 							})}
 							disabled={!(formik.dirty && formik.isValid)}
 							onClick={async () => {
-								if (await checkAcls(formik.values.acls)) {
+								if (await dispatch(checkAcls(formik.values.acls))) {
 									nextPage(formik.values);
 								}
 							}}
@@ -371,16 +368,4 @@ const AclAccessPage : React.FC<{
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-
-});
-
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'acls' implicitly has an 'any' type.
-	checkAcls: (acls) => dispatch(checkAcls(acls)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AclAccessPage);
+export default AclAccessPage;
