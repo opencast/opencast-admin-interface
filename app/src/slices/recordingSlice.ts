@@ -4,6 +4,7 @@ import axios from 'axios';
 import { getURLParams } from '../utils/resourceUtils';
 import { addNotification } from '../slices/notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
+import { RootState } from '../store';
 
 /**
  * This file contains redux reducer for actions affecting the state of recordings
@@ -59,7 +60,7 @@ export const fetchRecordings = createAsyncThunk('recordings/fetchRecordings', as
 			);
 		} else {
 			const state = getState();
-			let params = getURLParams(state);
+			let params = getURLParams(state as RootState);
 
 		// /agents.json?filter={filter}&limit=100&offset=0&inputs=false&sort={sort}
 		res = await axios.get("/admin-ng/capture-agents/agents.json", {
