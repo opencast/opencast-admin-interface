@@ -15,6 +15,7 @@ import { NewSeriesSchema } from "../../../../utils/validate";
 import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { postNewSeries } from "../../../../slices/seriesSlice";
+import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 
 /**
  * This component manages the pages of the new series wizard and the submission of values
@@ -28,8 +29,9 @@ const NewSeriesWizard: React.FC<{
 
 	const metadataFields = useAppSelector(state => getSeriesMetadata(state));
 	const extendedMetadata = useAppSelector(state => getSeriesExtendedMetadata(state));
+	const user = useAppSelector(state => getUserInformation(state));
 
-	const initialValues = getInitialValues(metadataFields, extendedMetadata);
+	const initialValues = getInitialValues(metadataFields, extendedMetadata, user);
 
 	const [page, setPage] = useState(0);
 	const [snapshot, setSnapshot] = useState(initialValues);
@@ -179,7 +181,7 @@ const NewSeriesWizard: React.FC<{
 };
 
 // @ts-expect-error TS(7006): Parameter 'metadataFields' implicitly has an 'any'... Remove this comment to see the full error message
-const getInitialValues = (metadataFields, extendedMetadata) => {
+const getInitialValues = (metadataFields, extendedMetadata, user) => {
 	// Transform metadata fields provided by backend (saved in redux)
 	let initialValues = getInitialMetadataFieldValues(
 		metadataFields,
@@ -191,6 +193,16 @@ const getInitialValues = (metadataFields, extendedMetadata) => {
 // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 		initialValues[key] = value;
 	}
+
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+	initialValues["acls"] = [
+		{
+			role: user.userRole,
+			read: true,
+			write: true,
+			actions: [],
+		},
+	];
 
 	return initialValues;
 };

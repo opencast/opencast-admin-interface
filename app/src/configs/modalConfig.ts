@@ -1,6 +1,7 @@
 // All fields for new event form that are fix and not depending on response of backend
 // InitialValues of Formik form (others computed dynamically depending on responses from backend)
 import { initArray } from "../utils/utils";
+import { EditedEvents, Event } from "../slices/eventSlice";
 
 // Context for notifications shown in modals
 export const NOTIFICATION_CONTEXT = "modal-form";
@@ -24,14 +25,7 @@ export const initialFormValuesNewEvents = {
 	processingWorkflow: "",
 	configuration: {},
 	aclTemplate: "",
-	acls: [
-		{
-			role: "ROLE_USER_ADMIN",
-			read: true,
-			write: true,
-			actions: [],
-		},
-	],
+	acls: [],
 };
 
 // constants for hours and minutes (used in selection for start/end time and duration)
@@ -76,14 +70,7 @@ export const WORKFLOW_UPLOAD_ASSETS_NON_TRACK = "publish-uploaded-assets";
 // All fields for new series form that are fix and not depending on response of backend
 // InitialValues of Formik form (others computed dynamically depending on responses from backend)
 export const initialFormValuesNewSeries = {
-	acls: [
-		{
-			role: "ROLE_USER_ADMIN",
-			read: true,
-			write: true,
-			actions: [],
-		},
-	],
+	acls: [],
 	theme: "",
 };
 
@@ -127,7 +114,14 @@ export const initialFormValuesNewGroup = {
 
 // All fields for new user form that are fix and not depending on response of backend
 // InitialValues of Formik form (others computed dynamically depending on responses from backend)
-export const initialFormValuesNewUser = {
+export const initialFormValuesNewUser: {
+	username: string,
+	name: string,
+	email: string,
+	password: string,
+	passwordConfirmation: string,
+	roles: string[],
+} = {
 	username: "",
 	name: "",
 	email: "",
@@ -144,7 +138,11 @@ export const initialFormValuesStartTask = {
 	configuration: {},
 };
 
-export const initialFormValuesEditScheduledEvents = {
+export const initialFormValuesEditScheduledEvents: {
+	events: Event[],
+	editedEvents: EditedEvents[],
+	changedEvents: string[],
+} = {
 	events: [],
 	editedEvents: [],
 	changedEvents: [],

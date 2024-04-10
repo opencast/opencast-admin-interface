@@ -10,7 +10,7 @@ import { initialFormValuesNewThemes } from "../../../../configs/modalConfig";
 import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { NewThemeSchema } from "../../../../utils/validate";
 import { useAppDispatch } from "../../../../store";
-import { postNewTheme } from "../../../../slices/themeSlice";
+import { Details, postNewTheme } from "../../../../slices/themeSlice";
 
 /**
  * This component manages the pages of the new theme wizard and the submission of values
@@ -23,7 +23,7 @@ const NewThemeWizard: React.FC<{
 	const dispatch = useAppDispatch();
 	const initialValues = initialFormValuesNewThemes;
 
-	const [
+	const {
 		snapshot,
 		page,
 		nextPage,
@@ -31,7 +31,7 @@ const NewThemeWizard: React.FC<{
 		setPage,
 		pageCompleted,
 		setPageCompleted,
-	] = usePageFunctions(0, initialValues);
+	 } = usePageFunctions(0, initialValues);
 
 	// Caption of steps used by Stepper
 	const steps = [
@@ -64,8 +64,7 @@ const NewThemeWizard: React.FC<{
 	// Validation schema of current page
 	const currentValidationSchema = NewThemeSchema[page];
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (values: any) => {
 		dispatch(postNewTheme(values));
 		close();
 	};

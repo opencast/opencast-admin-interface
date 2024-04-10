@@ -28,7 +28,7 @@ type Details = {
 	watermarkPosition: string,
 }
 
-type Usage = {
+export type Usage = {
 	series: {id: string, title: string}[]
 }
 

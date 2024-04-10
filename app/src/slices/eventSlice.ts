@@ -55,7 +55,7 @@ type Comment = {
 }
 
 // Strings will be empty if there is no value
-type Event = {
+export type Event = {
 	agent_id: string,
 	comments?: Comment[],
 	date: string,
@@ -108,7 +108,7 @@ type MetadataCatalog = {
 	fields: MetadataField[],
 }
 
-type EditedEvents = {
+export type EditedEvents = {
 	changedDeviceInputs: string[],
 	changedEndTimeHour: string,
 	changedEndTimeMinutes: string,
@@ -200,8 +200,8 @@ const initialState: EventState = {
 
 // fetch events from server
 export const fetchEvents = createAsyncThunk('events/fetchEvents', async (_, { getState }) => {
-	const state = getState();
-	let params: any = getURLParams(state);
+	const state = getState() as RootState;
+	let params: { limit: any, offset: number, getComments?: boolean }= getURLParams(state);
 
 	// Only if the notes column is enabled, fetch comment information for events
 	// @ts-expect-error TS(7006):

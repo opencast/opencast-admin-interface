@@ -78,6 +78,20 @@ type Workflow = {
 	workflow: any // TODO: proper typing
 }
 
+type Device = {
+	id: string,
+	inputs: { id: string, value: string }[],
+	inputMethods: string[],
+	name: string,
+	// Fields we add to "device" from recordings but don't actually care about?
+	// removable: boolean,
+	// roomId: string,
+	// status: string,
+	// type: string,
+	// updated: string,
+	// url: string,
+}
+
 type EventDetailsState = {
 	statusMetadata: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorMetadata: SerializedError | null,
@@ -259,19 +273,7 @@ type EventDetailsState = {
 			hour: number | undefined,
 			minute: number | undefined,
 		},
-		device: {
-			id: string,
-			inputs: string[],
-			inputMethods: string[],
-			name: string,
-			// Fields we add to "device" from recordings but don't actually care about?
-			// removable: boolean,
-			// roomId: string,
-			// status: string,
-			// type: string,
-			// updated: string,
-			// url: string,
-		},
+		device: Device,
 		agentId: string | undefined,
 		agentConfiguration: { [key: string]: string },
 	},
@@ -977,12 +979,7 @@ export const fetchSchedulingInfo = createAsyncThunk('eventDetails/fetchSchedulin
 			endDate
 		);
 
-		let device: {
-			id: string,
-			inputs: string[],
-			inputMethods: string[],
-			name: string,
-		} = {
+		let device: Device = {
 			id: "",
 			name: "",
 			inputs: [],
@@ -1057,12 +1054,7 @@ export const saveSchedulingInfo = createAsyncThunk('eventDetails/saveSchedulingI
 	const state = getState() as RootState;
 	const oldSource = getSchedulingSource(state as RootState);
 	const captureAgents = getRecordings(state);
-	let device: {
-		id: string,
-		inputs: string[],
-		inputMethods: string[],
-		name: string,
-	} = {
+	let device: Device = {
 		id: "",
 		name: "",
 		inputs: [],
