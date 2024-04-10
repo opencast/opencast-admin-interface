@@ -8,9 +8,9 @@ import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 /**
  * This file contains redux reducer for actions affecting the state of recordings
  */
-type Recording = {
+export type Recording = {
 	id: string,
-	inputs: string[],
+	inputs: { id: string, value: string }[],
 	name: string,
 	removable: boolean,
 	roomId: string,

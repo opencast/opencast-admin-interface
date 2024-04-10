@@ -45,6 +45,7 @@ import {
 	removeNotificationWizardForm,
 	addNotification,
 } from "../../../../slices/notificationSlice";
+import { Recording } from "../../../../slices/recordingSlice";
 
 /**
  * This component manages the main assets tab of event details modal
@@ -97,14 +98,12 @@ const EventDetailsSchedulingTab = ({
 		"ROLE_UI_EVENTS_DETAILS_SCHEDULING_EDIT",
 		user
 	);
-// @ts-expect-error TS(7006): Parameter 'agentId' implicitly has an 'any' type.
-	const accessAllowed = (agentId) => {
+	const accessAllowed = (agentId: Recording["id"]) => {
 		return !checkingConflicts && hasDeviceAccess(user, agentId);
 	};
 
 	// finds the inputs to be displayed in the formik
-// @ts-expect-error TS(7006): Parameter 'deviceId' implicitly has an 'any' type.
-	const getInputs = (deviceId) => {
+	const getInputs = (deviceId: Recording["id"]) => {
 		if (deviceId === source.device.id) {
 			return !!source.device.inputs ? source.device.inputs : [];
 		} else {
@@ -119,12 +118,11 @@ const EventDetailsSchedulingTab = ({
 
 	// changes the inputs in the formik
 // @ts-expect-error TS(7006): Parameter 'deviceId' implicitly has an 'any' type.
-	const changeInputs = (deviceId, setFieldValue) => {
+	const changeInputs = (deviceId: Recording["id"], setFieldValue) => {
 		setFieldValue("captureAgent", deviceId);
 		setFieldValue("inputs", []);
 	};
-// @ts-expect-error TS(7006): Parameter 'agent' implicitly has an 'any' type.
-	const filterCaptureAgents = (agent) => {
+	const filterCaptureAgents = (agent: Recording) => {
 		return agent.id === source.agentId || hasDeviceAccess(user, agent.id);
 	};
 
@@ -586,7 +584,6 @@ const EventDetailsSchedulingTab = ({
 																	options={filterDevicesForAccess(
 																		user,
 																		captureAgents
-// @ts-expect-error TS(7006): Parameter 'a' implicitly has an 'any' type.
 																	).filter((a) => filterCaptureAgents(a))}
 																	type={"captureAgent"}
 																	required={true}
@@ -630,7 +627,6 @@ const EventDetailsSchedulingTab = ({
 																			* These are the input fields starting at 8.
 																			*/
 																		getInputs(formik.values.captureAgent).map(
-// @ts-expect-error TS(7006): Parameter 'inputMethod' implicitly has an 'any' ty... Remove this comment to see the full error message
 																			(inputMethod, key) => (
 																				<label key={key}>
 																					<Field
@@ -649,9 +645,8 @@ const EventDetailsSchedulingTab = ({
 																					getInputs(
 																						formik.values.captureAgent
 																					).find(
-// @ts-expect-error TS(7006): Parameter 'agent' implicitly has an 'any' type.
 																						(agent) => agent.id === input
-																					).value
+																					)?.value
 																				)}
 																				<br />
 																			</span>
