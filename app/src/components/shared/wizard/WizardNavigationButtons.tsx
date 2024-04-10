@@ -1,21 +1,22 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
+import { FormikProps } from "formik";
 
-const WizardNavigationButtons : React.FC<{
-  isFirst?: any,
-	isLast?: any,
-	noValidation?: any,
-	formik: any,
-	nextPage?: any,
-	previousPage?: any,
-}> = ({
+const WizardNavigationButtons = <T,>({
 	isFirst,
 	isLast,
 	noValidation,
 	formik,
 	nextPage,
 	previousPage,
+}: {
+  isFirst?: boolean,
+	isLast?: boolean,
+	noValidation?: boolean,
+	formik: FormikProps<T>,
+	nextPage?: (values: T) => void,
+	previousPage?: (values: T) => void,
 }) => {
 	const { t } = useTranslation();
 
@@ -49,7 +50,7 @@ const WizardNavigationButtons : React.FC<{
 						className={cn("submit", validation)}
 						disabled={noValidation ? false : disabled}
 						onClick={() => {
-							nextPage(formik.values);
+							!!nextPage && nextPage(formik.values);
 						}}
 						tabIndex={100}
 					>
@@ -59,7 +60,9 @@ const WizardNavigationButtons : React.FC<{
 				{!isFirst && (
 					<button
 						className="cancel"
-						onClick={() => previousPage(formik.values, false)}
+						onClick={() => {
+							!!previousPage && previousPage(formik.values)
+						}}
 						tabIndex={101}
 					>
 						{t("WIZARD.BACK")}
