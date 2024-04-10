@@ -21,6 +21,7 @@ import {
 	checkForSchedulingConflicts,
 	fetchScheduling,
 } from "../../../../slices/eventSlice";
+import { Recording } from "../../../../slices/recordingSlice";
 
 /**
  * This component renders the edit page for scheduled events of the corresponding bulk action
@@ -42,7 +43,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 	nextPage: (values: T) => void,
 	previousPage: (values: T) => void,
 	setPageCompleted: (rec: Record<number, boolean>) => void,
-	inputDevices: { user: any, inputDevices: any }[],
+	inputDevices: Recording[],
 	conflictState: { conflicts: any, setConflicts: any },
 }) => {
 	const { t } = useTranslation();

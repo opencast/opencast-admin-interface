@@ -477,7 +477,7 @@ const Schedule = <T extends {
 								 */}
 								<DropDown
 									value={formik.values.scheduleStartHour}
-									text={formik.values.scheduleStartHour}
+									text={formik.values.scheduleStartHour.toString()}
 									options={hours}
 									type={"time"}
 									required={true}
@@ -508,7 +508,7 @@ const Schedule = <T extends {
 								 */}
 								<DropDown
 									value={formik.values.scheduleStartMinute}
-									text={formik.values.scheduleStartMinute}
+									text={formik.values.scheduleStartMinute.toString()}
 									options={minutes}
 									type={"time"}
 									required={true}
@@ -546,7 +546,7 @@ const Schedule = <T extends {
 								 */}
 								<DropDown
 									value={formik.values.scheduleDurationHours}
-									text={formik.values.scheduleDurationHours}
+									text={formik.values.scheduleDurationHours.toString()}
 									options={hours}
 									type={"time"}
 									required={true}
@@ -577,7 +577,7 @@ const Schedule = <T extends {
 								 */}
 								<DropDown
 									value={formik.values.scheduleDurationMinutes}
-									text={formik.values.scheduleDurationMinutes}
+									text={formik.values.scheduleDurationMinutes.toString()}
 									options={minutes}
 									type={"time"}
 									required={true}
@@ -615,7 +615,7 @@ const Schedule = <T extends {
 								 */}
 								<DropDown
 									value={formik.values.scheduleEndHour}
-									text={formik.values.scheduleEndHour}
+									text={formik.values.scheduleEndHour.toString()}
 									options={hours}
 									type={"time"}
 									required={true}
@@ -646,7 +646,7 @@ const Schedule = <T extends {
 								 */}
 								<DropDown
 									value={formik.values.scheduleEndMinute}
-									text={formik.values.scheduleEndMinute}
+									text={formik.values.scheduleEndMinute.toString()}
 									options={minutes}
 									type={"time"}
 									required={true}
