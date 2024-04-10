@@ -2,11 +2,21 @@ import React from "react";
 import Notifications from "../../../shared/Notifications";
 import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { FormikProps } from "formik";
+import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 
-const NewAclSummaryPage = ({
-    previousPage,
-    formik
-}: any) => {
+interface RequiredFormProps {
+	name: string,
+	acls: TransformedAcl[],
+}
+
+const NewAclSummaryPage = <T extends RequiredFormProps>({
+	formik,
+	previousPage,
+}: {
+	formik: FormikProps<T>,
+	previousPage: (values: T) => void,
+}) => {
 	const { t } = useTranslation();
 
 	return (
@@ -50,7 +60,6 @@ const NewAclSummaryPage = ({
 										</th>
 									</tr>
 									{formik.values.acls.length > 0 &&
-// @ts-expect-error TS(7006): Parameter 'acl' implicitly has an 'any' type.
 										formik.values.acls.map((acl, key) => (
 											<tr key={key}>
 												<td>{acl.role}</td>
@@ -61,7 +70,6 @@ const NewAclSummaryPage = ({
 													<input type="checkbox" disabled checked={acl.write} />
 												</td>
 												<td>
-{/* @ts-expect-error TS(7006): Parameter 'action' implicitly has an 'any' type. */}
 													{acl.actions.map((action, key) => (
 														<div key={key}>{action}</div>
 													))}
