@@ -64,7 +64,7 @@ const NewThemeWizard: React.FC<{
 	// Validation schema of current page
 	const currentValidationSchema = NewThemeSchema[page];
 
-	const handleSubmit = (values: Details) => {
+	const handleSubmit = (values: any) => {
 		dispatch(postNewTheme(values));
 		close();
 	};

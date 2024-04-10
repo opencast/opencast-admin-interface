@@ -288,9 +288,9 @@ const EventDetailsSchedulingTab = ({
 																/* date picker for start date */
 																<DatePicker
 																	name="scheduleStartDate"
-																	tabIndex={1}
+																	// tabIndex={1}
 																	value={new Date(formik.values.scheduleStartDate)}
-																	onChange={(value: Date) =>
+																	onChange={(value: Date | null) =>
 																		changeStartDate(
 																			value,
 																			formik.values,

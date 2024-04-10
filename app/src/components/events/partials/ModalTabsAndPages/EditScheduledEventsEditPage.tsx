@@ -42,7 +42,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 	nextPage: (values: T) => void,
 	previousPage: (values: T) => void,
 	setPageCompleted: (rec: Record<number, boolean>) => void,
-	inputDevices: { user: any, inputDevices: any },
+	inputDevices: { user: any, inputDevices: any }[],
 	conflictState: { conflicts: any, setConflicts: any },
 }) => {
 	const { t } = useTranslation();
