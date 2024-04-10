@@ -289,7 +289,6 @@ const getInitialValues = (
 	initialValues["scheduleEndHour"] = (defaultDate.getHours() + 1).toString();
 	initialValues["scheduleEndMinute"] = "55";
 
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 	initialValues["acls"] = [
 		{
 			role: user.userRole,

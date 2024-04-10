@@ -2,6 +2,7 @@ import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@
 import { TableConfig, aclsTableConfig } from "../configs/tableConfigs/aclsTableConfig";
 import axios from 'axios';
 import { getURLParams } from '../utils/resourceUtils';
+import { RootState } from '../store';
 
 /**
  * This file contains redux reducer for actions affecting the state of acls
@@ -50,7 +51,7 @@ const initialState: AclsState = {
 
 export const fetchAcls = createAsyncThunk('acls/fetchAcls', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state);
+	let params = getURLParams(state as RootState);
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.

@@ -117,10 +117,11 @@ const NewAccessPage = ({
 																			options={aclTemplates}
 																			type={"aclTemplate"}
 																			required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																			handleChange={(element) =>
-																				handleTemplateChange(element.value)
-																			}
+																			handleChange={(element) => {
+																				if (element) {
+																					handleTemplateChange(element.value)
+																				}
+																			}}
 																			placeholder={t(
 																				"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.LABEL"
 																			)}
@@ -208,13 +209,14 @@ const NewAccessPage = ({
 																								)}
 																								type={"aclRole"}
 																								required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																								handleChange={(element) =>
-																									formik.setFieldValue(
-																										`acls.${index}.role`,
-																										element.value
-																									)
-																								}
+																								handleChange={(element) => {
+																									if (element) {
+																										formik.setFieldValue(
+																											`acls.${index}.role`,
+																											element.value
+																										)
+																									}
+																								}}
 																								placeholder={t(
 																									"EVENTS.SERIES.NEW.ACCESS.ROLES.LABEL"
 																								)}

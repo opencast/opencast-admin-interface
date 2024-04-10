@@ -2,14 +2,25 @@ import React from "react";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { useTranslation } from "react-i18next";
 import Notifications from "../../../shared/Notifications";
+import { FormikProps } from "formik";
 
 /**
  * This component renders the summary page for new groups in the new group wizard.
  */
-const NewGroupSummaryPage = ({
-    previousPage,
-    formik
-}: any) => {
+interface RequiredFormProps {
+	name: string,
+	description: string,
+	roles: string[],
+	users: string[],
+}
+
+const NewGroupSummaryPage = <T extends RequiredFormProps>({
+	formik,
+	previousPage,
+}: {
+	formik: FormikProps<T>,
+	previousPage?: (values: T) => void,
+}) => {
 	const { t } = useTranslation();
 
 	// get values of objects in field that should be shown

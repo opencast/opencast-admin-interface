@@ -6,6 +6,9 @@ import {
 	getTableSorting,
 } from "../selectors/tableSelectors";
 import { MetadataCatalog } from "../slices/eventSlice";
+import { NewUser } from "../slices/userSlice";
+import { Recording } from "../slices/recordingSlice";
+import { UserInfoState } from "../slices/userInfoSlice";
 import { hasAccess } from "./utils";
 
 /**
@@ -22,8 +25,12 @@ export const getHttpHeaders = () => {
 };
 
 // prepare URL params for getting resources
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-export const getURLParams = (state) => {
+export const getURLParams = (
+	state: {
+		tableFilters: any,	// TODO: Type these after modernizing redux is done
+		table: any,
+	}
+) => {
 	// get filter map from state
 	let filters = [];
 	let filterMap = getFilters(state);
@@ -65,8 +72,7 @@ export const getURLParams = (state) => {
 };
 
 // used for create URLSearchParams for API requests used to create/update user
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-export const buildUserBody = (values) => {
+export const buildUserBody = (values: NewUser) => {
 	let data = new URLSearchParams();
 	// fill form data with user inputs
 	data.append("username", values.username);
@@ -503,8 +509,7 @@ export const transformAclTemplatesResponse = (acl) => {
 };
 
 // filter devices, so that only devices for which the user has access rights are left
-// @ts-expect-error TS(7006): Parameter 'user' implicitly has an 'any' type.
-export const filterDevicesForAccess = (user, inputDevices) => {
+export const filterDevicesForAccess = (user: UserInfoState, inputDevices: Recording[]) => {
 	if (user.isOrgAdmin) {
 		return inputDevices;
 	} else {
@@ -523,14 +528,12 @@ export const filterDevicesForAccess = (user, inputDevices) => {
 };
 
 // returns, whether user has access rights for any inputDevices
-// @ts-expect-error TS(7006): Parameter 'user' implicitly has an 'any' type.
-export const hasAnyDeviceAccess = (user, inputDevices) => {
+export const hasAnyDeviceAccess = (user: UserInfoState, inputDevices: Recording[]) => {
 	return filterDevicesForAccess(user, inputDevices).length > 0;
 };
 
 // returns, whether user has access rights for a specific inputDevice
-// @ts-expect-error TS(7006): Parameter 'user' implicitly has an 'any' type.
-export const hasDeviceAccess = (user, deviceId) => {
+export const hasDeviceAccess = (user: UserInfoState, deviceId: Recording["id"]) => {
 	if (user.isOrgAdmin) {
 		return true;
 	} else {

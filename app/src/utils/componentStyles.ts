@@ -1,11 +1,13 @@
 /* this file contains syles as javascript objects for syled components */
 
+import { DropDownType } from "../components/shared/DropDown";
+
 // colors
 const colorDropDownMain = "#aaa";
 const colorDropDownNormalFocus = "#5897fb";
 const colorDropDownDarkerFocus = "#2a62bc";
 
-export const dropDownStyle = (type: any) => {
+export const dropDownStyle = (type: DropDownType) => {
 	const width =
 		type === "theme" || type === "newTheme" || type === "workflow"
 			? "100%"
