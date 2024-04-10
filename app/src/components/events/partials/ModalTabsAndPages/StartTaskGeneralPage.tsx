@@ -10,20 +10,35 @@ import {
 	isStartable,
 	isTaskStartable,
 } from "../../../../utils/bulkActionUtils";
+import { FormikProps } from "formik";
+import {
+	Event,
+} from "../../../../slices/eventSlice";
 
 /**
  * This component renders the table overview of selected events in start task bulk action
  */
+interface RequiredFormProps {
+	events: Event[],
+}
+
+const StartTaskGeneralPage = <T extends RequiredFormProps>({
+	formik,
+	nextPage,
 // @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
-const StartTaskGeneralPage = ({ formik, nextPage, selectedRows }) => {
+	selectedRows
+}: {
+	formik: FormikProps<T>,
+	nextPage: (values: T) => void,
+}) => {
 	const { t } = useTranslation();
 
-	const [
+	const {
 		selectedEvents,
 		allChecked,
 		onChangeSelected,
 		onChangeAllSelected,
-	] = useSelectionChanges(formik, selectedRows);
+	} = useSelectionChanges(formik, selectedRows);
 
 	useEffect(() => {
 		// Set field value for formik on mount, because initially all events are selected
@@ -52,7 +67,6 @@ const StartTaskGeneralPage = ({ formik, nextPage, selectedRows }) => {
 								{t("BULK_ACTIONS.SCHEDULE_TASK.GENERAL.CAPTION")}
 								<span className="header-value">
 									{t("BULK_ACTIONS.SCHEDULE_TASK.GENERAL.SUMMARY", {
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
 										count: selectedEvents.filter((e) => e.selected === true)
 											.length,
 									})}
@@ -83,7 +97,6 @@ const StartTaskGeneralPage = ({ formik, nextPage, selectedRows }) => {
 									</thead>
 									<tbody>
 										{/* Repeat for each event chosen */}
-{/* @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type. */}
 										{selectedEvents.map((event, key) => (
 											<tr
 												key={key}

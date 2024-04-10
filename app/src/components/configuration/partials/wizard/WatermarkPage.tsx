@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { Field } from "formik";
+import { Field, FormikProps } from "formik";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import FileUpload from "../../../shared/wizard/FileUpload";
 import Notifications from "../../../shared/Notifications";
@@ -10,12 +10,23 @@ import Notifications from "../../../shared/Notifications";
  * This component renders the watermark page for new themes in the new themes wizard
  * and for themes in themes details modal.
  */
-const WatermarkPage = ({
-    formik,
-    nextPage,
-    previousPage,
-    isEdit
-}: any) => {
+interface RequiredFormProps {
+	watermarkActive: boolean,
+	watermarkFile: string,
+	watermarkPosition: string,
+}
+
+const WatermarkPage = <T extends RequiredFormProps>({
+	formik,
+	nextPage,
+	previousPage,
+	isEdit
+}: {
+	formik: FormikProps<T>,
+	nextPage?: (values: T) => void,
+	previousPage?: (values: T) => void,
+	isEdit?: boolean,
+}) => {
 	const { t } = useTranslation();
 
 // @ts-expect-error TS(7006): Parameter 'position' implicitly has an 'any' type.
