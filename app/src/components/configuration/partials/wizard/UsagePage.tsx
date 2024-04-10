@@ -1,12 +1,15 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { Usage } from "../../../../slices/themeDetailsSlice";
 
 /**
  * This component renders the usage of a theme in the theme details modal
  */
 const UsagePage = ({
-    themeUsage
-}: any) => {
+	themeUsage
+}: {
+	themeUsage: Usage
+}) => {
 	const { t } = useTranslation();
 
 	return (
@@ -23,7 +26,6 @@ const UsagePage = ({
 								</thead>
 								<tbody>
 									{!!themeUsage.series && themeUsage.series.length > 0 ? (
-// @ts-expect-error TS(7006): Parameter 'usage' implicitly has an 'any' type.
 										themeUsage.series.map((usage, key) => (
 											<tr key={key}>
 												<td>{usage.title}</td>

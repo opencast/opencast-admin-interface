@@ -55,7 +55,7 @@ type Comment = {
 }
 
 // Strings will be empty if there is no value
-type Event = {
+export type Event = {
 	agent_id: string,
 	comments?: Comment[],
 	date: string,
@@ -108,7 +108,7 @@ type MetadataCatalog = {
 	fields: MetadataField[],
 }
 
-type EditedEvents = {
+export type EditedEvents = {
 	changedDeviceInputs: string[],
 	changedEndTimeHour: string,
 	changedEndTimeMinutes: string,
@@ -201,7 +201,7 @@ const initialState: EventState = {
 // fetch events from server
 export const fetchEvents = createAsyncThunk('events/fetchEvents', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state);
+	let params = getURLParams(state as RootState);
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.

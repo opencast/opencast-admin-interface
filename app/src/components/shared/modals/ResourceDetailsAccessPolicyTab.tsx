@@ -321,13 +321,14 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 																				}
 																				type={"aclTemplate"}
 																				required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																				handleChange={(element) =>
-																					handleTemplateChange(
-																						element.value,
-																						formik.setFieldValue
-																					)
-																				}
+																				handleChange={(element) => {
+																						if (element) {
+																						handleTemplateChange(
+																							element.value,
+																							formik.setFieldValue
+																						)
+																					}
+																				}}
 																				placeholder={
 																					!!aclTemplates &&
 																					aclTemplates.length > 0
@@ -433,13 +434,14 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 																										}
 																										type={"aclRole"}
 																										required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																										handleChange={(element) =>
-																											replace(index, {
-																												...policy,
-																												role: element.value,
-																											})
-																										}
+																										handleChange={(element) => {
+																											if (element) {
+																												replace(index, {
+																													...policy,
+																													role: element.value,
+																												})
+																											}
+																										}}
 																										placeholder={
 																											roles.length > 0
 																												? t(

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { Field, FieldArray } from "formik";
+import { Field, FieldArray, FormikProps } from "formik";
 import Notifications from "../../../shared/Notifications";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import {
@@ -17,20 +17,26 @@ import { hasAccess } from "../../../../utils/utils";
 import DropDown from "../../../shared/DropDown";
 import { filterRoles, getAclTemplateText } from "../../../../utils/aclUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
+import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 
 /**
  * This component renders the access policy page in the new ACL wizard and in the ACL details modal
  */
-const AclAccessPage : React.FC<{
-	previousPage: any,	//TODO: Type this
-	nextPage: any,	//TODO: Type this
-	formik: any,	//TODO: Type this
-	isEdit?: any,	//TODO: Type this
-}> = ({
-	previousPage,
-	nextPage,
+interface RequiredFormProps {
+	acls: TransformedAcl[],
+	aclTemplate: string,
+}
+
+const AclAccessPage = <T extends RequiredFormProps>({
 	formik,
+	nextPage,
+	previousPage,
 	isEdit,
+} : {
+	formik: FormikProps<T>,
+	nextPage?: (values: T) => void,
+	previousPage?: (values: T) => void,
+	isEdit?: boolean,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -119,10 +125,11 @@ const AclAccessPage : React.FC<{
 																				}
 																				type={"aclTemplate"}
 																				required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																				handleChange={(element) =>
-																					handleTemplateChange(element.value)
-																				}
+																				handleChange={(element) => {
+																					if (element) {
+																						handleTemplateChange(element.value)
+																					}
+																				}}
 																				placeholder={t(
 																					"USERS.ACLS.NEW.ACCESS.ACCESS_POLICY.LABEL"
 																				)}
@@ -194,7 +201,6 @@ const AclAccessPage : React.FC<{
 																		<>
 																			{roles.length > 0 ? (
 																				formik.values.acls.length > 0 &&
-// @ts-expect-error TS(7006): Parameter 'acl' implicitly has an 'any' type.
 																				formik.values.acls.map((acl, index) => (
 																					<tr key={index}>
 																						<td className="editable">
@@ -211,13 +217,14 @@ const AclAccessPage : React.FC<{
 																								}
 																								type={"aclRole"}
 																								required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																								handleChange={(element) =>
-																									formik.setFieldValue(
-																										`acls.${index}.role`,
-																										element.value
-																									)
-																								}
+																								handleChange={(element) => {
+																									if (element) {
+																										formik.setFieldValue(
+																											`acls.${index}.role`,
+																											element.value
+																										)
+																									}
+																								}}
 																								placeholder={t(
 																									"USERS.ACLS.NEW.ACCESS.ROLES.LABEL"
 																								)}
@@ -261,10 +268,9 @@ const AclAccessPage : React.FC<{
 																									{formik.values.acls[
 																										index
 																									].actions.map(
-// @ts-expect-error TS(7006): Parameter 'action' implicitly has an 'any' type.
 																										(action, key) => (
 																											<div key={key}>
-																												{action.value}
+																												{action}
 																											</div>
 																										)
 																									)}
@@ -333,7 +339,7 @@ const AclAccessPage : React.FC<{
 				</div>
 			</div>
 			{/* Button for navigation to next page and previous page */}
-			{!isEdit && (
+			{(!isEdit && !!nextPage && !!previousPage) && (
 				<>
 					<footer>
 						<button
@@ -354,7 +360,7 @@ const AclAccessPage : React.FC<{
 						</button>
 						<button
 							className="cancel"
-							onClick={() => previousPage(formik.values, false)}
+							onClick={() => previousPage(formik.values)}
 							tabIndex={101}
 						>
 							{t("WIZARD.BACK")}

@@ -76,8 +76,6 @@ const AclDetails = ({
 							<AclAccessPage
 								formik={formik}
 								isEdit
-// @ts-expect-error TS(2322): Type '{ formik: FormikProps<{ name: any; aclTempla... Remove this comment to see the full error message
-								accessRole={"ROLE_UI_SERIES_DETAILS_ACL_EDIT"}
 							/>
 						)}
 

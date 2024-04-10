@@ -2,16 +2,22 @@ import React, { useEffect, useState } from "react";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import SelectContainer from "../../../shared/wizard/SelectContainer";
 import { fetchRolesWithTarget } from "../../../../slices/aclSlice";
+import { FormikProps } from "formik";
 
 /**
  * This component renders the role selection page of the new group wizard and group details modal
  */
-const GroupRolesPage = ({
-    previousPage,
-    nextPage,
-    formik,
-    isEdit
-}: any) => {
+const GroupRolesPage = <T,>({
+	formik,
+	nextPage,
+	previousPage,
+	isEdit
+}: {
+	formik: FormikProps<T>,
+	nextPage?: (values: T) => void,
+	previousPage?: (values: T) => void,
+	isEdit?: boolean,
+}) => {
 	// roles that can be chosen by user
 	const [roles, setRoles] = useState<{ name: string }[]>([]);
 	// flag for API call
