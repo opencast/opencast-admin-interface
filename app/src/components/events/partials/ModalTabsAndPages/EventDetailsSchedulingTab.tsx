@@ -288,10 +288,9 @@ const EventDetailsSchedulingTab = ({
 																/* date picker for start date */
 																<DatePicker
 																	name="scheduleStartDate"
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
 																	tabIndex={1}
 																	value={new Date(formik.values.scheduleStartDate)}
-																	onChange={(value) =>
+																	onChange={(value: Date) =>
 																		changeStartDate(
 																			value,
 																			formik.values,
@@ -331,16 +330,17 @@ const EventDetailsSchedulingTab = ({
 																	options={hours}
 																	type={"time"}
 																	required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																	handleChange={(element) =>
-																		changeStartHour(
-																			element.value,
-																			formik.values,
-																			formik.setFieldValue,
-																			eventId,
-																			checkConflictsWrapper
-																		)
-																	}
+																	handleChange={(element) => {
+																		if (element) {
+																			changeStartHour(
+																				element.value,
+																				formik.values,
+																				formik.setFieldValue,
+																				eventId,
+																				checkConflictsWrapper
+																			)
+																		}
+																	}}
 																	placeholder={t(
 																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
 																	)}
@@ -360,16 +360,17 @@ const EventDetailsSchedulingTab = ({
 																	options={minutes}
 																	type={"time"}
 																	required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																	handleChange={(element) =>
-																		changeStartMinute(
-																			element.value,
-																			formik.values,
-																			formik.setFieldValue,
-																			eventId,
-																			checkConflictsWrapper
-																		)
-																	}
+																	handleChange={(element) => {
+																		if (element) {
+																			changeStartMinute(
+																				element.value,
+																				formik.values,
+																				formik.setFieldValue,
+																				eventId,
+																				checkConflictsWrapper
+																			)
+																		}
+																	}}
 																	placeholder={t(
 																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
 																	)}
@@ -407,16 +408,17 @@ const EventDetailsSchedulingTab = ({
 																	options={hours}
 																	type={"time"}
 																	required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																	handleChange={(element) =>
-																		changeDurationHour(
-																			element.value,
-																			formik.values,
-																			formik.setFieldValue,
-																			eventId,
-																			checkConflictsWrapper
-																		)
-																	}
+																	handleChange={(element) => {
+																		if (element) {
+																			changeDurationHour(
+																				element.value,
+																				formik.values,
+																				formik.setFieldValue,
+																				eventId,
+																				checkConflictsWrapper
+																			)
+																		}
+																	}}
 																	placeholder={t("WIZARD.DURATION.HOURS")}
 																	tabIndex={4}
 																	disabled={
@@ -436,16 +438,17 @@ const EventDetailsSchedulingTab = ({
 																	options={minutes}
 																	type={"time"}
 																	required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																	handleChange={(element) =>
-																		changeDurationMinute(
-																			element.value,
-																			formik.values,
-																			formik.setFieldValue,
-																			eventId,
-																			checkConflictsWrapper
-																		)
-																	}
+																	handleChange={(element) => {
+																		if (element) {
+																			changeDurationMinute(
+																				element.value,
+																				formik.values,
+																				formik.setFieldValue,
+																				eventId,
+																				checkConflictsWrapper
+																			)
+																		}
+																	}}
 																	placeholder={t("WIZARD.DURATION.MINUTES")}
 																	tabIndex={5}
 																	disabled={
@@ -481,16 +484,17 @@ const EventDetailsSchedulingTab = ({
 																	options={hours}
 																	type={"time"}
 																	required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																	handleChange={(element) =>
-																		changeEndHour(
-																			element.value,
-																			formik.values,
-																			formik.setFieldValue,
-																			eventId,
-																			checkConflictsWrapper
-																		)
-																	}
+																	handleChange={(element) => {
+																		if (element) {
+																			changeEndHour(
+																				element.value,
+																				formik.values,
+																				formik.setFieldValue,
+																				eventId,
+																				checkConflictsWrapper
+																			)
+																		}
+																	}}
 																	placeholder={t(
 																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
 																	)}
@@ -510,16 +514,17 @@ const EventDetailsSchedulingTab = ({
 																	options={minutes}
 																	type={"time"}
 																	required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																	handleChange={(element) =>
-																		changeEndMinute(
-																			element.value,
-																			formik.values,
-																			formik.setFieldValue,
-																			eventId,
-																			checkConflictsWrapper
-																		)
-																	}
+																	handleChange={(element) => {
+																		if (element) {
+																			changeEndMinute(
+																				element.value,
+																				formik.values,
+																				formik.setFieldValue,
+																				eventId,
+																				checkConflictsWrapper
+																			)
+																		}
+																	}}
 																	placeholder={t(
 																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
 																	)}
@@ -585,13 +590,14 @@ const EventDetailsSchedulingTab = ({
 																	).filter((a) => filterCaptureAgents(a))}
 																	type={"captureAgent"}
 																	required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																	handleChange={(element) =>
-																		changeInputs(
-																			element.value,
-																			formik.setFieldValue
-																		)
-																	}
+																	handleChange={(element) => {
+																		if (element) {
+																			changeInputs(
+																				element.value,
+																				formik.setFieldValue
+																			)
+																		}
+																	}}
 																	placeholder={t(
 																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"
 																	)}

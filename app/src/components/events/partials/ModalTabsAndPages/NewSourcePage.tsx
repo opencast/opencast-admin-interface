@@ -466,20 +466,21 @@ const Schedule = ({ formik, inputDevices }) => {
 									options={hours}
 									type={"time"}
 									required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 									handleChange={(element) => {
-										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-											changeStartHourMultiple(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
-										} else {
-											changeStartHour(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
+										if (element) {
+											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+												changeStartHourMultiple(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											} else {
+												changeStartHour(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											}
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
@@ -496,20 +497,21 @@ const Schedule = ({ formik, inputDevices }) => {
 									options={minutes}
 									type={"time"}
 									required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 									handleChange={(element) => {
-										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-											changeStartMinuteMultiple(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
-										} else {
-											changeStartMinute(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
+										if (element) {
+											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+												changeStartMinuteMultiple(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											} else {
+												changeStartMinute(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											}
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
@@ -533,20 +535,21 @@ const Schedule = ({ formik, inputDevices }) => {
 									options={hours}
 									type={"time"}
 									required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 									handleChange={(element) => {
-										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-											changeDurationHourMultiple(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
-										} else {
-											changeDurationHour(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
+										if (element) {
+											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+												changeDurationHourMultiple(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											} else {
+												changeDurationHour(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											}
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
@@ -563,20 +566,21 @@ const Schedule = ({ formik, inputDevices }) => {
 									options={minutes}
 									type={"time"}
 									required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 									handleChange={(element) => {
-										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-											changeDurationMinuteMultiple(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
-										} else {
-											changeDurationMinute(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
+										if (element) {
+											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+												changeDurationMinuteMultiple(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											} else {
+												changeDurationMinute(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											}
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
@@ -600,20 +604,21 @@ const Schedule = ({ formik, inputDevices }) => {
 									options={hours}
 									type={"time"}
 									required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 									handleChange={(element) => {
-										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-											changeEndHourMultiple(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
-										} else {
-											changeEndHour(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
+										if (element) {
+											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+												changeEndHourMultiple(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											} else {
+												changeEndHour(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											}
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
@@ -630,20 +635,21 @@ const Schedule = ({ formik, inputDevices }) => {
 									options={minutes}
 									type={"time"}
 									required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 									handleChange={(element) => {
-										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-											changeEndMinuteMultiple(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
-										} else {
-											changeEndMinute(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
+										if (element) {
+											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+												changeEndMinuteMultiple(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											} else {
+												changeEndMinute(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											}
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
@@ -679,10 +685,11 @@ const Schedule = ({ formik, inputDevices }) => {
 									options={inputDevices}
 									type={"captureAgent"}
 									required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-									handleChange={(element) =>
-										formik.setFieldValue("location", element.value)
-									}
+									handleChange={(element) => {
+										if (element) {
+											formik.setFieldValue("location", element.value)
+										}
+									}}
 									placeholder={t(
 										"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.LOCATION"
 									)}

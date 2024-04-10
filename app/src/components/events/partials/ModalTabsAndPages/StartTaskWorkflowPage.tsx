@@ -72,10 +72,11 @@ const StartTaskWorkflowPage = <T extends RequiredFormProps>({
 											options={workflowDef}
 											type={"workflow"}
 											required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-											handleChange={(element) =>
-												setDefaultValues(element.value)
-											}
+											handleChange={(element) => {
+												if (element) {
+													setDefaultValues(element.value)
+												}
+											}}
 											placeholder={t(
 												"EVENTS.EVENTS.DETAILS.PUBLICATIONS.SELECT_WORKFLOW"
 											)}

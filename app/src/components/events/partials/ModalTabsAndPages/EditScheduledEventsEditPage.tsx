@@ -233,13 +233,14 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					options={hours}
 																					type={"time"}
 																					required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																					handleChange={(element) =>
-																						formik.setFieldValue(
-																							`editedEvents.${key}.changedStartTimeHour`,
-																							element.value
-																						)
-																					}
+																					handleChange={(element) => {
+																						if (element) {
+																							formik.setFieldValue(
+																								`editedEvents.${key}.changedStartTimeHour`,
+																								element.value
+																							)
+																						}
+																					}}
 																					placeholder={t(
 																						"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
 																					)}
@@ -264,13 +265,14 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					options={minutes}
 																					type={"time"}
 																					required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																					handleChange={(element) =>
-																						formik.setFieldValue(
-																							`editedEvents.${key}.changedStartTimeMinutes`,
-																							element.value
-																						)
-																					}
+																					handleChange={(element) => {
+																						if (element) {
+																							formik.setFieldValue(
+																								`editedEvents.${key}.changedStartTimeMinutes`,
+																								element.value
+																							)
+																						}
+																					}}
 																					placeholder={t(
 																						"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
 																					)}
@@ -303,13 +305,14 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					options={hours}
 																					type={"time"}
 																					required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																					handleChange={(element) =>
-																						formik.setFieldValue(
-																							`editedEvents.${key}.changedEndTimeHour`,
-																							element.value
-																						)
-																					}
+																					handleChange={(element) => {
+																						if (element) {
+																							formik.setFieldValue(
+																								`editedEvents.${key}.changedEndTimeHour`,
+																								element.value
+																							)
+																						}
+																					}}
 																					placeholder={t(
 																						"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
 																					)}
@@ -334,13 +337,14 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					options={minutes}
 																					type={"time"}
 																					required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-																					handleChange={(element) =>
-																						formik.setFieldValue(
-																							`editedEvents.${key}.changedEndTimeMinutes`,
-																							element.value
-																						)
-																					}
+																					handleChange={(element) => {
+																						if (element) {
+																							formik.setFieldValue(
+																								`editedEvents.${key}.changedEndTimeMinutes`,
+																								element.value
+																							)
+																						}
+																					}}
 																					placeholder={t(
 																						"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
 																					)}
@@ -374,16 +378,17 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					options={inputDevices}
 																					type={"captureAgent"}
 																					required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 																					handleChange={(element) => {
-																						formik.setFieldValue(
-																							`editedEvents.${key}.changedLocation`,
-																							element.value
-																						);
-																						formik.setFieldValue(
-																							`editedEvents.${key}.changedDeviceInputs`,
-																							[]
-																						);
+																						if (element) {
+																							formik.setFieldValue(
+																								`editedEvents.${key}.changedLocation`,
+																								element.value
+																							);
+																							formik.setFieldValue(
+																								`editedEvents.${key}.changedDeviceInputs`,
+																								[]
+																							);
+																						}
 																					}}
 																					placeholder={`-- ${t(
 																						"SELECT_NO_OPTION_SELECTED"
