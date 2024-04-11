@@ -44,13 +44,30 @@ import { checkConflicts } from "../../../../slices/eventSlice";
 /**
  * This component renders the source page for new events in the new event wizard.
  */
-const NewSourcePage = ({
-// @ts-expect-error TS(7031): Binding element 'previousPage' implicitly has an '... Remove this comment to see the full error message
-	previousPage,
-// @ts-expect-error TS(7031): Binding element 'nextPage' implicitly has an 'any'... Remove this comment to see the full error message
-	nextPage,
-// @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
+interface RequiredFormProps {
+	scheduleStartDate: string,
+	sourceMode: string,
+	// Schedule
+	location: string
+	scheduleEndDate: string
+	scheduleStartHour: string
+	scheduleEndHour: string
+	scheduleStartMinute: string
+	scheduleEndMinute: string
+	scheduleDurationHours: string
+	scheduleDurationMinutes: string
+	// checkConflicts
+	repeatOn: string[],
+}
+
+const NewSourcePage = <T extends RequiredFormProps>({
 	formik,
+	nextPage,
+	previousPage,
+}: {
+	formik: FormikProps<T>,
+	nextPage: (values: T) => void,
+	previousPage: (values: T, twoPagesBack?: boolean) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -63,7 +80,6 @@ const NewSourcePage = ({
 		dispatch(fetchRecordings("inputs"));
 
 		// validate form because dependent default values need to be checked
-// @ts-expect-error TS(7006): Parameter 'r' implicitly has an 'any' type.
 		formik.validateForm().then((r) => console.info(r));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -311,7 +327,7 @@ const Upload = ({ formik }) => {
 					<table className="main-tbl">
 						<tbody>
 							{/* One row for each metadata field*/}
-							{sourceMetadata.UPLOAD.metadata.map((field, key) => (
+							{sourceMetadata.UPLOAD && sourceMetadata.UPLOAD.metadata.map((field, key) => (
 								<tr key={key}>
 									<td>
 										<span>{t(field.label)}</span>
@@ -342,12 +358,12 @@ const Schedule = <T extends {
 	scheduleStartDate: string
 	scheduleEndDate: string
 	sourceMode: string
-	scheduleStartHour: number
-	scheduleEndHour: number
-	scheduleStartMinute: number
-	scheduleEndMinute: number
-	scheduleDurationHours: number
-	scheduleDurationMinutes: number
+	scheduleStartHour: string
+	scheduleEndHour: string
+	scheduleStartMinute: string
+	scheduleEndMinute: string
+	scheduleDurationHours: string
+	scheduleDurationMinutes: string
 }>({
 	formik,
 	inputDevices

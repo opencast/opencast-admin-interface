@@ -102,7 +102,7 @@ type MetadataField = {
 
 export type MetadataFieldSelected = MetadataField & { selected: boolean }
 
-type MetadataCatalog = {
+export type MetadataCatalog = {
 	title: string,
 	flavor: string,
 	fields: MetadataField[],
@@ -149,7 +149,7 @@ type EventState = {
 	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	isFetchingAssetUploadOptions: boolean,
-	uploadAssetOptions: any[],		// TODO: proper typing
+	uploadAssetOptions: any[],
 	uploadAssetWorkflow: any,		// TODO: proper typing
 	schedulingInfo: {
 		editedEvents: EditedEvents[],
@@ -439,13 +439,15 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 		source = {
 			type: values.sourceMode,
 		};
-		for (let i = 0; sourceMetadata.UPLOAD.metadata.length > i; i++) {
-			metadataFields = metadataFields.concat({
-				id: sourceMetadata.UPLOAD.metadata[i].id,
-				value: values[sourceMetadata.UPLOAD.metadata[i].id],
-				type: sourceMetadata.UPLOAD.metadata[i].type,
-				tabindex: sourceMetadata.UPLOAD.metadata[i].tabindex,
-			});
+		if (sourceMetadata.UPLOAD) {
+			for (let i = 0; sourceMetadata.UPLOAD.metadata.length > i; i++) {
+				metadataFields = metadataFields.concat({
+					id: sourceMetadata.UPLOAD.metadata[i].id,
+					value: values[sourceMetadata.UPLOAD.metadata[i].id],
+					type: sourceMetadata.UPLOAD.metadata[i].type,
+					tabindex: sourceMetadata.UPLOAD.metadata[i].tabindex,
+				});
+			}
 		}
 	}
 
@@ -846,11 +848,7 @@ export const updateScheduledEventsBulk = createAsyncThunk('events/updateSchedule
 // check provided date range for conflicts
 
 export const checkConflicts = (values: {
-	acls: TransformedAcls,
-	configuration: { [key: string]: any },
-	deviceInputs?: string[],
 	location: string,
-	processingWorkflow: string,
 	repeatOn: string[],
 	scheduleDurationHours: string,
 	scheduleDurationMinutes: string,
@@ -861,19 +859,6 @@ export const checkConflicts = (values: {
 	scheduleStartHour: string,
 	scheduleStartMinute: string,
 	sourceMode: string,
-	uploadAssetsTrack: {
-		accept: string,
-		displayOrder: number,
-		file: FileList,
-		flavorSubtType: string,
-		flavorType: string,
-		id: string,
-		multiple: boolean,
-		showAs: string,
-		title: string,
-		type: string,
-	}[],
-	[key: string]: unknown,
 }) => async (dispatch: AppDispatch) => {
 	let check = true;
 

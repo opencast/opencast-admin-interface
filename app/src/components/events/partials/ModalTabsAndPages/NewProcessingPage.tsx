@@ -7,18 +7,24 @@ import { setDefaultConfig } from "../../../../utils/workflowPanelUtils";
 import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchWorkflowDef } from "../../../../slices/workflowSlice";
+import { FormikProps } from "formik";
 
 /**
  * This component renders the processing page for new events in the new event wizard.
  */
-const NewProcessingPage: React.FC<{
-	previousPage: any	//TODO: Add type
-	nextPage: any	//TODO: Add type
-	formik: any	//TODO: Add type
-}> = ({
-	previousPage,
-	nextPage,
+interface RequiredFormProps {
+	sourceMode: string,
+	processingWorkflow: string,
+}
+
+const NewProcessingPage = <T extends RequiredFormProps>({
 	formik,
+	nextPage,
+	previousPage,
+}: {
+	formik: FormikProps<T>,
+	nextPage: (values: T) => void,
+	previousPage: (values: T, twoPagesBack?: boolean) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -40,8 +46,7 @@ const NewProcessingPage: React.FC<{
 		}
 	};
 
-// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
-	const setDefaultValues = (value) => {
+	const setDefaultValues = (value: string) => {
 		let workflowId = value;
 		// fill values with default configuration of chosen workflow
 		let defaultConfiguration = setDefaultConfig(workflowDef, workflowId);

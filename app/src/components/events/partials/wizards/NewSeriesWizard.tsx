@@ -182,19 +182,13 @@ const NewSeriesWizard: React.FC<{
 
 // @ts-expect-error TS(7006): Parameter 'metadataFields' implicitly has an 'any'... Remove this comment to see the full error message
 const getInitialValues = (metadataFields, extendedMetadata, user) => {
+	let initialValues = initialFormValuesNewSeries;
 	// Transform metadata fields provided by backend (saved in redux)
-	let initialValues = getInitialMetadataFieldValues(
+	initialValues = {...initialValues, ...getInitialMetadataFieldValues(
 		metadataFields,
 		extendedMetadata
-	);
+	)};
 
-	// Add all initial form values known upfront listed in newSeriesConfig
-	for (const [key, value] of Object.entries(initialFormValuesNewSeries)) {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-		initialValues[key] = value;
-	}
-
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 	initialValues["acls"] = [
 		{
 			role: user.userRole,

@@ -1,19 +1,25 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Field } from "formik";
+import { Field, FormikProps } from "formik";
 import RenderField from "../../../shared/wizard/RenderField";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
+import { MetadataCatalog } from "../../../../slices/eventSlice";
 
 /**
  * This component renders the metadata page for new events and series in the wizards.
  */
-const NewMetadataPage = ({
-    metadataFields,
-    nextPage,
-    formik,
-    header
-}: any) => {
+const NewMetadataPage = <T,>({
+	formik,
+	nextPage,
+	metadataFields,
+	header
+}: {
+	formik: FormikProps<T>,
+	nextPage: (values: T) => void,
+	metadataFields: MetadataCatalog,
+	header: string
+}) => {
 	const { t } = useTranslation();
 
 	return (
@@ -29,7 +35,6 @@ const NewMetadataPage = ({
 									<tbody>
 										{/* Render table row for each metadata field depending on type*/}
 										{!!metadataFields.fields &&
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
 											metadataFields.fields.map((field, key) => (
 												<tr key={key}>
 													<td>

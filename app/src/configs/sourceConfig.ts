@@ -9,7 +9,23 @@
  * - required: flag indicating if metadata field is required
  * - tabindex: tabindex of the metadata field
  */
-export const sourceMetadata = {
+type Metadata = {
+	id: string,
+	label: string,
+	value: any,
+	type: string,
+	readOnly: boolean,
+	required: boolean,
+	tabindex: number,
+}
+
+type SourceType = {
+	UPLOAD?: { metadata: Metadata[] },
+	SCHEDULE_SINGLE?: { metadata: Metadata[] },
+	SCHEDULE_MULTIPLE?: { metadata: Metadata[] },
+}
+
+export const sourceMetadata: SourceType = {
 	UPLOAD: {
 		metadata: [
 			{

@@ -3,18 +3,25 @@ import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { getAssetUploadOptions } from "../../../../selectors/eventSelectors";
 import { useAppSelector } from "../../../../store";
+import { FormikProps } from "formik";
 
 /**
  * This component renders the asset upload page of the new event wizard
  * (only if its not set hidden (see newEventWizardConfig) or user chose UPLOAD as source mode)
  */
-const NewAssetUploadPage = ({
-// @ts-expect-error TS(7031): Binding element 'previousPage' implicitly has an '... Remove this comment to see the full error message
-	previousPage,
-// @ts-expect-error TS(7031): Binding element 'nextPage' implicitly has an 'any'... Remove this comment to see the full error message
-	nextPage,
-// @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
+interface RequiredFormProps {
+	sourceMode: string,
+	[key: string]: any,
+}
+
+const NewAssetUploadPage = <T extends RequiredFormProps>({
 	formik,
+	nextPage,
+	previousPage
+}: {
+	formik: FormikProps<T>,
+	nextPage: (values: T) => void,
+	previousPage: (values: T, twoPagesBack?: boolean) => void,
 }) => {
 	const { t } = useTranslation();
 
@@ -92,8 +99,7 @@ const NewAssetUploadPage = ({
 															className="button-like-anchor remove"
 															onClick={() => {
 																formik.setFieldValue(asset.id, null);
-// @ts-expect-error TS(2531): Object is possibly 'null'.
-																document.getElementById(asset.id).value = "";
+																(document.getElementById(asset.id) as HTMLInputElement).value = "";
 															}}
 														/>
 													</td>
