@@ -67,7 +67,7 @@ const NewAccessPage = ({
 		fetchData();
 	}, []);
 
-	// If we have to add series ACL, fetch it
+	// If we have to use series ACL, fetch it
 	useEffect(() => {
 		if (initEventAclWithSeriesAcl && formik.values.isPartOf) {
 			dispatch(fetchSeriesDetailsAcls(formik.values.isPartOf))
@@ -75,20 +75,10 @@ const NewAccessPage = ({
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formik.values, initEventAclWithSeriesAcl]);
 
-	// If we have to add series ACL, add it
+	// If we have to use series ACL, overwrite existing rules
 	useEffect(() => {
 		if (initEventAclWithSeriesAcl && formik.values.isPartOf && seriesAcl) {
-			let rolesToAdd = []
-			for (const ace of seriesAcl) {
-				// @ts-expect-error TS(2345):
-				if (!formik.values.acls.some(acl => acl.role === ace.role)) {
-					rolesToAdd.push(ace)
-				}
-			}
-
-			if (rolesToAdd.length > 0) {
-				formik.setFieldValue("acls", [ ...formik.values.acls, ...rolesToAdd ])
-			}
+			formik.setFieldValue("acls", seriesAcl)
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [initEventAclWithSeriesAcl, seriesAcl]);
