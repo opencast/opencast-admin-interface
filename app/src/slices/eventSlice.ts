@@ -25,6 +25,7 @@ import { fetchSeriesOptions } from "../slices/seriesSlice";
 import { AppDispatch, RootState } from '../store';
 import { fetchAssetUploadOptions } from '../thunks/assetsThunks';
 import { TransformedAcls } from './aclDetailsSlice';
+import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 
 /**
  * This file contains redux reducer for actions affecting the state of events
@@ -159,7 +160,7 @@ type EventState = {
 	statusAssetUploadOptions: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAssetUploadOptions: SerializedError | null,
 	results: Event[],
-	columns: any,			 // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],			 // TODO: proper typing, derive from `initialColumns`
 	total: number,
 	count: number,
 	offset: number,
@@ -169,7 +170,7 @@ type EventState = {
 	extendedMetadata: MetadataCatalog[],
 	isFetchingAssetUploadOptions: boolean,
 	uploadAssetOptions: UploadAssetOption[],
-	uploadAssetWorkflow: any,		// TODO: proper typing
+	uploadAssetWorkflow: string | undefined,		// TODO: proper typing
 	schedulingInfo: {
 		editedEvents: EditedEvents[],
 		seriesOptions: {
@@ -1059,30 +1060,12 @@ const eventSlice = createSlice({
 		setEventColumns(state, action: PayloadAction<
 			EventState["columns"]
 		>) {
-			state.columns = action.payload.updatedColumns;
+			state.columns = action.payload;
 		},
 		setShowActions(state, action: PayloadAction<
 			EventState["showActions"]
 		>) {
 			state.showActions = action.payload;
-		},
-		setEventSelected(state, action: PayloadAction<
-			any
-		>) {
-			// state.rows: state.rows.map((row) => {
-			// 	if (row.id === id) {
-			// 		return {
-			// 			...row,
-			// 			selected: !row.selected,
-			// 		};
-			// 	}
-			// 	return row;
-			// }),
-		},
-		setAssetUploadWorkflow(state, action: PayloadAction<{
-			workflow: EventState["columns"],
-		}>) {
-			state.uploadAssetWorkflow = action.payload.workflow;
 		},
 	},
 	// These are used for thunks
@@ -1170,8 +1153,6 @@ const eventSlice = createSlice({
 export const {
 	setEventColumns,
 	setShowActions,
-	setEventSelected,
-	setAssetUploadWorkflow,
 } = eventSlice.actions;
 
 // Export the slice reducer as the default export
