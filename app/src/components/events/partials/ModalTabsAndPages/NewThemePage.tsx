@@ -4,15 +4,24 @@ import { getSeriesThemes } from "../../../../selectors/seriesSeletctor";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import DropDown from "../../../shared/DropDown";
 import { useAppSelector } from "../../../../store";
+import { FormikProps } from "formik";
 
 /**
  * This component renders the theme page for new series in the new series wizard.
  */
-const NewThemePage = ({
-    formik,
-    nextPage,
-    previousPage,
-}: any) => {
+interface RequiredFormProps {
+	theme: string,
+}
+
+const NewThemePage = <T extends RequiredFormProps>({
+	formik,
+	nextPage,
+	previousPage,
+}: {
+	formik: FormikProps<T>,
+	nextPage: (values: T) => void,
+	previousPage: (values: T, twoPagesBack?: boolean) => void,
+}) => {
 	const { t } = useTranslation();
 
 	const seriesThemes = useAppSelector(state => getSeriesThemes(state));

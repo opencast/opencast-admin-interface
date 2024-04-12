@@ -10,17 +10,25 @@ import MetadataExtendedSummaryTable from "./summaryTables/MetadataExtendedSummar
 import AccessSummaryTable from "./summaryTables/AccessSummaryTable";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { useAppSelector } from "../../../../store";
+import { FormikProps } from "formik";
+import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 
 /**
  * This component renders the summary page for new series in the new series wizard.
  */
-const NewSeriesSummary = ({
-// @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
+interface RequiredFormProps {
+	theme: string,
+	acls: TransformedAcl[],
+}
+
+const NewSeriesSummary = <T extends RequiredFormProps>({
 	formik,
-// @ts-expect-error TS(7031): Binding element 'previousPage' implicitly has an '... Remove this comment to see the full error message
 	previousPage,
-// @ts-expect-error TS(7031): Binding element 'metaDataExtendedHidden' implicitl... Remove this comment to see the full error message
 	metaDataExtendedHidden,
+}: {
+	formik: FormikProps<T>,
+	previousPage: (values: T, twoPagesBack?: boolean) => void,
+	metaDataExtendedHidden: boolean,
 }) => {
 	const { t } = useTranslation();
 
