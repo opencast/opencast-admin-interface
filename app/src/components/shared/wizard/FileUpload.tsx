@@ -4,20 +4,16 @@ import axios from "axios";
 import { NOTIFICATION_CONTEXT } from "../../../configs/modalConfig";
 import { useAppDispatch } from "../../../store";
 import { addNotification } from "../../../slices/notificationSlice";
+import { FormikProps } from "formik";
 
 /**
  * This component renders a custom file upload button in wizards.
  */
-const FileUpload : React.FC<{
-	descriptionKey?: any,
-	labelKey: any,
-	buttonKey: any,
-	acceptableTypes: any,
-	fileId: any,
-	fileName: any,
-	formik: any,
-	isEdit: any,
-}> = ({
+interface RequiredFormProps {
+	[key: string]: unknown,
+}
+
+const FileUpload = <T extends RequiredFormProps>({
 	descriptionKey,
 	labelKey,
 	buttonKey,
@@ -26,28 +22,36 @@ const FileUpload : React.FC<{
 	fileName,
 	formik,
 	isEdit,
+}: {
+	descriptionKey?: string,
+	labelKey: string,
+	buttonKey: string,
+	acceptableTypes: string,
+	fileId: string,
+	fileName: string,
+	formik: FormikProps<T>,
+	isEdit?: boolean,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	// Temporary storage for uploaded file
-	const [file, setFile] = useState({});
+	const [file, setFile] = useState<File | undefined>();
 	// how much is uploaded; used for progress bar
 	const [loaded, setLoaded] = useState(0);
 
 	// reference used for activating file input when button is clicked
-	const hiddenFileInput = useRef(null);
+	const hiddenFileInput = useRef<HTMLInputElement>(null);
 
 	const handleDelete = () => {
-		setFile({});
+		setFile(undefined);
 		setLoaded(0);
 		formik.setFieldValue(fileId, "");
 		formik.setFieldValue(fileName, "");
 	};
 
 	// upload file to backend
-// @ts-expect-error TS(7006): Parameter 'file' implicitly has an 'any' type.
-	const upload = (file) => {
+	const upload = (file: File) => {
 		const data = new FormData();
 		data.append("BODY", file, file.name);
 		axios
@@ -57,8 +61,7 @@ const FileUpload : React.FC<{
 				},
 				onUploadProgress: (ProgressEvent) => {
 					// update loaded with current progress
-// @ts-expect-error TS(2532): Object is possibly 'undefined'.
-					setLoaded((ProgressEvent.loaded / ProgressEvent.total) * 100);
+					setLoaded(ProgressEvent.total ? (ProgressEvent.loaded / ProgressEvent.total) * 100 : 0);
 				},
 			})
 			.then((res) => {
@@ -80,14 +83,14 @@ const FileUpload : React.FC<{
 	};
 
 	const handleClick = () => {
-// @ts-expect-error TS(2531): Object is possibly 'null'.
-		hiddenFileInput.current.click();
+		hiddenFileInput.current?.click();
 	};
 
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const handleChange = (e) => {
-		setFile(e.target.files[0]);
-		upload(e.target.files[0]);
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files) {
+			setFile(e.target.files[0]);
+			upload(e.target.files[0]);
+		}
 	};
 
 	return (
@@ -102,15 +105,14 @@ const FileUpload : React.FC<{
 					<div className="content-container">
 						{/* If user already uploaded a file, its name and a delete button is rendered */}
 						{/* else render button for upload */}
-						{!!formik.values[fileId] ? (
+						{!!formik.values[fileId] && file ? (
 							<div className="upload-file-info">
 								<p
 									style={
 										isEdit ? { padding: "0px 10px" } : { padding: "4px 10px" }
 									}
 								>
-{/* @ts-expect-error TS(2339): */}
-									<a href={file.url} target="_blank" rel="noreferrer">
+									<a href={URL.createObjectURL(file)} target="_blank" rel="noreferrer">
 										{formik.values[fileName]}
 									</a>
 								</p>
@@ -145,8 +147,7 @@ const FileUpload : React.FC<{
 			</div>
 
 			{/* render progress bar while loaded is under 100 and a file is in the upload */}
-{/* @ts-expect-error TS(2339): Property 'name' does not exist on type '{}'.*/}
-			{!!file.name && loaded < 100 && (
+			{!! file && !!file.name && loaded < 100 && (
 				<div className="list-sub-row file-management">
 					<div className="progress-container">
 						<div className="progress compact">

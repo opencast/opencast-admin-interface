@@ -10,6 +10,7 @@ import FileUpload from "../../../shared/wizard/FileUpload";
 interface RequiredFormProps {
 	titleSlideActive: boolean,
 	titleSlideMode: string,
+	[key: string]: unknown,
 }
 
 const TitleSlidePage = <T extends RequiredFormProps>({
