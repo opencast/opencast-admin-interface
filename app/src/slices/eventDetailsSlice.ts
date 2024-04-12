@@ -1559,7 +1559,10 @@ export const updateAssets = createAsyncThunk('eventDetails/updateAssets', async 
 
 	let formData = new FormData();
 
-	let assets = {
+	let assets: {
+		workflow: string,
+		options: UploadAssetOption[],
+	} = {
 		workflow: uploadAssetWorkflow,
 		options: [],
 	};

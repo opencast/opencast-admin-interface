@@ -61,16 +61,22 @@ const NewEventSummary = <T extends RequiredFormProps>({
 	);
 
 	// upload asset that user has provided
-// @ts-expect-error TS(7034): Variable 'uploadAssetsNonTrack' implicitly has typ... Remove this comment to see the full error message
-	let uploadAssetsNonTrack = [];
+	let uploadAssetsNonTrack: {
+		name: string,
+		translate?: string,
+		type: string,
+		flavorType: string,
+		flavorSubType: string,
+		value: any,
+	}[] = [];
 	for (let i = 0; uploadAssetsOptionsNonTrack.length > i; i++) {
 		let fieldValue = formik.values[uploadAssetsOptionsNonTrack[i].id];
 		if (!!fieldValue) {
-// @ts-expect-error TS(7005): Variable 'uploadAssetsNonTrack' implicitly has an ... Remove this comment to see the full error message
+			const displayOverride = uploadAssetsOptionsNonTrack[i].displayOverride
 			uploadAssetsNonTrack = uploadAssetsNonTrack.concat({
 				name: uploadAssetsOptionsNonTrack[i].id,
-				translate: !!uploadAssetsOptionsNonTrack[i].displayOverride
-					? t(uploadAssetsOptionsNonTrack[i].displayOverride)
+				translate: !!displayOverride
+					? t(displayOverride)
 					: t(uploadAssetsOptionsNonTrack[i].title),
 				type: uploadAssetsOptionsNonTrack[i].type,
 				flavorType: uploadAssetsOptionsNonTrack[i].flavorType,

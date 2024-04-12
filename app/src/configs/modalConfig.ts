@@ -1,7 +1,7 @@
 // All fields for new event form that are fix and not depending on response of backend
 // InitialValues of Formik form (others computed dynamically depending on responses from backend)
 import { initArray } from "../utils/utils";
-import { EditedEvents, Event } from "../slices/eventSlice";
+import { EditedEvents, Event, UploadAssetsTrack } from "../slices/eventSlice";
 import { TransformedAcl } from "../slices/aclDetailsSlice";
 
 // Context for notifications shown in modals
@@ -26,7 +26,7 @@ export const initialFormValuesNewEvents: {
 	configuration: { [key: string]: string },
 	aclTemplate: string,
 	acls: TransformedAcl[],
-	uploadAssetsTrack?: any[]
+	uploadAssetsTrack?: UploadAssetsTrack[]
 	[key: string]: unknown,	// Metadata fields that are getting added later
 } = {
 	sourceMode: "UPLOAD",

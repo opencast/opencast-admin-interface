@@ -18,7 +18,7 @@ import {
 	getExtendedEventMetadata,
 } from "../../../../selectors/eventSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { MetadataCatalog, postNewEvent } from "../../../../slices/eventSlice";
+import { MetadataCatalog, UploadAssetOption, postNewEvent } from "../../../../slices/eventSlice";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
 
@@ -43,7 +43,6 @@ const NewEventWizard: React.FC<{
 		uploadAssetOptions,
 		user
 	);
-	let workflowPanelRef = React.useRef();
 
 	const [page, setPage] = useState(0);
 	const [snapshot, setSnapshot] = useState(initialValues);
@@ -93,8 +92,7 @@ const NewEventWizard: React.FC<{
 	// Validation schema of current page
 	const currentValidationSchema = NewEventSchema[page];
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const nextPage = (values) => {
+	const nextPage = (values: typeof initialValues) => {
 		setSnapshot(values);
 
 		// set page as completely filled out
@@ -109,8 +107,7 @@ const NewEventWizard: React.FC<{
 		}
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const previousPage = (values, twoPagesBack) => {
+	const previousPage = (values: typeof initialValues, twoPagesBack?: boolean) => {
 		setSnapshot(values);
 		// if previous page is hidden or not always shown, than go back two pages
 		if (steps[page - 1].hidden || twoPagesBack) {
@@ -120,10 +117,7 @@ const NewEventWizard: React.FC<{
 		}
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
-// @ts-expect-error TS(2339): Property 'submitForm' does not exist on type 'neve... Remove this comment to see the full error message
-		workflowPanelRef.current?.submitForm();
+	const handleSubmit = (values: typeof initialValues) => {
 		const response = dispatch(postNewEvent({values, metadataInfo: metadataFields, extendedMetadata}));
 		console.info(response);
 		close();
@@ -222,8 +216,7 @@ const NewEventWizard: React.FC<{
 const getInitialValues = (
 	metadataFields: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
-// @ts-expect-error TS(7006): Parameter 'uploadAssetOptions' implicitly has an '... Remove this comment to see the full error message
-	uploadAssetOptions,
+	uploadAssetOptions: UploadAssetOption[],
 	user: UserInfoState
 ) => {
 	let initialValues = initialFormValuesNewEvents;
@@ -255,24 +248,17 @@ const getInitialValues = (
 	if (!!uploadAssetOptions) {
 		initialValues.uploadAssetsTrack = [];
 		// initial value of upload asset needs to be null, because object (file) is saved there
-// @ts-expect-error TS(7006): Parameter 'option' implicitly has an 'any' type.
-		uploadAssetOptions.forEach((option) => {
+		for (const option of uploadAssetOptions) {
 			if (option.type === "track") {
-// @ts-expect-error TS(2339): Property 'uploadAssetsTrack' does not exist on typ... Remove this comment to see the full error message
 				initialValues.uploadAssetsTrack.push({
 					...option,
-					file: null,
+					file: undefined,
 				});
 			} else {
 				initialValues[option.id] = null;
 			}
-		});
+		};
 	}
-
-	// // Add all initial form values known upfront listed in newEventsConfig
-	// for (const [key, value] of Object.entries(initialFormValuesNewEvents)) {
-	// 	initialValues[key] = value;
-	// }
 
 	const defaultDate = new Date();
 

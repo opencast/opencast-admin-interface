@@ -130,6 +130,25 @@ export type EditedEvents = {
 	weekday: string,
 }
 
+export type UploadAssetOption = {
+	accept: string,
+	"displayFallback.DETAIL": string,
+	"displayFallback.SHORT": string,
+	displayOrder: number,
+	flavorSubType: string,
+	flavorType: string,
+	id: string,
+	multiple: boolean,
+	showAs: string,
+	title: string,
+	type: string,
+	displayOverride?: string,
+}
+
+export type UploadAssetsTrack = UploadAssetOption & {
+	file?: FileList
+}
+
 type EventState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
@@ -149,7 +168,7 @@ type EventState = {
 	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	isFetchingAssetUploadOptions: boolean,
-	uploadAssetOptions: any[],
+	uploadAssetOptions: UploadAssetOption[],
 	uploadAssetWorkflow: any,		// TODO: proper typing
 	schedulingInfo: {
 		editedEvents: EditedEvents[],
@@ -400,18 +419,7 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 		scheduleStartHour: string,
 		scheduleStartMinute: string,
 		sourceMode: string,
-		uploadAssetsTrack: {
-			accept: string,
-			displayOrder: number,
-			file: FileList,
-			flavorSubtType: string,
-			flavorType: string,
-			id: string,
-			multiple: boolean,
-			showAs: string,
-			title: string,
-			type: string,
-		}[],
+		uploadAssetsTrack?: UploadAssetsTrack[],
 		[key: string]: unknown,
 	},
 	metadataInfo: MetadataCatalog,
@@ -424,7 +432,7 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 	const uploadAssetOptions = getAssetUploadOptions(state as RootState);
 
 	let formData = new FormData();
-	let metadataFields, extendedMetadataFields, metadata, source, access, assets;
+	let metadataFields, extendedMetadataFields, metadata, source, access;
 
 	// prepare metadata provided by user
 	metadataFields = prepareMetadataFieldsForPost(metadataInfo.fields, values);
@@ -528,7 +536,10 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 
 	// information about upload assets options
 	// need to provide all possible upload asset options independent of source mode/type
-	assets = {
+	let assets: {
+		workflow: string,
+		options: UploadAssetOption[],
+	}= {
 		workflow: WORKFLOW_UPLOAD_ASSETS_NON_TRACK,
 		options: [],
 	};
@@ -540,7 +551,7 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 			uploadAssetOptions[i].type === "track" &&
 			values.sourceMode === "UPLOAD"
 		) {
-			let asset = values.uploadAssetsTrack.find(
+			let asset = values.uploadAssetsTrack?.find(
 				(asset) => asset.id === uploadAssetOptions[i].id
 			);
 			if (!!asset && !!asset.file) {
