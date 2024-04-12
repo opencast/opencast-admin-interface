@@ -94,6 +94,7 @@ const StartTaskWorkflowPage = <T extends RequiredFormProps>({
 											<RenderWorkflowConfig
 												displayDescription
 												workflowId={formik.values.workflow}
+												// @ts-expect-error TS(7006):
 												formik={formik}
 											/>
 										</div>

@@ -1,6 +1,6 @@
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Field } from "formik";
+import { Field, FormikProps } from "formik";
 import {
 	getWorkflowDefById,
 } from "../../../../selectors/workflowSelectors";
@@ -10,14 +10,18 @@ import { useAppSelector } from "../../../../store";
  * This component renders the configuration panel for the selected workflow in the processing step of the new event
  * wizard chosen via dropdown.
  */
-const RenderWorkflowConfig: React.FC<{
-	workflowId: string
-	formik: any	//TODO: Add type
-	displayDescription?: any
-}> = ({
+interface RequiredFormProps {
+	configuration?: { [key: string]: any }
+}
+
+const RenderWorkflowConfig = <T extends RequiredFormProps>({
 	workflowId,
 	formik,
 	displayDescription
+}: {
+	workflowId: string
+	formik: FormikProps<T>
+	displayDescription?: boolean
 }) => {
 
 	const workflowDef = useAppSelector(state => getWorkflowDefById(state, workflowId));
@@ -82,8 +86,11 @@ const RenderWorkflowConfig: React.FC<{
 };
 
 // render input depending on field type
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
-const renderInputByType = (field, key, formik) => {
+const renderInputByType = <T extends RequiredFormProps>(
+	field: any,
+	key: React.Key | null | undefined,
+	formik: FormikProps<T>,
+) => {
 	switch (field.type) {
 		case "checkbox":
 			return <RenderCheckbox field={field} key={key} formik={formik} />;
@@ -100,26 +107,25 @@ const renderInputByType = (field, key, formik) => {
 	}
 };
 
-// @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderDatetimeLocal = ({ field, formik }) => {
+const RenderDatetimeLocal = <T extends RequiredFormProps>(
+	{ field, formik } : { field: any, formik: FormikProps<T> }) => {
 		return <RenderField field={field} formik={formik} />;
 };
 
-// @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderCheckbox = ({ field, formik }) => {
+const RenderCheckbox = <T extends RequiredFormProps>(
+	{ field, formik } : { field: any, formik: FormikProps<T> }) => {
 		return <RenderField field={field} formik={formik} />;
 };
 
-// @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderRadio = ({ field, formik }) => {
+const RenderRadio = <T extends RequiredFormProps>(
+	{ field, formik } : { field: any, formik: FormikProps<T> }) => {
 		return <RenderField field={field} formik={formik} />;
 };
 
-// @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderNumber = ({ field, formik }) => {
+const RenderNumber = <T extends RequiredFormProps>(
+	{ field, formik } : { field: any, formik: FormikProps<T> }) => {
 	// validate that value of number is between max and min
-// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
-	const validate = (value) => {
+	const validate = (value: string) => {
 		let error;
 		if (parseInt(value) > field.max || parseInt(value) < field.min) {
 			error = "out of range";
@@ -130,19 +136,24 @@ const RenderNumber = ({ field, formik }) => {
 		return <RenderField field={field} formik={formik} validate={validate}/>;
 };
 
-// @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RenderText = ({ field, formik }) => {
+const RenderText = <T extends RequiredFormProps>({
+	field,
+	formik
+}: {
+	field: any,
+	formik: FormikProps<T>,
+}) => {
 		return <RenderField field={field} formik={formik} />;
 };
 
-const RenderField : React.FC<{
-	field: any,
-	formik: any,
-	validate?: (value: any) => string | undefined,
-}> = ({
+const RenderField = <T extends RequiredFormProps>({
 	field,
 	formik,
 	validate = undefined
+}: {
+	field: any,
+	formik: FormikProps<T>,
+	validate?: (value: any) => string | undefined,
 }) => {
 	// id used for Field and label
 	const uuid = uuidv4();
@@ -170,7 +181,7 @@ const RenderField : React.FC<{
 			<label htmlFor={uuid}>{field.label}</label>
 			{/* if input has an additional fieldset or further configuration inputs
 						then render again by input type*/}
-			{!!field.fieldset && !!formik.values.configuration[field.name] && (
+			{!!field.fieldset && !!formik.values.configuration && !!formik.values.configuration[field.name] && (
 				<ul className="workflow-configuration-subpanel">
 {/* @ts-expect-error TS(7006): Parameter 'f' implicitly has an 'any' type. */}
 					{field.fieldset?.map((f, keys) => renderInputByType(f, keys, formik))}
