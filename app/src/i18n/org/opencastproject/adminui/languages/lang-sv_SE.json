@@ -2146,6 +2146,9 @@
 			"full": "{{time, [kl] H:mm z}}"
 		}
 	},
-	"IMPRINT": "Tryck",
-	"PRIVACY": "Integritetspolicy"
+	"ABOUT": {
+		"IMPRINT": "Tryck",
+		"PRIVACY": "Integritetspolicy",
+		"NOCONTENT": "Obsah nie je k dispozícii"
+	}
 }

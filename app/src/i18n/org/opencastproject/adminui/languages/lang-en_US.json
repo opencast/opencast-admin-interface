@@ -2150,6 +2150,9 @@
 			"full": "{{time, h:mm:ss a z}}"
 		}
 	},
-	"IMPRINT": "Imprint",
-	"PRIVACY": "Privacy statement"
+	"ABOUT": {
+		"IMPRINT": "Imprint",
+		"PRIVACY": "Privacy statement",
+		"NOCONTENT": "Content not available"
+	}
 }

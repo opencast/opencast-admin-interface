@@ -2146,6 +2146,9 @@
 			"full": "{{time, ahh[\u6642]mm[\u5206]ss[\u79d2] z}}"
 		}
 	},
-	"IMPRINT": "版本说明",
-	"PRIVACY": "隐私政策"
+	"ABOUT": {
+		"IMPRINT": "版本说明",
+		"PRIVACY": "隐私政策",
+		"NOCONTENT": "内容不详"
+	}
 }

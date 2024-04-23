@@ -32,8 +32,12 @@ const Footer: React.FC = () => {
 							)}
 						</li>
 					)}
-					<li><Link to="/about/imprint">{t("IMPRINT")}</Link></li>
-					<li><Link to="/about/privacy">{t("PRIVACY")}</Link></li>
+					{!!orgProperties && !!orgProperties["org.opencastproject.admin.display_about"] && (
+						<>
+						<li><Link to="/about/imprint">{t("ABOUT.IMPRINT")}</Link></li>
+						<li><Link to="/about/privacy">{t("ABOUT.PRIVACY")}</Link></li>
+						</>
+					)}
 				</ul>
 
 				{/* Only render if a feedback URL is set*/}

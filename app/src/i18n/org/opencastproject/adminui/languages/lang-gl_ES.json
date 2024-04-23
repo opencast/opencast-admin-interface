@@ -2146,6 +2146,9 @@
 			"full": "{{time, h:mm:ss a z}}"
 		}
 	},
-	"IMPRINT": "Pegada",
-	"PRIVACY": "Protección de datos"
+	"ABOUT": {
+		"IMPRINT": "Pegada",
+		"PRIVACY": "Protección de datos",
+		"NOCONTENT": "Contido non dispoñible"
+	}
 }

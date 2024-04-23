@@ -2146,6 +2146,9 @@
 			"full": "{{time, H:mm:ss z}}"
 		}
 	},
-	"IMPRINT": "Odtis",
-	"PRIVACY": "Politika zasebnosti"
+	"ABOUT": {
+		"IMPRINT": "Odtis",
+		"PRIVACY": "Politika zasebnosti",
+		"NOCONTENT": "Vsebina ni na voljo"
+	}
 }

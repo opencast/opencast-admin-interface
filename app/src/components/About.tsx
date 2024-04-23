@@ -7,6 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 import cn from "classnames";
 import axios from 'axios';
 import i18n from "../i18n/i18n";
+import DOMPurify from "dompurify";
 
 const About: React.FC = () => {
 	const { t } = useTranslation();
@@ -35,6 +36,7 @@ const About: React.FC = () => {
 					})
 					.catch(error => {
 						console.error('Error while fetching data:', error);
+						setAboutContent(t("ABOUT.NOCONTENT").toString());
 					});
 			});
 
@@ -46,12 +48,12 @@ const About: React.FC = () => {
 			<section className="action-nav-bar">
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
 				<nav>
-					<Link to="/about/imprint" className={cn({ active: location.pathname === "/about/imprint" })} onClick={() => { }}>{t("IMPRINT")}</Link>
-					<Link to="/about/privacy" className={cn({ active: location.pathname === "/about/privacy" })} onClick={() => { }}>{t("PRIVACY")}</Link>
+					<Link to="/about/imprint" className={cn({ active: location.pathname === "/about/imprint" })} onClick={() => { }}>{t("ABOUT.IMPRINT")}</Link>
+					<Link to="/about/privacy" className={cn({ active: location.pathname === "/about/privacy" })} onClick={() => { }}>{t("ABOUT.PRIVACY")}</Link>
 				</nav>
 			</section>
 			<div className="about">
-				<div dangerouslySetInnerHTML={{ __html: aboutContent }} ></div>
+				<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(aboutContent) }} ></div>
 			</div>
 			<Footer />
 		</span>

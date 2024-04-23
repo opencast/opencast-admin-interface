@@ -2146,6 +2146,9 @@
 			"full": "{{time, HH:mm [Uhr] z}}"
 		}
 	},
-	"IMPRINT": "Impressum",
-	"PRIVACY": "Datenschutzerklärung"
+	"ABOUT": {
+		"IMPRINT": "Impressum",
+		"PRIVACY": "Datenschutzerklärung",
+		"NOCONTENT": "Inhalt nicht verfügbar"
+	}
 }

@@ -2146,6 +2146,9 @@
 			"full": "{{time, H:mm:ss [uur] z}}"
 		}
 	},
-	"IMPRINT": "Afdruk",
-	"PRIVACY": "Privacybeleid"
+	"ABOUT": {
+		"IMPRINT": "Afdruk",
+		"PRIVACY": "Privacybeleid",
+		"NOCONTENT": "Inhoud niet beschikbaar"
+	}
 }

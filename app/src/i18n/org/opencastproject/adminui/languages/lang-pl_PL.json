@@ -2146,6 +2146,9 @@
 			"full": "{{time, HH:mm:ss z}}"
 		}
 	},
-	"IMPRINT": "Nadruk",
-	"PRIVACY": "Polityka prywatności"
+	"ABOUT": {
+		"IMPRINT": "Nadruk",
+		"PRIVACY": "Polityka prywatności",
+		"NOCONTENT": "Zawartość niedostępna"
+	}
 }
