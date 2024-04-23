@@ -19,12 +19,20 @@ import "react-datepicker/dist/react-datepicker.css";
 
 // todo: comment persistent stuff in, only out commented because for debugging purposes
 const persistor = persistStore(store);
+const accepted_terms = true;
+
+const Terms = () => {
+	return (
+		<div className="terms">Terms of Use</div>
+	);
+};
 
 ReactDOM.render(
 	<React.StrictMode>
 		<Provider store={store}>
 			<PersistGate loading={<div>loading...</div>} persistor={persistor}>
-				<App />
+				{!accepted_terms && <Terms />}
+				<div className={!accepted_terms?"blurred":""}><App /></div>
 			</PersistGate>
 		</Provider>
 	</React.StrictMode>,

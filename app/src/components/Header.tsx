@@ -20,6 +20,7 @@ import { studioURL } from "../configs/generalConfig";
 import { getCurrentLanguageInformation, hasAccess } from "../utils/utils";
 import { overflowStyle } from "../utils/componentStyles";
 import RegistrationModal from "./shared/RegistrationModal";
+import TermsOfUseModal from "./shared/TermsOfUseModal";
 import HotKeyCheatSheet from "./shared/HotKeyCheatSheet";
 import { useAppDispatch, useAppSelector } from "../store";
 import { fetchHealthStatus } from "../slices/healthSlice";
@@ -292,6 +293,8 @@ const Header = ({
 			{displayRegistrationModal && (
 				<RegistrationModal close={hideRegistrationModal} />
 			)}
+
+			{true && (<TermsOfUseModal />)}
 
 			{/* Hotkey Cheat Sheet */}
 			{displayHotKeyCheatSheet && (

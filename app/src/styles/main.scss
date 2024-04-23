@@ -573,6 +573,32 @@ tr.info {
   background: $state-info-bg !important;
 }
 
+.terms {
+  width:80%;
+  height: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  border: 1px solid #ddd;
+  position: absolute;
+  z-index: 99999;
+  background-color: #ededed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 50px 1px #444;
+}
+
+.blurred {
+  pointer-events: none;
+  filter: blur(4px);
+  -webkit-filter: blur(4px);
+}
+
 /*
 * ----------------------------------------------------------------
 * THE FOLLOWING SECTION NEEDS TO BE DELEGATED TO THE DESIGNERS!!!
