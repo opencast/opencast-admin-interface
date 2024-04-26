@@ -79,6 +79,13 @@ export const eventsTableConfig: TableConfig = {
 			label: "EVENTS.EVENTS.TABLE.ACTION",
 			translate: false,
 		},
+		{
+			name: "notes",
+			template: "EventsNotesCell",
+			label: "EVENTS.EVENTS.TABLE.ADMINUI_NOTES",
+			translate: false,
+			deactivated: true,
+		},
 	],
 	caption: "EVENTS.EVENTS.TABLE.CAPTION",
 	resource: "events",
