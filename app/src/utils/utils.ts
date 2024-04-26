@@ -1,5 +1,6 @@
 import languages from "../i18n/languages";
 import i18n from "../i18n/i18n";
+import { TFunction } from "i18next";
 import { UserInfoState } from "../slices/userInfoSlice";
 
 /**
@@ -132,3 +133,34 @@ export const isJson = (text: string) => {
 		return false;
 	}
 };
+
+/**
+ * Handles translation for assets with overrides or fallbackes in their
+ * translation as defined in Opencast documentation under
+ * /docs/guides/admin/docs/configuration/admin-ui/asset-upload.md
+ *
+ * Asset is expected to have a field "title" that contains a translation string
+ * t is the hook returned by i18next.useTranslation
+ * suffix further specifices the asset value if necessary, e.g. "SHORT" for "displayOverride.SHORT"
+ */
+export const translateOverrideFallback = (asset: any, t: TFunction, suffix?: string) => {
+	let result = undefined;
+	const sub = !!suffix ? "." + suffix : "";
+	const translatable = asset["title"] + sub;
+
+	if (asset['displayOverride' + sub]) {
+		result = asset['displayOverride' + sub];
+
+	} else if (i18n.exists(translatable)) {
+		result = t(translatable);
+
+	} else if (asset['displayFallback' + sub]) {
+		result = asset['displayFallback' + sub];
+
+	} else {
+		// no translate, override, or fallback, use what is given
+		result = translatable;
+	}
+
+	return result;
+}

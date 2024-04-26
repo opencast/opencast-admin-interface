@@ -6,6 +6,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
 	getCurrentLanguageInformation,
 	getTimezoneOffset,
+	translateOverrideFallback,
 } from "../../../../utils/utils";
 import { Field, FieldArray, FormikProps } from "formik";
 import RenderField from "../../../shared/wizard/RenderField";
@@ -244,20 +245,14 @@ const Upload = ({ formik }) => {
 										<tr key={key}>
 											<td>
 												<span style={{ fontWeight: "bold" }}>
-													{t(
-														asset.title + ".SHORT",
-														asset["displayOverride.SHORT"]
-													)}
+													{translateOverrideFallback(asset, t, "SHORT")}
 												</span>
 												<span className="ui-helper-hidden">
 													({asset.type} "{asset.flavorType}/
 													{asset.flavorSubType}")
 												</span>
 												<p>
-													{t(
-														asset.title + ".DETAIL",
-														asset["displayOverride.DETAIL"]
-													)}
+													{translateOverrideFallback(asset, t, "DETAIL")}
 												</p>
 											</td>
 											<td>
