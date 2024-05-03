@@ -54,7 +54,7 @@ export const makeTwoDigits = (number: number) => {
  * transforms an object of form { id1: value1, id2: value2 }
  * to [{id: id1, value: value1},{id: id2, value: value2}]
  */
-export const transformToIdValueArray = (data: {[key: string | number]: any}) => {
+export const transformToIdValueArray = (data: {[key: string | number]: string}) => {
 	return Object.keys(data).map((key) => {
 		return {
 			id: key,

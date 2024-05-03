@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import SelectContainer from "../../../shared/wizard/SelectContainer";
-import { fetchRolesWithTarget } from "../../../../thunks/aclThunks";
+import { fetchRolesWithTarget } from "../../../../slices/aclSlice";
 import { FormikProps } from "formik";
 
 /**
@@ -19,7 +19,7 @@ const GroupRolesPage = <T,>({
 	isEdit?: boolean,
 }) => {
 	// roles that can be chosen by user
-	const [roles, setRoles] = useState([]);
+	const [roles, setRoles] = useState<{ name: string }[]>([]);
 	// flag for API call
 	const [loading, setLoading] = useState(false);
 
@@ -36,7 +36,6 @@ const GroupRolesPage = <T,>({
 					});
 				}
 			}
-// @ts-expect-error TS(2345): Argument of type '{ name: any; }[]' is not assigna... Remove this comment to see the full error message
 			setRoles(roleNames);
 			setLoading(false);
 		}

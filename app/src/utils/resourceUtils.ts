@@ -5,6 +5,8 @@ import {
 	getTableDirection,
 	getTableSorting,
 } from "../selectors/tableSelectors";
+import { TransformedAcl } from "../slices/aclDetailsSlice";
+import { Acl } from "../slices/aclSlice";
 import { NewUser } from "../slices/userSlice";
 import { Recording } from "../slices/recordingSlice";
 import { UserInfoState } from "../slices/userInfoSlice";
@@ -434,20 +436,16 @@ export const prepareAccessPolicyRulesForPost = (policies) => {
 };
 
 // transform response data in form that is used in wizards and modals for policies (for each role one entry)
-// @ts-expect-error TS(7006): Parameter 'acl' implicitly has an 'any' type.
-export const transformAclTemplatesResponse = (acl) => {
-// @ts-expect-error TS(7034): Variable 'template' implicitly has type 'any[]' in... Remove this comment to see the full error message
-	let template = [];
+export const transformAclTemplatesResponse = (acl: Acl) => {
+	let template: TransformedAcl[] = [];
 
 	for (let i = 0; acl.ace.length > i; i++) {
-// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 		if (template.find((rule) => rule.role === acl.ace[i].role)) {
 			for (let j = 0; template.length > j; j++) {
 				// Only update entry for policy if already added with other action
 				if (template[j].role === acl.ace[i].role) {
 					if (acl.ace[i].action === "read") {
 						template[j] = {
-// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 							...template[j],
 							read: acl.ace[i].allow,
 						};
@@ -455,7 +453,6 @@ export const transformAclTemplatesResponse = (acl) => {
 					}
 					if (acl.ace[i].action === "write") {
 						template[j] = {
-// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 							...template[j],
 							write: acl.ace[i].allow,
 						};
@@ -467,9 +464,7 @@ export const transformAclTemplatesResponse = (acl) => {
 						acl.ace[i].allow === true
 					) {
 						template[j] = {
-// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 							...template[j],
-// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 							actions: template[j].actions.concat(acl.ace[i].action),
 						};
 						break;
@@ -479,7 +474,6 @@ export const transformAclTemplatesResponse = (acl) => {
 		} else {
 			// add policy if role not seen before
 			if (acl.ace[i].action === "read") {
-// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 				template = template.concat({
 					role: acl.ace[i].role,
 					read: acl.ace[i].allow,
