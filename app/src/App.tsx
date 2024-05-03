@@ -54,8 +54,7 @@ function App() {
 
 				<Route
 					path={"*"}
-// @ts-expect-error TS(2322): Type '{ path: string; render: () => Element; }' is... Remove this comment to see the full error message
-					render={() => <Navigate to={"/events/events"} replace />}
+					element={<Navigate to={"/events/events"} replace />}
 				/>
 			</Routes>
 		</HashRouter>
