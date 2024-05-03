@@ -1750,14 +1750,6 @@
 			"VOLUME": "Lautstärke"
 		}
 	},
-	"LOGIN": {
-		"WELCOME": "Willkommen bei Opencast",
-		"REMEMBER": "Automatisch anmelden",
-		"USERNAME": "Benutzername…",
-		"PASSWORD": "Passwort…",
-		"LOGIN": "Anmelden",
-		"ERROR": "Falscher Benutzername und/oder Passwort"
-	},
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Bitte einen Filter wählen…",

@@ -1754,14 +1754,6 @@
 			"VOLUME": "Volume"
 		}
 	},
-	"LOGIN": {
-		"WELCOME": "Welcome to Opencast",
-		"REMEMBER": "Remember me on this computer",
-		"USERNAME": "Username…",
-		"PASSWORD": "Password…",
-		"LOGIN": "Login",
-		"ERROR": "Incorrect username and / or password"
-	},
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Please select a filter…",
