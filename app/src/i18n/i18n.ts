@@ -61,7 +61,6 @@ const resources = {
 };
 
 // Configuration of i18next
-// @ts-expect-error TS(2769): No overload matches this call.
 i18n
 	.use(Backend)
 	.use(LanguageDetector)
@@ -82,7 +81,6 @@ i18n
 			},
 		},
 		react: {
-			wait: true,
 			useSuspense: false,
 		},
 	});
