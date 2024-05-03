@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "/admin-ui",
   "dependencies": {
-    "@edorivai/react-smooth-dnd": "^0.11.2",
+    "@hello-pangea/dnd": "^16.5.0",
     "@mui/material": "^5.15.6",
     "@mui/styles": "^5.15.6",
     "@mui/x-date-pickers": "^6.19.0",
