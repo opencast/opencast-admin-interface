@@ -29,13 +29,6 @@ module.exports = function (app) {
 		})
 	);
 	app.use(
-		"/i18n",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
 		"/blacklist",
 		createProxyMiddleware({
 			target: "http://localhost:5000",
