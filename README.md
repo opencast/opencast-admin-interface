@@ -62,7 +62,19 @@ Alternatively you can spin up a mock instance of the admin ui with:
 This uses mock data instead of a real Opencast. This means certain features will
 not work when using this mode.
 
+### Alternative ports
 
+The static file server and the proxy server serve their content
+on the port 5000. If this is used already (as it is on macOS)
+you can specify an alternative port in the `PORT` environment variable,
+for example:
+
+    PORT=5001 npm run proxy-server ...
+
+Note that you need to specify the same port when running the client,
+this time in the `PROXY_PORT` variable:
+
+    PROXY_PORT=5001 npm run client
 
 How to cut a release for Opencast
 ---------------------------------
