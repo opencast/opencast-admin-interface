@@ -39,7 +39,7 @@ const About: React.FC = () => {
 						setAboutContent(t("ABOUT.NOCONTENT").toString());
 					});
 			});
-
+           // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location.pathname]); // Listen to changes in pathname
 
 	return (
