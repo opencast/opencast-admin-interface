@@ -1,0 +1,30 @@
+name: Test build
+
+on:
+  push:
+    branches-ignore:
+      - 'dependabot/**'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: get node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: download tooling dependencies
+        run: npm ci
+
+      - name: download dependencies
+        working-directory: ./app
+        run: npm ci
+
+      - name: build project
+        working-directory: ./app
+        run: npm run build
