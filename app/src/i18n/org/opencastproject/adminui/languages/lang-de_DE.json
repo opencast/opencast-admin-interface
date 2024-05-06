@@ -2139,10 +2139,5 @@
 			"medium": "{{time, HH:mm:ss}}",
 			"full": "{{time, HH:mm [Uhr] z}}"
 		}
-	},
-	"ABOUT": {
-		"IMPRINT": "Impressum",
-		"PRIVACY": "Datenschutzerklärung",
-		"NOCONTENT": "Inhalt nicht verfügbar"
 	}
 }

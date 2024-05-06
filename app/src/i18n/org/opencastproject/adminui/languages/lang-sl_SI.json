@@ -2137,10 +2137,5 @@
 			"medium": "{{time, H:mm:ss}}",
 			"full": "{{time, H:mm:ss z}}"
 		}
-	},
-	"ABOUT": {
-		"IMPRINT": "Odtis",
-		"PRIVACY": "Politika zasebnosti",
-		"NOCONTENT": "Vsebina ni na voljo"
 	}
 }

@@ -2137,10 +2137,5 @@
 			"medium": "{{time, h:mm:ss a}}",
 			"full": "{{time, h:mm:ss a z}}"
 		}
-	},
-	"ABOUT": {
-		"IMPRINT": "Pegada",
-		"PRIVACY": "Protección de datos",
-		"NOCONTENT": "Contido non dispoñible"
 	}
 }

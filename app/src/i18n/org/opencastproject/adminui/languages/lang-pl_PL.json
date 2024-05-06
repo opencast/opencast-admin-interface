@@ -2137,10 +2137,5 @@
 			"medium": "{{time, HH:mm:ss}}",
 			"full": "{{time, HH:mm:ss z}}"
 		}
-	},
-	"ABOUT": {
-		"IMPRINT": "Nadruk",
-		"PRIVACY": "Polityka prywatności",
-		"NOCONTENT": "Zawartość niedostępna"
 	}
 }

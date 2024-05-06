@@ -2137,10 +2137,5 @@
 			"medium": "{{time, HH:mm:ss}}",
 			"full": "{{time, HH:mm:ss [o'clock] z}}"
 		}
-	},
-	"ABOUT": {
-		"IMPRINT": "Imprint",
-		"PRIVACY": "Privacy statement",
-		"NOCONTENT": "Content not available"
 	}
 }
