@@ -15,6 +15,7 @@ import ModalNavigation from "../../../shared/modals/ModalNavigation";
 import { NewThemeSchema } from "../../../../utils/validate";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { updateThemeDetails } from "../../../../slices/themeDetailsSlice";
+import { Details } from "../../../../slices/themeSlice";
 
 /**
  * This component manages the pages of the theme details
@@ -79,14 +80,12 @@ const ThemeDetails : React.FC<{
 	const currentValidationSchema = NewThemeSchema[page];
 
 	// update theme
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (values: Details) => {
 		dispatch(updateThemeDetails({id: themeDetails.id, values: values}));
 		close();
 	};
 
-// @ts-expect-error TS(7006): Parameter 'tabNr' implicitly has an 'any' type.
-	const openTab = (tabNr) => {
+	const openTab = (tabNr: number) => {
 		setPage(tabNr);
 	};
 

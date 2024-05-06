@@ -591,6 +591,7 @@
 				"NOCONTENT": "No data available",
 				"PUBLISHED": "Published",
 				"WEEKDAY": "Weekday",
+				"ADMINUI_NOTES": "Notes",
 				"TOOLTIP": {
 					"ASSETS": "Open asset details",
 					"START": "Filter for this start date",
@@ -879,7 +880,8 @@
 						"WRONG_METADATA": "Metadata needs correction",
 						"WRONG_SERIES_PUBLICATION": "Wrong series or publication channel",
 						"WRONG_WORKFLOW": "Wrong workflow",
-						"PROCESSING_FAILURE": "Processing failure"
+						"PROCESSING_FAILURE": "Processing failure",
+						"ADMINUI_NOTES": "Notes in Admin UI"
 					}
 				},
 				"STATISTICS": {
@@ -1751,14 +1753,6 @@
 			"MUTE": "Mute",
 			"VOLUME": "Volume"
 		}
-	},
-	"LOGIN": {
-		"WELCOME": "Welcome to Opencast",
-		"REMEMBER": "Remember me on this computer",
-		"USERNAME": "Username…",
-		"PASSWORD": "Password…",
-		"LOGIN": "Login",
-		"ERROR": "Incorrect username and / or password"
 	},
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {

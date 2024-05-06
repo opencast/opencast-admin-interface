@@ -2,18 +2,17 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import Notifications from "../../../shared/Notifications";
-import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
 	getCurrentLanguageInformation,
 	getTimezoneOffset,
+	translateOverrideFallback,
 } from "../../../../utils/utils";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
-import { Field, FieldArray } from "formik";
+import { Field, FieldArray, FormikProps } from "formik";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
 import { hours, minutes, weekdays } from "../../../../configs/modalConfig";
-import DateFnsUtils from "@date-io/date-fns";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import {
 	filterDevicesForAccess,
@@ -38,20 +37,10 @@ import {
 	changeStartMinuteMultiple,
 } from "../../../../utils/dateUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { fetchRecordings } from "../../../../slices/recordingSlice";
+import { Recording, fetchRecordings } from "../../../../slices/recordingSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { parseISO } from "date-fns";
 import { checkConflicts } from "../../../../slices/eventSlice";
-
-// Style to bring date picker pop up to front
-const theme = createMuiTheme({
-	props: {
-		MuiDialog: {
-			style: {
-				zIndex: "2147483550",
-			},
-		},
-	},
-});
 
 /**
  * This component renders the source page for new events in the new event wizard.
@@ -256,20 +245,14 @@ const Upload = ({ formik }) => {
 										<tr key={key}>
 											<td>
 												<span style={{ fontWeight: "bold" }}>
-													{t(
-														asset.title + ".SHORT",
-														asset["displayOverride.SHORT"]
-													)}
+													{translateOverrideFallback(asset, t, "SHORT")}
 												</span>
 												<span className="ui-helper-hidden">
 													({asset.type} "{asset.flavorType}/
 													{asset.flavorSubType}")
 												</span>
 												<p>
-													{t(
-														asset.title + ".DETAIL",
-														asset["displayOverride.DETAIL"]
-													)}
+													{translateOverrideFallback(asset, t, "DETAIL")}
 												</p>
 											</td>
 											<td>
@@ -349,8 +332,24 @@ const Upload = ({ formik }) => {
 /*
  * Renders fields for providing information for schedule of event
  */
-// @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
-const Schedule = ({ formik, inputDevices }) => {
+const Schedule = <T extends {
+	location: string
+	scheduleStartDate: string
+	scheduleEndDate: string
+	sourceMode: string
+	scheduleStartHour: number
+	scheduleEndHour: number
+	scheduleStartMinute: number
+	scheduleEndMinute: number
+	scheduleDurationHours: number
+	scheduleDurationMinutes: number
+}>({
+	formik,
+	inputDevices
+}: {
+	formik: FormikProps<T>,
+	inputDevices: Recording[]
+}) => {
 	const { t } = useTranslation();
 
 	const currentLanguage = getCurrentLanguageInformation();
@@ -358,7 +357,6 @@ const Schedule = ({ formik, inputDevices }) => {
 	const renderInputDeviceOptions = () => {
 		if (!!formik.values.location) {
 			let inputDevice = inputDevices.find(
-// @ts-expect-error TS(7031): Binding element 'name' implicitly has an 'any' typ... Remove this comment to see the full error message
 				({ name }) => name === formik.values.location
 			);
 // @ts-expect-error TS(7006): Parameter 'input' implicitly has an 'any' type.
@@ -392,34 +390,27 @@ const Schedule = ({ formik, inputDevices }) => {
 								<i className="required">*</i>
 							</td>
 							<td>
-								<ThemeProvider theme={theme}>
-									<MuiPickersUtilsProvider
-										utils={DateFnsUtils}
-// @ts-expect-error TS(2532): Object is possibly 'undefined'.
-										locale={currentLanguage.dateLocale}
-									>
-										<DatePicker
-											name="scheduleStartDate"
-											value={formik.values.scheduleStartDate}
-											onChange={(value) => {
-												if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-													changeStartDateMultiple(
-														value,
-														formik.values,
-														formik.setFieldValue
-													);
-												} else {
-													changeStartDate(
-														value,
-														formik.values,
-														formik.setFieldValue
-													);
-												}
-											}}
-											tabIndex={4}
-										/>
-									</MuiPickersUtilsProvider>
-								</ThemeProvider>
+								<DatePicker
+									name="scheduleStartDate"
+									value={typeof formik.values.scheduleStartDate === "string" ? parseISO(formik.values.scheduleStartDate): formik.values.scheduleStartDate}
+									onChange={(value) => {
+										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+											changeStartDateMultiple(
+												value,
+												formik.values,
+												formik.setFieldValue
+											);
+										} else {
+											changeStartDate(
+												value,
+												formik.values,
+												formik.setFieldValue
+											);
+										}
+									}}
+									// @ts-expect-error TS(2322):
+									tabIndex={4}
+								/>
 							</td>
 						</tr>
 						{/* Render fields specific for multiple schedule (Only if this is current source mode)*/}
@@ -431,20 +422,19 @@ const Schedule = ({ formik, inputDevices }) => {
 										<i className="required">*</i>
 									</td>
 									<td>
-										<ThemeProvider theme={theme}>
-											<DatePicker
-												name="scheduleEndDate"
-												value={formik.values.scheduleEndDate}
-												onChange={(value) =>
-													changeEndDateMultiple(
-														value,
-														formik.values,
-														formik.setFieldValue
-													)
-												}
-												tabIndex={5}
-											/>
-										</ThemeProvider>
+										<DatePicker
+											name="scheduleEndDate"
+											value={typeof formik.values.scheduleEndDate === "string" ? parseISO(formik.values.scheduleEndDate) : formik.values.scheduleEndDate}
+											onChange={(value) =>
+												changeEndDateMultiple(
+													value,
+													formik.values,
+													formik.setFieldValue
+												)
+											}
+											// @ts-expect-error TS(2322):
+											tabIndex={5}
+										/>
 									</td>
 								</tr>
 								<tr>
@@ -482,24 +472,25 @@ const Schedule = ({ formik, inputDevices }) => {
 								 */}
 								<DropDown
 									value={formik.values.scheduleStartHour}
-									text={formik.values.scheduleStartHour}
+									text={formik.values.scheduleStartHour.toString()}
 									options={hours}
 									type={"time"}
 									required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 									handleChange={(element) => {
-										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-											changeStartHourMultiple(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
-										} else {
-											changeStartHour(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
+										if (element) {
+											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+												changeStartHourMultiple(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											} else {
+												changeStartHour(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											}
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
@@ -512,24 +503,25 @@ const Schedule = ({ formik, inputDevices }) => {
 								 */}
 								<DropDown
 									value={formik.values.scheduleStartMinute}
-									text={formik.values.scheduleStartMinute}
+									text={formik.values.scheduleStartMinute.toString()}
 									options={minutes}
 									type={"time"}
 									required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 									handleChange={(element) => {
-										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-											changeStartMinuteMultiple(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
-										} else {
-											changeStartMinute(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
+										if (element) {
+											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+												changeStartMinuteMultiple(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											} else {
+												changeStartMinute(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											}
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
@@ -549,24 +541,25 @@ const Schedule = ({ formik, inputDevices }) => {
 								 */}
 								<DropDown
 									value={formik.values.scheduleDurationHours}
-									text={formik.values.scheduleDurationHours}
+									text={formik.values.scheduleDurationHours.toString()}
 									options={hours}
 									type={"time"}
 									required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 									handleChange={(element) => {
-										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-											changeDurationHourMultiple(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
-										} else {
-											changeDurationHour(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
+										if (element) {
+											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+												changeDurationHourMultiple(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											} else {
+												changeDurationHour(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											}
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
@@ -579,24 +572,25 @@ const Schedule = ({ formik, inputDevices }) => {
 								 */}
 								<DropDown
 									value={formik.values.scheduleDurationMinutes}
-									text={formik.values.scheduleDurationMinutes}
+									text={formik.values.scheduleDurationMinutes.toString()}
 									options={minutes}
 									type={"time"}
 									required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 									handleChange={(element) => {
-										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-											changeDurationMinuteMultiple(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
-										} else {
-											changeDurationMinute(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
+										if (element) {
+											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+												changeDurationMinuteMultiple(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											} else {
+												changeDurationMinute(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											}
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
@@ -616,24 +610,25 @@ const Schedule = ({ formik, inputDevices }) => {
 								 */}
 								<DropDown
 									value={formik.values.scheduleEndHour}
-									text={formik.values.scheduleEndHour}
+									text={formik.values.scheduleEndHour.toString()}
 									options={hours}
 									type={"time"}
 									required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 									handleChange={(element) => {
-										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-											changeEndHourMultiple(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
-										} else {
-											changeEndHour(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
+										if (element) {
+											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+												changeEndHourMultiple(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											} else {
+												changeEndHour(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											}
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
@@ -646,24 +641,25 @@ const Schedule = ({ formik, inputDevices }) => {
 								 */}
 								<DropDown
 									value={formik.values.scheduleEndMinute}
-									text={formik.values.scheduleEndMinute}
+									text={formik.values.scheduleEndMinute.toString()}
 									options={minutes}
 									type={"time"}
 									required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 									handleChange={(element) => {
-										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-											changeEndMinuteMultiple(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
-										} else {
-											changeEndMinute(
-												element.value,
-												formik.values,
-												formik.setFieldValue
-											).then();
+										if (element) {
+											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+												changeEndMinuteMultiple(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											} else {
+												changeEndMinute(
+													element.value,
+													formik.values,
+													formik.setFieldValue
+												).then();
+											}
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
@@ -699,10 +695,11 @@ const Schedule = ({ formik, inputDevices }) => {
 									options={inputDevices}
 									type={"captureAgent"}
 									required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-									handleChange={(element) =>
-										formik.setFieldValue("location", element.value)
-									}
+									handleChange={(element) => {
+										if (element) {
+											formik.setFieldValue("location", element.value)
+										}
+									}}
 									placeholder={t(
 										"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.LOCATION"
 									)}

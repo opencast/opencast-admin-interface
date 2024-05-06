@@ -1748,14 +1748,6 @@
 			"VOLUME": "Volume"
 		}
 	},
-	"LOGIN": {
-		"WELCOME": "Welkom bij Opencast",
-		"REMEMBER": "Onthoud mijn gegevens op deze computer",
-		"USERNAME": "Gebruikersnaam…",
-		"PASSWORD": "Wachtwoord…",
-		"LOGIN": "Aanmelden",
-		"ERROR": "Onjuiste gebruikersnaam en / of wachtwoord"
-	},
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Selecteer een filter…",

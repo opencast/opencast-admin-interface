@@ -30,7 +30,7 @@ const initialState: GroupDetailsState = {
 };
 
 // fetch details about certain group from server
-export const fetchGroupDetails = createAsyncThunk('groupDetails/fetchGroupDetails', async (groupName: any, {dispatch}) => {
+export const fetchGroupDetails = createAsyncThunk('groupDetails/fetchGroupDetails', async (groupName: string) => {
 	const res = await axios.get(`/admin-ng/groups/${groupName}`);
 	const response = await res.data;
 
@@ -58,7 +58,10 @@ export const fetchGroupDetails = createAsyncThunk('groupDetails/fetchGroupDetail
 });
 
 // update details of a certain group
-export const updateGroupDetails = createAsyncThunk('groupDetails/updateGroupDetails', async (params: {values: any, groupId: any}, {dispatch}) => {
+export const updateGroupDetails = createAsyncThunk('groupDetails/updateGroupDetails', async (params: {
+	values: GroupDetailsState,
+	groupId: string
+}, {dispatch}) => {
 	const { values, groupId } = params
 
 	// get URL params used for put request

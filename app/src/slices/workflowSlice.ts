@@ -38,7 +38,7 @@ const initialState: WorkflowState = {
 };
 
 // fetch workflow definitions from server
-export const fetchWorkflowDef = createAsyncThunk('workflow/fetchWorkflowDef', async (type: any) => {
+export const fetchWorkflowDef = createAsyncThunk('workflow/fetchWorkflowDef', async (type: string) => {
 	let urlParams;
 
 	switch (type) {

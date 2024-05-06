@@ -32,7 +32,6 @@ const RecordingsNameCell = ({
 			to="/events/events"
 			className="crosslink"
 			onClick={async () => await redirectToEvents(row.Name)}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 			title={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.NAME")}
 		>
 			{row.name}

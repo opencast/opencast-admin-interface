@@ -3,6 +3,8 @@ import { groupsTableConfig } from '../configs/tableConfigs/groupsTableConfig';
 import axios from 'axios';
 import { buildGroupBody, getURLParams } from '../utils/resourceUtils';
 import { addNotification } from '../slices/notificationSlice';
+import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
+import { RootState } from '../store';
 
 /**
  * This file contains redux reducer for actions affecting the state of groups
@@ -19,7 +21,7 @@ type GroupState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
 	results: Group[],
-	columns: any,			 // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],
 	total: number,
 	count: number,
 	offset: number,
@@ -47,7 +49,7 @@ const initialState: GroupState = {
 // fetch groups from server
 export const fetchGroups = createAsyncThunk('groups/fetchGroups', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state);
+	let params = getURLParams(state as RootState);
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -56,7 +58,7 @@ export const fetchGroups = createAsyncThunk('groups/fetchGroups', async (_, { ge
 });
 
 // post new group to backend
-export const postNewGroup = createAsyncThunk('groups/postNewGroup', async (values: any, {dispatch}) => {
+export const postNewGroup = createAsyncThunk('groups/postNewGroup', async (values: Group, {dispatch}) => {
 	// get URL params used for post request
 	let data = buildGroupBody(values);
 
@@ -81,7 +83,7 @@ export const postNewGroup = createAsyncThunk('groups/postNewGroup', async (value
 		});
 });
 
-export const deleteGroup = createAsyncThunk('groups/deleteGroup', async (id: any, {dispatch}) => {
+export const deleteGroup = createAsyncThunk('groups/deleteGroup', async (id: string, {dispatch}) => {
 	// API call for deleting a group
 	axios
 		.delete(`/admin-ng/groups/${id}`)

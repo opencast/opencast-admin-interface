@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
@@ -9,17 +8,20 @@ import { initialFormValuesNewUser } from "../../../../configs/modalConfig";
 import { getUsernames } from "../../../../selectors/userSelectors";
 import { NewUserSchema } from "../../../../utils/validate";
 import { postNewUser } from "../../../../slices/userSlice";
-import { useAppDispatch } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 
 /**
  * This component renders the new user wizard
  */
 const NewUserWizard = ({
-    close,
-    usernames,
-}: any) => {
+	close,
+}: {
+	close: () => void,
+}) => {
 	const { t } = useTranslation();
-  const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
+
+	const usernames = useAppSelector(state => getUsernames(state));
 
 	const navStyle = {
 		left: "0px",
@@ -29,8 +31,7 @@ const NewUserWizard = ({
 
 	const [tab, setTab] = useState(0);
 
-// @ts-expect-error TS(7006): Parameter 'tabNr' implicitly has an 'any' type.
-	const openTab = (tabNr) => {
+	const openTab = (tabNr: number) => {
 		setTab(tabNr);
 	};
 
@@ -54,7 +55,6 @@ const NewUserWizard = ({
 				<button
 					className={"button-like-anchor " + cn("wider", { active: tab === 1 })}
 					onClick={() => openTab(1)}
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("USERS.USERS.DETAILS.DESCRIPTION.ROLES")}
 				>
 					{t("USERS.USERS.DETAILS.TABS.ROLES")}
@@ -103,15 +103,4 @@ const NewUserWizard = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	usernames: getUsernames(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(NewUserWizard);
+export default NewUserWizard;

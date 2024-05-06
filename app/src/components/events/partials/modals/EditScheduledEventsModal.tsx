@@ -33,13 +33,13 @@ const EditScheduledEventsModal = ({
 
 	const inputDevices = useAppSelector(state => getRecordings(state));
 	// TODO: Get rid of the wrappers when modernizing redux is done
-	const checkForSchedulingConflictsWrapper = (events: any) => {
-		dispatch(checkForSchedulingConflicts(events));
+	const checkForSchedulingConflictsWrapper = async(events: any) => {
+		return dispatch(checkForSchedulingConflicts(events));
 	}
 
 	const initialValues = initialFormValuesEditScheduledEvents;
 
-	const [
+	const {
 		snapshot,
 		page,
 		nextPage,
@@ -47,7 +47,7 @@ const EditScheduledEventsModal = ({
 		setPage,
 		pageCompleted,
 		setPageCompleted,
-	] = usePageFunctions(0, initialValues);
+	} = usePageFunctions(0, initialValues);
 
 	// for edit page: conflicts with other events
 	const [conflicts, setConflicts] = useState([]);
@@ -148,7 +148,9 @@ const EditScheduledEventsModal = ({
 								<div>
 									{page === 0 && (
 										<EditScheduledEventsGeneralPage
+										// @ts-expect-error: Type-checking gets confused by redux-connect in the child
 											formik={formik}
+										// @ts-expect-error: Type-checking gets confused by redux-connect in the child
 											nextPage={nextPage}
 										/>
 									)}

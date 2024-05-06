@@ -39,7 +39,6 @@ const Statistics: React.FC = () => {
 	const hasError = useAppSelector(state => hasStatisticsError(state));
 	const isLoadingStatistics = useAppSelector(state => isFetchingStatistics(state));
 
-	dispatch(fetchStatisticsPageStatisticsValueUpdate)
 	// TODO: Get rid of the wrappers when modernizing redux is done
 	const fetchStatisticsPageStatisticsValueUpdateWrapper = (organizationId: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any) => {
 		dispatch(fetchStatisticsPageStatisticsValueUpdate({organizationId, providerId, from, to, dataResolution, timeMode}))

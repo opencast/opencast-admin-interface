@@ -13,6 +13,9 @@ import {
 	transformToObjectArray,
 } from "../utils/utils";
 import { addNotification } from '../slices/notificationSlice';
+import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
+import { TransformedAcls } from './aclDetailsSlice';
+import { RootState } from '../store';
 
 /**
  * This file contains redux reducer for actions affecting the state of series
@@ -59,7 +62,7 @@ type SeriesState = {
 	statusThemes: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorThemes: SerializedError | null,
 	results: Series[],
-	columns: any,			 // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],
   showActions: boolean,
 	total: number,
 	count: number,
@@ -107,7 +110,7 @@ const initialState: SeriesState = {
 // fetch series from server
 export const fetchSeries = createAsyncThunk('series/fetchSeries', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state);
+	let params = getURLParams(state as RootState);
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -149,7 +152,23 @@ export const fetchSeriesThemes = createAsyncThunk('series/fetchSeriesThemes', as
 });
 
 // post new series to backend
-export const postNewSeries = createAsyncThunk('series/postNewSeries', async (params: {values: any, metadataInfo: any, extendedMetadata: any}, {dispatch}) => {
+export const postNewSeries = createAsyncThunk('series/postNewSeries', async (params: {
+	values: {
+		acls: TransformedAcls,
+		contributor: string[],
+		creator: string[],
+		description: string,
+		language: string,
+		license: string,
+		publisher: string[],
+		rightsHolder: string,
+		subject: string,
+		theme: string,
+		title: string,
+	},
+	metadataInfo: MetadataCatalog,
+	extendedMetadata: MetadataCatalog[]
+}, {dispatch}) => {
 	const { values, metadataInfo, extendedMetadata } = params
 
 	let metadataFields, extendedMetadataFields, metadata, access;
@@ -214,7 +233,7 @@ export const postNewSeries = createAsyncThunk('series/postNewSeries', async (par
 });
 
 // check for events of the series and if deleting the series if it has events is allowed
-export const checkForEventsDeleteSeriesModal = createAsyncThunk('series/checkForEventsDeleteSeriesModal', async (id: any, {dispatch}) => {
+export const checkForEventsDeleteSeriesModal = createAsyncThunk('series/checkForEventsDeleteSeriesModal', async (id: string, {dispatch}) => {
 	const hasEventsRequest = await axios.get(
 		`/admin-ng/series/${id}/hasEvents.json`
 	);
@@ -234,7 +253,7 @@ export const checkForEventsDeleteSeriesModal = createAsyncThunk('series/checkFor
 });
 
 // delete series with provided id
-export const deleteSeries = createAsyncThunk('series/deleteSeries', async (id: any, {dispatch}) => {
+export const deleteSeries = createAsyncThunk('series/deleteSeries', async (id: string, {dispatch}) => {
 	// API call for deleting a series
 	axios
 		.delete(`/admin-ng/series/${id}`)
@@ -251,7 +270,18 @@ export const deleteSeries = createAsyncThunk('series/deleteSeries', async (id: a
 });
 
 // delete series with provided ids
-export const deleteMultipleSeries = createAsyncThunk('series/deleteMultipleSeries', async (series: any, {dispatch}) => {
+export const deleteMultipleSeries = createAsyncThunk('series/deleteMultipleSeries', async (
+	series: {
+		contributors: string[],
+		createdBy: string,
+		creation_date: string,
+		hasEvents: false,
+		id: string,
+		organizers: string[],
+		selected: boolean,
+		title: string,
+	}[],
+{dispatch}) => {
 	let data = [];
 
 	for (let i = 0; i < series.length; i++) {
@@ -289,8 +319,7 @@ export const fetchSeriesOptions = async () => {
 };
 
 // Check if a series has events
-// @ts-expect-error TS(7006): Parameter 'seriesId' implicitly has an 'any' type.
-export const hasEvents = async (seriesId) => {
+export const hasEvents = async (seriesId: string) => {
 	let data = await axios.get(`/admin-ng/series/${seriesId}/hasEvents.json`);
 
 	return (await data.data).hasEvents;

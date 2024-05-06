@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import ConfirmModal from "../../shared/ConfirmModal";
 import ThemeDetailsModal from "./wizard/ThemeDetailsModal";
 import {
@@ -42,8 +41,7 @@ const ThemesActionsCell = ({
 		setThemeDetails(true);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	const deletingTheme = (id) => {
+	const deletingTheme = (id: number) => {
 		dispatch(deleteTheme(id));
 	};
 
@@ -54,7 +52,6 @@ const ThemesActionsCell = ({
 				<button
 					onClick={() => showThemeDetails()}
 					className="button-like-anchor more"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("CONFIGURATION.THEMES.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
@@ -72,7 +69,6 @@ const ThemesActionsCell = ({
 				<button
 					onClick={() => setDeleteConfirmation(true)}
 					className="button-like-anchor remove ng-scope ng-isolate-scope"
-// @ts-expect-error TS(2322): Type 'DefaultTFuncReturn' is not assignable to typ... Remove this comment to see the full error message
 					title={t("CONFIGURATION.THEMES.TABLE.TOOLTIP.DELETE")}
 				/>
 			)}
@@ -90,15 +86,4 @@ const ThemesActionsCell = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ThemesActionsCell);
+export default ThemesActionsCell;

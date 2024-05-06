@@ -1,6 +1,6 @@
 import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { eventsTableConfig } from "../configs/tableConfigs/eventsTableConfig";
-import axios from 'axios';
+import axios, { AxiosProgressEvent } from 'axios';
 import moment from "moment-timezone";
 import {
 	getURLParams,
@@ -22,8 +22,9 @@ import {
 } from "../slices/notificationSlice";
 import { getAssetUploadOptions, getSchedulingEditedEvents } from '../selectors/eventSelectors';
 import { fetchSeriesOptions } from "../slices/seriesSlice";
-import { RootState } from '../store';
+import { AppDispatch, RootState } from '../store';
 import { fetchAssetUploadOptions } from '../thunks/assetsThunks';
+import { TransformedAcls } from './aclDetailsSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of events
@@ -54,7 +55,7 @@ type Comment = {
 }
 
 // Strings will be empty if there is no value
-type Event = {
+export type Event = {
 	agent_id: string,
 	comments?: Comment[],
 	date: string,
@@ -76,6 +77,7 @@ type Event = {
 		name: string,
 		url: string,
 	}[],
+	selected?: boolean,
 	series?: { id: string, title: string }
 	source: string,
 	start_date: string,
@@ -86,22 +88,27 @@ type Event = {
 	workflow_state: string,
 }
 
+type MetadataField = {
+	differentValues?: boolean,
+	collection?: {}[],	// different for e.g. languages and presenters
+	id: string,
+	label: string,
+	readOnly: boolean,
+	required: boolean,
+	translatable?: boolean,
+	type: string,
+	value: string | string[],
+}
+
+export type MetadataFieldSelected = MetadataField & { selected: boolean }
+
 type MetadataCatalog = {
 	title: string,
 	flavor: string,
-	fields: {
-		collection?: {}[],	// different for e.g. languages and presenters
-		id: string,
-		label: string,
-		readOnly: boolean,
-		required: boolean,
-		translatable?: boolean,
-		type: string,
-		value: string | string[],
-	}[]
+	fields: MetadataField[],
 }
 
-type EditedEvents = {
+export type EditedEvents = {
 	changedDeviceInputs: string[],
 	changedEndTimeHour: string,
 	changedEndTimeMinutes: string,
@@ -155,8 +162,8 @@ type EventState = {
 
 // Fill columns initially with columns defined in eventsTableConfig
 const initialColumns = eventsTableConfig.columns.map((column) => ({
-	...column,
 	deactivated: false,
+	...column,
 }));
 
 // Initial state of events in redux store
@@ -193,8 +200,18 @@ const initialState: EventState = {
 
 // fetch events from server
 export const fetchEvents = createAsyncThunk('events/fetchEvents', async (_, { getState }) => {
-	const state = getState();
-	let params = getURLParams(state);
+	const state = getState() as RootState;
+	let params: { limit: any, offset: number, getComments?: boolean }= getURLParams(state);
+
+	// Only if the notes column is enabled, fetch comment information for events
+	// @ts-expect-error TS(7006):
+	if (state.table.columns.find(column => column.label === "EVENTS.EVENTS.TABLE.ADMINUI_NOTES" && !column.deactivated)) {
+		params = {
+			...params,
+			getComments: true
+		}
+	}
+
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -254,7 +271,7 @@ export const fetchEventMetadata = createAsyncThunk('events/fetchEventMetadata', 
 });
 
 // get merged metadata for provided event ids
-export const postEditMetadata = createAsyncThunk('events/postEditMetadata', async (ids: any) => {
+export const postEditMetadata = createAsyncThunk('events/postEditMetadata', async (ids: string[]) => {
 	let formData = new URLSearchParams();
 	formData.append("eventIds", JSON.stringify(ids));
 
@@ -280,14 +297,26 @@ export const postEditMetadata = createAsyncThunk('events/postEditMetadata', asyn
 		};
 	} catch (e) {
 		// return error
+		if (e instanceof Error) {
+			return {
+				fatalError: e.message,
+			};
+		}
 		return {
-// @ts-expect-error TS(2571): Object is of type 'unknown'.
-			fatalError: e.message,
+			fatalError: "",
 		};
 	}
 });
 
-export const updateBulkMetadata = createAsyncThunk('events/updateBulkMetadata', async (params: {metadataFields: any, values: any}, { dispatch }) => {
+export const updateBulkMetadata = createAsyncThunk('events/updateBulkMetadata', async (params: {
+	metadataFields: {
+		merged: string[],
+		mergedMetadata: MetadataFieldSelected[],
+		notFound?: string[],
+		runningWorkflow?: string[],
+	},
+	values: { [key: string]: any}
+}, { dispatch }) => {
 	const { metadataFields, values } = params;
 
 	let formData = new URLSearchParams();
@@ -300,7 +329,6 @@ export const updateBulkMetadata = createAsyncThunk('events/updateBulkMetadata', 
 		},
 	];
 
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
 	metadataFields.mergedMetadata.forEach((field) => {
 		if (field.selected) {
 			let value = values[field.id];
@@ -366,7 +394,39 @@ export const updateBulkMetadata = createAsyncThunk('events/updateBulkMetadata', 
 		});
 });
 
-export const postNewEvent = createAsyncThunk('events/postNewEvent', async (params: {values: any, metadataInfo: any, extendedMetadata: any}, { dispatch, getState }) => {
+export const postNewEvent = createAsyncThunk('events/postNewEvent', async (params: {
+	values: {
+		acls: TransformedAcls,
+		configuration: { [key: string]: any },
+		deviceInputs?: string[],
+		processingWorkflow: string,
+		repeatOn: string[],
+		scheduleDurationHours: string,
+		scheduleDurationMinutes: string,
+		scheduleEndDate: string,
+		scheduleEndHour: string,
+		scheduleEndMinute: string,
+		scheduleStartDate: string,
+		scheduleStartHour: string,
+		scheduleStartMinute: string,
+		sourceMode: string,
+		uploadAssetsTrack: {
+			accept: string,
+			displayOrder: number,
+			file: FileList,
+			flavorSubtType: string,
+			flavorType: string,
+			id: string,
+			multiple: boolean,
+			showAs: string,
+			title: string,
+			type: string,
+		}[],
+		[key: string]: unknown,
+	},
+	metadataInfo: MetadataCatalog,
+	extendedMetadata: MetadataCatalog[],
+}, { dispatch, getState }) => {
 	const { values, metadataInfo, extendedMetadata } = params;
 
 	// get asset upload options from redux store
@@ -375,7 +435,6 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 
 	let formData = new FormData();
 	let metadataFields, extendedMetadataFields, metadata, source, access, assets;
-	let configuration = {};
 
 	// prepare metadata provided by user
 	metadataFields = prepareMetadataFieldsForPost(metadataInfo.fields, values);
@@ -422,8 +481,8 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 		// NOTE: if time zone issues still occur during further testing, try to set times to UTC (-offset)
 		//startDate.setHours((values.scheduleStartHour - offset), values.scheduleStartMinute, 0, 0);
 		startDate.setHours(
-			values.scheduleStartHour,
-			values.scheduleStartMinute,
+			parseInt(values.scheduleStartHour),
+			parseInt(values.scheduleStartMinute),
 			0,
 			0
 		);
@@ -438,12 +497,12 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 		}
 		// NOTE: if time zone issues still occur during further testing, try to set times to UTC (-offset)
 		//endDate.setHours((values.scheduleEndHour - offset), values.scheduleEndMinute, 0, 0);
-		endDate.setHours(values.scheduleEndHour, values.scheduleEndMinute, 0, 0);
+		endDate.setHours(parseInt(values.scheduleEndHour), parseInt(values.scheduleEndMinute), 0, 0);
 
 		// transform duration into milliseconds
 		let duration =
-			values.scheduleDurationHours * 3600000 +
-			values.scheduleDurationMinutes * 60000;
+			parseInt(values.scheduleDurationHours) * 3600000 +
+			parseInt(values.scheduleDurationMinutes) * 60000;
 
 		// data about source for post request
 		source = {
@@ -490,10 +549,9 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 			values.sourceMode === "UPLOAD"
 		) {
 			let asset = values.uploadAssetsTrack.find(
-// @ts-expect-error TS(7006): Parameter 'asset' implicitly has an 'any' type.
 				(asset) => asset.id === uploadAssetOptions[i].id
 			);
-			if (!!asset.file) {
+			if (!!asset && !!asset.file) {
 				if (asset.multiple) {
 					for (let j = 0; asset.file.length > j; j++) {
 						formData.append(asset.id + "." + j, asset.file[j]);
@@ -510,7 +568,7 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 			) {
 				formData.append(
 					uploadAssetOptions[i].id + ".0",
-					values[uploadAssetOptions[i].id]
+					String(values[uploadAssetOptions[i].id])
 				);
 				assets.options = assets.options.concat(uploadAssetOptions[i]);
 			}
@@ -521,9 +579,9 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 	access = prepareAccessPolicyRulesForPost(values.acls);
 
 	// prepare configurations for post
+	let configurationPrepared: { [key: string]: string } = {};
 	Object.keys(values.configuration).forEach((config) => {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-		configuration[config] = String(values.configuration[config]);
+		configurationPrepared[config] = String(values.configuration[config]);
 	});
 
 	for (const entry of extendedMetadataFields) {
@@ -536,7 +594,7 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 			metadata: metadata,
 			processing: {
 				workflow: values.processingWorkflow,
-				configuration: configuration,
+				configuration: configurationPrepared,
 			},
 			access: access,
 			source: source,
@@ -546,17 +604,18 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 
 	// Process bar notification
 	var config = {
-	// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-		onUploadProgress: function(progressEvent) {
-			var percentCompleted = (progressEvent.loaded * 100) / progressEvent.total;
-			dispatch(addNotification({
-				id: -42000,
-				type: "success",
-				key: "EVENTS_UPLOAD_STARTED",
-				duration: -1,
-				parameter: { "progress": percentCompleted.toFixed(2) }
-			}))
-			if (percentCompleted >= 100) {
+		onUploadProgress: function(progressEvent: AxiosProgressEvent) {
+			var percentCompleted = progressEvent.total ? (progressEvent.loaded * 100) / progressEvent.total : undefined;
+			if (percentCompleted) {
+				dispatch(addNotification({
+					id: -42000,
+					type: "success",
+					key: "EVENTS_UPLOAD_STARTED",
+					duration: -1,
+					parameter: { "progress": percentCompleted.toFixed(2) }
+				}))
+			}
+			if (!percentCompleted || percentCompleted >= 100) {
 				dispatch(removeNotification(-42000))
 			}
 		},
@@ -578,7 +637,7 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 });
 
 // delete event with provided id
-export const deleteEvent = createAsyncThunk('events/deleteEvent', async (id: any, { dispatch }) => {
+export const deleteEvent = createAsyncThunk('events/deleteEvent', async (id: string, { dispatch }) => {
 	// API call for deleting an event
 	axios
 		.delete(`/admin-ng/event/${id}`)
@@ -600,7 +659,7 @@ export const deleteEvent = createAsyncThunk('events/deleteEvent', async (id: any
 		});
 });
 
-export const deleteMultipleEvent = createAsyncThunk('events/deleteMultipleEvent', async (events: any, { dispatch }) => {
+export const deleteMultipleEvent = createAsyncThunk('events/deleteMultipleEvent', async (events: Event[], { dispatch }) => {
 	let data = [];
 
 	for (let i = 0; i < events.length; i++) {
@@ -623,7 +682,11 @@ export const deleteMultipleEvent = createAsyncThunk('events/deleteMultipleEvent'
 		});
 });
 
-export const fetchScheduling = createAsyncThunk('events/fetchScheduling', async (params: {events: any, fetchNewScheduling: any, setFormikValue: any}, { dispatch, getState }) => {
+export const fetchScheduling = createAsyncThunk('events/fetchScheduling', async (params: {
+	events: Event[],
+	fetchNewScheduling: boolean,
+	setFormikValue: any
+}, { getState }) => {
 	const { events, fetchNewScheduling, setFormikValue } = params;
 
 	let editedEvents = [];
@@ -695,18 +758,23 @@ export const fetchScheduling = createAsyncThunk('events/fetchScheduling', async 
 });
 
 // update multiple scheduled events at once
-export const updateScheduledEventsBulk = createAsyncThunk('events/updateScheduledEventsBulk', async (values: any, { dispatch }) => {
+export const updateScheduledEventsBulk = createAsyncThunk('events/updateScheduledEventsBulk', async (
+	values: {
+		changedEvent: number,
+		changedEvents: string[],
+		editedEvents: EditedEvents[],
+		events: Event[],
+	},
+{ dispatch }) => {
 	let formData = new FormData();
 	let update = [];
 	let timezone = moment.tz.guess();
 
 	for (let i = 0; i < values.changedEvents.length; i++) {
 		let eventChanges = values.editedEvents.find(
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 			(event) => event.eventId === values.changedEvents[i]
 		);
 		let originalEvent = values.events.find(
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 			(event) => event.id === values.changedEvents[i]
 		);
 
@@ -725,7 +793,7 @@ export const updateScheduledEventsBulk = createAsyncThunk('events/updateSchedule
 		update.push({
 			events: [eventChanges.eventId],
 			metadata: {
-				flavor: originalEvent.flavor,
+				// flavor: originalEvent.flavor,
 				title: "EVENTS.EVENTS.DETAILS.CATALOG.EPISODE",
 				fields: [
 					{
@@ -786,8 +854,37 @@ export const updateScheduledEventsBulk = createAsyncThunk('events/updateSchedule
 });
 
 // check provided date range for conflicts
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-export const checkConflicts = (values) => async (dispatch) => {
+
+export const checkConflicts = (values: {
+	acls: TransformedAcls,
+	configuration: { [key: string]: any },
+	deviceInputs?: string[],
+	location: string,
+	processingWorkflow: string,
+	repeatOn: string[],
+	scheduleDurationHours: string,
+	scheduleDurationMinutes: string,
+	scheduleEndDate: string,
+	scheduleEndHour: string,
+	scheduleEndMinute: string,
+	scheduleStartDate: string,
+	scheduleStartHour: string,
+	scheduleStartMinute: string,
+	sourceMode: string,
+	uploadAssetsTrack: {
+		accept: string,
+		displayOrder: number,
+		file: FileList,
+		flavorSubtType: string,
+		flavorType: string,
+		id: string,
+		multiple: boolean,
+		showAs: string,
+		title: string,
+		type: string,
+	}[],
+	[key: string]: unknown,
+}) => async (dispatch: AppDispatch) => {
 	let check = true;
 
 	// Only perform checks if source mode is SCHEDULE_SINGLE or SCHEDULE_MULTIPLE
@@ -802,8 +899,8 @@ export const checkConflicts = (values) => async (dispatch) => {
 		let startDate = new Date(values.scheduleStartDate);
 		// NOTE: if time zone issues still occur during further testing, try to set times to UTC (-offset)
 		startDate.setHours(
-			values.scheduleStartHour,
-			values.scheduleStartMinute,
+			parseInt(values.scheduleStartHour),
+			parseInt(values.scheduleStartMinute),
 			0,
 			0
 		);
@@ -824,7 +921,7 @@ export const checkConflicts = (values) => async (dispatch) => {
 
 		const endDate = new Date(values.scheduleEndDate);
 		// NOTE: if time zone issues still occur during further testing, try to set times to UTC (-offset)
-		endDate.setHours(values.scheduleEndHour, values.scheduleEndMinute, 0, 0);
+		endDate.setHours(parseInt(values.scheduleEndHour), parseInt(values.scheduleEndMinute), 0, 0);
 
 		// if start date is higher than end date --> end date is before start date
 		if (startDate > endDate) {
@@ -842,8 +939,8 @@ export const checkConflicts = (values) => async (dispatch) => {
 
 		// transform duration into milliseconds (needed for API request)
 		let duration =
-			values.scheduleDurationHours * 3600000 +
-			values.scheduleDurationMinutes * 60000;
+			parseInt(values.scheduleDurationHours) * 3600000 +
+			parseInt(values.scheduleDurationMinutes) * 60000;
 
 		// Check for conflicts with other already scheduled events
 		let conflicts =
@@ -876,15 +973,11 @@ export const checkConflicts = (values) => async (dispatch) => {
 
 // Check for conflicts with already scheduled events
 export const checkForConflicts = async (
-// @ts-expect-error TS(7006): Parameter 'startDate' implicitly has an 'any' type... Remove this comment to see the full error message
-	startDate,
-// @ts-expect-error TS(7006): Parameter 'endDate' implicitly has an 'any' type.
-	endDate,
-// @ts-expect-error TS(7006): Parameter 'duration' implicitly has an 'any' type.
-	duration,
-// @ts-expect-error TS(7006): Parameter 'device' implicitly has an 'any' type.
-	device,
-	repeatOn = null
+	startDate: Date,
+	endDate: Date,
+	duration: number,
+	device: string,
+	repeatOn: string[] | undefined = undefined
 ) => {
 	let metadata = !!repeatOn
 		? {
@@ -892,7 +985,6 @@ export const checkForConflicts = async (
 				device: device,
 				duration: duration.toString(),
 				end: endDate,
-// @ts-expect-error TS(2339): Property 'join' does not exist on type 'never'.
 				rrule: `FREQ=WEEKLY;BYDAY=${repeatOn.join()};BYHOUR=${startDate.getHours()};BYMINUTE=${startDate.getMinutes()}`,
 			}
 		: {
@@ -923,8 +1015,7 @@ export const checkForConflicts = async (
 };
 
 // check if there are any scheduling conflicts with other events
-// @ts-expect-error TS(7006): Parameter 'events' implicitly has an 'any' type.
-export const checkForSchedulingConflicts = (events) => async (dispatch) => {
+export const checkForSchedulingConflicts = (events: EditedEvents[]) => async (dispatch: AppDispatch) => {
 	const formData = new FormData();
 	let update = [];
 	let timezone = moment.tz.guess();
@@ -982,7 +1073,7 @@ const eventSlice = createSlice({
 		setEventColumns(state, action: PayloadAction<
 			EventState["columns"]
 		>) {
-			state.columns = action.payload.updatedColumns;
+			state.columns = action.payload;
 		},
 		setShowActions(state, action: PayloadAction<
 			EventState["showActions"]

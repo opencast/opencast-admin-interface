@@ -1,19 +1,20 @@
-import { Theme, makeStyles } from "@material-ui/core";
+import  makeStyles  from "@mui/styles/makeStyles";
 
 // Base style for Stepper component
-export const useStepperStyle = makeStyles((theme) => ({
+export const useStepperStyle = makeStyles({
 	root: {
 		background: "#eeeff0",
 		height: "100px",
+		padding: "24px",
 	},
-}));
+});
 
 // Style of icons used in Stepper
 type stepIconStyleProps = {
 	active: boolean,
 	completed: boolean,
 }
-export const useStepIconStyles = makeStyles<Theme, stepIconStyleProps>(theme => ({
+export const useStepIconStyles = makeStyles({
 	root: {
 		height: 22,
 		alignItems: "center",
@@ -24,7 +25,7 @@ export const useStepIconStyles = makeStyles<Theme, stepIconStyleProps>(theme => 
 		height: "20px",
 		transform: (props: stepIconStyleProps) => props.active ? "scale(1.3)" : "scale(1.0)",
 	},
-}));
+});
 
 /* This method checks if the summary page is reachable.
  * If the clicked page is some other page than summary then no check is needed.

@@ -1748,14 +1748,6 @@
 			"VOLUME": "Ses"
 		}
 	},
-	"LOGIN": {
-		"WELCOME": "Opencast 'a Hoşgeldin",
-		"REMEMBER": "Beni bu bilgisayarda hatırla",
-		"USERNAME": "Kullanıcı Adı…",
-		"PASSWORD": "Şifre…",
-		"LOGIN": "Oturum Aç",
-		"ERROR": "Geçersiz kullanıcı adı ve / ya da şifre"
-	},
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Lütfen bir filtre seçin…",

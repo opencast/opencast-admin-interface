@@ -2,6 +2,7 @@ import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@
 import axios from 'axios';
 import { addNotification } from '../slices/notificationSlice';
 import { buildUserBody } from "../utils/resourceUtils";
+import { NewUser } from './userSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of details of a user
@@ -30,7 +31,7 @@ const initialState: UserDetailsState = {
 };
 
 // fetch details about certain user from server
-export const fetchUserDetails = createAsyncThunk('userDetails/fetchUserDetails', async (username: any) => {
+export const fetchUserDetails = createAsyncThunk('userDetails/fetchUserDetails', async (username: string) => {
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -39,7 +40,10 @@ export const fetchUserDetails = createAsyncThunk('userDetails/fetchUserDetails',
 });
 
 // update existing user with changed values
-export const updateUserDetails = createAsyncThunk('userDetails/updateUserDetails', async (params: {values: any, username: string}, {dispatch}) => {
+export const updateUserDetails = createAsyncThunk('userDetails/updateUserDetails', async (params: {
+	values: NewUser,
+	username: string
+}, {dispatch}) => {
 	const { username, values } = params
 
 	// get URL params used for put request

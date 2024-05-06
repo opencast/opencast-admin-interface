@@ -2,6 +2,8 @@ import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@
 import { serversTableConfig } from "../configs/tableConfigs/serversTableConfig";
 import axios from 'axios';
 import { getURLParams } from '../utils/resourceUtils';
+import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
+import { RootState } from '../store';
 
 /**
  * This file contains redux reducer for actions affecting the state of servers
@@ -20,7 +22,7 @@ type ServerState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
 	results: Server[],
-	columns: any,			 // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],
 	total: number,
 	count: number,
 	offset: number,
@@ -48,7 +50,7 @@ const initialState: ServerState = {
 // fetch servers from server
 export const fetchServers = createAsyncThunk('servers/fetchServers', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state);
+	let params = getURLParams(state as RootState);
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -58,11 +60,14 @@ export const fetchServers = createAsyncThunk('servers/fetchServers', async (_, {
 });
 
 // change maintenance status of a server/host
-export const setServerMaintenance = createAsyncThunk('servers/setServerMaintenance', async (params: {host: any, maintenance: any}) => {
+export const setServerMaintenance = createAsyncThunk('servers/setServerMaintenance', async (params: {
+	host: string,
+	maintenance: boolean
+}) => {
 	const { host, maintenance } = params;
 	let data = new URLSearchParams();
 	data.append("host", host);
-	data.append("maintenance", maintenance);
+	data.append("maintenance", String(maintenance));
 
 	axios
 		.post("/services/maintenance", data)
@@ -81,7 +86,7 @@ const serverSlice = createSlice({
 		setServerColumns(state, action: PayloadAction<
 			ServerState["columns"]
 		>) {
-			state.columns = action.payload.updatedColumns;
+			state.columns = action.payload;
 		},
 	},
 	// These are used for thunks

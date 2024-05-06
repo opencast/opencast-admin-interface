@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Formik } from "formik";
 import cn from "classnames";
-import { connect } from "react-redux";
 import AclAccessPage from "../wizard/AclAccessPage";
 import AclMetadataPage from "../wizard/AclMetadataPage";
 import { getAclDetails } from "../../../../selectors/aclDetailsSelectors";
 import { NewAclSchema } from "../../../../utils/validate";
 import ModalNavigation from "../../../shared/modals/ModalNavigation";
-import { checkAcls } from "../../../../thunks/aclThunks";
+import { checkAcls } from "../../../../slices/aclSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { updateAclDetails } from "../../../../slices/aclDetailsSlice";
 
@@ -17,8 +16,9 @@ import { updateAclDetails } from "../../../../slices/aclDetailsSlice";
  */
 const AclDetails = ({
 	close,
-	checkAcls
-}: any) => {
+} : {
+	close: () => void,
+}) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
@@ -76,8 +76,6 @@ const AclDetails = ({
 							<AclAccessPage
 								formik={formik}
 								isEdit
-// @ts-expect-error TS(2322): Type '{ formik: FormikProps<{ name: any; aclTempla... Remove this comment to see the full error message
-								accessRole={"ROLE_UI_SERIES_DETAILS_ACL_EDIT"}
 							/>
 						)}
 
@@ -90,7 +88,7 @@ const AclDetails = ({
 								})}
 								disabled={!(formik.dirty && formik.isValid)}
 								onClick={async () => {
-									if (await checkAcls(formik.values.acls)) {
+									if (await dispatch(checkAcls(formik.values.acls))) {
 										formik.handleSubmit();
 									}
 								}}
@@ -109,17 +107,4 @@ const AclDetails = ({
 	);
 };
 
-// getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-
-});
-
-// mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'acls' implicitly has an 'any' type.
-	checkAcls: (acls) => dispatch(checkAcls(acls)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AclDetails);
+export default AclDetails;

@@ -1748,14 +1748,6 @@
 			"VOLUME": "Glasnost"
 		}
 	},
-	"LOGIN": {
-		"WELCOME": "Pozdravljeni v Opencastu",
-		"REMEMBER": "Zapomni si me v tem računalniku",
-		"USERNAME": "Uporabniško ime ...",
-		"PASSWORD": "Geslo ...",
-		"LOGIN": "Prijava",
-		"ERROR": "Napačno uporabniško ime in/ali geslo"
-	},
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Izberite filter …",

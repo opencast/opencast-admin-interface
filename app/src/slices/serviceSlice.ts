@@ -2,6 +2,8 @@ import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@
 import { servicesTableConfig } from "../configs/tableConfigs/servicesTableConfig";
 import axios from 'axios';
 import { getURLParams } from '../utils/resourceUtils';
+import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
+import { RootState } from '../store';
 
 /**
  * This file contains redux reducer for actions affecting the state of services
@@ -22,7 +24,7 @@ type ServiceState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
 	results: Service[],
-	columns: any,			 // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],
 	total: number,
 	count: number,
 	offset: number,
@@ -50,7 +52,7 @@ const initialState: ServiceState = {
 // fetch services from server
 export const fetchServices = createAsyncThunk('services/fetchServices', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state);
+	let params = getURLParams(state as RootState);
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -59,7 +61,10 @@ export const fetchServices = createAsyncThunk('services/fetchServices', async (_
 });
 
 // restarts a service after initiated by user
-export const restartService = createAsyncThunk('services/fetchServices', async (params: {host: any, serviceType: any}) => {
+export const restartService = createAsyncThunk('services/fetchServices', async (params: {
+	host: string,
+	serviceType: string
+}) => {
 	const { host, serviceType } = params
 	let data = new URLSearchParams();
 	data.append("host", host);
@@ -82,7 +87,7 @@ const serviceSlice = createSlice({
 		setServiceColumns(state, action: PayloadAction<
 			ServiceState["columns"]
 		>) {
-			state.columns = action.payload.updatedColumns;
+			state.columns = action.payload;
 		},
 	},
 	// These are used for thunks

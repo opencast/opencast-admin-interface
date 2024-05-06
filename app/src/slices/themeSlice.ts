@@ -3,11 +3,13 @@ import { themesTableConfig } from "../configs/tableConfigs/themesTableConfig";
 import axios from 'axios';
 import { buildThemeBody, getURLParams } from '../utils/resourceUtils';
 import { addNotification } from '../slices/notificationSlice';
+import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
+import { RootState } from '../store';
 
 /**
  * This file contains redux reducer for actions affecting the state of themes
  */
-type Details = {
+export type Details = {
 	bumperActive: boolean,
 	bumperFile: string,
 	creationDate: any,
@@ -33,7 +35,7 @@ type ThemeState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
 	results: Details[],
-	columns: any,			 // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],
 	total: number,
 	count: number,
 	offset: number,
@@ -61,7 +63,7 @@ const initialState: ThemeState = {
 // fetch themes from server
 export const fetchThemes = createAsyncThunk('theme/fetchThemes', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state);
+	let params = getURLParams(state as RootState);
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -71,7 +73,7 @@ export const fetchThemes = createAsyncThunk('theme/fetchThemes', async (_, { get
 });
 
 // post new theme to backend
-export const postNewTheme = createAsyncThunk('theme/postNewTheme', async (values: any, {dispatch}) => {
+export const postNewTheme = createAsyncThunk('theme/postNewTheme', async (values: Details, {dispatch}) => {
 	// get URL params used for post request
 	let data = buildThemeBody(values);
 
@@ -95,7 +97,7 @@ export const postNewTheme = createAsyncThunk('theme/postNewTheme', async (values
 });
 
 // delete theme with provided id
-export const deleteTheme = createAsyncThunk('theme/deleteTheme', async (id: any, {dispatch}) => {
+export const deleteTheme = createAsyncThunk('theme/deleteTheme', async (id: number, {dispatch}) => {
 	axios
 		.delete(`/admin-ng/themes/${id}`)
 		.then((res) => {

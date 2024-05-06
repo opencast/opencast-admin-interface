@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import NewEventSummary from "./NewEventSummary";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import { getCurrentLanguageInformation } from "../../../../utils/utils";
 import NewAssetUploadPage from "../ModalTabsAndPages/NewAssetUploadPage";
 import NewMetadataExtendedPage from "../ModalTabsAndPages/NewMetadataExtendedPage";
 import NewMetadataPage from "../ModalTabsAndPages/NewMetadataPage";
@@ -22,9 +19,7 @@ import {
 } from "../../../../selectors/eventSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { postNewEvent } from "../../../../slices/eventSlice";
-
-// Get info about the current language and its date locale
-const currentLanguage = getCurrentLanguageInformation();
+import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 
 /**
  * This component manages the pages of the new event wizard and the submission of values
@@ -39,17 +34,19 @@ const NewEventWizard: React.FC<{
 	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
 	const metadataFields = useAppSelector(state => getEventMetadata(state));
 	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
+	const user = useAppSelector(state => getUserInformation(state));
 
 	const initialValues = getInitialValues(
 		metadataFields,
 		extendedMetadata,
-		uploadAssetOptions
+		uploadAssetOptions,
+		user
 	);
 	let workflowPanelRef = React.useRef();
 
 	const [page, setPage] = useState(0);
 	const [snapshot, setSnapshot] = useState(initialValues);
-	const [pageCompleted, setPageCompleted] = useState({});
+	const [pageCompleted, setPageCompleted] = useState<{ [key: number]: boolean }>({});
 
 	// Caption of steps used by Stepper
 	const steps = [
@@ -101,7 +98,6 @@ const NewEventWizard: React.FC<{
 
 		// set page as completely filled out
 		let updatedPageCompleted = pageCompleted;
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 		updatedPageCompleted[page] = true;
 		setPageCompleted(updatedPageCompleted);
 
@@ -134,98 +130,91 @@ const NewEventWizard: React.FC<{
 
 	return (
 		<>
-			{/* Initialize overall form */}
-			<MuiPickersUtilsProvider
-				utils={DateFnsUtils}
-// @ts-expect-error TS(2532): Object is possibly 'undefined'.
-				locale={currentLanguage.dateLocale}
+			<Formik
+				initialValues={snapshot}
+				validationSchema={currentValidationSchema}
+				onSubmit={(values) => handleSubmit(values)}
 			>
-				<Formik
-					initialValues={snapshot}
-					validationSchema={currentValidationSchema}
-					onSubmit={(values) => handleSubmit(values)}
-				>
-					{/* Render wizard pages depending on current value of page variable */}
-					{(formik) => {
-						// eslint-disable-next-line react-hooks/rules-of-hooks
-						useEffect(() => {
-							formik.validateForm();
-							// eslint-disable-next-line react-hooks/exhaustive-deps
-						}, [page]);
+				{/* Render wizard pages depending on current value of page variable */}
+				{(formik) => {
+					// eslint-disable-next-line react-hooks/rules-of-hooks
+					useEffect(() => {
+						formik.validateForm();
+						// eslint-disable-next-line react-hooks/exhaustive-deps
+					}, [page]);
 
-						return (
-							<>
-								{/* Stepper that shows each step of wizard as header */}
-								<WizardStepperEvent
-									steps={steps}
-									page={page}
-									setPage={setPage}
-									completed={pageCompleted}
-									setCompleted={setPageCompleted}
-									formik={formik}
-								/>
-								<div>
-									{page === 0 && (
-										<NewMetadataPage
-											nextPage={nextPage}
-											formik={formik}
-											metadataFields={metadataFields}
-											header={steps[page].translation}
-										/>
-									)}
-									{page === 1 && (
-										<NewMetadataExtendedPage
-											previousPage={previousPage}
-											nextPage={nextPage}
-											formik={formik}
-											extendedMetadataFields={extendedMetadata}
-										/>
-									)}
-									{page === 2 && (
-										<NewSourcePage
-											previousPage={previousPage}
-											nextPage={nextPage}
-											formik={formik}
-										/>
-									)}
-									{page === 3 && (
-										<NewAssetUploadPage
-											previousPage={previousPage}
-											nextPage={nextPage}
-											formik={formik}
-										/>
-									)}
-									{page === 4 && (
-										<NewProcessingPage
-											previousPage={previousPage}
-											nextPage={nextPage}
+					return (
+						<>
+							{/* Stepper that shows each step of wizard as header */}
+							<WizardStepperEvent
+								steps={steps}
+								page={page}
+								setPage={setPage}
+								completed={pageCompleted}
+								setCompleted={setPageCompleted}
+								formik={formik}
+							/>
+							<div>
+								{page === 0 && (
+									<NewMetadataPage
+										nextPage={nextPage}
+										formik={formik}
+										metadataFields={metadataFields}
+										header={steps[page].translation}
+									/>
+								)}
+								{page === 1 && (
+									<NewMetadataExtendedPage
+										previousPage={previousPage}
+										nextPage={nextPage}
+										formik={formik}
+										extendedMetadataFields={extendedMetadata}
+									/>
+								)}
+								{page === 2 && (
+									<NewSourcePage
+										previousPage={previousPage}
+										nextPage={nextPage}
+										formik={formik}
+									/>
+								)}
+								{page === 3 && (
+									<NewAssetUploadPage
+										previousPage={previousPage}
+										nextPage={nextPage}
+										formik={formik}
+									/>
+								)}
+								{page === 4 && (
+									<NewProcessingPage
+										previousPage={previousPage}
+										nextPage={nextPage}
 // @ts-expect-error TS(2322): Type '{ previousPage: (values: any, twoPagesBack: ... Remove this comment to see the full error message
-											workflowPanelRef={workflowPanelRef}
-											formik={formik}
-										/>
-									)}
-									{page === 5 && (
-										<NewAccessPage
-											previousPage={previousPage}
-											nextPage={nextPage}
-											formik={formik}
-											editAccessRole="ROLE_UI_SERIES_DETAILS_ACL_EDIT"
-										/>
-									)}
-									{page === 6 && (
-										<NewEventSummary
-											previousPage={previousPage}
-											formik={formik}
-											metaDataExtendedHidden={steps[1].hidden}
-											assetUploadHidden={steps[3].hidden}
-										/>
-									)}
-								</div>
-							</>
-						);
-					}}
-				</Formik>
-			</MuiPickersUtilsProvider>
+										workflowPanelRef={workflowPanelRef}
+										formik={formik}
+									/>
+								)}
+								{page === 5 && (
+									<NewAccessPage
+										previousPage={previousPage}
+										nextPage={nextPage}
+										formik={formik}
+										editAccessRole="ROLE_UI_SERIES_DETAILS_ACL_EDIT"
+									/>
+								)}
+								{page === 6 && (
+									<NewEventSummary
+										previousPage={previousPage}
+										formik={formik}
+										metaDataExtendedHidden={steps[1].hidden}
+										assetUploadHidden={steps[3].hidden}
+									/>
+								)}
+							</div>
+						</>
+					);
+				}}
+			</Formik>
 		</>
 	);
 };
@@ -237,7 +226,9 @@ const getInitialValues = (
 // @ts-expect-error TS(7006): Parameter 'extendedMetadata' implicitly has an 'an... Remove this comment to see the full error message
 	extendedMetadata,
 // @ts-expect-error TS(7006): Parameter 'uploadAssetOptions' implicitly has an '... Remove this comment to see the full error message
-	uploadAssetOptions
+	uploadAssetOptions,
+// @ts-expect-error TS(7006): Parameter 'uploadAssetOptions' implicitly has an '... Remove this comment to see the full error message
+	user
 ) => {
 	// Transform metadata fields provided by backend (saved in redux)
 	let initialValues = getInitialMetadataFieldValues(
@@ -273,6 +264,8 @@ const getInitialValues = (
 	if (!!uploadAssetOptions) {
 // @ts-expect-error TS(2339): Property 'uploadAssetsTrack' does not exist on typ... Remove this comment to see the full error message
 		initialValues.uploadAssetsTrack = [];
+		// Sort by displayOrder
+		uploadAssetOptions = uploadAssetOptions.slice().sort((a: any, b: any) => a.displayOrder - b.displayOrder)
 		// initial value of upload asset needs to be null, because object (file) is saved there
 // @ts-expect-error TS(7006): Parameter 'option' implicitly has an 'any' type.
 		uploadAssetOptions.forEach((option) => {
@@ -310,6 +303,16 @@ const getInitialValues = (
 	initialValues["scheduleEndHour"] = (defaultDate.getHours() + 1).toString();
 // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 	initialValues["scheduleEndMinute"] = "55";
+
+// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+	initialValues["acls"] = [
+		{
+			role: user.userRole,
+			read: true,
+			write: true,
+			actions: [],
+		},
+	];
 
 	return initialValues;
 };

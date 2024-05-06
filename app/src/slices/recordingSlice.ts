@@ -3,13 +3,15 @@ import { recordingsTableConfig } from '../configs/tableConfigs/recordingsTableCo
 import axios from 'axios';
 import { getURLParams } from '../utils/resourceUtils';
 import { addNotification } from '../slices/notificationSlice';
+import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
+import { RootState } from '../store';
 
 /**
  * This file contains redux reducer for actions affecting the state of recordings
  */
-type Recording = {
+export type Recording = {
 	id: string,
-	inputs: string[],
+	inputs: { id: string, value: string }[],
 	name: string,
 	removable: boolean,
 	roomId: string,
@@ -23,7 +25,7 @@ type RecordingState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
 	results: Recording[],
-	columns: any,			 // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],
 	total: number,
 	count: number,
 	offset: number,
@@ -49,7 +51,7 @@ const initialState: RecordingState = {
 };
 
 // fetch recordings from server
-export const fetchRecordings = createAsyncThunk('recordings/fetchRecordings', async (flag: any, { getState }) => {
+export const fetchRecordings = createAsyncThunk('recordings/fetchRecordings', async (flag: string | undefined, { getState }) => {
 	let res;
 
 	if (flag === "inputs") {
@@ -58,7 +60,7 @@ export const fetchRecordings = createAsyncThunk('recordings/fetchRecordings', as
 			);
 		} else {
 			const state = getState();
-			let params = getURLParams(state);
+			let params = getURLParams(state as RootState);
 
 		// /agents.json?filter={filter}&limit=100&offset=0&inputs=false&sort={sort}
 		res = await axios.get("/admin-ng/capture-agents/agents.json", {
@@ -92,7 +94,7 @@ export const fetchRecordings = createAsyncThunk('recordings/fetchRecordings', as
 });
 
 // delete location with provided id
-export const deleteRecording = createAsyncThunk('recordings/deleteRecording', async (id: any, { dispatch }) => {
+export const deleteRecording = createAsyncThunk('recordings/deleteRecording', async (id: string, { dispatch }) => {
 	// API call for deleting a location
 	axios
 		.delete(`/admin-ng/capture-agents/${id}`)
@@ -121,7 +123,7 @@ const recordingSlice = createSlice({
 		setRecordingsColumns(state, action: PayloadAction<
 			RecordingState["columns"]
 		>) {
-			state.columns = action.payload.updatedColumns;
+			state.columns = action.payload;
 		},
 	},
 	// These are used for thunks

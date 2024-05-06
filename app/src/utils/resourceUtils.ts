@@ -5,6 +5,11 @@ import {
 	getTableDirection,
 	getTableSorting,
 } from "../selectors/tableSelectors";
+import { TransformedAcl } from "../slices/aclDetailsSlice";
+import { Acl } from "../slices/aclSlice";
+import { NewUser } from "../slices/userSlice";
+import { Recording } from "../slices/recordingSlice";
+import { UserInfoState } from "../slices/userInfoSlice";
 import { hasAccess } from "./utils";
 
 /**
@@ -21,8 +26,12 @@ export const getHttpHeaders = () => {
 };
 
 // prepare URL params for getting resources
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-export const getURLParams = (state) => {
+export const getURLParams = (
+	state: {
+		tableFilters: any,	// TODO: Type these after modernizing redux is done
+		table: any,
+	}
+) => {
 	// get filter map from state
 	let filters = [];
 	let filterMap = getFilters(state);
@@ -64,8 +73,7 @@ export const getURLParams = (state) => {
 };
 
 // used for create URLSearchParams for API requests used to create/update user
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-export const buildUserBody = (values) => {
+export const buildUserBody = (values: NewUser) => {
 	let data = new URLSearchParams();
 	// fill form data with user inputs
 	data.append("username", values.username);
@@ -428,20 +436,16 @@ export const prepareAccessPolicyRulesForPost = (policies) => {
 };
 
 // transform response data in form that is used in wizards and modals for policies (for each role one entry)
-// @ts-expect-error TS(7006): Parameter 'acl' implicitly has an 'any' type.
-export const transformAclTemplatesResponse = (acl) => {
-// @ts-expect-error TS(7034): Variable 'template' implicitly has type 'any[]' in... Remove this comment to see the full error message
-	let template = [];
+export const transformAclTemplatesResponse = (acl: Acl) => {
+	let template: TransformedAcl[] = [];
 
 	for (let i = 0; acl.ace.length > i; i++) {
-// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 		if (template.find((rule) => rule.role === acl.ace[i].role)) {
 			for (let j = 0; template.length > j; j++) {
 				// Only update entry for policy if already added with other action
 				if (template[j].role === acl.ace[i].role) {
 					if (acl.ace[i].action === "read") {
 						template[j] = {
-// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 							...template[j],
 							read: acl.ace[i].allow,
 						};
@@ -449,7 +453,6 @@ export const transformAclTemplatesResponse = (acl) => {
 					}
 					if (acl.ace[i].action === "write") {
 						template[j] = {
-// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 							...template[j],
 							write: acl.ace[i].allow,
 						};
@@ -461,9 +464,7 @@ export const transformAclTemplatesResponse = (acl) => {
 						acl.ace[i].allow === true
 					) {
 						template[j] = {
-// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 							...template[j],
-// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 							actions: template[j].actions.concat(acl.ace[i].action),
 						};
 						break;
@@ -473,7 +474,6 @@ export const transformAclTemplatesResponse = (acl) => {
 		} else {
 			// add policy if role not seen before
 			if (acl.ace[i].action === "read") {
-// @ts-expect-error TS(7005): Variable 'template' implicitly has an 'any[]' type... Remove this comment to see the full error message
 				template = template.concat({
 					role: acl.ace[i].role,
 					read: acl.ace[i].allow,
@@ -508,8 +508,7 @@ export const transformAclTemplatesResponse = (acl) => {
 };
 
 // filter devices, so that only devices for which the user has access rights are left
-// @ts-expect-error TS(7006): Parameter 'user' implicitly has an 'any' type.
-export const filterDevicesForAccess = (user, inputDevices) => {
+export const filterDevicesForAccess = (user: UserInfoState, inputDevices: Recording[]) => {
 	if (user.isOrgAdmin) {
 		return inputDevices;
 	} else {
@@ -528,14 +527,12 @@ export const filterDevicesForAccess = (user, inputDevices) => {
 };
 
 // returns, whether user has access rights for any inputDevices
-// @ts-expect-error TS(7006): Parameter 'user' implicitly has an 'any' type.
-export const hasAnyDeviceAccess = (user, inputDevices) => {
+export const hasAnyDeviceAccess = (user: UserInfoState, inputDevices: Recording[]) => {
 	return filterDevicesForAccess(user, inputDevices).length > 0;
 };
 
 // returns, whether user has access rights for a specific inputDevice
-// @ts-expect-error TS(7006): Parameter 'user' implicitly has an 'any' type.
-export const hasDeviceAccess = (user, deviceId) => {
+export const hasDeviceAccess = (user: UserInfoState, deviceId: Recording["id"]) => {
 	if (user.isOrgAdmin) {
 		return true;
 	} else {

@@ -1,14 +1,12 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { Step, StepButton, StepLabel, Stepper } from "@material-ui/core";
+import { Step, StepButton, StepLabel, Stepper } from "@mui/material";
 import {
 	isSummaryReachable,
 	useStepperStyle,
 } from "../../../utils/wizardUtils";
 import CustomStepIcon from "./CustomStepIcon";
-import { checkAcls } from "../../../thunks/aclThunks";
-import { connect } from "react-redux";
 
 const WizardStepperEvent = ({
 // @ts-expect-error TS(7031): Binding element 'steps' implicitly has an 'any' ty... Remove this comment to see the full error message
@@ -23,8 +21,6 @@ const WizardStepperEvent = ({
 	completed,
 // @ts-expect-error TS(7031): Binding element 'setCompleted' implicitly has an '... Remove this comment to see the full error message
 	setCompleted,
-// @ts-expect-error TS(7031): Binding element 'checkAcls' implicitly has an 'any... Remove this comment to see the full error message
-	checkAcls,
 }) => {
 	const { t } = useTranslation();
 
@@ -77,10 +73,6 @@ const WizardStepperEvent = ({
 	);
 };
 
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'acls' implicitly has an 'any' type.
-	checkAcls: (acls) => dispatch(checkAcls(acls)),
-});
 
-export default connect(null, mapDispatchToProps)(WizardStepperEvent);
+
+export default WizardStepperEvent;
