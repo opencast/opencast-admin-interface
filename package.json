@@ -1,7 +1,8 @@
 {
   "name": "staticserver",
   "version": "1.0.0",
-  "description": "",
+  "description": "A modern admin user interface for Opencast.",
+  "license": "ECL-2.0",
   "main": "staticServer.js",
   "scripts": {
     "client": "cd app && npm start",
