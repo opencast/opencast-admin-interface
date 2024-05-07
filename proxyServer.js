@@ -1,6 +1,5 @@
 const path = require("path");
 const express = require("express");
-const bodyParser = require('body-parser');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const requestDigest = require('request-digest');
 const urlParser = require('url-parse');
