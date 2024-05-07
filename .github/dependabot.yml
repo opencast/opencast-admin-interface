@@ -19,7 +19,7 @@ updates:
   - package-ecosystem: npm
     directory: "/app"
     schedule:
-      interval: montly
+      interval: monthly
       time: "04:00"
     open-pull-requests-limit: 15
     labels:
