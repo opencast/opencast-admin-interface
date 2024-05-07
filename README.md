@@ -43,7 +43,7 @@ To test with real data run:
 npm run proxy-server http://stable.opencast.org *opencast_digest_username* *opencast_digest_password*
 ```
 
-This will start a proxy server at localhost:5000. It will automatically proxy
+This will start a proxy server at localhost:5001. It will automatically proxy
 requests to an Opencast instance at http://stable.opencast.org. You can change the URL to a different Opencast if you wish (e.g., http://localhost.8080 for
 a local Opencast installation). Note that `http` is required.
 
@@ -70,11 +70,11 @@ not work when using this mode.
 ### Alternative ports
 
 The static file server and the proxy server serve their content
-on the port 5000. If this is used already (as it is on macOS)
+on the port 5001. If this is used already (as it is on macOS)
 you can specify an alternative port in the `PORT` environment variable,
 for example:
 
-    PORT=5001 npm run proxy-server ...
+    PORT=5002 npm run proxy-server ...
 
 Note that you need to specify the same port when running the client,
 this time in the `PROXY_PORT` variable:
