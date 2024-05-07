@@ -67,7 +67,7 @@ not work when using this mode.
 How to cut a release for Opencast
 ---------------------------------
 
-1. [NOT YET FUNCTIONAL] (Optional) Run the [Update translations](https://github.com/opencast/opencast-editor/actions/workflows/update-translations.yml) workflow, to make sure all changes from crowdin are included in the next release.
+1. [NOT YET FUNCTIONAL] (Optional) Run the [Update translations](https://github.com/opencast/opencast-admin-interface/actions/workflows/update-translations.yml/actions/workflows/update-translations.yml) workflow, to make sure all changes from crowdin are included in the next release.
 1. Switch to the commit you want to turn into the release
 1. Create and push a new tag
    ```bash
@@ -75,9 +75,9 @@ How to cut a release for Opencast
     git tag -m Release -s "$DATE"
     git push upstream "$DATE":"$DATE"
    ```
-1. Wait for the [Create release draft](https://github.com/opencast/opencast-editor/actions/workflows/create-release.yml)
+1. Wait for the [Create release draft](https://github.com/opencast/opencast-admin-interface/actions/workflows/create-release.yml)
    workflow to finish
-    - It will create a new [GitHub release draft](https://github.com/opencast/opencast-editor/releases)
+    - It will create a new [GitHub release draft](https://github.com/opencast/opencast-admin-interface/releases)
     - Review and publish the draft
 1. Submit a pull request against Opencast
     - [Update the release](https://github.com/opencast/opencast/blob/b2bea8822b95b8692bb5bbbdf75c9931c2b7298a/modules/admin-ui-interface/pom.xml#L16-L17)
