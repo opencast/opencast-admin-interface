@@ -9,7 +9,7 @@
     "@mui/styles": "^5.15.6",
     "@mui/x-date-pickers": "^6.19.0",
     "@reduxjs/toolkit": "^1.9.7",
-    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^12.1.5",
     "@types/dompurify": "^3.0.5",
     "@types/react-router-dom": "^5.3.3",
