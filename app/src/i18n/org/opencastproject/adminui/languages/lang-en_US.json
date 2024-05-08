@@ -489,6 +489,10 @@
 						"MULTIPLE_PARTS": {
 							"SHORT": "Multiple parts",
 							"DETAIL": "A set of files containing different parts of the event."
+						},
+						"SUBTITLES": {
+							"SHORT": "Subtitles",
+							"DETAIL": "A subtitle file in vtt format"
 						}
 					},
 					"DATE_TIME": {

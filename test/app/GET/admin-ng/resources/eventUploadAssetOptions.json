@@ -9,6 +9,7 @@
   "EVENTS.EVENTS.NEW.SOURCE.UPLOAD.SEGMENTABLE": "{\"id\": \"track_presentation\",\"type\":\"track\", \"flavorType\": \"presentation\",\"flavorSubType\": \"source\", \"multiple\":false,\"displayOrder\":11}",
   "EVENTS.EVENTS.NEW.SOURCE.UPLOAD.UNKNOWN": "{\"id\": \"track_unknown\",\"type\":\"track\", \"flavorType\": \"presentation\",\"flavorSubType\": \"unknown\", \"multiple\":false,\"displayOrder\":11, \"displayOverride.SHORT\":\"Override Text\",  \"displayFallback.DETAIL\":\"Fallback detail text\"}",
   "EVENTS.EVENTS.NEW.SOURCE.UPLOAD.AUDIO_ONLY": "{\"id\": \"track_audio\",\"type\":\"track\", \"flavorType\": \"audio\",\"flavorSubType\": \"source\", \"multiple\":false,\"displayOrder\":6, \"displayOverride.SHORT\":\"Hi I'm the translate text short override!\", \"displayOverride.DETAIL\":\"Hi I'm the translate text detail override!\"}",
+  "EVENTS.EVENTS.NEW.SOURCE.UPLOAD.SUBTITLES": "{\"id\": \"track_subtitles\", \"type\":\"track\", \"flavorType\": \"captions\", \"flavorSubType\": \"source\", \"tags\": \"generator:unknown\", \"displayOrder\":3, \"accept\": \".vtt\"}",
   "EVENTS.EVENTS.NEW.UPLOAD_ASSET.WORKFLOWDEFID": "publish-uploaded-assets"
 }
 
