@@ -11,6 +11,7 @@ module.exports = function (app) {
             "/sysinfo",
             "/staticfiles",
             "/j_spring_security_check",
+            "/ui",
         ],
         createProxyMiddleware({
             target: "http://localhost:5000",

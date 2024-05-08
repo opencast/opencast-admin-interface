@@ -43,19 +43,15 @@ $footer-background-color: darken($body-background, 5%);
     background: $footer-background-color;
     border-top: 1px solid $footer-border-color;
 
-    .feedback-btn,
-    .meta {
-        display: inline-block;
-        vertical-align: top;
-        font-size: 10px;
-    }
-
     .feedback-btn {
         @include clearfix();
-        float: right;
         width: 90px;
         position: absolute;
         right: 0;
+        top: 0;
+        display: inline-block;
+        vertical-align: top;
+        font-size: 10px;
 
         a {
             transition: all .2s;
@@ -78,12 +74,16 @@ $footer-background-color: darken($body-background, 5%);
         }
     }
 
-    .meta {
+    ul {
+        display: flex;
+        justify-content: center;
+    }
+
+    ul li {
         color: $light-prim-color;
-        text-align: center;
-        margin: 0 auto;
-        margin-left: -4px;
-        width: 100%;
+        margin-left: 10px;
+        vertical-align: top;
+        font-size: 10px;
         @include footer-component-padding();
     }
 }
