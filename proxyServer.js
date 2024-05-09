@@ -1,6 +1,5 @@
 const path = require("path");
 const express = require("express");
-const { createProxyMiddleware } = require('http-proxy-middleware');
 const requestDigest = require('request-digest');
 const urlParser = require('url-parse');
 
@@ -23,44 +22,6 @@ if (username === undefined) {
 if (password === undefined) {
     throw new Error("Runtime Parameter password is undefined!");
 }
-
-
-
-// Set up static files
-// TODO: maybe future adjustments necessary when code is further implemented
-app.use(
-    "/styles",
-    express.static(path.join(__dirname, "app/build/static/css"))
-);
-app.use(
-    "/modules",
-    express.static(path.join(__dirname, "app/src/components"))
-);
-app.use(
-    "/shared",
-    express.static(path.join(__dirname, "app/src/components"))
-);
-app.use(
-    "/public",
-    express.static(path.join(__dirname, "app/public/"))
-);
-app.use(
-    "/img",
-    express.static(path.join(__dirname, "app/src/img"))
-);
-app.use(
-    "/info",
-    express.static(path.join(__dirname, "test/app/GET/info"))
-);
-app.use(
-    "/i18n",
-    express.static(path.join(__dirname, "test/app/GET/i18n"))
-);
-app.use(
-    "/sysinfo",
-    express.static(path.join(__dirname, "test/app/GET/sysinfo"))
-);
-
 
 app.use('', (req, res, next) => {
     console.log('Proxy ' + req.method + ' ' + req.url + ' -> ' + host + req.url);
@@ -109,26 +70,5 @@ app.use('', (req, res, next) => {
         onForwardToBackend(Buffer.concat(buffer));
     });
 });
-
-// todo: not sure if really needed
-app.use(
-    "/admin-ng",
-    createProxyMiddleware({
-        target: host,
-        headers: {
-            'X-Requested-Auth': 'Digest'
-        },
-        changeOrigin: true
-    }));
-
-app.use(
-    "/services",
-    createProxyMiddleware({
-        target: host,
-        headers: {
-            'X-Requested-Auth': 'Digest'
-        },
-        changeOrigin: true
-    }));
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
