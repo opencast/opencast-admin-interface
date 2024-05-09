@@ -1,5 +1,7 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
+const port = process.env.PROXY_PORT || 5000;
+
 module.exports = function (app) {
     app.use(
         [
@@ -14,7 +16,7 @@ module.exports = function (app) {
             "/ui",
         ],
         createProxyMiddleware({
-            target: "http://localhost:5000",
+            target: `http://localhost:${port}`,
             changeOrigin: true,
         }),
     );
