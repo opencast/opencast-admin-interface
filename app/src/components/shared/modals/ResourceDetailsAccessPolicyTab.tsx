@@ -251,7 +251,15 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 // @ts-expect-error TS(7006): Parameter 'templateId' implicitly has an 'any' typ... Remove this comment to see the full error message
 	const handleTemplateChange = async (templateId, setFormikFieldValue) => {
 		// fetch information about chosen template from backend
-		const template = await fetchAclTemplateById(templateId);
+		let template = await fetchAclTemplateById(templateId);
+
+		// always add current user to acl since template could lock the user out
+		template = template.concat({
+			role: user.userRole,
+			read: true,
+			write: true,
+			actions: [],
+		});
 
 		setFormikFieldValue("policies", template);
 		setFormikFieldValue("template", templateId);
