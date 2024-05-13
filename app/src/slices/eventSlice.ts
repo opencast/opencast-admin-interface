@@ -182,8 +182,8 @@ type EventState = {
 
 // Fill columns initially with columns defined in eventsTableConfig
 const initialColumns = eventsTableConfig.columns.map((column) => ({
-	...column,
 	deactivated: false,
+	...column,
 }));
 
 // Initial state of events in redux store
@@ -220,8 +220,18 @@ const initialState: EventState = {
 
 // fetch events from server
 export const fetchEvents = createAsyncThunk('events/fetchEvents', async (_, { getState }) => {
-	const state = getState();
-	let params = getURLParams(state as RootState);
+	const state = getState() as RootState;
+	let params: { limit: any, offset: number, getComments?: boolean }= getURLParams(state);
+
+	// Only if the notes column is enabled, fetch comment information for events
+	// @ts-expect-error TS(7006):
+	if (state.table.columns.find(column => column.label === "EVENTS.EVENTS.TABLE.ADMINUI_NOTES" && !column.deactivated)) {
+		params = {
+			...params,
+			getComments: true
+		}
+	}
+
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.

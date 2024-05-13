@@ -34,7 +34,7 @@ const StartTaskWorkflowPage = <T extends RequiredFormProps>({
 
 	useEffect(() => {
 		// Load workflow definitions for selecting
-		dispatch(fetchWorkflowDef("default"));
+		dispatch(fetchWorkflowDef("tasks"));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

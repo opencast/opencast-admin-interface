@@ -247,6 +247,8 @@ const getInitialValues = (
 	// Add possible files that can be uploaded in source step
 	if (!!uploadAssetOptions) {
 		initialValues.uploadAssetsTrack = [];
+		// Sort by displayOrder
+		uploadAssetOptions = uploadAssetOptions.slice().sort((a: any, b: any) => a.displayOrder - b.displayOrder)
 		// initial value of upload asset needs to be null, because object (file) is saved there
 		for (const option of uploadAssetOptions) {
 			if (option.type === "track") {

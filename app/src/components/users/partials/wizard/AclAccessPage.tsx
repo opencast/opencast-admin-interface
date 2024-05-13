@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { connect } from "react-redux";
 import { Field, FieldArray, FormikProps } from "formik";
 import Notifications from "../../../shared/Notifications";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import {
+	Role,
 	checkAcls,
 	fetchAclActions,
 	fetchAclTemplateById,
 	fetchAclTemplates,
 	fetchRolesWithTarget,
-} from "../../../../thunks/aclThunks";
+} from "../../../../slices/aclSlice";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
 import DropDown from "../../../shared/DropDown";
 import { filterRoles, getAclTemplateText } from "../../../../utils/aclUtils";
-import { useAppSelector } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 
 /**
@@ -32,19 +32,18 @@ const AclAccessPage = <T extends RequiredFormProps>({
 	nextPage,
 	previousPage,
 	isEdit,
-// @ts-expect-error TS(2345): Argument of type 'checkAcls' i... Remove this comment to see the full error message
-	checkAcls,
 } : {
 	formik: FormikProps<T>,
-	nextPage: (values: T) => void,
-	previousPage: (values: T) => void,
+	nextPage?: (values: T) => void,
+	previousPage?: (values: T) => void,
 	isEdit?: boolean,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
-	const [aclTemplates, setAclTemplates] = useState([]);
-	const [aclActions, setAclActions] = useState([]);
-	const [roles, setRoles] = useState([]);
+	const [aclTemplates, setAclTemplates] = useState<{ id: string, value: string }[]>([]);
+	const [aclActions, setAclActions] = useState<{ id: string, value: string }[]>([]);
+	const [roles, setRoles] = useState<Role[]>([]);
 	const [loading, setLoading] = useState(false);
 
 	const user = useAppSelector(state => getUserInformation(state));
@@ -57,10 +56,8 @@ const AclAccessPage = <T extends RequiredFormProps>({
 		async function fetchData() {
 			setLoading(true);
 			const responseTemplates = await fetchAclTemplates();
-// @ts-expect-error TS(2345): Argument of type '{ id: string; value: any; }[]' i... Remove this comment to see the full error message
 			setAclTemplates(responseTemplates);
 			const responseActions = await fetchAclActions();
-// @ts-expect-error TS(2345): Argument of type '{ id: string; value: any; }[]' i... Remove this comment to see the full error message
 			setAclActions(responseActions);
 			const responseRoles = await fetchRolesWithTarget("ACL");
 			setRoles(responseRoles);
@@ -77,7 +74,7 @@ const AclAccessPage = <T extends RequiredFormProps>({
 
 		formik.setFieldValue("acls", template);
 		formik.setFieldValue("aclTemplate", value);
-		await checkAcls(formik.values.acls);
+		await dispatch(checkAcls(formik.values.acls));
 	};
 
 	return (
@@ -312,7 +309,7 @@ const AclAccessPage = <T extends RequiredFormProps>({
 																									write: false,
 																									actions: [],
 																								});
-																								checkAcls(formik.values.acls);
+																								dispatch(checkAcls(formik.values.acls));
 																							}}
                                               className="button-like-anchor"
 																						>
@@ -342,7 +339,7 @@ const AclAccessPage = <T extends RequiredFormProps>({
 				</div>
 			</div>
 			{/* Button for navigation to next page and previous page */}
-			{!isEdit && (
+			{(!isEdit && !!nextPage && !!previousPage) && (
 				<>
 					<footer>
 						<button
@@ -353,7 +350,7 @@ const AclAccessPage = <T extends RequiredFormProps>({
 							})}
 							disabled={!(formik.dirty && formik.isValid)}
 							onClick={async () => {
-								if (await checkAcls(formik.values.acls)) {
+								if (await dispatch(checkAcls(formik.values.acls))) {
 									nextPage(formik.values);
 								}
 							}}
@@ -377,16 +374,4 @@ const AclAccessPage = <T extends RequiredFormProps>({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-
-});
-
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'acls' implicitly has an 'any' type.
-	checkAcls: (acls) => dispatch(checkAcls(acls)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AclAccessPage);
+export default AclAccessPage;

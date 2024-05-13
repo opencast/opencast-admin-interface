@@ -1,22 +1,25 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
 import { Formik } from "formik";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
 import AclMetadataPage from "./AclMetadataPage";
 import NewAclSummaryPage from "./NewAclSummaryPage";
-import { postNewAcl } from "../../../../thunks/aclThunks";
+import { postNewAcl } from "../../../../slices/aclSlice";
 import { initialFormValuesNewAcl } from "../../../../configs/modalConfig";
 import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { NewAclSchema } from "../../../../utils/validate";
 import AclAccessPage from "./AclAccessPage";
+import { useAppDispatch } from "../../../../store";
 
 /**
  * This component manages the pages of the new ACL wizard
  */
 const NewAclWizard = ({
-    close,
-    postNewAcl
-}: any) => {
+	close,
+} : {
+	close: () => void,
+}) => {
+	const dispatch = useAppDispatch();
+
 	const initialValues = initialFormValuesNewAcl;
 
 	const {
@@ -48,7 +51,7 @@ const NewAclWizard = ({
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
-		const response = postNewAcl(values);
+		const response = dispatch(postNewAcl(values));
 		console.info(response);
 		close();
 	};
@@ -113,10 +116,4 @@ const NewAclWizard = ({
 	);
 };
 
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	postNewAcl: (values) => dispatch(postNewAcl(values)),
-});
-
-export default connect(null, mapDispatchToProps)(NewAclWizard);
+export default NewAclWizard;

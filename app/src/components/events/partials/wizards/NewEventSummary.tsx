@@ -10,6 +10,7 @@ import MetadataSummaryTable from "./summaryTables/MetadataSummaryTable";
 import MetadataExtendedSummaryTable from "./summaryTables/MetadataExtendedSummaryTable";
 import AccessSummaryTable from "./summaryTables/AccessSummaryTable";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { translateOverrideFallback } from "../../../../utils/utils";
 import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
@@ -77,7 +78,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 				name: uploadAssetsOptionsNonTrack[i].id,
 				translate: !!displayOverride
 					? t(displayOverride)
-					: t(uploadAssetsOptionsNonTrack[i].title),
+					: translateOverrideFallback(uploadAssetsOptionsNonTrack[i], t),
 				type: uploadAssetsOptionsNonTrack[i].type,
 				flavorType: uploadAssetsOptionsNonTrack[i].flavorType,
 				flavorSubType: uploadAssetsOptionsNonTrack[i].flavorSubType,
@@ -162,10 +163,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 												!!asset.file ? (
 													<tr key={key}>
 														<td>
-															{t(
-																asset.title + ".SHORT",
-																asset["displayOverride.SHORT"]
-															)}
+															{translateOverrideFallback(asset, t, "SHORT")}
 															<span className="ui-helper-hidden">
                                 { // eslint-disable-next-line react/jsx-no-comment-textnodes
                                 } ({asset.type} "{asset.flavorType}//

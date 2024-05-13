@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
 import RenderMultiField from "../wizard/RenderMultiField";
 import {
+	Role,
 	fetchAclActions,
 	fetchAclTemplateById,
 	fetchAclTemplates,
 	fetchRolesWithTarget,
-} from "../../../thunks/aclThunks";
+} from "../../../slices/aclSlice";
 import Notifications from "../Notifications";
 import { Formik, Field, FieldArray } from "formik";
 import { NOTIFICATION_CONTEXT } from "../../../configs/modalConfig";
@@ -32,12 +32,10 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 	fetchHasActiveTransactions?: any,
 	fetchAccessPolicies: any,
 	saveNewAccessPolicies: any,
-	descriptionText: any,
-	fetchAclTemplates: any,
-	fetchRoles: any,
-	buttonText: any,
-	saveButtonText: any,
-	editAccessRole: any,
+	descriptionText: string,
+	buttonText: string,
+	saveButtonText: string,
+	editAccessRole: string,
 	policyChanged: any,
 	setPolicyChanged: any,
 }> = ({
@@ -49,8 +47,6 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 	fetchAccessPolicies,
 	saveNewAccessPolicies,
 	descriptionText,
-	fetchAclTemplates,
-	fetchRoles,
 	buttonText,
 	saveButtonText,
 	editAccessRole,
@@ -61,16 +57,16 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 	const baseAclId = "";
 
 	// list of policy templates
-	const [aclTemplates, setAclTemplates] = useState([]);
+	const [aclTemplates, setAclTemplates] = useState<{ id: string, value: string }[]>([]);
 
 	// list of possible additional actions
-	const [aclActions, setAclActions] = useState([]);
+	const [aclActions, setAclActions] = useState<{ id: string, value: string }[]>([]);
 
 	// shows, whether a resource has additional actions on top of normal read and write rights
 	const [hasActions, setHasActions] = useState(false);
 
 	// list of possible roles
-	const [roles, setRoles] = useState(false);
+	const [roles, setRoles] = useState<Role[]>([]);
 
 	// this state is used, because the policies should be read-only, if a transaction is currently being performed on a resource
 	const [transactions, setTransactions] = useState({ read_only: false });
@@ -88,12 +84,10 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 			const responseTemplates = await fetchAclTemplates();
 			await setAclTemplates(responseTemplates);
 			const responseActions = await fetchAclActions();
-// @ts-expect-error TS(2345): Argument of type '{ id: string; value: any; }[]' i... Remove this comment to see the full error message
 			setAclActions(responseActions);
 			setHasActions(responseActions.length > 0);
 			await fetchAccessPolicies(resourceId);
-// @ts-expect-error TS(7006): Parameter 'roles' implicitly has an 'any' type.
-			fetchRoles().then((roles) => setRoles(roles));
+			fetchRolesWithTarget("ACL").then((roles) => setRoles(roles));
 			if (fetchHasActiveTransactions) {
 				const fetchTransactionResult = await fetchHasActiveTransactions(
 					resourceId
@@ -430,8 +424,6 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 																										value={policy.role}
 																										text={policy.role}
 																										options={
-																											!!roles &&
-// @ts-expect-error TS(2339): Property 'length' does not exist on type 'true'.
 																											roles.length > 0
 																												? filterRoles(
 																														roles,
@@ -451,8 +443,6 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 																											}
 																										}}
 																										placeholder={
-																											!!roles &&
-// @ts-expect-error TS(2339): Property 'length' does not exist on type 'true'.
 																											roles.length > 0
 																												? t(
 																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.LABEL"
@@ -659,20 +649,4 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	fetchRoles: () => fetchRolesWithTarget("ACL"),
-	fetchAclTemplates: () => fetchAclTemplates(),
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(ResourceDetailsAccessPolicyTab);
+export default ResourceDetailsAccessPolicyTab;

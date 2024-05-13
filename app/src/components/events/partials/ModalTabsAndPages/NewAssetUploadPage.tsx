@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { getAssetUploadOptions } from "../../../../selectors/eventSelectors";
+import { translateOverrideFallback } from "../../../../utils/utils";
 import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
 
@@ -67,9 +68,7 @@ const NewAssetUploadPage = <T extends RequiredFormProps>({
 												<tr key={key}>
 													<td>
 														{" "}
-														{!!asset.displayOverride
-															? t(asset.displayOverride)
-															: t(asset.title)}
+														{translateOverrideFallback(asset, t)}
 														<span className="ui-helper-hidden">
                               { // eslint-disable-next-line react/jsx-no-comment-textnodes
                               } ({asset.type} "{asset.flavorType}//

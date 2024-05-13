@@ -7,8 +7,8 @@ import {
 	useStepperStyle,
 } from "../../../utils/wizardUtils";
 import CustomStepIcon from "./CustomStepIcon";
-import { checkAcls } from "../../../thunks/aclThunks";
-import { connect } from "react-redux";
+import { checkAcls } from "../../../slices/aclSlice";
+import { useAppDispatch } from "../../../store";
 import { FormikProps } from "formik/dist/types";
 
 /**
@@ -22,8 +22,6 @@ const WizardStepper = ({
 	completed,
 	setCompleted,
 	hasAccessPage = false,
-// @ts-expect-error TS(7031): Binding element 'checkAcls' implicitly has an 'any... Remove this comment to see the full error message
-	checkAcls,
 }: {
 	steps: {
 		name: string,
@@ -38,13 +36,14 @@ const WizardStepper = ({
 	hasAccessPage?: boolean,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const classes = useStepperStyle();
 
 	const handleOnClick = async (key: number) => {
 		if (isSummaryReachable(key, steps, completed)) {
 			if (hasAccessPage) {
-				let check = await checkAcls(formik.values.acls);
+				let check = await dispatch(checkAcls(formik.values.acls));
 				if (!check) {
 					return;
 				}
@@ -85,10 +84,4 @@ const WizardStepper = ({
 	);
 };
 
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'acls' implicitly has an 'any' type.
-	checkAcls: (acls) => dispatch(checkAcls(acls)),
-});
-
-export default connect(null, mapDispatchToProps)(WizardStepper);
+export default WizardStepper;
