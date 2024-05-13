@@ -4,13 +4,13 @@ import { Field, Formik } from "formik";
 import cn from "classnames";
 import _ from "lodash";
 import Notifications from "../../../shared/Notifications";
+import RenderDate from "../../../shared/RenderDate";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { getCurrentLanguageInformation, hasAccess, isJson } from "../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
 import { useAppSelector } from "../../../../store";
-import { parseISO } from "date-fns";
 
 /**
  * This component renders metadata details of a certain event or series
@@ -128,7 +128,7 @@ const DetailsMetadataTab: React.FC<{
 																) : (
 																	<td>{
 																		field.type === "time" || field.type === "date"
-																			? parseISO(field.value).toLocaleString(currentLanguage?.dateLocale.code, { timeZone: 'UTC' })
+																			? <RenderDate date={field.value} />
 																			: field.value
 																	}</td>
 																)
