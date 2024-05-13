@@ -81,7 +81,7 @@ const MetadataExtendedSummaryTable = ({
 			<header className="no-expand">{t(header)}</header>
 			<div className="obj-container">
 				{catalogs.map((catalog, key) => (
-					<table className="main-tbl">
+					<table key={key} className="main-tbl">
 						<tbody>
 							{catalog.map((entry, key) => (
 								<tr key={key}>

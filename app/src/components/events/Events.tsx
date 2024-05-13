@@ -44,7 +44,7 @@ import {
 import { fetchSeries } from "../../slices/seriesSlice";
 
 // References for detecting a click outside of the container of the dropdown menu
-const containerAction = React.createRef();
+const containerAction = React.createRef<HTMLDivElement>();
 
 /**
  * This component renders the table view of events
@@ -128,12 +128,10 @@ const Events = ({
 		loadEvents().then((r) => console.info(r));
 
 		// Function for handling clicks outside of an open dropdown menu
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-		const handleClickOutside = (e) => {
+		const handleClickOutside = (e: MouseEvent) => {
 			if (
 				containerAction.current &&
-// @ts-expect-error TS(2571): Object is of type 'unknown'.
-				!containerAction.current.contains(e.target)
+				!containerAction.current.contains(e.target as Node)
 			) {
 				setActionMenu(false);
 			}
@@ -156,8 +154,7 @@ const Events = ({
 		setNavigation(!displayNavigation);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const handleActionMenu = (e) => {
+	const handleActionMenu = (e: React.MouseEvent) => {
 		e.preventDefault();
 		setActionMenu(!displayActionMenu);
 	};
@@ -277,7 +274,6 @@ const Events = ({
 						<div
 							className={cn("drop-down-container", { disabled: !showActions })}
 							onClick={(e) => handleActionMenu(e)}
-// @ts-expect-error TS(2322): Type 'RefObject<unknown>' is not assignable to typ... Remove this comment to see the full error message
 							ref={containerAction}
 						>
 							<span>{t("BULK_ACTIONS.CAPTION")}</span>

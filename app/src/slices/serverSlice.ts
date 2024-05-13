@@ -3,6 +3,7 @@ import { serversTableConfig } from "../configs/tableConfigs/serversTableConfig";
 import axios from 'axios';
 import { getURLParams } from '../utils/resourceUtils';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
+import { RootState } from '../store';
 
 /**
  * This file contains redux reducer for actions affecting the state of servers
@@ -49,7 +50,7 @@ const initialState: ServerState = {
 // fetch servers from server
 export const fetchServers = createAsyncThunk('servers/fetchServers', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state);
+	let params = getURLParams(state as RootState);
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.

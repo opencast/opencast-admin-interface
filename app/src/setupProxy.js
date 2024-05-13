@@ -1,157 +1,23 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
+
+const port = process.env.PROXY_PORT || 5000;
+
 module.exports = function (app) {
-	app.use(
-		"/admin-ng/j_spring_security_check",
-		createProxyMiddleware({
-			target: "http://localhost:8080",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/admin-ng/event/new/conflicts",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/admin-ng",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/acl-manager",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/i18n",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/i18n",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/blacklist",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/capture-agents",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/email",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/groups",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/info",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/roles",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/services",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/sysinfo",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/workflow",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/img",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/app/styles",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/staticfiles",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/public",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/modules",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/shared",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
-	app.use(
-		"/j_spring_security_check",
-		createProxyMiddleware({
-			target: "http://localhost:5000",
-			changeOrigin: true,
-		})
-	);
+    app.use(
+        [
+            "/api",
+            "/admin-ng",
+            "/acl-manager",
+            "/info",
+            "/services",
+            "/sysinfo",
+            "/staticfiles",
+            "/j_spring_security_check",
+            "/ui",
+        ],
+        createProxyMiddleware({
+            target: `http://localhost:${port}`,
+            changeOrigin: true,
+        }),
+    );
 };

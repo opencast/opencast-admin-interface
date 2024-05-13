@@ -22,7 +22,7 @@ const StartTaskModal = ({
 
 	const initialValues = initialFormValuesStartTask;
 
-	const [
+	const {
 		snapshot,
 		page,
 		nextPage,
@@ -30,7 +30,7 @@ const StartTaskModal = ({
 		setPage,
 		pageCompleted,
 		setPageCompleted,
-	] = usePageFunctions(0, initialValues);
+	} = usePageFunctions(0, initialValues);
 
 	const steps = [
 		{
@@ -108,7 +108,12 @@ const StartTaskModal = ({
 								/>
 								<div>
 									{page === 0 && (
-										<StartTaskGeneralPage formik={formik} nextPage={nextPage} />
+										<StartTaskGeneralPage
+											// @ts-expect-error: Type-checking gets confused by redux-connect in the child
+											formik={formik}
+											// @ts-expect-error: Type-checking gets confused by redux-connect in the child
+											nextPage={nextPage}
+										/>
 									)}
 									{page === 1 && (
 										<StartTaskWorkflowPage

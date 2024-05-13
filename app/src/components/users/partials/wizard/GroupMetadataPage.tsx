@@ -1,16 +1,20 @@
 import React from "react";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { useTranslation } from "react-i18next";
-import { Field } from "formik";
+import { Field, FormikProps } from "formik";
 
 /**
  * This component renders the metadata page for groups in the new groups wizard and group details modal
  */
-const GroupMetadataPage = ({
-    nextPage,
-    formik,
-    isEdit
-}: any) => {
+const GroupMetadataPage = <T,>({
+	formik,
+	nextPage,
+	isEdit
+}: {
+	formik: FormikProps<T>,
+	nextPage?: (values: T) => void,
+	isEdit?: boolean,
+}) => {
 	const { t } = useTranslation();
 
 	return (

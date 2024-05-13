@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchRolesWithTarget } from "../../../../thunks/aclThunks";
+import { Role, fetchRolesWithTarget } from "../../../../slices/aclSlice";
 import SelectContainer from "../../../shared/wizard/SelectContainer";
 
 /**
@@ -9,7 +9,7 @@ const UserRolesTab = ({
     formik
 }: any) => {
 	// roles that can be chosen by user
-	const [roles, setRoles] = useState([]);
+	const [roles, setRoles] = useState<Role[]>([]);
 	// flag for API call
 	const [loading, setLoading] = useState(false);
 

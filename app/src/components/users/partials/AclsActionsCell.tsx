@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import ConfirmModal from "../../shared/ConfirmModal";
-import { deleteAcl } from "../../../thunks/aclThunks";
+import { deleteAcl } from "../../../slices/aclSlice";
 import AclDetailsModal from "./modal/AclDetailsModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
@@ -14,7 +13,6 @@ import { fetchAclDetails } from "../../../slices/aclDetailsSlice";
  */
 const AclsActionsCell = ({
 	row,
-	deleteAcl,
 }: any) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -30,7 +28,7 @@ const AclsActionsCell = ({
 
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 	const deletingAcl = (id) => {
-		deleteAcl(id);
+		dispatch(deleteAcl(id));
 	};
 
 	const hideAclDetails = () => {
@@ -81,16 +79,4 @@ const AclsActionsCell = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-
-});
-
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	deleteAcl: (id) => dispatch(deleteAcl(id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AclsActionsCell);
+export default AclsActionsCell;

@@ -32,13 +32,6 @@ textarea {
     width: 130px;
     font-family: $font-stack;
 
-     // ## Refactor this. Hacked in a way to keep the login inputs bigger than standard.
-    &.login-input {
-        width: $login-input-width;
-        height: 50px;
-        padding-left: 50px;
-    }
-
     background: #fff;
     border: $thin-border-stroke $main-border-color;
     border-radius: $main-border-radius;

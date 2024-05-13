@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Notifications from "../../../shared/Notifications";
-import { Field } from "formik";
+import { Field, FormikProps } from "formik";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
@@ -9,11 +9,15 @@ import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButt
  * and for themes in the themes details modal.
  * Here, additional information, like name, for themes can be provided.
  */
-const GeneralPage = ({
-    formik,
-    nextPage,
-    isEdit
-}: any) => {
+const GeneralPage = <T,>({
+	formik,
+	nextPage,
+	isEdit,
+}: {
+	formik: FormikProps<T>,
+	nextPage?: (values: T) => void,
+	isEdit?: boolean,
+}) => {
 	const { t } = useTranslation();
 
 	// Style used in themes details modal
@@ -31,7 +35,7 @@ const GeneralPage = ({
 						<div className="form-container">
 							<div className="row">
 								<Notifications />
-								<label className="required" style={isEdit && editStyle}>
+								<label className="required" style={isEdit ? editStyle: undefined}>
 									{t("CONFIGURATION.THEMES.DETAILS.GENERAL.NAME")}
 								</label>
 								<Field
@@ -44,7 +48,7 @@ const GeneralPage = ({
 								/>
 							</div>
 							<div className="row">
-								<label style={isEdit && editStyle}>
+								<label style={isEdit ? editStyle: undefined}>
 									{t("CONFIGURATION.THEMES.DETAILS.GENERAL.DESCRIPTION")}
 								</label>
 								<Field

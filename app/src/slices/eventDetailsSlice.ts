@@ -78,6 +78,20 @@ type Workflow = {
 	workflow: any // TODO: proper typing
 }
 
+type Device = {
+	id: string,
+	inputs: { id: string, value: string }[],
+	inputMethods: string[],
+	name: string,
+	// Fields we add to "device" from recordings but don't actually care about?
+	// removable: boolean,
+	// roomId: string,
+	// status: string,
+	// type: string,
+	// updated: string,
+	// url: string,
+}
+
 type EventDetailsState = {
 	statusMetadata: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorMetadata: SerializedError | null,
@@ -109,6 +123,8 @@ type EventDetailsState = {
 	errorSaveComment: SerializedError | null,
 	statusSaveCommentReply: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorSaveCommentReply: SerializedError | null,
+	statusUpdateComment: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	errorUpdateComment: SerializedError | null,
 	statusScheduling: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorScheduling: SerializedError | null,
 	statusSaveScheduling: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
@@ -257,19 +273,7 @@ type EventDetailsState = {
 			hour: number | undefined,
 			minute: number | undefined,
 		},
-		device: {
-			id: string,
-			inputs: string[],
-			inputMethods: string[],
-			name: string,
-			// Fields we add to "device" from recordings but don't actually care about?
-			// removable: boolean,
-			// roomId: string,
-			// status: string,
-			// type: string,
-			// updated: string,
-			// url: string,
-		},
+		device: Device,
 		agentId: string | undefined,
 		agentConfiguration: { [key: string]: string },
 	},
@@ -379,6 +383,8 @@ const initialState: EventDetailsState = {
 	errorSaveComment: null,
 	statusSaveCommentReply: 'uninitialized',
 	errorSaveCommentReply: null,
+	statusUpdateComment: 'uninitialized',
+	errorUpdateComment: null,
 	statusScheduling: 'uninitialized',
 	errorScheduling: null,
 	statusSaveScheduling: 'uninitialized',
@@ -973,12 +979,7 @@ export const fetchSchedulingInfo = createAsyncThunk('eventDetails/fetchSchedulin
 			endDate
 		);
 
-		let device: {
-			id: string,
-			inputs: string[],
-			inputMethods: string[],
-			name: string,
-		} = {
+		let device: Device = {
 			id: "",
 			name: "",
 			inputs: [],
@@ -1053,12 +1054,7 @@ export const saveSchedulingInfo = createAsyncThunk('eventDetails/saveSchedulingI
 	const state = getState() as RootState;
 	const oldSource = getSchedulingSource(state as RootState);
 	const captureAgents = getRecordings(state);
-	let device: {
-		id: string,
-		inputs: string[],
-		inputMethods: string[],
-		name: string,
-	} = {
+	let device: Device = {
 		id: "",
 		name: "",
 		inputs: [],
@@ -1656,6 +1652,23 @@ export const saveAccessPolicies = createAsyncThunk('eventDetails/saveAccessPolic
 		});
 });
 
+export const updateComment = createAsyncThunk('eventDetails/updateComment', async (params: {eventId: any, commentId: any, commentText: any, commentReason: any}, { dispatch }) => {
+	const { eventId, commentId, commentText, commentReason } = params;
+	let headers = getHttpHeaders();
+
+	let data = new URLSearchParams();
+	data.append("text", commentText);
+	data.append("reason", commentReason);
+
+	const commentUpdated = await axios.post(
+		`/admin-ng/event/${eventId}/comment/${commentId}`,
+		data.toString(),
+		headers
+	);
+	await commentUpdated.data;
+	return true;
+});
+
 export const deleteComment = createAsyncThunk('eventDetails/deleteComment', async (params: {
 	eventId: string,
 	commentId: number
@@ -2070,6 +2083,18 @@ const eventDetailsSlice = createSlice({
 			.addCase(saveCommentReply.rejected, (state, action) => {
 				state.statusSaveCommentReply = 'failed';
 				state.errorSaveCommentReply = action.error;
+				console.error(action.error);
+			})
+			// updateComment
+			.addCase(updateComment.pending, (state) => {
+				state.statusUpdateComment = 'loading';
+			})
+			.addCase(updateComment.fulfilled, (state) => {
+				state.statusUpdateComment = 'succeeded';
+			})
+			.addCase(updateComment.rejected, (state, action) => {
+				state.statusUpdateComment = 'failed';
+				state.errorUpdateComment = action.error;
 				console.error(action.error);
 			})
 			// fetchSchedulingInfo

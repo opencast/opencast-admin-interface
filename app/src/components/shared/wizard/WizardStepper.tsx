@@ -7,38 +7,43 @@ import {
 	useStepperStyle,
 } from "../../../utils/wizardUtils";
 import CustomStepIcon from "./CustomStepIcon";
-import { checkAcls } from "../../../thunks/aclThunks";
-import { connect } from "react-redux";
+import { checkAcls } from "../../../slices/aclSlice";
+import { useAppDispatch } from "../../../store";
+import { FormikProps } from "formik/dist/types";
 
 /**
  * This components renders the stepper navigation of new resource wizards
  */
 const WizardStepper = ({
-// @ts-expect-error TS(7031): Binding element 'steps' implicitly has an 'any' ty... Remove this comment to see the full error message
 	steps,
-// @ts-expect-error TS(7031): Binding element 'page' implicitly has an 'any' typ... Remove this comment to see the full error message
 	page,
-// @ts-expect-error TS(7031): Binding element 'setPage' implicitly has an 'any' ... Remove this comment to see the full error message
 	setPage,
-// @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
 	formik,
-// @ts-expect-error TS(7031): Binding element 'completed' implicitly has an 'any... Remove this comment to see the full error message
 	completed,
-// @ts-expect-error TS(7031): Binding element 'setCompleted' implicitly has an '... Remove this comment to see the full error message
 	setCompleted,
 	hasAccessPage = false,
-// @ts-expect-error TS(7031): Binding element 'checkAcls' implicitly has an 'any... Remove this comment to see the full error message
-	checkAcls,
+}: {
+	steps: {
+		name: string,
+		translation: string,
+		hidden?: boolean,
+	}[],
+	page: number,
+	setPage: (num: number) => void,
+	formik: FormikProps<any>,
+	completed: Record<number, boolean>,
+	setCompleted: (rec: Record<number, boolean>) => void,
+	hasAccessPage?: boolean,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const classes = useStepperStyle();
 
-// @ts-expect-error TS(7006): Parameter 'key' implicitly has an 'any' type.
-	const handleOnClick = async (key) => {
+	const handleOnClick = async (key: number) => {
 		if (isSummaryReachable(key, steps, completed)) {
 			if (hasAccessPage) {
-				let check = await checkAcls(formik.values.acls);
+				let check = await dispatch(checkAcls(formik.values.acls));
 				if (!check) {
 					return;
 				}
@@ -64,7 +69,6 @@ const WizardStepper = ({
 			connector={false}
 			className={cn("step-by-step", classes.root)}
 		>
-{/* @ts-expect-error TS(7006): Parameter 'label' implicitly has an 'any' type. */}
 			{steps.map((label, key) =>
 				!label.hidden ? (
 					<Step key={label.translation} completed={completed[key]}>
@@ -80,10 +84,4 @@ const WizardStepper = ({
 	);
 };
 
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'acls' implicitly has an 'any' type.
-	checkAcls: (acls) => dispatch(checkAcls(acls)),
-});
-
-export default connect(null, mapDispatchToProps)(WizardStepper);
+export default WizardStepper;
