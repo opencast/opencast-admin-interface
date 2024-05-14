@@ -10,7 +10,6 @@ module.exports = app => {
             "/services",
             "/sysinfo",
             "/staticfiles",
-            "/j_spring_security_check",
             "/ui",
         ],
         createProxyMiddleware({
