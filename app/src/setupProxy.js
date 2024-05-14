@@ -3,13 +3,13 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 module.exports = app => {
     app.use(
         [
-            "/api",
-            "/admin-ng",
             "/acl-manager",
+            "/admin-ng",
+            "/api",
             "/info",
             "/services",
-            "/sysinfo",
             "/staticfiles",
+            "/sysinfo",
             "/ui",
         ],
         createProxyMiddleware({
