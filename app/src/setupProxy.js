@@ -14,7 +14,7 @@ module.exports = app => {
             "/ui",
         ],
         createProxyMiddleware({
-            target: process.env.PROXY_TARGET || "http://localhost:5000",
+            target: process.env.PROXY_TARGET || "http://localhost:8080",
             changeOrigin: true,
             auth: process.env.PROXY_AUTH || "admin:opencast",
         }),
