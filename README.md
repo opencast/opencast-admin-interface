@@ -1,85 +1,71 @@
 Opencast Admin UI
-=====================
+=================
 
-The Opencast Admin UI is a graphical interface included by Opencast to give
-admins an easy way of managing their Opencast instance.
+The Opencast Admin UI is a graphical interface included with Opencast
+that allows admins to easily manage their Opencast instance.
 
-Quickstart
-----------
+Development and testing
+-----------------------
 
-Commands to hack into your console to get to testing pull requests ASAP:
+To get a local copy of the admin UI to test or develop on, you can do the following:
 
-```console
+```sh
 git clone git@github.com:opencast/opencast-admin-interface.git opencast-admin-interface-demo
 cd opencast-admin-interface-demo
+git switch my-branch  # or otherwise check out, pull, merge, etc. whatever branch you want to test/hack on
 npm ci
 cd app
 npm ci
 cd ..
-npm run proxy-server http://stable.opencast.org opencast_system_account CHANGE_ME
 ```
 
-Open a second tab:
+You can now run a local instance of the UI by saying
 
-```bash
-npm run client
-```
-
-Open a third tab to checkout the pull request you want to test. You need to know the pull request number!:
-
-```bash
-git fetch origin pull/{PULL REQUEST NUMBER HERE}/head:some-branch-name-of-your-choosing
-git checkout some-branch-name-of-your-choosing
-```
-
-Development
--------
-
-Before starting, get the project dependencies by running  `npm ci` beforehand both in the root and `/app` directory.
-
-To test with real data run:
-
-```shell
-npm run proxy-server http://stable.opencast.org *opencast_digest_username* *opencast_digest_password*
-```
-
-This will start a proxy server at localhost:5000. It will automatically proxy
-requests to an Opencast instance at http://stable.opencast.org. You can change the URL to a different Opencast if you wish (e.g., http://localhost.8080 for
-a local Opencast installation). Note that `http` is required.
-
-You can then start the client in a different tab by running:
-
-```shell
-npm run client
-```
-
-This will start a client server in the development mode.
-Open [http://localhost:3000](localhost:3000) to view it in the browser.
-
---------
-
-Alternatively, you can spin up a mock instance of the admin ui with:
-
-```shell
+```sh
 npm start
 ```
 
-This uses mock data instead of a real Opencast. This means certain features will
-not work when using this mode.
+This runs a static file server in the background replying mock data to the various requests
+the UI would normally send to the Opencast backend.
+It also runs an autoreloading development server delivering the admin UI itself,
+and automatically open a browser tab pointing to it.
 
-### Alternative ports
+Not all functionality of the admin UI works in this mode. If you need to test with real data,
+or need the ability to change it, you can rely on the proxy functionality of said development server,
+instead of running the static file server. Run:
 
-The static file server and the proxy server serve their content
-on the port 5000. If this is used already (as it is on macOS)
-you can specify an alternative port in the `PORT` environment variable,
-for example:
+```sh
+PROXY_TARGET=https://develop.opencast.org npm run client
+```
 
-    PORT=5001 npm run proxy-server ...
+Here, `PROXY_TARGET` is the target URL of the Opencast instance you want to test against.
+This can also be a local one like `http://localhost:8080`.
 
-Note that you need to specify the same port when running the client,
-this time in the `PROXY_PORT` variable:
+By default, this tries to authenticate backend requests using HTTP Basic Auth
+as user `admin` with the default password `opencast`.
+If you want to authenticate using different credentials, you can specify them
+in the `PROXY_AUTH` variable in the format `user:password`, as in
 
-    PROXY_PORT=5001 npm run client
+```sh
+PROXY_TARGET=http://localhost:8080 PROXY_AUTH=jdoe:aligator3 npm run client
+```
+
+### Ports
+
+By default, the development server runs on port `3000`, and the static server on port `5000`.
+If you need to change these ports, you have to do the following:
+
+```sh
+PORT=5001 npm run server
+```
+
+This runs the static server only, serving assets under `http://localhost:5001`. Now, in a second terminal, run:
+
+```sh
+PORT=3001 PROXY_TARGET=http://localhost:5001 npm run client
+```
+
+This runs the development server on port `3001` and tells it about the alternative file server location.
 
 How to cut a release for Opencast
 ---------------------------------
@@ -88,10 +74,10 @@ How to cut a release for Opencast
 1. Switch to the commit you want to turn into the release
 1. Create and push a new tag
 
-   ```bash
-    DATE=$(date +%Y-%m-%d)
-    git tag -m Release -s "$DATE"
-    git push upstream "$DATE":"$DATE"
+   ```sh
+   DATE=$(date +%Y-%m-%d)
+   git tag -m Release -s "$DATE"
+   git push upstream "$DATE":"$DATE"
    ```
 
 1. Wait for the [Create release draft](https://github.com/opencast/opencast-admin-interface/actions/workflows/create-release.yml)
@@ -104,19 +90,8 @@ How to cut a release for Opencast
       if necessary
     - Verify that the new release runs in Opencast, then create the pull request.
 
-Opencast API used by the Admin UI
--------------
-
-The Admin UI accesses all endpoints in Opencast located under
-
-* `/admin-ng/*`
-
-If you want to use the current version of the frontend with an earlier Opencast
-version, you will have to cherry-pick the relevant commits from the Opencast
-repository yourself.
-
 Translating the Admin UI
--------------
+------------------------
 
 You can help translate the Opencast Admin UI to your language on [crowdin.com/project/opencast-admin-interface](https://crowdin.com/project/opencast-admin-interface). Simply request to join the project on Crowdin and start translating. If you are interested in translating a language that is not a target language right now, please create [a GitHub issue](https://github.com/opencast/opencast-admin-interface/issues) and we will add the language.
 

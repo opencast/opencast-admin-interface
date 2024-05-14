@@ -1,7 +1,5 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
-const port = process.env.PROXY_PORT || 5000;
-
 module.exports = function (app) {
     app.use(
         [
@@ -16,8 +14,9 @@ module.exports = function (app) {
             "/ui",
         ],
         createProxyMiddleware({
-            target: `http://localhost:${port}`,
+            target: process.env.PROXY_TARGET || "http://localhost:5000",
             changeOrigin: true,
+            auth: process.env.PROXY_AUTH || "admin:opencast",
         }),
     );
 };
