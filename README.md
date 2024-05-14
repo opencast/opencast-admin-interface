@@ -62,7 +62,19 @@ Alternatively you can spin up a mock instance of the admin ui with:
 This uses mock data instead of a real Opencast. This means certain features will
 not work when using this mode.
 
+### Alternative ports
 
+The static file server and the proxy server serve their content
+on the port 5000. If this is used already (as it is on macOS)
+you can specify an alternative port in the `PORT` environment variable,
+for example:
+
+    PORT=5001 npm run proxy-server ...
+
+Note that you need to specify the same port when running the client,
+this time in the `PROXY_PORT` variable:
+
+    PROXY_PORT=5001 npm run client
 
 How to cut a release for Opencast
 ---------------------------------
@@ -101,7 +113,9 @@ repository yourself.
 
 Translating the Admin UI
 -------------
-TBA
+You can help translating the editor to your language on [crowdin.com/project/opencast-admin-interface](https://crowdin.com/project/opencast-admin-interface). Simply request to join the project on Crowdin and start translating. If you are interested in translating a language which is not a target language right now, please create [a GitHub issue](https://github.com/opencast/opencast-admin-interface/issues) and we will add the language.
+
+This project follows the general form of [Opencast's Localization Process](https://docs.opencast.org/develop/developer/#participate/localization/), especially regarding what happens when you need to [change an existing translation key](https://docs.opencast.org/develop/developer/#participate/localization/#i-need-to-update-the-wording-of-the-source-translation-what-happens).  Any questions not answered there should be referred to the mailing lists!
 
 
 

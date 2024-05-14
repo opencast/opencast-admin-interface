@@ -1,30 +1,29 @@
+import { FormikProps } from "formik";
 import { useEffect, useState } from "react";
+import { Event } from "../slices/eventSlice";
 
-export const usePageFunctions = (initialPage: any, initialValues: any) => {
+export const usePageFunctions = <initialValuesType>(initialPage: number, initialValues: initialValuesType) => {
 	const [page, setPage] = useState(initialPage);
 	const [snapshot, setSnapshot] = useState(initialValues);
-	const [pageCompleted, setPageCompleted] = useState({});
+	const [pageCompleted, setPageCompleted] = useState<{ [key: number]: boolean }>({});
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const nextPage = (values) => {
+	const nextPage = (values: initialValuesType) => {
 		setSnapshot(values);
 
 		// set page as completely filled out
 		let updatedPageCompleted = pageCompleted;
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 		updatedPageCompleted[page] = true;
 		setPageCompleted(updatedPageCompleted);
 
 		setPage(page + 1);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const previousPage = (values) => {
+	const previousPage = (values: initialValuesType) => {
 		setSnapshot(values);
 		setPage(page - 1);
 	};
 
-	return [
+	return {
 		snapshot,
 		page,
 		nextPage,
@@ -32,27 +31,30 @@ export const usePageFunctions = (initialPage: any, initialValues: any) => {
 		setPage,
 		pageCompleted,
 		setPageCompleted,
-	];
+	};
 };
 
-// @ts-expect-error TS(7006): Parameter 'formik' implicitly has an 'any' type.
-export const useSelectionChanges = (formik, selectedRows) => {
+interface RequiredFormProps {
+	events: Event[],
+}
+
+export const useSelectionChanges = <T extends RequiredFormProps>(
+	formik: FormikProps<T>,
+	selectedRows: Event[]
+) => {
 	const [selectedEvents, setSelectedEvents] = useState(
 		formik.values.events.length === 0 ? selectedRows : formik.values.events
 	);
 	const [allChecked, setAllChecked] = useState(
 		formik.values.events.length === 0
 			? true
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 			: formik.values.events.every((event) => event.selected === true)
 	);
 
 	// Select or deselect all rows in table
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const onChangeAllSelected = (e) => {
+	const onChangeAllSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selected = e.target.checked;
 		setAllChecked(selected);
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 		let changedSelection = selectedEvents.map((event) => {
 			return {
 				...event,
@@ -64,10 +66,8 @@ export const useSelectionChanges = (formik, selectedRows) => {
 	};
 
 	// Handle change of checkboxes indicating which events to consider further
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const onChangeSelected = (e, id) => {
+	const onChangeSelected = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
 		const selected = e.target.checked;
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 		let changedEvents = selectedEvents.map((event) => {
 			if (event.id === id) {
 				return {
@@ -84,25 +84,30 @@ export const useSelectionChanges = (formik, selectedRows) => {
 		if (!selected) {
 			setAllChecked(false);
 		}
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 		if (changedEvents.every((event) => event.selected === true)) {
 			setAllChecked(true);
 		}
 	};
 
-	return [selectedEvents, allChecked, onChangeSelected, onChangeAllSelected];
+	return {
+		selectedEvents,
+		allChecked,
+		onChangeSelected,
+		onChangeAllSelected
+	};
 };
 
-// @ts-expect-error TS(7006): Parameter 'childRef' implicitly has an 'any' type.
-export const useClickOutsideField = (childRef, isFirstField) => {
+export const useClickOutsideField = (
+	childRef: React.RefObject<HTMLDivElement>,
+	isFirstField?: boolean,
+) => {
 	// Indicator if currently edit mode is activated
 	const [editMode, setEditMode] = useState(isFirstField);
 
 	useEffect(() => {
 		// Handle click outside the field and leave edit mode
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-		const handleClickOutside = (e) => {
-			if (childRef.current && !childRef.current.contains(e.target)) {
+		const handleClickOutside = (e: MouseEvent) => {
+			if (childRef.current && !childRef.current.contains(e.target as Node)) {
 				setEditMode(false);
 			}
 		};
@@ -121,5 +126,5 @@ export const useClickOutsideField = (childRef, isFirstField) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [editMode]);
 
-	return [editMode, setEditMode];
+	return {editMode, setEditMode};
 };

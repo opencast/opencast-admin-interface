@@ -12,6 +12,7 @@ import Servers from "./components/systems/Servers";
 import Services from "./components/systems/Services";
 import Groups from "./components/users/Groups";
 import Acls from "./components/users/Acls";
+import About from "./components/About";
 import { useAppDispatch } from "./store";
 import { fetchOcVersion, fetchUserInfo } from "./slices/userInfoSlice";
 
@@ -52,10 +53,13 @@ function App() {
 
 				<Route path={"/statistics/organization"} element={<Statistics />} />
 
+				<Route path={"/about/imprint"} element={<About />} />
+
+				<Route path={"/about/privacy"} element={<About />} />
+
 				<Route
 					path={"*"}
-// @ts-expect-error TS(2322): Type '{ path: string; render: () => Element; }' is... Remove this comment to see the full error message
-					render={() => <Navigate to={"/events/events"} replace />}
+					element={<Navigate to={"/events/events"} replace />}
 				/>
 			</Routes>
 		</HashRouter>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import i18n from "../i18n/i18n";
 import languages from "../i18n/languages";
 // @ts-expect-error TS(2307): Cannot find module '../img/opencast-white.svg' or ... Remove this comment to see the full error message
@@ -22,19 +21,19 @@ import { overflowStyle } from "../utils/componentStyles";
 import RegistrationModal from "./shared/RegistrationModal";
 import HotKeyCheatSheet from "./shared/HotKeyCheatSheet";
 import { useAppDispatch, useAppSelector } from "../store";
-import { fetchHealthStatus } from "../slices/healthSlice";
+import { HealthStatus, fetchHealthStatus } from "../slices/healthSlice";
+import { UserInfoState } from "../slices/userInfoSlice";
 
 // Get code, flag and name of the current language
 const currentLanguage = getCurrentLanguageInformation();
 
 // References for detecting a click outside of the container of the dropdown menus
 const containerLang = React.createRef<HTMLDivElement>();
-const containerHelp = React.createRef();
+const containerHelp = React.createRef<HTMLDivElement>();
 const containerUser = React.createRef<HTMLDivElement>();
-const containerNotify = React.createRef();
+const containerNotify = React.createRef<HTMLDivElement>();
 
-// @ts-expect-error TS(7006): Parameter 'code' implicitly has an 'any' type.
-function changeLanguage(code) {
+function changeLanguage(code: string) {
 	// Load json-file of the language with provided code
 	i18n.changeLanguage(code);
 	// Reload window for updating the flag of the language dropdown menu
@@ -107,25 +106,22 @@ const Header = ({
 
 	useEffect(() => {
 		// Function for handling clicks outside of an open dropdown menu
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-		const handleClickOutside = (e) => {
-			if (containerLang.current && !containerLang.current.contains(e.target)) {
+		const handleClickOutside = (e: MouseEvent) => {
+			if (containerLang.current && !containerLang.current.contains(e.target as Node)) {
 				setMenuLang(false);
 			}
 
-// @ts-expect-error TS(2571): Object is of type 'unknown'.
-			if (containerHelp.current && !containerHelp.current.contains(e.target)) {
+			if (containerHelp.current && !containerHelp.current.contains(e.target as Node)) {
 				setMenuHelp(false);
 			}
 
-			if (containerUser.current && !containerUser.current.contains(e.target)) {
+			if (containerUser.current && !containerUser.current.contains(e.target as Node)) {
 				setMenuUser(false);
 			}
 
 			if (
 				containerNotify.current &&
-// @ts-expect-error TS(2571): Object is of type 'unknown'.
-				!containerNotify.current.contains(e.target)
+				!containerNotify.current.contains(e.target as Node)
 			) {
 				setMenuNotify(false);
 			}
@@ -207,7 +203,6 @@ const Header = ({
 							className="nav-dd info-dd"
 							id="info-dd"
 							title={t("SYSTEM_NOTIFICATIONS")}
-// @ts-expect-error TS(2322): Type 'RefObject<unknown>' is not assignable to typ... Remove this comment to see the full error message
 							ref={containerNotify}
 						>
 							<div onClick={() => setMenuNotify(!displayMenuNotify)}>
@@ -243,7 +238,6 @@ const Header = ({
 								title="Help"
 								className="nav-dd"
 								id="help-dd"
-// @ts-expect-error TS(2322): Type 'RefObject<unknown>' is not assignable to typ... Remove this comment to see the full error message
 								ref={containerHelp}
 							>
 								<div
@@ -311,12 +305,16 @@ const MenuLang = () => {
 	);
 };
 
-// @ts-expect-error TS(7031): Binding element 'healthStatus' implicitly has an '... Remove this comment to see the full error message
-const MenuNotify = ({ healthStatus, redirectToServices }) => {
+const MenuNotify = ({
+	healthStatus,
+	redirectToServices
+}: {
+	healthStatus: HealthStatus[],
+	redirectToServices: () => Promise<void>,
+}) => {
 	return (
 		<ul className="dropdown-ul">
 			{/* For each service in the serviceList (Background Services) one list item */}
-{/* @ts-expect-error TS(7006): Parameter 'service' implicitly has an 'any' type. */}
 			{healthStatus.map((service, key) => (
 				<li key={key}>
 					{!!service.status && (
@@ -343,16 +341,17 @@ const MenuNotify = ({ healthStatus, redirectToServices }) => {
 };
 
 const MenuHelp = ({
-// @ts-expect-error TS(7031): Binding element 'hideMenuHelp' implicitly has an '... Remove this comment to see the full error message
 	hideMenuHelp,
-// @ts-expect-error TS(7031): Binding element 'showRegistrationModal' implicitly... Remove this comment to see the full error message
 	showRegistrationModal,
-// @ts-expect-error TS(7031): Binding element 'showHotKeyCheatSheet' implicitly ... Remove this comment to see the full error message
 	showHotKeyCheatSheet,
-// @ts-expect-error TS(7031): Binding element 'user' implicitly has an 'any' typ... Remove this comment to see the full error message
 	user,
-// @ts-expect-error TS(7031): Binding element 'orgProperties' implicitly has an ... Remove this comment to see the full error message
 	orgProperties,
+}: {
+	hideMenuHelp: () => void,
+	showRegistrationModal: () => void,
+	showHotKeyCheatSheet: () => void,
+	user: UserInfoState,
+	orgProperties: { [key: string]: string },
 }) => {
 	const { t } = useTranslation();
 

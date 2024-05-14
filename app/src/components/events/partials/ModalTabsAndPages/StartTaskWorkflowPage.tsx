@@ -7,20 +7,25 @@ import { setDefaultConfig } from "../../../../utils/workflowPanelUtils";
 import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchWorkflowDef } from "../../../../slices/workflowSlice";
+import { FormikProps } from "formik";
 
 /**
  * This component renders the workflow selection for start task bulk action
  */
-const StartTaskWorkflowPage: React.FC<{
-	formik: any	//TODO: Add type
-	previousPage: any	//TODO: Add type
-	nextPage: any	//TODO: Add type
-	setPageCompleted: any	//TODO: Add type
-}> = ({
+interface RequiredFormProps {
+	workflow: string,
+}
+
+const StartTaskWorkflowPage = <T extends RequiredFormProps>({
 	formik,
 	previousPage,
 	nextPage,
 	setPageCompleted,
+} : {
+	formik: FormikProps<T>,
+	previousPage: (values: T) => void,
+	nextPage: (values: T) => void,
+	setPageCompleted: (rec: Record<number, boolean>) => void,
 }) => {
 	const { t } = useTranslation();
 
@@ -29,7 +34,7 @@ const StartTaskWorkflowPage: React.FC<{
 
 	useEffect(() => {
 		// Load workflow definitions for selecting
-		dispatch(fetchWorkflowDef("default"));
+		dispatch(fetchWorkflowDef("tasks"));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -67,10 +72,11 @@ const StartTaskWorkflowPage: React.FC<{
 											options={workflowDef}
 											type={"workflow"}
 											required={true}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-											handleChange={(element) =>
-												setDefaultValues(element.value)
-											}
+											handleChange={(element) => {
+												if (element) {
+													setDefaultValues(element.value)
+												}
+											}}
 											placeholder={t(
 												"EVENTS.EVENTS.DETAILS.PUBLICATIONS.SELECT_WORKFLOW"
 											)}
@@ -118,7 +124,7 @@ const StartTaskWorkflowPage: React.FC<{
 				<button
 					className="cancel"
 					onClick={() => {
-						previousPage();
+						previousPage(formik.values);
 						if (!formik.isValid) {
 							// set page as not filled out
 							setPageCompleted([]);
