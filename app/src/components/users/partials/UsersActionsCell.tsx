@@ -57,8 +57,8 @@ const UsersActionCell = ({
 				<UserDetailsModal close={hideUserDetails} username={row.username} />
 			)}
 
-			{row.manageable && hasAccess("ROLE_UI_USERS_DELETE", user) && (
-				<>
+			{(row.manageable || (row.provider !== "opencast" && row.provider !== "system"))
+				&& hasAccess("ROLE_UI_USERS_DELETE", user) && <>
 					<button
 						onClick={() => setDeleteConfirmation(true)}
 						className="button-like-anchor remove"
@@ -76,7 +76,7 @@ const UsersActionCell = ({
 						/>
 					)}
 				</>
-			)}
+			}
 		</>
 	);
 };
