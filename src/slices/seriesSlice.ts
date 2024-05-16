@@ -12,7 +12,7 @@ import {
 	transformToIdValueArray,
 	transformToObjectArray,
 } from "../utils/utils";
-import { addNotification } from '../slices/notificationSlice';
+import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { TransformedAcls } from './aclDetailsSlice';
 import { RootState } from '../store';

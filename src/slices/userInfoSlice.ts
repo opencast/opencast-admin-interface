@@ -1,6 +1,6 @@
 import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
-import { addNotification } from '../slices/notificationSlice';
+import { addNotification } from './notificationSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of information about current user

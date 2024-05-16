@@ -37,4 +37,4 @@ const middleware = process.env.PROXY || process.env.PROXY_TARGET || process.env.
         }
     };
 
-const testFiles = express.static(`${__dirname}/../../test/app`);
+const testFiles = express.static(`${__dirname}/../test`);

@@ -13,7 +13,6 @@ To get a local copy of the admin UI to test or develop on, you can do the follow
 git clone git@github.com:opencast/opencast-admin-interface.git opencast-admin-interface-demo
 cd opencast-admin-interface-demo
 git switch my-branch  # or otherwise check out, pull, merge, etc. whatever branch you want to test/hack on
-cd app
 npm ci
 ```
 

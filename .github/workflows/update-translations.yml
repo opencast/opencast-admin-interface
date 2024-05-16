@@ -27,9 +27,9 @@ jobs:
           crowdin download --config .crowdin.yaml -b admin-ui-picard
       - name: add new translations
         run: |
-          git add /app/src/i18n/org/opencastproject/adminui/languages/
+          git add /src/i18n/org/opencastproject/adminui/languages/
       - name: update language list
-        working-directory: /app/src/i18n/org/opencastproject/adminui/languages/
+        working-directory: /src/i18n/org/opencastproject/adminui/languages/
         run: |
           echo -n '[ "' > locales.json
           echo -n ??-??.json | sed 's/  */", "/g' >> locales.json

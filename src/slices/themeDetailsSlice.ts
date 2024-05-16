@@ -1,7 +1,7 @@
 import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { buildThemeBody } from '../utils/resourceUtils';
-import { addNotification } from '../slices/notificationSlice';
+import { addNotification } from './notificationSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of a theme

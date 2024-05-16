@@ -19,9 +19,9 @@ import {
 import {
 	removeNotification,
 	addNotification,
-} from "../slices/notificationSlice";
+} from "./notificationSlice";
 import { getAssetUploadOptions, getSchedulingEditedEvents } from '../selectors/eventSelectors';
-import { fetchSeriesOptions } from "../slices/seriesSlice";
+import { fetchSeriesOptions } from "./seriesSlice";
 import { AppDispatch, RootState } from '../store';
 import { fetchAssetUploadOptions } from '../thunks/assetsThunks';
 import { TransformedAcls } from './aclDetailsSlice';

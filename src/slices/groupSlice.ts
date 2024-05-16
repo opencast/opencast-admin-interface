@@ -2,7 +2,7 @@ import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@
 import { groupsTableConfig } from '../configs/tableConfigs/groupsTableConfig';
 import axios from 'axios';
 import { buildGroupBody, getURLParams } from '../utils/resourceUtils';
-import { addNotification } from '../slices/notificationSlice';
+import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { RootState } from '../store';
 
