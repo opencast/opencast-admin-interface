@@ -6,6 +6,7 @@ import { useClickOutsideField } from "../../../hooks/wizardHooks";
 import { isJson } from "../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../utils/resourceUtils";
 import DropDown from "../DropDown";
+import RenderDate from "../RenderDate";
 import { parseISO } from "date-fns";
 
 const childRef = React.createRef<HTMLDivElement>();
@@ -210,7 +211,7 @@ const EditableDateValue = ({
 	) : (
 		<div onClick={() => setEditMode(true)} className="show-edit">
 			<span className="editable preserve-newlines">
-				{t("dateFormats.dateTime.short", { dateTime: new Date(text) }) || ""}
+				<RenderDate date={text} />
 			</span>
 			<div>
 				<i className="edit fa fa-pencil-square" />
