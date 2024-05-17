@@ -58,9 +58,9 @@ type FetchHealthStatusResponse = {
 export const fetchHealthStatus = createAsyncThunk('health/fetchHealthStatus', async () => {
 	const res = await axios.get<FetchHealthStatusResponse>("/services/health.json");
 
-	// When http response is not 200, it is likely we are not logged in, so lets trigger a logout
+	// When http response is not 200, it is likely we are not logged in, so lets redirect to login
 	if(res.status != 200) {
-		window.location.href = "/j_spring_security_logout";
+		window.location.href = "/login.html";
 	}
 
 	return res.data;
