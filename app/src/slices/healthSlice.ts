@@ -57,6 +57,12 @@ type FetchHealthStatusResponse = {
 // Fetch health status and transform it to further use
 export const fetchHealthStatus = createAsyncThunk('health/fetchHealthStatus', async () => {
 	const res = await axios.get<FetchHealthStatusResponse>("/services/health.json");
+
+	// When http response is not 200, it is likely we are not logged in, so lets trigger a logout
+	if(res.status != 200) {
+		window.location.href = "/j_spring_security_logout";
+	}
+
 	return res.data;
 });
 
