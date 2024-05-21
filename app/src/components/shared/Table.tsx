@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'styl... Remove this comment to see the full error message
 import styled from "styled-components";
 import {
 	getPageOffset,
@@ -46,7 +45,7 @@ const SortIcon = styled.i`
 	background-image: url(${sortIcon});
 `;
 
-const SortActiveIcon = styled.i`
+const SortActiveIcon = styled.i<{order: string}>`
     float: right;
     margin: 12px 0 0 5px;
     top: auto;
