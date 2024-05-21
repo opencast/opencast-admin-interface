@@ -1,4 +1,4 @@
-name: Update translations
+name: Crowdin » Download translations
 
 on:
   schedule:
