@@ -27,4 +27,6 @@ jobs:
 
       - name: build project
         working-directory: ./app
+        env:
+          CI: false
         run: npm run build
