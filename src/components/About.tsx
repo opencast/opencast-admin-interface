@@ -30,7 +30,7 @@ const About: React.FC = () => {
 				setAboutContent(response.data);
 			})
 			.catch(error => {
-				axios.get(getURL(typeof i18n.options.fallbackLng === 'string' ? i18n.options.fallbackLng : 'en-GB'))
+				axios.get(getURL(typeof i18n.options.fallbackLng === 'string' ? i18n.options.fallbackLng : 'en-US'))
 					.then(response => {
 						setAboutContent(response.data);
 					})
