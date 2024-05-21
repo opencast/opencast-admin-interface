@@ -14,6 +14,7 @@ interface RequiredFormProps {
 	watermarkActive: boolean,
 	watermarkFile: string,
 	watermarkPosition: string,
+	[key: string]: unknown,
 }
 
 const WatermarkPage = <T extends RequiredFormProps>({

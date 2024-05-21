@@ -25,6 +25,7 @@ import { fetchSeriesOptions } from "../slices/seriesSlice";
 import { AppDispatch, RootState } from '../store';
 import { fetchAssetUploadOptions } from '../thunks/assetsThunks';
 import { TransformedAcls } from './aclDetailsSlice';
+import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 
 /**
  * This file contains redux reducer for actions affecting the state of events
@@ -102,7 +103,7 @@ type MetadataField = {
 
 export type MetadataFieldSelected = MetadataField & { selected: boolean }
 
-type MetadataCatalog = {
+export type MetadataCatalog = {
 	title: string,
 	flavor: string,
 	fields: MetadataField[],
@@ -130,6 +131,25 @@ export type EditedEvents = {
 	weekday: string,
 }
 
+export type UploadAssetOption = {
+	accept: string,
+	"displayFallback.DETAIL": string,
+	"displayFallback.SHORT": string,
+	displayOrder: number,
+	flavorSubType: string,
+	flavorType: string,
+	id: string,
+	multiple: boolean,
+	showAs: string,
+	title: string,
+	type: string,
+	displayOverride?: string,
+}
+
+export type UploadAssetsTrack = UploadAssetOption & {
+	file?: FileList
+}
+
 type EventState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
@@ -140,7 +160,7 @@ type EventState = {
 	statusAssetUploadOptions: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAssetUploadOptions: SerializedError | null,
 	results: Event[],
-	columns: any,			 // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],			 // TODO: proper typing, derive from `initialColumns`
 	total: number,
 	count: number,
 	offset: number,
@@ -149,8 +169,8 @@ type EventState = {
 	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	isFetchingAssetUploadOptions: boolean,
-	uploadAssetOptions: any[],		// TODO: proper typing
-	uploadAssetWorkflow: any,		// TODO: proper typing
+	uploadAssetOptions: UploadAssetOption[],
+	uploadAssetWorkflow: string | undefined,		// TODO: proper typing
 	schedulingInfo: {
 		editedEvents: EditedEvents[],
 		seriesOptions: {
@@ -410,18 +430,7 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 		scheduleStartHour: string,
 		scheduleStartMinute: string,
 		sourceMode: string,
-		uploadAssetsTrack: {
-			accept: string,
-			displayOrder: number,
-			file: FileList,
-			flavorSubtType: string,
-			flavorType: string,
-			id: string,
-			multiple: boolean,
-			showAs: string,
-			title: string,
-			type: string,
-		}[],
+		uploadAssetsTrack?: UploadAssetsTrack[],
 		[key: string]: unknown,
 	},
 	metadataInfo: MetadataCatalog,
@@ -434,7 +443,7 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 	const uploadAssetOptions = getAssetUploadOptions(state as RootState);
 
 	let formData = new FormData();
-	let metadataFields, extendedMetadataFields, metadata, source, access, assets;
+	let metadataFields, extendedMetadataFields, metadata, source, access;
 
 	// prepare metadata provided by user
 	metadataFields = prepareMetadataFieldsForPost(metadataInfo.fields, values);
@@ -449,13 +458,15 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 		source = {
 			type: values.sourceMode,
 		};
-		for (let i = 0; sourceMetadata.UPLOAD.metadata.length > i; i++) {
-			metadataFields = metadataFields.concat({
-				id: sourceMetadata.UPLOAD.metadata[i].id,
-				value: values[sourceMetadata.UPLOAD.metadata[i].id],
-				type: sourceMetadata.UPLOAD.metadata[i].type,
-				tabindex: sourceMetadata.UPLOAD.metadata[i].tabindex,
-			});
+		if (sourceMetadata.UPLOAD) {
+			for (let i = 0; sourceMetadata.UPLOAD.metadata.length > i; i++) {
+				metadataFields = metadataFields.concat({
+					id: sourceMetadata.UPLOAD.metadata[i].id,
+					value: values[sourceMetadata.UPLOAD.metadata[i].id],
+					type: sourceMetadata.UPLOAD.metadata[i].type,
+					tabindex: sourceMetadata.UPLOAD.metadata[i].tabindex,
+				});
+			}
 		}
 	}
 
@@ -536,7 +547,10 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 
 	// information about upload assets options
 	// need to provide all possible upload asset options independent of source mode/type
-	assets = {
+	let assets: {
+		workflow: string,
+		options: UploadAssetOption[],
+	}= {
 		workflow: WORKFLOW_UPLOAD_ASSETS_NON_TRACK,
 		options: [],
 	};
@@ -548,7 +562,7 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 			uploadAssetOptions[i].type === "track" &&
 			values.sourceMode === "UPLOAD"
 		) {
-			let asset = values.uploadAssetsTrack.find(
+			let asset = values.uploadAssetsTrack?.find(
 				(asset) => asset.id === uploadAssetOptions[i].id
 			);
 			if (!!asset && !!asset.file) {
@@ -856,11 +870,7 @@ export const updateScheduledEventsBulk = createAsyncThunk('events/updateSchedule
 // check provided date range for conflicts
 
 export const checkConflicts = (values: {
-	acls: TransformedAcls,
-	configuration: { [key: string]: any },
-	deviceInputs?: string[],
 	location: string,
-	processingWorkflow: string,
 	repeatOn: string[],
 	scheduleDurationHours: string,
 	scheduleDurationMinutes: string,
@@ -871,19 +881,6 @@ export const checkConflicts = (values: {
 	scheduleStartHour: string,
 	scheduleStartMinute: string,
 	sourceMode: string,
-	uploadAssetsTrack: {
-		accept: string,
-		displayOrder: number,
-		file: FileList,
-		flavorSubtType: string,
-		flavorType: string,
-		id: string,
-		multiple: boolean,
-		showAs: string,
-		title: string,
-		type: string,
-	}[],
-	[key: string]: unknown,
 }) => async (dispatch: AppDispatch) => {
 	let check = true;
 
@@ -1080,24 +1077,6 @@ const eventSlice = createSlice({
 		>) {
 			state.showActions = action.payload;
 		},
-		setEventSelected(state, action: PayloadAction<
-			any
-		>) {
-			// state.rows: state.rows.map((row) => {
-			// 	if (row.id === id) {
-			// 		return {
-			// 			...row,
-			// 			selected: !row.selected,
-			// 		};
-			// 	}
-			// 	return row;
-			// }),
-		},
-		setAssetUploadWorkflow(state, action: PayloadAction<{
-			workflow: EventState["columns"],
-		}>) {
-			state.uploadAssetWorkflow = action.payload.workflow;
-		},
 	},
 	// These are used for thunks
 	extraReducers: builder => {
@@ -1184,8 +1163,6 @@ const eventSlice = createSlice({
 export const {
 	setEventColumns,
 	setShowActions,
-	setEventSelected,
-	setAssetUploadWorkflow,
 } = eventSlice.actions;
 
 // Export the slice reducer as the default export

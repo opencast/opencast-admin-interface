@@ -92,6 +92,16 @@ type Device = {
 	// url: string,
 }
 
+export type UploadAssetOption = {
+	id: string,
+	title: string,	// translation key
+	type: string,		// "track", "attachment" etc.
+	flavorType: string,
+	flavorSubType: string,
+	accept: string,
+	displayOrder: number,
+}
+
 type EventDetailsState = {
 	statusMetadata: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorMetadata: SerializedError | null,
@@ -169,15 +179,7 @@ type EventDetailsState = {
 		publications: number,
 	},
 	transactionsReadOnly: boolean,
-	uploadAssetOptions: {
-		id: string,
-		title: string,	// translation key
-		type: string,		// "track", "attachment" etc.
-		flavorType: string,
-		flavorSubType: string,
-		accept: string,
-		displayOrder: number,
-	}[] | undefined,
+	uploadAssetOptions: UploadAssetOption[] | undefined,
 	assetAttachments: Array< Assets & {
 		type: string,
 	}>,
@@ -1561,7 +1563,10 @@ export const updateAssets = createAsyncThunk('eventDetails/updateAssets', async 
 
 	let formData = new FormData();
 
-	let assets = {
+	let assets: {
+		workflow: string | undefined,
+		options: UploadAssetOption[],
+	} = {
 		workflow: uploadAssetWorkflow,
 		options: [],
 	};

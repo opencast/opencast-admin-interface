@@ -1,21 +1,23 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Field } from "formik";
+import { Field, FormikProps } from "formik";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import RenderField from "../../../shared/wizard/RenderField";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { isJson } from "../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
+import { MetadataCatalog } from "../../../../slices/eventSlice";
 
-const NewMetadataExtendedPage = ({
-// @ts-expect-error TS(7031): Binding element 'previousPage' implicitly has an '... Remove this comment to see the full error message
-	previousPage,
-// @ts-expect-error TS(7031): Binding element 'nextPage' implicitly has an 'any'... Remove this comment to see the full error message
-	nextPage,
-// @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
+const NewMetadataExtendedPage = <T,>({
 	formik,
-// @ts-expect-error TS(7031): Binding element 'extendedMetadataFields' implicitl... Remove this comment to see the full error message
+	nextPage,
+	previousPage,
 	extendedMetadataFields,
+}: {
+	formik: FormikProps<T>,
+	nextPage: (values: T) => void,
+	previousPage: (values: T, twoPagesBack?: boolean) => void,
+	extendedMetadataFields?: MetadataCatalog[],
 }) => {
 	const { t } = useTranslation();
 
@@ -28,7 +30,6 @@ const NewMetadataExtendedPage = ({
 							//iterate through metadata catalogs
 							!!extendedMetadataFields &&
 								extendedMetadataFields.length > 0 &&
-// @ts-expect-error TS(7006): Parameter 'catalog' implicitly has an 'any' type.
 								extendedMetadataFields.map((catalog, index) => (
 									<div className="obj tbl-list" key={index}>
 										<header>
@@ -38,7 +39,6 @@ const NewMetadataExtendedPage = ({
 											<table className="main-tbl">
 												<tbody>
 													{!!catalog.fields &&
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
 														catalog.fields.map((field, key) => (
 															<tr key={key}>
 																<td>

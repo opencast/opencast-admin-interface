@@ -2,6 +2,7 @@ import axios from "axios";
 import { getAssetUploadOptions } from "../selectors/eventSelectors";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../store";
+import { UploadAssetOption } from "../slices/eventSlice";
 
 // thunks for assets, especially for getting asset options
 
@@ -17,7 +18,7 @@ export const fetchAssetUploadOptions = createAsyncThunk('assets/fetchAssetUpload
 	// only fetch asset upload options, if they haven't been fetched yet
 	if (!(assetUploadOptions.length !== 0 && assetUploadOptions.length !== 0)) {
 		let workflow;
-		let newAssetUploadOptions: any[] = [];
+		let newAssetUploadOptions: UploadAssetOption[] = [];
 
 		// request asset upload options from API
 		await axios
@@ -34,7 +35,7 @@ export const fetchAssetUploadOptions = createAsyncThunk('assets/fetchAssetUpload
 						// if the line is a source upload option or additional asset upload option,
 						// format it and add to upload options list
 						if (isSourceOption || isAssetOption) {
-							let option = JSON.parse(optionJson as any);
+							let option = JSON.parse(optionJson as string);
 
 							option = {
 								...option,
@@ -45,7 +46,7 @@ export const fetchAssetUploadOptions = createAsyncThunk('assets/fetchAssetUpload
 							newAssetUploadOptions.push(option);
 						} else if (optionKey.indexOf(workflowPrefix) >= 0) {
 							// if the line is the upload asset workflow id, set the asset upload workflow
-							workflow = optionJson;
+							workflow = optionJson as string;
 						}
 					}
 				}

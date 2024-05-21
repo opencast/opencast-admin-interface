@@ -154,17 +154,18 @@ export const fetchSeriesThemes = createAsyncThunk('series/fetchSeriesThemes', as
 // post new series to backend
 export const postNewSeries = createAsyncThunk('series/postNewSeries', async (params: {
 	values: {
+		[key: string]: any;
 		acls: TransformedAcls,
-		contributor: string[],
-		creator: string[],
-		description: string,
-		language: string,
-		license: string,
-		publisher: string[],
-		rightsHolder: string,
-		subject: string,
+		// contributor: string[],
+		// creator: string[],
+		// description: string,
+		// language: string,
+		// license: string,
+		// publisher: string[],
+		// rightsHolder: string,
+		// subject: string,
 		theme: string,
-		title: string,
+		// title: string,
 	},
 	metadataInfo: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[]

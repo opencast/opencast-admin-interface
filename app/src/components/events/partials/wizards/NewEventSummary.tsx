@@ -12,19 +12,42 @@ import AccessSummaryTable from "./summaryTables/AccessSummaryTable";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { translateOverrideFallback } from "../../../../utils/utils";
 import { useAppSelector } from "../../../../store";
+import { FormikProps } from "formik";
+import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 
 /**
  * This component renders the summary page for new events in the new event wizard.
  */
-const NewEventSummary = ({
-// @ts-expect-error TS(7031): Binding element 'previousPage' implicitly has an '... Remove this comment to see the full error message
-	previousPage,
-// @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
+interface RequiredFormProps {
+	processingWorkflow: string
+	sourceMode: string
+	startDate?: string
+	location: string
+	scheduleStartDate: string
+	scheduleEndDate: string
+	scheduleStartHour: string
+	scheduleEndHour: string
+	scheduleStartMinute: string
+	scheduleEndMinute: string
+	scheduleDurationHours: string
+	scheduleDurationMinutes: string
+	repeatOn: string[]
+	deviceInputs?: string[]
+	configuration: { [key: string]: string }
+	acls: TransformedAcl[]
+	[key: string]: unknown,	// Metadata fields
+}
+
+const NewEventSummary = <T extends RequiredFormProps>({
 	formik,
-// @ts-expect-error TS(7031): Binding element 'metaDataExtendedHidden' implicitl... Remove this comment to see the full error message
+	previousPage,
 	metaDataExtendedHidden,
-// @ts-expect-error TS(7031): Binding element 'assetUploadHidden' implicitly has... Remove this comment to see the full error message
 	assetUploadHidden,
+}: {
+	formik: FormikProps<T>,
+	previousPage: (values: T, twoPagesBack?: boolean) => void,
+	metaDataExtendedHidden: boolean,
+	assetUploadHidden: boolean,
 }) => {
 	const { t } = useTranslation();
 
@@ -39,15 +62,23 @@ const NewEventSummary = ({
 	);
 
 	// upload asset that user has provided
-// @ts-expect-error TS(7034): Variable 'uploadAssetsNonTrack' implicitly has typ... Remove this comment to see the full error message
-	let uploadAssetsNonTrack = [];
+	let uploadAssetsNonTrack: {
+		name: string,
+		translate?: string,
+		type: string,
+		flavorType: string,
+		flavorSubType: string,
+		value: any,
+	}[] = [];
 	for (let i = 0; uploadAssetsOptionsNonTrack.length > i; i++) {
 		let fieldValue = formik.values[uploadAssetsOptionsNonTrack[i].id];
 		if (!!fieldValue) {
-// @ts-expect-error TS(7005): Variable 'uploadAssetsNonTrack' implicitly has an ... Remove this comment to see the full error message
+			const displayOverride = uploadAssetsOptionsNonTrack[i].displayOverride
 			uploadAssetsNonTrack = uploadAssetsNonTrack.concat({
 				name: uploadAssetsOptionsNonTrack[i].id,
-				translate: translateOverrideFallback(uploadAssetsOptionsNonTrack[i], t),
+				translate: !!displayOverride
+					? t(displayOverride)
+					: translateOverrideFallback(uploadAssetsOptionsNonTrack[i], t),
 				type: uploadAssetsOptionsNonTrack[i].type,
 				flavorType: uploadAssetsOptionsNonTrack[i].flavorType,
 				flavorSubType: uploadAssetsOptionsNonTrack[i].flavorSubType,
@@ -143,6 +174,7 @@ const NewEventSummary = ({
 													</tr>
 												) : null
 											)}
+											{!!formik.values.startDate && (
 											<tr>
 												<td>
 													{t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.START_DATE")}
@@ -153,6 +185,7 @@ const NewEventSummary = ({
 													})}
 												</td>
 											</tr>
+											)}
 										</tbody>
 									</table>
 								)}
@@ -210,7 +243,6 @@ const NewEventSummary = ({
 													</td>
 													<td>
 														{formik.values.repeatOn
-// @ts-expect-error TS(7006): Parameter 'day' implicitly has an 'any' type.
 															.map((day) =>
 																t("EVENTS.EVENTS.NEW.WEEKDAYSLONG." + day)
 															)

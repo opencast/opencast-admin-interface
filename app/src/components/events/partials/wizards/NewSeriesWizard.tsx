@@ -16,6 +16,9 @@ import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { postNewSeries } from "../../../../slices/seriesSlice";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
+import { MetadataCatalog } from "../../../../slices/eventSlice";
+import { UserInfoState } from "../../../../slices/userInfoSlice";
+import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 
 /**
  * This component manages the pages of the new series wizard and the submission of values
@@ -35,7 +38,7 @@ const NewSeriesWizard: React.FC<{
 
 	const [page, setPage] = useState(0);
 	const [snapshot, setSnapshot] = useState(initialValues);
-	const [pageCompleted, setPageCompleted] = useState({});
+	const [pageCompleted, setPageCompleted] = useState<{ [key: number]: boolean }>({});
 
 	// Caption of steps used by Stepper
 	const steps = [
@@ -69,13 +72,17 @@ const NewSeriesWizard: React.FC<{
 	// Validation schema of current page
 	const currentValidationSchema = NewSeriesSchema[page];
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const nextPage = (values) => {
+	const nextPage = (
+		values: {
+			[key: string]: any;
+			acls: TransformedAcl[];
+			theme: string;
+		}
+	) => {
 		setSnapshot(values);
 
 		// set page as completely filled out
 		let updatedPageCompleted = pageCompleted;
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 		updatedPageCompleted[page] = true;
 		setPageCompleted(updatedPageCompleted);
 
@@ -86,8 +93,14 @@ const NewSeriesWizard: React.FC<{
 		}
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const previousPage = (values, twoPagesBack) => {
+	const previousPage = (
+		values: {
+			[key: string]: any;
+			acls: TransformedAcl[];
+			theme: string;
+		},
+		twoPagesBack?: boolean
+	) => {
 		setSnapshot(values);
 		// if previous page is hidden or not always shown, then go back two pages
 		if (steps[page - 1].hidden || twoPagesBack) {
@@ -97,8 +110,14 @@ const NewSeriesWizard: React.FC<{
 		}
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (
+		values:
+			{
+				[key: string]: any;
+				acls: TransformedAcl[];
+				theme: string;
+			}
+	) => {
 		const response = dispatch(postNewSeries({values, metadataInfo: metadataFields, extendedMetadata}));
 		console.info(response);
 		close();
@@ -180,21 +199,18 @@ const NewSeriesWizard: React.FC<{
 	);
 };
 
-// @ts-expect-error TS(7006): Parameter 'metadataFields' implicitly has an 'any'... Remove this comment to see the full error message
-const getInitialValues = (metadataFields, extendedMetadata, user) => {
+const getInitialValues = (
+	metadataFields: MetadataCatalog,
+	extendedMetadata: MetadataCatalog[],
+	user: UserInfoState
+) => {
+	let initialValues = initialFormValuesNewSeries;
 	// Transform metadata fields provided by backend (saved in redux)
-	let initialValues = getInitialMetadataFieldValues(
+	initialValues = {...initialValues, ...getInitialMetadataFieldValues(
 		metadataFields,
 		extendedMetadata
-	);
+	)};
 
-	// Add all initial form values known upfront listed in newSeriesConfig
-	for (const [key, value] of Object.entries(initialFormValuesNewSeries)) {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-		initialValues[key] = value;
-	}
-
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 	initialValues["acls"] = [
 		{
 			role: user.userRole,

@@ -12,6 +12,7 @@ import Notifications from "../../../shared/Notifications";
 interface RequiredFormProps {
 	bumperActive: boolean,
 	trailerActive: boolean,
+	[key: string]: unknown,
 }
 
 const BumperPage = <T extends RequiredFormProps>({

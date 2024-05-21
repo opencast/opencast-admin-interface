@@ -11,6 +11,7 @@ import { NewUser } from "../slices/userSlice";
 import { Recording } from "../slices/recordingSlice";
 import { UserInfoState } from "../slices/userInfoSlice";
 import { hasAccess } from "./utils";
+import { MetadataCatalog } from "../slices/eventSlice";
 
 /**
  * This file contains methods that are needed in more than one resource thunk
@@ -110,17 +111,13 @@ export const buildGroupBody = (values) => {
 
 // get initial metadata field values for formik in create resources wizards
 export const getInitialMetadataFieldValues = (
-// @ts-expect-error TS(7006): Parameter 'metadataFields' implicitly has an 'any'... Remove this comment to see the full error message
-	metadataFields,
-// @ts-expect-error TS(7006): Parameter 'extendedMetadata' implicitly has an 'an... Remove this comment to see the full error message
-	extendedMetadata
+	metadataFields: MetadataCatalog,
+	extendedMetadata: MetadataCatalog[]
 ) => {
-	let initialValues = {};
+	let initialValues: { [key: string]: string | string[] | boolean } = {};
 
 	if (!!metadataFields.fields && metadataFields.fields.length > 0) {
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
 		metadataFields.fields.forEach((field) => {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 			initialValues[field.id] = field.value;
 		});
 	}
@@ -128,16 +125,14 @@ export const getInitialMetadataFieldValues = (
 	if (extendedMetadata.length > 0) {
 		for (const metadataCatalog of extendedMetadata) {
 			if (!!metadataCatalog.fields && metadataCatalog.fields.length > 0) {
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
 				metadataCatalog.fields.forEach((field) => {
-					let value = field.value;
-					if (value === "true") {
+					let value = false;
+					if (field.value === "true") {
 						value = true;
-					} else if (value === "false") {
+					} else if (field.value === "false") {
 						value = false;
 					}
 
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 					initialValues[metadataCatalog.flavor + "_" + field.id] = value;
 				});
 			}
