@@ -5,7 +5,7 @@
   "homepage": "/admin-ui",
   "dependencies": {
     "@hello-pangea/dnd": "^16.5.0",
-    "@mui/material": "^5.15.6",
+    "@mui/material": "^5.15.18",
     "@mui/styles": "^5.15.6",
     "@mui/x-date-pickers": "^6.19.0",
     "@reduxjs/toolkit": "^1.9.7",
