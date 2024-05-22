@@ -57,12 +57,6 @@ type FetchHealthStatusResponse = {
 // Fetch health status and transform it to further use
 export const fetchHealthStatus = createAsyncThunk('health/fetchHealthStatus', async () => {
 	const res = await axios.get<FetchHealthStatusResponse>("/services/health.json");
-
-	// When http response is not 200, it is likely we are not logged in, so lets redirect to login
-	if(res.status != 200) {
-		window.location.href = "/login.html";
-	}
-
 	return res.data;
 });
 
