@@ -85,6 +85,11 @@ export const fetchUserInfo = createAsyncThunk('UserInfo/fetchUserInfo', async (_
 			dispatch(addNotification({type: "error", key: "USER_NOT_SAVED"}));
 		});
 
+	// Redirect to login if not in ROLE_ADMIN_UI
+	if (!(res.roles.includes('ROLE_ADMIN') || res.roles.includes('ROLE_ADMIN_UI'))) {
+		window.location.href = "/login.html";
+	}
+
 	return res;
 });
 

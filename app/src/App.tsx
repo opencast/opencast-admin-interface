@@ -23,6 +23,12 @@ function App() {
 		dispatch(fetchUserInfo());
 		// Load information about current opencast version on mount
 		dispatch(fetchOcVersion());
+
+		// Add event listener for back button to check if we are still logged in
+		window.addEventListener("popstate", function(event) {
+			dispatch(fetchUserInfo());
+		});
+
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
