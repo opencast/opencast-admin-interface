@@ -13,10 +13,8 @@ To get a local copy of the admin UI to test or develop on, you can do the follow
 git clone git@github.com:opencast/opencast-admin-interface.git opencast-admin-interface-demo
 cd opencast-admin-interface-demo
 git switch my-branch  # or otherwise check out, pull, merge, etc. whatever branch you want to test/hack on
-npm ci
 cd app
 npm ci
-cd ..
 ```
 
 You can now run a local instance of the UI by saying
@@ -25,17 +23,29 @@ You can now run a local instance of the UI by saying
 npm start
 ```
 
-This runs a static file server in the background replying mock data to the various requests
+This runs a development server at `http://localhost:3000`, serving a development build
+of the admin UI, and automatically opens a browser tab pointed to it.
+The build and the browser tab should automatically refresh on every change you make
+to the codebase.
+By default, this server also replies mock data to the various requests
 the UI would normally send to the Opencast backend.
-It also runs an autoreloading development server delivering the admin UI itself,
-and automatically open a browser tab pointing to it.
 
-Not all functionality of the admin UI works in this mode. If you need to test with real data,
-or need the ability to change it, you can rely on the proxy functionality of said development server,
-instead of running the static file server. Run:
+Not all functionality of the admin UI works in this mode. If you need to test
+with real data, or need the ability to change it, you can rely on the
+proxy functionality of said development server, instead of running the static file server. Run:
 
 ```sh
-PROXY_TARGET=https://develop.opencast.org npm run client
+PROXY=1 npm start
+```
+
+This assumes you have an Opencast instance running at `http://localhost:8080`
+to which the development server will then proxy all the backend request,
+authenticating them as user `admin` with password `opencast`.
+
+If you want to work with a different Opencast and/or user, you can change the command thusly:
+
+```sh
+PROXY_TARGET=https://develop.opencast.org npm start
 ```
 
 Here, `PROXY_TARGET` is the target URL of the Opencast instance you want to test against.
@@ -50,22 +60,10 @@ in the `PROXY_AUTH` variable in the format `user:password`, as in
 PROXY_TARGET=http://localhost:8080 PROXY_AUTH=jdoe:aligator3 npm run client
 ```
 
-### Ports
+Note that `PROXY=1` is not required if you specify either `PROXY_TARGET` or `PROXY_AUTH`.
 
-By default, the development server runs on port `3000`, and the static server on port `5000`.
-If you need to change these ports, you have to do the following:
-
-```sh
-PORT=5001 npm run server
-```
-
-This runs the static server only, serving assets under `http://localhost:5001`. Now, in a second terminal, run:
-
-```sh
-PORT=3001 PROXY_TARGET=http://localhost:5001 npm run client
-```
-
-This runs the development server on port `3001` and tells it about the alternative file server location.
+Similarly, if you want to change the port the development server itself runs at,
+you can specify an alternative port in the `PORT` environment variable.
 
 How to cut a release for Opencast
 ---------------------------------
