@@ -1,6 +1,6 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 const express = require("express");
-const path = require("path");
+const path = require("node:path");
 
 module.exports = app => {
     app.use([
