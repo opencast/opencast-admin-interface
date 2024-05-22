@@ -1039,6 +1039,11 @@
 				}
 			}
 		},
+		"RECORDINGS": {
+			"TABLE": {
+				"CAPTION": "Locations"
+			}
+		},
 		"SERIES": {
 			"NEW": {
 				"CAPTION": "Create series",
