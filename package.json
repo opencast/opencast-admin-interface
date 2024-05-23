@@ -18,7 +18,7 @@
     "bourbon": "^7.3.0",
     "classnames": "^2.5.1",
     "date-fns": "^2.30.0",
-    "dompurify": "^3.1.0",
+    "dompurify": "^3.1.4",
     "font-awesome": "^4.7.0",
     "formik": "^2.4.6",
     "http-proxy-middleware": "^2.0.6",
