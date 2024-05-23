@@ -2,7 +2,7 @@ import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@
 import { recordingsTableConfig } from '../configs/tableConfigs/recordingsTableConfig';
 import axios from 'axios';
 import { getURLParams } from '../utils/resourceUtils';
-import { addNotification } from '../slices/notificationSlice';
+import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { RootState } from '../store';
 

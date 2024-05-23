@@ -1,6 +1,6 @@
 import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
-import { addNotification } from '../slices/notificationSlice';
+import { addNotification } from './notificationSlice';
 import { buildUserBody } from "../utils/resourceUtils";
 import { NewUser } from './userSlice';
 

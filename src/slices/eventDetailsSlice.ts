@@ -1,6 +1,6 @@
 import { PayloadAction, SerializedError, createAsyncThunk, createSlice, unwrapResult } from '@reduxjs/toolkit'
 import axios from 'axios';
-import { addNotification, removeNotificationWizardForm } from "../slices/notificationSlice";
+import { addNotification, removeNotificationWizardForm } from "./notificationSlice";
 import {
 	createPolicy,
 	getHttpHeaders,
@@ -8,7 +8,7 @@ import {
 	transformMetadataForUpdate,
 } from "../utils/resourceUtils";
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
-import { fetchWorkflowDef } from "../slices/workflowSlice";
+import { fetchWorkflowDef } from "./workflowSlice";
 import {
 	getMetadata,
 	getExtendedMetadata,
@@ -23,9 +23,9 @@ import {
 	getAssetUploadWorkflow,
 } from "../selectors/eventSelectors";
 import { calculateDuration } from "../utils/dateUtils";
-import { fetchRecordings } from "../slices/recordingSlice";
+import { fetchRecordings } from "./recordingSlice";
 import { getRecordings } from "../selectors/recordingSelectors";
-import { Workflow as WorkflowDefinitions} from "../slices/workflowSlice";
+import { Workflow as WorkflowDefinitions} from "./workflowSlice";
 import { RootState } from '../store';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 import { Ace, TransformedAcl, TransformedAcls } from './aclDetailsSlice';

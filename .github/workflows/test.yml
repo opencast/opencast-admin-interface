@@ -19,11 +19,9 @@ jobs:
           node-version: 20
 
       - name: download dependencies
-        working-directory: ./app
         run: npm ci
 
       - name: build project
-        working-directory: ./app
         env:
           CI: false
         run: npm run build

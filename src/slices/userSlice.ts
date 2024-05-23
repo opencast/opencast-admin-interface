@@ -3,7 +3,7 @@ import { usersTableConfig } from "../configs/tableConfigs/usersTableConfig";
 import axios from 'axios';
 import { transformToIdValueArray } from "../utils/utils";
 import { buildUserBody, getURLParams } from "../utils/resourceUtils";
-import { addNotification } from '../slices/notificationSlice';
+import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { RootState } from '../store';
 

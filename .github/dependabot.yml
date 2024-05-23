@@ -9,10 +9,9 @@ updates:
 
   # Javascript
   - package-ecosystem: npm
-    directory: "/app"
+    directory: /
     schedule:
       interval: monthly
-      time: "04:00"
     open-pull-requests-limit: 15
     labels:
       - dependencies

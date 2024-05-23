@@ -7,7 +7,7 @@ import {
 	getSeriesDetailsThemeNames,
 	getStatistics,
 } from "../selectors/seriesDetailsSelectors";
-import { addNotification } from "../slices/notificationSlice";
+import { addNotification } from "./notificationSlice";
 import {
 	createPolicy,
 	transformMetadataCollection,
