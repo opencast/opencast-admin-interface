@@ -10,7 +10,7 @@ import { initialFormValuesNewThemes } from "../../../../configs/modalConfig";
 import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { NewThemeSchema } from "../../../../utils/validate";
 import { useAppDispatch } from "../../../../store";
-import { Details, postNewTheme } from "../../../../slices/themeSlice";
+import { postNewTheme } from "../../../../slices/themeSlice";
 
 /**
  * This component manages the pages of the new theme wizard and the submission of values

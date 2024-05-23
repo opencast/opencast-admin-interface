@@ -144,6 +144,7 @@ const EventDetailsAssetAttachmentDetails = ({
 												}
 											</td>
 											<td>
+												{/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
 												<a
 													className="fa fa-external-link"
 													href={attachment.url}

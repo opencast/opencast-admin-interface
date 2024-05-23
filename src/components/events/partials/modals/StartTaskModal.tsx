@@ -93,6 +93,7 @@ const StartTaskModal = ({
 						// eslint-disable-next-line react-hooks/rules-of-hooks
 						useEffect(() => {
 							formik.validateForm().then();
+						// eslint-disable-next-line react-hooks/exhaustive-deps
 						}, [page]);
 
 						return (

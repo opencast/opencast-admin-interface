@@ -183,49 +183,45 @@ const EditableDateValue = ({
 	showCheck,
 // @ts-expect-error TS(7031):
 	handleKeyDown
-}) => {
-	const { t } = useTranslation();
-
-	return editMode ? (
-		<div>
-			<DateTimePicker
-				name={field.name}
-				value={typeof field.value === "string" ? parseISO(field.value) : field.value}
-				onChange={(value) => setFieldValue(field.name, value)}
-				onClose={() => setEditMode(false)}
-				slotProps={{
-					textField: {
-						fullWidth: true,
-						onKeyDown: (event) => {
-							if (event.key === "Enter") {
-								handleKeyDown(event, "date")
-							}
-						},
-						onBlur: (event) => {
-							setEditMode(false)
+}) => editMode ? (
+	<div>
+		<DateTimePicker
+			name={field.name}
+			value={typeof field.value === "string" ? parseISO(field.value) : field.value}
+			onChange={(value) => setFieldValue(field.name, value)}
+			onClose={() => setEditMode(false)}
+			slotProps={{
+				textField: {
+					fullWidth: true,
+					onKeyDown: (event) => {
+						if (event.key === "Enter") {
+							handleKeyDown(event, "date")
 						}
+					},
+					onBlur: (event) => {
+						setEditMode(false)
 					}
-				}}
-			/>
+				}
+			}}
+		/>
+	</div>
+) : (
+	<div onClick={() => setEditMode(true)} className="show-edit">
+		<span className="editable preserve-newlines">
+			<RenderDate date={text} />
+		</span>
+		<div>
+			<i className="edit fa fa-pencil-square" />
+			{showCheck && (
+				<i
+					className={cn("saved fa fa-check", {
+						active: initialValues[field.name] !== field.value,
+					})}
+				/>
+			)}
 		</div>
-	) : (
-		<div onClick={() => setEditMode(true)} className="show-edit">
-			<span className="editable preserve-newlines">
-				<RenderDate date={text} />
-			</span>
-			<div>
-				<i className="edit fa fa-pencil-square" />
-				{showCheck && (
-					<i
-						className={cn("saved fa fa-check", {
-							active: initialValues[field.name] !== field.value,
-						})}
-					/>
-				)}
-			</div>
-		</div>
-	);
-};
+	</div>
+);
 
 // renders editable field for selecting value via dropdown
 const EditableSingleSelect = ({
