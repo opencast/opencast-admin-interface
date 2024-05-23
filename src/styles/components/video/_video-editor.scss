@@ -488,27 +488,27 @@ $segment-deleted-selected: saturate(darken($segment-deleted, 25%), 5%);
             }
 
             .arrow_box:after, .arrow_box:before {
-            	bottom: 100%;
-            	left: 50%;
-            	border: solid transparent;
-            	content: " ";
-            	height: 0;
-            	width: 0;
-            	position: absolute;
-            	pointer-events: none;
+                bottom: 100%;
+                left: 50%;
+                border: solid transparent;
+                content: " ";
+                height: 0;
+                width: 0;
+                position: absolute;
+                pointer-events: none;
             }
 
             .arrow_box:after {
-            	border-color: rgba(238, 238, 238, 0);
-            	border-bottom-color: #eee;
-            	border-width: 4px;
-            	margin-left: -4px;
+                border-color: rgba(238, 238, 238, 0);
+                border-bottom-color: #eee;
+                border-width: 4px;
+                margin-left: -4px;
             }
             .arrow_box:before {
-            	border-color: rgba(204, 204, 204, 0);
-            	border-bottom-color: #ccc;
-            	border-width: 5px;
-            	margin-left: -5px;
+                border-color: rgba(204, 204, 204, 0);
+                border-bottom-color: #ccc;
+                border-width: 5px;
+                margin-left: -5px;
             }
 
             a.split {
@@ -686,88 +686,89 @@ $segment-deleted-selected: saturate(darken($segment-deleted, 25%), 5%);
 
     .segment-list {
 
-      .segment-list-entry {
-          margin: 8px auto;
-          margin-left: 0;
-          width: 98%;
-          height: $segment-list-element-height;
-          color: $dark-prim-color;
-          padding-right: 5px;
-          padding-left: 5px;
-          text-align: right;
-          //background: $off-white;
-          background: rgba($segment-normal, 0.5);
-          border: $thin-border-stroke $segment-normal;
-          transition-property: background-color, background, border;
-          transition-duration: 250ms;
-          transition-timing-function: ease;
+    .segment-list-entry {
+            margin: 8px auto;
+            margin-left: 0;
+            width: 98%;
+            height: $segment-list-element-height;
+            color: $dark-prim-color;
+            padding-right: 5px;
+            padding-left: 5px;
+            text-align: right;
+            //background: $off-white;
+            background: rgba($segment-normal, 0.5);
+            border: $thin-border-stroke $segment-normal;
+            transition-property: background-color, background, border;
+            transition-duration: 250ms;
+            transition-timing-function: ease;
 
-          a {
-              display: inline-block;
-              color: lighten($black, 10%);
-              padding: 9px;
+            a {
+                display: inline-block;
+                color: lighten($black, 10%);
+                padding: 9px;
 
-              &:before {
-                  width: 1em;
-                  text-align: center;
-              }
+                &:before {
+                    width: 1em;
+                    text-align: center;
+                }
 
-              &:hover, &:active {
-                  &:before {
-                      color: $black !important; // force this for mouseover
-                  }
-              }
+                &:hover,
+                &:active {
+                    &:before {
+                        color: $black !important; // force this for mouseover
+                    }
+                }
 
-              &.unused {
-                @include fa-icon($fa-var-eye-slash , before, inline-block, 0 0 0 0, 0, lighten($black, 10%), 1em);
-              }
+                &.unused {
+                    @include fa-icon($fa-var-eye-slash , before, inline-block, 0 0 0 0, 0, lighten($black, 10%), 1em);
+                }
 
-              &.used {
-                @include fa-icon($fa-var-eye, before, inline-block, 0 0 0 0, 0, lighten($black, 10%), 1em);
-              }
+                &.used {
+                    @include fa-icon($fa-var-eye, before, inline-block, 0 0 0 0, 0, lighten($black, 10%), 1em);
+                }
 
-              &.remove {
-                  @include fa-icon($fa-var-times, before, inline-block, 0 0 0 0, 0, lighten($black, 10%), 1em);
-              }
-          }
-
-
-          &.selected {
-              background: rgba($segment-selected, 0.5);
-              border: $thin-border-stroke darken($segment-selected, 10%);
-
-              &.deleted {
-                  background-color: rgba($segment-deleted-selected, 0.5);
-                  border: $thin-border-stroke $segment-deleted-selected;
-              }
-          }
-
-          &.deleted {
-              background-color: rgba($segment-deleted, 0.5);
-              border: $thin-border-stroke $segment-deleted;
-          }
-
-          .segment-start-end {
-            float: left;
-            padding: 6px;
-          }
-
-          .segment-remove {
-            float: left;
-          }
-
-
-          input[type="text"] {
-            height: auto;
-            width: 90px;
-            padding: 0 5px;
-
-            &:disabled {
-              color: $light-prim-color;
-              background-color: darken(#FFFFFF, 5%);
+                &.remove {
+                    @include fa-icon($fa-var-times, before, inline-block, 0 0 0 0, 0, lighten($black, 10%), 1em);
+                }
             }
-          }
-      }
+
+
+            &.selected {
+                background: rgba($segment-selected, 0.5);
+                border: $thin-border-stroke darken($segment-selected, 10%);
+
+                &.deleted {
+                    background-color: rgba($segment-deleted-selected, 0.5);
+                    border: $thin-border-stroke $segment-deleted-selected;
+                }
+            }
+
+            &.deleted {
+                background-color: rgba($segment-deleted, 0.5);
+                border: $thin-border-stroke $segment-deleted;
+            }
+
+            .segment-start-end {
+                float: left;
+                padding: 6px;
+            }
+
+            .segment-remove {
+                float: left;
+            }
+
+
+            input[type="text"] {
+                height: auto;
+                width: 90px;
+                padding: 0 5px;
+
+                &:disabled {
+                    color: $light-prim-color;
+                    background-color: darken(#FFFFFF, 5%);
+                }
+            }
+        }
 
     }
 }
@@ -781,124 +782,128 @@ $segment-deleted-selected: saturate(darken($segment-deleted, 25%), 5%);
 // ----------------------------------------
 .editor-thumbnail {
 
-  .content-wrapper  {
-    display: flex;
-  }
-
-  form {
-    display: inline;
-    margin-left: 6px;
-  }
-
-  .controls {
-    position: relative;
-    padding-right: 20px;
-    margin: 20px 0 20px 0;
-    color: $medium-prim-color;
-    font-size: 12px;
-
-    .description {
-      line-height: 20px;
-      margin-bottom: 20px;
+    .content-wrapper {
+        display: flex;
     }
-  }
 
-  .thumbnail-canvas {
-    margin: 20px;
-    width: 320px;
-    height: 180px;
-    min-width: 320px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-origin: border-box;
-    border: $thin-border-stroke $main-border-color;
-    text-align: center;
-  }
+    form {
+        display: inline;
+        margin-left: 6px;
+    }
 
-  .thumbnail-canvas>div {
-    background-color: rgba( $black, .4 );
-    width: 320px;
-    height: 180px;
-    display: table-cell;
-    vertical-align: middle;
-    color: $off-white;
-  }
+    .controls {
+        position: relative;
+        padding-right: 20px;
+        margin: 20px 0 20px 0;
+        color: $medium-prim-color;
+        font-size: 12px;
 
-  .spinner, .error {
-    font-size: 3em;
-  }
+        .description {
+            line-height: 20px;
+            margin-bottom: 20px;
+        }
+    }
 
-  .hidden {
-    display: none;
-  }
+    .thumbnail-canvas {
+        margin: 20px;
+        width: 320px;
+        height: 180px;
+        min-width: 320px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-origin: border-box;
+        border: $thin-border-stroke $main-border-color;
+        text-align: center;
+    }
+
+    .thumbnail-canvas>div {
+        background-color: rgba($black, .4);
+        width: 320px;
+        height: 180px;
+        display: table-cell;
+        vertical-align: middle;
+        color: $off-white;
+    }
+
+    .spinner,
+    .error {
+        font-size: 3em;
+    }
+
+    .hidden {
+        display: none;
+    }
 }
 
 .editor-tracks {
 
-  .audio-canvas, .video-canvas {
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-origin: border-box;
-    text-align: center;
-    border: $thin-border-stroke $main-border-color;
+    .audio-canvas,
+    .video-canvas {
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-origin: border-box;
+        text-align: center;
+        border: $thin-border-stroke $main-border-color;
 
-    cursor: pointer;
+        cursor: pointer;
 
-  }
+    }
 
-  .audio-canvas {
-    background-color: rgba(28, 131, 236, 0.5);
-    border: 1px solid #1169c5;
-    width: 690px;
-    height: 60px;
-  }
+    .audio-canvas {
+        background-color: rgba(28, 131, 236, 0.5);
+        border: 1px solid #1169c5;
+        width: 690px;
+        height: 60px;
+    }
 
-  .video-canvas {
-    position: relative;
-    width: 160px;
-    height: 90px;
-  }
+    .video-canvas {
+        position: relative;
+        width: 160px;
+        height: 90px;
+    }
 
-  .track-name {
-    text-transform: capitalize;
-  }
+    .track-name {
+        text-transform: capitalize;
+    }
 
-  .track, .track-hidden {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+    .track,
+    .track-hidden {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-  .track-hidden {
-    background-color: rgba( $red, .4 );
-  }
+    .track-hidden {
+        background-color: rgba($red, .4);
+    }
 
-  .audio-track-hidden-icon, .video-track-hidden-icon {
-    position: absolute;
-    height: 100%;
-    text-align: center ;
-  }
+    .audio-track-hidden-icon,
+    .video-track-hidden-icon {
+        position: absolute;
+        height: 100%;
+        text-align: center;
+    }
 
-  .video-track-hidden-icon {
-    line-height: 120px;
-    @include fa-icon($fa-var-eye-slash, before, inline-block, 0 0 0 0, 0, lighten($black, 90%), 60px);
-  }
+    .video-track-hidden-icon {
+        line-height: 120px;
+        @include fa-icon($fa-var-eye-slash, before, inline-block, 0 0 0 0, 0, lighten($black, 90%), 60px);
+    }
 
-  .audio-track-hidden-icon {
-    line-height: 80px;
-    @include fa-icon($fa-var-microphone-slash, before, inline-block, 0 0 0 0, 0, lighten($black, 90%), 60px);
-  }
+    .audio-track-hidden-icon {
+        line-height: 80px;
+        @include fa-icon($fa-var-microphone-slash, before, inline-block, 0 0 0 0, 0, lighten($black, 90%), 60px);
+    }
 
-  .track-hidden:hover {
-    background-color: rgba( $red, .6 );
-  }
+    .track-hidden:hover {
+        background-color: rgba($red, .6);
+    }
 
-  .track:hover {
-    background-color: rgba( $black, .2 );
-  }
+    .track:hover {
+        background-color: rgba($black, .2);
+    }
 }
