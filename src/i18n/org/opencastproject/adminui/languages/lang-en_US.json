@@ -871,7 +871,7 @@
 						"REVIEW": "Review required",
 						"ASYNC": "A/V tracks asynchronous",
 						"AUDIO_ISSUE": "Missing or defective audio track",
-						"CANCELED": "Canceled event",
+						"CANCELLED": "Cancelled event",
 						"CONFLICTING_METADATA": "Conflicting metadata",
 						"IMPROPER_POINT": "Improper in or out point",
 						"MISSING_AGREEMENT": "Missing agreement",
