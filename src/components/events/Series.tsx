@@ -24,8 +24,8 @@ import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
-import { GlobalHotKeys } from "react-hotkeys";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
+import { useHotkeys } from "react-hotkeys-hook";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchEvents } from "../../slices/eventSlice";
 import {
@@ -158,17 +158,15 @@ const Series = ({
 		setDeleteSeriesModal(false);
 	};
 
-	const hotKeyHandlers = {
-		NEW_SERIES: showNewSeriesModal,
-	};
+	useHotkeys(
+    availableHotkeys.general.NEW_SERIES.sequence,
+    () => showNewSeriesModal(),
+		{ description: t(availableHotkeys.general.NEW_SERIES.description) ?? undefined },
+    [showNewSeriesModal]
+  );
 
 	return (
 		<>
-			<GlobalHotKeys
-// @ts-expect-error TS(2769): No overload matches this call.
-				keyMap={availableHotkeys.general}
-				handlers={hotKeyHandlers}
-			/>
 			<Header />
 			<section className="action-nav-bar">
 				<div className="btn-group">
