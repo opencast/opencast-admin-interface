@@ -24,6 +24,11 @@ import { HealthStatus, fetchHealthStatus } from "../slices/healthSlice";
 import { UserInfoState } from "../slices/userInfoSlice";
 import { Tooltip } from "./shared/Tooltip";
 import { HiTranslate } from "react-icons/hi";
+import {
+	FaVideo,
+	FaPlayCircle,
+	FaBell
+} from "react-icons/fa";
 import { IconContext } from "react-icons";
 
 // Get code, flag and name of the current language
@@ -182,13 +187,8 @@ const Header = ({
 						!!orgProperties["org.opencastproject.admin.mediamodule.url"] && (
 							<Tooltip  title={t("MEDIAMODULE")}>
 								<div className="nav-dd">
-									<a
-										href={
-											orgProperties["org.opencastproject.admin.mediamodule.url"]
-										}
-										target="_blank" rel="noreferrer"
-									>
-										<span className="fa fa-play-circle" />
+									<a href={orgProperties["org.opencastproject.admin.mediamodule.url"]} target="_blank" rel="noreferrer">
+										<FaPlayCircle />
 									</a>
 								</div>
 							</Tooltip>
@@ -199,7 +199,7 @@ const Header = ({
 						<Tooltip  title="Studio">
 							<div className="nav-dd">
 								<a href={studioURL} target="_blank" rel="noreferrer">
-									<span className="fa fa-video-camera" />
+									<FaVideo />
 								</a>
 							</div>
 						</Tooltip>
@@ -208,13 +208,11 @@ const Header = ({
 					{/* System warnings and notifications */}
 					{hasAccess("ROLE_ADMIN", user) && (
 						<Tooltip title={t("SYSTEM_NOTIFICATIONS")}>
-							<div
-								className="nav-dd info-dd"
-								id="info-dd"
-								ref={containerNotify}
-							>
+							<div className="nav-dd info-dd" id="info-dd" ref={containerNotify}>
 								<div onClick={() => setMenuNotify(!displayMenuNotify)}>
-									<i className="fa fa-bell" aria-hidden="true" />
+									<IconContext.Provider value={{ attr: {"aria-hidden": true} }}>
+										<FaBell />
+									</IconContext.Provider>
 									{errorCounter !== 0 && (
 										<span id="error-count" className="badge">
 											{errorCounter}
