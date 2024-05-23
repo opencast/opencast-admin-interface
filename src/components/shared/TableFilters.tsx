@@ -20,8 +20,8 @@ import {
 } from "../../slices/tableFilterSlice";
 import TableFilterProfiles from "./TableFilterProfiles";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
-import { GlobalHotKeys } from "react-hotkeys";
 import { getResourceType } from "../../selectors/tableSelectors";
+import { useHotkeys } from "react-hotkeys-hook";
 import moment from "moment";
 import { useAppDispatch, useAppSelector } from "../../store";
 
@@ -189,9 +189,12 @@ const TableFilters = ({
 		}
 	}
 
-	const hotKeyHandlers = {
-		REMOVE_FILTERS: removeFilters,
-	};
+	useHotkeys(
+    availableHotkeys.general.REMOVE_FILTERS.sequence,
+    () => removeFilters(),
+		{ description: t(availableHotkeys.general.REMOVE_FILTERS.description) ?? undefined },
+    [removeFilters]
+  );
 
 // @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 	const renderBlueBox = (filter) => {
@@ -210,11 +213,6 @@ const TableFilters = ({
 
 	return (
 		<>
-			<GlobalHotKeys
-// @ts-expect-error TS(2769): No overload matches this call.
-				keyMap={availableHotkeys.general}
-				handlers={hotKeyHandlers}
-			/>
 			<div className="filters-container">
 				{/* Text filter - Search Query */}
 				<input

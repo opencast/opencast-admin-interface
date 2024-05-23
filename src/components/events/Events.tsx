@@ -30,7 +30,7 @@ import Header from "../Header";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
-import { GlobalHotKeys } from "react-hotkeys";
+import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { fetchAssetUploadOptions } from "../../thunks/assetsThunks";
@@ -181,17 +181,17 @@ const Events = ({
 		setEditMetadataEventsModal(false);
 	};
 
-	const hotKeyHandlers = {
-		NEW_EVENT: showNewEventModal,
-	};
+	useHotkeys(
+    availableHotkeys.general.NEW_EVENT.sequence,
+    () => showNewEventModal(),
+		{
+			description: t(availableHotkeys.general.NEW_EVENT.description) ?? undefined
+		},
+    [showNewEventModal]
+  );
 
 	return (
 		<>
-			<GlobalHotKeys
-// @ts-expect-error TS(2769): No overload matches this call.
-				keyMap={availableHotkeys.general}
-				handlers={hotKeyHandlers}
-			/>
 			<Header />
 			<section className="action-nav-bar">
 				<div className="btn-group">
