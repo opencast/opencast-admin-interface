@@ -107,7 +107,9 @@ const Header = ({
 	useHotkeys(
     availableHotkeys.general.HOTKEY_CHEATSHEET.sequence,
     () => toggleHotKeyCheatSheet(),
-		{ description: t(availableHotkeys.general.HOTKEY_CHEATSHEET.description) ?? undefined },
+		{
+			description: t(availableHotkeys.general.HOTKEY_CHEATSHEET.description) ?? undefined
+		},
     [toggleHotKeyCheatSheet]
   );
 

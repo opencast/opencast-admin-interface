@@ -189,7 +189,9 @@ const Events = ({
 	useHotkeys(
     availableHotkeys.general.NEW_EVENT.sequence,
     () => showNewEventModal(),
-		{ description: t(availableHotkeys.general.NEW_EVENT.description) ?? undefined },
+		{
+			description: t(availableHotkeys.general.NEW_EVENT.description) ?? undefined
+		},
     [showNewEventModal]
   );
 
