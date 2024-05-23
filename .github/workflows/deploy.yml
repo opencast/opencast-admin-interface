@@ -18,34 +18,30 @@ jobs:
           node-version: 20
 
       - name: download dependencies
-        working-directory: ./app
         run: npm ci
 
       - name: build project
-        working-directory: ./app
         env:
           CI: false
         run: npm run build
 
       - name: create pages directory
-        working-directory: ./app
         run: mkdir gh-pages
 
-      - name: include admin intterface
-        working-directory: ./app
+      - name: include admin interface
         run: mv build gh-pages/admin-ui
 
       - name: include mock data
-        working-directory: ./app/gh-pages
-        run: cp -rv ../../test/app/GET/* .
+        working-directory: ./gh-pages
+        run: cp -rv ../test/app/GET/* .
 
       - name: include landing page
-        run: cp .github/demo-page.html app/gh-pages/index.html
+        run: cp .github/demo-page.html gh-pages/index.html
 
       - name: upload test page artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./app/gh-pages
+          path: ./gh-pages
 
   deploy:
     needs: build
