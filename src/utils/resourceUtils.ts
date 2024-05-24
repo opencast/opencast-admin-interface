@@ -11,11 +11,8 @@ import { NewUser } from "../slices/userSlice";
 import { Recording } from "../slices/recordingSlice";
 import { UserInfoState } from "../slices/userInfoSlice";
 import { hasAccess } from "./utils";
-<<<<<<< HEAD:app/src/utils/resourceUtils.ts
 import { RootState } from "../store";
-=======
 import { MetadataCatalog } from "../slices/eventSlice";
->>>>>>> main:src/utils/resourceUtils.ts
 
 /**
  * This file contains methods that are needed in more than one resource thunk
