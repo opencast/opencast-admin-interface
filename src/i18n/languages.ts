@@ -43,8 +43,7 @@ import { zhCN } from "date-fns/locale/zh-CN";
  * dateLocale: is needed for translation in datepicker
  *
  * !!! If a translation file of a new language was added, please insert these language here, too !!!
- *
- * */
+ */
 const languages = [
 	{
 		code: "en-US",
