@@ -78,7 +78,6 @@
 
     @if $expand == true {
         cursor: pointer;
-        @include fa-icon($fa-var-chevron-down, after, inline-block, 10px 0);
 
         &:hover {
             background: linear-gradient(to bottom, #fff, darken(#f3f5f6, 2%));

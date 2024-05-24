@@ -20,171 +20,12 @@
  */
 
 
-// Modal sizes
-// ----------------------------------------
-
-.extra-small-modal {
-    width: 400px;
-    margin-left: -200px;
-}
-
-.small-modal {
-    width: 600px;
-    margin-left: -300px;
-}
-
-.medium-modal {
-    width: $modal-width;
-    margin-left: -($modal-width * 0.5);
-}
-
-.large-modal {
-    width: 1000px;
-    margin-left: -500px;
-}
-
-
-// Main Modal Properties
-// ----------------------------------------
-
-.modal {
-
-    // Hide modal
-    visibility: hidden;
-    opacity: 0;
-    display: none;
-    transition: all .2s;
-    z-index: ($max-z + 2);
-    width: $modal-width;
-    height: auto;
-
+.area-body {
     // Center box
-    position: absolute;
-    top: 100px;
-    left: 50%;
-    margin-left: -($modal-width * 0.5);
     background: $body-background;
-    border-radius: $main-border-radius;
-    box-shadow: 0 0 20px 2px rgba($black, 0.3);
-
-    &.active {
-        opacity: 1;
-        top: 30px;
-        visibility: visible;
-    }
-
-    // Directional Arrows Outside of Modal
-    .arrow {
-        $spacing: -75px;
-        position: absolute;
-        top: 48%;
-        font-size: 50px;
-        color: rgba($white, 0.7);
-        text-shadow: 0 0 10px rgba($black, 0.4);
-        transition: all 0.2s;
-
-        &:hover {
-            color: #fff;
-        }
-    }
-}
-
-
-// Modal Overlay
-// ----------------------------------------
-
-.modal-overlay {
-
-    // Hide overlay
-    visibility: hidden;
-    opacity: 0;
-    transition: all .15s;
-
-    &.active {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: $max-z + 1;
-    background-color: rgba($black, 0.2);
-    background-image: radial-gradient(rgba($black, 0.2), rgba($black, 0.4));
-
-}
-
-
-// Modal Layout
-// ----------------------------------------
-
-.modal-body {
-    padding: 3%;
-
-    input.search {
-        border-radius: $main-border-radius 0 0 $main-border-radius;
-        border-right-width: 0;
-        float: left;
-        width: 100% !important;
-    }
-
-    button.clear {
-        height: inherit;
-        width: 46px;
-        margin-top: 5px;
-        float: right;
-        @include btn(white);
-
-        border-radius: 0 $main-border-radius $main-border-radius 0;
-
-        &+input.search {
-            width: calc(100% - 46px) !important;
-        }
-    }
-}
-
-.modal {
-    .modal-content {
-        display: block;
-        margin: 0 auto;
-        width: 100%;
-        box-sizing: border-box;
-
-        &.active {
-            display: block;
-        }
-
-        .tab-description {
-            color: $medium-prim-color;
-            font-size: 12px;
-            line-height: 20px;
-            margin-bottom: 10px;
-            width: 97%;
-        }
-
-        // Modal obj header
-        header {
-            $height: 35px;
-            @include accordion-header($height);
-            user-select: none;
-            position: static;
-
-            &.expand {
-                @include accordion-header($height, true);
-            }
-
-            // This is used when there is data displayed in header
-            span.header-value {
-                float: right;
-            }
-        }
-
-        p {
-            color: $color-darkgray;
-            margin-bottom: 0.3em;
-        }
-    }
+    border-top: 0px;
+    padding: 10px;
+    border-radius: 4px;
 
     // Modal Columns
     .col {
@@ -247,22 +88,6 @@
             }
         }
     }
-}
-
-
-// Object Styles
-// --------------------------------------------------
-
-.modal {
-
-    // Just some text to loosen up the strict "tables-within-boxes" layout
-    .hint {
-        &:not(:last-child) {
-            margin-bottom: 20px;
-        }
-        font-size: 11px;
-        line-height: 18px;
-    }
 
     // Object within columns
     .obj {
@@ -287,16 +112,11 @@
 
             td {
                 line-height: 25px !important;
-                padding-top: 4px;
-                padding-bottom: 4px;
+                padding: 4px 15px;
 
                 > a {
                     float: none;
                     margin: 0;
-                }
-
-                a.external-link {
-                    float: right;
                 }
 
                 .circle {
@@ -378,16 +198,183 @@
         }
     }
 
-    .header-description {
-        padding: 10px;
-        line-height: 20px;
+    // Modal obj header
+    header {
+        $height: 35px;
+        @include accordion-header($height);
+        user-select: none;
+        position: static;
+
+        &.expand {
+            @include accordion-header($height, true);
+        }
+
+        // This is used when there is data displayed in header
+        span.header-value {
+            float: right;
+        }
+    }
+
+    .obj {
+        &.comments {
+
+            .comment-container {
+                height: auto;
+                overflow-y: auto;
+
+                .comment-view {
+                  float: left;
+                  width: 60%;
+                  padding: 10px;
+                  min-height: 340px;
+                  border-right: 1px solid $main-border-color;
+                }
+
+                .comment-creation {
+                  float: right;
+                  width: 40%;
+                  padding: 10px;
+                }
+
+                .comment {
+                    margin-bottom: 20px;
+
+                    &:first-child h4 {
+                        margin-top: 0;
+                    }
+
+                    .is-reply {
+
+                        > h4 {
+                            padding-left: 30px;
+                        }
+
+                        .category {
+                            padding-left: 30px;
+                        }
+
+                        > p {
+                            padding-left: 30px;
+                        }
+                    }
+
+                    // Hide first HR
+                    &:first-child > hr {
+                        display: none;
+                    }
+
+                    > hr {
+                        background: lighten($main-border-color, 10%);
+                        height: 1px;
+                        border: none;
+                        margin: 30px 0 20px;
+                    }
+
+                    > h4 {
+                        font-weight: 600;
+                    }
+
+                    .category {
+                        font-size: 10px;
+                        color: $medium-prim-color;
+
+                        > strong {
+                            color: $medium-prim-color;
+                        }
+                    }
+
+                    .date {
+                        float: right;
+                        font-size: 10px;
+                        color: $light-prim-color;
+                    }
+
+                    > p {
+                       margin: 7px 15px 0 0;
+                       font-size: 11px;
+                       line-height: 15px;
+
+                        > span {
+                            color: $l-blue;
+                        }
+                    }
+
+                    .reply,
+                    .delete,
+                    .resolve {
+                        float: right;
+                        font-size: 11px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        color: $l-blue;
+                        display: inline-block;
+                    }
+
+                    .delete {
+                        color: $red;
+                        margin-left: 10px;
+
+                    }
+
+                    .resolve {
+                        color: $light-prim-color;
+                        margin-right: 10px;
+
+                        &.resolved {
+                            color: $green;
+                        }
+                    }
+                }
+            }
+
+            .add-comment {
+
+                .drop-down-container {
+                    width: 100%;
+                }
+
+                textarea {
+                    width: 100%;
+                    height: 80px;
+                    resize: none;
+                    margin-bottom: 20px;
+                }
+
+                .btn {
+                    @include btn(green);
+                    padding: 10px 15px;
+                    float: right;
+                }
+
+                .save {
+                    float: right;
+                    margin-left: 10px;
+                }
+
+                .resolved {
+                  display: inline-block;
+                }
+
+                .resolve-select {
+                  vertical-align: middle;
+                }
+
+                .reasons {
+                    float: left;
+                }
+
+                .drop-down-container {
+                    width: 250px;
+                    display: inline-block;
+                    z-index: 100;
+                }
+
+                .chosen-container .chosen-results{
+                  max-height: 160px !important;
+                }
+
+            }
+        }
     }
 }
 
-// Miscellaneous
-// --------------------------------------------------
-.loading {
-    text-align: center;
-    padding-top: 16px;
-    padding-bottom: 16px;
-}

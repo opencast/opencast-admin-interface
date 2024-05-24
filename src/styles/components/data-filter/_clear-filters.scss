@@ -38,7 +38,6 @@
         right: 8px;
         cursor: pointer;
         pointer-events: auto;
-        @include fa-icon($fa-var-close, before, inline-block, 0, 0, $medium-prim-color, 10px);
         font-family: "Open Sans", sans-serif;
         color: #555;
 
@@ -50,20 +49,7 @@
         &:before {
             transition: color 250ms ease-in-out;
         }
-
-        &:hover {
-            @include fa-icon-color(before, $alt-red);
-        }
     }
-
-    &.disabled .df-clear-button {
-        @include fa-icon-color(before, $light-prim-color);
-
-        &:hover {
-            @include fa-icon-color(before, $light-prim-color);
-        }
-    }
-
     .js-df-state-new-filter & {
         visibility: visible;
         opacity: 1;

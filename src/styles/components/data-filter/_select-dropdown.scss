@@ -139,12 +139,6 @@ $df-select-dropdown-horizontal-padding: 6px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 
-    @include fa-icon($fa-var-close, before, inline-block, 4px 0 0 0, 0, $medium-prim-color, 10px);
-
-    &.disabled {
-        @include fa-icon-color(before, $light-prim-color);
-    }
-
     transition-property: visibility, opacity;
     transition-duration: 300ms;
     transition-timing-function: ease-in-out;
@@ -152,9 +146,5 @@ $df-select-dropdown-horizontal-padding: 6px;
 
     &:before {
         transition: color 250ms ease-in-out;
-    }
-
-    &:hover:not(.disabled) {
-        @include fa-icon-color(before, $alt-red);
     }
 }

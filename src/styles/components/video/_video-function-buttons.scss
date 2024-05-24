@@ -19,19 +19,24 @@
  *
  */
 
+.function-buttons a:first-child {
+    margin-left: 0;
+}
+.function-buttons a {
+    @include btn(white);
+    font-size: 12px;
+    font-weight: $weight-semibold;
+    padding: 10px;
+    display: inline-block;
+    margin-left: 6px;
 
-@import "variables";
-@import "fa-variables"; // Our own version
-@import "mixins";
-@import "fa-mixins"; // Our own version
-//@import "path"; // already included
-@import "core";
-@import "larger";
-@import "fixed-width";
-@import "list";
-@import "bordered-pulled";
-@import "animated";
-@import "rotated-flipped";
-@import "stacked";
-@import "icons";
-@import "screen-reader";
+    // Function Icons
+    $pseudo-position: before;
+    $display-value: inline;
+    $margin: 0 4px 0 0;
+    $padding: 0;
+    $color: inherit;
+    $font-size: 12px;
+    $font-weight: normal;
+    $line-height: 1;
+}

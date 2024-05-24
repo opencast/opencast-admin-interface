@@ -33,27 +33,6 @@
             margin-right: 10px;
         }
 
-        .fa-calendar-o,
-        .fa-plus-circle {
-            font-size: 14px;
-            margin: 0;
-            margin-left: 5px;
-            display: inline-block;
-            float: none;
-
-            &:hover {
-                color: $l-blue;
-            }
-        }
-
-        .fa-plus-circle {
-            color: $primary-color-green;
-
-            &:hover {
-                color: $primary-color-green-light-1;
-            }
-        }
-
         // Show and Hide sections
         .source-type-content {
             display: none;
