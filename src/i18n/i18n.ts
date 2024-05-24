@@ -37,7 +37,9 @@ import svSETrans from "./org/opencastproject/adminui/languages/lang-sv_SE";
 // @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import trTRTrans from "./org/opencastproject/adminui/languages/lang-tr_TR";
 // @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import zhZWTrans from "./org/opencastproject/adminui/languages/lang-zh_TW";
+import zhCNTrans from "./org/opencastproject/adminui/languages/lang-zh_CN";
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
+import zhTWTrans from "./org/opencastproject/adminui/languages/lang-zh_TW";
 
 // Assignment of language code to translation file
 // !!! If translation file of a new language is added, please add assignment here, too !!!
@@ -57,7 +59,8 @@ const resources = {
 	sl: { translation: slSITrans },
 	sv: { translation: svSETrans },
 	tr: { translation: trTRTrans },
-	zh: { translation: zhZWTrans },
+	"zh-CN": { translation: zhCNTrans },
+	"zh-TW": { translation: zhTWTrans },
 };
 
 // Configuration of i18next

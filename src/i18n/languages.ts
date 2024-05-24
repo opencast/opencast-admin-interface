@@ -15,6 +15,7 @@ import SIFlag from "../img/lang/sl_SI.svg?url";
 import SEFlag from "../img/lang/sv_SE.svg?url";
 import TRFlag from "../img/lang/tr_TR.svg?url";
 import CNFlag from "../img/lang/zh_CN.svg?url";
+import TWFlag from "../img/lang/zh_TW.svg";
 
 // Import date-fns locales
 import { da } from "date-fns/locale/da";
@@ -33,6 +34,7 @@ import { sl } from "date-fns/locale/sl";
 import { sv } from "date-fns/locale/sv";
 import { tr } from "date-fns/locale/tr";
 import { zhCN } from "date-fns/locale/zh-CN";
+import {zhTW} from "date-fns/locale/zh-TW";
 
 /*
  * JSON object that contains all available languages and the following information:
@@ -46,64 +48,23 @@ import { zhCN } from "date-fns/locale/zh-CN";
  *
  * */
 const languages = [
-	{
-		code: "en-US",
-		long: "English",
-		rtl: false,
-		flag: USFlag,
-		dateLocale: enUS,
-	},
-	{
-		code: "en-GB",
-		long: "English",
-		rtl: false,
-		flag: GBFlag,
-		dateLocale: enGB,
-	},
+	{ code: "en-US", long: "English", rtl: false, flag: USFlag, dateLocale: enUS },
+	{ code: "en-GB", long: "English", rtl: false, flag: GBFlag, dateLocale: enGB },
 	{ code: "da", long: "Dansk", rtl: false, flag: DKFlag, dateLocale: da },
 	{ code: "de", long: "Deutsch", rtl: false, flag: DEFlag, dateLocale: de },
-	{
-		code: "el",
-		long: "Ελληνικά",
-		rtl: false,
-		flag: GRFlag,
-		dateLocale: el,
-	},
+	{ code: "el", long: "Ελληνικά", rtl: false, flag: GRFlag, dateLocale: el },
 	{ code: "es", long: "Español", rtl: false, flag: ESFlag, dateLocale: es },
-	{
-		code: "fr",
-		long: "Français",
-		rtl: false,
-		flag: FRFlag,
-		dateLocale: fr,
-	},
+	{ code: "fr", long: "Français", rtl: false, flag: FRFlag, dateLocale: fr },
 	{ code: "gl", long: "Galego", rtl: false, flag: ESFlag2, dateLocale: gl },
 	{ code: "he", long: "עברית", rtl: true, flag: ILFlag, dateLocale: he },
-	{
-		code: "it",
-		long: "Italiano",
-		rtl: false,
-		flag: ITFlag,
-		dateLocale: it,
-	},
-	{
-		code: "nl",
-		long: "Nederlands",
-		rtl: false,
-		flag: NLFlag,
-		dateLocale: nl,
-	},
+	{ code: "it", long: "Italiano", rtl: false, flag: ITFlag, dateLocale: it },
+	{ code: "nl", long: "Nederlands", rtl: false, flag: NLFlag, dateLocale: nl }, 
 	{ code: "pl", long: "Polski", rtl: false, flag: PLFlag, dateLocale: pl },
-	{
-		code: "sl",
-		long: "Slovenščina",
-		rtl: false,
-		flag: SIFlag,
-		dateLocale: sl,
-	},
+	{ code: "sl", long: "Slovenščina", rtl: false, flag: SIFlag, dateLocale: sl },
 	{ code: "sv", long: "Svenska", rtl: false, flag: SEFlag, dateLocale: sv },
 	{ code: "tr", long: "Türkçe", rtl: false, flag: TRFlag, dateLocale: tr },
-	{ code: "zh", long: "中文", rtl: false, flag: CNFlag, dateLocale: zhCN },
+	{ code: "zh-CN", long: "简体中文", rtl: false, flag: CNFlag, dateLocale: zhCN },
+	{ code: "zh-TW", long: "繁體中文", rtl: false, flag: TWFlag, dateLocale: zhTW },
 ];
 
 export default languages;
