@@ -33,7 +33,7 @@ jobs:
 
       - name: include mock data
         working-directory: ./gh-pages
-        run: cp -rv ../test/app/GET/* .
+        run: cp -rv ../test/GET/* .
 
       - name: include landing page
         run: cp .github/demo-page.html gh-pages/index.html
