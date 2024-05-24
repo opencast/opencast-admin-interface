@@ -20,16 +20,14 @@ jobs:
 
       - name: download dependencies
         run: npm ci
-        working-directory: ./app
 
       - name: create release tarball
-        run: ../.github/build-release.sh
-        working-directory: ./app
+        run: ./.github/build-release.sh
 
       - name: create new release
         uses: softprops/action-gh-release@v2
         with:
-          files: ./app/oc-admin-ui-*.tar.gz
+          files: ./oc-admin-ui-*.tar.gz
           draft: true
           fail_on_unmatched_files: true
           generate_release_notes: true

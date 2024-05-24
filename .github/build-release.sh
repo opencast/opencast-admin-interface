@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Build integrated version
-cd ../app
+cd ..
 rm -rf build/
 export PUBLIC_URL=/admin-ui
 CI=false npm run build
