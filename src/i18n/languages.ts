@@ -63,18 +63,18 @@ import zhDate from "date-fns/locale/zh-CN";
  * */
 const languages = [
 	{
-		code: "en-GB",
-		long: "English",
-		rtl: false,
-		flag: GBFlag,
-		dateLocale: enGBDate,
-	},
-	{
 		code: "en-US",
 		long: "English",
 		rtl: false,
 		flag: USFlag,
 		dateLocale: enUSDate,
+	},
+	{
+		code: "en-GB",
+		long: "English",
+		rtl: false,
+		flag: GBFlag,
+		dateLocale: enGBDate,
 	},
 	{ code: "da", long: "Dansk", rtl: false, flag: DKFlag, dateLocale: daDate },
 	{ code: "de", long: "Deutsch", rtl: false, flag: DEFlag, dateLocale: deDate },

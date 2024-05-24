@@ -7,9 +7,9 @@ import LanguageDetector from "i18next-browser-languagedetector";
 
 // import language files
 // @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import enGBTrans from "./org/opencastproject/adminui/languages/lang-en_GB";
-// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import enUSTrans from "./org/opencastproject/adminui/languages/lang-en_US";
+// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
+import enGBTrans from "./org/opencastproject/adminui/languages/lang-en_GB";
 // @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
 import daDKTrans from "./org/opencastproject/adminui/languages/lang-da_DK";
 // @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
@@ -42,8 +42,8 @@ import zhZWTrans from "./org/opencastproject/adminui/languages/lang-zh_TW";
 // Assignment of language code to translation file
 // !!! If translation file of a new language is added, please add assignment here, too !!!
 const resources = {
-	"en-GB": { translation: enGBTrans },
 	"en-US": { translation: enUSTrans },
+	"en-GB": { translation: enGBTrans },
 	da: { translation: daDKTrans },
 	de: { translation: deDETrans },
 	el: { translation: elGRTrans },
@@ -67,7 +67,7 @@ i18n
 	.use(initReactI18next)
 	.init({
 		resources,
-		fallbackLng: "en-GB",
+		fallbackLng: "en-US",
 		debug: true,
 
 		interpolation: {
