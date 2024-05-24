@@ -6,7 +6,7 @@ import i18n from "../i18n/i18n";
 import languages from "../i18n/languages";
 // @ts-expect-error TS(2307): Cannot find module '../img/opencast-white.svg' or ... Remove this comment to see the full error message
 import opencastLogo from "../img/opencast-white.svg";
-import { setSpecificServiceFilter } from "../thunks/tableFilterThunks";
+import { setSpecificServiceFilter } from "../slices/tableFilterSlice";
 import { loadServicesIntoTable } from "../thunks/tableThunks";
 import { getErrorCount, getHealthStatus } from "../selectors/healthSelectors";
 import {
@@ -48,8 +48,6 @@ function logout() {
  * Component that renders the header and the navigation in the upper right corner.
  */
 const Header = ({
-// @ts-expect-error TS(7031): Binding element 'setSpecificServiceFilter' implici... Remove this comment to see the full error message
-	setSpecificServiceFilter,
 // @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
 	loadingServicesIntoTable,
 }) => {
@@ -89,7 +87,7 @@ const Header = ({
 		await loadingServicesIntoTable();
 
 		// set the action filter value of services to true
-		await setSpecificServiceFilter("actions", "true");
+		await dispatch(setSpecificServiceFilter({ filter: "actions", filterValue: "true" }));
 	};
 
 	const showHotKeyCheatSheet = () => {
@@ -444,9 +442,6 @@ const mapStateToProps = (state) => ({
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
 	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
-// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
-	setSpecificServiceFilter: (filter, filterValue) =>
-		dispatch(setSpecificServiceFilter(filter, filterValue)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

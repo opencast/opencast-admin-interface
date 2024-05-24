@@ -5,14 +5,13 @@ import { Link } from "react-router-dom";
 import cn from "classnames";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
-import { fetchFilters } from "../../thunks/tableFilterThunks";
+import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
 import { connect } from "react-redux";
 import { themesTemplateMap } from "../../configs/tableConfigs/themesTableMap";
 import { getTotalThemes } from "../../selectors/themeSelectors";
 import { loadThemesIntoTable } from "../../thunks/tableThunks";
 import Notifications from "../shared/Notifications";
 import NewResourceModal from "../shared/NewResourceModal";
-import { editTextFilter } from "../../actions/tableFilterActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
 import Header from "../Header";
 import Footer from "../Footer";
@@ -28,15 +27,12 @@ import { fetchThemes } from "../../slices/themeSlice";
 const Themes = ({
 // @ts-expect-error TS(7031): Binding element 'loadingThemesIntoTable' implicitl... Remove this comment to see the full error message
 	loadingThemesIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
-	loadingFilters,
-// @ts-expect-error TS(7031): Binding element 'resetTextFilter' implicitly has a... Remove this comment to see the full error message
-	resetTextFilter,
-// @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
-	currentFilterType,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
+
+	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
+
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewThemesModal, setNewThemesModal] = useState(false);
 
@@ -58,10 +54,11 @@ const Themes = ({
 
 	useEffect(() => {
 		if ("themes" !== currentFilterType) {
-			loadingFilters("themes");
+			dispatch(fetchFilters("themes"));
 		}
 
-		resetTextFilter();
+		// Reset text filter
+		dispatch(editTextFilter(""));
 
 		// Load themes on mount
 		loadThemes().then((r) => console.info(r));
@@ -150,16 +147,12 @@ const Themes = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	currentFilterType: getCurrentFilterResource(state),
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
-	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
 	loadingThemesIntoTable: () => dispatch(loadThemesIntoTable()),
-	resetTextFilter: () => dispatch(editTextFilter("")),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Themes);
