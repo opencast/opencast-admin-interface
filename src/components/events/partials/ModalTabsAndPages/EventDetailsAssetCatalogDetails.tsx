@@ -87,7 +87,7 @@ const EventDetailsAssetCatalogDetails = ({
 											</td>
 											<td>{catalog.mimetype}</td>
 										</tr>
-										{(!!catalog.size && catalog.size) > 0 && (
+										{catalog.size > 0 && (
 											<tr>
 												<td>
 													{

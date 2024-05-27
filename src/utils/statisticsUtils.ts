@@ -38,7 +38,6 @@ const createXAxisTickCallback = (timeMode: any, dataResolution: any, language: a
 /* creates callback function for the displayed label when hovering over a data point in a statistics diagram */
 // @ts-expect-error TS(7006): Parameter 'timeMode' implicitly has an 'any' type.
 const createTooltipCallback = (timeMode, dataResolution, language) => {
-// @ts-expect-error TS(7034): Variable 'formatString' implicitly has type 'any' ... Remove this comment to see the full error message
 	let formatString;
 	if (timeMode === "year") {
 		formatString = "MMMM YYYY";
@@ -71,7 +70,6 @@ const createTooltipCallback = (timeMode, dataResolution, language) => {
 // @ts-expect-error TS(7006): Parameter 'tooltipItem' implicitly has an 'any' ty... Remove this comment to see the full error message
 	return (tooltipItem) => {
 		const date = tooltipItem.label;
-// @ts-expect-error TS(7005): Variable 'formatString' implicitly has an 'any' ty... Remove this comment to see the full error message
 		const finalDate = moment(date).locale(language).format(formatString);
 		return finalDate + ": " + tooltipItem.value;
 	};

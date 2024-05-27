@@ -169,8 +169,8 @@ const TimeSeriesStatistics = ({
 	// change to and from dates in formik to previous timeframe and get new values from API
 // @ts-expect-error TS(7006): Parameter 'setFormikValue' implicitly has an 'any'... Remove this comment to see the full error message
 	const selectPrevious = (setFormikValue, from, timeMode, dataResolution) => {
-// @ts-expect-error TS(2769): No overload matches this call.
 		const newFrom = moment(from)
+			// @ts-expect-error TS(2769): No overload matches this call.
 			.subtract(1, timeMode + "s")
 			.format("YYYY-MM-DD");
 		const to = newFrom;
@@ -180,8 +180,8 @@ const TimeSeriesStatistics = ({
 	// change to and from dates in formik to next timeframe and get new values from API
 // @ts-expect-error TS(7006): Parameter 'setFormikValue' implicitly has an 'any'... Remove this comment to see the full error message
 	const selectNext = (setFormikValue, from, timeMode, dataResolution) => {
-// @ts-expect-error TS(2769): No overload matches this call.
 		const newFrom = moment(from)
+			// @ts-expect-error TS(2769): No overload matches this call.
 			.add(1, timeMode + "s")
 			.format("YYYY-MM-DD");
 		const to = newFrom;
