@@ -15,6 +15,7 @@ import "./i18n/i18n";
 // import css files for certain libraries
 import "font-awesome/css/font-awesome.min.css";
 import "react-datepicker/dist/react-datepicker.css";
+import { HotkeysProvider } from "react-hotkeys-hook";
 import { ThemeProvider } from "@mui/material";
 import { createTheme } from '@mui/material/styles';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -36,7 +37,9 @@ ReactDOM.render(
 			<PersistGate loading={<div>loading...</div>} persistor={persistor}>
 				<ThemeProvider theme={theme}>
 					<LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={getCurrentLanguageInformation()?.dateLocale}> {/*locale={getCurrentLanguageInformation()?.dateLocale}> */}
-						<App />
+						<HotkeysProvider>
+							<App />
+						</HotkeysProvider>
 					</LocalizationProvider>
 				</ThemeProvider>
 			</PersistGate>

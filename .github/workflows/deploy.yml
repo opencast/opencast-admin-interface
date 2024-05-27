@@ -1,0 +1,61 @@
+name: Publish Test Page
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: get node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: download dependencies
+        run: npm ci
+
+      - name: build project
+        env:
+          CI: false
+        run: npm run build
+
+      - name: create pages directory
+        run: mkdir gh-pages
+
+      - name: include admin interface
+        run: mv build gh-pages/admin-ui
+
+      - name: include mock data
+        working-directory: ./gh-pages
+        run: cp -rv ../test/GET/* .
+
+      - name: include landing page
+        run: cp .github/demo-page.html gh-pages/index.html
+
+      - name: upload test page artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./gh-pages
+
+  deploy:
+    needs: build
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

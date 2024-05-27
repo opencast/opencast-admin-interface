@@ -1,18 +1,36 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
+import { useHotkeysContext } from "react-hotkeys-hook";
+import { Hotkey } from "react-hotkeys-hook/dist/types";
 
 /**
  * This component renders the hotkey cheat sheet showing all available hotkeys
  */
-const HotKeyCheatSheet = ({
-    close
-}: any) => {
+const HotKeyCheatSheet: React.FC<{
+	close: () => void,
+}> = ({
+	close
+}) => {
 	const { t } = useTranslation();
 
 	const handleClose = () => {
 		close();
 	};
+
+	const { hotkeys } = useHotkeysContext();
+
+	const checkHotkeys = (hotkeys: readonly Hotkey[], searchkeys: string[]) => {
+		for (const hotkey of hotkeys) {
+			if (!hotkey.keys) { continue; }
+			if (hotkey.keys.length !== searchkeys.length) { continue; }
+			if (hotkey.keys.every((element, index) => element === searchkeys[index])) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	return (
 		<>
@@ -38,21 +56,18 @@ const HotKeyCheatSheet = ({
 									<table className="main-tbl">
 										<tbody>
 											{/* Repeat row for each hotkey in group*/}
-{/* @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
 											{Object.keys(availableHotkeys[hotkeyGroup]).map(
 												(hotkey, key) => (
-													<tr key={key}>
+													<tr key={key} style={{ opacity: !(hotkeys && checkHotkeys(hotkeys, availableHotkeys[hotkeyGroup][hotkey].sequence)) ? "50%" : "100%"}}>
 														<td className="hotkey">
 															<p className="combo">
 																<span className="chord">
 																	{/* repeat for each key in hotkey */}
-{/* @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
 																	{availableHotkeys[hotkeyGroup][
 																		hotkey
-// @ts-expect-error TS(7006): Parameter 'comboKey' implicitly has an 'any' type.
-																	].combo.map((comboKey, key) => (
-																		<>
-																			<span key={key}>
+																	].sequence.map((comboKey, key) => (
+																		<span key={key}>
+																			<span>
 																				<span className="key">
 																					{t(
 																						"HOTKEYS.KEYS." +
@@ -62,23 +77,20 @@ const HotKeyCheatSheet = ({
 																				</span>
 																			</span>
 																			{comboKey ===
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 																			availableHotkeys[hotkeyGroup][hotkey]
-																				.combo[
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+																				.sequence[
 																				availableHotkeys[hotkeyGroup][hotkey]
-																					.combo.length - 1
+																					.sequence.length - 1
 																			]
 																				? ""
 																				: " + "}
-																		</>
+																		</span>
 																	))}
 																</span>
 															</p>
 														</td>
 														<td>
 															{t(
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 																availableHotkeys[hotkeyGroup][hotkey]
 																	.description
 															)}

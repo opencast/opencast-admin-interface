@@ -8,14 +8,13 @@ import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
 import NewResourceModal from "../shared/NewResourceModal";
 import { aclsTemplateMap } from "../../configs/tableConfigs/aclsTableMap";
-import { fetchFilters } from "../../thunks/tableFilterThunks";
+import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
 import {
 	loadAclsIntoTable,
 	loadGroupsIntoTable,
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
 import { getTotalAcls } from "../../selectors/aclSelectors";
-import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
 import Header from "../Header";
@@ -76,6 +75,7 @@ const Acls: React.FC = () => {
 			dispatch(fetchFilters("acls"));
 		}
 
+		// Reset text filter
 		dispatch(editTextFilter(""));
 
 		// Load acls on mount

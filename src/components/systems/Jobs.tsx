@@ -9,13 +9,12 @@ import MainNav from "../shared/MainNav";
 import Notifications from "../shared/Notifications";
 import { jobsTemplateMap } from "../../configs/tableConfigs/jobsTableConfig";
 import { getTotalJobs } from "../../selectors/jobSelectors";
-import { fetchFilters } from "../../thunks/tableFilterThunks";
+import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
 import {
 	loadJobsIntoTable,
 	loadServersIntoTable,
 	loadServicesIntoTable,
 } from "../../thunks/tableThunks";
-import { editTextFilter } from "../../actions/tableFilterActions";
 import { setOffset } from "../../actions/tableActions";
 import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
 import Header from "../Header";
@@ -34,23 +33,18 @@ import { fetchServices } from "../../slices/serviceSlice";
 const Jobs = ({
 // @ts-expect-error TS(7031): Binding element 'loadingJobsIntoTable' implicitly ... Remove this comment to see the full error message
 	loadingJobsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingFilters' implicitly has an... Remove this comment to see the full error message
-	loadingFilters,
 // @ts-expect-error TS(7031): Binding element 'loadingServersIntoTable' implicit... Remove this comment to see the full error message
 	loadingServersIntoTable,
 // @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
 	loadingServicesIntoTable,
-// @ts-expect-error TS(7031): Binding element 'resetTextFilter' implicitly has a... Remove this comment to see the full error message
-	resetTextFilter,
 // @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
 	resetOffset,
-// @ts-expect-error TS(7031): Binding element 'currentFilterType' implicitly has... Remove this comment to see the full error message
-	currentFilterType,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 
+	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 	const user = useAppSelector(state => getUserInformation(state));
 	const jobs = useAppSelector(state => getTotalJobs(state));
 
@@ -91,10 +85,11 @@ const Jobs = ({
 
 	useEffect(() => {
 		if ("jobs" !== currentFilterType) {
-			loadingFilters("jobs");
+			dispatch(fetchFilters("jobs"));
 		}
 
-		resetTextFilter();
+		// Reset text filter
+		dispatch(editTextFilter(""));
 
 		// Load jobs on mount
 		loadJobs().then((r) => console.info(r));
@@ -176,18 +171,14 @@ const Jobs = ({
 // Getting state data out of redux store
 // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
 const mapStateToProps = (state) => ({
-	currentFilterType: getCurrentFilterResource(state),
 });
 
 // Mapping actions to dispatch
 // @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
 const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'resource' implicitly has an 'any' type.
-	loadingFilters: (resource) => dispatch(fetchFilters(resource)),
 	loadingJobsIntoTable: () => dispatch(loadJobsIntoTable()),
 	loadingServersIntoTable: () => dispatch(loadServersIntoTable()),
 	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
-	resetTextFilter: () => dispatch(editTextFilter("")),
 	resetOffset: () => dispatch(setOffset(0)),
 });
 

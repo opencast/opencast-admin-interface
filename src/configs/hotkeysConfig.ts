@@ -1,53 +1,45 @@
 // keymap containing information about available hotkeys
-export const availableHotkeys = {
+type HotkeyMapType = {
+	[key: string]: {
+		[key: string]: {
+			name: string,
+			description: string,
+			sequence: string[],
+		}
+	}
+}
+
+export const availableHotkeys: HotkeyMapType = {
 	general: {
 		HOTKEY_CHEATSHEET: {
 			name: "hotkey_cheatsheet",
 			description: "HOTKEYS.DESCRIPTIONS.GENERAL.CHEAT_SHEET",
-			combo: ["h"],
-			sequence: "h",
-			action: "keyup",
-			allowIn: ["INPUT", "SELECT", "TEXTAREA"],
+			sequence: ["h"],
 		},
 		EVENT_VIEW: {
 			name: "event_view",
 			description: "HOTKEYS.DESCRIPTIONS.GENERAL.EVENT_VIEW",
-			combo: ["e"],
-			sequence: "e",
-			action: "keyup",
-			allowIn: ["INPUT", "SELECT", "TEXTAREA"],
+			sequence: ["e"],
 		},
 		SERIES_VIEW: {
 			name: "series_view",
 			description: "HOTKEYS.DESCRIPTIONS.GENERAL.SERIES_VIEW",
-			combo: ["s"],
-			sequence: "s",
-			action: "keyup",
-			allowIn: ["INPUT", "SELECT", "TEXTAREA"],
+			sequence: ["s"],
 		},
 		NEW_EVENT: {
 			name: "new_event",
 			description: "HOTKEYS.DESCRIPTIONS.GENERAL.NEW_EVENT",
-			combo: ["n"],
-			sequence: "n",
-			action: "keyup",
-			allowIn: ["INPUT", "SELECT", "TEXTAREA"],
+			sequence: ["n"],
 		},
 		NEW_SERIES: {
 			name: "new_series",
 			description: "HOTKEYS.DESCRIPTIONS.GENERAL.NEW_SERIES",
-			combo: ["N"],
-			sequence: "shift+n",
-			action: "keyup",
-			allowIn: ["INPUT", "SELECT", "TEXTAREA"],
+			sequence: ["j"],
 		},
 		MAIN_MENU: {
 			name: "main_menu",
 			description: "HOTKEYS.DESCRIPTIONS.GENERAL.MAIN_MENU",
-			combo: ["m"],
-			sequence: "m",
-			action: "keyup",
-			allowIn: ["INPUT", "SELECT", "TEXTAREA"],
+			sequence: ["m"],
 		},
 		/*NEXT_DASHBOARD_FILTER: {
             name: 'select_next_dashboard_filter',
@@ -68,10 +60,7 @@ export const availableHotkeys = {
 		REMOVE_FILTERS: {
 			name: "remove_filters",
 			description: "HOTKEYS.DESCRIPTIONS.GENERAL.REMOVE_FILTERS",
-			combo: ["r"],
-			sequence: "r",
-			action: "keyup",
-			allowIn: ["INPUT", "SELECT", "TEXTAREA"],
+			sequence: ["r"],
 		},
 	},
 };

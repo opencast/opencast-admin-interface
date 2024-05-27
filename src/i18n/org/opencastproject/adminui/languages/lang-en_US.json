@@ -871,7 +871,7 @@
 						"REVIEW": "Review required",
 						"ASYNC": "A/V tracks asynchronous",
 						"AUDIO_ISSUE": "Missing or defective audio track",
-						"CANCELED": "Canceled event",
+						"CANCELLED": "Cancelled event",
 						"CONFLICTING_METADATA": "Conflicting metadata",
 						"IMPROPER_POINT": "Improper in or out point",
 						"MISSING_AGREEMENT": "Missing agreement",
@@ -2040,12 +2040,36 @@
 			"END": "End",
 			"HOME": "Home",
 			"INS": "Ins",
-			"DEL": "Del"
+			"DEL": "Del",
+			"A": "a",
+			"B": "b",
+			"C": "c",
+			"D": "d",
+			"E": "e",
+			"F": "f",
+			"G": "g",
+			"H": "h",
+			"I": "i",
+			"J": "j",
+			"K": "k",
+			"L": "l",
+			"M": "m",
+			"N": "n",
+			"O": "o",
+			"P": "p",
+			"Q": "q",
+			"R": "r",
+			"S": "s",
+			"T": "t",
+			"U": "u",
+			"V": "v",
+			"W": "w",
+			"X": "x",
+			"Y": "y",
+			"Z": "z"
 		},
 		"GROUPS": {
-			"GENERAL": "General",
-			"PLAYER": "Player",
-			"EDITOR": "Editor"
+			"GENERAL": "General"
 		},
 		"DESCRIPTIONS": {
 			"GENERAL": {
@@ -2058,26 +2082,6 @@
 				"NEW_EVENT": "Add event",
 				"NEW_SERIES": "Add series",
 				"CHEAT_SHEET": "Keyboard shortcuts"
-			},
-			"PLAYER": {
-				"PLAY_PAUSE": "Play/pause",
-				"PREVIOUS_FRAME": "Previous frame",
-				"NEXT_FRAME": "Next frame",
-				"STEP_BACKWARD": "Jump 10s back",
-				"STEP_FORWARD": "Jump 10s forward",
-				"PREVIOUS_SEGMENT": "Previous segment/jump to start",
-				"NEXT_SEGMENT": "Next segment/jump to end",
-				"VOLUME_UP": "Volume up",
-				"VOLUME_DOWN": "Volume down",
-				"MUTE": "Mute/unmute"
-			},
-			"EDITOR": {
-				"SPLIT_AT_CURRENT_TIME": "Split",
-				"CUT_SELECTED_SEGMENT": "Cut",
-				"PLAY_CURRENT_SEGMENT": "Play current segment",
-				"CLEAR_LIST": "Clear segment",
-				"PLAY_CURRENT_SEGMENT_WITH_PRE-ROLL": "Replay segment with pre-roll",
-				"PLAY_ENDING_OF_CURRENT_SEGMENT": "End of segment"
 			}
 		}
 	},
