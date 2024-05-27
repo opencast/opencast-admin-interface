@@ -9,8 +9,6 @@
     "@mui/styles": "^5.15.18",
     "@mui/x-date-pickers": "^6.19.0",
     "@reduxjs/toolkit": "^1.9.7",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^12.1.5",
     "@types/dompurify": "^3.0.5",
     "@types/http-proxy": "^1.17.14",
     "@types/react-router-dom": "^5.3.3",
@@ -85,8 +83,10 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "prop-types": "^15.8.1",
     "sass": "^1.70.0",
+    "typescript": "^5.4.5",
     "uuid": "^9.0.1",
     "vite": "^5.2.11",
+    "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^1.2.2"
   }
