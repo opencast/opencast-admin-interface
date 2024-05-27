@@ -12,7 +12,9 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^12.1.5",
     "@types/dompurify": "^3.0.5",
+    "@types/http-proxy": "^1.17.14",
     "@types/react-router-dom": "^5.3.3",
+    "@vitejs/plugin-react": "^4.3.0",
     "array-move": "^4.0.0",
     "axios": "^1.6.5",
     "bourbon": "^7.3.0",
@@ -37,10 +39,8 @@
     "react-icons": "^5.2.1",
     "react-redux": "^7.2.9",
     "react-router-dom": "^6.21.2",
-    "react-scripts": "5.0.1",
     "react-select": "^5.8.0",
     "redux": "^4.2.1",
-    "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.2",
     "reselect": "^4.1.8",
@@ -48,10 +48,10 @@
     "yup": "^1.4.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview",
+    "test": "vitest"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -75,10 +75,19 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-env": "^7.23.8",
     "@babel/preset-react": "^7.24.1",
+    "@redux-devtools/extension": "^3.3.0",
     "@types/lodash": "^4.14.202",
+    "@types/node": "^20.12.12",
     "@types/uuid": "^9.0.8",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "prop-types": "^15.8.1",
     "sass": "^1.70.0",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "vite": "^5.2.11",
+    "vite-tsconfig-paths": "^4.3.2",
+    "vitest": "^1.2.2"
   }
 }

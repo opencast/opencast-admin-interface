@@ -26,29 +26,17 @@ This runs a development server at `http://localhost:3000`, serving a development
 of the admin UI, and automatically opens a browser tab pointed to it.
 The build and the browser tab should automatically refresh on every change you make
 to the codebase.
-By default, this server also replies mock data to the various requests
-the UI would normally send to the Opencast backend.
 
-Not all functionality of the admin UI works in this mode. If you need to test
-with real data, or need the ability to change it, you can rely on the
-proxy functionality of said development server, instead of running the static file server. Run:
-
-```sh
-PROXY=1 npm start
-```
-
-This assumes you have an Opencast instance running at `http://localhost:8080`
-to which the development server will then proxy all the backend request,
+This assumes you have an internet connection to which the development server will then proxy all the backend request,
 authenticating them as user `admin` with password `opencast`.
 
 If you want to work with a different Opencast and/or user, you can change the command thusly:
 
 ```sh
-PROXY_TARGET=https://develop.opencast.org npm start
+PROXY_TARGET=http://localhost:8080 npm start
 ```
 
 Here, `PROXY_TARGET` is the target URL of the Opencast instance you want to test against.
-This can also be a local one like `http://localhost:8080`.
 
 By default, this tries to authenticate backend requests using HTTP Basic Auth
 as user `admin` with the default password `opencast`.
@@ -58,8 +46,6 @@ in the `PROXY_AUTH` variable in the format `user:password`, as in
 ```sh
 PROXY_TARGET=http://localhost:8080 PROXY_AUTH=jdoe:aligator3 npm start
 ```
-
-Note that `PROXY=1` is not required if you specify either `PROXY_TARGET` or `PROXY_AUTH`.
 
 Similarly, if you want to change the port the development server itself runs at,
 you can specify an alternative port in the `PORT` environment variable.
