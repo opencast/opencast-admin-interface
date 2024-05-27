@@ -3,6 +3,8 @@
 // List Icons
 // -------------------------
 
+@use "sass:math";
+
 .#{$fa-css-prefix}-ul {
   padding-left: 0;
   margin-left: $fa-li-width;

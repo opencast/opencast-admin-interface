@@ -78,7 +78,7 @@
                 z-index: $max-z;
                 width: $w;
                 height: $h;
-                background-image: url("#{$img-path}#{$image-name}.png");
+                background-image: url("#{$img-path}/#{$image-name}.png");
                 background-size: $w $h;
             }
         }

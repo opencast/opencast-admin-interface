@@ -3,6 +3,8 @@
 // Variables
 // --------------------------
 
+@use "sass:math";
+
 $fa-font-path:        "/fonts" !default;
 $fa-font-size-base:   14px !default;
 $fa-line-height-base: 1 !default;

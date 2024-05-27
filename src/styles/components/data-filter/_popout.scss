@@ -86,7 +86,7 @@
         width: 100%;
         box-sizing: border-box;
         // @include row(table);
-        *zoom: 1;
+        zoom: 1;
         display: block;
     }
     .row:before, .element:after {

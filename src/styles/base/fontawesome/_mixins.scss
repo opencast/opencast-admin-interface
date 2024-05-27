@@ -3,6 +3,8 @@
 // Mixins
 // --------------------------
 
+@use "sass:list";
+
 @mixin fa-icon() {
   display: inline-block;
   font: normal normal normal list.slash($fa-font-size-base, $fa-line-height-base) FontAwesome; // shortening font declaration
