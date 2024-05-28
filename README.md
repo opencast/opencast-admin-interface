@@ -56,7 +56,7 @@ If you want to authenticate using different credentials, you can specify them
 in the `PROXY_AUTH` variable in the format `user:password`, as in
 
 ```sh
-PROXY_TARGET=http://localhost:8080 PROXY_AUTH=jdoe:aligator3 npm run client
+PROXY_TARGET=http://localhost:8080 PROXY_AUTH=jdoe:aligator3 npm start
 ```
 
 Note that `PROXY=1` is not required if you specify either `PROXY_TARGET` or `PROXY_AUTH`.
