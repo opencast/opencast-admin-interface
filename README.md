@@ -27,7 +27,7 @@ of the admin UI, and automatically opens a browser tab pointed to it.
 The build and the browser tab should automatically refresh on every change you make
 to the codebase.
 
-This assumes you have an internet connection to which the development server will then proxy all the backend request,
+The default target for API calls is `https://develop.opencast.org` to which the development server will proxy all the backend request,
 authenticating them as user `admin` with password `opencast`.
 
 If you want to work with a different Opencast and/or user, you can change the command thusly:
