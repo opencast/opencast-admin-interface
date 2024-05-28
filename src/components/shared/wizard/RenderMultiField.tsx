@@ -91,7 +91,6 @@ const RenderMultiField = ({
 						collection={fieldInfo.collection}
 						field={field}
 						fieldValue={fieldValue}
-						setEditMode={setEditMode}
 						inputValue={inputValue}
 						removeItem={removeItem}
 						handleChange={handleChange}
@@ -125,8 +124,6 @@ const RenderMultiField = ({
 
 // Renders multi select
 const EditMultiSelect = ({
-// @ts-expect-error TS(7031): Binding element 'setEditMode' implicitly has an 'a... Remove this comment to see the full error message
-	setEditMode,
 // @ts-expect-error TS(7031): Binding element 'collection' implicitly has an 'an... Remove this comment to see the full error message
 	collection,
 // @ts-expect-error TS(7031): Binding element 'handleKeyDown' implicitly has an ... Remove this comment to see the full error message
@@ -159,7 +156,7 @@ const EditMultiSelect = ({
 
 	return (
 		<>
-			<div onBlur={() => setEditMode(false)} ref={childRef}>
+			<div ref={childRef}>
 				<div>
 					<input
 						type="text"
@@ -255,7 +252,7 @@ const ShowValue : React.FC<{
 	fieldValue,
 }) => {
 	return (
-		<div onFocus={() => setEditMode(true)} className="show-edit" tabIndex={0}>
+		<div onClick={() => setEditMode(true)} className="show-edit">
 			{field.value instanceof Array && field.value.length !== 0 ? (
 				<ul>
 {/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}

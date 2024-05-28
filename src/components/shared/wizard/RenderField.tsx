@@ -33,9 +33,9 @@ const RenderField = ({
 	const handleKeyDown = (event, type) => {
 		const { key } = event;
 		// keys pressable for leaving edit mode
-		const keys = ["Escape", "Enter"];
+		const keys = ["Escape", "Tab", "Enter"];
 
-		if ((type !== "textarea" || type !== "select") && keys.indexOf(key) > -1) {
+		if (type !== "textarea" && keys.indexOf(key) > -1) {
 			setEditMode(false);
 		}
 	};
@@ -209,7 +209,7 @@ const EditableDateValue = ({
 			/>
 		</div>
 	) : (
-		<div onFocus={() => setEditMode(true)} className="show-edit" tabIndex={0}>
+		<div onClick={() => setEditMode(true)} className="show-edit">
 			<span className="editable preserve-newlines">
 				<RenderDate date={text} />
 			</span>
@@ -263,13 +263,13 @@ const EditableSingleSelect = ({
 // @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 				handleChange={(element) => setFieldValue(field.name, element.value)}
 				placeholder={`-- ${t("SELECT_NO_OPTION_SELECTED")} --`}
-				tabIndex={-1}
+				tabIndex={10}
 				autoFocus={true}
 				defaultOpen={true}
 			/>
 		</div>
 	) : (
-		<div onFocus={() => setEditMode(true)} className="show-edit" tabIndex={0}>
+		<div onClick={() => setEditMode(true)} className="show-edit">
 			<span className="editable preserve-newlines">
 				{text || t("SELECT_NO_OPTION_SELECTED")}
 			</span>
@@ -317,7 +317,7 @@ const EditableSingleValueTextArea = ({
 			/>
 		</div>
 	) : (
-		<div onFocus={() => setEditMode(true)} className="show-edit" tabIndex={0}>
+		<div onClick={() => setEditMode(true)} className="show-edit">
 			<span className="editable preserve-newlines">{text || ""}</span>
 			<div>
 				<i className="edit fa fa-pencil-square" />
@@ -359,7 +359,7 @@ const EditableSingleValue = ({
 			<input {...field} autoFocus={true} type="text" />
 		</div>
 	) : (
-		<div onFocus={() => setEditMode(true)} className="show-edit" tabIndex={0}>
+		<div onClick={() => setEditMode(true)} className="show-edit">
 			<span className="editable preserve-newlines">{text || ""}</span>
 			<div>
 				<i className="edit fa fa-pencil-square" />
@@ -417,7 +417,7 @@ const EditableSingleValueTime = ({
 			/>
 		</div>
 	) : (
-		<div onFocus={() => setEditMode(true)} className="show-edit" tabIndex={0}>
+		<div onClick={() => setEditMode(true)} className="show-edit">
 			<span className="editable preserve-newlines">
 				{t("dateFormats.dateTime.short", { dateTime: new Date(text) }) || ""}
 			</span>
