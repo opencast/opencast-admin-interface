@@ -69,11 +69,6 @@ const NewAssetUploadPage = <T extends RequiredFormProps>({
 													<td>
 														{" "}
 														{translateOverrideFallback(asset, t)}
-														<span className="ui-helper-hidden">
-                              { // eslint-disable-next-line react/jsx-no-comment-textnodes
-                              } ({asset.type} "{asset.flavorType}//
-															{asset.flavorSubType}")
-														</span>
 													</td>
 													<td>
 														<div className="file-upload">

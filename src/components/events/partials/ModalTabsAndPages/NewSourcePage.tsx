@@ -295,10 +295,6 @@ const Upload = ({ formik }) => {
 												<span style={{ fontWeight: "bold" }}>
 													{translateOverrideFallback(asset, t, "SHORT")}
 												</span>
-												<span className="ui-helper-hidden">
-													({asset.type} "{asset.flavorType}/
-													{asset.flavorSubType}")
-												</span>
 												<p>
 													{translateOverrideFallback(asset, t, "DETAIL")}
 												</p>
