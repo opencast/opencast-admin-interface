@@ -7,6 +7,7 @@ on:
 
 jobs:
   build:
+    if: github.repository_owner == 'opencast'
     runs-on: ubuntu-latest
     steps:
       - name: checkout code
@@ -44,6 +45,7 @@ jobs:
           path: ./gh-pages
 
   deploy:
+    if: github.repository_owner == 'opencast'
     needs: build
 
     permissions:
