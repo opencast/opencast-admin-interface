@@ -61,7 +61,15 @@ const NewAccessPage = ({
 // @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	const handleTemplateChange = async (value) => {
 		// fetch information about chosen template from backend
-		const template = await fetchAclTemplateById(value);
+		let template = await fetchAclTemplateById(value);
+
+		// always add current user to acl since template could lock the user out
+		template = template.concat({
+			role: user.userRole,
+			read: true,
+			write: true,
+			actions: [],
+		});
 
 		formik.setFieldValue("aclTemplate", value);
 		formik.setFieldValue("acls", template);
