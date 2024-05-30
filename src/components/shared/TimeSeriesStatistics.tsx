@@ -50,14 +50,6 @@ const TimeSeriesStatistics = ({
 // @ts-expect-error TS(7031): Binding element 'chartOptions' implicitly has an '... Remove this comment to see the full error message
 	chartOptions,
 }) => {
-	// Style for date picker
-	const datePickerStyle = {
-		border: "1px solid #dedddd",
-		borderRadius: "4px",
-		marginLeft: "3px",
-		marginRight: "5px",
-	};
-
 	// Style for radio buttons
 	const radioButtonStyle = {
 		backgroundColor: "whitesmoke",
@@ -212,6 +204,7 @@ const TimeSeriesStatistics = ({
 				<div className="statistics-graph">
 					{/* download link for a statistic file */}
 					<div className="download">
+						{/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
 						<a
 							className="download-icon"
 							href={exportUrl}
@@ -265,6 +258,7 @@ const TimeSeriesStatistics = ({
 						formik.values.timeMode === "month") && (
 						/* year/month selection for statistic via previous and next buttons */
 						<span className="preset">
+							{/* eslint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/anchor-is-valid */}
 							<a
 								className="navigation prev"
 								onClick={() =>
@@ -282,6 +276,7 @@ const TimeSeriesStatistics = ({
 									formik.values.timeMode
 								)}
 							</div>
+							{/* eslint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/anchor-is-valid */}
 							<a
 								className="navigation next"
 								onClick={() =>

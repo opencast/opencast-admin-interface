@@ -1,7 +1,6 @@
 // Check if an event is scheduled and therefore editable
 import { hasDeviceAccess } from "./resourceUtils";
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
-import { useAppDispatch } from "../store";
 import { addNotification } from "../slices/notificationSlice";
 
 // Check if event is scheduled and therefore the schedule is editable

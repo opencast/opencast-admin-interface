@@ -1,4 +1,4 @@
-import React, { createRef, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -297,41 +297,39 @@ const TableFilters = ({
 
 							{/* Show for each selected filter a blue label containing its name and option */}
 							{filterMap.map((filter, key) => {
-								if (!!filter.value) {
-									return (
-										<span className="ng-multi-value" key={key}>
-											<span>
-												{
-													// Use different representation of name and value depending on type of filter
-													filter.type === "select" ? (
-														renderBlueBox(filter)
-													) : filter.type === "period" ? (
+								return filter.value && (
+									<span className="ng-multi-value" key={key}>
+										<span>
+											{
+												// Use different representation of name and value depending on type of filter
+												filter.type === "select" ? (
+													renderBlueBox(filter)
+												) : filter.type === "period" ? (
+													<span>
 														<span>
-															<span>
-																{t(filter.label).substr(0, 40)}:
-																{t("dateFormats.date.short", {
-																	date: new Date(filter.value.split("/")[0]),
-																})}
-																-
-																{t("dateFormats.date.short", {
-																	date: new Date(filter.value.split("/")[1]),
-																})}
-															</span>
+															{t(filter.label).substr(0, 40)}:
+															{t("dateFormats.date.short", {
+																date: new Date(filter.value.split("/")[0]),
+															})}
+															-
+															{t("dateFormats.date.short", {
+																date: new Date(filter.value.split("/")[1]),
+															})}
 														</span>
-													) : null
-												}
-											</span>
-											{/* Remove icon in blue area around filter */}
-											<button
-												title={t("TABLE_FILTERS.REMOVE")}
-												onClick={() => removeFilter(filter)}
-                        className="button-like-anchor"
-											>
-												<i className="fa fa-times" />
-											</button>
+													</span>
+												) : null
+											}
 										</span>
-									);
-								}
+										{/* Remove icon in blue area around filter */}
+										<button
+											title={t("TABLE_FILTERS.REMOVE")}
+											onClick={() => removeFilter(filter)}
+											className="button-like-anchor"
+										>
+											<i className="fa fa-times" />
+										</button>
+									</span>
+								);
 							})}
 						</div>
 
@@ -517,7 +515,6 @@ const FilterSwitch = ({
     // This should never happen
     default:
       return null;
-
 	}
 };
 

@@ -38,7 +38,7 @@ const TableFiltersProfiles = ({
 	// State for helping saving and editing profiles
 	const [profileName, setProfileName] = useState("");
 	const [profileDescription, setProfileDescription] = useState("");
-	const [currentlyEditing, setCurrentlyEditing] = useState("");
+	const [, setCurrentlyEditing] = useState("");
 	const [validName, setValidName] = useState(false);
 
 	const { t } = useTranslation();

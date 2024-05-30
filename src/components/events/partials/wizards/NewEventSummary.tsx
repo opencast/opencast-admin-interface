@@ -133,8 +133,8 @@ const NewEventSummary = <T extends RequiredFormProps>({
 													<td>
 														{asset.translate}
 														<span className="ui-helper-hidden">
-                              { // eslint-disable-next-line react/jsx-no-comment-textnodes
-                              } ({asset.type} "{asset.flavorType}//
+                              {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
+                              ({asset.type} "{asset.flavorType}//
 															{asset.flavorSubType}")
 														</span>
 													</td>
@@ -165,8 +165,8 @@ const NewEventSummary = <T extends RequiredFormProps>({
 														<td>
 															{translateOverrideFallback(asset, t, "SHORT")}
 															<span className="ui-helper-hidden">
-                                { // eslint-disable-next-line react/jsx-no-comment-textnodes
-                                } ({asset.type} "{asset.flavorType}//
+                                {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
+                                ({asset.type} "{asset.flavorType}//
 																{asset.flavorSubType}")
 															</span>
 														</td>
