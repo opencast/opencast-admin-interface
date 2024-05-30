@@ -3,8 +3,6 @@
 // Base Class Definition
 // -------------------------
 
-@use "sass:list";
-
 .#{$fa-css-prefix} {
   display: inline-block;
   font: normal normal normal list.slash($fa-font-size-base, $fa-line-height-base) FontAwesome; // shortening font declaration
