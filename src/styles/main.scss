@@ -572,21 +572,17 @@ tr.info {
   background: $state-info-bg !important;
 }
 
-/*
-* ----------------------------------------------------------------
-* THE FOLLOWING SECTION NEEDS TO BE DELEGATED TO THE DESIGNERS!!!
-* ----------------------------------------------------------------
-*/
-.playback-toggle-pause {
-  @include fa-icon($fa-var-pause,$playback-icon-pseudo-position, $playback-icon-display-value, $playback-icon-margin, $playback-icon-padding, $playback-icon-color, $playback-icon-font-size);
-  @include fa-icon-float($playback-icon-pseudo-position, $playback-icon-float);
-  @extend .playback-control-icon;
-  &:hover {
-    color: darken($grey, 15%);
+.video-player {
+  @include clearfix();
+  width: 100%;
+  margin: 0 auto;
+  background: #1e1e1e;
+  text-align: center;
+  border-radius: 4px 4px 0 0;
+
+  video {
+      max-height: 350px;
+      max-width: 100%;
+      height: auto;
   }
 }
-// Allow for slightly wider icons
-.playback-controls-wrapper {
-  width: 280px;
-}
-
