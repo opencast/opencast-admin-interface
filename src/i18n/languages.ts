@@ -1,22 +1,3 @@
-// flag images imports
-import DKFlag from "../img/lang/da_DK.svg?url";
-import DEFlag from "../img/lang/de_DE.svg?url";
-import GRFlag from "../img/lang/el_GR.svg?url";
-import GBFlag from "../img/lang/en_GB.svg?url";
-import USFlag from "../img/lang/en_US.svg?url";
-import ESFlag from "../img/lang/es_ES.svg?url";
-import FRFlag from "../img/lang/fr_FR.svg?url";
-import ESFlag2 from "../img/lang/gl_ES.svg?url";
-import ILFlag from "../img/lang/he_IL.svg?url";
-import ITFlag from "../img/lang/it_IT.svg?url";
-import NLFlag from "../img/lang/nl_NL.svg?url";
-import PLFlag from "../img/lang/pl_PL.svg?url";
-import SIFlag from "../img/lang/sl_SI.svg?url";
-import SEFlag from "../img/lang/sv_SE.svg?url";
-import TRFlag from "../img/lang/tr_TR.svg?url";
-import CNFlag from "../img/lang/zh_CN.svg?url";
-import TWFlag from "../img/lang/zh_TW.svg";
-
 // Import date-fns locales
 import { da } from "date-fns/locale/da";
 import { de } from "date-fns/locale/de";
@@ -41,30 +22,28 @@ import {zhTW} from "date-fns/locale/zh-TW";
  * code: language code (has to be the same as in i18n.js)
  * long: name of the language
  * rtl: is the reading direction right to left?
- * flag: image of the flag (used as icon in language selection)
  * dateLocale: is needed for translation in datepicker
  *
  * !!! If a translation file of a new language was added, please insert these language here, too !!!
- *
- * */
+ */
 const languages = [
-	{ code: "en-US", long: "English", rtl: false, flag: USFlag, dateLocale: enUS },
-	{ code: "en-GB", long: "English", rtl: false, flag: GBFlag, dateLocale: enGB },
-	{ code: "da", long: "Dansk", rtl: false, flag: DKFlag, dateLocale: da },
-	{ code: "de", long: "Deutsch", rtl: false, flag: DEFlag, dateLocale: de },
-	{ code: "el", long: "Ελληνικά", rtl: false, flag: GRFlag, dateLocale: el },
-	{ code: "es", long: "Español", rtl: false, flag: ESFlag, dateLocale: es },
-	{ code: "fr", long: "Français", rtl: false, flag: FRFlag, dateLocale: fr },
-	{ code: "gl", long: "Galego", rtl: false, flag: ESFlag2, dateLocale: gl },
-	{ code: "he", long: "עברית", rtl: true, flag: ILFlag, dateLocale: he },
-	{ code: "it", long: "Italiano", rtl: false, flag: ITFlag, dateLocale: it },
-	{ code: "nl", long: "Nederlands", rtl: false, flag: NLFlag, dateLocale: nl }, 
-	{ code: "pl", long: "Polski", rtl: false, flag: PLFlag, dateLocale: pl },
-	{ code: "sl", long: "Slovenščina", rtl: false, flag: SIFlag, dateLocale: sl },
-	{ code: "sv", long: "Svenska", rtl: false, flag: SEFlag, dateLocale: sv },
-	{ code: "tr", long: "Türkçe", rtl: false, flag: TRFlag, dateLocale: tr },
-	{ code: "zh-CN", long: "简体中文", rtl: false, flag: CNFlag, dateLocale: zhCN },
-	{ code: "zh-TW", long: "繁體中文", rtl: false, flag: TWFlag, dateLocale: zhTW },
+	{ code: "en-US", long: "English (US)", rtl: false, dateLocale: enUS },
+	{ code: "en-GB", long: "English (UK)", rtl: false, dateLocale: enGB },
+	{ code: "da", long: "Dansk", rtl: false, dateLocale: da },
+	{ code: "de", long: "Deutsch", rtl: false, dateLocale: de },
+	{ code: "el", long: "Ελληνικά", rtl: false, dateLocale: el },
+	{ code: "es", long: "Español", rtl: false, dateLocale: es },
+	{ code: "fr", long: "Français", rtl: false, dateLocale: fr },
+	{ code: "gl", long: "Galego", rtl: false, dateLocale: gl },
+	{ code: "he", long: "עברית", rtl: true, dateLocale: he },
+	{ code: "it", long: "Italiano", rtl: false, dateLocale: it },
+	{ code: "nl", long: "Nederlands", rtl: false, dateLocale: nl }, 
+	{ code: "pl", long: "Polski", rtl: false, dateLocale: pl },
+	{ code: "sl", long: "Slovenščina", rtl: false, dateLocale: sl },
+	{ code: "sv", long: "Svenska", rtl: false, dateLocale: sv },
+	{ code: "tr", long: "Türkçe", rtl: false, dateLocale: tr },
+	{ code: "zh-CN", long: "简体中文", rtl: false, dateLocale: zhCN },
+	{ code: "zh-TW", long: "繁體中文", rtl: false, dateLocale: zhTW },
 ];
 
 export default languages;

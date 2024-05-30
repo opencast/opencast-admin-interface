@@ -163,12 +163,9 @@ const Header = ({
 					{/* Select language */}
 					<div className="nav-dd lang-dd" id="lang-dd" ref={containerLang}>
 						<Tooltip title={t("LANGUAGE")}>
-						<div
-							className="lang"
-							onClick={() => setMenuLang(!displayMenuLang)}
-						>
-							<img src={currentLanguage?.flag} alt={currentLanguage?.code} />
-						</div>
+							<div className="lang" onClick={() => setMenuLang(!displayMenuLang)}>
+								{currentLanguage?.long}
+							</div>
 						</Tooltip>
 						{/* Click on the flag icon, a dropdown menu with all available languages opens */}
 						{displayMenuLang && <MenuLang />}
@@ -302,11 +299,6 @@ const MenuLang = () => {
 			{languages.map((language, key) => (
 				<li key={key}>
 					<button className="button-like-anchor" onClick={() => changeLanguage(language.code)}>
-						<img
-							className="lang-flag"
-							src={language.flag}
-							alt={language.code}
-						/>
 						{language.long}
 					</button>
 				</li>
