@@ -89,9 +89,9 @@ export type Event = {
 	workflow_state: string,
 }
 
-type MetadataField = {
+export type MetadataField = {
 	differentValues?: boolean,
-	collection?: {}[],	// different for e.g. languages and presenters
+	collection?: { [key: string]: unknown }[],	// different for e.g. languages and presenters
 	id: string,
 	label: string,
 	readOnly: boolean,
