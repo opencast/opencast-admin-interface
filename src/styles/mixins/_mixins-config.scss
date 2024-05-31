@@ -45,7 +45,7 @@
     left: $left;
     width: $width;
     height: $height;
-    background-image: url("#{$img-path}#{$image}.png");
+    background-image: url("#{$img-path}/#{$image}.png");
     background-size: $width $height;
 }
 

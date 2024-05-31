@@ -75,7 +75,7 @@
             position: absolute;
             top: 12px;
             left: 10px;
-            background-image: url("#{$img-path}grip.png");
+            background-image: url("#{$img-path}/grip.png");
             background-size: 13px 14px;
         }
 
@@ -89,12 +89,12 @@
             right: 10px;
 
             &.add {
-                background-image: url("#{$img-path}plus-icon.png");
+                background-image: url("#{$img-path}/plus-icon.png");
                 background-size: 17px 17px;
             }
 
             &.remove {
-                background-image: url("#{$img-path}remove-icon.png");
+                background-image: url("#{$img-path}/remove-icon.png");
                 background-size: 17px 17px;
             }
         }

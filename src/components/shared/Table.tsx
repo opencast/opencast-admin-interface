@@ -27,11 +27,8 @@ import cn from "classnames";
 
 import EditTableViewModal from "../shared/EditTableViewModal";
 
-// @ts-expect-error TS(2307): Cannot find module '../../img/tbl-sort.png' or its... Remove this comment to see the full error message
 import sortIcon from "../../img/tbl-sort.png";
-// @ts-expect-error TS(2307): Cannot find module '../../img/tbl-sort-up.png' or ... Remove this comment to see the full error message
 import sortUpIcon from "../../img/tbl-sort-up.png";
-// @ts-expect-error TS(2307): Cannot find module '../../img/tbl-sort-down.png' o... Remove this comment to see the full error message
 import sortDownIcon from "../../img/tbl-sort-down.png";
 import Notifications from "./Notifications";
 

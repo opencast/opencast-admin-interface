@@ -64,14 +64,14 @@ textarea {
     // ----------------------------------------
 
     &#email {
-       background-image: url("#{$img-path}user-input-icon.png");
+       background-image: url("#{$img-path}/user-input-icon.png");
        background-size: 23px 20px;
        background-repeat: no-repeat;
        background-position: 14px center;
     }
 
     &#password {
-        background-image: url("#{$img-path}key-icon.png");
+        background-image: url("#{$img-path}/key-icon.png");
         background-size: 16px 20px;
         background-repeat: no-repeat;
         background-position: 19px center;
@@ -80,7 +80,7 @@ textarea {
     &.search,
     &#search {
         appearance: none;
-        background-image: url("#{$img-path}search.png");
+        background-image: url("#{$img-path}/search.png");
         background-size: 13px 13px;
         background-repeat: no-repeat;
         background-position: 14px center;

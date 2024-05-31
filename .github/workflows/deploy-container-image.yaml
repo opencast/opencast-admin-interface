@@ -51,14 +51,14 @@ jobs:
           message: |
             Use `docker` or `podman` to test this pull request locally.
 
-            Local test with mock data
+            Run test server using develop.opencast.org as backend:
             ```
             podman run --rm -it -p 127.0.0.1:3000:3000 ${{ steps.meta.outputs.tags }}
             ```
 
-            Proxy data from develop.opencast.org
+            Specify a different backend like stable.opencast.org:
             ```
-            podman run --rm -it -p 127.0.0.1:3000:3000 -e PROXY_TARGET=https://develop.opencast.org ${{ steps.meta.outputs.tags }}
+            podman run --rm -it -p 127.0.0.1:3000:3000 -e PROXY_TARGET=https://stable.opencast.org ${{ steps.meta.outputs.tags }}
             ```
 
             It may take a few seconds for the interface to spin up.

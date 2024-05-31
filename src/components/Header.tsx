@@ -4,8 +4,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import i18n from "../i18n/i18n";
 import languages from "../i18n/languages";
-// @ts-expect-error TS(2307): Cannot find module '../img/opencast-white.svg' or ... Remove this comment to see the full error message
-import opencastLogo from "../img/opencast-white.svg";
+import opencastLogo from "../img/opencast-white.svg?url";
 import { setSpecificServiceFilter } from "../slices/tableFilterSlice";
 import { loadServicesIntoTable } from "../thunks/tableThunks";
 import { getErrorCount, getHealthStatus } from "../selectors/healthSelectors";
