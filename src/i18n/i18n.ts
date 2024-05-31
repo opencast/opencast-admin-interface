@@ -2,7 +2,7 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import moment from "moment";
 
-import Backend from "i18next-xhr-backend";
+import HttpBackend, { HttpBackendOptions } from "i18next-http-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 
 // import language files
@@ -62,10 +62,10 @@ const resources = {
 
 // Configuration of i18next
 i18n
-	.use(Backend)
+	.use(HttpBackend)
 	.use(LanguageDetector)
 	.use(initReactI18next)
-	.init({
+	.init<HttpBackendOptions>({
 		resources,
 		fallbackLng: "en-US",
 		debug: true,
