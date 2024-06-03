@@ -1,6 +1,7 @@
 {
   "name": "admin-ui-picard",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "homepage": "/admin-ui",
   "dependencies": {
