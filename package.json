@@ -70,7 +70,7 @@
     "@types/lodash": "^4.17.4",
     "@types/node": "^20.13.0",
     "@types/uuid": "^9.0.8",
-    "@vitejs/plugin-react": "^4.3.0",
+    "@vitejs/plugin-react-swc": "^3.7.0",
     "prop-types": "^15.8.1",
     "sass": "^1.77.4",
     "typescript": "^5.4.5",
