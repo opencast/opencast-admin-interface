@@ -18,7 +18,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { HotkeysProvider } from "react-hotkeys-hook";
 import { ThemeProvider } from "@mui/material";
 import { createTheme } from '@mui/material/styles';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { getCurrentLanguageInformation } from "./utils/utils";
 

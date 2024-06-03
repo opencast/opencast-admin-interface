@@ -17,22 +17,22 @@ import TRFlag from "../img/lang/tr_TR.svg?url";
 import CNFlag from "../img/lang/zh_CN.svg?url";
 
 // Import date-fns locales
-import daDate from "date-fns/locale/da";
-import deDate from "date-fns/locale/de";
-import elDate from "date-fns/locale/el";
-import enGBDate from "date-fns/locale/en-GB";
-import enUSDate from "date-fns/locale/en-US";
-import esDate from "date-fns/locale/es";
-import frDate from "date-fns/locale/fr";
-import glDate from "date-fns/locale/gl";
-import heDate from "date-fns/locale/he";
-import itDate from "date-fns/locale/it";
-import nlDate from "date-fns/locale/nl";
-import plDate from "date-fns/locale/pl";
-import slDate from "date-fns/locale/sl";
-import svDate from "date-fns/locale/sv";
-import trDate from "date-fns/locale/tr";
-import zhDate from "date-fns/locale/zh-CN";
+import { da } from "date-fns/locale/da";
+import { de } from "date-fns/locale/de";
+import { el } from "date-fns/locale/el";
+import { enGB } from "date-fns/locale/en-GB";
+import { enUS } from "date-fns/locale/en-US";
+import { es } from "date-fns/locale/es";
+import { fr } from "date-fns/locale/fr";
+import { gl } from "date-fns/locale/gl";
+import { he } from "date-fns/locale/he";
+import { it } from "date-fns/locale/it";
+import { nl } from "date-fns/locale/nl";
+import { pl } from "date-fns/locale/pl";
+import { sl } from "date-fns/locale/sl";
+import { sv } from "date-fns/locale/sv";
+import { tr } from "date-fns/locale/tr";
+import { zhCN } from "date-fns/locale/zh-CN";
 
 /*
  * JSON object that contains all available languages and the following information:
@@ -51,59 +51,59 @@ const languages = [
 		long: "English",
 		rtl: false,
 		flag: USFlag,
-		dateLocale: enUSDate,
+		dateLocale: enUS,
 	},
 	{
 		code: "en-GB",
 		long: "English",
 		rtl: false,
 		flag: GBFlag,
-		dateLocale: enGBDate,
+		dateLocale: enGB,
 	},
-	{ code: "da", long: "Dansk", rtl: false, flag: DKFlag, dateLocale: daDate },
-	{ code: "de", long: "Deutsch", rtl: false, flag: DEFlag, dateLocale: deDate },
+	{ code: "da", long: "Dansk", rtl: false, flag: DKFlag, dateLocale: da },
+	{ code: "de", long: "Deutsch", rtl: false, flag: DEFlag, dateLocale: de },
 	{
 		code: "el",
 		long: "Ελληνικά",
 		rtl: false,
 		flag: GRFlag,
-		dateLocale: elDate,
+		dateLocale: el,
 	},
-	{ code: "es", long: "Español", rtl: false, flag: ESFlag, dateLocale: esDate },
+	{ code: "es", long: "Español", rtl: false, flag: ESFlag, dateLocale: es },
 	{
 		code: "fr",
 		long: "Français",
 		rtl: false,
 		flag: FRFlag,
-		dateLocale: frDate,
+		dateLocale: fr,
 	},
-	{ code: "gl", long: "Galego", rtl: false, flag: ESFlag2, dateLocale: glDate },
-	{ code: "he", long: "עברית", rtl: true, flag: ILFlag, dateLocale: heDate },
+	{ code: "gl", long: "Galego", rtl: false, flag: ESFlag2, dateLocale: gl },
+	{ code: "he", long: "עברית", rtl: true, flag: ILFlag, dateLocale: he },
 	{
 		code: "it",
 		long: "Italiano",
 		rtl: false,
 		flag: ITFlag,
-		dateLocale: itDate,
+		dateLocale: it,
 	},
 	{
 		code: "nl",
 		long: "Nederlands",
 		rtl: false,
 		flag: NLFlag,
-		dateLocale: nlDate,
+		dateLocale: nl,
 	},
-	{ code: "pl", long: "Polski", rtl: false, flag: PLFlag, dateLocale: plDate },
+	{ code: "pl", long: "Polski", rtl: false, flag: PLFlag, dateLocale: pl },
 	{
 		code: "sl",
 		long: "Slovenščina",
 		rtl: false,
 		flag: SIFlag,
-		dateLocale: slDate,
+		dateLocale: sl,
 	},
-	{ code: "sv", long: "Svenska", rtl: false, flag: SEFlag, dateLocale: svDate },
-	{ code: "tr", long: "Türkçe", rtl: false, flag: TRFlag, dateLocale: trDate },
-	{ code: "zh", long: "中文", rtl: false, flag: CNFlag, dateLocale: zhDate },
+	{ code: "sv", long: "Svenska", rtl: false, flag: SEFlag, dateLocale: sv },
+	{ code: "tr", long: "Türkçe", rtl: false, flag: TRFlag, dateLocale: tr },
+	{ code: "zh", long: "中文", rtl: false, flag: CNFlag, dateLocale: zhCN },
 ];
 
 export default languages;
