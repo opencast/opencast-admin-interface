@@ -40,8 +40,8 @@ const Themes = ({
 	const themes = useAppSelector(state => getTotalThemes(state));
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchThemesWrapper = () => {
-		dispatch(fetchThemes())
+	const fetchThemesWrapper = async () => {
+		await dispatch(fetchThemes())
 	}
 
 	const loadThemes = async () => {

@@ -64,8 +64,8 @@ const Series = ({
 	const showActions = useAppSelector(state => isShowActions(state));
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchSeriesWrapper = () => {
-		dispatch(fetchSeries())
+	const fetchSeriesWrapper = async () => {
+		await dispatch(fetchSeries())
 	}
 
 	const loadEvents = () => {

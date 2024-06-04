@@ -41,8 +41,8 @@ const Users: React.FC = () => {
   const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchUsersWrapper = () => {
-		dispatch(fetchUsers())
+	const fetchUsersWrapper = async () => {
+		await dispatch(fetchUsers())
 	}
 
 	const loadUsers = async () => {
