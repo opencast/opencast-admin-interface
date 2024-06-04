@@ -160,7 +160,7 @@ const DetailsMetadataTab: React.FC<{
 									{formik.dirty && (
 										<>
 											{/* Render buttons for updating metadata */}
-											<footer style={{ padding: "15px" }}>
+											<footer>
 												<button
 													type="submit"
 													onClick={() => formik.handleSubmit()}
