@@ -149,9 +149,8 @@ const EmbeddingCodeModal = ({
 				{showCopySuccess && (
 					<div className="copyConfirm">
 						<span id="copy_confirm_pre">
-							{t("CONFIRMATIONS.EMBEDDING_CODE")}
+							{t("CONFIRMATIONS.EMBEDDING_CODE",{size: currentSize})}
 						</span>
-						<span id="copy_confirm">{currentSize}</span>
 					</div>
 				)}
 
