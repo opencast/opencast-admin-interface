@@ -400,19 +400,22 @@ export const prepareAccessPolicyRulesForPost = (policies) => {
 
 	// iterate through all policies provided by user and transform them into form required for request
 	for (let i = 0; policies.length > i; i++) {
-		access.acl.ace = access.acl.ace.concat(
-			{
+		if (policies[i].read) {
+			access.acl.ace = access.acl.ace.concat({
 // @ts-expect-error TS(2769): No overload matches this call.
 				action: "read",
 				allow: policies[i].read,
 				role: policies[i].role,
-			},
-			{
+			});
+		}
+		if (policies[i].write) {
+			access.acl.ace = access.acl.ace.concat({
+// @ts-expect-error TS(2769): No overload matches this call.
 				action: "write",
 				allow: policies[i].write,
 				role: policies[i].role,
-			}
-		);
+			});
+		}
 		if (policies[i].actions.length > 0) {
 			for (let j = 0; policies[i].actions.length > j; j++) {
 				access.acl.ace = access.acl.ace.concat({
