@@ -120,7 +120,7 @@
 		},
 		"WARNINGS": {
 			"SERIES_HAS_EVENTS": "This series does contain events. Deleting the series will not delete the events.",
-			"EVENT_WILL_BE_GONE": "If you continue, the event will be irrevocably deleted.",
+			"EVENT_WILL_BE_GONE": "If you continue, the event will be irrevocably gone.",
 			"UNSAVED_CHANGES": "You have unsaved changes. If you continue, those changes will be discarded. Are you sure that you want to continue?"
 		},
 		"ERRORS": {
@@ -159,7 +159,7 @@
 		"SERIES_ADDED": "The series has been created",
 		"SERIES_NOT_SAVED": "The series could not be saved",
 		"EVENTS_CREATED": "The event has been created",
-		"EVENTS_UPLOAD_STARTED": "The event is being uploaded… {{ progress }}%",
+		"EVENTS_UPLOAD_STARTED": "The event is being uploaded…",
 		"EVENTS_NOT_CREATED": "The event could not be created",
 		"EVENTS_UPDATED_ALL": "All events have been successfully updated",
 		"EVENTS_NOT_UPDATED": "The event could not be saved",

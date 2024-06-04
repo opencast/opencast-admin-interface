@@ -60,8 +60,7 @@ const WizardStepperEvent = ({
 			activeStep={page}
 			nonLinear
 			alternativeLabel
-// @ts-expect-error TS(2322): Type 'boolean' is not assignable to type 'ReactEle... Remove this comment to see the full error message
-			connector={false}
+			connector={<></>}
 			className={cn("step-by-step", stepperClasses.root)}
 		>
 			{steps.map((label, key) =>
@@ -73,7 +72,7 @@ const WizardStepperEvent = ({
 							</StepLabel>
 						</StepButton>
 					</Step>
-				) : <></>
+				) : <React.Fragment key={label.translation} />
 			)}
 		</Stepper>
 	);
