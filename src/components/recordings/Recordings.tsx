@@ -11,8 +11,9 @@ import { recordingsTemplateMap } from "../../configs/tableConfigs/recordingsTabl
 import { getTotalRecordings } from "../../selectors/recordingSelectors";
 import { loadRecordingsIntoTable } from "../../thunks/tableThunks";
 import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
-import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
 import Header from "../Header";
+import NavBar from "../NavBar";
+import MainView from "../MainView";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
@@ -68,7 +69,7 @@ const Recordings = ({
 	return (
 		<>
 			<Header />
-			<section className="action-nav-bar">
+			<NavBar>
 				{/* Include Burger-button menu*/}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
 
@@ -83,12 +84,9 @@ const Recordings = ({
 						</Link>
 					)}
 				</nav>
-			</section>
+			</NavBar>
 
-			<div
-				className="main-view"
-				style={displayNavigation ? styleNavOpen : styleNavClosed}
-			>
+			<MainView open={displayNavigation}>
 				{/* Include notifications component */}
 				<Notifications />
 
@@ -105,7 +103,7 @@ const Recordings = ({
 				</div>
 				{/* Include table component */}
 				<Table templateMap={recordingsTemplateMap} />
-			</div>
+			</MainView>
 			<Footer />
 		</>
 	);

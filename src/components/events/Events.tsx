@@ -25,8 +25,9 @@ import {
 	isShowActions,
 } from "../../selectors/eventSelectors";
 import { setOffset } from "../../actions/tableActions";
-import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
 import Header from "../Header";
+import NavBar from "../NavBar";
+import MainView from "../MainView";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
@@ -193,7 +194,7 @@ const Events = ({
 	return (
 		<>
 			<Header />
-			<section className="action-nav-bar">
+			<NavBar>
 				<div className="btn-group">
 					{hasAccess("ROLE_UI_EVENTS_CREATE", user) && (
 						<button className="add" onClick={() => showNewEventModal()}>
@@ -230,7 +231,7 @@ const Events = ({
 				{/* Include Burger-button menu */}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
 
-				<nav>
+				<nav aria-label={t("EVENTS.EVENTS.NAVIGATION.LABEL")}>
 					{hasAccess("ROLE_UI_EVENTS_VIEW", user) && (
 						<Link
 							to="/events/events"
@@ -257,12 +258,9 @@ const Events = ({
 						<Stats />
 					</div>
 				)}
-			</section>
+			</NavBar>
 
-			<div
-				className="main-view"
-				style={displayNavigation ? styleNavOpen : styleNavClosed}
-			>
+			<MainView open={displayNavigation}>
 				{/* Include notifications component */}
 				<Notifications />
 
@@ -323,7 +321,7 @@ const Events = ({
 				{/*Include table component*/}
 				{/* <Table templateMap={eventsTemplateMap} resourceType="events" /> */}
         <Table templateMap={eventsTemplateMap} />
-			</div>
+			</MainView>
 			<Footer />
 		</>
 	);

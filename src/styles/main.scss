@@ -110,7 +110,7 @@ a {
 }
 
 // Mark mockups as stubs
-div.main-view.stub, div.full-col > div.stub {
+.main-view.stub, div.full-col > div.stub {
   margin-right: 20px;
   -webkit-background-size: 50px 50px;
   -moz-background-size: 50px 50px;
@@ -486,7 +486,7 @@ input.disabled, select.disabled {
 }
 
 // pagination of tables
-.main-view {
+main.main-view {
   #tbl-view-controls-container {
 
     .pagination {
