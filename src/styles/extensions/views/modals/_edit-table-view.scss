@@ -55,28 +55,4 @@
             width: 48.72%;
         }
     }
-
-    footer {
-
-        a {
-            margin: 15px 5px 15px;
-
-            &:first-child {
-                margin-left: 15px;
-            }
-
-            &:last-child {
-                margin-right: 15px;
-            }
-        }
-
-        .pull-right {
-            float: right;
-        }
-
-        a:first-child {
-            float: none;
-        }
-    }
-
 }
