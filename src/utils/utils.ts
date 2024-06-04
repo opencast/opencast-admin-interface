@@ -135,13 +135,13 @@ export const isJson = (text: string) => {
 };
 
 /**
- * Handles translation for assets with overrides or fallbackes in their
+ * Handles translation for assets with overrides or fallbacks in their
  * translation as defined in Opencast documentation under
  * /docs/guides/admin/docs/configuration/admin-ui/asset-upload.md
  *
  * Asset is expected to have a field "title" that contains a translation string
  * t is the hook returned by i18next.useTranslation
- * suffix further specifices the asset value if necessary, e.g. "SHORT" for "displayOverride.SHORT"
+ * suffix further specifies the asset value if necessary, e.g. "SHORT" for "displayOverride.SHORT"
  */
 export const translateOverrideFallback = (asset: any, t: TFunction, suffix?: string) => {
 	let result = undefined;
