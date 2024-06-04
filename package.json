@@ -1,6 +1,7 @@
 {
   "name": "admin-ui-picard",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "homepage": "/admin-ui",
   "dependencies": {
@@ -11,7 +12,6 @@
     "@reduxjs/toolkit": "^1.9.7",
     "@types/dompurify": "^3.0.5",
     "@types/react-router-dom": "^5.3.3",
-    "@vitejs/plugin-react": "^4.3.0",
     "array-move": "^4.0.0",
     "axios": "^1.7.2",
     "bourbon": "^7.3.0",
@@ -70,7 +70,7 @@
     "@types/lodash": "^4.17.4",
     "@types/node": "^20.13.0",
     "@types/uuid": "^9.0.8",
-    "@vitejs/plugin-react": "^4.2.1",
+    "@vitejs/plugin-react-swc": "^3.7.0",
     "prop-types": "^15.8.1",
     "sass": "^1.77.4",
     "typescript": "^5.4.5",
