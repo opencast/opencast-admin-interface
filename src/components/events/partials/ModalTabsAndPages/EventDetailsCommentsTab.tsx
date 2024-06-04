@@ -309,7 +309,42 @@ const EventDetailsCommentsTab = ({
 										}
 									></textarea>
 
-									{/* submit button for comment reply (only active, if text has been written) */}
+                  {/* 'resolved' checkbox */}
+									{hasAccess(
+										"ROLE_UI_EVENTS_DETAILS_COMMENTS_RESOLVE",
+										user
+									) && (
+										<>
+										  <div className="resolved-checkbox">
+                        <input
+                          type="checkbox"
+                          id="resolved-checkbox"
+                          className="ios"
+                          onChange={() =>
+                            setCommentReplyIsResolved(!commentReplyIsResolved)
+                          }
+                        />
+                        <label>
+                          {
+                            t(
+                              "EVENTS.EVENTS.DETAILS.COMMENTS.RESOLVED"
+                            ) /* Resolved */
+                          }
+                        </label>
+                      </div>
+										</>
+									)}
+
+									{/* cancel button (exits reply mode) */}
+									<button className="cancel" onClick={() => exitReplyMode()}>
+										{
+											t(
+												"EVENTS.EVENTS.DETAILS.COMMENTS.CANCEL_REPLY"
+											) /* Cancel */
+										}
+									</button>
+
+                  {/* submit button for comment reply (only active, if text has been written) */}
 									<button
 										disabled={
 											!!(
@@ -335,39 +370,6 @@ const EventDetailsCommentsTab = ({
 									>
 										{t("EVENTS.EVENTS.DETAILS.COMMENTS.REPLY") /* Reply */}
 									</button>
-
-									{/* cancel button (exits reply mode) */}
-									<button className="red" onClick={() => exitReplyMode()}>
-										{
-											t(
-												"EVENTS.EVENTS.DETAILS.COMMENTS.CANCEL_REPLY"
-											) /* Cancel */
-										}
-									</button>
-
-									{/* 'resolved' checkbox */}
-									{hasAccess(
-										"ROLE_UI_EVENTS_DETAILS_COMMENTS_RESOLVE",
-										user
-									) && (
-										<>
-											<input
-												type="checkbox"
-												id="resolved-checkbox"
-												className="ios"
-												onChange={() =>
-													setCommentReplyIsResolved(!commentReplyIsResolved)
-												}
-											/>
-											<label>
-												{
-													t(
-														"EVENTS.EVENTS.DETAILS.COMMENTS.RESOLVED"
-													) /* Resolved */
-												}
-											</label>
-										</>
-									)}
 								</form>
 							)
 						}
