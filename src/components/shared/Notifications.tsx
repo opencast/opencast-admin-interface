@@ -10,31 +10,28 @@ import {
 	NOTIFICATION_CONTEXT,
 	NOTIFICATION_CONTEXT_ACCESS,
 } from "../../configs/modalConfig";
-import { useAppDispatch } from "../../store";
-import { setHidden } from "../../slices/notificationSlice";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { OurNotification, setHidden } from "../../slices/notificationSlice";
 
 /**
  * This component renders notifications about occurred errors, warnings and info
  */
 const Notifications : React.FC<{
-  notifications: any,
-  globalPosition: any,
-  context?: any,
+  context?: string,
 }> = ({
-	notifications,
-	globalPosition,
 	context,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	const closeNotification = (id) => {
+	const notifications = useAppSelector(getNotifications);
+	const globalPosition = useAppSelector(getGlobalPositions);
+
+	const closeNotification = (id: number) => {
 		dispatch(setHidden({id: id, isHidden: true}));
 	};
 
-// @ts-expect-error TS(7006): Parameter 'notification' implicitly has an 'any' t... Remove this comment to see the full error message
-	const renderNotification = (notification, key) => (
+	const renderNotification = (notification: OurNotification, key: number) => (
 		<li key={key}>
 			<div className={cn(notification.type, "alert sticky")}>
 				<button
@@ -51,7 +48,6 @@ const Notifications : React.FC<{
 		context === "not_corner" ? (
 			<ul>
 				{notifications.map(
-// @ts-expect-error TS(7006): Parameter 'notification' implicitly has an 'any' t... Remove this comment to see the full error message
 					(notification, key) =>
 						!notification.hidden &&
 						(notification.context === NOTIFICATION_CONTEXT ||
@@ -62,7 +58,6 @@ const Notifications : React.FC<{
 		) : context === "above_table" ? (
 			<ul>
 				{notifications.map(
-// @ts-expect-error TS(7006): Parameter 'notification' implicitly has an 'any' t... Remove this comment to see the full error message
 					(notification, key) =>
 						!notification.hidden &&
 						notification.context === "global" &&
@@ -83,7 +78,6 @@ const Notifications : React.FC<{
 				})}
 			>
 				{notifications.map(
-// @ts-expect-error TS(7006): Parameter 'notification' implicitly has an 'any' t... Remove this comment to see the full error message
 					(notification, key) =>
 						!notification.hidden &&
 						notification.context === "global" &&
@@ -94,17 +88,4 @@ const Notifications : React.FC<{
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	notifications: getNotifications(state),
-	globalPosition: getGlobalPositions(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Notifications);
+export default Notifications;
