@@ -9,6 +9,13 @@ export const useStepperStyle = makeStyles({
 	},
 });
 
+// Properly align multi-line wizard step labels
+export const useStepLabelStyles = makeStyles({
+	root: {
+		alignSelf: "flex-start",
+	},
+});
+
 // Style of icons used in Stepper
 type stepIconStyleProps = {
 	active: boolean,
