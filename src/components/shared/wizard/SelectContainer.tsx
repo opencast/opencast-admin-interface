@@ -3,14 +3,27 @@ import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { useField } from "formik";
 
+type Item = {
+	name: string
+	[key: string]: unknown
+}
+
 /**
  * This component renders the select container used for roles and user pages in new group and new user pages.
  */
 const SelectContainer = ({
-    resource,
-    formikField,
-    manageable = true
-}: any) => {
+	resource,
+	formikField,
+	manageable = true
+}: {
+	resource: {
+		searchable: boolean,
+		label: string,
+		items: Item[]
+	}
+	formikField: string
+	manageable?: boolean,
+}) => {
 	const { t } = useTranslation();
 
 	// Formik hook for getting data of specific form field
@@ -19,12 +32,12 @@ const SelectContainer = ({
 
 	// Search field for filter options/items
 	const [searchField, setSearchField] = useState("");
-	const [defaultItems, setDefaultItems] = useState([]);
+	const [defaultItems, setDefaultItems] = useState<Item[]>([]);
 	// arrays an item can be part of depending on its state
-	const [items, setItems] = useState([]);
+	const [items, setItems] = useState<Item[]>([]);
 	const [selectedItems, setSelectedItems] = useState(field.value);
-	const [markedForAddition, setMarkedForAddition] = useState([]);
-	const [markedForRemoval, setMarkedForRemoval] = useState([]);
+	const [markedForAddition, setMarkedForAddition] = useState<string[]>([]);
+	const [markedForRemoval, setMarkedForRemoval] = useState<string[]>([]);
 
 	let initialItems = resource.items;
 
@@ -56,18 +69,15 @@ const SelectContainer = ({
 		setItems(defaultItems);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'input' implicitly has an 'any' type.
-	const handleChangeSearch = async (input) => {
+	const handleChangeSearch = async (input: string) => {
 		const filtered = defaultItems.filter((item) => {
-// @ts-expect-error TS(2339): Property 'name' does not exist on type 'never'.
 			return item.name.toLowerCase().includes(input.toLowerCase());
 		});
 		setSearchField(input);
 		setItems(filtered);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const handleChangeAdd = (e) => {
+	const handleChangeAdd = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		let options = e.target.options;
 		let selectedOptions = [];
 
@@ -79,12 +89,10 @@ const SelectContainer = ({
 		}
 
 		// set currently chosen options
-// @ts-expect-error TS(2345): Argument of type 'any[]' is not assignable to para... Remove this comment to see the full error message
 		setMarkedForAddition(selectedOptions);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const handleChangeRemove = (e) => {
+	const handleChangeRemove = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		let options = e.target.options;
 		let deselectedOptions = [];
 
@@ -96,7 +104,6 @@ const SelectContainer = ({
 		}
 
 		// mark currently marked options for removal
-// @ts-expect-error TS(2345): Argument of type 'any[]' is not assignable to para... Remove this comment to see the full error message
 		setMarkedForRemoval(deselectedOptions);
 	};
 
@@ -134,13 +141,9 @@ const SelectContainer = ({
 
 			// add marked item to items considered for search bar if not already containing
 			if (
-// @ts-expect-error TS(2339): Property 'name' does not exist on type 'never'.
 				!editableDefaultItems.some((item) => item.name === markedForRemoval[i])
 			) {
-// @ts-expect-error TS(2322): Type 'any' is not assignable to type 'never'.
 				editableDefaultItems.push({
-// @ts-expect-error TS(2322): Type 'any' is not assignable to type 'never'.
-					id: !!markedForRemoval[i].id ? markedForRemoval.id : "",
 					name: markedForRemoval[i],
 				});
 			}
@@ -157,8 +160,7 @@ const SelectContainer = ({
 	};
 
 	// move item from one array to another when matching key
-// @ts-expect-error TS(7006): Parameter 'key' implicitly has an 'any' type.
-	const move = (key, from, to) => {
+	const move = (key: string, from: Item[], to: Item[]) => {
 		for (let i = 0; i < from.length; i++) {
 			if (from[i].name === key) {
 				to.push(from[i]);
@@ -169,8 +171,7 @@ const SelectContainer = ({
 	};
 
 	// remove item from array when matching key
-// @ts-expect-error TS(7006): Parameter 'key' implicitly has an 'any' type.
-	const remove = (key, compare) => {
+	const remove = (key: string, compare: Item[]) => {
 		for (let i = 0; i < compare.length; i++) {
 			if (compare[i].name === key) {
 				compare.splice(i, 1);
@@ -215,9 +216,7 @@ const SelectContainer = ({
 							onChange={(e) => handleChangeAdd(e)}
 						>
 							{items.map((item, key) => (
-// @ts-expect-error TS(2339): Property 'name' does not exist on type 'never'.
 								<option key={key} value={item.name}>
-{/* @ts-expect-error TS(2339): Property 'name' does not exist on type 'never'. */}
 									{item.name}
 								</option>
 							))}
