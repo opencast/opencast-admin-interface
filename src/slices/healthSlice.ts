@@ -1,6 +1,6 @@
 import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
-import { WritableDraft } from 'immer/dist/internal';
+import { WritableDraft } from 'immer';
 
 /**
  * This file contains redux reducer for actions affecting the state of information about health status

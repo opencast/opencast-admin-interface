@@ -29,10 +29,9 @@ jobs:
         run: npm ci
 
       - name: build app
-        run: npm run build
         env:
           PUBLIC_URL: /${{ steps.build-path.outputs.build }}
-          CI: false
+        run: npm run build
 
       - name: prepare git
         run: |
