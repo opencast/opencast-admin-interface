@@ -157,8 +157,19 @@
             button.save {
                 min-width: 100px;
                 @include btn(green);
-                padding: 10px 15px;
-                float: right;
+                order: 2;
+            }
+
+            button.cancel {
+              order: 1;
+              min-width: 100px;
+              @include btn(red);
+
+            }
+
+            .resolve-checkbox {
+              order: 0;
+              flex: 20%;
             }
         }
     }
@@ -736,3 +747,4 @@
         }
     }
 }
+

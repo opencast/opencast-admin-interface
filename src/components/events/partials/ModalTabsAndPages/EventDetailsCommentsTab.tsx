@@ -337,7 +337,7 @@ const EventDetailsCommentsTab = ({
 									</button>
 
 									{/* cancel button (exits reply mode) */}
-									<button className="red" onClick={() => exitReplyMode()}>
+									<button className="cancel" onClick={() => exitReplyMode()}>
 										{
 											t(
 												"EVENTS.EVENTS.DETAILS.COMMENTS.CANCEL_REPLY"
@@ -351,21 +351,23 @@ const EventDetailsCommentsTab = ({
 										user
 									) && (
 										<>
-											<input
-												type="checkbox"
-												id="resolved-checkbox"
-												className="ios"
-												onChange={() =>
-													setCommentReplyIsResolved(!commentReplyIsResolved)
-												}
-											/>
-											<label>
-												{
-													t(
-														"EVENTS.EVENTS.DETAILS.COMMENTS.RESOLVED"
-													) /* Resolved */
-												}
-											</label>
+										  <div className="resolve-checkbox">
+                        <input
+                          type="checkbox"
+                          id="resolved-checkbox"
+                          className="ios"
+                          onChange={() =>
+                            setCommentReplyIsResolved(!commentReplyIsResolved)
+                          }
+                        />
+                        <label>
+                          {
+                            t(
+                              "EVENTS.EVENTS.DETAILS.COMMENTS.RESOLVED"
+                            ) /* Resolved */
+                          }
+                        </label>
+                      </div>
 										</>
 									)}
 								</form>
