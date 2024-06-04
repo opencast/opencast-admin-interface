@@ -134,15 +134,9 @@
     // ----------------------------------------
 
     .lang-dd .dropdown-ul {
-        width: 160px;
+        width: 120px;
         top: $header-dropdown-top-position;
-        right: 5px;
-    }
-
-    .lang {
-        display: inline-block;
-        vertical-align: middle;
-        margin-right: 10px;
+        right: -7px;
     }
 
     // RestService Dropdown
