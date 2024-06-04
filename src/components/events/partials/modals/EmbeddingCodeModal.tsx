@@ -75,6 +75,7 @@ const EmbeddingCodeModal = ({
 		// set state with new inputs
 		setTextAreaContent(iFrameString);
 		setCurrentSize(frameSize);
+		setCopySuccess(false);
 	};
 
 	return (
