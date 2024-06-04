@@ -148,6 +148,7 @@ const EventDetailsAssetPublicationDetails = ({
 												<a
 													className="fa fa-external-link"
 													href={publication.url}
+													target="_blank" rel="noreferrer"
 												/>
 											</td>
 										</tr>

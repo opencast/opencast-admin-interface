@@ -166,6 +166,7 @@ const EventActionCell = ({
 							? t("EVENTS.EVENTS.TABLE.TOOLTIP.EDITOR_NEEDS_CUTTING")
 							: t("EVENTS.EVENTS.TABLE.TOOLTIP.EDITOR")
 					}
+					target="_blank" rel="noreferrer"
 				>
 					{row.needs_cutting && <span id="badge" className="badge" />}
 				</a>

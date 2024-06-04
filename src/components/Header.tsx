@@ -183,6 +183,7 @@ const Header = ({
 									href={
 										orgProperties["org.opencastproject.admin.mediamodule.url"]
 									}
+									target="_blank" rel="noreferrer"
 								>
 									<span className="fa fa-play-circle" />
 								</a>
@@ -192,7 +193,7 @@ const Header = ({
 					{/* Opencast Studio */}
 					{hasAccess("ROLE_STUDIO", user) && (
 						<div className="nav-dd" title="Studio">
-							<a href={studioURL}>
+							<a href={studioURL} target="_blank" rel="noreferrer">
 								<span className="fa fa-video-camera" />
 							</a>
 						</div>
@@ -382,6 +383,7 @@ const MenuHelp = ({
 									"org.opencastproject.admin.help.documentation.url"
 								]
 							}
+							target="_blank" rel="noreferrer"
 						>
 							<span>{t("HELP.DOCUMENTATION")}</span>
 						</a>
@@ -392,7 +394,7 @@ const MenuHelp = ({
 					hasAccess("ROLE_ADMIN", user) && (
 						<li>
 							<a
-								target="_self"
+								target="_blank" rel="noreferrer"
 								href={
 									orgProperties["org.opencastproject.admin.help.restdocs.url"]
 								}

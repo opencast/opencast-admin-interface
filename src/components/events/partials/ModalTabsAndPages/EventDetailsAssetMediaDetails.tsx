@@ -139,7 +139,7 @@ const EventDetailsAssetMediaDetails = ({
 												}
 											</td>
 											<td>
-												<a href={media.url}>{media.url.split("?")[0]}</a>
+												<a href={media.url} target="_blank" rel="noreferrer">{media.url.split("?")[0]}</a>
 											</td>
 										</tr>
 									</tbody>
