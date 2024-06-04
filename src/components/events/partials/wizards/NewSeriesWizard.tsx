@@ -226,7 +226,7 @@ const getInitialValues = (
 	let metadataInitialValues = getInitialMetadataFieldValues(
 		metadataFields,
 		extendedMetadata
-	)};
+	);
 
 	initialValues = { ...initialValues, ...metadataInitialValues };
 
