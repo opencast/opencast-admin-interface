@@ -52,8 +52,9 @@ const SeriesDetailsThemeTab = ({
 				<>
 					<div className="modal-content">
 						<div className="modal-body">
-							<Notifications context="not-corner" />
 							<div className="full-col">
+                            {/* Notifications */}
+                            <Notifications context="not_corner" />
 								<div className="obj quick-actions">
 									<header>{t("CONFIGURATION.NAVIGATION.THEMES")}</header>
 									<div className="obj-container padded">
