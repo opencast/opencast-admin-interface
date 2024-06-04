@@ -52,6 +52,7 @@
 
     th {
         &.sortable {
+            min-width: 80px;
             cursor: pointer;
             &:hover {
                 background: linear-gradient(to bottom, $off-white, darken(#f1f3f5, 3%));
