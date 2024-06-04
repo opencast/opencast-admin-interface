@@ -6,6 +6,8 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    labels:
+      - type:github_actions
 
   # Javascript
   - package-ecosystem: npm
@@ -14,4 +16,4 @@ updates:
       interval: monthly
     open-pull-requests-limit: 15
     labels:
-      - dependencies
+      - type:dependencies
