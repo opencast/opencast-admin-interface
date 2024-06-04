@@ -225,16 +225,13 @@ const EditTableViewModal = ({
 						</div>
 
 						<footer>
-							<div className="pull-left">
+							{/* Render buttons for updating table data */}
 								<button onClick={() => clearData()} className="cancel active">
 									{t("CANCEL") /*Cancel*/}
 								</button>
-							</div>
-							<div className="pull-right">
 								<button onClick={() => save()} className="submit active">
 									{t("SAVE") /* Save As Default */}
 								</button>
-							</div>
 						</footer>
 					</section>
 				</>
