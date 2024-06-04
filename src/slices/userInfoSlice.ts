@@ -8,7 +8,7 @@ import { addNotification } from './notificationSlice';
 type OcVersion = {
 	buildNumber: string | undefined,
 	consistent: boolean | undefined,
-	lastModified: number | undefined,
+	'last-modified': number | undefined,
 	version: string | undefined,
 }
 
@@ -67,7 +67,7 @@ const initialState: UserInfoState = {
 	ocVersion: {
 		buildNumber: undefined,
 		consistent: undefined,
-		lastModified: undefined,
+		"last-modified": undefined,
 		version: undefined,
 	},
 };
