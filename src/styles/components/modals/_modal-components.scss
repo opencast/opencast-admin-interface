@@ -157,18 +157,15 @@
             button.save {
                 min-width: 100px;
                 @include btn(green);
-                order: 2;
             }
 
             button.cancel {
-              order: 1;
               min-width: 100px;
               @include btn(red);
 
             }
 
-            .resolve-checkbox {
-              order: 0;
+            .resolved-checkbox {
               flex: 20%;
             }
         }
