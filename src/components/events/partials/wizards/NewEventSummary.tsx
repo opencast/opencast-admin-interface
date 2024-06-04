@@ -166,7 +166,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 															{translateOverrideFallback(asset, t, "SHORT")}
 															<span className="ui-helper-hidden">
                                 {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
-                                ({asset.type} "{asset.flavorType}//
+                                ({asset.type} "{asset.flavorType}/
 																{asset.flavorSubType}")
 															</span>
 														</td>
