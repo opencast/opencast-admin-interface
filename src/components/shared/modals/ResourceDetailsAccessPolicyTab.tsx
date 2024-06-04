@@ -620,7 +620,7 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 											{!transactions.read_only &&
 												policyChanged &&
 												formik.dirty && (
-													<footer style={{ padding: "15px" }}>
+													<footer style={{ padding: "0 15px" }}>
 														<div className="pull-left">
 															<button
 																type="reset"

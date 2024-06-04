@@ -453,7 +453,7 @@ const EventDetailsWorkflowTab = ({
 													!!workflowConfiguration &&
 													!!workflowConfiguration.workflowId &&
 													formik.dirty && (
-														<footer style={{ padding: "15px" }}>
+														<footer style={{ padding: "0 15px" }}>
 															<div className="pull-left">
 																<button
 																	type="reset"
