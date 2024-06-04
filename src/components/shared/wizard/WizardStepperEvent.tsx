@@ -73,7 +73,7 @@ const WizardStepperEvent = ({
 							</StepLabel>
 						</StepButton>
 					</Step>
-				) : <></>
+				) : <React.Fragment key={label.translation} />
 			)}
 		</Stepper>
 	);
