@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOMClient from "react-dom/client";
 import "./index.css";
 import App from "./App";
 
@@ -31,7 +31,13 @@ const theme = createTheme({
 	}
 })
 
-ReactDOM.render(
+const container = document.getElementById("root");
+if (!container) {
+	throw new Error("Failed to find the root element");
+}
+const root = ReactDOMClient.createRoot(container);
+
+root.render(
 	<React.StrictMode>
 		<Provider store={store}>
 			<PersistGate loading={<div>loading...</div>} persistor={persistor}>
@@ -45,6 +51,4 @@ ReactDOM.render(
 			</PersistGate>
 		</Provider>
 	</React.StrictMode>,
-	document.getElementById("root")
 );
-
