@@ -80,7 +80,7 @@ const EventDetailsAssetMedia = ({
 										media.map((item, key) => (
 											<tr key={key}>
 												<td>
-													<a href={item.url}>{item.id}</a>
+													<a href={item.url} target="_blank" rel="noreferrer">{item.id}</a>
 												</td>
 												<td>{item.type}</td>
 												<td>{item.mimetype}</td>
