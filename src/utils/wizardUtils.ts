@@ -1,3 +1,4 @@
+import { StepIconProps } from "@mui/material";
 import  makeStyles  from "@mui/styles/makeStyles";
 
 // Base style for Stepper component
@@ -17,10 +18,6 @@ export const useStepLabelStyles = makeStyles({
 });
 
 // Style of icons used in Stepper
-type stepIconStyleProps = {
-	active: boolean,
-	completed: boolean,
-}
 export const useStepIconStyles = makeStyles({
 	root: {
 		height: 22,
@@ -30,7 +27,7 @@ export const useStepIconStyles = makeStyles({
 		color: "#92a0ab",
 		width: "20px",
 		height: "20px",
-		transform: (props: stepIconStyleProps) => props.active ? "scale(1.3)" : "scale(1.0)",
+		transform: (props: StepIconProps) => props.active ? "scale(1.3)" : "scale(1.0)",
 	},
 });
 
