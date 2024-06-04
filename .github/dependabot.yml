@@ -1,10 +1,19 @@
 version: 2
 updates:
-- package-ecosystem: npm
-  directory: "/"
-  schedule:
-    interval: monthly
-    time: "04:00"
-  open-pull-requests-limit: 15
-  labels:
-    - dependencies
+
+  # GHA
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    labels:
+      - type:github_actions
+
+  # Javascript
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 15
+    labels:
+      - type:dependencies
