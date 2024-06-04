@@ -51,8 +51,8 @@ const Groups = ({
 	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchGroupsWrapper = () => {
-		dispatch(fetchGroups())
+	const fetchGroupsWrapper = async () => {
+		await dispatch(fetchGroups())
 	}
 
 	const loadGroups = async () => {

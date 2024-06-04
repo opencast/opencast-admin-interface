@@ -36,8 +36,8 @@ const Recordings = ({
 	const recordings = useAppSelector(state => getTotalRecordings(state));
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchRecordingsWrapper = () => {
-		dispatch(fetchRecordings(undefined))
+	const fetchRecordingsWrapper = async () => {
+		await dispatch(fetchRecordings(undefined))
 	}
 
 	const loadRecordings = async () => {

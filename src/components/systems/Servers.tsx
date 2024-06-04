@@ -49,8 +49,8 @@ const Servers = ({
 	const servers = useAppSelector(state => getTotalServers(state));
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchServersWrapper = () => {
-		dispatch(fetchServers())
+	const fetchServersWrapper = async () => {
+		await dispatch(fetchServers())
 	}
 
 	const loadServers = async () => {

@@ -82,8 +82,8 @@ const Events = ({
 	let location = useLocation();
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchEventsWrapper = () => {
-		dispatch(fetchEvents())
+	const fetchEventsWrapper = async () => {
+		await dispatch(fetchEvents())
 	}
 
 	const loadEvents = async () => {
