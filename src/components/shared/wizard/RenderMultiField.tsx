@@ -2,6 +2,8 @@ import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { useClickOutsideField } from "../../../hooks/wizardHooks";
+import { FieldInputProps, FieldProps } from "formik";
+import { MetadataField } from "../../../slices/eventSlice";
 
 const childRef = React.createRef<HTMLDivElement>();
 
@@ -9,14 +11,17 @@ const childRef = React.createRef<HTMLDivElement>();
  * This component renders an editable field for multiple values depending on the type of the corresponding metadata
  */
 const RenderMultiField = ({
-// @ts-expect-error TS(7031): Binding element 'fieldInfo' implicitly has an 'any... Remove this comment to see the full error message
 	fieldInfo,
 	onlyCollectionValues = false,
-// @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 	field,
-// @ts-expect-error TS(7031): Binding element 'form' implicitly has an 'any' typ... Remove this comment to see the full error message
 	form,
 	showCheck = false,
+}: {
+	fieldInfo: MetadataField
+	onlyCollectionValues?: boolean
+	field: FieldProps["field"]
+	form: FieldProps["form"]
+	showCheck?: boolean,
 }) => {
 	// Indicator if currently edit mode is activated
 	const {editMode, setEditMode} = useClickOutsideField(childRef);
@@ -26,14 +31,12 @@ const RenderMultiField = ({
 	let fieldValue = [...field.value];
 
 	// Handle change of value user currently types in
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const handleChange = (e) => {
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const itemValue = e.target.value;
 		setInputValue(itemValue);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
-	const handleKeyDown = (event) => {
+	const handleKeyDown = (event: React.KeyboardEvent) => {
 		// Check if pressed key is Enter
 		if (event.keyCode === 13 && inputValue !== "") {
 			event.preventDefault();
@@ -55,8 +58,7 @@ const RenderMultiField = ({
 				// add input to formik field value if not already added and input in collection of possible values
 				if (
 					!fieldValue.find((e) => e === newInputValue) &&
-	// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-					fieldInfo.collection.find((e) => e.value === newInputValue)
+					fieldInfo.collection?.find((e) => e.value === newInputValue)
 				) {
 					fieldValue[fieldValue.length] = newInputValue;
 					form.setFieldValue(field.name, fieldValue);
@@ -75,8 +77,7 @@ const RenderMultiField = ({
 	}
 
 	// Remove item/value from inserted field values
-// @ts-expect-error TS(7006): Parameter 'key' implicitly has an 'any' type.
-	const removeItem = (key) => {
+	const removeItem = (key: number) => {
 		fieldValue.splice(key, 1);
 		form.setFieldValue(field.name, fieldValue);
 	};
@@ -124,22 +125,23 @@ const RenderMultiField = ({
 
 // Renders multi select
 const EditMultiSelect = ({
-// @ts-expect-error TS(7031): Binding element 'collection' implicitly has an 'an... Remove this comment to see the full error message
 	collection,
-// @ts-expect-error TS(7031): Binding element 'handleKeyDown' implicitly has an ... Remove this comment to see the full error message
 	handleKeyDown,
-// @ts-expect-error TS(7031): Binding element 'handleChange' implicitly has an '... Remove this comment to see the full error message
 	handleChange,
-	// @ts-expect-error TS(7031): Binding element 'handleChange' implicitly has an '... Remove this comment to see the full error message
 	handleBlur,
-// @ts-expect-error TS(7031): Binding element 'inputValue' implicitly has an 'an... Remove this comment to see the full error message
 	inputValue,
-// @ts-expect-error TS(7031): Binding element 'removeItem' implicitly has an 'an... Remove this comment to see the full error message
 	removeItem,
-// @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 	field,
-// @ts-expect-error TS(7031): Binding element 'fieldValue' implicitly has an 'an... Remove this comment to see the full error message
 	fieldValue,
+}: {
+	collection: { [key: string]: unknown }[]
+	handleKeyDown: (event: React.KeyboardEvent) => void
+	handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+	handleBlur: (refCurrent: string) => void
+	inputValue: HTMLInputElement["value"]
+	removeItem: (key: number) => void
+	field: FieldProps["field"]
+	fieldValue: FieldInputProps<unknown>["value"]
 }) => {
 	const { t } = useTranslation();
 
@@ -170,7 +172,6 @@ const EditMultiSelect = ({
 					/>
 					{/* Display possible options for values as some kind of dropdown */}
 					<datalist id="data-list">
-{/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}
 						{collection.map((item, key) => (
 							<option key={key}>{item.value}</option>
 						))}
@@ -194,20 +195,21 @@ const EditMultiSelect = ({
 
 // Renders editable field input for multiple values
 const EditMultiValue = ({
-// @ts-expect-error TS(7031): Binding element 'setEditMode' implicitly has an 'a... Remove this comment to see the full error message
 	setEditMode,
-// @ts-expect-error TS(7031): Binding element 'inputValue' implicitly has an 'an... Remove this comment to see the full error message
 	inputValue,
-// @ts-expect-error TS(7031): Binding element 'removeItem' implicitly has an 'an... Remove this comment to see the full error message
 	removeItem,
-// @ts-expect-error TS(7031): Binding element 'handleChange' implicitly has an '... Remove this comment to see the full error message
 	handleChange,
-// @ts-expect-error TS(7031): Binding element 'handleKeyDown' implicitly has an ... Remove this comment to see the full error message
 	handleKeyDown,
-// @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 	field,
-// @ts-expect-error TS(7031): Binding element 'fieldValue' implicitly has an 'an... Remove this comment to see the full error message
 	fieldValue,
+}: {
+	setEditMode: (e: boolean) => void
+	inputValue: HTMLInputElement["value"]
+	removeItem: (key: number) => void
+	handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+	handleKeyDown: (event: React.KeyboardEvent) => void
+	field: FieldProps["field"]
+	fieldValue: FieldInputProps<unknown>["value"]
 }) => {
 	const { t } = useTranslation();
 
@@ -238,24 +240,21 @@ const EditMultiValue = ({
 };
 
 // Shows the values of the array in non-edit mode
-const ShowValue : React.FC<{
-  setEditMode: any,
-	form: any,
-	field: any,
-	showCheck: any,
-	fieldValue?: any,
-}> = ({
+const ShowValue = ({
 	setEditMode,
 	form: { initialValues },
 	field,
 	showCheck,
-	fieldValue,
+}: {
+  setEditMode: (e: boolean) => void
+	form: FieldProps["form"]
+	field: FieldProps["field"]
+	showCheck: any,
 }) => {
 	return (
 		<div onClick={() => setEditMode(true)} className="show-edit">
 			{field.value instanceof Array && field.value.length !== 0 ? (
 				<ul>
-{/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}
 					{field.value.map((item, key) => (
 						<li key={key}>
 							<span>{item}</span>
