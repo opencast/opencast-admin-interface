@@ -8,7 +8,7 @@
     "@hello-pangea/dnd": "^16.5.0",
     "@mui/material": "^5.15.9",
     "@mui/styles": "^5.15.19",
-    "@mui/x-date-pickers": "^6.19.0",
+    "@mui/x-date-pickers": "^7.6.1",
     "@reduxjs/toolkit": "^2.2.5",
     "@types/dompurify": "^3.0.5",
     "@types/react-router-dom": "^5.3.3",
