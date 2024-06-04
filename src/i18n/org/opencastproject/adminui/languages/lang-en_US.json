@@ -610,7 +610,9 @@
 					"COMMENTS": "View comments",
 					"PAUSED_WORKFLOW": "View paused workflow",
 					"PRESENTER": "Filter for this presenter"
-				}
+				},
+				"SELECT_ALL": "Select all events",
+				"SELECT_EVENT": "Select event \"{{title}}\""
 			},
 			"STATUS": {
 				"SCHEDULED": "Scheduled",
