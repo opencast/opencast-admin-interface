@@ -7,6 +7,7 @@ import Header from "../Header";
 import Footer from "../Footer";
 import MainNav from "../shared/MainNav";
 import TimeSeriesStatistics from "../shared/TimeSeriesStatistics";
+import { addNotification } from "../../slices/notificationSlice";
 import {
 	getStatistics,
 	hasStatistics as getHasStatistics,
@@ -46,10 +47,9 @@ const Statistics: React.FC = () => {
 
 	useEffect(() => {
 		// fetch user information for organization id, then fetch statistics
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-		fetchUserInfo().then((e) => {
+		dispatch(fetchUserInfo()).then(() => {
 			dispatch(fetchStatisticsPageStatistics(organizationId)).then();
-		});
+		})
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
