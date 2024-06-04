@@ -7,7 +7,6 @@ import Header from "../Header";
 import Footer from "../Footer";
 import MainNav from "../shared/MainNav";
 import TimeSeriesStatistics from "../shared/TimeSeriesStatistics";
-import { addNotification } from "../../slices/notificationSlice";
 import {
 	getStatistics,
 	hasStatistics as getHasStatistics,
