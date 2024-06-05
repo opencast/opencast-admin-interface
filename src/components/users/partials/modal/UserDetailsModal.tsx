@@ -1,6 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import UserDetails from "./UserDetails";
+import { useHotkeys } from "react-hotkeys-hook";
+import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 
 /**
  * This component renders the modal for displaying user details
@@ -10,6 +12,13 @@ const UserDetailsModal = ({
     username
 }: any) => {
 	const { t } = useTranslation();
+
+	useHotkeys(
+		availableHotkeys.general.CLOSE_MODAL.sequence,
+		() => close(),
+		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
+		[close],
+  	);
 
 	const handleClose = () => {
 		close();

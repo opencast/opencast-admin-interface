@@ -2085,7 +2085,8 @@
 				"SERIES_VIEW": "Series",
 				"NEW_EVENT": "Add event",
 				"NEW_SERIES": "Add series",
-				"CHEAT_SHEET": "Keyboard shortcuts"
+				"CHEAT_SHEET": "Keyboard shortcuts",
+				"CLOSE_MODAL": "Close dialog"
 			}
 		}
 	},

@@ -6,6 +6,8 @@ import NewThemeWizard from "../configuration/partials/wizard/NewThemeWizard";
 import NewAclWizard from "../users/partials/wizard/NewAclWizard";
 import NewGroupWizard from "../users/partials/wizard/NewGroupWizard";
 import NewUserWizard from "../users/partials/wizard/NewUserWizard";
+import { useHotkeys } from "react-hotkeys-hook";
+import { availableHotkeys } from "../../configs/hotkeysConfig";
 
 /**
  * This component renders the modal for adding new resources
@@ -16,6 +18,13 @@ const NewResourceModal = ({
     resource
 }: any) => {
 	const { t } = useTranslation();
+
+	useHotkeys(
+		availableHotkeys.general.CLOSE_MODAL.sequence,
+		() => handleClose(),
+		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
+		[handleClose],
+  	);
 
 	const close = () => {
 		handleClose();

@@ -9,6 +9,8 @@ import {
 	getResourceType,
 } from "../../selectors/tableSelectors";
 import { DragDropContext, Droppable, OnDragEndResponder, Draggable as Draggablee } from "@hello-pangea/dnd";
+import { availableHotkeys } from "../../configs/hotkeysConfig";
+import { useHotkeys } from "react-hotkeys-hook";
 
 /**
  * This component renders the modal for editing which columns are shown in the table
@@ -45,6 +47,13 @@ const EditTableViewModal = ({
 			}
 		}
 	}, [activeColumns, deactivatedColumns, isColsLoaded]);
+
+	useHotkeys(
+		availableHotkeys.general.CLOSE_MODAL.sequence,
+		() => handleClose(),
+		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
+		[handleClose],
+  	);
 
 	// closes this modal
 	const close = () => {

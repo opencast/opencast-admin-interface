@@ -9,6 +9,8 @@ import {
 	getSeriesConfig,
 	hasEvents,
 } from "../../../../slices/seriesSlice";
+import { useHotkeys } from "react-hotkeys-hook";
+import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 
 /**
  * This component manges the delete series bulk action
@@ -21,6 +23,13 @@ const DeleteSeriesModal = ({ close, selectedRows }) => {
 	const [allChecked, setAllChecked] = useState(true);
 	const [selectedSeries, setSelectedSeries] = useState(selectedRows);
 	const [deleteWithSeriesAllowed, setDeleteWithSeriesAllowed] = useState(false);
+
+	useHotkeys(
+		availableHotkeys.general.CLOSE_MODAL.sequence,
+		() => close(),
+		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
+		[close],
+  	);
 
 	useEffect(() => {
 		async function fetchData() {

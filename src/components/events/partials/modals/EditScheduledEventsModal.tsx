@@ -20,6 +20,8 @@ import {
 	updateScheduledEventsBulk,
 } from "../../../../slices/eventSlice";
 import { fetchRecordings } from "../../../../slices/recordingSlice";
+import { useHotkeys } from "react-hotkeys-hook";
+import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 
 /**
  * This component manages the pages of the edit scheduled bulk action
@@ -53,6 +55,13 @@ const EditScheduledEventsModal = ({
 	const [conflicts, setConflicts] = useState([]);
 
 	const user = useAppSelector(state => getUserInformation(state));
+
+	useHotkeys(
+		availableHotkeys.general.CLOSE_MODAL.sequence,
+		() => close(),
+		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
+		[close],
+  	);
 
 	useEffect(() => {
 		// Load recordings that can be used for input

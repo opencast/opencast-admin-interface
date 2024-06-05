@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import EventDetails from "./EventDetails";
 import { useAppDispatch } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { useHotkeys } from "react-hotkeys-hook";
+import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 
 /**
  * This component renders the modal for displaying event details
@@ -36,6 +38,13 @@ const EventDetailsModal = ({
 			handleClose();
 		}
 	};
+
+	useHotkeys(
+		availableHotkeys.general.CLOSE_MODAL.sequence,
+		() => close(),
+		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
+		[close],
+  	);
 
 	return (
 		// todo: add hotkeys

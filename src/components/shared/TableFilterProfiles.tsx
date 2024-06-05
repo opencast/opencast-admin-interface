@@ -10,6 +10,8 @@ import {
 import { getFilters } from "../../selectors/tableFilterSelectors";
 import { loadFilterProfile } from "../../slices/tableFilterSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
+import { useHotkeys } from "react-hotkeys-hook";
+import { availableHotkeys } from "../../configs/hotkeysConfig";
 
 /**
  * This component renders the table filter profiles in the upper right corner when clicked on settings icon of the
@@ -42,6 +44,13 @@ const TableFiltersProfiles = ({
 	const [validName, setValidName] = useState(false);
 
 	const { t } = useTranslation();
+
+	useHotkeys(
+		availableHotkeys.general.CLOSE_MODAL.sequence,
+		() => setFilterSettings(false),
+		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
+		[setFilterSettings],
+  	);
 
 	const currentProfiles = profiles.filter(
 		(profile) => profile.resource === resource

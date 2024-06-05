@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
-import { useHotkeysContext } from "react-hotkeys-hook";
+import { useHotkeys, useHotkeysContext } from "react-hotkeys-hook";
 import { Hotkey } from "react-hotkeys-hook/dist/types";
 
 /**
@@ -13,6 +13,13 @@ const HotKeyCheatSheet: React.FC<{
 	close
 }) => {
 	const { t } = useTranslation();
+
+	useHotkeys(
+		availableHotkeys.general.CLOSE_MODAL.sequence,
+		() => close(),
+		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
+		[close],
+  	);
 
 	const handleClose = () => {
 		close();
