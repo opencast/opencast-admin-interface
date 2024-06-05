@@ -7,14 +7,34 @@ const UsersRolesCell = ({
     row
 }: any) => {
 	const getRoleString = () => {
-		let roleString = "";
+		let displayRoles = [];
+		let roleCountUI = 0;
+		let roleCountAPI = 0;
+		let roleCountCaptureAgent = 0;
 
-// @ts-expect-error TS(7006): Parameter 'role' implicitly has an 'any' type.
-		row.roles.forEach((role) => {
-			roleString = roleString.concat(role.name + ", ");
-		});
+		for (const role of row.roles) {
+			if (role.name.startsWith('ROLE_UI')) {
+				roleCountUI++;
+			} else if (role.name.startsWith('ROLE_API')) {
+				roleCountAPI++;
+			} else if (role.name.startsWith('ROLE_CAPTURE_AGENT')) {
+				roleCountCaptureAgent++;
+			} else {
+				displayRoles.push(role.name);
+			}
+		}
 
-		return roleString;
+		if (roleCountUI > 0) {
+			displayRoles.push(`${roleCountUI} UI roles`);
+		}
+		if (roleCountAPI > 0) {
+			displayRoles.push(`${roleCountAPI} API roles`);
+		}
+		if (roleCountCaptureAgent > 0) {
+			displayRoles.push(`${roleCountUI} capture agent roles`);
+		}
+
+		return displayRoles.join(', ');
 	};
 
 	return <span>{getRoleString()}</span>;
