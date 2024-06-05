@@ -210,6 +210,7 @@ const Table = ({
 								<input
 									type="checkbox"
 									onChange={(e) => onChangeAllSelected(e)}
+									aria-label={t("EVENTS.EVENTS.TABLE.SELECT_ALL")}
 								/>
 							</th>
 						) : null}
@@ -269,6 +270,7 @@ const Table = ({
 											type="checkbox"
 											checked={row.selected}
 											onChange={() => rowSelectionChanged(row.id)}
+											aria-label={t("EVENTS.EVENTS.TABLE.SELECT_EVENT", { title: row.title })}
 										/>
 									</td>
 								)}
