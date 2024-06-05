@@ -1,22 +1,19 @@
-import { useStepIconStyles } from "../../../utils/wizardUtils";
-import cn from "classnames";
+import { stepIcon } from "../../../utils/wizardUtils";
 import { FaCircle, FaDotCircle } from "react-icons/fa";
-import React from "react";
 import { StepIconProps } from "@mui/material";
 
 /**
  * Component that renders icons of Stepper depending on completeness of steps
  */
 const CustomStepIcon = (props: StepIconProps) => {
-	const { completed } = props;
-	const classes = useStepIconStyles(props);
+	const { completed, active } = props;
 
 	return (
-		<div className={cn(classes.root)}>
+		<div style={stepIcon.root}>
 			{completed ? (
-				<FaCircle className={classes.circle} />
+				<FaCircle style={{...stepIcon.circle, ...(active && stepIcon.circleActive),}}/>
 			) : (
-				<FaDotCircle className={classes.circle} />
+				<FaDotCircle style={{...stepIcon.circle, ...(active && stepIcon.circleActive),}} />
 			)}
 		</div>
 	);

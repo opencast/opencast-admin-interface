@@ -4,8 +4,8 @@ import cn from "classnames";
 import { Step, StepButton, StepLabel, Stepper } from "@mui/material";
 import {
 	isSummaryReachable,
-	useStepLabelStyles,
-	useStepperStyle,
+	stepLabelStyle,
+	stepperStyle,
 } from "../../../utils/wizardUtils";
 import CustomStepIcon from "./CustomStepIcon";
 import { FormikProps } from "formik/dist/types";
@@ -30,9 +30,6 @@ const WizardStepperEvent = ({
 	setCompleted: (rec: Record<number, boolean>) => void,
 }) => {
 	const { t } = useTranslation();
-
-	const stepperClasses = useStepperStyle();
-	const labelClasses = useStepLabelStyles();
 
 	const handleOnClick = async (key: number) => {
 		if (isSummaryReachable(key, steps, completed)) {
@@ -61,13 +58,14 @@ const WizardStepperEvent = ({
 			nonLinear
 			alternativeLabel
 			connector={<></>}
-			className={cn("step-by-step", stepperClasses.root)}
+			sx={stepperStyle.root}
+			className={cn("step-by-step")}
 		>
 			{steps.map((label, key) =>
 				!label.hidden ? (
 					<Step key={label.translation} completed={completed[key]}>
 						<StepButton onClick={() => handleOnClick(key)}>
-							<StepLabel className={labelClasses.root} StepIconComponent={CustomStepIcon}>
+							<StepLabel sx={stepLabelStyle.root} StepIconComponent={CustomStepIcon}>
 								{t(label.translation)}
 							</StepLabel>
 						</StepButton>
