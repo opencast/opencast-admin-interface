@@ -17,7 +17,10 @@ import {
 import { fetchThemes } from "../../slices/themeSlice";
 import { fetchFilters, fetchStats } from "../../slices/tableFilterSlice";
 import { setOffset } from "../../actions/tableActions";
-import { getUserInformation } from "../../selectors/userInfoSelectors";
+import {
+	getOrgProperties,
+	getUserInformation
+} from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { fetchServices } from "../../slices/serviceSlice";
 import { fetchGroups } from "../../slices/groupSlice";
@@ -68,6 +71,9 @@ const MainNav = ({
 	let navigate = useNavigate();
 
 	const user = useAppSelector(state => getUserInformation(state));
+	const orgProperties = useAppSelector(state => getOrgProperties(state));
+
+	const statisticsEnabled = orgProperties['admin.statistics.enabled']?.toLowerCase() === 'true';
 
 	const loadEvents = () => {
 		dispatch(fetchFilters("events"));
@@ -295,7 +301,8 @@ const MainNav = ({
 										/>
 									</Link>
 								)}
-							{hasAccess("ROLE_UI_NAV_STATISTICS_VIEW", user) &&
+							{statisticsEnabled &&
+								hasAccess("ROLE_UI_NAV_STATISTICS_VIEW", user) &&
 								hasAccess("ROLE_UI_STATISTICS_ORGANIZATION_VIEW", user) && (
 									<Link to="/statistics/organization">
 										<i
