@@ -25,7 +25,7 @@
 
   .col {
     $num-cols: 8;
-    $stat-color: lighten($header-link-color, 15%);
+    $stat-color: lighten($header-link-color, 22%);
 
     box-sizing: border-box;
     display: inline-block;
@@ -46,7 +46,7 @@
       color: $stat-color;
 
       &:hover {
-        color: lighten($stat-color, 25%);
+        color: lighten($stat-color, 32%);
       }
 
       h1 {
