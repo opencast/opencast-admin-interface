@@ -83,18 +83,4 @@ const RecordingsActionCell = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(RecordingsActionCell);
+export default RecordingsActionCell;
