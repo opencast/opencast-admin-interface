@@ -31,7 +31,7 @@
 
     > button {
         $width: 100px;
-        width: $width;
+        min-width: $width;
         display: inline-block;
         text-align: center;
         position: relative;
