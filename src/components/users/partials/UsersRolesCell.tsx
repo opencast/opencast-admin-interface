@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 /**
  * This component renders the roles cells of users in the table view
@@ -6,6 +7,8 @@ import React from "react";
 const UsersRolesCell = ({
     row
 }: any) => {
+	const { t } = useTranslation();
+
 	const getRoleString = () => {
 		let displayRoles = [];
 		let roleCountUI = 0;
@@ -25,13 +28,16 @@ const UsersRolesCell = ({
 		}
 
 		if (roleCountUI > 0) {
-			displayRoles.push(`${roleCountUI} UI roles`);
+      const desc = t('USERS.USERS.TABLE.COLLAPSED.UI');
+			displayRoles.push(`${roleCountUI} ${desc}`);
 		}
 		if (roleCountAPI > 0) {
-			displayRoles.push(`${roleCountAPI} API roles`);
+      const desc = t('USERS.USERS.TABLE.COLLAPSED.API');
+			displayRoles.push(`${roleCountAPI} ${desc}`);
 		}
 		if (roleCountCaptureAgent > 0) {
-			displayRoles.push(`${roleCountUI} capture agent roles`);
+      const desc = t('USERS.USERS.TABLE.COLLAPSED.CAPTURE_AGENT');
+			displayRoles.push(`${roleCountCaptureAgent} ${desc}`);
 		}
 
 		return displayRoles.join(', ');

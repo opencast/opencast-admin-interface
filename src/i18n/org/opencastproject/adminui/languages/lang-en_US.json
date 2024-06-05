@@ -1243,6 +1243,11 @@
 				"USERNAME": "Username",
 				"EMAIL": "Email",
 				"ROLES": "Roles",
+				"COLLAPSED": {
+					"UI": "user interface roles",
+					"API": "API roles",
+					"CAPTURE_AGENT": "capture agent roles"
+				},
 				"TYPE": "Type",
 				"PROVIDER": "Provider",
 				"ACTION": "Actions",
