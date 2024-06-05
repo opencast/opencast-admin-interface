@@ -107,14 +107,6 @@ const changeStart = (
 	}
 
 	setDuration(startDate, endDate, setFieldValue);
-	setFieldValue(
-		"scheduleEndDate",
-		new Date(endDate.setHours(0, 0, 0)).toISOString()
-	);
-	setFieldValue(
-		"scheduleStartDate",
-		new Date(startDate.setHours(0, 0, 0)).toISOString()
-	);
 
 	if (!!checkConflicts) {
 		checkConflicts(
@@ -124,6 +116,15 @@ const changeStart = (
 			formikValues.captureAgent
 		);
 	}
+
+	setFieldValue(
+		"scheduleEndDate",
+		new Date(endDate.setHours(0, 0, 0)).toISOString()
+	);
+	setFieldValue(
+		"scheduleStartDate",
+		new Date(startDate.setHours(0, 0, 0)).toISOString()
+	);
 };
 
 export const changeStartDate = (
