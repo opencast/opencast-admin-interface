@@ -1,24 +1,21 @@
-import { StepIconProps } from "@mui/material";
-import  makeStyles  from "@mui/styles/makeStyles";
-
 // Base style for Stepper component
-export const useStepperStyle = makeStyles({
+export const stepperStyle = {
 	root: {
 		background: "#eeeff0",
 		height: "100px",
 		padding: "24px",
 	},
-});
+};
 
 // Properly align multi-line wizard step labels
-export const useStepLabelStyles = makeStyles({
+export const stepLabelStyle = {
 	root: {
 		alignSelf: "flex-start",
-	},
-});
+	}
+};
 
 // Style of icons used in Stepper
-export const useStepIconStyles = makeStyles({
+export const stepIcon = {
 	root: {
 		height: 22,
 		alignItems: "center",
@@ -27,9 +24,11 @@ export const useStepIconStyles = makeStyles({
 		color: "#92a0ab",
 		width: "20px",
 		height: "20px",
-		transform: (props: StepIconProps) => props.active ? "scale(1.3)" : "scale(1.0)",
 	},
-});
+	circleActive: {
+		transform: "scale(1.3)"
+	},
+};
 
 /* This method checks if the summary page is reachable.
  * If the clicked page is some other page than summary then no check is needed.

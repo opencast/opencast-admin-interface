@@ -1,11 +1,10 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { Step, StepButton, StepLabel, Stepper } from "@mui/material";
 import {
 	isSummaryReachable,
-	useStepLabelStyles,
-	useStepperStyle,
+	stepLabelStyle,
+	stepperStyle,
 } from "../../../utils/wizardUtils";
 import CustomStepIcon from "./CustomStepIcon";
 import { checkAcls } from "../../../slices/aclSlice";
@@ -39,9 +38,6 @@ const WizardStepper = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const stepperClasses = useStepperStyle();
-	const labelClasses = useStepLabelStyles();
-
 	const handleOnClick = async (key: number) => {
 		if (isSummaryReachable(key, steps, completed)) {
 			if (hasAccessPage) {
@@ -69,13 +65,14 @@ const WizardStepper = ({
 			alternativeLabel
 // @ts-expect-error TS(2322): Type 'boolean' is not assignable to type 'ReactEle... Remove this comment to see the full error message
 			connector={false}
-			className={cn("step-by-step", stepperClasses.root)}
+			sx={stepperStyle.root }
+			className={cn("step-by-step")}
 		>
 			{steps.map((label, key) =>
 				!label.hidden ? (
 					<Step key={label.translation} completed={completed[key]}>
 						<StepButton onClick={() => handleOnClick(key)} disabled={disabled}>
-							<StepLabel className={labelClasses.root} StepIconComponent={CustomStepIcon}>
+							<StepLabel sx={stepLabelStyle.root} StepIconComponent={CustomStepIcon}>
 								{t(label.translation)}
 							</StepLabel>
 						</StepButton>
