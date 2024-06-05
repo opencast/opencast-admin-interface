@@ -110,4 +110,15 @@
             background: radial-gradient(ellipse at center,  rgba(238,239,240,1) 35%,rgba(146,160,171,1) 40%);
         }
     }
+
+    &.MuiStepper-horizontal {
+      .MuiStep-horizontal {
+        word-break: break-word;
+        padding: 0;
+        flex: 1 1 min-content;
+      }
+      .MuiStepButton-horizontal {
+        padding: 24px 0;
+      }
+    }
 }
