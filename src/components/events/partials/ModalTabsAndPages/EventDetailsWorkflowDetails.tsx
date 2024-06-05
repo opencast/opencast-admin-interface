@@ -104,12 +104,7 @@ const EventDetailsWorkflowDetails = ({
 													}
 												</td>
 												<td>
-													{workflowData.creator.name + " "}
-													{workflowData.creator.email && (
-														<span>
-															{"<" + workflowData.creator.email + ">"}
-														</span>
-													)}
+													{ workflowData.creator }
 												</td>
 											</tr>
 											<tr>
