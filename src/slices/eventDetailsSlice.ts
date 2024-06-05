@@ -1146,7 +1146,7 @@ const conflicts: any[] = [];
 let hasSchedulingConflicts = false;
 
 const now = new Date();
-if (endDate < now) {
+if (endDate < now || startDate < now) {
 	dispatch(removeNotificationWizardForm());
 	dispatch(
 		addNotification({
