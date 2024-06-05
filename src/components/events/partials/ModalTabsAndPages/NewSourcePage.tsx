@@ -35,6 +35,7 @@ import {
 	changeStartHourMultiple,
 	changeStartMinute,
 	changeStartMinuteMultiple,
+	renderValidDate,
 } from "../../../../utils/dateUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { Recording, fetchRecordings } from "../../../../slices/recordingSlice";
@@ -115,12 +116,12 @@ const NewSourcePage = <T extends RequiredFormProps>({
                         <td>{conflict.title}</td>
                         <td>
                           {t("dateFormats.dateTime.medium", {
-                            dateTime: new Date(conflict.start),
+                            dateTime: renderValidDate(conflict.start),
                           })}
                         </td>
                         <td>
                           {t("dateFormats.dateTime.medium", {
-                            dateTime: new Date(conflict.end),
+                            dateTime: renderValidDate(conflict.end),
                           })}
                         </td>
                       </tr>

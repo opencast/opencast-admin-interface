@@ -26,6 +26,7 @@ import {
 	updateWorkflow,
 } from "../../../../slices/eventDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { renderValidDate } from "../../../../utils/dateUtils";
 
 /**
  * This component manages the workflows tab of the event details modal
@@ -213,7 +214,7 @@ const EventDetailsWorkflowTab = ({
 															<td>{item.submitter}</td>
 															<td>
 																{t("dateFormats.dateTime.medium", {
-																	dateTime: new Date(item.submitted),
+																	dateTime: renderValidDate(item.submitted),
 																})}
 															</td>
 															<td>{t(item.status)}</td>

@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { renderValidDate } from "../../../utils/dateUtils";
 
 /**
  * This component renders the mean run time cells of systems in the table view
@@ -11,7 +12,7 @@ const MeanRunTimeCell = ({
 
 	return (
 		<span>
-			{t("dateFormats.time.medium", { time: new Date(row.meanRunTime) })}
+			{t("dateFormats.time.medium", { time: renderValidDate(row.meanRunTime) })}
 		</span>
 	);
 };
