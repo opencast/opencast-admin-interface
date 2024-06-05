@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "name": "Opencast: Admin UI",
+  "short_name": "Opencast",
+  "description": "A modern admin user interface for Opencast",
   "icons": [
     {
       "src": "favicon.ico",
