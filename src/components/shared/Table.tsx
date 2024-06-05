@@ -93,7 +93,7 @@ const Table = ({
 	reverse,
 }) => {
 	// Size options for pagination
-	const sizeOptions = [10, 20, 50, 100];
+	const sizeOptions = [10, 20, 50, 100, 1000];
 
 	const lengthDivStyle = {
 		position: "absolute" as const,
