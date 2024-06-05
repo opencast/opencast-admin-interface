@@ -10,7 +10,7 @@ import { Acl } from "../slices/aclSlice";
 import { NewUser } from "../slices/userSlice";
 import { Recording } from "../slices/recordingSlice";
 import { UserInfoState } from "../slices/userInfoSlice";
-import { hasAccess } from "./utils";
+import { hasAccess, isJson } from "./utils";
 import { RootState } from "../store";
 import { MetadataCatalog } from "../slices/eventSlice";
 
@@ -141,8 +141,7 @@ export const getInitialMetadataFieldValues = (
 };
 
 // transform collection of metadata into object with name and value
-// @ts-expect-error TS(7006): Parameter 'metadata' implicitly has an 'any' type.
-export const transformMetadataCollection = (metadata, noField) => {
+export const transformMetadataCollection = (metadata: any, noField: boolean) => {
 	if (noField) {
 		for (let i = 0; metadata.length > i; i++) {
 			if (!!metadata[i].collection) {
@@ -166,10 +165,19 @@ export const transformMetadataCollection = (metadata, noField) => {
 				metadata.fields[i].collection = Object.keys(
 					metadata.fields[i].collection
 				).map((key) => {
-					return {
-						name: key,
-						value: metadata.fields[i].collection[key],
-					};
+					if (isJson(key)) {
+						let collectionParsed = JSON.parse(key);
+						return {
+							name: collectionParsed.label ? collectionParsed.label : key,
+							value: metadata.fields[i].collection[key],
+							...collectionParsed,
+						};
+					} else {
+						return {
+							name: key,
+							value: metadata.fields[i].collection[key],
+						};
+					}
 				});
 			}
 		}
