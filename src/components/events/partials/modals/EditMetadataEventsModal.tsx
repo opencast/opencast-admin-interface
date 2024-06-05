@@ -17,6 +17,8 @@ import {
 	updateBulkMetadata,
 } from "../../../../slices/eventSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
+import { useHotkeys } from "react-hotkeys-hook";
+import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 
 /**
  * This component manges the edit metadata bulk action
@@ -45,6 +47,13 @@ const EditMetadataEventsModal = ({
 	const [fetchedValues, setFetchedValues] = useState(null);
 
 	const user = useAppSelector(state => getUserInformation(state));
+
+	useHotkeys(
+		availableHotkeys.general.CLOSE_MODAL.sequence,
+		() => close(),
+		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
+		[close],
+  	);
 
 	useEffect(() => {
 		async function fetchData() {

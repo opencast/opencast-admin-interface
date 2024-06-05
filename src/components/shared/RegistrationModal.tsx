@@ -10,6 +10,8 @@ import {
 	fetchAdopterRegistration,
 	postRegistration,
 } from "../../utils/adopterRegistrationUtils";
+import { useHotkeys } from "react-hotkeys-hook";
+import { availableHotkeys } from "../../configs/hotkeysConfig";
 
 /**
  * This component renders the adopter registration modal. This modal has various states.
@@ -22,6 +24,13 @@ const RegistrationModal = ({ close }) => {
 	const [state, setState] = useState("form");
 	// initial values for Formik
 	const [initialValues, setInitialValues] = useState({});
+
+	useHotkeys(
+		availableHotkeys.general.CLOSE_MODAL.sequence,
+		() => close(),
+		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
+		[close],
+  	);
 
 	const handleClose = () => {
 		close();
