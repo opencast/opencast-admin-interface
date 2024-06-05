@@ -149,6 +149,28 @@
     .filter-details {
         @include filter-dd-mixin();
 
+        .edit-details {
+            padding: 5px 10px;
+
+            > label {
+                display: block;
+                line-height: 20px;
+            }
+
+            > input, textarea {
+                padding-left: 10px;
+                width: 100%;
+                margin-bottom: 10px;
+                resize: none;
+                font-size: 12px;
+            }
+
+            > input {
+                height: 30px;
+            }
+
+        } // edit-details
+
         .input-container {
 
             //padding: 10px;
@@ -185,8 +207,7 @@
         .btn-container {
             width: 100%;
             float: right;
-            padding: 5px 5px 30px 5px;
-            height: 28px;
+            padding: 5px;
             @include border-bottom-radius($main-border-radius);
             background: darken($body-background, 3%);
             border-top: 1px solid $main-border-color;
@@ -196,14 +217,14 @@
             @include btn(white);
             margin-right: 3px;
             float: left;
-            height: inherit;
+            height: 28px;
         } // cancel
 
         .save {
             @include btn(green);
             text-shadow: none;
             float: right;
-            height: inherit;
+            height: 28px;
         } // save
     } // input-container
 

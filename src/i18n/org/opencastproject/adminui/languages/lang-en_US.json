@@ -1788,7 +1788,8 @@
 			"NAME": "Name",
 			"NAME_PLACEHOLDER": "Name…",
 			"DESCRIPTION": "Description",
-			"DESCRIPTION_PLACEHOLDER": "Description…"
+			"DESCRIPTION_PLACEHOLDER": "Description…",
+			"ADD": "Add"
 		}
 	},
 	"FILTERS": {
