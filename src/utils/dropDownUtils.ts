@@ -53,7 +53,7 @@ export const formatDropDownOptions = (
 			label: `-- ${t("SELECT_NO_OPTION_SELECTED")} --`,
 		});
 	}
-	if (type === "language") {
+	if (type === "language" || type === "license") {
 		for (const item of unformattedOptions) {
 			formattedOptions.push({
 				value: item.value,
