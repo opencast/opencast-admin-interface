@@ -77,7 +77,7 @@ const NewSourcePage = <T extends RequiredFormProps>({
 	const user = useAppSelector(state => getUserInformation(state));
 	const inputDevices = useAppSelector(state => getRecordings(state));
 
-	const [conflicts, setConflicts] = useState<{title: string, start: number, end: number}[]>([]);
+	const [conflicts, setConflicts] = useState<{title: string, start: string, end: string}[]>([]);
 
 	useEffect(() => {
 		// Load recordings that can be used for input
