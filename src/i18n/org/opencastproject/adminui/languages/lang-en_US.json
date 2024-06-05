@@ -2002,6 +2002,8 @@
 	"TABLE_NO_RESULT": "No results found",
 	"TABLE_LOADING": "Loading…",
 	"TABLE_EDIT": "Edit",
+	"TABLE_NEXT": "Next page",
+	"TABLE_PREVIOUS": "Previous page",
 	"DASHBOARD": {
 		"RUNNING": "Running",
 		"FINISHED": "Finished",

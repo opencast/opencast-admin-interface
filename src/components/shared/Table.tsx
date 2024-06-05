@@ -337,7 +337,7 @@ const Table = ({
 						className={"button-like-anchor " + cn("prev", { disabled: !isNavigatePrevious() })}
 						onClick={() => goToPage(pageOffset - 1)}
 					>
-						<span className="sr-only">{t("EVENTS.EVENTS.TABLE.PREVIOUS")}</span>
+						<span className="sr-only">{t("TABLE_PREVIOUS")}</span>
 					</button>
 					{directAccessible.map((page, key) =>
 						page.active ? (
@@ -355,7 +355,7 @@ const Table = ({
 						className={"button-like-anchor " + cn("next", { disabled: !isNavigateNext() })}
 						onClick={() => goToPage(pageOffset + 1)}
 					>
-						<span className="sr-only">{t("EVENTS.EVENTS.TABLE.NEXT")}</span>
+						<span className="sr-only">{t("TABLE_NEXT")}</span>
 					</button>
 				</div>
 			</div>
