@@ -14,6 +14,7 @@ import { translateOverrideFallback } from "../../../../utils/utils";
 import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
+import { renderValidDate } from "../../../../utils/dateUtils";
 
 /**
  * This component renders the summary page for new events in the new event wizard.
@@ -181,7 +182,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 												</td>
 												<td>
 													{t("dateFormats.date.short", {
-														date: new Date(formik.values.startDate),
+														date: renderValidDate(formik.values.startDate),
 													})}
 												</td>
 											</tr>

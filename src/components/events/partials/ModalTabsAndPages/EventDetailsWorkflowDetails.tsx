@@ -14,6 +14,7 @@ import {
 	fetchWorkflowOperations,
 } from "../../../../slices/eventDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { renderValidDate } from "../../../../utils/dateUtils";
 
 /**
  * This component manages the workflow details for the workflows tab of the event details modal
@@ -117,7 +118,7 @@ const EventDetailsWorkflowDetails = ({
 												</td>
 												<td>
 													{t("dateFormats.dateTime.medium", {
-														dateTime: new Date(workflowData.submittedAt),
+														dateTime: renderValidDate(workflowData.submittedAt),
 													})}
 												</td>
 											</tr>

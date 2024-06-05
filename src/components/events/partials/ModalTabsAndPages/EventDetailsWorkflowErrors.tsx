@@ -9,6 +9,7 @@ import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNaviga
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { fetchWorkflowErrorDetails } from "../../../../slices/eventDetailsSlice";
+import { renderValidDate } from "../../../../utils/dateUtils";
 
 /**
  * This component manages the workflow errors for the workflows tab of the event details modal
@@ -119,7 +120,7 @@ const EventDetailsWorkflowErrors = ({
 														</td>
 														<td>
 															{t("dateFormats.dateTime.medium", {
-																dateTime: new Date(item.timestamp),
+																dateTime: renderValidDate(item.timestamp),
 															})}
 														</td>
 														<td>{item.title}</td>

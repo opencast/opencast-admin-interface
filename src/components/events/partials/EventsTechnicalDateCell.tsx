@@ -6,6 +6,7 @@ import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { connect } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
+import { renderValidDate } from "../../../utils/dateUtils";
 
 /**
  * This component renders the technical date cells of events in the table view
@@ -40,7 +41,7 @@ const EventsTechnicalDateCell = ({
 // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 			onClick={() => addFilter()}
 		>
-			{t("dateFormats.date.short", { date: new Date(row.technical_start) })}
+			{t("dateFormats.date.short", { date: renderValidDate(row.technical_start) })}
 		</button>
 	);
 };

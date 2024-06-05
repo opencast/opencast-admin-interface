@@ -6,6 +6,7 @@ import { getFilters } from "../../../selectors/tableFilterSelectors";
 import { connect } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
+import { renderValidDate } from "../../../utils/dateUtils";
 
 /**
  * This component renders the start date cells of events in the table view
@@ -39,7 +40,7 @@ const EventsDateCell = ({
 			title={t("EVENTS.EVENTS.TABLE.TOOLTIP.START")}
 			onClick={() => addFilter(row.date)}
 		>
-			{t("dateFormats.date.short", { date: new Date(row.date) })}
+			{t("dateFormats.date.short", { date: renderValidDate(row.date) })}
 		</button>
 	);
 };

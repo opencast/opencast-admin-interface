@@ -28,6 +28,7 @@ import {
 	changeStartHour,
 	changeStartMinute,
 	makeDate,
+	renderValidDate,
 } from "../../../../utils/dateUtils";
 import { hours, minutes } from "../../../../configs/modalConfig";
 import {
@@ -225,12 +226,12 @@ const EventDetailsSchedulingTab = ({
 											<td>{conflict.title}</td>
 											<td>
 												{t("dateFormats.dateTime.medium", {
-													dateTime: new Date(conflict.start),
+													dateTime: renderValidDate(conflict.start),
 												})}
 											</td>
 											<td>
 												{t("dateFormats.dateTime.medium", {
-													dateTime: new Date(conflict.end),
+													dateTime: renderValidDate(conflict.end),
 												})}
 											</td>
 										</tr>

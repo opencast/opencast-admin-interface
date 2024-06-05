@@ -24,6 +24,7 @@ import { getResourceType } from "../../selectors/tableSelectors";
 import { useHotkeys } from "react-hotkeys-hook";
 import moment from "moment";
 import { useAppDispatch, useAppSelector } from "../../store";
+import { renderValidDate } from "../../utils/dateUtils";
 
 /**
  * This component renders the table filters in the upper right corner of the table
@@ -309,11 +310,11 @@ const TableFilters = ({
 														<span>
 															{t(filter.label).substr(0, 40)}:
 															{t("dateFormats.date.short", {
-																date: new Date(filter.value.split("/")[0]),
+																date: renderValidDate(filter.value.split("/")[0]),
 															})}
 															-
 															{t("dateFormats.date.short", {
-																date: new Date(filter.value.split("/")[1]),
+																date: renderValidDate(filter.value.split("/")[1]),
 															})}
 														</span>
 													</span>
