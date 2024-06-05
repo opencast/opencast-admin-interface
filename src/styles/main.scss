@@ -141,6 +141,20 @@ div.main-view.stub, div.full-col > div.stub {
   .select-container > p {
     margin-bottom: 10px;
   }
+
+  h2 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  table {
+    table-layout: fixed;
+  }
+
+  .editable {
+    word-wrap: anywhere;
+  }
 }
 
 .modal-animation {
@@ -533,7 +547,13 @@ table.main-tbl {
     display: none !important;
   }
 
-  td{
+  th,
+  td {
+    max-width: 800px;
+    word-wrap: anywhere;
+  }
+
+  td {
     .fa-check {
       float: right;
       color: $green;
