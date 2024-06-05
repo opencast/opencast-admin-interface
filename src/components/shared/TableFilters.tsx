@@ -195,9 +195,11 @@ const TableFilters = ({
 				}));
 				setFilterSelector(false);
 				dispatch(removeSelectedFilter());
-				// Reload of resource
-				await loadResource();
-				loadResourceIntoTable();
+				// Reload of resource after going to very first page.
+				dispatch(goToPage(0)).then(async () => {
+					await loadResource();
+					loadResourceIntoTable();
+				});
 			}
 		}
 
