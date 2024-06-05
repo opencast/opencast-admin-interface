@@ -269,7 +269,7 @@ const ShowValue = ({
 				{showCheck && (
 					<i
 						className={cn("saved fa fa-check", {
-							active: initialValues[field.name] !== field.value,
+							active: JSON.stringify(initialValues[field.name] ?? []) !== JSON.stringify(field.value ?? []),
 						})}
 					/>
 				)}
