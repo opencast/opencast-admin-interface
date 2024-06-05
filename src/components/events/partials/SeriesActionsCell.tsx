@@ -22,6 +22,8 @@ import {
 	deleteSeries,
 } from "../../../slices/seriesSlice";
 
+import { Tooltip } from "../../shared/Tooltip";
+
 /**
  * This component renders the action cells of series in the table view
  */
@@ -72,11 +74,12 @@ const SeriesActionsCell = ({
 		<>
 			{/* series details */}
 			{hasAccess("ROLE_UI_SERIES_DETAILS_VIEW", user) && (
-				<button
-					onClick={() => showSeriesDetailsModal()}
-					className="button-like-anchor more-series"
-					title={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}
-				/>
+				<Tooltip title={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}>
+					<button
+						onClick={() => showSeriesDetailsModal()}
+						className="button-like-anchor more-series"
+					/>
+				</Tooltip>
 			)}
 
 			{displaySeriesDetailsModal && (
@@ -89,11 +92,13 @@ const SeriesActionsCell = ({
 
 			{/* delete series */}
 			{hasAccess("ROLE_UI_SERIES_DELETE", user) && (
-				<button
-					onClick={() => showDeleteConfirmation()}
-					className="button-like-anchor remove"
-					title={t("EVENTS.SERIES.TABLE.TOOLTIP.DELETE")}
-				/>
+				<Tooltip title={t("EVENTS.SERIES.TABLE.TOOLTIP.DELETE")}>
+					<button
+						onClick={() => showDeleteConfirmation()}
+						className="button-like-anchor remove"
+
+					/>
+				</Tooltip>
 			)}
 
 			{displayDeleteConfirmation && (

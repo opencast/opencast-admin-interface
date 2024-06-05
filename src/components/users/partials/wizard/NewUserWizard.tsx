@@ -9,6 +9,7 @@ import { getUsernames } from "../../../../selectors/userSelectors";
 import { NewUserSchema } from "../../../../utils/validate";
 import { postNewUser } from "../../../../slices/userSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store";
+import { Tooltip } from "../../../shared/Tooltip";
 
 /**
  * This component renders the new user wizard
@@ -52,13 +53,14 @@ const NewUserWizard = ({
 				>
 					{t("USERS.USERS.DETAILS.TABS.USER")}
 				</button>
-				<button
-					className={"button-like-anchor " + cn("wider", { active: tab === 1 })}
-					onClick={() => openTab(1)}
-					title={t("USERS.USERS.DETAILS.DESCRIPTION.ROLES")}
-				>
-					{t("USERS.USERS.DETAILS.TABS.ROLES")}
-				</button>
+				<Tooltip title={t("USERS.USERS.DETAILS.DESCRIPTION.ROLES")}>
+					<button
+						className={"button-like-anchor " + cn("wider", { active: tab === 1 })}
+						onClick={() => openTab(1)}
+					>
+						{t("USERS.USERS.DETAILS.TABS.ROLES")}
+					</button>
+				</Tooltip>
 			</nav>
 
 			{/* Initialize overall form */}

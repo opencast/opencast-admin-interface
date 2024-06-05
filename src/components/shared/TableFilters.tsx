@@ -28,6 +28,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import moment from "moment";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { renderValidDate } from "../../utils/dateUtils";
+import { Tooltip } from "./Tooltip";
 
 /**
  * This component renders the table filters in the upper right corner of the table
@@ -260,11 +261,12 @@ const TableFilters = ({
 				{!!filterMap && (
 					<div className="table-filter">
 						<div className="filters">
-							<i
-								title={t("TABLE_FILTERS.ADD")}
-								className="fa fa-filter"
-								onClick={() => setFilterSelector(!showFilterSelector)}
-							/>
+							<Tooltip title={t("TABLE_FILTERS.ADD")}>
+								<i
+									className="fa fa-filter"
+									onClick={() => setFilterSelector(!showFilterSelector)}
+								/>
+							</Tooltip>
 
 							{/*show if icon is clicked*/}
 							{showFilterSelector && (
@@ -352,30 +354,33 @@ const TableFilters = ({
 											}
 										</span>
 										{/* Remove icon in blue area around filter */}
-										<button
-											title={t("TABLE_FILTERS.REMOVE")}
-											onClick={() => removeFilter(filter)}
-											className="button-like-anchor"
-										>
-											<i className="fa fa-times" />
-										</button>
+										<Tooltip title={t("TABLE_FILTERS.REMOVE")}>
+											<button
+												onClick={() => removeFilter(filter)}
+												className="button-like-anchor"
+											>
+												<i className="fa fa-times" />
+											</button>
+										</Tooltip>
 									</span>
 								);
 							})}
 						</div>
 
 						{/* Remove icon to clear all filters */}
-						<i
-							onClick={removeFilters}
-							title={t("TABLE_FILTERS.CLEAR")}
-							className="clear fa fa-times"
-						/>
+						<Tooltip title={t("TABLE_FILTERS.CLEAR")}>
+							<i
+								onClick={removeFilters}
+								className="clear fa fa-times"
+							/>
+						</Tooltip>
 						{/* Settings icon to open filters profile dialog (save and editing filter profiles)*/}
-						<i
-							onClick={() => setFilterSettings(!showFilterSettings)}
-							title={t("TABLE_FILTERS.PROFILES.FILTERS_HEADER")}
-							className="settings fa fa-cog fa-times"
-						/>
+						<Tooltip title={t("TABLE_FILTERS.PROFILES.FILTERS_HEADER")}>
+							<i
+								onClick={() => setFilterSettings(!showFilterSettings)}
+								className="settings fa fa-cog fa-times"
+							/>
+						</Tooltip>
 
 						{/* Filter profile dialog for saving and editing filter profiles */}
 						<TableFilterProfiles

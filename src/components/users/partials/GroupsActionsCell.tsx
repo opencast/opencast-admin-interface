@@ -8,6 +8,7 @@ import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch, useAppSelector  } from "../../../store";
 import { deleteGroup } from "../../../slices/groupSlice";
 import { fetchGroupDetails } from "../../../slices/groupDetailsSlice";
+import { Tooltip } from "../../shared/Tooltip";
 
 /**
  * This component renders the action cells of groups in the table view
@@ -46,11 +47,12 @@ const GroupsActionsCell = ({
 		<>
 			{/*edit/show group */}
 			{hasAccess("ROLE_UI_GROUPS_EDIT", user) && (
-				<button
-					onClick={() => showGroupDetails()}
-					className="button-like-anchor more"
-					title={t("USERS.GROUPS.TABLE.TOOLTIP.DETAILS")}
-				/>
+				<Tooltip title={t("USERS.GROUPS.TABLE.TOOLTIP.DETAILS")}>
+					<button
+						onClick={() => showGroupDetails()}
+						className="button-like-anchor more"
+					/>
+				</Tooltip>
 			)}
 
 			{/*modal displaying details about group*/}
@@ -60,11 +62,12 @@ const GroupsActionsCell = ({
 
 			{/* delete group */}
 			{hasAccess("ROLE_UI_GROUPS_DELETE", user) && (
-				<button
-					onClick={() => setDeleteConfirmation(true)}
-					className="button-like-anchor remove"
-					title={t("USERS.GROUPS.TABLE.TOOLTIP.DETAILS")}
-				/>
+				<Tooltip title={t("USERS.GROUPS.TABLE.TOOLTIP.DETAILS")}>
+					<button
+						onClick={() => setDeleteConfirmation(true)}
+						className="button-like-anchor remove"
+					/>
+				</Tooltip>
 			)}
 
 			{/*Confirmation for deleting a group*/}

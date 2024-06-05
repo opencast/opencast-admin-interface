@@ -6,6 +6,7 @@ import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchServices, restartService } from "../../../slices/serviceSlice";
+import { Tooltip } from "../../shared/Tooltip";
 
 /**
  * This component renders the action cells of services in the table view
@@ -32,11 +33,12 @@ const ServicesActionCell = ({
 	return (
 		row.status !== "SYSTEMS.SERVICES.STATUS.NORMAL" &&
 		hasAccess("ROLE_UI_SERVICES_STATUS_EDIT", user) && (
-			<button
-				className="button-like-anchor sanitize fa fa-undo"
-				onClick={() => onClickRestart()}
-				title={t("SYSTEMS.SERVICES.TABLE.SANITIZE")}
-			/>
+			<Tooltip title={t("SYSTEMS.SERVICES.TABLE.SANITIZE")}>
+				<button
+					className="button-like-anchor sanitize fa fa-undo"
+					onClick={() => onClickRestart()}
+				/>
+			</Tooltip>
 		)
 	);
 };

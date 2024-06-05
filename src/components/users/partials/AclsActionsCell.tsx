@@ -7,6 +7,7 @@ import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchAclDetails } from "../../../slices/aclDetailsSlice";
+import { Tooltip } from "../../shared/Tooltip";
 
 /**
  * This component renders the action cells of acls in the table view
@@ -45,11 +46,12 @@ const AclsActionsCell = ({
 		<>
 			{/* edit/show ACL details */}
 			{hasAccess("ROLE_UI_ACLS_EDIT", user) && (
-				<button
-					onClick={() => showAclDetails()}
-					className="button-like-anchor more"
-					title={t("USERS.ACLS.TABLE.TOOLTIP.DETAILS")}
-				/>
+				<Tooltip title={t("USERS.ACLS.TABLE.TOOLTIP.DETAILS")}>
+					<button
+						onClick={() => showAclDetails()}
+						className="button-like-anchor more"
+					/>
+				</Tooltip>
 			)}
 
 			{displayAclDetails && (
@@ -58,11 +60,12 @@ const AclsActionsCell = ({
 
 			{/* delete ACL */}
 			{hasAccess("ROLE_UI_ACLS_DELETE", user) && (
-				<button
-					onClick={() => setDeleteConfirmation(true)}
-					className="button-like-anchor remove"
-					title={t("USERS.ACLS.TABLE.TOOLTIP.DETAILS")}
-				/>
+				<Tooltip title={t("USERS.ACLS.TABLE.TOOLTIP.DETAILS")}>
+					<button
+						onClick={() => setDeleteConfirmation(true)}
+						className="button-like-anchor remove"
+					/>
+				</Tooltip>
 			)}
 
 			{/* Confirmation for deleting an ACL */}

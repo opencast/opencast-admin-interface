@@ -5,6 +5,7 @@ import { setSpecificEventFilter } from "../../../slices/tableFilterSlice";
 import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { connect } from "react-redux";
 import { useAppDispatch } from "../../../store";
+import { Tooltip } from "../../shared/Tooltip";
 
 /**
  * This component renders the name cells of recordings in the table view
@@ -28,14 +29,15 @@ const RecordingsNameCell = ({
 	};
 
 	return (
-		<Link
-			to="/events/events"
-			className="crosslink"
-			onClick={async () => await redirectToEvents(row.Name)}
-			title={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.NAME")}
-		>
-			{row.name}
-		</Link>
+		<Tooltip title={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.NAME")}>
+			<Link
+				to="/events/events"
+				className="crosslink"
+				onClick={async () => await redirectToEvents(row.Name)}
+			>
+				{row.name}
+			</Link>
+		</Tooltip>
 	);
 };
 

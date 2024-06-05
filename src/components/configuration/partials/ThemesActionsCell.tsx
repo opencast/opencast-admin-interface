@@ -10,6 +10,7 @@ import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { deleteTheme } from "../../../slices/themeSlice";
+import { Tooltip } from "../../shared/Tooltip";
 
 /**
  * This component renders the action cells of themes in the table view
@@ -49,11 +50,12 @@ const ThemesActionsCell = ({
 		<>
 			{/* edit themes */}
 			{hasAccess("ROLE_UI_THEMES_EDIT", user) && (
-				<button
-					onClick={() => showThemeDetails()}
-					className="button-like-anchor more"
-					title={t("CONFIGURATION.THEMES.TABLE.TOOLTIP.DETAILS")}
-				/>
+				<Tooltip title={t("CONFIGURATION.THEMES.TABLE.TOOLTIP.DETAILS")}>
+					<button
+						onClick={() => showThemeDetails()}
+						className="button-like-anchor more"
+					/>
+				</Tooltip>
 			)}
 
 			{displayThemeDetails && (
@@ -66,11 +68,12 @@ const ThemesActionsCell = ({
 
 			{/* delete themes */}
 			{hasAccess("ROLE_UI_THEMES_DELETE", user) && (
-				<button
-					onClick={() => setDeleteConfirmation(true)}
-					className="button-like-anchor remove ng-scope ng-isolate-scope"
-					title={t("CONFIGURATION.THEMES.TABLE.TOOLTIP.DELETE")}
-				/>
+				<Tooltip title={t("CONFIGURATION.THEMES.TABLE.TOOLTIP.DELETE")}>
+					<button
+						onClick={() => setDeleteConfirmation(true)}
+						className="button-like-anchor remove ng-scope ng-isolate-scope"
+					/>
+				</Tooltip>
 			)}
 
 			{displayDeleteConfirmation && (

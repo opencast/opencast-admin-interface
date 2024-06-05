@@ -8,6 +8,7 @@ import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { deleteRecording } from "../../../slices/recordingSlice";
 import { fetchRecordingDetails } from "../../../slices/recordingDetailsSlice";
+import { Tooltip } from "../../shared/Tooltip";
 
 /**
  * This component renders the action cells of recordings in the table view
@@ -47,11 +48,12 @@ const RecordingsActionCell = ({
 		<>
 			{/* view details location/recording */}
 			{hasAccess("ROLE_UI_LOCATIONS_DETAILS_VIEW", user) && (
-				<button
-					className="button-like-anchor more"
-					title={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DETAILS")}
-					onClick={() => showRecordingDetails()}
-				/>
+				<Tooltip title={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DETAILS")}>
+					<button
+						className="button-like-anchor more"
+						onClick={() => showRecordingDetails()}
+					/>
+				</Tooltip>
 			)}
 
 			{displayRecordingDetails && (
@@ -63,11 +65,12 @@ const RecordingsActionCell = ({
 
 			{/* delete location/recording */}
 			{hasAccess("ROLE_UI_LOCATIONS_DELETE", user) && (
-				<button
-					className="button-like-anchor remove"
-					title={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DELETE")}
-					onClick={() => setDeleteConfirmation(true)}
-				/>
+				<Tooltip title={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DELETE")}>
+					<button
+						className="button-like-anchor remove"
+						onClick={() => setDeleteConfirmation(true)}
+					/>
+				</Tooltip>
 			)}
 
 			{displayDeleteConfirmation && (
