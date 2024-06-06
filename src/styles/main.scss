@@ -489,9 +489,9 @@ input.disabled, select.disabled {
 
 // Use HTML5 input field for file upload
 .file-upload > input[type="file"] {
-  width: inherit !important;
+  width: 300px;
   visibility: visible !important;
-  hidden: false !important;
+  text-align: left;
 }
 
 // Notification alias error to danger
