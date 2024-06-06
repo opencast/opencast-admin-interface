@@ -470,7 +470,7 @@ const FilterSwitch = ({
 						autoFocus={true}
 						inputRef={startDateRef}
 						className="small-search start-date"
-						value={startDate}
+						value={startDate ?? null}
 						format="dd/MM/yyyy"
 						onChange={(date) => handleDate(date as Date | null, true)}
 						// FixMe: onAccept does not trigger if the already set value is the same as the selected value
@@ -493,7 +493,7 @@ const FilterSwitch = ({
 					<DatePicker
 						inputRef={endDateRef}
 						className="small-search end-date"
-						value={endDate}
+						value={endDate ?? null}
 						format="dd/MM/yyyy"
 						onChange={(date) => handleDate(date as Date | null)}
 						// FixMe: See above
