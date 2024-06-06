@@ -50,6 +50,7 @@ const RecordingsActionCell = ({
 				<button
 					className="button-like-anchor more"
 					title={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DETAILS")}
+					aria-label={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DETAILS")}
 					onClick={() => showRecordingDetails()}
 				/>
 			)}
@@ -66,6 +67,7 @@ const RecordingsActionCell = ({
 				<button
 					className="button-like-anchor remove"
 					title={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DELETE")}
+					aria-label={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DELETE")}
 					onClick={() => setDeleteConfirmation(true)}
 				/>
 			)}
