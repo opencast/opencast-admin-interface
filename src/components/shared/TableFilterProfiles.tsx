@@ -90,6 +90,13 @@ const TableFiltersProfiles = ({
 		resetStateValues();
 	};
 
+	const closeFilterSetting = () => {
+		if (currentlyEditing) {
+			cancelEditProfile();
+		}
+		setFilterSettings(!showFilterSettings);
+	};
+
 	const resetStateValues = () => {
 		setProfileName("");
 		setProfileDescription("");
@@ -139,7 +146,7 @@ const TableFiltersProfiles = ({
 							<header>
 								<button
 									className="button-like-anchor icon close"
-									onClick={() => setFilterSettings(!showFilterSettings)}
+									onClick={closeFilterSetting}
 								/>
 								<h4>{t("TABLE_FILTERS.PROFILES.FILTERS_HEADER")}</h4>
 							</header>
@@ -194,10 +201,7 @@ const TableFiltersProfiles = ({
 							<header>
 								<button
 									className="button-like-anchor icon close"
-									onClick={() => {
-										setFilterSettings(!showFilterSettings);
-										setSettingsMode(true);
-									}}
+									onClick={closeFilterSetting}
 								/>
 								<h4>{t("TABLE_FILTERS.PROFILES.FILTER_HEADER")}</h4>
 							</header>
