@@ -22,7 +22,8 @@ jobs:
         run: npm ci
 
       - name: create release tarball
-        run: ./.github/build-release.sh
+        working-directory: .github
+        run: ./build-release.sh
 
       - name: create new release
         uses: softprops/action-gh-release@v2
