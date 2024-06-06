@@ -49,6 +49,7 @@ const AclsActionsCell = ({
 					onClick={() => showAclDetails()}
 					className="button-like-anchor more"
 					title={t("USERS.ACLS.TABLE.TOOLTIP.DETAILS")}
+					aria-label={t("USERS.ACLS.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
 
@@ -62,6 +63,7 @@ const AclsActionsCell = ({
 					onClick={() => setDeleteConfirmation(true)}
 					className="button-like-anchor remove"
 					title={t("USERS.ACLS.TABLE.TOOLTIP.DETAILS")}
+					aria-label={t("USERS.ACLS.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
 
