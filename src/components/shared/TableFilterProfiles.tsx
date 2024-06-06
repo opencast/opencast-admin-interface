@@ -7,6 +7,9 @@ import {
 	createFilterProfile,
 	removeFilterProfile,
 } from "../../slices/tableFilterProfilesSlice";
+import {
+	goToPage,
+} from "../../thunks/tableThunks";
 import { getFilters } from "../../selectors/tableFilterSelectors";
 import { loadFilterProfile } from "../../slices/tableFilterSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
@@ -124,9 +127,12 @@ const TableFiltersProfiles = ({
 	const chooseFilterProfile = (filterMap) => {
 		dispatch(loadFilterProfile(filterMap));
 
-		// Reload resources when filters are removed
-		loadResource();
-		loadResourceIntoTable();
+		// No matter what, we go to page one.
+		dispatch(goToPage(0)).then(async () => {
+			// Reload resources when filters are removed
+			await loadResource();
+			loadResourceIntoTable();
+		});
 	};
 
 	return (
