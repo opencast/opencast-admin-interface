@@ -489,7 +489,7 @@ input.disabled, select.disabled {
 
 // Use HTML5 input field for file upload
 .file-upload > input[type="file"] {
-  width: 300px;
+  width: 100%;
   visibility: visible !important;
   text-align: left;
 }
