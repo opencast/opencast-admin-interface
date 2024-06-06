@@ -334,12 +334,13 @@ const Table = ({
 				</div>
 
 				{/* Pagination and navigation trough pages */}
-				<div className="pagination">
+				<div className="pagination" role="group" aria-label={t("TABLE_PAGINATION")}>
 					<button
 						className={"button-like-anchor " + cn("prev", { disabled: !isNavigatePrevious() })}
 						onClick={() => goToPage(pageOffset - 1)}
+						title={t("TABLE_PREVIOUS")}
+						aria-label={t("TABLE_PREVIOUS")}
 					>
-						<span className="sr-only">{t("TABLE_PREVIOUS")}</span>
 					</button>
 					{directAccessible.map((page, key) =>
 						page.active ? (
@@ -356,8 +357,9 @@ const Table = ({
 					<button
 						className={"button-like-anchor " + cn("next", { disabled: !isNavigateNext() })}
 						onClick={() => goToPage(pageOffset + 1)}
+						title={t("TABLE_NEXT")}
+						aria-label={t("TABLE_NEXT")}
 					>
-						<span className="sr-only">{t("TABLE_NEXT")}</span>
 					</button>
 				</div>
 			</div>
