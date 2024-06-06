@@ -314,14 +314,6 @@ const Upload = ({ formik }) => {
 														name={`uploadAssetsTrack.${key}.file`}
 														tabIndex={0}
 													/>
-													{/* Show name of file that is uploaded */}
-													{formik.values.uploadAssetsTrack[key].file && (
-														<span className="ui-helper">
-															{formik.values.uploadAssetsTrack[
-																key
-															].file[0].name.substr(0, 50)}
-														</span>
-													)}
 												</div>
 											</td>
 											<td className="fit">
