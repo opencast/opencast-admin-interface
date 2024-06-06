@@ -53,6 +53,7 @@ const ThemesActionsCell = ({
 					onClick={() => showThemeDetails()}
 					className="button-like-anchor more"
 					title={t("CONFIGURATION.THEMES.TABLE.TOOLTIP.DETAILS")}
+					aria-label={t("CONFIGURATION.THEMES.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
 
@@ -70,6 +71,7 @@ const ThemesActionsCell = ({
 					onClick={() => setDeleteConfirmation(true)}
 					className="button-like-anchor remove ng-scope ng-isolate-scope"
 					title={t("CONFIGURATION.THEMES.TABLE.TOOLTIP.DELETE")}
+					aria-label={t("CONFIGURATION.THEMES.TABLE.TOOLTIP.DELETE")}
 				/>
 			)}
 
