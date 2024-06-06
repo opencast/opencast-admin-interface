@@ -123,6 +123,7 @@ const EventActionCell = ({
 					onClick={() => onClickEventDetails()}
 					className="button-like-anchor more"
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.DETAILS")}
+					aria-label={t("EVENTS.EVENTS.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
 
@@ -132,6 +133,7 @@ const EventActionCell = ({
 					onClick={() => onClickSeriesDetails()}
 					className="button-like-anchor more-series"
 					title={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}
+					aria-label={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
 
@@ -142,6 +144,7 @@ const EventActionCell = ({
 					onClick={() => setDeleteConfirmation(true)}
 					className="button-like-anchor remove"
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.DELETE")}
+					aria-label={t("EVENTS.EVENTS.TABLE.TOOLTIP.DELETE")}
 				/>
 			)}
 
@@ -166,6 +169,11 @@ const EventActionCell = ({
 							? t("EVENTS.EVENTS.TABLE.TOOLTIP.EDITOR_NEEDS_CUTTING")
 							: t("EVENTS.EVENTS.TABLE.TOOLTIP.EDITOR")
 					}
+					aria-label={
+						row.needs_cutting
+							? t("EVENTS.EVENTS.TABLE.TOOLTIP.EDITOR_NEEDS_CUTTING")
+							: t("EVENTS.EVENTS.TABLE.TOOLTIP.EDITOR")
+					}
 					target="_blank" rel="noreferrer"
 				>
 					{row.needs_cutting && <span id="badge" className="badge" />}
@@ -177,6 +185,7 @@ const EventActionCell = ({
 				<button
 					onClick={() => onClickComments()}
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.COMMENTS")}
+					aria-label={t("EVENTS.EVENTS.TABLE.TOOLTIP.COMMENTS")}
 					className="button-like-anchor comments"
 				/>
 			)}
@@ -186,6 +195,7 @@ const EventActionCell = ({
 				<button
 					onClick={() => onClickComments()}
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.COMMENTS")}
+					aria-label={t("EVENTS.EVENTS.TABLE.TOOLTIP.COMMENTS")}
 					className="button-like-anchor comments-open"
 				/>
 			)}
@@ -196,6 +206,7 @@ const EventActionCell = ({
 				hasAccess("ROLE_UI_EVENTS_DETAILS_WORKFLOWS_EDIT", user) && (
 					<button
 						title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PAUSED_WORKFLOW")}
+						aria-label={t("EVENTS.EVENTS.TABLE.TOOLTIP.PAUSED_WORKFLOW")}
 						onClick={() => onClickWorkflow()}
 						className="button-like-anchor fa fa-warning"
 					/>
@@ -206,6 +217,7 @@ const EventActionCell = ({
 				<button
 					onClick={() => onClickAssets()}
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.ASSETS")}
+					aria-label={t("EVENTS.EVENTS.TABLE.TOOLTIP.ASSETS")}
 					className="button-like-anchor fa fa-folder-open"
 				/>
 			)}
@@ -214,6 +226,7 @@ const EventActionCell = ({
 				<button
 					onClick={() => showEmbeddingCodeModal()}
 					title={t("EVENTS.EVENTS.TABLE.TOOLTIP.EMBEDDING_CODE")}
+					aria-label={t("EVENTS.EVENTS.TABLE.TOOLTIP.EMBEDDING_CODE")}
 					className="button-like-anchor fa fa-link"
 				/>
 			)}
