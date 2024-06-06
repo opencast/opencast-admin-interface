@@ -12,8 +12,9 @@ import { getTotalThemes } from "../../selectors/themeSelectors";
 import { loadThemesIntoTable } from "../../thunks/tableThunks";
 import Notifications from "../shared/Notifications";
 import NewResourceModal from "../shared/NewResourceModal";
-import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
 import Header from "../Header";
+import NavBar from "../NavBar";
+import MainView from "../MainView";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
@@ -85,7 +86,7 @@ const Themes = ({
 	return (
 		<>
 			<Header />
-			<section className="action-nav-bar">
+			<NavBar>
 				{/* Add theme button */}
 				<div className="btn-group">
 					{hasAccess("ROLE_UI_THEMES_CREATE", user) && (
@@ -117,12 +118,9 @@ const Themes = ({
 						</Link>
 					)}
 				</nav>
-			</section>
+			</NavBar>
 
-			<div
-				className="main-view"
-				style={displayNavigation ? styleNavOpen : styleNavClosed}
-			>
+			<MainView open={displayNavigation}>
 				{/* Include notifications component */}
 				<Notifications />
 
@@ -138,7 +136,7 @@ const Themes = ({
 				</div>
 				{/* Include table component */}
 				<Table templateMap={themesTemplateMap} />
-			</div>
+			</MainView>
 			<Footer />
 		</>
 	);
