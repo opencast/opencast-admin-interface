@@ -76,6 +76,7 @@ const SeriesActionsCell = ({
 					onClick={() => showSeriesDetailsModal()}
 					className="button-like-anchor more-series"
 					title={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}
+					aria-label={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}
 				/>
 			)}
 
@@ -93,6 +94,7 @@ const SeriesActionsCell = ({
 					onClick={() => showDeleteConfirmation()}
 					className="button-like-anchor remove"
 					title={t("EVENTS.SERIES.TABLE.TOOLTIP.DELETE")}
+					aria-label={t("EVENTS.SERIES.TABLE.TOOLTIP.DELETE")}
 				/>
 			)}
 
