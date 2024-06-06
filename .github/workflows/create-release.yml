@@ -21,9 +21,14 @@ jobs:
       - name: download dependencies
         run: npm ci
 
+      - name: build release
+        env:
+          PUBLIC_URL: /admin-ui
+        run: npm run build
+
       - name: create release tarball
-        working-directory: .github
-        run: ./build-release.sh
+        working-directory: build
+        run: tar -czf "../oc-admin-ui-$(date -u +%F).tar.gz" *
 
       - name: create new release
         uses: softprops/action-gh-release@v2
