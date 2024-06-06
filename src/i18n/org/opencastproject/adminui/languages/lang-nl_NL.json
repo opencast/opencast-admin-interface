@@ -566,7 +566,8 @@
 			"NAVIGATION": {
 				"EVENTS": "Begivenheder",
 				"SERIES": "Serier",
-				"OVERVIEW": "Oversigt"
+				"OVERVIEW": "Oversigt",
+				"LABEL": "Switch between events and series."
 			},
 			"UPLOAD": "Upload",
 			"ADD_SERIES": "Tilføj serier",
@@ -1785,7 +1786,8 @@
 			"NAME": "Navn",
 			"NAME_PLACEHOLDER": "Navn…",
 			"DESCRIPTION": "Beskriveslse",
-			"DESCRIPTION_PLACEHOLDER": "Beskriveslse…"
+			"DESCRIPTION_PLACEHOLDER": "Beskriveslse…",
+			"ADD": "Add"
 		}
 	},
 	"FILTERS": {

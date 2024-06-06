@@ -566,7 +566,8 @@
 			"NAVIGATION": {
 				"EVENTS": "Videos",
 				"SERIES": "Serien",
-				"OVERVIEW": "Übersicht"
+				"OVERVIEW": "Übersicht",
+				"LABEL": "Zwischen Aufzeichnungen und Serien wechseln."
 			},
 			"UPLOAD": "Hochladen",
 			"ADD_SERIES": "Serie hinzufügen",
@@ -608,8 +609,8 @@
 					"PAUSED_WORKFLOW": "Angehaltenen Workflow anzeigen",
 					"PRESENTER": "Nach diesem Vortragenden filtern"
 				},
-				"SELECT_ALL": "Select all events",
-				"SELECT_EVENT": "Select event \"{{title}}\""
+				"SELECT_ALL": "Alle Aufzeichnungen auswählen",
+				"SELECT_EVENT": "Aufzeichnung „{{title}}“ auswählen"
 			},
 			"STATUS": {
 				"SCHEDULED": "Geplant",
@@ -1243,9 +1244,9 @@
 				"EMAIL": "E-Mail",
 				"ROLES": "Rollen",
 				"COLLAPSED": {
-					"UI": "user interface roles",
-					"API": "API roles",
-					"CAPTURE_AGENT": "capture agent roles"
+					"UI": "UI-Rollen",
+					"API": "API-Rollen",
+					"CAPTURE_AGENT": "Capture-Agent-Rollen"
 				},
 				"TYPE": "Typ",
 				"PROVIDER": "Anbieter",
@@ -1785,7 +1786,8 @@
 			"NAME": "Name",
 			"NAME_PLACEHOLDER": "Name…",
 			"DESCRIPTION": "Beschreibung",
-			"DESCRIPTION_PLACEHOLDER": "Beschreibung…"
+			"DESCRIPTION_PLACEHOLDER": "Beschreibung…",
+			"ADD": "Hinzufügen"
 		}
 	},
 	"FILTERS": {
@@ -2088,7 +2090,7 @@
 				"NEW_EVENT": "Video hinzufügen",
 				"NEW_SERIES": "Serie hinzufügen",
 				"CHEAT_SHEET": "Tastenkürzel",
-				"CLOSE_MODAL": "Close dialog"
+				"CLOSE_MODAL": "Dialog schließen"
 			}
 		}
 	},

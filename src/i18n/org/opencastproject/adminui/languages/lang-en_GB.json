@@ -566,7 +566,8 @@
 			"NAVIGATION": {
 				"EVENTS": "Events",
 				"SERIES": "Series",
-				"OVERVIEW": "Overview"
+				"OVERVIEW": "Overview",
+				"LABEL": "Switch between events and series."
 			},
 			"UPLOAD": "Upload",
 			"ADD_SERIES": "Add series",
@@ -1785,7 +1786,8 @@
 			"NAME": "Name",
 			"NAME_PLACEHOLDER": "Name…",
 			"DESCRIPTION": "Description",
-			"DESCRIPTION_PLACEHOLDER": "Description…"
+			"DESCRIPTION_PLACEHOLDER": "Description…",
+			"ADD": "Add"
 		}
 	},
 	"FILTERS": {
