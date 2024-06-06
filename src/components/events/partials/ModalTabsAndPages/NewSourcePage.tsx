@@ -11,7 +11,6 @@ import {
 import { Field, FieldArray, FormikProps } from "formik";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
-import { sourceMetadata } from "../../../../configs/sourceConfig";
 import { hours, minutes, weekdays } from "../../../../configs/modalConfig";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import {
@@ -65,11 +64,9 @@ interface RequiredFormProps {
 const NewSourcePage = <T extends RequiredFormProps>({
 	formik,
 	nextPage,
-	previousPage,
 }: {
 	formik: FormikProps<T>,
 	nextPage: (values: T) => void,
-	previousPage: (values: T, twoPagesBack?: boolean) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -84,6 +81,7 @@ const NewSourcePage = <T extends RequiredFormProps>({
 		dispatch(fetchRecordings("inputs"));
 
 		// validate form because dependent default values need to be checked
+    console.info(formik);
 		formik.validateForm().then((r) => console.info(r));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -246,13 +244,6 @@ const NewSourcePage = <T extends RequiredFormProps>({
 				>
 					{t("WIZARD.NEXT_STEP")}
 				</button>
-				<button
-					className="cancel"
-					onClick={() => previousPage(formik.values, false)}
-					tabIndex={101}
-				>
-					{t("WIZARD.BACK")}
-				</button>
 			</footer>
 
 			<div className="btm-spacer" />
@@ -332,33 +323,6 @@ const Upload = ({ formik }) => {
 									))
 								}
 							</FieldArray>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div className="obj list-obj">
-				<header className="no-expand">
-					{t("EVENTS.EVENTS.NEW.SOURCE.UPLOAD.RECORDING_METADATA")}
-				</header>
-				<div className="obj-container">
-					<table className="main-tbl">
-						<tbody>
-							{/* One row for each metadata field*/}
-							{sourceMetadata.UPLOAD && sourceMetadata.UPLOAD.metadata.map((field, key) => (
-								<tr key={key}>
-									<td>
-										<span>{t(field.label)}</span>
-										{field.required && <i className="required">*</i>}
-									</td>
-									<td className="editable">
-										<Field
-											name={field.id}
-											metadataField={field}
-											component={RenderField}
-										/>
-									</td>
-								</tr>
-							))}
 						</tbody>
 					</table>
 				</div>
