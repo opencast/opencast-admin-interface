@@ -607,7 +607,9 @@
 					"COMMENTS": "Kommentare ansehen",
 					"PAUSED_WORKFLOW": "Angehaltenen Workflow anzeigen",
 					"PRESENTER": "Nach diesem Vortragenden filtern"
-				}
+				},
+				"SELECT_ALL": "Select all events",
+				"SELECT_EVENT": "Select event \"{{title}}\""
 			},
 			"STATUS": {
 				"SCHEDULED": "Geplant",
@@ -1240,6 +1242,11 @@
 				"USERNAME": "Benutzername",
 				"EMAIL": "E-Mail",
 				"ROLES": "Rollen",
+				"COLLAPSED": {
+					"UI": "user interface roles",
+					"API": "API roles",
+					"CAPTURE_AGENT": "capture agent roles"
+				},
 				"TYPE": "Typ",
 				"PROVIDER": "Anbieter",
 				"ACTION": "Aktionen",
@@ -1999,6 +2006,8 @@
 	"TABLE_NO_RESULT": "Keine Treffer gefunden.",
 	"TABLE_LOADING": "Lädt…",
 	"TABLE_EDIT": "Bearbeiten",
+	"TABLE_NEXT": "Nächste Seite",
+	"TABLE_PREVIOUS": "Vorherige Seite",
 	"DASHBOARD": {
 		"RUNNING": "In Verarbeitung",
 		"FINISHED": "Verarbeitet",
@@ -2078,7 +2087,8 @@
 				"SERIES_VIEW": "Serien",
 				"NEW_EVENT": "Video hinzufügen",
 				"NEW_SERIES": "Serie hinzufügen",
-				"CHEAT_SHEET": "Tastenkürzel"
+				"CHEAT_SHEET": "Tastenkürzel",
+				"CLOSE_MODAL": "Close dialog"
 			}
 		}
 	},

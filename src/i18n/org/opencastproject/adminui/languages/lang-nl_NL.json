@@ -607,7 +607,9 @@
 					"COMMENTS": "Vis kommentarer",
 					"PAUSED_WORKFLOW": "Vis arbejdsgange på pause",
 					"PRESENTER": "Filtrér til denne vært"
-				}
+				},
+				"SELECT_ALL": "Select all events",
+				"SELECT_EVENT": "Select event \"{{title}}\""
 			},
 			"STATUS": {
 				"SCHEDULED": "Planlagt",
@@ -1240,6 +1242,11 @@
 				"USERNAME": "Brugernavn",
 				"EMAIL": "E-mail",
 				"ROLES": "Roller",
+				"COLLAPSED": {
+					"UI": "user interface roles",
+					"API": "API roles",
+					"CAPTURE_AGENT": "capture agent roles"
+				},
 				"TYPE": "Type",
 				"PROVIDER": "Udbyder",
 				"ACTION": "Handlinger",
@@ -1999,6 +2006,8 @@
 	"TABLE_NO_RESULT": "Intet resultat fundet",
 	"TABLE_LOADING": "Indlæser…",
 	"TABLE_EDIT": "Redigér",
+	"TABLE_NEXT": "Next page",
+	"TABLE_PREVIOUS": "Previous page",
 	"DASHBOARD": {
 		"RUNNING": "Kører",
 		"FINISHED": "Færdig",
@@ -2078,7 +2087,8 @@
 				"SERIES_VIEW": "Serier",
 				"NEW_EVENT": "Tilføj begivenhed",
 				"NEW_SERIES": "Tilføj serier",
-				"CHEAT_SHEET": "Tastaturgenveje"
+				"CHEAT_SHEET": "Tastaturgenveje",
+				"CLOSE_MODAL": "Close dialog"
 			}
 		}
 	},

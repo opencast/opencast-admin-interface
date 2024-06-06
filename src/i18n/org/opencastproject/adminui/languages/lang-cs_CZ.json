@@ -607,7 +607,9 @@
 					"COMMENTS": "View comments",
 					"PAUSED_WORKFLOW": "View paused workflow",
 					"PRESENTER": "Filter for this presenter"
-				}
+				},
+				"SELECT_ALL": "Select all events",
+				"SELECT_EVENT": "Select event \"{{title}}\""
 			},
 			"STATUS": {
 				"SCHEDULED": "Scheduled",
@@ -1240,6 +1242,11 @@
 				"USERNAME": "Username",
 				"EMAIL": "Email",
 				"ROLES": "Roles",
+				"COLLAPSED": {
+					"UI": "user interface roles",
+					"API": "API roles",
+					"CAPTURE_AGENT": "capture agent roles"
+				},
 				"TYPE": "Type",
 				"PROVIDER": "Provider",
 				"ACTION": "Actions",
@@ -1999,6 +2006,8 @@
 	"TABLE_NO_RESULT": "No results found",
 	"TABLE_LOADING": "Loading…",
 	"TABLE_EDIT": "Edit",
+	"TABLE_NEXT": "Next page",
+	"TABLE_PREVIOUS": "Previous page",
 	"DASHBOARD": {
 		"RUNNING": "Running",
 		"FINISHED": "Finished",
@@ -2078,7 +2087,8 @@
 				"SERIES_VIEW": "Series",
 				"NEW_EVENT": "Add event",
 				"NEW_SERIES": "Add series",
-				"CHEAT_SHEET": "Keyboard shortcuts"
+				"CHEAT_SHEET": "Keyboard shortcuts",
+				"CLOSE_MODAL": "Close dialog"
 			}
 		}
 	},
