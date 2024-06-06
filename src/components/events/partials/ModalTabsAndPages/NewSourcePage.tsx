@@ -171,7 +171,7 @@ const NewSourcePage = <T extends RequiredFormProps>({
 														className="source-toggle"
 														onClick={() =>
 															changeStartDate(
-																formik.values.scheduleStartDate,
+																new Date(formik.values.scheduleStartDate),
 																formik.values,
 																formik.setFieldValue
 															)
@@ -438,7 +438,7 @@ const Schedule = <T extends {
 												formik.setFieldValue
 											);
 										} else {
-											changeStartDate(
+											value && changeStartDate(
 												value,
 												formik.values,
 												formik.setFieldValue

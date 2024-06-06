@@ -290,7 +290,7 @@ const EventDetailsSchedulingTab = ({
 																	// tabIndex={1}
 																	value={new Date(formik.values.scheduleStartDate)}
 																	onChange={(value: Date | null) =>
-																		changeStartDate(
+																		value && changeStartDate(
 																			value,
 																			formik.values,
 																			formik.setFieldValue,
