@@ -2011,6 +2011,7 @@
 	"TABLE_EDIT": "Edit",
 	"TABLE_NEXT": "Next page",
 	"TABLE_PREVIOUS": "Previous page",
+	"TABLE_PAGINATION": "Pagination",
 	"DASHBOARD": {
 		"RUNNING": "Running",
 		"FINISHED": "Finished",
