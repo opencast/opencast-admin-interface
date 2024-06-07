@@ -301,13 +301,13 @@
 
         a {
             display: inline-block;
-            color: lighten($header-link-color, 22%);
+            color: $subpage-navigation-link-color;
             text-align: center;
             position: relative;
             padding: 0 20px;
 
             &:hover {
-                color: lighten($header-link-color, 32%);
+                color: $subpage-navigation-link-hover-color;
             }
 
             &.active {

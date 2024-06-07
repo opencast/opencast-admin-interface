@@ -25,7 +25,6 @@
 
   .col {
     $num-cols: 8;
-    $stat-color: lighten($header-link-color, 22%);
 
     box-sizing: border-box;
     display: inline-block;
@@ -43,10 +42,10 @@
       text-align: center;
       cursor: pointer;
       overflow: hidden;
-      color: $stat-color;
+      color: $stats-color;
 
       &:hover {
-        color: lighten($stat-color, 32%);
+        color: $stats-hover-color;
       }
 
       h1 {
@@ -54,7 +53,7 @@
         font-size: 24px;
         margin: 0 0 5px 0;
         padding: 2px 0;
-        border-bottom: $thin-border-stroke $stat-color;
+        border-bottom: $thin-border-stroke $stats-color;
       }
 
       span {

@@ -80,7 +80,7 @@ $light-black-alpha:            rgba($black, 0.04);
 // ----------------------------------------
 
 $body-background:               $off-white;
-$header-link-color:             #5d7589;
+$header-link-color:             #596C82;
 $color-link:                    $medium-prim-color;
 $color-link-hover:              $dark-prim-color;
 
@@ -138,12 +138,18 @@ $modal-full-col-width:          100%;
 $modal-heading-color:           #4d4d4d;
 
 // Nav Colors
+// ----------------------------------------
 $modal-nav-bg-color:            #eeeff0;
 $modal-nav-border-color:        #d6d6d6;
-$modal-nav-link-color:          #92a0ab;
+$modal-nav-link-color:          #646E75;
 $modal-nav-link-active-color:   $header-link-color;
+$subpage-navigation-link-color: lighten($header-link-color, 25%);
+$subpage-navigation-link-hover-color: lighten($header-link-color, 35%);
 
-
+// Stats
+// ----------------------------------------
+$stats-color: $subpage-navigation-link-color;
+$stats-hover-color: $subpage-navigation-link-hover-color;
 
 // Layout
 // ----------------------------------------
