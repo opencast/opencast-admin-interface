@@ -7,9 +7,7 @@ import { makeTwoDigits } from "./utils";
 
 // Get the ISO date string based on local time
 const getISODateString = (date: Date) => {
-	const offsetHours = Math.trunc(date.getTimezoneOffset() / 60)
-	const offsetMinutes = date.getTimezoneOffset() % 60
-	return new Date(date.setHours(-offsetHours, -offsetMinutes, 0)).toISOString().substring(0, 10);
+	return moment(date).format('YYYY-MM-DD');
 }
 
 // check if date can be parsed
