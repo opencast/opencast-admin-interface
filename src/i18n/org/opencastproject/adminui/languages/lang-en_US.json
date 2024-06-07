@@ -1771,7 +1771,8 @@
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Please select a filter…",
-			"NO_OPTIONS": "No filters found"
+			"NO_OPTIONS": "No filters found",
+			"LABEL": "Filter table rows"
 		},
 		"FILTER_VALUE_SELECTION": {
 			"PLACEHOLDER": "Please select a value…",

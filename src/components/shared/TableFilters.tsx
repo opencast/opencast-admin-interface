@@ -279,6 +279,7 @@ const TableFilters = ({
 												"TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS"
 											)}
 											className="main-filter"
+											aria-label={t("TABLE_FILTERS.FILTER_SELECTION.LABEL")}
 										>
 											<option disabled>
 												{t("TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS")}
@@ -293,6 +294,7 @@ const TableFilters = ({
 											value={selectedFilter}
 											name="selectedFilter"
 											className="main-filter"
+											aria-label={t("TABLE_FILTERS.FILTER_SELECTION.LABEL")}
 										>
 											<option value="" disabled>
 												{t("TABLE_FILTERS.FILTER_SELECTION.PLACEHOLDER")}
