@@ -22,6 +22,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { useAppDispatch, useAppSelector } from "../store";
 import { HealthStatus, fetchHealthStatus } from "../slices/healthSlice";
 import { UserInfoState } from "../slices/userInfoSlice";
+import { Tooltip } from "./shared/Tooltip";
 
 // Get code, flag and name of the current language
 const currentLanguage = getCurrentLanguageInformation();
@@ -161,13 +162,14 @@ const Header = ({
 				<nav className="header-nav nav-dd-container" id="nav-dd-container">
 					{/* Select language */}
 					<div className="nav-dd lang-dd" id="lang-dd" ref={containerLang}>
+						<Tooltip title={t("LANGUAGE")}>
 						<div
 							className="lang"
-							title={t("LANGUAGE")}
 							onClick={() => setMenuLang(!displayMenuLang)}
 						>
 							<img src={currentLanguage?.flag} alt={currentLanguage?.code} />
 						</div>
+						</Tooltip>
 						{/* Click on the flag icon, a dropdown menu with all available languages opens */}
 						{displayMenuLang && <MenuLang />}
 					</div>
@@ -178,51 +180,56 @@ const Header = ({
                     otherwise the app crashes */}
 					{!!orgProperties &&
 						!!orgProperties["org.opencastproject.admin.mediamodule.url"] && (
-							<div className="nav-dd" title={t("MEDIAMODULE")}>
-								<a
-									href={
-										orgProperties["org.opencastproject.admin.mediamodule.url"]
-									}
-									target="_blank" rel="noreferrer"
-								>
-									<span className="fa fa-play-circle" />
-								</a>
-							</div>
+							<Tooltip  title={t("MEDIAMODULE")}>
+								<div className="nav-dd">
+									<a
+										href={
+											orgProperties["org.opencastproject.admin.mediamodule.url"]
+										}
+										target="_blank" rel="noreferrer"
+									>
+										<span className="fa fa-play-circle" />
+									</a>
+								</div>
+							</Tooltip>
 						)}
 
 					{/* Opencast Studio */}
 					{hasAccess("ROLE_STUDIO", user) && (
-						<div className="nav-dd" title="Studio">
-							<a href={studioURL} target="_blank" rel="noreferrer">
-								<span className="fa fa-video-camera" />
-							</a>
-						</div>
+						<Tooltip  title="Studio">
+							<div className="nav-dd">
+								<a href={studioURL} target="_blank" rel="noreferrer">
+									<span className="fa fa-video-camera" />
+								</a>
+							</div>
+						</Tooltip>
 					)}
 
 					{/* System warnings and notifications */}
 					{hasAccess("ROLE_ADMIN", user) && (
-						<div
-							className="nav-dd info-dd"
-							id="info-dd"
-							title={t("SYSTEM_NOTIFICATIONS")}
-							ref={containerNotify}
-						>
-							<div onClick={() => setMenuNotify(!displayMenuNotify)}>
-								<i className="fa fa-bell" aria-hidden="true" />
-								{errorCounter !== 0 && (
-									<span id="error-count" className="badge">
-										{errorCounter}
-									</span>
-								)}
-								{/* Click on the bell icon, a dropdown menu with all services in serviceList and their status opens */}
-								{displayMenuNotify && (
-									<MenuNotify
-										healthStatus={healthStatus}
-										redirectToServices={redirectToServices}
-									/>
-								)}
+						<Tooltip title={t("SYSTEM_NOTIFICATIONS")}>
+							<div
+								className="nav-dd info-dd"
+								id="info-dd"
+								ref={containerNotify}
+							>
+								<div onClick={() => setMenuNotify(!displayMenuNotify)}>
+									<i className="fa fa-bell" aria-hidden="true" />
+									{errorCounter !== 0 && (
+										<span id="error-count" className="badge">
+											{errorCounter}
+										</span>
+									)}
+									{/* Click on the bell icon, a dropdown menu with all services in serviceList and their status opens */}
+									{displayMenuNotify && (
+										<MenuNotify
+											healthStatus={healthStatus}
+											redirectToServices={redirectToServices}
+										/>
+									)}
+								</div>
 							</div>
-						</div>
+						</Tooltip>
 					)}
 
 					{/* Help */}
@@ -236,27 +243,28 @@ const Header = ({
 							!!orgProperties[
 								"org.opencastproject.admin.help.restdocs.url"
 							]) && (
-							<div
-								title="Help"
-								className="nav-dd"
-								id="help-dd"
-								ref={containerHelp}
-							>
+							<Tooltip title="Help">
 								<div
-									className="fa fa-question-circle"
-									onClick={() => setMenuHelp(!displayMenuHelp)}
-								/>
-								{/* Click on the help icon, a dropdown menu with documentation, REST-docs and shortcuts (if available) opens */}
-								{displayMenuHelp && (
-									<MenuHelp
-										hideMenuHelp={hideMenuHelp}
-										showRegistrationModal={showRegistrationModal}
-										showHotKeyCheatSheet={showHotKeyCheatSheet}
-										orgProperties={orgProperties}
-										user={user}
+									className="nav-dd"
+									id="help-dd"
+									ref={containerHelp}
+								>
+									<div
+										className="fa fa-question-circle"
+										onClick={() => setMenuHelp(!displayMenuHelp)}
 									/>
-								)}
-							</div>
+									{/* Click on the help icon, a dropdown menu with documentation, REST-docs and shortcuts (if available) opens */}
+									{displayMenuHelp && (
+										<MenuHelp
+											hideMenuHelp={hideMenuHelp}
+											showRegistrationModal={showRegistrationModal}
+											showHotKeyCheatSheet={showHotKeyCheatSheet}
+											orgProperties={orgProperties}
+											user={user}
+										/>
+									)}
+								</div>
+							</Tooltip>
 						)}
 
 					{/* Username */}

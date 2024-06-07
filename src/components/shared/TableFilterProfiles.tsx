@@ -15,6 +15,7 @@ import { loadFilterProfile } from "../../slices/tableFilterSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
+import { Tooltip } from "./Tooltip";
 
 /**
  * This component renders the table filter profiles in the upper right corner when clicked on settings icon of the
@@ -164,25 +165,28 @@ const TableFiltersProfiles = ({
 									// repeat for each profile in profiles filtered for currently shown resource (else-case)
 									currentProfiles.map((profile, key) => (
 										<li key={key}>
-											<button
-												title="profile.description"
-												onClick={() => chooseFilterProfile(profile.filterMap)}
-                        className="button-like-anchor"
-											>
-												{profile.name.substr(0, 70)}
-											</button>
+											<Tooltip title="profile.description">
+												<button
+													onClick={() => chooseFilterProfile(profile.filterMap)}
+                        className="button-li	ke-anchor"
+												>
+													{profile.name.substr(0, 70)}
+												</button>
+											</Tooltip>
 											{/* Settings icon to edit profile */}
-											<button
-												onClick={() => editFilterProfile(profile)}
-												title={t("TABLE_FILTERS.PROFILES.EDIT")}
-												className="button-like-anchor icon edit"
-											/>
+											<Tooltip title={t("TABLE_FILTERS.PROFILES.EDIT")}>
+												<button
+													onClick={() => editFilterProfile(profile)}
+													className="button-like-anchor icon edit"
+												/>
+											</Tooltip>
 											{/* Remove icon to remove profile */}
-											<button
-												onClick={() => dispatch(removeFilterProfile(profile))}
-												title={t("TABLE_FILTERS.PROFILES.REMOVE")}
-												className="button-like-anchor icon remove"
-											/>
+											<Tooltip title={t("TABLE_FILTERS.PROFILES.REMOVE")}>
+												<button
+													onClick={() => dispatch(removeFilterProfile(profile))}
+													className="button-like-anchor icon remove"
+												/>
+											</Tooltip>
 										</li>
 									))
 								)}
