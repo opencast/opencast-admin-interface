@@ -154,7 +154,9 @@ const EditTableViewModal = ({
 															<button
 																className="button-like-anchor move-item add"
 																onClick={() => changeColumn(column, false)}
-															/>
+															>
+																<span class="sr-only">{t("PREFERENCES.TABLE.ADD_COLUMN")}</span>
+															</button>
 														</li>
 													) : null
 												)}
@@ -203,7 +205,9 @@ const EditTableViewModal = ({
 																						<button
 																							className="button-like-anchor move-item remove"
 																							onClick={() => changeColumn(column, true)}
-																						/>
+																						>
+																							<span class="sr-only">{t("PREFERENCES.TABLE.REMOVE_COLUMN")}</span>
+																						</button>
 																					</div>
 																				)}
 																			</Draggablee>
