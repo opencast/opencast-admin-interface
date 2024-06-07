@@ -95,7 +95,9 @@
 			"SUBHEADING": "Select the default data you would like displayed in the {{ tableName }} view",
 			"AVAILABLE_COLUMNS": "Available columns",
 			"SELECTED_COLUMNS": "Selected columns",
-			"FOOTER_TEXT": "The order and selection will be saved automatically. Press \"{{resetTranslation}}\" to restore the default view."
+			"FOOTER_TEXT": "The order and selection will be saved automatically. Press \"{{resetTranslation}}\" to restore the default view.",
+			"ADD_COLUMN": "Add column",
+			"REMOVE_COLUMN": "Remove column"
 		}
 	},
 	"CONFIRMATIONS": {
