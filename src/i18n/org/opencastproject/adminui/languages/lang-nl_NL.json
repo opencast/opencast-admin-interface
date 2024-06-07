@@ -93,7 +93,9 @@
 			"SUBHEADING": "Vælg de standarddata, som skal fremgå af {{ tableName }}-visningen",
 			"AVAILABLE_COLUMNS": "Tilgængelige kolonner",
 			"SELECTED_COLUMNS": "Valgte kolonner",
-			"FOOTER_TEXT": "Rækkefølge og udvælgelse gemmes automatisk. Tryk på \"{{resetTranslation}}\" for at gendanne standardvisningen."
+			"FOOTER_TEXT": "Rækkefølge og udvælgelse gemmes automatisk. Tryk på \"{{resetTranslation}}\" for at gendanne standardvisningen.",
+			"ADD_COLUMN": "Add column",
+			"REMOVE_COLUMN": "Remove column"
 		}
 	},
 	"CONFIRMATIONS": {
@@ -1766,7 +1768,8 @@
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Vælg et filter…",
-			"NO_OPTIONS": "Ingen filtre fundet"
+			"NO_OPTIONS": "Ingen filtre fundet",
+			"LABEL": "Filter table rows"
 		},
 		"FILTER_VALUE_SELECTION": {
 			"PLACEHOLDER": "Vælg en værdi…",

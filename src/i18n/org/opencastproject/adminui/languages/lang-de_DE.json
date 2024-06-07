@@ -93,7 +93,9 @@
 			"SUBHEADING": "Wählen Sie die Standard-Daten, die Sie in der {{ tableName }}-Ansicht anzeigen möchten",
 			"AVAILABLE_COLUMNS": "Verfügbare Spalten",
 			"SELECTED_COLUMNS": "Ausgewählte Spalten",
-			"FOOTER_TEXT": "Die Reihenfolge und Auswahl werden automatisch gespeichert. Drücken Sie \"{{resetTranslation}}\", um die Standardansicht wiederherzustellen."
+			"FOOTER_TEXT": "Die Reihenfolge und Auswahl werden automatisch gespeichert. Drücken Sie \"{{resetTranslation}}\", um die Standardansicht wiederherzustellen.",
+			"ADD_COLUMN": "Spalte hinzufügen",
+			"REMOVE_COLUMN": "Spalte entfernen"
 		}
 	},
 	"CONFIRMATIONS": {
@@ -1766,7 +1768,8 @@
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Bitte einen Filter wählen…",
-			"NO_OPTIONS": "Keine Filter gefunden"
+			"NO_OPTIONS": "Keine Filter gefunden",
+			"LABEL": "Tabellenzeilen filtern"
 		},
 		"FILTER_VALUE_SELECTION": {
 			"PLACEHOLDER": "Bitte einen Wert wählen…",
