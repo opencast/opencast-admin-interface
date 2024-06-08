@@ -232,7 +232,7 @@ const TableFilters = ({
 	const renderBlueBox = (filter) => {
 // @ts-expect-error TS(7006): Parameter 'opt' implicitly has an 'any' type.
 		let valueLabel = filter.options.find((opt) => opt.value === filter.value)
-			.label;
+			?.label || filter.value;
 		return (
 			<span>
 				{t(filter.label).substr(0, 40)}:
