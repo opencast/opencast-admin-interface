@@ -197,13 +197,13 @@ const EventDetailsSchedulingTab = ({
 
 		return {
 			scheduleStartDate: startDate.setHours(0, 0, 0),
-			scheduleStartHour: source.start.hour ? makeTwoDigits(source.start.hour) : "",
-			scheduleStartMinute: source.start.minute ? makeTwoDigits(source.start.minute) : "",
-			scheduleDurationHours: source.duration.hour ? makeTwoDigits(source.duration.hour) : "",
-			scheduleDurationMinutes: source.duration.minute ? makeTwoDigits(source.duration.minute): "",
+			scheduleStartHour: source.start.hour != null ? makeTwoDigits(source.start.hour) : "",
+			scheduleStartMinute: source.start.minute != null ? makeTwoDigits(source.start.minute) : "",
+			scheduleDurationHours: source.duration.hour != null ? makeTwoDigits(source.duration.hour) : "",
+			scheduleDurationMinutes: source.duration.minute != null ? makeTwoDigits(source.duration.minute): "",
 			scheduleEndDate: endDate.setHours(0, 0, 0),
-			scheduleEndHour: source.end.hour ? makeTwoDigits(source.end.hour): "",
-			scheduleEndMinute: source.end.minute ? makeTwoDigits(source.end.minute): "",
+			scheduleEndHour: source.end.hour != null ? makeTwoDigits(source.end.hour): "",
+			scheduleEndMinute: source.end.minute != null ? makeTwoDigits(source.end.minute): "",
 			captureAgent: source.device.name,
 			inputs: inputs.filter((input) => input !== ""),
 		};
