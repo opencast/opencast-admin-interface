@@ -224,7 +224,6 @@ export const fetchEvents = createAsyncThunk('events/fetchEvents', async (_, { ge
 	let params: { limit: any, offset: number, getComments?: boolean }= getURLParams(state);
 
 	// Only if the notes column is enabled, fetch comment information for events
-	// @ts-expect-error TS(7006):
 	if (state.table.columns.find(column => column.label === "EVENTS.EVENTS.TABLE.ADMINUI_NOTES" && !column.deactivated)) {
 		params = {
 			...params,

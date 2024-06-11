@@ -2,7 +2,7 @@ import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@
 import axios from 'axios';
 import { relativeDateSpanToFilterValue } from '../utils/dateUtils';
 import { RootState } from '../store';
-import { setOffset } from '../actions/tableActions';
+import { setOffset } from '../slices/tableSlice';
 import { fetchEvents } from './eventSlice';
 import { fetchServices } from './serviceSlice';
 import { FilterProfile } from './tableFilterProfilesSlice';

@@ -24,7 +24,7 @@ import {
 	isFetchingAssetUploadOptions as getIsFetchingAssetUploadOptions,
 	isShowActions,
 } from "../../selectors/eventSelectors";
-import { setOffset } from "../../actions/tableActions";
+import { setOffset } from "../../slices/tableSlice";
 import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";

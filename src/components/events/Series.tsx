@@ -16,7 +16,7 @@ import {
 } from "../../thunks/tableThunks";
 import { fetchFilters, fetchStats, editTextFilter } from "../../slices/tableFilterSlice";
 import { getTotalSeries, isShowActions } from "../../selectors/seriesSeletctor";
-import { setOffset } from "../../actions/tableActions";
+import { setOffset } from "../../slices/tableSlice";
 import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";

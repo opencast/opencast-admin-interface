@@ -4,7 +4,7 @@ import { combineReducers } from "redux";
 import tableFilters from "./slices/tableFilterSlice";
 import tableFilterProfiles from "./slices/tableFilterProfilesSlice";
 import events from "./slices/eventSlice";
-import table from "./reducers/tableReducers";
+import table from "./slices/tableSlice";
 import series from "./slices/seriesSlice";
 import recordings from "./slices/recordingSlice";
 import jobs from "./slices/jobSlice";

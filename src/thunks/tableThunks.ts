@@ -16,7 +16,7 @@ import {
 	setOffset,
 	setPageActive,
 	setPages,
-} from "../actions/tableActions";
+} from "../slices/tableSlice";
 import {
 	setEventColumns,
 	setShowActions as showEventsActions,
@@ -657,7 +657,7 @@ export const changeColumnSelection = (updatedColumns) => async (
 // Select certain row
 // @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
 export const changeRowSelection = (id, selected) => (dispatch, getState) => {
-	dispatch(selectRow(id, selected));
+	dispatch(selectRow(id));
 
 	const state = getState();
 

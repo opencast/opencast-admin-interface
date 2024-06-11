@@ -16,7 +16,7 @@ import {
 } from "../../thunks/tableThunks";
 import { fetchThemes } from "../../slices/themeSlice";
 import { fetchFilters, fetchStats } from "../../slices/tableFilterSlice";
-import { setOffset } from "../../actions/tableActions";
+import { setOffset } from "../../slices/tableSlice";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { fetchServices } from "../../slices/serviceSlice";
