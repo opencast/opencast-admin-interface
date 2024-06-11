@@ -134,31 +134,9 @@
     // ----------------------------------------
 
     .lang-dd .dropdown-ul {
-        width: 160px;
+        width: 120px;
         top: $header-dropdown-top-position;
-        right: 5px;
-    }
-
-    // Language Flags
-    @mixin flag-style($size) {
-        height: $size;
-        vertical-align: middle;
-        border-radius: 1px;
-        border: 1px solid gray;
-    }
-
-    .lang {
-        display: inline-block;
-        vertical-align: middle;
-        margin-right: 10px;
-        img {
-            @include flag-style(18px);
-        }
-    }
-
-    .lang-flag {
-        @include flag-style(16px);
-        margin-right: 5px;
+        right: -7px;
     }
 
     // RestService Dropdown
