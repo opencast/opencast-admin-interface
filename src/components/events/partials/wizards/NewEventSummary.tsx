@@ -93,6 +93,8 @@ const NewEventSummary = <T extends RequiredFormProps>({
 		(workflow) => workflow.id === formik.values.processingWorkflow
 	);
 
+	const endsOnSameDay = formik.values.scheduleStartDate === formik.values.scheduleEndDate;
+
 	return (
 		<>
 			<div className="modal-content">
@@ -181,8 +183,8 @@ const NewEventSummary = <T extends RequiredFormProps>({
 													{t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.START_DATE")}
 												</td>
 												<td>
-													{t("dateFormats.date.short", {
-														date: renderValidDate(formik.values.startDate),
+													{t("dateFormats.dateTime.short", {
+														dateTime: renderValidDate(formik.values.startDate),
 													})}
 												</td>
 											</tr>
@@ -214,7 +216,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 													{formik.values.scheduleStartMinute}
 												</td>
 											</tr>
-											{formik.values.sourceMode === "SCHEDULE_MULTIPLE" && (
+											{(!endsOnSameDay || formik.values.sourceMode === "SCHEDULE_MULTIPLE") && (
 												<tr>
 													<td>
 														{t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.END_DATE")}
