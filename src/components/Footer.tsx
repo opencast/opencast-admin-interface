@@ -40,7 +40,7 @@ const Footer: React.FC = () => {
 							)}
 						</li>
 					)}
-					{!!orgProperties && !!orgProperties["org.opencastproject.admin.display_about"] && (
+					{!!orgProperties && !!orgProperties["admin.display_about"] && (
 						<>
 						<li><Link to="/about/imprint">{t("ABOUT.IMPRINT")}</Link></li>
 						<li><Link to="/about/privacy">{t("ABOUT.PRIVACY")}</Link></li>
