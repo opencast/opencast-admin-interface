@@ -8,7 +8,7 @@ import { RootState } from '../store';
 /**
  * This file contains redux reducer for actions affecting the state of jobs
  */
-type Job = {
+export type Job = {
 	creator: string,
 	id: number,
 	operation: string,

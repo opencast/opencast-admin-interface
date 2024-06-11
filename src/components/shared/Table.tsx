@@ -11,6 +11,7 @@ import {
 	getTableSorting,
 } from "../../selectors/tableSelectors";
 import {
+	Row,
 	reverseTable,
 	setOffset,
 	setSortBy,
@@ -164,6 +165,17 @@ const Table = ({
 		setEditTableViewModal(false);
 	};
 
+	const tryToGetValueForKeyFromRowAsString = (row: Row, key: string) => {
+		if (key in row) {
+			const value = row[key as keyof Row];
+			if (typeof value === "string") {
+				return value;
+			}
+		}
+
+		return "";
+	}
+
 	return (
 		<>
 			<Notifications context="above_table" />
@@ -255,7 +267,7 @@ const Table = ({
 											type="checkbox"
 											checked={row.selected}
 											onChange={() => dispatch(changeRowSelection(row.id, undefined))}
-											aria-label={t("EVENTS.EVENTS.TABLE.SELECT_EVENT", { title: row.title })}
+											aria-label={t("EVENTS.EVENTS.TABLE.SELECT_EVENT", { title: row.id })}
 										/>
 									</td>
 								)}
@@ -264,12 +276,12 @@ const Table = ({
 									!column.template &&
 									!column.translate &&
 									!column.deactivated ? (
-										<td key={key}>{row[column.name]}</td>
+										<td key={key}>{column.name in row ? row[column.name as keyof Row] : ""}</td>
 									) : !column.template &&
 									  column.translate &&
 									  !column.deactivated ? (
 										//Show only if column not template, translate, not deactivated
-										<td key={key}>{t(row[column.name])}</td>
+										<td key={key}>{t(tryToGetValueForKeyFromRowAsString(row, column.name))}</td>
 									) : !!column.template &&
 									  !column.deactivated &&
 									  !!templateMap[column.template] ? (

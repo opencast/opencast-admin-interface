@@ -3,6 +3,16 @@ import axios from 'axios';
 import { prepareAccessPolicyRulesForPost } from '../utils/resourceUtils';
 import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
+import { Server } from './serverSlice';
+import { Recording } from './recordingSlice';
+import { Job } from './jobSlice';
+import { Service } from './serviceSlice';
+import { UserResult } from './userSlice';
+import { Group } from './groupSlice';
+import { AclResult } from './aclSlice';
+import { Details } from './themeSlice';
+import { Series } from './seriesSlice';
+import { Event } from './eventSlice';
 
 /*
 Overview of the structure of the data in arrays in state
@@ -32,8 +42,18 @@ const columns = [{
  * This file contains methods/thunks used to manage the table in the main view and its state changes
  */
 
-type Page = any;
-type Row = any;
+type Page = {
+	active: boolean,
+	label: string,
+	number: number,
+};
+
+export type Row = {
+	// "selected" and "id" should only be available if "multiSelect" is true in TableState
+	selected?: boolean,
+	id?: number,
+} & (Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | Details);
+
 type TableState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,

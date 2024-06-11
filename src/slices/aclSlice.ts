@@ -28,7 +28,7 @@ export type Role = {
 	type: string,
 }
 
-type AclResult = {
+export type AclResult = {
 	acl: Acl,
 	id: number,
 	name: string,
