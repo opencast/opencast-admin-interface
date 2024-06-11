@@ -19,6 +19,10 @@ const Footer: React.FC = () => {
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
 
+	const lastModified = user?.ocVersion?.['last-modified']
+		? new Date(user.ocVersion['last-modified']).toISOString().substring(0, 10)
+		: 'unknown';
+
 	return (
 		<footer id="main-footer">
 			<div className="default-footer">
@@ -26,9 +30,13 @@ const Footer: React.FC = () => {
 					{/* Only render if a version is set */}
 					{!!user.ocVersion && (
 						<li>
-							Opencast {user.ocVersion.version}
+							{"Opencast "}
+							<span title={t('BUILD.VERSION')}>{user.ocVersion.version}</span>
 							{hasAccess("ROLE_ADMIN", user) && (
-								<span> - {user.ocVersion.buildNumber || "undefined"}</span>
+								<span>
+								{" – "} <span title={t('BUILD.COMMIT')}>{user.ocVersion.buildNumber || "undefined"}</span>
+								{" – "} <span title={t('BUILD.DATE_DESC')}>{t("BUILD.BUILT_ON")} {lastModified}</span>
+								</span>
 							)}
 						</li>
 					)}
