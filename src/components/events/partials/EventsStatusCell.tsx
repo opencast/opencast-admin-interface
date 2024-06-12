@@ -6,13 +6,15 @@ import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import { Event } from "../../../slices/eventSlice";
 
 /**
  * This component renders the status cells of events in the table view
  */
 const EventsStatusCell = ({
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
+}: {
+	row: Event
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -20,8 +22,7 @@ const EventsStatusCell = ({
 	const filterMap = useAppSelector(state => getFilters(state));
 
 	// Filter with value of current cell
-// @ts-expect-error TS(7006): Parameter 'status' implicitly has an 'any' type.
-	const addFilter = async (status) => {
+	const addFilter = async (status: string) => {
 		let filter = filterMap.find(({ name }) => name === "status");
 		if (!!filter) {
 			await dispatch(editFilterValue({filterName: filter.name, value: status}));

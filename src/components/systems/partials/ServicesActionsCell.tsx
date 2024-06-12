@@ -4,15 +4,16 @@ import { loadServicesIntoTable } from "../../../thunks/tableThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import { fetchServices, restartService } from "../../../slices/serviceSlice";
+import { Service, fetchServices, restartService } from "../../../slices/serviceSlice";
 import { Tooltip } from "../../shared/Tooltip";
 
 /**
  * This component renders the action cells of services in the table view
  */
 const ServicesActionCell = ({
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
+}: {
+	row: Service
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();

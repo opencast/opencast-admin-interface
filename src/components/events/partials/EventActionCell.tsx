@@ -14,15 +14,16 @@ import {
 	fetchSeriesDetailsMetadata,
 	fetchSeriesDetailsTheme,
 } from "../../../slices/seriesDetailsSlice";
-import { deleteEvent } from "../../../slices/eventSlice";
+import { Event, deleteEvent } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
 
 /**
  * This component renders the action cells of events in the table view
  */
 const EventActionCell = ({
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
+}: {
+	row: Event
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -69,13 +70,15 @@ const EventActionCell = ({
 	};
 
 	const onClickSeriesDetails = async () => {
-		await dispatch(fetchSeriesDetailsMetadata(row.series.id));
-		await dispatch(fetchSeriesDetailsAcls(row.series.id));
-		await dispatch(fetchSeriesDetailsFeeds(row.series.id));
-		await dispatch(fetchSeriesDetailsTheme(row.series.id));
-		await dispatch(fetchSeriesDetailsThemeNames());
+		if (!!row.series) {
+			await dispatch(fetchSeriesDetailsMetadata(row.series.id));
+			await dispatch(fetchSeriesDetailsAcls(row.series.id));
+			await dispatch(fetchSeriesDetailsFeeds(row.series.id));
+			await dispatch(fetchSeriesDetailsTheme(row.series.id));
+			await dispatch(fetchSeriesDetailsThemeNames());
 
-		showSeriesDetailsModal();
+			showSeriesDetailsModal();
+		}
 	};
 
 	const onClickEventDetails = () => {
@@ -109,7 +112,7 @@ const EventActionCell = ({
 				eventId={row.id}
 			/>
 
-			{displaySeriesDetailsModal && (
+			{!!row.series && displaySeriesDetailsModal && (
 				<SeriesDetailsModal
 					handleClose={hideSeriesDetailsModal}
 					seriesId={row.series.id}

@@ -5,13 +5,15 @@ import {
 	updateComment as updateNewComment } from "../../../slices/eventDetailsSlice";
 import { updatePages } from "../../../thunks/tableThunks";
 import { useAppDispatch } from "../../../store";
+import { Event } from "../../../slices/eventSlice";
 
 /**
  * This component renders the location cells of events in the table view
  */
 const EventsNotesCell = ({
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
+}: {
+	row: Event
 }) => {
 	const notesCommentReason = 'EVENTS.EVENTS.DETAILS.COMMENTS.REASONS.ADMINUI_NOTES';
 
@@ -22,7 +24,6 @@ const EventsNotesCell = ({
 		return <></>;
 	}
 
-	// @ts-expect-error TS(7031):
 	const comments = row.comments.filter((comment) => comment.reason === notesCommentReason)
 
 	const createComment = (event: React.FocusEvent<HTMLTextAreaElement>) => {
@@ -63,7 +64,6 @@ const EventsNotesCell = ({
 				>
 				</textarea>
 			}
-			{/* @ts-expect-error TS(7031): */}
 			{comments.map((comment, key) => (
 				<div className="comment" key={key}>
 					<hr />

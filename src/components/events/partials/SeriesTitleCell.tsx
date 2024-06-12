@@ -5,13 +5,15 @@ import { setSpecificEventFilter } from "../../../slices/tableFilterSlice";
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../../store";
 import { Tooltip } from "../../shared/Tooltip";
+import { Series } from "../../../slices/seriesSlice";
 
 /**
  * This component renders the title cells of series in the table view
  */
 const SeriesTitleCell = ({
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
+}: {
+	row: Series
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();

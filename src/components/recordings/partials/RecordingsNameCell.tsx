@@ -5,13 +5,15 @@ import { setSpecificEventFilter } from "../../../slices/tableFilterSlice";
 import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { useAppDispatch } from "../../../store";
 import { Tooltip } from "../../shared/Tooltip";
+import { Recording } from "../../../slices/recordingSlice";
 
 /**
  * This component renders the name cells of recordings in the table view
  */
 const RecordingsNameCell = ({
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
+}: {
+	row: Recording
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -30,7 +32,7 @@ const RecordingsNameCell = ({
 			<Link
 				to="/events/events"
 				className="crosslink"
-				onClick={async () => await redirectToEvents(row.Name)}
+				onClick={async () => await redirectToEvents(row.name)}
 			>
 				{row.name}
 			</Link>

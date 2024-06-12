@@ -6,13 +6,15 @@ import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import { Event } from "../../../slices/eventSlice";
 
 /**
  * This component renders the location cells of events in the table view
  */
 const EventsLocationCell = ({
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
+}: {
+	row: Event
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -20,8 +22,7 @@ const EventsLocationCell = ({
 	const filterMap = useAppSelector(state => getFilters(state));
 
 	// Filter with value of current cell
-// @ts-expect-error TS(7006): Parameter 'location' implicitly has an 'any' type.
-	const addFilter = (location) => {
+	const addFilter = (location: string) => {
 		let filter = filterMap.find(({ name }) => name === "location");
 		if (!!filter) {
 			dispatch(editFilterValue({filterName: filter.name, value: location}));

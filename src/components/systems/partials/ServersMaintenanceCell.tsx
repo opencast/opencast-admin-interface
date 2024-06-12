@@ -4,6 +4,7 @@ import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import {
+	Server,
 	fetchServers,
 	setServerMaintenance,
 } from "../../../slices/serverSlice";
@@ -12,14 +13,14 @@ import {
  * This component renders the maintenance cells of servers in the table view
  */
 const ServersMaintenanceCell = ({
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
+}: {
+	row: Server
 }) => {
 	const user = useAppSelector(state => getUserInformation(state));
 	const dispatch = useAppDispatch();
 
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const onClickCheckbox = async (e) => {
+	const onClickCheckbox = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		await dispatch(setServerMaintenance({host: row.hostname, maintenance: e.target.checked}));
 		await dispatch(fetchServers());
 		dispatch(loadServersIntoTable());

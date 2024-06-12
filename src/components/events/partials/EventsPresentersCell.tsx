@@ -6,13 +6,15 @@ import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import { Event } from "../../../slices/eventSlice";
 
 /**
  * This component renders the presenters cells of events in the table view
  */
 const EventsPresentersCell = ({
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
+}: {
+	row: Event
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -20,8 +22,7 @@ const EventsPresentersCell = ({
 	const filterMap = useAppSelector(state => getFilters(state));
 
 	// Filter with value of current cell
-// @ts-expect-error TS(7006): Parameter 'presenter' implicitly has an 'any' type... Remove this comment to see the full error message
-	const addFilter = async (presenter) => {
+	const addFilter = async (presenter: string) => {
 		let filter = filterMap.find(
 			({ name }) => name === "presentersBibliographic"
 		);
@@ -35,7 +36,6 @@ const EventsPresentersCell = ({
 	return (
 		// Link template for presenter of event
 		// Repeat for each presenter
-// @ts-expect-error TS(7006): Parameter 'presenter' implicitly has an 'any' type... Remove this comment to see the full error message
 		row.presenters.map((presenter, key) => (
 			<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PRESENTER")} key={key}>
 				<button

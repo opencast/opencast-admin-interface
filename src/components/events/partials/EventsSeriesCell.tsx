@@ -6,13 +6,15 @@ import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import { Event } from "../../../slices/eventSlice";
 
 /**
  * This component renders the series cells of events in the table view
  */
 const EventsSeriesCell = ({
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
+}: {
+	row: Event
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();

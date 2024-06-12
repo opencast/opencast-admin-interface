@@ -7,13 +7,15 @@ import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
 import { renderValidDate } from "../../../utils/dateUtils";
 import { Tooltip } from "../../shared/Tooltip";
+import { Event } from "../../../slices/eventSlice";
 
 /**
  * This component renders the start date cells of events in the table view
  */
 const EventsDateCell = ({
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
+}: {
+	row: Event
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -21,8 +23,7 @@ const EventsDateCell = ({
 	const filterMap = useAppSelector(state => getFilters(state));
 
 	// Filter with value of current cell
-// @ts-expect-error TS(7006): Parameter 'date' implicitly has an 'any' type.
-	const addFilter = async (date) => {
+	const addFilter = async (date: string) => {
 		let filter = filterMap.find(({ name }) => name === "startDate");
 		if (!!filter) {
 			await dispatch(editFilterValue({filterName: filter.name, value: date + "/" + date}));
