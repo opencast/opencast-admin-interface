@@ -35,7 +35,7 @@ const NewSeriesWizard: React.FC<{
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
 
-	const themesEnabled = orgProperties['admin.themes.enabled']?.toLowerCase() === 'true';
+	const themesEnabled = (orgProperties['admin.themes.enabled']?.toLowerCase() || 'true') === 'true';
 
 	const initialValues = getInitialValues(metadataFields, extendedMetadata, user);
 

@@ -75,7 +75,7 @@ const MainNav = ({
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
 
 	const statisticsEnabled = orgProperties['admin.statistics.enabled']?.toLowerCase() === 'true';
-	const themesEnabled = orgProperties['admin.themes.enabled']?.toLowerCase() === 'true';
+	const themesEnabled = (orgProperties['admin.themes.enabled']?.toLowerCase() || 'true') === 'true';
 
 	const loadEvents = () => {
 		dispatch(fetchFilters("events"));
