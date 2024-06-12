@@ -22,6 +22,7 @@ const Footer: React.FC = () => {
 	const lastModified = user?.ocVersion?.['last-modified']
 		? new Date(user.ocVersion['last-modified']).toISOString().substring(0, 10)
 		: 'unknown';
+	const aboutEnabled = orgProperties['org.opencastproject.admin.display_about']?.toLowerCase() === 'true';
 
 	return (
 		<footer id="main-footer">
@@ -40,7 +41,7 @@ const Footer: React.FC = () => {
 							)}
 						</li>
 					)}
-					{!!orgProperties && !!orgProperties["org.opencastproject.admin.display_about"] && (
+					{aboutEnabled && (
 						<>
 						<li><Link to="/about/imprint">{t("ABOUT.IMPRINT")}</Link></li>
 						<li><Link to="/about/privacy">{t("ABOUT.PRIVACY")}</Link></li>
