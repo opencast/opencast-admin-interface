@@ -75,6 +75,7 @@ const MainNav = ({
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
 
 	const statisticsEnabled = orgProperties['admin.statistics.enabled']?.toLowerCase() === 'true';
+	const themesEnabled = (orgProperties['admin.themes.enabled']?.toLowerCase() || 'true') === 'true';
 
 	const loadEvents = () => {
 		dispatch(fetchFilters("events"));
@@ -310,7 +311,8 @@ const MainNav = ({
 										</Link>
 									)
 								))}
-							{hasAccess("ROLE_UI_NAV_CONFIGURATION_VIEW", user) &&
+							{themesEnabled &&
+								hasAccess("ROLE_UI_NAV_CONFIGURATION_VIEW", user) &&
 								hasAccess("ROLE_UI_THEMES_VIEW", user) && (
 									<Link to="/configuration/themes" onClick={() => loadThemes()}>
 										<Tooltip title={t("NAV.CONFIGURATION.TITLE")}>
