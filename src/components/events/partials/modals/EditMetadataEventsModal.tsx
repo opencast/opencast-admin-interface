@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Formik, Field } from "formik";
 import { useTranslation } from "react-i18next";
 import { getSelectedRows } from "../../../../selectors/tableSelectors";
-import { connect } from "react-redux";
 import {
 	hasAccess,
 } from "../../../../utils/utils";
@@ -24,13 +23,14 @@ import { availableHotkeys } from "../../../../configs/hotkeysConfig";
  * This component manges the edit metadata bulk action
  */
 const EditMetadataEventsModal = ({
-// @ts-expect-error TS(7031): Binding element 'close' implicitly has an 'any' ty... Remove this comment to see the full error message
 	close,
-// @ts-expect-error TS(7031): Binding element 'selectedRows' implicitly has an '... Remove this comment to see the full error message
-	selectedRows,
+}: {
+	close: () => void
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
+
+	const selectedRows = useAppSelector(state => getSelectedRows(state));
 
 	const [selectedEvents] = useState(selectedRows);
 	const [metadataFields, setMetadataFields] = useState<{
@@ -61,7 +61,6 @@ const EditMetadataEventsModal = ({
 
 // @ts-expect-error TS(7034): Variable 'eventIds' implicitly has type 'any[]' in... Remove this comment to see the full error message
 			let eventIds = [];
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 			selectedEvents.forEach((event) => eventIds.push(event.id));
 
 			// Get merged metadata from backend
@@ -351,16 +350,4 @@ const getInitialValues = (metadataFields) => {
 	return initialValues;
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	selectedRows: getSelectedRows(state),
-});
-
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-});
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EditMetadataEventsModal);
+export default EditMetadataEventsModal;

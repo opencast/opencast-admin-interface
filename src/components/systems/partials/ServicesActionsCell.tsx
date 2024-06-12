@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import { loadServicesIntoTable } from "../../../thunks/tableThunks";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
@@ -14,10 +13,6 @@ import { Tooltip } from "../../shared/Tooltip";
 const ServicesActionCell = ({
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
-// @ts-expect-error TS(7031): Binding element 'loadServices' implicitly has an '... Remove this comment to see the full error message
-	loadServices,
-// @ts-expect-error TS(7031): Binding element 'loadServicesIntoTable' implicitly... Remove this comment to see the full error message
-	loadServicesIntoTable,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -27,7 +22,7 @@ const ServicesActionCell = ({
 	const onClickRestart = async () => {
 		await dispatch(restartService({host: row.hostname, serviceType: row.name}));
 		await dispatch(fetchServices());
-		loadServicesIntoTable();
+		dispatch(loadServicesIntoTable());
 	};
 
 	return (
@@ -43,17 +38,4 @@ const ServicesActionCell = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-
-});
-
-// mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	loadServicesIntoTable: () => dispatch(loadServicesIntoTable()),
-});
-
-// @ts-expect-error TS(2345): Argument of type '({ row, loadServices, loadServic... Remove this comment to see the full error message
-export default connect(mapStateToProps, mapDispatchToProps)(ServicesActionCell);
+export default ServicesActionCell;

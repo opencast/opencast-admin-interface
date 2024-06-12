@@ -23,7 +23,6 @@ import {
 	goToPage,
 	updatePages,
 } from "../../thunks/tableThunks";
-import { connect } from "react-redux";
 import cn from "classnames";
 
 import EditTableViewModal from "../shared/EditTableViewModal";
@@ -63,12 +62,6 @@ const containerPageSize = React.createRef();
 const Table = ({
 // @ts-expect-error TS(7031): Binding element 'templateMap' implicitly has an 'a... Remove this comment to see the full error message
 	templateMap,
-// @ts-expect-error TS(7031): Binding element 'goToPage' implicitly has an 'any'... Remove this comment to see the full error message
-	goToPage,
-// @ts-expect-error TS(7031): Binding element 'updatePages' implicitly has an 'a... Remove this comment to see the full error message
-	updatePages,
-// @ts-expect-error TS(7031): Binding element 'changeSelectAll' implicitly has a... Remove this comment to see the full error message
-	changeSelectAll,
 }) => {
 	const dispatch = useAppDispatch();
 
@@ -127,14 +120,14 @@ const Table = ({
 // @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
 	const onChangeAllSelected = (e) => {
 		const selected = e.target.checked;
-		changeSelectAll(selected);
+		dispatch(changeAllSelected(selected));
 	};
 
 // @ts-expect-error TS(7006): Parameter 'size' implicitly has an 'any' type.
 	const changePageSize = (size) => {
 		dispatch(updatePageSize(size));
 		dispatch(setOffset(0)),
-		updatePages();
+		dispatch(updatePages());
 	};
 
 	// Navigation to previous page possible?
@@ -154,7 +147,7 @@ const Table = ({
 			direction = "DESC";
 		}
 		dispatch(reverseTable(direction));
-		updatePages();
+		dispatch(updatePages());
 	};
 
 	const showEditTableViewModal = async () => {
@@ -193,10 +186,11 @@ const Table = ({
 			</div>
 
 			{/* Display modal for editing table view if table edit button is clicked */}
-			<EditTableViewModal
-				showModal={displayEditTableViewModal}
-				handleClose={hideEditTableViewModal}
-			/>
+			{ displayEditTableViewModal &&
+				<EditTableViewModal
+					handleClose={hideEditTableViewModal}
+				/>
+			}
 
 			<div id="length-div" style={lengthDivStyle}></div>
 			<table className={"main-tbl highlight-hover"}>
@@ -266,7 +260,7 @@ const Table = ({
 										<input
 											type="checkbox"
 											checked={row.selected}
-											onChange={() => dispatch(changeRowSelection(row.id, undefined))}
+											onChange={() => dispatch(changeRowSelection(row.id, false))}
 											aria-label={t("EVENTS.EVENTS.TABLE.SELECT_EVENT", { title: row.id })}
 										/>
 									</td>
@@ -333,7 +327,7 @@ const Table = ({
 				<div className="pagination">
 					<button
 						className={"button-like-anchor " + cn("prev", { disabled: !isNavigatePrevious() })}
-						onClick={() => goToPage(pageOffset - 1)}
+						onClick={() => dispatch(goToPage(pageOffset - 1))}
 					>
 						<span className="sr-only">{t("TABLE_PREVIOUS")}</span>
 					</button>
@@ -343,7 +337,7 @@ const Table = ({
 								{page.label}
 							</button>
 						) : (
-							<button key={key} className="button-like-anchor" onClick={() => goToPage(page.number)}>
+							<button key={key} className="button-like-anchor" onClick={() => dispatch(goToPage(page.number))}>
 								{page.label}
 							</button>
 						)
@@ -351,7 +345,7 @@ const Table = ({
 
 					<button
 						className={"button-like-anchor " + cn("next", { disabled: !isNavigateNext() })}
-						onClick={() => goToPage(pageOffset + 1)}
+						onClick={() => dispatch(goToPage(pageOffset + 1))}
 					>
 						<span className="sr-only">{t("TABLE_NEXT")}</span>
 					</button>
@@ -419,26 +413,4 @@ const ColumnTemplate = ({ row, column, templateMap }) => {
 	return <Template row={row} />;
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	table: getTable(state),
-	pageOffset: getPageOffset(state),
-	pages: getTablePages(state),
-	pagination: getTablePagination(state),
-	rows: getTableRows(state),
-	sortBy: getTableSorting(state),
-	reverse: getTableDirection(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'pageNumber' implicitly has an 'any' typ... Remove this comment to see the full error message
-	goToPage: (pageNumber) => dispatch(goToPage(pageNumber)),
-	updatePages: () => dispatch(updatePages()),
-// @ts-expect-error TS(7006): Parameter 'selected' implicitly has an 'any' type.
-	changeSelectAll: (selected) => dispatch(changeAllSelected(selected)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Table);
+export default Table;

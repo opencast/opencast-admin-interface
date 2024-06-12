@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import i18n from "../i18n/i18n";
 import languages from "../i18n/languages";
@@ -47,10 +46,7 @@ function logout() {
 /**
  * Component that renders the header and the navigation in the upper right corner.
  */
-const Header = ({
-// @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
-	loadingServicesIntoTable,
-}) => {
+const Header = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	// State for opening (true) and closing (false) the dropdown menus for language, notification, help and user
@@ -84,7 +80,7 @@ const Header = ({
 
 	const redirectToServices = async () => {
 		// Load services into table
-		await loadingServicesIntoTable();
+		await dispatch(loadServicesIntoTable());
 
 		// set the action filter value of services to true
 		await dispatch(setSpecificServiceFilter({ filter: "actions", filterValue: "true" }));
@@ -442,15 +438,4 @@ const MenuUser = () => {
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;

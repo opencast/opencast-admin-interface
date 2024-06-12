@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
 	getFilters,
@@ -26,20 +25,24 @@ import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { getResourceType } from "../../selectors/tableSelectors";
 import { useHotkeys } from "react-hotkeys-hook";
 import moment from "moment";
-import { useAppDispatch, useAppSelector } from "../../store";
+import { AppThunk, useAppDispatch, useAppSelector } from "../../store";
 import { renderValidDate } from "../../utils/dateUtils";
 import { Tooltip } from "./Tooltip";
+import { AsyncThunkAction } from "@reduxjs/toolkit";
+import { AsyncThunk, AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 
 /**
  * This component renders the table filters in the upper right corner of the table
  */
 const TableFilters = ({
-// @ts-expect-error TS(7031): Binding element 'loadResource' implicitly has an '... Remove this comment to see the full error message
 	loadResource,
-// @ts-expect-error TS(7031): Binding element 'loadResourceIntoTable' implicitly... Remove this comment to see the full error message
 	loadResourceIntoTable,
-// @ts-expect-error TS(7031): Binding element 'resource' implicitly has an 'any'... Remove this comment to see the full error message
 	resource,
+}: {
+	// TODO: Figure out proper typings
+	loadResource: any,   // (() => AppThunk ) | AsyncThunkAction<any, unknown, AsyncThunkConfig>
+	loadResourceIntoTable: () => AppThunk,
+	resource: string,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -48,6 +51,7 @@ const TableFilters = ({
 	const secondFilter = useAppSelector(state => getSecondFilter(state));
 	const selectedFilter = useAppSelector(state => getSelectedFilter(state));
 	const textFilter = useAppSelector(state => getTextFilter(state));
+	const resourceType = useAppSelector(state => getResourceType(state));
 
 	// Variables for showing different dialogs depending on what was clicked
 	const [showFilterSelector, setFilterSelector] = useState(false);
@@ -72,8 +76,8 @@ const TableFilters = ({
 		dispatch(resetFilterValues())
 
 		// Reload resources when filters are removed
-		await loadResource();
-		loadResourceIntoTable();
+		await dispatch(loadResource);
+		dispatch(loadResourceIntoTable());
 	};
 
 	// Remove a certain filter
@@ -88,8 +92,8 @@ const TableFilters = ({
 		dispatch(editFilterValue({filterName: filter.name, value: ""}));
 
 		// Reload resources when filter is removed
-		await loadResource();
-		loadResourceIntoTable();
+		await dispatch(loadResource());
+		dispatch(loadResourceIntoTable());
 	};
 
 	// Handle changes when an item of the component is changed
@@ -131,11 +135,10 @@ const TableFilters = ({
 	// This helps increase performance by reducing the number of calls to load resources.
 	const applyFilterChangesDebounced = async () => {
 		// No matter what, we go to page one.
-		dispatch(goToPage(0)).then(async () => {
-			// Reload of resource
-			await loadResource();
-			loadResourceIntoTable();
-		});
+		dispatch(goToPage(0))
+		// Reload of resource
+		await dispatch(loadResource());
+		dispatch(loadResourceIntoTable());
 	};
 
 	useEffect(() => {
@@ -198,10 +201,9 @@ const TableFilters = ({
 				setFilterSelector(false);
 				dispatch(removeSelectedFilter());
 				// Reload of resource after going to very first page.
-				dispatch(goToPage(0)).then(async () => {
-					await loadResource();
-					loadResourceIntoTable();
-				});
+				dispatch(goToPage(0))
+				await dispatch(loadResource());
+				dispatch(loadResourceIntoTable());
 			}
 		}
 
@@ -556,16 +558,4 @@ const FilterSwitch = ({
 	}
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	resourceType: getResourceType(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TableFilters);
+export default TableFilters;

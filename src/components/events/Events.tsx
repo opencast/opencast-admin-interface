@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { connect } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import TableFilters from "../shared/TableFilters";
 import MainNav from "../shared/MainNav";
@@ -49,14 +48,7 @@ const containerAction = React.createRef<HTMLDivElement>();
 /**
  * This component renders the table view of events
  */
-const Events = ({
-// @ts-expect-error TS(7031): Binding element 'loadingEventsIntoTable' implicitl... Remove this comment to see the full error message
-	loadingEventsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingSeriesIntoTable' implicitl... Remove this comment to see the full error message
-	loadingSeriesIntoTable,
-// @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
-	resetOffset,
-}) => {
+const Events = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
@@ -82,11 +74,6 @@ const Events = ({
 
 	let location = useLocation();
 
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchEventsWrapper = async () => {
-		await dispatch(fetchEvents())
-	}
-
 	const loadEvents = async () => {
 		// Fetching stats from server
 		dispatch(fetchStats());
@@ -95,18 +82,18 @@ const Events = ({
 		await dispatch(fetchEvents());
 
 		// Load events into table
-		loadingEventsIntoTable();
+		dispatch(loadEventsIntoTable());
 	};
 
 	const loadSeries = () => {
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		//fetching series from server
 		dispatch(fetchSeries());
 
 		//load series into table
-		loadingSeriesIntoTable();
+		dispatch(loadSeriesIntoTable());
 	};
 
 	useEffect(() => {
@@ -310,8 +297,8 @@ const Events = ({
 
 						{/* Include filters component*/}
 						<TableFilters
-							loadResource={fetchEventsWrapper}
-							loadResourceIntoTable={loadingEventsIntoTable}
+							loadResource={fetchEvents}
+							loadResourceIntoTable={loadEventsIntoTable}
 							resource={"events"}
 						/>
 					</div>
@@ -327,17 +314,4 @@ const Events = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	loadingEventsIntoTable: () => dispatch(loadEventsIntoTable()),
-	loadingSeriesIntoTable: () => dispatch(loadSeriesIntoTable()),
-	resetOffset: () => dispatch(setOffset(0)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Events);
+export default Events;

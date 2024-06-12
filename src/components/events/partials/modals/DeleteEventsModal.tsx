@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { getSelectedRows } from "../../../../selectors/tableSelectors";
-import { connect } from "react-redux";
-import { useAppDispatch } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 import { deleteMultipleEvent } from "../../../../slices/eventSlice";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
@@ -12,11 +11,14 @@ import { availableHotkeys } from "../../../../configs/hotkeysConfig";
  * This component manages the delete bulk action
  */
 const DeleteEventsModal = ({
-    close,
-    selectedRows,
-}: any) => {
+	close,
+}: {
+	close: () => void
+}) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
+
+	const selectedRows = useAppSelector(state => getSelectedRows(state));
 
 	const [allChecked, setAllChecked] = useState(true);
 	const [selectedEvents, setSelectedEvents] = useState(selectedRows);
@@ -38,7 +40,6 @@ const DeleteEventsModal = ({
 	const onChangeAllSelected = (e) => {
 		const selected = e.target.checked;
 		setAllChecked(selected);
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 		let changedSelection = selectedEvents.map((event) => {
 			return {
 				...event,
@@ -52,7 +53,6 @@ const DeleteEventsModal = ({
 // @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
 	const onChangeSelected = (e, id) => {
 		const selected = e.target.checked;
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 		let changedEvents = selectedEvents.map((event) => {
 			if (event.id === id) {
 				return {
@@ -68,7 +68,6 @@ const DeleteEventsModal = ({
 		if (!selected) {
 			setAllChecked(false);
 		}
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 		if (changedEvents.every((event) => event.selected === true)) {
 			setAllChecked(true);
 		}
@@ -122,7 +121,6 @@ const DeleteEventsModal = ({
 											</thead>
 											<tbody>
 												{/* Repeat for each marked event*/}
-{/* @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type. */}
 												{selectedEvents.map((event, key) => (
 													<tr key={key}>
 														<td>
@@ -158,13 +156,10 @@ const DeleteEventsModal = ({
 				<footer>
 					<button
 						onClick={() => deleteSelectedEvents()}
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 						disabled={!selectedEvents.some((event) => event.selected === true)}
 						className={cn("danger", {
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 							active: selectedEvents.some((event) => event.selected === true),
 							inactive: !selectedEvents.some(
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 								(event) => event.selected === true
 							),
 						})}
@@ -182,15 +177,4 @@ const DeleteEventsModal = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	selectedRows: getSelectedRows(state),
-});
-
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(DeleteEventsModal);
+export default DeleteEventsModal;

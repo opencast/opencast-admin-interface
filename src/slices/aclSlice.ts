@@ -216,10 +216,10 @@ const aclsSlice = createSlice({
 	name: 'acls',
 	initialState,
 	reducers: {
-		setAclColumns(state, action: PayloadAction<{
-			updatedColumns: AclsState["columns"],
-		}>) {
-			state.columns = action.payload.updatedColumns;
+		setAclColumns(state, action: PayloadAction<
+			AclsState["columns"]
+		>) {
+			state.columns = action.payload;
 		},
 	},
 	// These are used for thunks

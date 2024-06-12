@@ -12,7 +12,7 @@ import {
 } from "../../thunks/tableThunks";
 import { getFilters } from "../../selectors/tableFilterSelectors";
 import { loadFilterProfile } from "../../slices/tableFilterSlice";
-import { useAppDispatch, useAppSelector } from "../../store";
+import { AppThunk, useAppDispatch, useAppSelector } from "../../store";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { Tooltip } from "./Tooltip";
@@ -22,16 +22,18 @@ import { Tooltip } from "./Tooltip";
  * table filters.
  */
 const TableFiltersProfiles = ({
-// @ts-expect-error TS(7031): Binding element 'showFilterSettings' implicitly ha... Remove this comment to see the full error message
 	showFilterSettings,
-// @ts-expect-error TS(7031): Binding element 'setFilterSettings' implicitly has... Remove this comment to see the full error message
 	setFilterSettings,
-// @ts-expect-error TS(7031): Binding element 'loadResource' implicitly has an '... Remove this comment to see the full error message
 	loadResource,
-// @ts-expect-error TS(7031): Binding element 'loadResourceIntoTable' implicitly... Remove this comment to see the full error message
 	loadResourceIntoTable,
-// @ts-expect-error TS(7031): Binding element 'resource' implicitly has an 'any'... Remove this comment to see the full error message
 	resource,
+}: {
+	showFilterSettings: boolean,
+	setFilterSettings: (_: boolean) => void,
+	// TODO: Figure out proper typings
+	loadResource: any,
+	loadResourceIntoTable: () => AppThunk,
+	resource: string,
 }) => {
 	const dispatch = useAppDispatch();
 
@@ -134,11 +136,10 @@ const TableFiltersProfiles = ({
 		dispatch(loadFilterProfile(filterMap));
 
 		// No matter what, we go to page one.
-		dispatch(goToPage(0)).then(async () => {
-			// Reload resources when filters are removed
-			await loadResource();
-			loadResourceIntoTable();
-		});
+		dispatch(goToPage(0))
+		// Reload resources when filters are removed
+		dispatch(loadResource());
+		dispatch(loadResourceIntoTable());
 	};
 
 	return (

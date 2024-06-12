@@ -3,7 +3,6 @@ import {
 	getNotifications,
 	getGlobalPositions,
 } from "../../selectors/notificationSelector";
-import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import {

@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import {
 	deleteComment as deleteOneComment,
 	saveComment as saveNewComment,
@@ -13,8 +12,6 @@ import { useAppDispatch } from "../../../store";
 const EventsNotesCell = ({
 // @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
-	// @ts-expect-error TS(7031):
-	updatePages,
 }) => {
 	const notesCommentReason = 'EVENTS.EVENTS.DETAILS.COMMENTS.REASONS.ADMINUI_NOTES';
 
@@ -34,7 +31,7 @@ const EventsNotesCell = ({
 		}
 		dispatch(saveNewComment({eventId: row.id, commentText: event.target.value, commentReason: notesCommentReason}))
 		.then(() => {
-			updatePages();
+			dispatch(updatePages());
 		});
 	 }
 
@@ -52,7 +49,7 @@ const EventsNotesCell = ({
 		if (event.target.value === "") {
 			dispatch(deleteOneComment({eventId: row.id, commentId}))
 			.then(() => {
-				updatePages();
+				dispatch(updatePages());
 			});
 		}
 	}
@@ -82,16 +79,4 @@ const EventsNotesCell = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	// comments: getComments(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	updatePages: () => dispatch(updatePages()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(EventsNotesCell);
+export default EventsNotesCell;

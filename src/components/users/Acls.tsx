@@ -163,8 +163,8 @@ const Acls: React.FC = () => {
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={() => dispatch(fetchAcls())}
-						loadResourceIntoTable={() => dispatch(loadAclsIntoTable())}
+						loadResource={fetchAcls}
+						loadResourceIntoTable={loadAclsIntoTable}
 						resource={"acls"}
 					/>
 					<h1>{t("USERS.ACLS.TABLE.CAPTION")}</h1>

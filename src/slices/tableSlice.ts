@@ -48,11 +48,13 @@ type Page = {
 	number: number,
 };
 
-export type Row = {
-	// "selected" and "id" should only be available if "multiSelect" is true in TableState
-	selected?: boolean,
-	id?: number,
-} & (Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | Details);
+// TODO: Type Row
+export type Row = any
+// {
+// 	// "selected" and "id" should only be available if "multiSelect" is true in TableState
+// 	selected?: boolean,
+// 	id?: string | number,
+// } & (Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | Details);
 
 type TableState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
