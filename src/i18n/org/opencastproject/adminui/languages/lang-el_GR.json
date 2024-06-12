@@ -3,10 +3,10 @@
 	"NAV_HOME": "Έναρξη",
 	"NAV_ABOUT": "Σχετικά με",
 	"BUILD": {
-		"BUILT_ON": "built on",
-		"DATE_DESC": "Date this system's kernel module was built on.",
-		"COMMIT": "Git commit this version of Opencast was built from.",
-		"VERSION": "Common bundle version of Opencast modules"
+		"BUILT_ON": "κατασκευάστηκε στις",
+		"DATE_DESC": "Ημερομηνία κατασκευής της μονάδας πυρήνα αυτού του συστήματος.",
+		"COMMIT": "Η υποβολή στο Git από την οποία κατασκευάστηκε αυτή η έκδοση.",
+		"VERSION": "Κοινή έκδοση δέσμης των ενοτήτων Opencast"
 	},
 	"NO": "'Οχι",
 	"SUBMIT": "Υποβολή",
@@ -100,8 +100,8 @@
 			"AVAILABLE_COLUMNS": "Διαθέσιμες στήλες",
 			"SELECTED_COLUMNS": "Επιλεγμένες στήλες",
 			"FOOTER_TEXT": "H σειρά και η επιλογή θα αποθηκευτούν αυτόματα. Πιέστε το πλήκτρο \"{{resetTranslation}}\" για να επαναφέρετε την προεπιλεγμένη προβολή.",
-			"ADD_COLUMN": "Add column",
-			"REMOVE_COLUMN": "Remove column"
+			"ADD_COLUMN": "Προσθέστε στήλη",
+			"REMOVE_COLUMN": "Αφαίρεση στήλης"
 		}
 	},
 	"CONFIRMATIONS": {
@@ -575,7 +575,7 @@
 				"EVENTS": "Εκδηλώσεις",
 				"SERIES": "Σειρά",
 				"OVERVIEW": "Επισκόπηση",
-				"LABEL": "Switch between events and series."
+				"LABEL": "Εναλλαγή μεταξύ εκδηλώσεων και σειράς."
 			},
 			"UPLOAD": "Μεταφόρτωση",
 			"ADD_SERIES": "Προσθήκη σειράς",
@@ -617,8 +617,8 @@
 					"PAUSED_WORKFLOW": "Δείτε σταματημένη εκδήλωση",
 					"PRESENTER": "Φίλτρο για αυτόν τον παρουσιαστή"
 				},
-				"SELECT_ALL": "Select all events",
-				"SELECT_EVENT": "Select event \"{{title}}\""
+				"SELECT_ALL": "Επιλογή όλων των εκδηλώσεων",
+				"SELECT_EVENT": "Επιλογή εκδήλωσης \"{{title}}\""
 			},
 			"STATUS": {
 				"SCHEDULED": "Προγραμματισμένη",
@@ -1252,9 +1252,9 @@
 				"EMAIL": "Διεύθυνση ηλεκτρονικού ταχυδρομείου",
 				"ROLES": "Ρόλοι",
 				"COLLAPSED": {
-					"UI": "user interface roles",
-					"API": "API roles",
-					"CAPTURE_AGENT": "capture agent roles"
+					"UI": "ρόλοι διεπαφής χρήστη",
+					"API": "Ρόλοι API",
+					"CAPTURE_AGENT": "λήψη ρόλων πράκτορα"
 				},
 				"TYPE": "Τύπος",
 				"PROVIDER": "Πάροχος",
@@ -1775,7 +1775,7 @@
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Παρακαλώ επιλέξτε ένα φίλτρο…",
 			"NO_OPTIONS": "Δεν βρέθηκαν φίλτρα",
-			"LABEL": "Filter table rows"
+			"LABEL": "Φιλτράρισμα γραμμών πίνακα"
 		},
 		"FILTER_VALUE_SELECTION": {
 			"PLACEHOLDER": "Παρακαλώ επιλέξτε μια τιμή…",
@@ -1796,7 +1796,7 @@
 			"NAME_PLACEHOLDER": "Όνομα…",
 			"DESCRIPTION": "Περιγραφή",
 			"DESCRIPTION_PLACEHOLDER": "Περιγραφή…",
-			"ADD": "Add"
+			"ADD": "Προσθήκη"
 		}
 	},
 	"FILTERS": {
@@ -2017,8 +2017,8 @@
 	"TABLE_NO_RESULT": "Δεν βρέθηκαν αποτελέσματα",
 	"TABLE_LOADING": "Φόρτωση…",
 	"TABLE_EDIT": "Επεξεργασία",
-	"TABLE_NEXT": "Next page",
-	"TABLE_PREVIOUS": "Previous page",
+	"TABLE_NEXT": "Επόμενη σελίδα",
+	"TABLE_PREVIOUS": "Προηγούμενη σελίδα",
 	"DASHBOARD": {
 		"RUNNING": "Εκτελείται",
 		"FINISHED": "Ολοκληρώθηκε",
@@ -2099,7 +2099,7 @@
 				"NEW_EVENT": "Προσθήκη εκδήλωσης",
 				"NEW_SERIES": "Προσθήκη σειράς",
 				"CHEAT_SHEET": "Συντομεύσεις πληκτρολογίου",
-				"CLOSE_MODAL": "Close dialog"
+				"CLOSE_MODAL": "Κλείσιμο διαλόγου"
 			}
 		}
 	},
