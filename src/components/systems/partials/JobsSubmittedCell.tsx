@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { renderValidDate } from "../../../utils/dateUtils";
 
 /**
  * This component renders the submitted date cells of jobs in the table view
@@ -11,7 +12,7 @@ const JobsSubmittedCell = ({
 
 	return (
 		<span>
-			{t("dateFormats.dateTime.short", { dateTime: new Date(row.submitted) })}
+			{t("dateFormats.dateTime.short", { dateTime: renderValidDate(row.submitted) })}
 		</span>
 	);
 };

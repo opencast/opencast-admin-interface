@@ -10,6 +10,7 @@ import RenderDate from "../RenderDate";
 import { parseISO } from "date-fns";
 import { FieldProps } from "formik";
 import { MetadataField } from "../../../slices/eventSlice";
+import { renderValidDate } from "../../../utils/dateUtils";
 
 const childRef = React.createRef<HTMLDivElement>();
 /**
@@ -86,7 +87,7 @@ const RenderField = ({
 					metadataField={metadataField}
 					field={field}
 					form={form}
-					text={field.value}
+					text={t(getMetadataCollectionFieldName(metadataField, field))}
 					editMode={editMode}
 					setEditMode={setEditMode}
 					showCheck={showCheck}
@@ -420,7 +421,7 @@ const EditableSingleValueTime = ({
 	) : (
 		<div onClick={() => setEditMode(true)} className="show-edit">
 			<span className="editable preserve-newlines">
-				{t("dateFormats.dateTime.short", { dateTime: new Date(text) }) || ""}
+				{t("dateFormats.dateTime.short", { dateTime: renderValidDate(text) }) || ""}
 			</span>
 			<div>
 				<i className="edit fa fa-pencil-square" />

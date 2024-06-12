@@ -1,5 +1,6 @@
 import { TFunction } from "i18next";
 import { DropDownType } from './../components/shared/DropDown';
+import { isJson } from "./utils";
 /*
  * this file contains functions, which are needed for the searchable drop-down selections
  */
@@ -46,6 +47,20 @@ export const formatDropDownOptions = (
 	required: boolean,
 	t: TFunction
 ) => {
+	/**
+	 * This is used to determine whether any entry of the passed `unformattedOptions`
+	 * contains an `order` field, indicating that a custom ordering for that list
+	 * exists and the list therefore should not be ordered alphabetically.
+	 */
+	const hasCustomOrder = unformattedOptions.every((item: any) => 
+		isJson(item.name) && JSON.parse(item.name).order !== undefined);
+
+	if (hasCustomOrder) {
+		// Apply custom ordering. Needs to be done here because the order field isn't carried over
+		// to the `formattedOptions`.
+		unformattedOptions.sort((a: any, b: any) => JSON.parse(a.name).order - JSON.parse(b.name).order);
+	}
+
 	const formattedOptions = [];
 	if (!required) {
 		formattedOptions.push({
@@ -53,7 +68,7 @@ export const formatDropDownOptions = (
 			label: `-- ${t("SELECT_NO_OPTION_SELECTED")} --`,
 		});
 	}
-	if (type === "language") {
+	if (type === "language" || type === "license") {
 		for (const item of unformattedOptions) {
 			formattedOptions.push({
 				value: item.value,
@@ -111,5 +126,7 @@ export const formatDropDownOptions = (
 		}
 	}
 
-	return formattedOptions;
+	return hasCustomOrder
+		? formattedOptions
+		: formattedOptions.sort((a, b) => a.label.localeCompare(b.label));
 };

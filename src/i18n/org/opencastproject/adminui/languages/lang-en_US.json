@@ -2,6 +2,12 @@
 	"MATTERHORN": "Opencast",
 	"NAV_HOME": "Start",
 	"NAV_ABOUT": "About",
+	"BUILD": {
+		"BUILT_ON": "built on",
+		"DATE_DESC":"Date this system's kernel module was built on.",
+		"COMMIT": "Git commit this version of Opencast was built from.",
+		"VERSION": "Common bundle version of Opencast modules"
+	},
 	"NO": "No",
 	"SUBMIT": "Submit",
 	"UPDATE": "Update",
@@ -95,7 +101,9 @@
 			"SUBHEADING": "Select the default data you would like displayed in the {{ tableName }} view",
 			"AVAILABLE_COLUMNS": "Available columns",
 			"SELECTED_COLUMNS": "Selected columns",
-			"FOOTER_TEXT": "The order and selection will be saved automatically. Press \"{{resetTranslation}}\" to restore the default view."
+			"FOOTER_TEXT": "The order and selection will be saved automatically. Press \"{{resetTranslation}}\" to restore the default view.",
+			"ADD_COLUMN": "Add column",
+			"REMOVE_COLUMN": "Remove column"
 		}
 	},
 	"CONFIRMATIONS": {
@@ -569,7 +577,8 @@
 			"NAVIGATION": {
 				"EVENTS": "Events",
 				"SERIES": "Series",
-				"OVERVIEW": "Overview"
+				"OVERVIEW": "Overview",
+				"LABEL": "Switch between events and series."
 			},
 			"UPLOAD": "Upload",
 			"ADD_SERIES": "Add series",
@@ -610,7 +619,9 @@
 					"COMMENTS": "View comments",
 					"PAUSED_WORKFLOW": "View paused workflow",
 					"PRESENTER": "Filter for this presenter"
-				}
+				},
+				"SELECT_ALL": "Select all events",
+				"SELECT_EVENT": "Select event \"{{title}}\""
 			},
 			"STATUS": {
 				"SCHEDULED": "Scheduled",
@@ -1243,6 +1254,11 @@
 				"USERNAME": "Username",
 				"EMAIL": "Email",
 				"ROLES": "Roles",
+				"COLLAPSED": {
+					"UI": "user interface roles",
+					"API": "API roles",
+					"CAPTURE_AGENT": "capture agent roles"
+				},
 				"TYPE": "Type",
 				"PROVIDER": "Provider",
 				"ACTION": "Actions",
@@ -1761,7 +1777,8 @@
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Please select a filter…",
-			"NO_OPTIONS": "No filters found"
+			"NO_OPTIONS": "No filters found",
+			"LABEL": "Filter table rows"
 		},
 		"FILTER_VALUE_SELECTION": {
 			"PLACEHOLDER": "Please select a value…",
@@ -1781,7 +1798,8 @@
 			"NAME": "Name",
 			"NAME_PLACEHOLDER": "Name…",
 			"DESCRIPTION": "Description",
-			"DESCRIPTION_PLACEHOLDER": "Description…"
+			"DESCRIPTION_PLACEHOLDER": "Description…",
+			"ADD": "Add"
 		}
 	},
 	"FILTERS": {
@@ -2083,7 +2101,8 @@
 				"SERIES_VIEW": "Series",
 				"NEW_EVENT": "Add event",
 				"NEW_SERIES": "Add series",
-				"CHEAT_SHEET": "Keyboard shortcuts"
+				"CHEAT_SHEET": "Keyboard shortcuts",
+				"CLOSE_MODAL": "Close dialog"
 			}
 		}
 	},

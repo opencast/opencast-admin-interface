@@ -58,9 +58,6 @@ const tableFilterProfileSlice = createSlice({
 			state.profiles = state.profiles.filter(
 									(filterProfile) => filterProfile.name !== filterProfileToRemove.name
 								)
-		},
-		cancelEditFilterProfile(state) {
-			return
 		}
 	},
 });
@@ -69,7 +66,6 @@ export const {
 	createFilterProfile,
 	editFilterProfile,
 	removeFilterProfile,
-	cancelEditFilterProfile,
 } = tableFilterProfileSlice.actions;
 
 // Export the slice reducer as the default export

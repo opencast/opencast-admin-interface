@@ -16,8 +16,9 @@ import {
 } from "../../thunks/tableThunks";
 import { getTotalAcls } from "../../selectors/aclSelectors";
 import { setOffset } from "../../actions/tableActions";
-import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
 import Header from "../Header";
+import NavBar from "../NavBar";
+import MainView from "../MainView";
 import Footer from "../Footer";
 import { hasAccess } from "../../utils/utils";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
@@ -103,7 +104,7 @@ const Acls: React.FC = () => {
 	return (
 		<>
 			<Header />
-			<section className="action-nav-bar">
+			<NavBar>
 				{/* Add acl button */}
 				<div className="btn-group">
 					{hasAccess("ROLE_UI_ACLS_CREATE", user) && (
@@ -153,12 +154,9 @@ const Acls: React.FC = () => {
 						</Link>
 					)}
 				</nav>
-			</section>
+			</NavBar>
 
-			<div
-				className="main-view"
-				style={displayNavigation ? styleNavOpen : styleNavClosed}
-			>
+			<MainView open={displayNavigation}>
 				{/* Include notifications component */}
 				<Notifications />
 
@@ -174,7 +172,7 @@ const Acls: React.FC = () => {
 				</div>
 				{/* Include table component */}
 				<Table templateMap={aclsTemplateMap} />
-			</div>
+			</MainView>
 			<Footer />
 		</>
 	);

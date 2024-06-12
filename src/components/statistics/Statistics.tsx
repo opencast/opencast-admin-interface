@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import Header from "../Header";
+import NavBar from "../NavBar";
+import MainView from "../MainView";
 import Footer from "../Footer";
 import MainNav from "../shared/MainNav";
 import TimeSeriesStatistics from "../shared/TimeSeriesStatistics";
@@ -18,7 +20,6 @@ import {
 	getUserInformation,
 } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
-import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
 import { fetchUserInfo } from "../../slices/userInfoSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
@@ -74,7 +75,7 @@ const Statistics: React.FC = () => {
 	return (
                 <span>
 			<Header />
-			<section className="action-nav-bar">
+			<NavBar>
 				{/* Include Burger-button menu */}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
 
@@ -89,13 +90,10 @@ const Statistics: React.FC = () => {
 						</Link>
 					)}
 				</nav>
-			</section>
+			</NavBar>
 
 			{/* main view of this page, displays statistics */}
-			<div
-				className="main-view"
-				style={displayNavigation ? styleNavOpen : styleNavClosed}
-			>
+			<MainView open={displayNavigation}>
 				<div className="obj statistics">
 					{/* heading */}
 					<div className="controls-container">
@@ -152,21 +150,10 @@ const Statistics: React.FC = () => {
 							))
 						))}
 				</div>
-			</div>
+			</MainView>
 			<Footer />
 		</span>
     );
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Statistics);
+export default Statistics;

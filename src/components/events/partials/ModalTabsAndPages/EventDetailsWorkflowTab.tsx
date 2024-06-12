@@ -26,6 +26,8 @@ import {
 	updateWorkflow,
 } from "../../../../slices/eventDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { renderValidDate } from "../../../../utils/dateUtils";
+import { Tooltip } from "../../../shared/Tooltip";
 
 /**
  * This component manages the workflows tab of the event details modal
@@ -213,7 +215,7 @@ const EventDetailsWorkflowTab = ({
 															<td>{item.submitter}</td>
 															<td>
 																{t("dateFormats.dateTime.medium", {
-																	dateTime: new Date(item.submitted),
+																	dateTime: renderValidDate(item.submitted),
 																})}
 															</td>
 															<td>{t(item.status)}</td>
@@ -221,46 +223,43 @@ const EventDetailsWorkflowTab = ({
 																<td>
 																	{item.status ===
 																		"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.RUNNING" && (
-																		<button
-																			onClick={() =>
-																				workflowAction(item.id, "STOP")
-																			}
-																			className="button-like-anchor stop fa-fw"
-																			title={t(
-																				"EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.STOP"
-																			)}
-																		>
-																			{/* STOP */}
-																		</button>
+																		<Tooltip title={t("EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.STOP")}>
+																			<button
+																				onClick={() =>
+																					workflowAction(item.id, "STOP")
+																				}
+																				className="button-like-anchor stop fa-fw"
+																			>
+																				{/* STOP */}
+																			</button>
+																		</Tooltip>
 																	)}
 																	{item.status ===
 																		"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.PAUSED" && (
-																		<button
-																			onClick={() =>
-																				workflowAction(item.id, "NONE")
-																			}
-																			className="button-like-anchor fa fa-hand-stop-o fa-fw"
-																			style={{ color: "red" }}
-																			title={t(
-																				"EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.ABORT"
-																			)}
-																		>
-																			{/* Abort */}
-																		</button>
+																		<Tooltip title={t("EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.ABORT")}>
+																			<button
+																				onClick={() =>
+																					workflowAction(item.id, "NONE")
+																				}
+																				className="button-like-anchor fa fa-hand-stop-o fa-fw"
+																				style={{ color: "red" }}
+																			>
+																				{/* Abort */}
+																			</button>
+																		</Tooltip>
 																	)}
 																	{item.status ===
 																		"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.PAUSED" && (
-																		<button
-																			onClick={() =>
-																				workflowAction(item.id, "RETRY")
-																			}
-																			className="button-like-anchor fa fa-refresh fa-fw"
-																			title={t(
-																				"EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.RETRY"
-																			)}
-																		>
-																			{/* Retry */}
-																		</button>
+																		<Tooltip title={t("EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.RETRY")}>
+																			<button
+																				onClick={() =>
+																					workflowAction(item.id, "RETRY")
+																				}
+																				className="button-like-anchor fa fa-refresh fa-fw"
+																			>
+																				{/* Retry */}
+																			</button>
+																		</Tooltip>
 																	)}
 																	{(item.status ===
 																		"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.SUCCEEDED" ||
@@ -270,15 +269,18 @@ const EventDetailsWorkflowTab = ({
 																			"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.STOPPED") &&
 																		!isCurrentWorkflow(item.id) &&
 																		isRoleWorkflowDelete && (
-																			<button
-																				onClick={() => deleteWorkflow(item.id)}
-																				className="button-like-anchor remove fa-fw"
+																			<Tooltip
 																				title={t(
 																					"EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.DELETE"
 																				)}
 																			>
-																				{/* DELETE */}
-																			</button>
+																				<button
+																					onClick={() => deleteWorkflow(item.id)}
+																					className="button-like-anchor remove fa-fw"
+																				>
+																					{/* DELETE */}
+																				</button>
+																			</Tooltip>
 																		)}
 																</td>
 															)}

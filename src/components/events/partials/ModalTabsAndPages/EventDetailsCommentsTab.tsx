@@ -17,6 +17,7 @@ import {
 	deleteComment as deleteOneComment,
 	deleteCommentReply,
 } from "../../../../slices/eventDetailsSlice";
+import { renderValidDate } from "../../../../utils/dateUtils";
 
 /**
  * This component manages the comment tab of the event details modal
@@ -133,7 +134,7 @@ const EventDetailsCommentsTab = ({
 											{/* details about the comment */}
 											<div className="date">
 												{t("dateFormats.dateTime.short", {
-													dateTime: new Date(comment.creationDate),
+													dateTime: renderValidDate(comment.creationDate),
 												}) || ""}
 											</div>
 											<h4>{comment.author.name}</h4>
@@ -188,7 +189,7 @@ const EventDetailsCommentsTab = ({
 														{/* details about the reply and reply text */}
 														<div className="date">
 															{t("dateFormats.dateTime.short", {
-																dateTime: new Date(reply.creationDate),
+																dateTime: renderValidDate(reply.creationDate),
 															}) || ""}
 														</div>
 														<h4>{reply.author.name}</h4>

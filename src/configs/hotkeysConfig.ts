@@ -62,5 +62,10 @@ export const availableHotkeys: HotkeyMapType = {
 			description: "HOTKEYS.DESCRIPTIONS.GENERAL.REMOVE_FILTERS",
 			sequence: ["r"],
 		},
+		CLOSE_MODAL: {
+			name: "close_modal",
+			description: "HOTKEYS.DESCRIPTIONS.GENERAL.CLOSE_MODAL",
+			sequence: ["Esc"],
+		}
 	},
 };

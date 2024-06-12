@@ -55,7 +55,7 @@ const RenderWorkflowConfig = <T extends RequiredFormProps>({
 		<>
 			{displayDescription && description.length > 0 && (
 				<div className="collapsible-box" style={descriptionBoxStyle}>
-					<div style={descriptionTextStyle}>{description}</div>
+					<div style={descriptionTextStyle}>{description.trim()}</div>
 				</div>
 			)}
 

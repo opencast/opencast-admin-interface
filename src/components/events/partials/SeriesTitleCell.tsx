@@ -5,6 +5,7 @@ import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { setSpecificEventFilter } from "../../../slices/tableFilterSlice";
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../../store";
+import { Tooltip } from "../../shared/Tooltip";
 
 /**
  * This component renders the title cells of series in the table view
@@ -28,14 +29,15 @@ const SeriesTitleCell = ({
 	};
 
 	return (
-		<Link
-			to="/events/events"
-			className="crosslink"
-			title={t("EVENTS.SERIES.TABLE.TOOLTIP.SERIES")}
-			onClick={async () => await redirectToEvents(row.id)}
-		>
-			{row.title}
-		</Link>
+		<Tooltip title={t("EVENTS.SERIES.TABLE.TOOLTIP.SERIES")}>
+			<Link
+				to="/events/events"
+				className="crosslink"
+				onClick={async () => await redirectToEvents(row.id)}
+			>
+				{row.title}
+			</Link>
+		</Tooltip>
 	);
 };
 

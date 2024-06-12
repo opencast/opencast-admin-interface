@@ -2,6 +2,12 @@
 	"MATTERHORN": "Opencast",
 	"NAV_HOME": "Zur Startseite",
 	"NAV_ABOUT": "Über",
+	"BUILD": {
+		"BUILT_ON": "gebaut am",
+		"DATE_DESC": "Datum an welchem das Kernelmodul dieses Systems gebaut wurde.",
+		"COMMIT": "Git commit aus der diese Version von Opencast gebaut wurde.",
+		"VERSION": "Gemeinsame Bundle-Version von Opencast Modulen"
+	},
 	"NO": "Nein",
 	"SUBMIT": "Speichern",
 	"UPDATE": {
@@ -93,7 +99,9 @@
 			"SUBHEADING": "Wählen Sie die Standard-Daten, die Sie in der {{ tableName }}-Ansicht anzeigen möchten",
 			"AVAILABLE_COLUMNS": "Verfügbare Spalten",
 			"SELECTED_COLUMNS": "Ausgewählte Spalten",
-			"FOOTER_TEXT": "Die Reihenfolge und Auswahl werden automatisch gespeichert. Drücken Sie \"{{resetTranslation}}\", um die Standardansicht wiederherzustellen."
+			"FOOTER_TEXT": "Die Reihenfolge und Auswahl werden automatisch gespeichert. Drücken Sie \"{{resetTranslation}}\", um die Standardansicht wiederherzustellen.",
+			"ADD_COLUMN": "Spalte hinzufügen",
+			"REMOVE_COLUMN": "Spalte entfernen"
 		}
 	},
 	"CONFIRMATIONS": {
@@ -566,7 +574,8 @@
 			"NAVIGATION": {
 				"EVENTS": "Videos",
 				"SERIES": "Serien",
-				"OVERVIEW": "Übersicht"
+				"OVERVIEW": "Übersicht",
+				"LABEL": "Zwischen Aufzeichnungen und Serien wechseln."
 			},
 			"UPLOAD": "Hochladen",
 			"ADD_SERIES": "Serie hinzufügen",
@@ -607,7 +616,9 @@
 					"COMMENTS": "Kommentare ansehen",
 					"PAUSED_WORKFLOW": "Angehaltenen Workflow anzeigen",
 					"PRESENTER": "Nach diesem Vortragenden filtern"
-				}
+				},
+				"SELECT_ALL": "Alle Aufzeichnungen auswählen",
+				"SELECT_EVENT": "Aufzeichnung „{{title}}“ auswählen"
 			},
 			"STATUS": {
 				"SCHEDULED": "Geplant",
@@ -1240,6 +1251,11 @@
 				"USERNAME": "Benutzername",
 				"EMAIL": "E-Mail",
 				"ROLES": "Rollen",
+				"COLLAPSED": {
+					"UI": "UI-Rollen",
+					"API": "API-Rollen",
+					"CAPTURE_AGENT": "Capture-Agent-Rollen"
+				},
 				"TYPE": "Typ",
 				"PROVIDER": "Anbieter",
 				"ACTION": "Aktionen",
@@ -1758,7 +1774,8 @@
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Bitte einen Filter wählen…",
-			"NO_OPTIONS": "Keine Filter gefunden"
+			"NO_OPTIONS": "Keine Filter gefunden",
+			"LABEL": "Tabellenzeilen filtern"
 		},
 		"FILTER_VALUE_SELECTION": {
 			"PLACEHOLDER": "Bitte einen Wert wählen…",
@@ -1778,7 +1795,8 @@
 			"NAME": "Name",
 			"NAME_PLACEHOLDER": "Name…",
 			"DESCRIPTION": "Beschreibung",
-			"DESCRIPTION_PLACEHOLDER": "Beschreibung…"
+			"DESCRIPTION_PLACEHOLDER": "Beschreibung…",
+			"ADD": "Hinzufügen"
 		}
 	},
 	"FILTERS": {
@@ -1999,6 +2017,8 @@
 	"TABLE_NO_RESULT": "Keine Treffer gefunden.",
 	"TABLE_LOADING": "Lädt…",
 	"TABLE_EDIT": "Bearbeiten",
+	"TABLE_NEXT": "Nächste Seite",
+	"TABLE_PREVIOUS": "Vorherige Seite",
 	"DASHBOARD": {
 		"RUNNING": "In Verarbeitung",
 		"FINISHED": "Verarbeitet",
@@ -2078,7 +2098,8 @@
 				"SERIES_VIEW": "Serien",
 				"NEW_EVENT": "Video hinzufügen",
 				"NEW_SERIES": "Serie hinzufügen",
-				"CHEAT_SHEET": "Tastenkürzel"
+				"CHEAT_SHEET": "Tastenkürzel",
+				"CLOSE_MODAL": "Dialog schließen"
 			}
 		}
 	},

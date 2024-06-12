@@ -10,6 +10,8 @@ import StartTaskSummaryPage from "../ModalTabsAndPages/StartTaskSummaryPage";
 import { postTasks } from "../../../../thunks/taskThunks";
 import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { checkValidityStartTaskEventSelection } from "../../../../utils/bulkActionUtils";
+import { useHotkeys } from "react-hotkeys-hook";
+import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 
 /**
  * This component manages the pages of the task start bulk action
@@ -31,6 +33,13 @@ const StartTaskModal = ({
 		pageCompleted,
 		setPageCompleted,
 	} = usePageFunctions(0, initialValues);
+
+	useHotkeys(
+		availableHotkeys.general.CLOSE_MODAL.sequence,
+		() => close(),
+		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
+		[close],
+  	);
 
 	const steps = [
 		{

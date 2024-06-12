@@ -1,6 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import RecordingsDetails from "./RecordingsDetails";
+import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { useHotkeys } from "react-hotkeys-hook";
 
 /**
  * This component renders the modal for displaying recording details
@@ -10,6 +12,13 @@ const RecordingDetailsModal = ({
     recordingId
 }: any) => {
 	const { t } = useTranslation();
+
+	useHotkeys(
+		availableHotkeys.general.CLOSE_MODAL.sequence,
+		() => close(),
+		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
+		[close],
+  	);
 
 	const handleClose = () => {
 		close();

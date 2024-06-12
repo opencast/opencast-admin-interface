@@ -2,6 +2,12 @@
 	"MATTERHORN": "Opencast",
 	"NAV_HOME": "Start",
 	"NAV_ABOUT": "Om",
+	"BUILD": {
+		"BUILT_ON": "built on",
+		"DATE_DESC": "Date this system's kernel module was built on.",
+		"COMMIT": "Git commit this version of Opencast was built from.",
+		"VERSION": "Common bundle version of Opencast modules"
+	},
 	"NO": "Nej",
 	"SUBMIT": "Indsend",
 	"UPDATE": {
@@ -93,7 +99,9 @@
 			"SUBHEADING": "Vælg de standarddata, som skal fremgå af {{ tableName }}-visningen",
 			"AVAILABLE_COLUMNS": "Tilgængelige kolonner",
 			"SELECTED_COLUMNS": "Valgte kolonner",
-			"FOOTER_TEXT": "Rækkefølge og udvælgelse gemmes automatisk. Tryk på \"{{resetTranslation}}\" for at gendanne standardvisningen."
+			"FOOTER_TEXT": "Rækkefølge og udvælgelse gemmes automatisk. Tryk på \"{{resetTranslation}}\" for at gendanne standardvisningen.",
+			"ADD_COLUMN": "Add column",
+			"REMOVE_COLUMN": "Remove column"
 		}
 	},
 	"CONFIRMATIONS": {
@@ -566,7 +574,8 @@
 			"NAVIGATION": {
 				"EVENTS": "Begivenheder",
 				"SERIES": "Serier",
-				"OVERVIEW": "Oversigt"
+				"OVERVIEW": "Oversigt",
+				"LABEL": "Switch between events and series."
 			},
 			"UPLOAD": "Upload",
 			"ADD_SERIES": "Tilføj serier",
@@ -607,7 +616,9 @@
 					"COMMENTS": "Vis kommentarer",
 					"PAUSED_WORKFLOW": "Vis arbejdsgange på pause",
 					"PRESENTER": "Filtrér til denne vært"
-				}
+				},
+				"SELECT_ALL": "Select all events",
+				"SELECT_EVENT": "Select event \"{{title}}\""
 			},
 			"STATUS": {
 				"SCHEDULED": "Planlagt",
@@ -1240,6 +1251,11 @@
 				"USERNAME": "Brugernavn",
 				"EMAIL": "E-mail",
 				"ROLES": "Roller",
+				"COLLAPSED": {
+					"UI": "user interface roles",
+					"API": "API roles",
+					"CAPTURE_AGENT": "capture agent roles"
+				},
 				"TYPE": "Type",
 				"PROVIDER": "Udbyder",
 				"ACTION": "Handlinger",
@@ -1758,7 +1774,8 @@
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Vælg et filter…",
-			"NO_OPTIONS": "Ingen filtre fundet"
+			"NO_OPTIONS": "Ingen filtre fundet",
+			"LABEL": "Filter table rows"
 		},
 		"FILTER_VALUE_SELECTION": {
 			"PLACEHOLDER": "Vælg en værdi…",
@@ -1778,7 +1795,8 @@
 			"NAME": "Navn",
 			"NAME_PLACEHOLDER": "Navn…",
 			"DESCRIPTION": "Beskriveslse",
-			"DESCRIPTION_PLACEHOLDER": "Beskriveslse…"
+			"DESCRIPTION_PLACEHOLDER": "Beskriveslse…",
+			"ADD": "Add"
 		}
 	},
 	"FILTERS": {
@@ -1999,6 +2017,8 @@
 	"TABLE_NO_RESULT": "Intet resultat fundet",
 	"TABLE_LOADING": "Indlæser…",
 	"TABLE_EDIT": "Redigér",
+	"TABLE_NEXT": "Next page",
+	"TABLE_PREVIOUS": "Previous page",
 	"DASHBOARD": {
 		"RUNNING": "Kører",
 		"FINISHED": "Færdig",
@@ -2078,7 +2098,8 @@
 				"SERIES_VIEW": "Serier",
 				"NEW_EVENT": "Tilføj begivenhed",
 				"NEW_SERIES": "Tilføj serier",
-				"CHEAT_SHEET": "Tastaturgenveje"
+				"CHEAT_SHEET": "Tastaturgenveje",
+				"CLOSE_MODAL": "Close dialog"
 			}
 		}
 	},
