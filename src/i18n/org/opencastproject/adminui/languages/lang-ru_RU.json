@@ -1,32 +1,32 @@
 {
 	"MATTERHORN": "Opencast",
 	"NAV_HOME": "Start",
-	"NAV_ABOUT": "About",
+	"NAV_ABOUT": "О программе",
 	"BUILD": {
 		"BUILT_ON": "built on",
 		"DATE_DESC": "Date this system's kernel module was built on.",
 		"COMMIT": "Git commit this version of Opencast was built from.",
 		"VERSION": "Common bundle version of Opencast modules"
 	},
-	"NO": "No",
-	"SUBMIT": "Submit",
+	"NO": "Нет",
+	"SUBMIT": "Отправить",
 	"UPDATE": {
 		"MINOR": "Minor update available",
 		"MAJOR": "Major update available",
-		"UNSUPPORTED": "Version {{ version }} no longer supported",
+		"UNSUPPORTED": "Версия {{ version }} больше не поддерживается",
 		"UNDETERMINED": "Indeterminable version"
 	},
-	"CANCEL": "Cancel",
-	"CONFIRM": "Confirm",
-	"SAVE": "Save",
+	"CANCEL": "Отмена",
+	"CONFIRM": "Подтвердить",
+	"SAVE": "Сохранить",
 	"CONTINUE": "Continue",
-	"CLOSE": "Close",
-	"LOGOUT": "Logout",
-	"RESET": "Reset",
+	"CLOSE": "Закрыть",
+	"LOGOUT": "Выйти",
+	"RESET": "Сброс",
 	"SELECT_NO_OPTION_SELECTED": "No option selected",
-	"SELECT_NO_OPTIONS_AVAILABLE": "No options available",
-	"YES": "Yes",
-	"COPY": "Copy to clipboard",
+	"SELECT_NO_OPTIONS_AVAILABLE": "Нет доступных параметров",
+	"YES": "Да",
+	"COPY": "Скопировать в буфер обмена",
 	"LTI": {
 		"ERROR_LOADING_METADATA": "Error loading event metadata. Please try again later.",
 		"SERIES_TITLE": "View Series",
@@ -41,21 +41,21 @@
 		"CAPTION_DESCRIPTION": "Caption file; VTT format is supported",
 		"UPLOAD": "Upload",
 		"UPLOADING": "Uploading",
-		"EDIT": "Save",
+		"EDIT": "Сохранить",
 		"EDIT_TITLE": "Edit event",
 		"NO_OPTION_SELECTED": "No option selected",
-		"EDITING": "Saving…",
+		"EDITING": "Сохранение…",
 		"SELECT_OPTION": "Select option",
-		"JOB_TITLE": "Title",
-		"JOB_STATUS": "Status",
-		"UPLOAD_SUCCESS": "Upload succeeded!",
-		"UPLOAD_FAILURE": "Upload failed!",
-		"UPLOAD_FAILURE_DESCRIPTION": "Please try again later.",
+		"JOB_TITLE": "Заголовок",
+		"JOB_STATUS": "Статус",
+		"UPLOAD_SUCCESS": "Файл успешно загружен!",
+		"UPLOAD_FAILURE": "Сбой загрузки!",
+		"UPLOAD_FAILURE_DESCRIPTION": "Пожалуйста, повторите попытку позже.",
 		"EDIT_SUCCESS": "Edit succeeded, beginning republishing.",
 		"EDIT_FAILURE": "Edit failed!",
 		"COPY_SUCCESS": "Copying started…",
-		"COPY_SUCCESS_DESCRIPTION": "Please wait a moment…",
-		"GENERIC_ERROR": "Error: {{message}}",
+		"COPY_SUCCESS_DESCRIPTION": "Пожалуйста, подождите…",
+		"GENERIC_ERROR": "Ошибка: {{message}}",
 		"DELETION_SUCCESS": "Event deletion successful",
 		"DELETION_SUCCESS_DESCRIPTION": "The event will be removed from the list in a few moments…",
 		"EVENT_LOCKED": "The event is currently being worked on. Please wait until making further changes…",
@@ -65,22 +65,22 @@
 		"CONFIRM_DELETION": "Really delete this event?",
 		"COPY_TO_SERIES": "Copy event to series",
 		"SELECT_COPY_TARGET": "Select destination series",
-		"COPY": "Copy",
+		"COPY": "Копировать",
 		"COPY_IN_PROGRESS": "Starting copy…",
 		"CREATOR": "by {{creator}}"
 	},
 	"LANGUAGES": {
 		"ARABIC": "Arabic",
-		"DANISH": "Danish",
-		"GERMAN": "German",
+		"DANISH": "Датский",
+		"GERMAN": "Немецкий",
 		"GERMAN_CH": "Swiss German",
-		"FINNISH": "Finnish",
+		"FINNISH": "Финский",
 		"HINDI": "Hindi",
 		"ITALIAN": "Italian",
-		"JAPANESE": "Japanese",
+		"JAPANESE": "Японский",
 		"DUTCH": "Dutch",
 		"NORWEGIAN": "Norwegian",
-		"FRENCH": "French",
+		"FRENCH": "Французский",
 		"ENGLISH": "English",
 		"SPANISH": "Spanish",
 		"ROMANSH": "Romansh",
@@ -88,10 +88,10 @@
 		"PORTUGESE": "Portuguese",
 		"SLOVENIAN": "Slovenian",
 		"SWEDISH": "Swedish",
-		"RUSSIAN": "Russian",
-		"TURKISH": "Turkish",
-		"UKRAINIAN": "Ukrainian",
-		"CHINESE": "Chinese"
+		"RUSSIAN": "Русский",
+		"TURKISH": "Турецкий",
+		"UKRAINIAN": "Украинский",
+		"CHINESE": "Китайский"
 	},
 	"PREFERENCES": {
 		"TABLE": {
@@ -105,7 +105,7 @@
 		}
 	},
 	"CONFIRMATIONS": {
-		"EMBEDDING_CODE": "Embedding code has been copied to the clipboard: {{ size }}",
+		"EMBEDDING_CODE": "Embedding code has been copied to the clipboard:",
 		"CONTINUE_ACTION": "Are you sure you want to continue?",
 		"METADATA": {
 			"NOTICE": {
@@ -140,7 +140,7 @@
 	"LANGUAGE": "Select language",
 	"HELP": {
 		"HELP": "Help",
-		"USERS_GUIDE": "User's Guide",
+		"USERS_GUIDE": "Руководство пользователя",
 		"DOCUMENTATION": "Documentation",
 		"REST_DOC": "REST API Docs",
 		"HOTKEY_CHEAT_SHEET": "Keyboard Shortcuts",
@@ -155,7 +155,7 @@
 		"USER_ADDED": "The user has been created",
 		"USER_UPDATED": "The user has been updated",
 		"USER_NOT_SAVED": "The user could not be saved",
-		"USER_DELETED": "The user has been deleted",
+		"USER_DELETED": "Пользователь удален",
 		"USER_NOT_DELETED": "The user could not be deleted",
 		"USER_NOT_MANAGEABLE": "The user is not manageable",
 		"GROUP_ADDED": "The group has been created",
@@ -163,11 +163,11 @@
 		"GROUP_UPDATED": "The group has been updated",
 		"GROUP_NOT_SAVED": "The group could not be saved",
 		"GROUP_DELETED": "The group has been deleted",
-		"GROUP_NOT_DELETED": "The group could not be deleted",
+		"GROUP_NOT_DELETED": "Группа не может быть удалена",
 		"SERIES_ADDED": "The series has been created",
 		"SERIES_NOT_SAVED": "The series could not be saved",
 		"EVENTS_CREATED": "The event has been created",
-		"EVENTS_UPLOAD_STARTED": "The event is being uploaded… {{ progress }}%",
+		"EVENTS_UPLOAD_STARTED": "The event is being uploaded…",
 		"EVENTS_NOT_CREATED": "The event could not be created",
 		"EVENTS_UPDATED_ALL": "All events have been successfully updated",
 		"EVENTS_NOT_UPDATED": "The event could not be saved",
@@ -223,15 +223,15 @@
 		"PROBLEM_ON_START": "A error occurred on start up. Please contact your OpenCast admin"
 	},
 	"BULK_ACTIONS": {
-		"CAPTION": "Actions",
+		"CAPTION": "Действия",
 		"DELETE": {
 			"SERIES": {
 				"CAPTION": "Delete",
-				"BUTTON": "Delete",
+				"BUTTON": "Удалить",
 				"CANNOT_DELETE": "The highlighted series cannot be deleted as they still contain events."
 			},
 			"EVENTS": {
-				"CAPTION": "Delete",
+				"CAPTION": "Удалить",
 				"DELETE_EVENTS": "Delete Events",
 				"UNAUTHORIZED": "You are not authorized to delete the highlighted events. Please unselect them to continue."
 			}
@@ -285,7 +285,7 @@
 				"EVENT": "event",
 				"EVENTS": "events",
 				"HEADER": "This page allows you to edit scheduled events grouped by weekdays. The inputs fields are pre-filled in case all scheduled events have the same value for a specific field. Otherwise, the input fields are left blank. Leaving input fields blank means that the respective values should not be changed.",
-				"METADATA": "Metadata",
+				"METADATA": "Метаданные",
 				"SCHEDULING": "{{ weekday }} ({{ noEvents }} {{ eventOrEvents }})"
 			}
 		},
@@ -295,7 +295,7 @@
 			"REQUEST_ERRORS": {
 				"CANNOT_EDIT_SOME": "Highlighted events cannot be edited.",
 				"NOTHING_TO_EDIT": "The events cannot be edited.",
-				"NOT_FOUND": "Not found",
+				"NOT_FOUND": "Не найдено",
 				"RUNNING_WORKFLOW": "Running workflow",
 				"TABLE": {
 					"CAPTION": "Selected events",
@@ -306,7 +306,7 @@
 				"DESCRIPTION": "Edit and/or select the metadata fields you want to update. A field cannot be selected if this doesn't result in a changed value for at least one event, or if the field isn't valid (e.g. required fields cannot be empty). Highlighted metadata fields have diverging values for the selected events.",
 				"TABLE": {
 					"CAPTION": "Metadata of selected events",
-					"FIELDS": "Metadata",
+					"FIELDS": "Метаданные",
 					"VALUES": "Values"
 				}
 			},
@@ -321,23 +321,23 @@
 		}
 	},
 	"DATES": {
-		"TODAY": "Today",
-		"TOMORROW": "Tomorrow",
-		"YESTERDAY": "Yesterday",
-		"THIS_WEEK": "This week",
-		"THIS_MONTH": "This month",
-		"THIS_YEAR": "This year"
+		"TODAY": "Сегодня",
+		"TOMORROW": "Завтра",
+		"YESTERDAY": "Вчера",
+		"THIS_WEEK": "На этой неделе",
+		"THIS_MONTH": "В этом месяце",
+		"THIS_YEAR": "В этом году"
 	},
 	"DATETIMES": {
-		"TODAY": "Today at {{ time }}",
-		"TOMORROW": "Tomorrow at {{ time }}",
+		"TODAY": "Сегодня в {{ time }}",
+		"TOMORROW": "Завтра в {{ time }}",
 		"YESTERDAY": "Yesterday at {{ time }}"
 	},
 	"WIZARD": {
-		"NEXT_STEP": "Next",
+		"NEXT_STEP": "Далее",
 		"BACK": "Previous",
 		"CREATE": "Create",
-		"DELETE": "Delete",
+		"DELETE": "Удалить",
 		"UPDATE": "Update",
 		"DURATION": {
 			"HOURS": "Hours",
@@ -346,7 +346,7 @@
 	},
 	"CAPTURE_AGENT": {
 		"DEVICE": {
-			"MICROPHONE": "Microphone",
+			"MICROPHONE": "Микрофон",
 			"CAMERA": "Camera",
 			"PRESENTATION": "Presentation"
 		}
@@ -387,26 +387,26 @@
 				"HEADER": "Terms of Service and Privacy Policy"
 			},
 			"INFORMATION_STATE": {
-				"HEADER": "Thank you for using Opencast!",
+				"HEADER": "Спасибо за использование Opencast!",
 				"INFORMATION_PARAGRAPH_1": "Our developers are constantly working to provide you the best possible user experience. For that, we need to know more about who uses Opencast and how it is used. You can help us with a quick registration.",
 				"INFORMATION_PARAGRAPH_2": "We highly appreciate any feedback, as even some of the data that we gather about the Opencast usage will help us to create better software, have better chances for additional funding and attract more companies to provide services around Opencast."
 			},
 			"FORM_STATE": {
 				"ORGANISATION": "Organisation",
 				"DEPARTMENT": "Department",
-				"COUNTRY": "Country",
-				"POSTAL_CODE": "Postal code",
-				"CITY": "City",
+				"COUNTRY": "Страна",
+				"POSTAL_CODE": "Почтовый индекс",
+				"CITY": "Город",
 				"CONTACT_INFO": "Contact information",
-				"GENDER": "Gender",
-				"GENDER_MALE": "male",
-				"GENDER_FEMALE": "female",
-				"FIRST_NAME": "First name",
-				"LAST_NAME": "Last name",
+				"GENDER": "Пол",
+				"GENDER_MALE": "мужской",
+				"GENDER_FEMALE": "женский",
+				"FIRST_NAME": "Имя",
+				"LAST_NAME": "Фамилия",
 				"STREET": "Street",
 				"NUMBER": "Number",
 				"ADDITIONAL_ADRESS_INFO": "Add. adress information",
-				"MAIL": "Email",
+				"MAIL": "E-mail",
 				"CONTACT_ME": "Contact me for updates and secruity issues",
 				"WHICH_DATA_TO_SHARE": "Which data do you want to share?",
 				"POLICY_HEADLINE": "Privacy policy and terms of use",
@@ -426,7 +426,7 @@
 				"TEXT_LEADING_AFTER_PATH": "at any time."
 			},
 			"ERROR": {
-				"HEADER": "Error",
+				"HEADER": "Ошибка",
 				"TEXT": "An error occurred while processing your request."
 			},
 			"DELETE_SUBMIT_STATE": {
@@ -452,7 +452,7 @@
 			"NEW": {
 				"CAPTION": "Create event",
 				"METADATA": {
-					"CAPTION": "Metadata"
+					"CAPTION": "Метаданные"
 				},
 				"METADATA_EXTENDED": {
 					"CAPTION": "Extended metadata",
@@ -480,7 +480,7 @@
 						"RECORDING_ELEMENTS": "Recording elements",
 						"RECORDING_METADATA": "Recording metadata",
 						"SEGMENTABLE": {
-							"SHORT": "Slides",
+							"SHORT": "Слайды",
 							"DETAIL": "The file contains a recording of a slide presentation (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
@@ -488,7 +488,7 @@
 							"DETAIL": "The file contains a recording of a person speaking to an audience."
 						},
 						"AUDIO_ONLY": {
-							"SHORT": "Audio only",
+							"SHORT": "Только аудио",
 							"DETAIL": "The file contains only audio."
 						},
 						"MULTIPLE_PARTS": {
@@ -501,7 +501,7 @@
 						}
 					},
 					"DATE_TIME": {
-						"CAPTION": "Schedule",
+						"CAPTION": "Расписание",
 						"START_DATE": "Start date",
 						"START_TIME": "Start time",
 						"TIMEZONE": "Time zone",
@@ -553,22 +553,22 @@
 					}
 				},
 				"WEEKDAYS": {
-					"MO": "Mo",
-					"TU": "Tu",
-					"WE": "We",
-					"TH": "Th",
-					"FR": "Fr",
-					"SA": "Sa",
-					"SU": "Su"
+					"MO": "Пн",
+					"TU": "Вт",
+					"WE": "Ср",
+					"TH": "Чт",
+					"FR": "Пт",
+					"SA": "Сб",
+					"SU": "Вс"
 				},
 				"WEEKDAYSLONG": {
-					"MO": "Monday",
-					"TU": "Tuesday",
-					"WE": "Wednesday",
-					"TH": "Thursday",
-					"FR": "Friday",
-					"SA": "Saturday",
-					"SU": "Sunday"
+					"MO": "Понедельник",
+					"TU": "Вторник",
+					"WE": "Среда",
+					"TH": "Четверг",
+					"FR": "Пятница",
+					"SA": "Суббота",
+					"SU": "Воскресенье"
 				}
 			},
 			"NAVIGATION": {
@@ -591,13 +591,13 @@
 				"STOP": "Stop",
 				"STATUS": "Status",
 				"LOCATION": "Location",
-				"ACTION": "Actions",
+				"ACTION": "Действия",
 				"FIRST": "First",
 				"LAST": "Last",
-				"NEXT": "Next",
+				"NEXT": "Далее",
 				"MANAGED_ACL": "Access policy",
-				"WORKFLOW_STATE": "Progress",
-				"PREVIOUS": "Previous",
+				"WORKFLOW_STATE": "Прогресс",
+				"PREVIOUS": "Предыдущий",
 				"NOCONTENT": "No data available",
 				"PUBLISHED": "Published",
 				"WEEKDAY": "Weekday",
@@ -645,7 +645,7 @@
 			"DETAILS": {
 				"HEADER": "Event details - {{resourceId}}",
 				"TABS": {
-					"METADATA": "Metadata",
+					"METADATA": "Метаданные",
 					"EXTENDED-METADATA": "Metadata II",
 					"ASSETS": "Assets",
 					"PUBLICATIONS": "Publications",
@@ -653,7 +653,7 @@
 					"WORKFLOWS": "Workflows",
 					"ACCESS": "Access policy",
 					"COMMENTS": "Comments",
-					"STATISTICS": "Statistics"
+					"STATISTICS": "Статистика"
 				},
 				"PUBLICATIONS": {
 					"CAPTION": "Publications",
@@ -715,7 +715,7 @@
 						}
 					},
 					"DATE_TIME": {
-						"CAPTION": "Schedule",
+						"CAPTION": "Расписание",
 						"START_DATE": "Start date",
 						"START_TIME": "Start time",
 						"TIMEZONE": "Time zone",
@@ -799,7 +799,7 @@
 							"RECORDING_DATE": "Recording date",
 							"FLAVOR": "Flavor",
 							"TAGS": "Tags",
-							"DURATION": "Duration",
+							"DURATION": "Продолжительность",
 							"STREAM_AUDIO": "Audio streams",
 							"STREAM_VIDEO": "Video streams",
 							"CHANNELS": "Channels",
@@ -855,7 +855,7 @@
 						"WRITE": "Write",
 						"READ": "Read",
 						"ADDITIONAL_ACTIONS": "Additional Actions",
-						"ACTION": "Actions",
+						"ACTION": "Действия",
 						"NEW": "New policy",
 						"DETAILS": "Details"
 					},
@@ -871,7 +871,7 @@
 					"RESOLVED": "Resolved",
 					"REPLY": "Reply",
 					"REPLY_TO": "Reply to",
-					"CANCEL_REPLY": "Cancel",
+					"CANCEL_REPLY": "Отмена",
 					"DELETE": "Delete",
 					"REASON": "Reason",
 					"REASONS": {
@@ -901,7 +901,7 @@
 				},
 				"METADATA": {
 					"CAPTION": "Event details",
-					"TITLE": "Title",
+					"TITLE": "Заголовок",
 					"ID": "UID",
 					"SERIES": "Series",
 					"RECORDING_DATE": "Recording date",
@@ -935,7 +935,7 @@
 					}
 				},
 				"WORKFLOWS": {
-					"ACTIONS": "Actions",
+					"ACTIONS": "Действия",
 					"DETAILS": "Details",
 					"DESCRIPTION": "Description",
 					"MORE_INFO": "More Information",
@@ -985,7 +985,7 @@
 					"DETAILS_LINK": "Operations",
 					"TABLE_HEADERS": {
 						"TITLE": "Title",
-						"STATUS": "Status",
+						"STATUS": "Статус",
 						"DESCRIPTION": "Description"
 					}
 				},
@@ -1051,7 +1051,7 @@
 			"NEW": {
 				"CAPTION": "Create series",
 				"METADATA": {
-					"CAPTION": "Metadata",
+					"CAPTION": "Метаданные",
 					"DESCRIPTION": "",
 					"METADATA": {
 						"TITLE": "Metadata"
@@ -1077,7 +1077,7 @@
 						"WRITE": "Write",
 						"READ": "Read",
 						"ADDITIONAL_ACTIONS": "Additional Actions",
-						"ACTION": "Actions",
+						"ACTION": "Действия",
 						"NEW": "New policy",
 						"DETAILS": "Details"
 					},
@@ -1108,7 +1108,7 @@
 				"CREATED": "Created",
 				"MANAGED_ACL": "Access policy",
 				"EVENTS": "Events",
-				"ACTION": "Actions",
+				"ACTION": "Действия",
 				"TOOLTIP": {
 					"SERIES": "Filter events for this series",
 					"DETAILS": "Open series details",
@@ -1446,8 +1446,8 @@
 				"GENERAL": {
 					"CAPTION": "General",
 					"NAME": "Name",
-					"DESCRIPTION": "Description",
-					"DEFAULT": "Default",
+					"DESCRIPTION": "Описание",
+					"DEFAULT": "По умолчанию",
 					"SET_DEFAULT_INFO": "Set as default theme for all series and events",
 					"NAME_ERROR": "Name is already in use",
 					"NAME_REQUIRED": "Required"
@@ -1468,7 +1468,7 @@
 					"ACTIVE": "Active"
 				},
 				"WATERMARK": {
-					"CAPTION": "Watermark",
+					"CAPTION": "Водяной знак",
 					"DESCRIPTION": "Semi-transparent image that is overlaid on every frame of the recording.",
 					"ACTIVE": "Active"
 				},
@@ -1485,11 +1485,11 @@
 			"ADD_THEME": "Add theme"
 		},
 		"NAVIGATION": {
-			"THEMES": "Themes"
+			"THEMES": "Темы оформления"
 		},
 		"THEMES": {
 			"TABLE": {
-				"CAPTION": "Themes",
+				"CAPTION": "Темы оформления",
 				"NAME": "Name",
 				"DESCRIPTION": "Description",
 				"CREATOR": "Creator",
@@ -1784,7 +1784,7 @@
 		"CLEAR": "Clear all filters",
 		"REMOVE": "Remove filter",
 		"ADD": "Add filters",
-		"PLACEHOLDER": "Search…",
+		"PLACEHOLDER": "Поиск…",
 		"PROFILES": {
 			"FILTERS_HEADER": "Saved filter sets",
 			"EDIT": "Edit filter set",
@@ -1995,10 +1995,10 @@
 				"LABEL": "Provider"
 			},
 			"ROLE": {
-				"LABEL": "Role"
+				"LABEL": "Роль"
 			},
 			"USERNAME": {
-				"LABEL": "Username"
+				"LABEL": "Логин"
 			},
 			"NAME": {
 				"LABEL": "Name"
@@ -2013,14 +2013,14 @@
 			"CONFIRMED": "Confirmed"
 		}
 	},
-	"TABLE_SUMMARY": "{{numberOfRows}} rows",
+	"TABLE_SUMMARY": "{{numberOfRows}} строк",
 	"TABLE_NO_RESULT": "No results found",
-	"TABLE_LOADING": "Loading…",
+	"TABLE_LOADING": "Загрузка…",
 	"TABLE_EDIT": "Edit",
 	"TABLE_NEXT": "Next page",
 	"TABLE_PREVIOUS": "Previous page",
 	"DASHBOARD": {
-		"RUNNING": "Running",
+		"RUNNING": "Выполняется",
 		"FINISHED": "Finished",
 		"PAUSED": "Paused",
 		"FAILED": "Failed",
@@ -2106,7 +2106,7 @@
 	"AGENTS": {
 		"STATUS": {
 			"CAPTURING": "Capturing",
-			"ERROR": "Error",
+			"ERROR": "Ошибка",
 			"IDLE": "Idle",
 			"OFFLINE": "Offline",
 			"SHUTTING_DOWN": "Shutting down",

@@ -5,7 +5,7 @@
 	"BUILD": {
 		"BUILT_ON": "gebaut am",
 		"DATE_DESC": "Datum an welchem das Kernelmodul dieses Systems gebaut wurde.",
-		"COMMIT": "Git Commit aus der diese Version von Opencast gebaut wurde.",
+		"COMMIT": "Git commit aus der diese Version von Opencast gebaut wurde.",
 		"VERSION": "Gemeinsame Bundle-Version von Opencast Modulen"
 	},
 	"NO": "Nein",
