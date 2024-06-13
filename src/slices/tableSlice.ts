@@ -1,7 +1,4 @@
 import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios';
-import { prepareAccessPolicyRulesForPost } from '../utils/resourceUtils';
-import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { Server } from './serverSlice';
 import { Recording } from './recordingSlice';
@@ -48,13 +45,23 @@ type Page = {
 	number: number,
 };
 
-// TODO: Type Row
-export type Row = any
-// {
-// 	// "selected" and "id" should only be available if "multiSelect" is true in TableState
-// 	selected?: boolean,
-// 	id?: string | number,
-// } & (Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | Details);
+export function isRowSelectable(row: Row) {
+	if ("id" in row === true) {
+		return true;
+	}
+	return false;
+}
+
+export function isEvent(row: Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | Details): row is Event {
+	return (row as Event).event_status !== undefined;
+}
+
+export function isSeries(row: Row | Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | Details): row is Series {
+	return (row as Series).organizers !== undefined;
+}
+
+// TODO: Improve row typing. While this somewhat correctly reflects the current state of our code, it is rather annoying to work with.
+export type Row = { selected: boolean } & ( Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | Details )
 
 type TableState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
@@ -127,11 +134,11 @@ const tableSlice = createSlice({
 			state.columns = action.payload;
 		},
 		selectRow(state, action: PayloadAction<
-			number
+			number | string
 		>) {
 			const id = action.payload;
 			state.rows = state.rows.map((row) => {
-				if (row.id === id) {
+				if ("id" in row && row.id === id) {
 					return {
 						...row,
 						selected: !row.selected,

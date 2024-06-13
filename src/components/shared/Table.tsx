@@ -255,13 +255,13 @@ const Table = ({
 							<tr key={key}>
 								{/* Show if multi selection is possible */}
 								{/* Checkbox for selection of row */}
-								{table.multiSelect && (
+								{table.multiSelect && "id" in row && (
 									<td>
 										<input
 											type="checkbox"
 											checked={row.selected}
 											onChange={() => dispatch(changeRowSelection(row.id, false))}
-											aria-label={t("EVENTS.EVENTS.TABLE.SELECT_EVENT", { title: row.id })}
+											aria-label={t("EVENTS.EVENTS.TABLE.SELECT_EVENT", { title: "title" in row ? row.title : row.id })}
 										/>
 									</td>
 								)}

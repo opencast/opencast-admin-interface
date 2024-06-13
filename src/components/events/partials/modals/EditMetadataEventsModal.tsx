@@ -18,6 +18,7 @@ import {
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { isEvent } from "../../../../slices/tableSlice";
 
 /**
  * This component manges the edit metadata bulk action
@@ -61,7 +62,7 @@ const EditMetadataEventsModal = ({
 
 // @ts-expect-error TS(7034): Variable 'eventIds' implicitly has type 'any[]' in... Remove this comment to see the full error message
 			let eventIds = [];
-			selectedEvents.forEach((event) => eventIds.push(event.id));
+			selectedEvents.forEach((event) => isEvent(event) &&  eventIds.push(event.id));
 
 			// Get merged metadata from backend
 // @ts-expect-error TS(7005): Variable 'eventIds' implicitly has an 'any[]' type... Remove this comment to see the full error message

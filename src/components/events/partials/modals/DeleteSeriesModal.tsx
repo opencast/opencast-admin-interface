@@ -10,6 +10,7 @@ import {
 } from "../../../../slices/seriesSlice";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { Row, isSeries } from "../../../../slices/tableSlice";
 
 /**
  * This component manges the delete series bulk action
@@ -23,9 +24,12 @@ const DeleteSeriesModal = ({
 	const dispatch = useAppDispatch();
 
 	const selectedRows = useAppSelector(state => getSelectedRows(state));
+	const modifiedSelectedRows = selectedRows.map((row) => {
+		return { ...row, hasEvents: false }
+	})
 
 	const [allChecked, setAllChecked] = useState(true);
-	const [selectedSeries, setSelectedSeries] = useState(selectedRows);
+	const [selectedSeries, setSelectedSeries] = useState(modifiedSelectedRows);
 	const [deleteWithSeriesAllowed, setDeleteWithSeriesAllowed] = useState(false);
 
 	useHotkeys(
@@ -44,9 +48,10 @@ const DeleteSeriesModal = ({
 			// Check for each selected series if it has events
 			let series = [];
 			for (let i = 0; i < selectedSeries.length; i++) {
-				const events = await hasEvents(selectedSeries[i].id);
+				const selectedSeriesInThisLoop = selectedSeries[i];
+				const events = isSeries(selectedSeriesInThisLoop) ? await hasEvents(selectedSeriesInThisLoop.id.toString()) : false;
 				series.push({
-					...selectedSeries[i],
+					...selectedSeriesInThisLoop,
 					hasEvents: events,
 				});
 			}
@@ -57,6 +62,7 @@ const DeleteSeriesModal = ({
 	}, []);
 
 	const deleteSelectedSeries = () => {
+		// @ts-expect-error TS(7006): Type guarding array is hard
 		dispatch(deleteMultipleSeries(selectedSeries));
 		close();
 	};
@@ -76,11 +82,10 @@ const DeleteSeriesModal = ({
 	};
 
 	// Handle change of checkboxes indicating which series to consider further
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const onChangeSelected = (e, id) => {
+	const onChangeSelected = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
 		const selected = e.target.checked;
 		let changedSeries = selectedSeries.map((series) => {
-			if (series.id === id) {
+			if (isSeries(series) && series.id === id) {
 				return {
 					...series,
 					selected: selected,
@@ -183,11 +188,11 @@ const DeleteSeriesModal = ({
 															type="checkbox"
 															name="selection"
 															checked={series.selected}
-															onChange={(e) => onChangeSelected(e, series.id)}
+															onChange={(e) => onChangeSelected(e, isSeries(series) ?series.id : "")}
 															className="child-cbox"
 														/>
 													</td>
-													<td>{series.title}</td>
+													<td>{isSeries(series) && series.title}</td>
 													<td>
 														{/*Repeat for each creator*/}
 {/* @ts-expect-error TS(7006): Parameter 'organizer' implicitly has an 'any' type */}

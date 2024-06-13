@@ -57,7 +57,7 @@ export const loadEventsIntoTable = (): AppThunk => async (dispatch, getState) =>
 	const pagination = table.pagination;
 	// check which events are currently selected
 	const resource = events.results.map((result) => {
-		const current = table.rows.find((row) => row.id === result.id);
+		const current = table.rows.find((row) => "id" in row && row.id === result.id);
 
 		if (!!current && table.resource === "events") {
 			return {
@@ -104,7 +104,7 @@ export const loadSeriesIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	// check which events are currently selected
 	const resource = series.results.map((result) => {
-		const current = table.rows.find((row) => row.id === result.id);
+		const current = table.rows.find((row) => "id" in row && row.id === result.id);
 
 		if (!!current && table.resource === "series") {
 			return {
@@ -157,7 +157,9 @@ export const loadRecordingsIntoTable = (): AppThunk => (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
-		rows: resource,
+		rows: resource.map((obj) => {
+			return { ...obj, selected: false }
+		}),
 		totalItems: total,
 	};
 
@@ -184,7 +186,9 @@ export const loadJobsIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	let tableData = {
 		resource: "jobs",
-		rows: resource,
+		rows: resource.map((obj) => {
+			return { ...obj, selected: false }
+		}),
 		columns: jobs.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
@@ -214,7 +218,9 @@ export const loadServersIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	let tableData = {
 		resource: "servers",
-		rows: resource,
+		rows: resource.map((obj) => {
+			return { ...obj, selected: false }
+		}),
 		columns: servers.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
@@ -243,7 +249,9 @@ export const loadServicesIntoTable = (): AppThunk => (dispatch, getState) => {
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
 	let tableData = {
-		rows: resource,
+		rows: resource.map((obj) => {
+			return { ...obj, selected: false }
+		}),
 		pages: pages,
 		totalItems: total,
 		resource: "services",
@@ -275,7 +283,9 @@ export const loadUsersIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	let tableData = {
 		resource: "users",
-		rows: resource,
+		rows: resource.map((obj) => {
+			return { ...obj, selected: false }
+		}),
 		columns: users.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
@@ -305,7 +315,9 @@ export const loadGroupsIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	let tableData = {
 		resource: "groups",
-		rows: resource,
+		rows: resource.map((obj) => {
+			return { ...obj, selected: false }
+		}),
 		columns: groups.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
@@ -335,7 +347,9 @@ export const loadAclsIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	let tableData = {
 		resource: "acls",
-		rows: resource,
+		rows: resource.map((obj) => {
+			return { ...obj, selected: false }
+		}),
 		columns: acls.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
@@ -364,7 +378,9 @@ export const loadThemesIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	let tableData = {
 		resource: "themes",
-		rows: resource,
+		rows: resource.map((obj) => {
+			return { ...obj, selected: false }
+		}),
 		columns: themes.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
@@ -636,7 +652,7 @@ export const changeColumnSelection = (updatedColumns: TableConfig["columns"]): A
 };
 
 // Select certain row
-export const changeRowSelection = (id: number, selected: boolean): AppThunk => (dispatch, getState) => {
+export const changeRowSelection = (id: number | string, selected: boolean): AppThunk => (dispatch, getState) => {
 	dispatch(selectRow(id));
 
 	const state = getState();

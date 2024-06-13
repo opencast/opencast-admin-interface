@@ -39,6 +39,7 @@ const EditScheduledEventsGeneralPage = <T extends RequiredFormProps>({
 		allChecked,
 		onChangeSelected,
 		onChangeAllSelected,
+		// @ts-expect-error TS(7006):
 	} = useSelectionChanges(formik, selectedRows);
 
 	useEffect(() => {

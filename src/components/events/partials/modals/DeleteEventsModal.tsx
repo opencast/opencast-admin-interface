@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { deleteMultipleEvent } from "../../../../slices/eventSlice";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { isEvent } from "../../../../slices/tableSlice";
 
 /**
  * This component manages the delete bulk action
@@ -28,9 +29,10 @@ const DeleteEventsModal = ({
 		() => close(),
 		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
 		[close],
-  	);
+		);
 
 	const deleteSelectedEvents = () => {
+		// @ts-expect-error TS(7006): Type guarding array is hard
 		dispatch(deleteMultipleEvent(selectedEvents));
 		close();
 	};
@@ -50,11 +52,10 @@ const DeleteEventsModal = ({
 	};
 
 	// Handle change of checkboxes indicating which events to consider further
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const onChangeSelected = (e, id) => {
+	const onChangeSelected = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
 		const selected = e.target.checked;
 		let changedEvents = selectedEvents.map((event) => {
-			if (event.id === id) {
+			if (isEvent(event) && event.id === id) {
 				return {
 					...event,
 					selected: selected,
@@ -129,10 +130,10 @@ const DeleteEventsModal = ({
 																name="selection"
 																type="checkbox"
 																checked={event.selected}
-																onChange={(e) => onChangeSelected(e, event.id)}
+																onChange={(e) => onChangeSelected(e, isEvent(event) ? event.id : "")}
 															/>
 														</td>
-														<td>{event.title}</td>
+														<td>{isEvent(event) && event.title}</td>
 														<td>
 															{/* Repeat for each presenter*/}
 {/* @ts-expect-error TS(7006): Parameter 'presenter' implicitly has an 'any' type... Remove this comment to see the full error message */}
