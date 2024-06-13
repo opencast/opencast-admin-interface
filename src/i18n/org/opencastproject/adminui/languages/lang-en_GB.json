@@ -2,6 +2,12 @@
 	"MATTERHORN": "Opencast",
 	"NAV_HOME": "Start",
 	"NAV_ABOUT": "About",
+	"BUILD": {
+		"BUILT_ON": "built on",
+		"DATE_DESC": "Date this system's kernel module was built on.",
+		"COMMIT": "Git commit this version of Opencast was built from.",
+		"VERSION": "Common bundle version of Opencast modules"
+	},
 	"NO": "No",
 	"SUBMIT": "Submit",
 	"UPDATE": {

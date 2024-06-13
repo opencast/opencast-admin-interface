@@ -2114,6 +2114,7 @@ const eventDetailsSlice = createSlice({
 				state.scheduling.hasProperties = true;
 			})
 			.addCase(fetchSchedulingInfo.rejected, (state, action) => {
+				// This usually means we have a non-scheduled event
 				state.statusScheduling = 'failed';
 				const emptySchedulingSource = {
 					start: {
@@ -2142,7 +2143,7 @@ const eventDetailsSlice = createSlice({
 				state.schedulingSource = emptySchedulingSource;
 				state.scheduling.hasProperties = false;
 				state.errorScheduling = action.error;
-				console.error(action.error);
+				console.debug(action.error);
 			})
 			// saveSchedulingInfo
 			.addCase(saveSchedulingInfo.pending, (state) => {

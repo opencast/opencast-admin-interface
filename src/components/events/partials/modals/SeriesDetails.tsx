@@ -9,7 +9,7 @@ import {
 	getSeriesDetailsThemeNames,
 	hasStatistics as seriesHasStatistics,
 } from "../../../../selectors/seriesDetailsSelectors";
-import { getUserInformation } from "../../../../selectors/userInfoSelectors";
+import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
 import SeriesDetailsAccessTab from "../ModalTabsAndPages/SeriesDetailsAccessTab";
 import SeriesDetailsThemeTab from "../ModalTabsAndPages/SeriesDetailsThemeTab";
@@ -61,6 +61,8 @@ const SeriesDetails = ({
 	const [page, setPage] = useState(0);
 
 	const user = useAppSelector(state => getUserInformation(state));
+	const orgProperties = useAppSelector(state => getOrgProperties(state));
+	const themesEnabled = (orgProperties['admin.themes.enabled']?.toLowerCase() || 'true') === 'true';
 
 	// information about each tab
 	const tabs = [
@@ -84,6 +86,7 @@ const SeriesDetails = ({
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.THEME",
 			accessRole: "ROLE_UI_SERIES_DETAILS_THEMES_VIEW",
 			name: "theme",
+			hidden: !theme && !themesEnabled
 		},
 		{
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.STATISTICS",
@@ -117,7 +120,7 @@ const SeriesDetails = ({
 						{t(tabs[2].tabNameTranslation)}
 					</button>
 				)}
-				{hasAccess(tabs[3].accessRole, user) && (
+				{!tabs[3].hidden && hasAccess(tabs[3].accessRole, user) && (
 					<button className={"button-like-anchor " + cn({ active: page === 3 })} onClick={() => openTab(3)}>
 						{t(tabs[3].tabNameTranslation)}
 					</button>

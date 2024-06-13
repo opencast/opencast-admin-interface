@@ -8,6 +8,7 @@ export default defineConfig({
     plugins: [react(), svgr(), viteTsconfigPaths()],
     build: {
         outDir: "build",
+        sourcemap: true,
     },
     server: {
         open: true,

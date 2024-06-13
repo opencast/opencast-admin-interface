@@ -22,6 +22,8 @@ import { useAppDispatch, useAppSelector } from "../store";
 import { HealthStatus, fetchHealthStatus } from "../slices/healthSlice";
 import { UserInfoState } from "../slices/userInfoSlice";
 import { Tooltip } from "./shared/Tooltip";
+import { HiTranslate } from "react-icons/hi";
+import { IconContext } from "react-icons";
 
 // Get code, flag and name of the current language
 const currentLanguage = getCurrentLanguageInformation();
@@ -159,14 +161,12 @@ const Header = () => {
 					{/* Select language */}
 					<div className="nav-dd lang-dd" id="lang-dd" ref={containerLang}>
 						<Tooltip title={t("LANGUAGE")}>
-						<div
-							className="lang"
-							onClick={() => setMenuLang(!displayMenuLang)}
-						>
-							<img src={currentLanguage?.flag} alt={currentLanguage?.code} />
-						</div>
+							<div className="lang" onClick={() => setMenuLang(!displayMenuLang)}>
+								<IconContext.Provider value={{ style: {fontSize: "20px"} }}>
+									<HiTranslate />
+								</IconContext.Provider>
+							</div>
 						</Tooltip>
-						{/* Click on the flag icon, a dropdown menu with all available languages opens */}
 						{displayMenuLang && <MenuLang />}
 					</div>
 
@@ -298,11 +298,6 @@ const MenuLang = () => {
 			{languages.map((language, key) => (
 				<li key={key}>
 					<button className="button-like-anchor" onClick={() => changeLanguage(language.code)}>
-						<img
-							className="lang-flag"
-							src={language.flag}
-							alt={language.code}
-						/>
 						{language.long}
 					</button>
 				</li>
