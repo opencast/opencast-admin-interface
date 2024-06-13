@@ -1,5 +1,7 @@
 import React from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 import { useTranslation } from "react-i18next";
+import { availableHotkeys } from "../../configs/hotkeysConfig";
 
 const ConfirmModal = ({
 // @ts-expect-error TS(7031): Binding element 'close' implicitly has an 'any' ty... Remove this comment to see the full error message
@@ -18,6 +20,13 @@ const ConfirmModal = ({
 	deleteWithCautionMessage = "",
 }) => {
 	const { t } = useTranslation();
+
+	useHotkeys(
+		availableHotkeys.general.CLOSE_MODAL.sequence,
+		() => close(),
+		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
+		[close],
+  	);
 
 	const handleClose = () => {
 		close();

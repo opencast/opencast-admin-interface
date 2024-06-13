@@ -2,6 +2,12 @@
 	"MATTERHORN": "Opencast",
 	"NAV_HOME": "Začetek",
 	"NAV_ABOUT": "Vizitka",
+	"BUILD": {
+		"BUILT_ON": "built on",
+		"DATE_DESC": "Date this system's kernel module was built on.",
+		"COMMIT": "Git commit this version of Opencast was built from.",
+		"VERSION": "Common bundle version of Opencast modules"
+	},
 	"NO": "Ne",
 	"SUBMIT": "Pošlji",
 	"UPDATE": {
@@ -93,7 +99,9 @@
 			"SUBHEADING": "Izberite privzete podatke, za katere želite, da so prikazani v pogledu {{ tableName }}.",
 			"AVAILABLE_COLUMNS": "Razpoložljivi stolpci",
 			"SELECTED_COLUMNS": "Izbrani stolpci",
-			"FOOTER_TEXT": "Vrstni red in izbor bosta samodejno shranjena. Pritisnite »{{resetTranslation}}«, da obnovite privzeti pogled."
+			"FOOTER_TEXT": "Vrstni red in izbor bosta samodejno shranjena. Pritisnite »{{resetTranslation}}«, da obnovite privzeti pogled.",
+			"ADD_COLUMN": "Add column",
+			"REMOVE_COLUMN": "Remove column"
 		}
 	},
 	"CONFIRMATIONS": {
@@ -120,7 +128,8 @@
 		},
 		"WARNINGS": {
 			"SERIES_HAS_EVENTS": "Ta zbirka vsebuje posnetke. Z izbrisom zbirke, posnetki ne bodo izbrisani.",
-			"EVENT_WILL_BE_GONE": "If you continue, the event will be irrevocably gone."
+			"EVENT_WILL_BE_GONE": "If you continue, the event will be irrevocably gone.",
+			"UNSAVED_CHANGES": "You have unsaved changes. If you continue, those changes will be discarded. Are you sure that you want to continue?"
 		},
 		"ERRORS": {
 			"SERIES_HAS_EVENTS": "Ta zbirka ne more biti izbrisana, ker vsebuje posnetke."
@@ -485,6 +494,10 @@
 						"MULTIPLE_PARTS": {
 							"SHORT": "Več delov",
 							"DETAIL": "Komplet datotek, ki vsebujejo različne dele dogodka."
+						},
+						"SUBTITLES": {
+							"SHORT": "Subtitles",
+							"DETAIL": "A subtitle file in vtt format"
 						}
 					},
 					"DATE_TIME": {
@@ -561,7 +574,8 @@
 			"NAVIGATION": {
 				"EVENTS": "Dogodki",
 				"SERIES": "Serije",
-				"OVERVIEW": "Pregled"
+				"OVERVIEW": "Pregled",
+				"LABEL": "Switch between events and series."
 			},
 			"UPLOAD": "Naloži",
 			"ADD_SERIES": "Dodaj serijo",
@@ -587,6 +601,7 @@
 				"NOCONTENT": "Ni podatkov",
 				"PUBLISHED": "Objavljeno",
 				"WEEKDAY": "Delovni dan",
+				"ADMINUI_NOTES": "Notes",
 				"TOOLTIP": {
 					"ASSETS": "Open asset details",
 					"START": "Filter za ta začetni datum",
@@ -601,7 +616,9 @@
 					"COMMENTS": "Poglej komentarje",
 					"PAUSED_WORKFLOW": "Poglej začasno ustavljen potek dela",
 					"PRESENTER": "Filter for this presenter"
-				}
+				},
+				"SELECT_ALL": "Select all events",
+				"SELECT_EVENT": "Select event \"{{title}}\""
 			},
 			"STATUS": {
 				"SCHEDULED": "Načrtovano",
@@ -862,7 +879,7 @@
 						"REVIEW": "Potreben je pregled",
 						"ASYNC": "A/V sledi asinhrone",
 						"AUDIO_ISSUE": "Manjkajoč ali pomanjkljiv zvočni posnetek",
-						"CANCELED": "Preklican dogodek",
+						"CANCELLED": "Cancelled event",
 						"CONFLICTING_METADATA": "Neujemajoči se metapodatki",
 						"IMPROPER_POINT": "Neprimerna vstopna ali izstopna točka",
 						"MISSING_AGREEMENT": "Manjkajoča pogodba",
@@ -875,7 +892,8 @@
 						"WRONG_METADATA": "Metapodatke je treba popraviti",
 						"WRONG_SERIES_PUBLICATION": "Napačna serija ali kanal za objavo",
 						"WRONG_WORKFLOW": "Napačen potek dela",
-						"PROCESSING_FAILURE": "Napaka pri obdelavi"
+						"PROCESSING_FAILURE": "Napaka pri obdelavi",
+						"ADMINUI_NOTES": "Notes in Admin UI"
 					}
 				},
 				"STATISTICS": {
@@ -1233,6 +1251,11 @@
 				"USERNAME": "Uporabniško ime",
 				"EMAIL": "E-pošta",
 				"ROLES": "Vloge",
+				"COLLAPSED": {
+					"UI": "user interface roles",
+					"API": "API roles",
+					"CAPTURE_AGENT": "capture agent roles"
+				},
 				"TYPE": "Vrsta",
 				"PROVIDER": "Ponudnik",
 				"ACTION": "Dejanja",
@@ -1751,7 +1774,8 @@
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Izberite filter …",
-			"NO_OPTIONS": "Ni najdenih filtrov"
+			"NO_OPTIONS": "Ni najdenih filtrov",
+			"LABEL": "Filter table rows"
 		},
 		"FILTER_VALUE_SELECTION": {
 			"PLACEHOLDER": "Izberite vrednost ...",
@@ -1771,7 +1795,8 @@
 			"NAME": "Ime",
 			"NAME_PLACEHOLDER": "Ime ...",
 			"DESCRIPTION": "Opis",
-			"DESCRIPTION_PLACEHOLDER": "Opis ..."
+			"DESCRIPTION_PLACEHOLDER": "Opis ...",
+			"ADD": "Add"
 		}
 	},
 	"FILTERS": {
@@ -1992,6 +2017,8 @@
 	"TABLE_NO_RESULT": "Ni najdenih rezultatov",
 	"TABLE_LOADING": "Nalaganje ...",
 	"TABLE_EDIT": "Uredi",
+	"TABLE_NEXT": "Next page",
+	"TABLE_PREVIOUS": "Previous page",
 	"DASHBOARD": {
 		"RUNNING": "Izvajanje",
 		"FINISHED": "Dokončano",
@@ -2030,12 +2057,36 @@
 			"END": "End",
 			"HOME": "Home",
 			"INS": "Ins",
-			"DEL": "Del"
+			"DEL": "Del",
+			"A": "a",
+			"B": "b",
+			"C": "c",
+			"D": "d",
+			"E": "e",
+			"F": "f",
+			"G": "g",
+			"H": "h",
+			"I": "i",
+			"J": "j",
+			"K": "k",
+			"L": "l",
+			"M": "m",
+			"N": "n",
+			"O": "o",
+			"P": "p",
+			"Q": "q",
+			"R": "r",
+			"S": "s",
+			"T": "t",
+			"U": "u",
+			"V": "v",
+			"W": "w",
+			"X": "x",
+			"Y": "y",
+			"Z": "z"
 		},
 		"GROUPS": {
-			"GENERAL": "Splošno",
-			"PLAYER": "Predvajalnik",
-			"EDITOR": "Urejevalnik"
+			"GENERAL": "Splošno"
 		},
 		"DESCRIPTIONS": {
 			"GENERAL": {
@@ -2047,27 +2098,8 @@
 				"SERIES_VIEW": "Serije",
 				"NEW_EVENT": "Dodaj dogodek",
 				"NEW_SERIES": "Dodaj serijo",
-				"CHEAT_SHEET": "Bližnjice na tipkovnici"
-			},
-			"PLAYER": {
-				"PLAY_PAUSE": "Predvajaj/premor",
-				"PREVIOUS_FRAME": "Prejšnja sličica",
-				"NEXT_FRAME": "Naslednja sličica",
-				"STEP_BACKWARD": "Skoči 10s nazaj",
-				"STEP_FORWARD": "Skoči 10s naprej",
-				"PREVIOUS_SEGMENT": "Prejšnji segment/skoči na začetek",
-				"NEXT_SEGMENT": "Naslednji segment/skoči na konec",
-				"VOLUME_UP": "Povečaj glasnost",
-				"VOLUME_DOWN": "Zmanjšaj glasnost",
-				"MUTE": "Vključi/izključi zvok"
-			},
-			"EDITOR": {
-				"SPLIT_AT_CURRENT_TIME": "Razdelitev",
-				"CUT_SELECTED_SEGMENT": "Izreži",
-				"PLAY_CURRENT_SEGMENT": "Predvajaj trenutni odsek",
-				"CLEAR_LIST": "Počisti segment",
-				"PLAY_CURRENT_SEGMENT_WITH_PRE-ROLL": "Replay segment with pre-roll",
-				"PLAY_ENDING_OF_CURRENT_SEGMENT": "Konec segmenta"
+				"CHEAT_SHEET": "Bližnjice na tipkovnici",
+				"CLOSE_MODAL": "Close dialog"
 			}
 		}
 	},
@@ -2137,5 +2169,10 @@
 			"medium": "{{time, H:mm:ss}}",
 			"full": "{{time, H:mm:ss z}}"
 		}
+	},
+	"ABOUT": {
+		"IMPRINT": "Imprint",
+		"PRIVACY": "Privacy statement",
+		"NOCONTENT": "Content not available"
 	}
 }

@@ -19,6 +19,11 @@ const Footer: React.FC = () => {
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
 
+	const lastModified = user?.ocVersion?.['last-modified']
+		? new Date(user.ocVersion['last-modified']).toISOString().substring(0, 10)
+		: 'unknown';
+	const aboutEnabled = orgProperties['org.opencastproject.admin.display_about']?.toLowerCase() === 'true';
+
 	return (
 		<footer id="main-footer">
 			<div className="default-footer">
@@ -26,13 +31,17 @@ const Footer: React.FC = () => {
 					{/* Only render if a version is set */}
 					{!!user.ocVersion && (
 						<li>
-							Opencast {user.ocVersion.version}
+							{"Opencast "}
+							<span title={t('BUILD.VERSION')}>{user.ocVersion.version}</span>
 							{hasAccess("ROLE_ADMIN", user) && (
-								<span> - {user.ocVersion.buildNumber || "undefined"}</span>
+								<span>
+								{" – "} <span title={t('BUILD.COMMIT')}>{user.ocVersion.buildNumber || "undefined"}</span>
+								{" – "} <span title={t('BUILD.DATE_DESC')}>{t("BUILD.BUILT_ON")} {lastModified}</span>
+								</span>
 							)}
 						</li>
 					)}
-					{!!orgProperties && !!orgProperties["org.opencastproject.admin.display_about"] && (
+					{aboutEnabled && (
 						<>
 						<li><Link to="/about/imprint">{t("ABOUT.IMPRINT")}</Link></li>
 						<li><Link to="/about/privacy">{t("ABOUT.PRIVACY")}</Link></li>

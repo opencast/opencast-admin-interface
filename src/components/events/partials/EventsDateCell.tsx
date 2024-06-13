@@ -6,6 +6,8 @@ import { getFilters } from "../../../selectors/tableFilterSelectors";
 import { connect } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
+import { renderValidDate } from "../../../utils/dateUtils";
+import { Tooltip } from "../../shared/Tooltip";
 
 /**
  * This component renders the start date cells of events in the table view
@@ -34,13 +36,14 @@ const EventsDateCell = ({
 
 	return (
 		// Link template for start date of event
-		<button
-			className="button-like-anchor crosslink"
-			title={t("EVENTS.EVENTS.TABLE.TOOLTIP.START")}
-			onClick={() => addFilter(row.date)}
-		>
-			{t("dateFormats.date.short", { date: new Date(row.date) })}
-		</button>
+		<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.START")}>
+			<button
+				className="button-like-anchor crosslink"
+				onClick={() => addFilter(row.date)}
+			>
+				{t("dateFormats.date.short", { date: renderValidDate(row.date) })}
+			</button>
+		</Tooltip>
 	);
 };
 

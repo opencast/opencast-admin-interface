@@ -2,6 +2,12 @@
 	"MATTERHORN": "Οpencast",
 	"NAV_HOME": "Έναρξη",
 	"NAV_ABOUT": "Σχετικά με",
+	"BUILD": {
+		"BUILT_ON": "κατασκευάστηκε στις",
+		"DATE_DESC": "Ημερομηνία κατασκευής της μονάδας πυρήνα αυτού του συστήματος.",
+		"COMMIT": "Η υποβολή στο Git από την οποία κατασκευάστηκε αυτή η έκδοση.",
+		"VERSION": "Κοινή έκδοση δέσμης των ενοτήτων Opencast"
+	},
 	"NO": "'Οχι",
 	"SUBMIT": "Υποβολή",
 	"UPDATE": {
@@ -93,7 +99,9 @@
 			"SUBHEADING": "Επιλέξτε τα προεπιλεγμένα δεδομένα που θέλετε να εμφανίζεται στην προβολή {{ tableName }}",
 			"AVAILABLE_COLUMNS": "Διαθέσιμες στήλες",
 			"SELECTED_COLUMNS": "Επιλεγμένες στήλες",
-			"FOOTER_TEXT": "H σειρά και η επιλογή θα αποθηκευτούν αυτόματα. Πιέστε το πλήκτρο \"{{resetTranslation}}\" για να επαναφέρετε την προεπιλεγμένη προβολή."
+			"FOOTER_TEXT": "H σειρά και η επιλογή θα αποθηκευτούν αυτόματα. Πιέστε το πλήκτρο \"{{resetTranslation}}\" για να επαναφέρετε την προεπιλεγμένη προβολή.",
+			"ADD_COLUMN": "Προσθέστε στήλη",
+			"REMOVE_COLUMN": "Αφαίρεση στήλης"
 		}
 	},
 	"CONFIRMATIONS": {
@@ -120,7 +128,8 @@
 		},
 		"WARNINGS": {
 			"SERIES_HAS_EVENTS": "Αυτή η σειρά περιέχει εκδηλώσεις. Η διαγραφή της σειράς δεν θα διαγράψει τις εκδηλώσεις.",
-			"EVENT_WILL_BE_GONE": "Εάν συνεχίσετε, η εκδήλωση θα διαγραφεί αμετάκλητα."
+			"EVENT_WILL_BE_GONE": "Εάν συνεχίσετε, η εκδήλωση θα διαγραφεί αμετάκλητα.",
+			"UNSAVED_CHANGES": "You have unsaved changes. If you continue, those changes will be discarded. Are you sure that you want to continue?"
 		},
 		"ERRORS": {
 			"SERIES_HAS_EVENTS": "Αυτή η σειρά δεν μπορεί να διαγραφεί, καθώς εξακολουθεί να περιέχει εκδηλώσεις."
@@ -211,7 +220,7 @@
 			"NO_EVENTS_UPDATED": "Όλες οι ενημερώσεις απέτυχαν.",
 			"SOME_EVENTS_NOT_UPDATED": "Δεν ήταν δυνατή η ενημέρωση ορισμένων εκδηλώσεων."
 		},
-		"PROBLEM_ON_START": "A error occurred on start up. Please contact your OpenCast admin"
+		"PROBLEM_ON_START": "Παρουσιάστηκε σφάλμα κατά την εκκίνηση. Επικοινωνήστε με τον διαχειριστή του Opencast"
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Ενέργειες",
@@ -485,6 +494,10 @@
 						"MULTIPLE_PARTS": {
 							"SHORT": "Πολλαπλά τμήματα",
 							"DETAIL": "Ένα σύνολο αρχείων που περιέχει διάφορα τμήματα της εκδήλωσης."
+						},
+						"SUBTITLES": {
+							"SHORT": "Subtitles",
+							"DETAIL": "A subtitle file in vtt format"
 						}
 					},
 					"DATE_TIME": {
@@ -561,7 +574,8 @@
 			"NAVIGATION": {
 				"EVENTS": "Εκδηλώσεις",
 				"SERIES": "Σειρά",
-				"OVERVIEW": "Επισκόπηση"
+				"OVERVIEW": "Επισκόπηση",
+				"LABEL": "Εναλλαγή μεταξύ εκδηλώσεων και σειράς."
 			},
 			"UPLOAD": "Μεταφόρτωση",
 			"ADD_SERIES": "Προσθήκη σειράς",
@@ -587,6 +601,7 @@
 				"NOCONTENT": "Δεν υπάρχουν διαθέσιμα δεδομένα",
 				"PUBLISHED": "Δημοσιευμένο",
 				"WEEKDAY": "Ημέρες εβδομάδας",
+				"ADMINUI_NOTES": "Notes",
 				"TOOLTIP": {
 					"ASSETS": "Άνοιγμα λεπτομερειών αντικιεμένων",
 					"START": "Φίλτρο για αυτήν την ημερομηνία έναρξης",
@@ -601,7 +616,9 @@
 					"COMMENTS": "Δείτε σχόλια",
 					"PAUSED_WORKFLOW": "Δείτε σταματημένη εκδήλωση",
 					"PRESENTER": "Φίλτρο για αυτόν τον παρουσιαστή"
-				}
+				},
+				"SELECT_ALL": "Επιλογή όλων των εκδηλώσεων",
+				"SELECT_EVENT": "Επιλογή εκδήλωσης \"{{title}}\""
 			},
 			"STATUS": {
 				"SCHEDULED": "Προγραμματισμένη",
@@ -862,7 +879,7 @@
 						"REVIEW": "Απαιτείται προεπισκόπηση",
 						"ASYNC": "Ασύγχρονα κομμάτια εικόνας/ήχου",
 						"AUDIO_ISSUE": "Χαμένο ή ελλατωματικό κομμάτι ήχου",
-						"CANCELED": "Διαγραφείσα εκδήλωση",
+						"CANCELLED": "Cancelled event",
 						"CONFLICTING_METADATA": "Αντικρουόμενα μετα-δεδομένα",
 						"IMPROPER_POINT": "Λανθασμένο σημείο εισαγωγής ή εξαγωγής",
 						"MISSING_AGREEMENT": "Ελλειπής συμφνία",
@@ -875,7 +892,8 @@
 						"WRONG_METADATA": "Τα μετα-δεδομένα χρειάζονται διόρθωση",
 						"WRONG_SERIES_PUBLICATION": "Λάρθςο σειρά ή κανάλι δημοσίευσης",
 						"WRONG_WORKFLOW": "Λάθος ροής εργασίας",
-						"PROCESSING_FAILURE": "Αποτυχία επεξεργασίας"
+						"PROCESSING_FAILURE": "Αποτυχία επεξεργασίας",
+						"ADMINUI_NOTES": "Notes in Admin UI"
 					}
 				},
 				"STATISTICS": {
@@ -1149,8 +1167,8 @@
 					"LANGUAGE": "Γλώσσα",
 					"LICENSE": "Άδεια χρήσης",
 					"DESCRIPTION": "Περιγραφή",
-					"REPLACE_SERIES_METADATA": "Update series metadata",
-					"REPLACE_SERIES_THEME": "Update series theme"
+					"REPLACE_SERIES_METADATA": "Ενημέρωση μεταδεδομένων σειράς",
+					"REPLACE_SERIES_THEME": "Ενημέρωση θέματος σειράς"
 				},
 				"EVENTS": {
 					"TITLE": "Τίτλος",
@@ -1233,6 +1251,11 @@
 				"USERNAME": "Όνομα χρήστη",
 				"EMAIL": "Διεύθυνση ηλεκτρονικού ταχυδρομείου",
 				"ROLES": "Ρόλοι",
+				"COLLAPSED": {
+					"UI": "ρόλοι διεπαφής χρήστη",
+					"API": "Ρόλοι API",
+					"CAPTURE_AGENT": "λήψη ρόλων πράκτορα"
+				},
 				"TYPE": "Τύπος",
 				"PROVIDER": "Πάροχος",
 				"ACTION": "Ενέργειες",
@@ -1751,7 +1774,8 @@
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Παρακαλώ επιλέξτε ένα φίλτρο…",
-			"NO_OPTIONS": "Δεν βρέθηκαν φίλτρα"
+			"NO_OPTIONS": "Δεν βρέθηκαν φίλτρα",
+			"LABEL": "Φιλτράρισμα γραμμών πίνακα"
 		},
 		"FILTER_VALUE_SELECTION": {
 			"PLACEHOLDER": "Παρακαλώ επιλέξτε μια τιμή…",
@@ -1771,7 +1795,8 @@
 			"NAME": "Όνομα",
 			"NAME_PLACEHOLDER": "Όνομα…",
 			"DESCRIPTION": "Περιγραφή",
-			"DESCRIPTION_PLACEHOLDER": "Περιγραφή…"
+			"DESCRIPTION_PLACEHOLDER": "Περιγραφή…",
+			"ADD": "Προσθήκη"
 		}
 	},
 	"FILTERS": {
@@ -1992,6 +2017,8 @@
 	"TABLE_NO_RESULT": "Δεν βρέθηκαν αποτελέσματα",
 	"TABLE_LOADING": "Φόρτωση…",
 	"TABLE_EDIT": "Επεξεργασία",
+	"TABLE_NEXT": "Επόμενη σελίδα",
+	"TABLE_PREVIOUS": "Προηγούμενη σελίδα",
 	"DASHBOARD": {
 		"RUNNING": "Εκτελείται",
 		"FINISHED": "Ολοκληρώθηκε",
@@ -2030,12 +2057,36 @@
 			"END": "End",
 			"HOME": "Home",
 			"INS": "Ins",
-			"DEL": "Del"
+			"DEL": "Del",
+			"A": "a",
+			"B": "b",
+			"C": "c",
+			"D": "d",
+			"E": "e",
+			"F": "f",
+			"G": "g",
+			"H": "h",
+			"I": "i",
+			"J": "j",
+			"K": "k",
+			"L": "l",
+			"M": "m",
+			"N": "n",
+			"O": "o",
+			"P": "p",
+			"Q": "q",
+			"R": "r",
+			"S": "s",
+			"T": "t",
+			"U": "u",
+			"V": "v",
+			"W": "w",
+			"X": "x",
+			"Y": "y",
+			"Z": "z"
 		},
 		"GROUPS": {
-			"GENERAL": "Γενικά",
-			"PLAYER": "Αναπαραγωγέας",
-			"EDITOR": "Πρόγραμμα επεξεργασίας"
+			"GENERAL": "Γενικά"
 		},
 		"DESCRIPTIONS": {
 			"GENERAL": {
@@ -2047,27 +2098,8 @@
 				"SERIES_VIEW": "Σειρά",
 				"NEW_EVENT": "Προσθήκη εκδήλωσης",
 				"NEW_SERIES": "Προσθήκη σειράς",
-				"CHEAT_SHEET": "Συντομεύσεις πληκτρολογίου"
-			},
-			"PLAYER": {
-				"PLAY_PAUSE": "Αναπαραγωγή/Παύση",
-				"PREVIOUS_FRAME": "Προηγούμενο καρέ",
-				"NEXT_FRAME": "Επόμενο καρέ",
-				"STEP_BACKWARD": "Άλμα πίσω 10s",
-				"STEP_FORWARD": "Άλμα προς τα εμπρός 10s",
-				"PREVIOUS_SEGMENT": "Προηγούμενο τμήμα / μετακίνηση στην αρχή",
-				"NEXT_SEGMENT": "Επόμενο τμήμα / μετακίνηση στο τέλος",
-				"VOLUME_UP": "Αύξηση έντασης",
-				"VOLUME_DOWN": "Μείωση έντασης",
-				"MUTE": "Σίγαση/κατάργηση σίγασης"
-			},
-			"EDITOR": {
-				"SPLIT_AT_CURRENT_TIME": "Διαχωρισμός",
-				"CUT_SELECTED_SEGMENT": "Αποκοπή",
-				"PLAY_CURRENT_SEGMENT": "Παίξτε το τρέχον τμήμα",
-				"CLEAR_LIST": "Καθαρισμός τμήματος",
-				"PLAY_CURRENT_SEGMENT_WITH_PRE-ROLL": "Επανάληψη τμήματος με pre-roll",
-				"PLAY_ENDING_OF_CURRENT_SEGMENT": "Τέλος του τμήματος"
+				"CHEAT_SHEET": "Συντομεύσεις πληκτρολογίου",
+				"CLOSE_MODAL": "Κλείσιμο διαλόγου"
 			}
 		}
 	},
@@ -2098,15 +2130,15 @@
 			"ORGANIZATION": "Οργανισμός"
 		},
 		"TIME_MODES": {
-			"Year": "Year",
-			"Month": "Month",
-			"Custom": "Custom"
+			"Year": "Έτος",
+			"Month": "Μήνας",
+			"Custom": "Προσαρμοσμένη"
 		},
 		"TIME_GRANULARITIES": {
-			"Yearly": "Yearly",
-			"Monthly": "Monthly",
-			"Daily": "Daily",
-			"Hourly": "Hourly"
+			"Yearly": "Ετήσια",
+			"Monthly": "Μηνιαία",
+			"Daily": "Ημερησίως",
+			"Hourly": "Ωριαία"
 		},
 		"TITLE": {
 			"RANDOM": "Τυχαία δεδομένα",
@@ -2137,5 +2169,10 @@
 			"medium": "{{time, h:mm:ss a}}",
 			"full": "{{time, h:mm:ss a z}}"
 		}
+	},
+	"ABOUT": {
+		"IMPRINT": "Imprint",
+		"PRIVACY": "Privacy statement",
+		"NOCONTENT": "Content not available"
 	}
 }

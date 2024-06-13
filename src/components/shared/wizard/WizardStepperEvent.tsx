@@ -4,8 +4,8 @@ import cn from "classnames";
 import { Step, StepButton, StepLabel, Stepper } from "@mui/material";
 import {
 	isSummaryReachable,
-	useStepLabelStyles,
-	useStepperStyle,
+	stepLabelStyle,
+	stepperStyle,
 } from "../../../utils/wizardUtils";
 import CustomStepIcon from "./CustomStepIcon";
 import { FormikProps } from "formik/dist/types";
@@ -30,9 +30,6 @@ const WizardStepperEvent = ({
 	setCompleted: (rec: Record<number, boolean>) => void,
 }) => {
 	const { t } = useTranslation();
-
-	const stepperClasses = useStepperStyle();
-	const labelClasses = useStepLabelStyles();
 
 	const handleOnClick = async (key: number) => {
 		if (isSummaryReachable(key, steps, completed)) {
@@ -60,20 +57,20 @@ const WizardStepperEvent = ({
 			activeStep={page}
 			nonLinear
 			alternativeLabel
-// @ts-expect-error TS(2322): Type 'boolean' is not assignable to type 'ReactEle... Remove this comment to see the full error message
-			connector={false}
-			className={cn("step-by-step", stepperClasses.root)}
+			connector={<></>}
+			sx={stepperStyle.root}
+			className={cn("step-by-step")}
 		>
 			{steps.map((label, key) =>
 				!label.hidden ? (
 					<Step key={label.translation} completed={completed[key]}>
 						<StepButton onClick={() => handleOnClick(key)}>
-							<StepLabel className={labelClasses.root} StepIconComponent={CustomStepIcon}>
+							<StepLabel sx={stepLabelStyle.root} StepIconComponent={CustomStepIcon}>
 								{t(label.translation)}
 							</StepLabel>
 						</StepButton>
 					</Step>
-				) : <></>
+				) : <React.Fragment key={label.translation} />
 			)}
 		</Stepper>
 	);

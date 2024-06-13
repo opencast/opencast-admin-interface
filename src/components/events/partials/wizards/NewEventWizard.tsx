@@ -227,6 +227,11 @@ const getInitialValues = (
 		extendedMetadata
 	)};
 
+	// Update start date for uploads
+	if (sourceMetadata?.UPLOAD?.metadata?.[0]) {
+		sourceMetadata.UPLOAD.metadata[0].value = new Date().toISOString();
+	}
+
 	// Transform additional metadata for source (provided by constant in newEventConfig)
 	if (!!sourceMetadata.UPLOAD) {
 		sourceMetadata.UPLOAD.metadata.forEach((field) => {

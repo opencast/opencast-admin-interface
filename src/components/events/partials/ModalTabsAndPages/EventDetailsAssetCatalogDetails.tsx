@@ -143,7 +143,7 @@ const EventDetailsAssetCatalogDetails = ({
 											</td>
 											<td>
 												{/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
-												<a className="fa fa-external-link" href={catalog.url} />
+												<a className="fa fa-external-link" href={catalog.url} target="_blank" rel="noreferrer"/>
 											</td>
 										</tr>
 									</tbody>

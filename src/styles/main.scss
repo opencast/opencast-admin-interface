@@ -110,7 +110,7 @@ a {
 }
 
 // Mark mockups as stubs
-div.main-view.stub, div.full-col > div.stub {
+.main-view.stub, div.full-col > div.stub {
   margin-right: 20px;
   -webkit-background-size: 50px 50px;
   -moz-background-size: 50px 50px;
@@ -140,6 +140,16 @@ div.main-view.stub, div.full-col > div.stub {
   }
   .select-container > p {
     margin-bottom: 10px;
+  }
+
+  h2 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .editable {
+    word-wrap: anywhere;
   }
 }
 
@@ -357,6 +367,7 @@ div.table-filter {
   position: inherit;
 
   .filters {
+    display: flex;
     border: 0;
     border-radius: 4px;
     float: left;
@@ -395,6 +406,24 @@ div.table-filter {
 
     .ng-multi-value {
       padding: 5px;
+    }
+
+    .MuiInputBase-root {
+      height: 24px;
+    }
+
+    .MuiInputBase-input {
+      height: 24px;
+      box-sizing: border-box;
+    }
+
+    .MuiButtonBase-root {
+      height: 24px;
+      padding: 0;
+    }
+
+    .MuiInputAdornment-root {
+      margin: 0;
     }
   }
 
@@ -460,9 +489,9 @@ input.disabled, select.disabled {
 
 // Use HTML5 input field for file upload
 .file-upload > input[type="file"] {
-  width: inherit !important;
+  width: 100%;
   visibility: visible !important;
-  hidden: false !important;
+  text-align: left;
 }
 
 // Notification alias error to danger
@@ -486,7 +515,7 @@ input.disabled, select.disabled {
 }
 
 // pagination of tables
-.main-view {
+main.main-view {
   #tbl-view-controls-container {
 
     .pagination {
@@ -533,7 +562,13 @@ table.main-tbl {
     display: none !important;
   }
 
-  td{
+  th,
+  td {
+    max-width: 800px;
+    word-wrap: anywhere;
+  }
+
+  td {
     .fa-check {
       float: right;
       color: $green;

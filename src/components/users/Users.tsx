@@ -16,8 +16,9 @@ import {
 } from "../../thunks/tableThunks";
 import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
 import { setOffset } from "../../actions/tableActions";
-import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
 import Header from "../Header";
+import NavBar from "../NavBar";
+import MainView from "../MainView";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
@@ -41,8 +42,8 @@ const Users: React.FC = () => {
   const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchUsersWrapper = () => {
-		dispatch(fetchUsers())
+	const fetchUsersWrapper = async () => {
+		await dispatch(fetchUsers())
 	}
 
 	const loadUsers = async () => {
@@ -108,7 +109,7 @@ const Users: React.FC = () => {
 	return (
 		<>
 			<Header />
-			<section className="action-nav-bar">
+			<NavBar>
 				{/* Add user button */}
 				<div className="btn-group">
 					{hasAccess("ROLE_UI_USERS_CREATE", user) && (
@@ -158,12 +159,9 @@ const Users: React.FC = () => {
 						</Link>
 					)}
 				</nav>
-			</section>
+			</NavBar>
 
-			<div
-				className="main-view"
-				style={displayNavigation ? styleNavOpen : styleNavClosed}
-			>
+			<MainView open={displayNavigation}>
 				{/* Include notifications component */}
 				<Notifications />
 
@@ -179,7 +177,7 @@ const Users: React.FC = () => {
 				</div>
 				{/* Include table component */}
 				<Table templateMap={usersTemplateMap} />
-			</div>
+			</MainView>
 			<Footer />
 		</>
 	);

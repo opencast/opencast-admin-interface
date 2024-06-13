@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
+import { Tooltip } from "../../shared/Tooltip";
 
 /**
  * This component renders the series cells of events in the table view
@@ -35,13 +36,14 @@ const EventsSeriesCell = ({
 	return (
 		!!row.series && (
 			// Link template for series of event
-			<button
-				className="button-like-anchor crosslink"
-				title={t("EVENTS.EVENTS.TABLE.TOOLTIP.SERIES")}
-				onClick={() => addFilter(row.series)}
-			>
-				{row.series.title}
-			</button>
+			<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.SERIES")}>
+				<button
+					className="button-like-anchor crosslink"
+					onClick={() => addFilter(row.series)}
+				>
+					{row.series.title}
+				</button>
+			</Tooltip>
 		)
 	);
 };

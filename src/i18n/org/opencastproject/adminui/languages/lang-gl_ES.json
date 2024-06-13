@@ -2,13 +2,19 @@
 	"MATTERHORN": "Opencast",
 	"NAV_HOME": "Inicio",
 	"NAV_ABOUT": "Acerca de",
+	"BUILD": {
+		"BUILT_ON": "built on",
+		"DATE_DESC": "Date this system's kernel module was built on.",
+		"COMMIT": "Git commit this version of Opencast was built from.",
+		"VERSION": "Common bundle version of Opencast modules"
+	},
 	"NO": "Non",
 	"SUBMIT": "Enviar",
 	"UPDATE": {
-		"MINOR": "Minor update available",
-		"MAJOR": "Major update available",
-		"UNSUPPORTED": "Version {{ version }} no longer supported",
-		"UNDETERMINED": "Indeterminable version"
+		"MINOR": "Dispoñible unha actualización menor",
+		"MAJOR": "Dispoñible unha actualización maior",
+		"UNSUPPORTED": "Versión {{ version }} non sostida",
+		"UNDETERMINED": "Versión indefinida"
 	},
 	"CANCEL": "Cancelar",
 	"CONFIRM": "Confirmar",
@@ -42,7 +48,7 @@
 		"SELECT_OPTION": "Seleccionar opción",
 		"JOB_TITLE": "Título",
 		"JOB_STATUS": "Estado",
-		"UPLOAD_SUCCESS": "Upload succeeded!",
+		"UPLOAD_SUCCESS": "Carga rematada con éxito!",
 		"UPLOAD_FAILURE": "Fallo ao cargar!",
 		"UPLOAD_FAILURE_DESCRIPTION": "Por favor, inténteo de novo máis tarde.",
 		"EDIT_SUCCESS": "Edición rematada con éxito. Volvendo a publicar...",
@@ -93,7 +99,9 @@
 			"SUBHEADING": "Seleccione os datos que se amosarán por defecto na vista da táboa {{ tableName }}",
 			"AVAILABLE_COLUMNS": "Columnas dispoñibles",
 			"SELECTED_COLUMNS": "Columnas seleccionadas",
-			"FOOTER_TEXT": "A orde e a selección gardaranse automaticamente. Pulse \"{{resetTranslation}}\" para restaurar a vista por defecto."
+			"FOOTER_TEXT": "A orde e a selección gardaranse automaticamente. Pulse \"{{resetTranslation}}\" para restaurar a vista por defecto.",
+			"ADD_COLUMN": "Add column",
+			"REMOVE_COLUMN": "Remove column"
 		}
 	},
 	"CONFIRMATIONS": {
@@ -120,7 +128,8 @@
 		},
 		"WARNINGS": {
 			"SERIES_HAS_EVENTS": "Estas series non conteñen eventos. Eliminar as series non eliminará os eventos.",
-			"EVENT_WILL_BE_GONE": "De continuar, o evento eliminarase de xeito permanente."
+			"EVENT_WILL_BE_GONE": "De continuar, o evento eliminarase de xeito permanente.",
+			"UNSAVED_CHANGES": "You have unsaved changes. If you continue, those changes will be discarded. Are you sure that you want to continue?"
 		},
 		"ERRORS": {
 			"SERIES_HAS_EVENTS": "Estas series non poden ser eliminadas mentres conteñan eventos."
@@ -135,7 +144,7 @@
 		"DOCUMENTATION": "Documentación",
 		"REST_DOC": "Documentación da API REST",
 		"HOTKEY_CHEAT_SHEET": "Atallos de teclado",
-		"ADOPTER_REGISTRATION": "Adopter Registration"
+		"ADOPTER_REGISTRATION": "Rexistro de afiliados"
 	},
 	"NOTIFICATIONS": {
 		"ACL_ADDED": "Política de acceso creada",
@@ -211,7 +220,7 @@
 			"NO_EVENTS_UPDATED": "Fallaron tódalas actualizacións.",
 			"SOME_EVENTS_NOT_UPDATED": "Non se puideron crear algúns eventos."
 		},
-		"PROBLEM_ON_START": "A error occurred on start up. Please contact your OpenCast admin"
+		"PROBLEM_ON_START": "Ocorreu un erro no arranque. Contacte co seu administrador OpenCast"
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Accións",
@@ -370,36 +379,36 @@
 	},
 	"ADOPTER_REGISTRATION": {
 		"MODAL": {
-			"CAPTION": "Registration",
-			"SKIP": "Not now",
-			"CONTINUE": "Continue",
-			"BACK": "Back",
+			"CAPTION": "Rexistro",
+			"SKIP": "Agora non",
+			"CONTINUE": "Continuar",
+			"BACK": "Voltar",
 			"LEGAL_INFO_STATE": {
-				"HEADER": "Terms of Service and Privacy Policy"
+				"HEADER": "Termos do servizo e Política de privacidade"
 			},
 			"INFORMATION_STATE": {
-				"HEADER": "Thank you for using Opencast!",
-				"INFORMATION_PARAGRAPH_1": "Our developers are constantly working to provide you the best possible user experience. For that, we need to know more about who uses Opencast and how it is used. You can help us with a quick registration.",
-				"INFORMATION_PARAGRAPH_2": "We highly appreciate any feedback, as even some of the data that we gather about the Opencast usage will help us to create better software, have better chances for additional funding and attract more companies to provide services around Opencast."
+				"HEADER": "Grazas por usar Opencast!",
+				"INFORMATION_PARAGRAPH_1": "Os nosos desenvolvedores traballan constantemente para ofrecerche a mellor experiencia de usuario posible. Para iso, necesitamos saber máis sobre quen e como usa Opencast. Podes axudarnos cun rexistro rápido.",
+				"INFORMATION_PARAGRAPH_2": "Agradecemos moito calquera suxestion, xa que algúns dos datos que recompilamos sobre o uso de Opencast axudaranos a crear un mellor software, ter mellores posibilidades para obter financiamento adicional e atraer máis empresas para ofrecer servizos sobre Opencast."
 			},
 			"FORM_STATE": {
-				"ORGANISATION": "Organisation",
-				"DEPARTMENT": "Department",
-				"COUNTRY": "Country",
-				"POSTAL_CODE": "Postal code",
-				"CITY": "City",
-				"CONTACT_INFO": "Contact information",
-				"GENDER": "Gender",
-				"GENDER_MALE": "male",
-				"GENDER_FEMALE": "female",
-				"FIRST_NAME": "First name",
-				"LAST_NAME": "Last name",
-				"STREET": "Street",
-				"NUMBER": "Number",
-				"ADDITIONAL_ADRESS_INFO": "Add. adress information",
-				"MAIL": "Email",
-				"CONTACT_ME": "Contact me for updates and secruity issues",
-				"WHICH_DATA_TO_SHARE": "Which data do you want to share?",
+				"ORGANISATION": "Organización",
+				"DEPARTMENT": "Departamento",
+				"COUNTRY": "País",
+				"POSTAL_CODE": "Código Postal",
+				"CITY": "Cidade",
+				"CONTACT_INFO": "Información de contacto",
+				"GENDER": "Xénero",
+				"GENDER_MALE": "masculino",
+				"GENDER_FEMALE": "feminino",
+				"FIRST_NAME": "Nome",
+				"LAST_NAME": "Apelidos",
+				"STREET": "Rúa",
+				"NUMBER": "Número",
+				"ADDITIONAL_ADRESS_INFO": "Outra información do enderezo",
+				"MAIL": "Correo electrónico",
+				"CONTACT_ME": "Póñase en contacto comigo para obter actualizacións e problemas de seguranza",
+				"WHICH_DATA_TO_SHARE": "¿Que datos queres compartir?",
 				"POLICY_HEADLINE": "Privacy policy and terms of use",
 				"USAGE_STATISTICS": "Usage statistcs",
 				"ERROR_REPORTS": "Error reports",
@@ -485,6 +494,10 @@
 						"MULTIPLE_PARTS": {
 							"SHORT": "Múltiples partes",
 							"DETAIL": "Un conxunto de arquivos que conteñen diferentes partes do evento."
+						},
+						"SUBTITLES": {
+							"SHORT": "Subtitles",
+							"DETAIL": "A subtitle file in vtt format"
 						}
 					},
 					"DATE_TIME": {
@@ -561,7 +574,8 @@
 			"NAVIGATION": {
 				"EVENTS": "Eventos",
 				"SERIES": "Series",
-				"OVERVIEW": "Resumo"
+				"OVERVIEW": "Resumo",
+				"LABEL": "Switch between events and series."
 			},
 			"UPLOAD": "Subir",
 			"ADD_SERIES": "Engadir serie",
@@ -587,6 +601,7 @@
 				"NOCONTENT": "Non hai información dispoñible",
 				"PUBLISHED": "Publicado",
 				"WEEKDAY": "Día da semana",
+				"ADMINUI_NOTES": "Notes",
 				"TOOLTIP": {
 					"ASSETS": "Abrir o detalles do recurso",
 					"START": "Filtro para esta data de inicio",
@@ -601,7 +616,9 @@
 					"COMMENTS": "Ver comentarios",
 					"PAUSED_WORKFLOW": "Ver fluxos de traballo pausados",
 					"PRESENTER": "Filtrar por este presentador"
-				}
+				},
+				"SELECT_ALL": "Select all events",
+				"SELECT_EVENT": "Select event \"{{title}}\""
 			},
 			"STATUS": {
 				"SCHEDULED": "Programado",
@@ -862,7 +879,7 @@
 						"REVIEW": "Pendente de revisar",
 						"ASYNC": "Pistas de A/V asíncronas",
 						"AUDIO_ISSUE": "Pista de audio non dispoñible ou defectuosa",
-						"CANCELED": "Evento cancelado",
+						"CANCELLED": "Cancelled event",
 						"CONFLICTING_METADATA": "Conflito de metadatos",
 						"IMPROPER_POINT": "Punto inicial ou final incorrecto",
 						"MISSING_AGREEMENT": "Acordo non dispoñible",
@@ -875,7 +892,8 @@
 						"WRONG_METADATA": "Necesario corrixir os metadatos",
 						"WRONG_SERIES_PUBLICATION": "Serie ou canle de publicación incorrecta",
 						"WRONG_WORKFLOW": "Fluxo de traballo incorrecto",
-						"PROCESSING_FAILURE": "Fallo no procesamento"
+						"PROCESSING_FAILURE": "Fallo no procesamento",
+						"ADMINUI_NOTES": "Notes in Admin UI"
 					}
 				},
 				"STATISTICS": {
@@ -1233,6 +1251,11 @@
 				"USERNAME": "Nome de usuario",
 				"EMAIL": "Correo electrónico",
 				"ROLES": "Roles",
+				"COLLAPSED": {
+					"UI": "user interface roles",
+					"API": "API roles",
+					"CAPTURE_AGENT": "capture agent roles"
+				},
 				"TYPE": "Tipo",
 				"PROVIDER": "Fornecedor",
 				"ACTION": "Accións",
@@ -1751,7 +1774,8 @@
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Por favor, seleccione un filtro…",
-			"NO_OPTIONS": "Non se atopou ningún filtro"
+			"NO_OPTIONS": "Non se atopou ningún filtro",
+			"LABEL": "Filter table rows"
 		},
 		"FILTER_VALUE_SELECTION": {
 			"PLACEHOLDER": "Por favor, seleccione un valor…",
@@ -1771,7 +1795,8 @@
 			"NAME": "Nome",
 			"NAME_PLACEHOLDER": "Nome…",
 			"DESCRIPTION": "Descrición",
-			"DESCRIPTION_PLACEHOLDER": "Descrición…"
+			"DESCRIPTION_PLACEHOLDER": "Descrición…",
+			"ADD": "Add"
 		}
 	},
 	"FILTERS": {
@@ -1992,6 +2017,8 @@
 	"TABLE_NO_RESULT": "Non se atoparon resultados",
 	"TABLE_LOADING": "Cargando…",
 	"TABLE_EDIT": "Modificar",
+	"TABLE_NEXT": "Next page",
+	"TABLE_PREVIOUS": "Previous page",
 	"DASHBOARD": {
 		"RUNNING": "Procesando",
 		"FINISHED": "Finalizado",
@@ -2030,12 +2057,36 @@
 			"END": "Fin",
 			"HOME": "Inicio",
 			"INS": "Ins",
-			"DEL": "Supr"
+			"DEL": "Supr",
+			"A": "a",
+			"B": "b",
+			"C": "c",
+			"D": "d",
+			"E": "e",
+			"F": "f",
+			"G": "g",
+			"H": "h",
+			"I": "i",
+			"J": "j",
+			"K": "k",
+			"L": "l",
+			"M": "m",
+			"N": "n",
+			"O": "o",
+			"P": "p",
+			"Q": "q",
+			"R": "r",
+			"S": "s",
+			"T": "t",
+			"U": "u",
+			"V": "v",
+			"W": "w",
+			"X": "x",
+			"Y": "y",
+			"Z": "z"
 		},
 		"GROUPS": {
-			"GENERAL": "Xeral",
-			"PLAYER": "Reprodutor",
-			"EDITOR": "Editor"
+			"GENERAL": "Xeral"
 		},
 		"DESCRIPTIONS": {
 			"GENERAL": {
@@ -2047,27 +2098,8 @@
 				"SERIES_VIEW": "Series",
 				"NEW_EVENT": "Engadir evento",
 				"NEW_SERIES": "Engadir serie",
-				"CHEAT_SHEET": "Atallos de teclado"
-			},
-			"PLAYER": {
-				"PLAY_PAUSE": "Reproducir/Pausa",
-				"PREVIOUS_FRAME": "Fotograma anterior",
-				"NEXT_FRAME": "Fotograma seguinte",
-				"STEP_BACKWARD": "Saltar 10s cara atrás",
-				"STEP_FORWARD": "Saltar 10s cara adiante",
-				"PREVIOUS_SEGMENT": "Segmento anterior / Saltar ó inicio",
-				"NEXT_SEGMENT": "Seguinte segmento / Saltar ó fin",
-				"VOLUME_UP": "Subir volume",
-				"VOLUME_DOWN": "Baixar volume",
-				"MUTE": "Activar/desactivar son"
-			},
-			"EDITOR": {
-				"SPLIT_AT_CURRENT_TIME": "Dividir",
-				"CUT_SELECTED_SEGMENT": "Cortar",
-				"PLAY_CURRENT_SEGMENT": "Reproducir segmento actual",
-				"CLEAR_LIST": "Borrar segmento",
-				"PLAY_CURRENT_SEGMENT_WITH_PRE-ROLL": "Reproducir segmento con previo",
-				"PLAY_ENDING_OF_CURRENT_SEGMENT": "Fin de segmento"
+				"CHEAT_SHEET": "Atallos de teclado",
+				"CLOSE_MODAL": "Close dialog"
 			}
 		}
 	},
@@ -2137,5 +2169,10 @@
 			"medium": "{{time, h:mm:ss a}}",
 			"full": "{{time, h:mm:ss a z}}"
 		}
+	},
+	"ABOUT": {
+		"IMPRINT": "Imprint",
+		"PRIVACY": "Privacy statement",
+		"NOCONTENT": "Content not available"
 	}
 }

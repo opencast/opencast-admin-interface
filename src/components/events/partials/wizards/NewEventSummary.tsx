@@ -14,6 +14,7 @@ import { translateOverrideFallback } from "../../../../utils/utils";
 import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
+import { renderValidDate } from "../../../../utils/dateUtils";
 
 /**
  * This component renders the summary page for new events in the new event wizard.
@@ -92,6 +93,8 @@ const NewEventSummary = <T extends RequiredFormProps>({
 		(workflow) => workflow.id === formik.values.processingWorkflow
 	);
 
+	const endsOnSameDay = formik.values.scheduleStartDate === formik.values.scheduleEndDate;
+
 	return (
 		<>
 			<div className="modal-content">
@@ -166,7 +169,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 															{translateOverrideFallback(asset, t, "SHORT")}
 															<span className="ui-helper-hidden">
                                 {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
-                                ({asset.type} "{asset.flavorType}//
+                                ({asset.type} "{asset.flavorType}/
 																{asset.flavorSubType}")
 															</span>
 														</td>
@@ -180,8 +183,8 @@ const NewEventSummary = <T extends RequiredFormProps>({
 													{t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.START_DATE")}
 												</td>
 												<td>
-													{t("dateFormats.date.short", {
-														date: new Date(formik.values.startDate),
+													{t("dateFormats.dateTime.short", {
+														dateTime: renderValidDate(formik.values.startDate),
 													})}
 												</td>
 											</tr>
@@ -213,7 +216,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 													{formik.values.scheduleStartMinute}
 												</td>
 											</tr>
-											{formik.values.sourceMode === "SCHEDULE_MULTIPLE" && (
+											{(!endsOnSameDay || formik.values.sourceMode === "SCHEDULE_MULTIPLE") && (
 												<tr>
 													<td>
 														{t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.END_DATE")}

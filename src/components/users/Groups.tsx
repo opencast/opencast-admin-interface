@@ -17,8 +17,9 @@ import {
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
 import { setOffset } from "../../actions/tableActions";
-import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
 import Header from "../Header";
+import NavBar from "../NavBar";
+import MainView from "../MainView";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
@@ -51,8 +52,8 @@ const Groups = ({
 	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchGroupsWrapper = () => {
-		dispatch(fetchGroups())
+	const fetchGroupsWrapper = async () => {
+		await dispatch(fetchGroups())
 	}
 
 	const loadGroups = async () => {
@@ -118,7 +119,7 @@ const Groups = ({
 	return (
 		<>
 			<Header />
-			<section className="action-nav-bar">
+			<NavBar>
 				{/* Add group button */}
 				<div className="btn-group">
 					{hasAccess("ROLE_UI_GROUPS_CREATE", user) && (
@@ -168,12 +169,9 @@ const Groups = ({
 						</Link>
 					)}
 				</nav>
-			</section>
+			</NavBar>
 
-			<div
-				className="main-view"
-				style={displayNavigation ? styleNavOpen : styleNavClosed}
-			>
+			<MainView open={displayNavigation}>
 				{/* Include notifications component */}
 				<Notifications />
 
@@ -189,7 +187,7 @@ const Groups = ({
 				</div>
 				{/* Include table component */}
 				<Table templateMap={groupsTemplateMap} />
-			</div>
+			</MainView>
 			<Footer />
 		</>
 	);

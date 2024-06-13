@@ -37,6 +37,7 @@ import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 // Configuration for persisting states in store
 const eventsPersistConfig = { key: "events", storage, whitelist: ["columns"] }
 const seriesPersistConfig = { key: "series", storage, whitelist: ["columns"] }
+const tablePersistConfig = { key: "table", storage, whitelist: ["pagination"] }
 const recordingsPersistConfig = { key: "recordings", storage, whitelist: ["columns"] }
 const jobsPersistConfig = { key: "jobs", storage, whitelist: ["columns"] }
 const serversPersistConfig = { key: "servers", storage, whitelist: ["columns"] }
@@ -52,7 +53,7 @@ const reducers = combineReducers({
 	tableFilterProfiles,
 	events: persistReducer(eventsPersistConfig, events),
 	series: persistReducer(seriesPersistConfig, series),
-	table,
+	table: persistReducer(tablePersistConfig, table),
 	recordings: persistReducer(recordingsPersistConfig, recordings),
 	jobs: persistReducer(jobsPersistConfig, jobs),
 	servers: persistReducer(serversPersistConfig, servers),

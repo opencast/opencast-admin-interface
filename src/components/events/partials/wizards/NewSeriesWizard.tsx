@@ -18,8 +18,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { postNewSeries } from "../../../../slices/seriesSlice";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
 import NewTobiraPage from "../ModalTabsAndPages/NewTobiraPage";
-import { getUserInformation } from "../../../../selectors/userInfoSelectors";
-import { MetadataCatalog } from "../../../../slices/eventSlice";
+import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 
@@ -37,6 +36,9 @@ const NewSeriesWizard: React.FC<{
 	const extendedMetadata = useAppSelector(state => getSeriesExtendedMetadata(state));
 	const statusTobiraPage = useAppSelector(state => getSeriesTobiraPageStatus(state));
 	const user = useAppSelector(state => getUserInformation(state));
+	const orgProperties = useAppSelector(state => getOrgProperties(state));
+
+	const themesEnabled = (orgProperties['admin.themes.enabled']?.toLowerCase() || 'true') === 'true';
 
 	const initialValues = getInitialValues(metadataFields, extendedMetadata, user);
 
@@ -64,7 +66,7 @@ const NewSeriesWizard: React.FC<{
 		{
 			translation: "EVENTS.SERIES.NEW.THEME.CAPTION",
 			name: "theme",
-			hidden: false,
+			hidden: !themesEnabled,
 		},
 		{
 			translation: "EVENTS.SERIES.NEW.TOBIRA.CAPTION",

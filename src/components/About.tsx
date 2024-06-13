@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
+import NavBar from "./NavBar";
 import Footer from "./Footer";
 import MainNav from "./shared/MainNav";
 import { useTranslation } from "react-i18next";
@@ -45,13 +46,13 @@ const About: React.FC = () => {
 	return (
 		<span>
 			<Header />
-			<section className="action-nav-bar">
+			<NavBar>
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
 				<nav>
 					<Link to="/about/imprint" className={cn({ active: location.pathname === "/about/imprint" })} onClick={() => { }}>{t("ABOUT.IMPRINT")}</Link>
 					<Link to="/about/privacy" className={cn({ active: location.pathname === "/about/privacy" })} onClick={() => { }}>{t("ABOUT.PRIVACY")}</Link>
 				</nav>
-			</section>
+			</NavBar>
 			<div className="about">
 				<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(aboutContent) }} ></div>
 			</div>

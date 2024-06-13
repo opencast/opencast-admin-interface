@@ -5,9 +5,14 @@ import { makeTwoDigits } from "./utils";
  * This File contains methods concerning dates
  */
 
+// Get the ISO date string based on local time
+const getISODateString = (date: Date) => {
+	return moment(date).format('YYYY-MM-DD');
+}
+
 // check if date can be parsed
 export const renderValidDate = (date: string) => {
-  return !isNaN(Date.parse(date)) ? new Date(date) : ""
+	return !isNaN(Date.parse(date)) ? new Date(date) : ""
 }
 
 // transform relative date to an absolute date
@@ -107,14 +112,8 @@ const changeStart = (
 	}
 
 	setDuration(startDate, endDate, setFieldValue);
-	setFieldValue(
-		"scheduleEndDate",
-		new Date(endDate.setHours(0, 0, 0)).toISOString()
-	);
-	setFieldValue(
-		"scheduleStartDate",
-		new Date(startDate.setHours(0, 0, 0)).toISOString()
-	);
+	setFieldValue("scheduleEndDate", getISODateString(endDate));
+	setFieldValue("scheduleStartDate", getISODateString(startDate));
 
 	if (!!checkConflicts) {
 		checkConflicts(
@@ -127,8 +126,7 @@ const changeStart = (
 };
 
 export const changeStartDate = (
-// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
-	value,
+	value: Date,
 // @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
 	formikValues,
 // @ts-expect-error TS(7006): Parameter 'setFieldValue' implicitly has an 'any' ... Remove this comment to see the full error message
@@ -227,10 +225,7 @@ const changeEnd = (
 	}
 
 	setDuration(startDate, endDate, setFieldValue);
-	setFieldValue(
-		"scheduleEndDate",
-		new Date(endDate.setHours(0, 0, 0)).toISOString()
-	);
+	setFieldValue("scheduleEndDate", getISODateString(endDate));
 
 	if (!!checkConflicts) {
 		checkConflicts(
@@ -314,10 +309,7 @@ const changeDuration = (
 
 	setFieldValue("scheduleEndHour", makeTwoDigits(endDate.getHours()));
 	setFieldValue("scheduleEndMinute", makeTwoDigits(endDate.getMinutes()));
-	setFieldValue(
-		"scheduleEndDate",
-		new Date(endDate.setHours(0, 0, 0)).toISOString()
-	);
+	setFieldValue("scheduleEndDate", getISODateString(endDate));
 
 	if (!!checkConflicts) {
 		checkConflicts(
@@ -412,18 +404,8 @@ const changeStartMultiple = (
 		endDate.setDate(startDate.getDate() + 1);
 	}
 
-	setFieldValue(
-		"scheduleEndDate",
-		new Date(endDate.setHours(0, 0, 0)).toISOString()
-	);
-	setFieldValue(
-		"scheduleStartDate",
-		new Date(startDate.setHours(0, 0, 0)).toISOString()
-	);
-
-	if (isEndBeforeStart(startDate, endDate)) {
-		endDate.setDate(startDate.getDate() + 1);
-	}
+	setFieldValue("scheduleEndDate", getISODateString(endDate));
+	setFieldValue("scheduleStartDate", getISODateString(startDate));
 
 	if (!!checkConflicts) {
 		checkConflicts(
@@ -537,14 +519,8 @@ export const changeEndDateMultiple = async (
 		}
 	}
 
-	setFieldValue(
-		"scheduleEndDate",
-		new Date(endDate.setHours(0, 0, 0)).toISOString()
-	);
-	setFieldValue(
-		"scheduleStartDate",
-		new Date(startDate.setHours(0, 0, 0)).toISOString()
-	);
+	setFieldValue("scheduleEndDate", getISODateString(endDate));
+	setFieldValue("scheduleStartDate", getISODateString(startDate));
 
 	if (!!checkConflicts) {
 		checkConflicts(
@@ -585,10 +561,7 @@ const changeEndMultiple = (
 
 	if (isEndBeforeStart(startDate, endDate)) {
 		endDate.setDate(startDate.getDate() + 1);
-		setFieldValue(
-			"scheduleEndDate",
-			new Date(endDate.setHours(0, 0, 0)).toISOString()
-		);
+	  setFieldValue("scheduleEndDate", getISODateString(endDate));
 	}
 
 	if (!!checkConflicts) {
@@ -677,10 +650,7 @@ const changeDurationMultiple = (
 
 	setFieldValue("scheduleEndHour", makeTwoDigits(endDate.getHours()));
 	setFieldValue("scheduleEndMinute", makeTwoDigits(endDate.getMinutes()));
-	setFieldValue(
-		"scheduleEndDate",
-		new Date(endDate.setHours(0, 0, 0)).toISOString()
-	);
+	setFieldValue("scheduleEndDate", getISODateString(endDate));
 
 	if (!!checkConflicts) {
 		checkConflicts(

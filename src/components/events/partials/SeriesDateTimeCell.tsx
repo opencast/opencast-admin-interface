@@ -13,8 +13,8 @@ const SeriesDateTimeCell = ({
 	return (
 		// Link template for creation date of series
 		<span>
-			{t("dateFormats.dateTime.short", {
-				dateTime: renderValidDate(row.creation_date),
+			{t("dateFormats.date.short", {
+				date: renderValidDate(row.creation_date),
 			})}
 		</span>
 	);

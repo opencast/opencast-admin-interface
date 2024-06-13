@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getSourceURL } from "../../../../utils/embeddedCodeUtils";
+import { useHotkeys } from "react-hotkeys-hook";
+import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 
 /**
  * This component renders the embedding code modal
@@ -15,6 +17,13 @@ const EmbeddingCodeModal = ({
 	const [sourceURL, setSourceURL] = useState("");
 	const [currentSize, setCurrentSize] = useState("0x0");
 	const [showCopySuccess, setCopySuccess] = useState(false);
+
+	useHotkeys(
+		availableHotkeys.general.CLOSE_MODAL.sequence,
+		() => close(),
+		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
+		[close],
+  	);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -75,6 +84,7 @@ const EmbeddingCodeModal = ({
 		// set state with new inputs
 		setTextAreaContent(iFrameString);
 		setCurrentSize(frameSize);
+		setCopySuccess(false);
 	};
 
 	return (
@@ -149,9 +159,8 @@ const EmbeddingCodeModal = ({
 				{showCopySuccess && (
 					<div className="copyConfirm">
 						<span id="copy_confirm_pre">
-							{t("CONFIRMATIONS.EMBEDDING_CODE")}
+							{t("CONFIRMATIONS.EMBEDDING_CODE",{size: currentSize})}
 						</span>
-						<span id="copy_confirm">{currentSize}</span>
 					</div>
 				)}
 

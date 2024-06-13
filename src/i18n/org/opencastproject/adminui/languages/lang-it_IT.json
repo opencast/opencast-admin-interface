@@ -2,6 +2,12 @@
 	"MATTERHORN": "Opencast",
 	"NAV_HOME": "Avvio",
 	"NAV_ABOUT": "Informazioni",
+	"BUILD": {
+		"BUILT_ON": "built on",
+		"DATE_DESC": "Date this system's kernel module was built on.",
+		"COMMIT": "Git commit this version of Opencast was built from.",
+		"VERSION": "Common bundle version of Opencast modules"
+	},
 	"NO": "No",
 	"SUBMIT": "Invia",
 	"UPDATE": {
@@ -93,7 +99,9 @@
 			"SUBHEADING": "Seleziona i dati predefiniti per la visualizzazione {{ tableName }}",
 			"AVAILABLE_COLUMNS": "Colonne disponibili",
 			"SELECTED_COLUMNS": "Colonne selezionate",
-			"FOOTER_TEXT": "L'ordinamento e la selezione verranno salvati automaticamente. Premere \"{{resetTranslation}}\" per ripristinare la visualizzazione predefinita."
+			"FOOTER_TEXT": "L'ordinamento e la selezione verranno salvati automaticamente. Premere \"{{resetTranslation}}\" per ripristinare la visualizzazione predefinita.",
+			"ADD_COLUMN": "Add column",
+			"REMOVE_COLUMN": "Remove column"
 		}
 	},
 	"CONFIRMATIONS": {
@@ -120,7 +128,8 @@
 		},
 		"WARNINGS": {
 			"SERIES_HAS_EVENTS": "Questa serie contiene eventi. L'eliminazione della serie non cancellerà gli eventi.",
-			"EVENT_WILL_BE_GONE": "If you continue, the event will be irrevocably gone."
+			"EVENT_WILL_BE_GONE": "If you continue, the event will be irrevocably gone.",
+			"UNSAVED_CHANGES": "You have unsaved changes. If you continue, those changes will be discarded. Are you sure that you want to continue?"
 		},
 		"ERRORS": {
 			"SERIES_HAS_EVENTS": "Questa serie non può essere cancellata in quanto contiene ancora eventi."
@@ -485,6 +494,10 @@
 						"MULTIPLE_PARTS": {
 							"SHORT": "Parti multiple",
 							"DETAIL": "Un insieme di file contenente diverse parti dell'evento."
+						},
+						"SUBTITLES": {
+							"SHORT": "Subtitles",
+							"DETAIL": "A subtitle file in vtt format"
 						}
 					},
 					"DATE_TIME": {
@@ -561,7 +574,8 @@
 			"NAVIGATION": {
 				"EVENTS": "Eventi",
 				"SERIES": "Serie",
-				"OVERVIEW": "Panoramica"
+				"OVERVIEW": "Panoramica",
+				"LABEL": "Switch between events and series."
 			},
 			"UPLOAD": "Carica",
 			"ADD_SERIES": "Aggiungi serie",
@@ -587,6 +601,7 @@
 				"NOCONTENT": "Nessun dato disponibile",
 				"PUBLISHED": "Pubblicato",
 				"WEEKDAY": "Giorno feriale",
+				"ADMINUI_NOTES": "Notes",
 				"TOOLTIP": {
 					"ASSETS": "Open asset details",
 					"START": "Filtro per questa data di inizio",
@@ -601,7 +616,9 @@
 					"COMMENTS": "Visualizza commenti",
 					"PAUSED_WORKFLOW": "Mostra flusso di lavoro in pausa",
 					"PRESENTER": "Filtra per questo presentatore"
-				}
+				},
+				"SELECT_ALL": "Select all events",
+				"SELECT_EVENT": "Select event \"{{title}}\""
 			},
 			"STATUS": {
 				"SCHEDULED": "Programmato",
@@ -862,7 +879,7 @@
 						"REVIEW": "Revisione necessaria",
 						"ASYNC": "A/V tracce asincrone",
 						"AUDIO_ISSUE": "Traccia audio mancante o difettosa",
-						"CANCELED": "Evento annullato",
+						"CANCELLED": "Cancelled event",
 						"CONFLICTING_METADATA": "Metadati in conflitto",
 						"IMPROPER_POINT": "Punto di ingresso o di uscita improprio",
 						"MISSING_AGREEMENT": "Contratto mancante",
@@ -875,7 +892,8 @@
 						"WRONG_METADATA": "Metadata necessita di correzione",
 						"WRONG_SERIES_PUBLICATION": "Serie o canale di pubblicazione errati",
 						"WRONG_WORKFLOW": "Flusso di lavoro errato",
-						"PROCESSING_FAILURE": "Elaborazione fallita"
+						"PROCESSING_FAILURE": "Elaborazione fallita",
+						"ADMINUI_NOTES": "Notes in Admin UI"
 					}
 				},
 				"STATISTICS": {
@@ -1233,6 +1251,11 @@
 				"USERNAME": "Nome Utente",
 				"EMAIL": "Email",
 				"ROLES": "Ruoli",
+				"COLLAPSED": {
+					"UI": "user interface roles",
+					"API": "API roles",
+					"CAPTURE_AGENT": "capture agent roles"
+				},
 				"TYPE": "Tipo",
 				"PROVIDER": "Provider",
 				"ACTION": "Azioni",
@@ -1751,7 +1774,8 @@
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Si prega di selezionare un filtro…",
-			"NO_OPTIONS": "Nessun filtro trovato"
+			"NO_OPTIONS": "Nessun filtro trovato",
+			"LABEL": "Filter table rows"
 		},
 		"FILTER_VALUE_SELECTION": {
 			"PLACEHOLDER": "Si prega di selezionare un valore…",
@@ -1771,7 +1795,8 @@
 			"NAME": "Nome",
 			"NAME_PLACEHOLDER": "Nome…",
 			"DESCRIPTION": "Descrizione",
-			"DESCRIPTION_PLACEHOLDER": "Descrizione…"
+			"DESCRIPTION_PLACEHOLDER": "Descrizione…",
+			"ADD": "Add"
 		}
 	},
 	"FILTERS": {
@@ -1992,6 +2017,8 @@
 	"TABLE_NO_RESULT": "Nessun risultato trovato",
 	"TABLE_LOADING": "Caricamento…",
 	"TABLE_EDIT": "Modifica",
+	"TABLE_NEXT": "Next page",
+	"TABLE_PREVIOUS": "Previous page",
 	"DASHBOARD": {
 		"RUNNING": "In esecuzione",
 		"FINISHED": "Completato",
@@ -2030,12 +2057,36 @@
 			"END": "Fine",
 			"HOME": "Home",
 			"INS": "Ins",
-			"DEL": "Canc"
+			"DEL": "Canc",
+			"A": "a",
+			"B": "b",
+			"C": "c",
+			"D": "d",
+			"E": "e",
+			"F": "f",
+			"G": "g",
+			"H": "h",
+			"I": "i",
+			"J": "j",
+			"K": "k",
+			"L": "l",
+			"M": "m",
+			"N": "n",
+			"O": "o",
+			"P": "p",
+			"Q": "q",
+			"R": "r",
+			"S": "s",
+			"T": "t",
+			"U": "u",
+			"V": "v",
+			"W": "w",
+			"X": "x",
+			"Y": "y",
+			"Z": "z"
 		},
 		"GROUPS": {
-			"GENERAL": "Generale",
-			"PLAYER": "Player",
-			"EDITOR": "Editor"
+			"GENERAL": "Generale"
 		},
 		"DESCRIPTIONS": {
 			"GENERAL": {
@@ -2047,27 +2098,8 @@
 				"SERIES_VIEW": "Serie",
 				"NEW_EVENT": "Aggiungi evento",
 				"NEW_SERIES": "Aggiungi serie",
-				"CHEAT_SHEET": "Scorciatoie da tastiera"
-			},
-			"PLAYER": {
-				"PLAY_PAUSE": "Riproduci/Pausa",
-				"PREVIOUS_FRAME": "Fotogramma precedente",
-				"NEXT_FRAME": "Fotogramma successivo",
-				"STEP_BACKWARD": "Torna 10s indietro",
-				"STEP_FORWARD": "Salta 10s in avanti",
-				"PREVIOUS_SEGMENT": "Segmento precedente / salta per avviare",
-				"NEXT_SEGMENT": "Segmento successivo / Salta per terminare",
-				"VOLUME_UP": "Alza il volume",
-				"VOLUME_DOWN": "Riduci Volume",
-				"MUTE": "Attiva/disattiva audio"
-			},
-			"EDITOR": {
-				"SPLIT_AT_CURRENT_TIME": "Dividi",
-				"CUT_SELECTED_SEGMENT": "Taglia",
-				"PLAY_CURRENT_SEGMENT": "Riproduci segmento corrente",
-				"CLEAR_LIST": "Cancella segmento",
-				"PLAY_CURRENT_SEGMENT_WITH_PRE-ROLL": "Ritarda segmento con pre-roll",
-				"PLAY_ENDING_OF_CURRENT_SEGMENT": "Fine del segmento"
+				"CHEAT_SHEET": "Scorciatoie da tastiera",
+				"CLOSE_MODAL": "Close dialog"
 			}
 		}
 	},
@@ -2137,5 +2169,10 @@
 			"medium": "{{time, H.mm.ss}}",
 			"full": "{{time, H.mm.ss z}}"
 		}
+	},
+	"ABOUT": {
+		"IMPRINT": "Imprint",
+		"PRIVACY": "Privacy statement",
+		"NOCONTENT": "Content not available"
 	}
 }

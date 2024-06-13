@@ -5,23 +5,29 @@ import cn from "classnames";
 import { useClickOutsideField } from "../../../hooks/wizardHooks";
 import { isJson } from "../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../utils/resourceUtils";
-import DropDown from "../DropDown";
+import DropDown, { DropDownType } from "../DropDown";
 import RenderDate from "../RenderDate";
 import { parseISO } from "date-fns";
+import { FieldProps } from "formik";
+import { MetadataField } from "../../../slices/eventSlice";
+import { renderValidDate } from "../../../utils/dateUtils";
 
 const childRef = React.createRef<HTMLDivElement>();
 /**
  * This component renders an editable field for single values depending on the type of the corresponding metadata
  */
 const RenderField = ({
-// @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 	field,
-// @ts-expect-error TS(7031): Binding element 'metadataField' implicitly has an ... Remove this comment to see the full error message
 	metadataField,
-// @ts-expect-error TS(7031): Binding element 'form' implicitly has an 'any' typ... Remove this comment to see the full error message
 	form,
 	showCheck = false,
 	isFirstField = false,
+}: {
+	field: FieldProps["field"]
+	metadataField: MetadataField
+	form: FieldProps["form"]
+	showCheck?: boolean,
+	isFirstField?: boolean,
 }) => {
 	const { t } = useTranslation();
 
@@ -29,8 +35,7 @@ const RenderField = ({
 	const {editMode, setEditMode} = useClickOutsideField(childRef, isFirstField);
 
 	// Handle key down event and check if pressed key leads to leaving edit mode
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
-	const handleKeyDown = (event, type) => {
+	const handleKeyDown = (event: React.KeyboardEvent, type: MetadataField["type"]) => {
 		const { key } = event;
 		// keys pressable for leaving edit mode
 		const keys = ["Escape", "Tab", "Enter"];
@@ -82,7 +87,7 @@ const RenderField = ({
 					metadataField={metadataField}
 					field={field}
 					form={form}
-					text={field.value}
+					text={t(getMetadataCollectionFieldName(metadataField, field))}
 					editMode={editMode}
 					setEditMode={setEditMode}
 					showCheck={showCheck}
@@ -99,8 +104,6 @@ const RenderField = ({
 						text={field.value}
 						editMode={editMode}
 						setEditMode={setEditMode}
-// @ts-expect-error TS(2322): Type '{ field: any; form: any; text: any; editMode... Remove this comment to see the full error message
-						isFirst={isFirstField}
 						showCheck={showCheck}
 						handleKeyDown={handleKeyDown}
 					/>
@@ -112,8 +115,6 @@ const RenderField = ({
 					form={form}
 					editMode={editMode}
 					setEditMode={setEditMode}
-// @ts-expect-error TS(2322): Type '{ field: any; text: any; form: any; editMode... Remove this comment to see the full error message
-					isFirst={isFirstField}
 					showCheck={showCheck}
 					handleKeyDown={handleKeyDown}
 				/>
@@ -143,14 +144,15 @@ const RenderField = ({
 
 // Renders editable field for a boolean value
 const EditableBooleanValue = ({
-// @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 	field,
-// @ts-expect-error TS(7031): Binding element 'handleKeyDown' implicitly has an ... Remove this comment to see the full error message
 	handleKeyDown,
-// @ts-expect-error TS(7031): Binding element 'initialValues' implicitly has an ... Remove this comment to see the full error message
 	form: { initialValues },
-// @ts-expect-error TS(7031): Binding element 'showCheck' implicitly has an 'any... Remove this comment to see the full error message
 	showCheck,
+}: {
+	field: FieldProps["field"]
+	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
+	form: FieldProps["form"]
+	showCheck?: boolean,
 }) => {
 	return (
 		<div onKeyDown={(e) => handleKeyDown(e, "input")} ref={childRef}>
@@ -169,20 +171,21 @@ const EditableBooleanValue = ({
 
 // Renders editable field for a data value
 const EditableDateValue = ({
-// @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 	field,
-// @ts-expect-error TS(7031): Binding element 'text' implicitly has an 'any' typ... Remove this comment to see the full error message
 	text,
-// @ts-expect-error TS(7031): Binding element 'setFieldValue' implicitly has an ... Remove this comment to see the full error message
 	form: { setFieldValue, initialValues },
-// @ts-expect-error TS(7031): Binding element 'editMode' implicitly has an 'any'... Remove this comment to see the full error message
 	editMode,
-// @ts-expect-error TS(7031): Binding element 'setEditMode' implicitly has an 'a... Remove this comment to see the full error message
 	setEditMode,
-// @ts-expect-error TS(7031): Binding element 'showCheck' implicitly has an 'any... Remove this comment to see the full error message
 	showCheck,
-// @ts-expect-error TS(7031):
 	handleKeyDown
+}: {
+	field: FieldProps["field"]
+	text: string
+	form: FieldProps["form"]
+	editMode: boolean | undefined
+	setEditMode: (e: boolean) => void
+	showCheck?: boolean,
+	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
 }) => editMode ? (
 	<div>
 		<DateTimePicker
@@ -225,22 +228,23 @@ const EditableDateValue = ({
 
 // renders editable field for selecting value via dropdown
 const EditableSingleSelect = ({
-// @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 	field,
-// @ts-expect-error TS(7031): Binding element 'metadataField' implicitly has an ... Remove this comment to see the full error message
 	metadataField,
-// @ts-expect-error TS(7031): Binding element 'text' implicitly has an 'any' typ... Remove this comment to see the full error message
 	text,
-// @ts-expect-error TS(7031): Binding element 'editMode' implicitly has an 'any'... Remove this comment to see the full error message
 	editMode,
-// @ts-expect-error TS(7031): Binding element 'setEditMode' implicitly has an 'a... Remove this comment to see the full error message
 	setEditMode,
-// @ts-expect-error TS(7031): Binding element 'handleKeyDown' implicitly has an ... Remove this comment to see the full error message
 	handleKeyDown,
-// @ts-expect-error TS(7031): Binding element 'setFieldValue' implicitly has an ... Remove this comment to see the full error message
 	form: { setFieldValue, initialValues },
-// @ts-expect-error TS(7031): Binding element 'showCheck' implicitly has an 'any... Remove this comment to see the full error message
 	showCheck,
+}: {
+	field: FieldProps["field"]
+	metadataField: MetadataField
+	text: string
+	editMode: boolean | undefined
+	setEditMode: (e: boolean) => void
+	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
+	form: FieldProps["form"]
+	showCheck?: boolean,
 }) => {
 	const { t } = useTranslation();
 
@@ -253,11 +257,10 @@ const EditableSingleSelect = ({
 			<DropDown
 				value={field.value}
 				text={text}
-				options={metadataField.collection}
-				type={metadataField.id}
+				options={metadataField.collection ? metadataField.collection : []}
+				type={metadataField.id as DropDownType}
 				required={metadataField.required}
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-				handleChange={(element) => setFieldValue(field.name, element.value)}
+				handleChange={(element) => element && setFieldValue(field.name, element.value)}
 				placeholder={`-- ${t("SELECT_NO_OPTION_SELECTED")} --`}
 				tabIndex={10}
 				autoFocus={true}
@@ -285,20 +288,21 @@ const EditableSingleSelect = ({
 
 // Renders editable text area
 const EditableSingleValueTextArea = ({
-// @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 	field,
-// @ts-expect-error TS(7031): Binding element 'text' implicitly has an 'any' typ... Remove this comment to see the full error message
 	text,
-// @ts-expect-error TS(7031): Binding element 'editMode' implicitly has an 'any'... Remove this comment to see the full error message
 	editMode,
-// @ts-expect-error TS(7031): Binding element 'setEditMode' implicitly has an 'a... Remove this comment to see the full error message
 	setEditMode,
-// @ts-expect-error TS(7031): Binding element 'handleKeyDown' implicitly has an ... Remove this comment to see the full error message
 	handleKeyDown,
-// @ts-expect-error TS(7031): Binding element 'initialValues' implicitly has an ... Remove this comment to see the full error message
 	form: { initialValues },
-// @ts-expect-error TS(7031): Binding element 'showCheck' implicitly has an 'any... Remove this comment to see the full error message
 	showCheck,
+}: {
+	field: FieldProps["field"]
+	text: string
+	editMode: boolean | undefined
+	setEditMode: (e: boolean) => void
+	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
+	form: FieldProps["form"]
+	showCheck?: boolean,
 }) => {
 	return editMode ? (
 		<div
@@ -331,20 +335,21 @@ const EditableSingleValueTextArea = ({
 
 // Renders editable input for single value
 const EditableSingleValue = ({
-// @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 	field,
-// @ts-expect-error TS(7031): Binding element 'initialValues' implicitly has an ... Remove this comment to see the full error message
 	form: { initialValues },
-// @ts-expect-error TS(7031): Binding element 'text' implicitly has an 'any' typ... Remove this comment to see the full error message
 	text,
-// @ts-expect-error TS(7031): Binding element 'editMode' implicitly has an 'any'... Remove this comment to see the full error message
 	editMode,
-// @ts-expect-error TS(7031): Binding element 'setEditMode' implicitly has an 'a... Remove this comment to see the full error message
 	setEditMode,
-// @ts-expect-error TS(7031): Binding element 'handleKeyDown' implicitly has an ... Remove this comment to see the full error message
 	handleKeyDown,
-// @ts-expect-error TS(7031): Binding element 'showCheck' implicitly has an 'any... Remove this comment to see the full error message
 	showCheck,
+}: {
+	field: FieldProps["field"]
+	form: FieldProps["form"]
+	text: string
+	editMode: boolean | undefined
+	setEditMode: (e: boolean) => void
+	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
+	showCheck?: boolean,
 }) => {
 	return editMode ? (
 		<div
@@ -373,20 +378,21 @@ const EditableSingleValue = ({
 
 // Renders editable field for time value
 const EditableSingleValueTime = ({
-// @ts-expect-error TS(7031): Binding element 'field' implicitly has an 'any' ty... Remove this comment to see the full error message
 	field,
-// @ts-expect-error TS(7031): Binding element 'text' implicitly has an 'any' typ... Remove this comment to see the full error message
 	text,
-// @ts-expect-error TS(7031): Binding element 'setFieldValue' implicitly has an ... Remove this comment to see the full error message
 	form: { setFieldValue, initialValues },
-// @ts-expect-error TS(7031): Binding element 'editMode' implicitly has an 'any'... Remove this comment to see the full error message
 	editMode,
-// @ts-expect-error TS(7031): Binding element 'setEditMode' implicitly has an 'a... Remove this comment to see the full error message
 	setEditMode,
-// @ts-expect-error TS(7031): Binding element 'showCheck' implicitly has an 'any... Remove this comment to see the full error message
 	showCheck,
-	// @ts-expect-error TS(7031): Binding element 'handleKeyDown' implicitly has an ... Remove this comment to see the full error message
 	handleKeyDown,
+}: {
+	field: FieldProps["field"]
+	text: string
+	form: FieldProps["form"]
+	editMode: boolean | undefined
+	setEditMode: (e: boolean) => void
+	showCheck?: boolean,
+	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
 }) => {
 	const { t } = useTranslation();
 
@@ -405,7 +411,7 @@ const EditableSingleValueTime = ({
 								handleKeyDown(event, "date")
 							}
 						},
-						onBlur: (event) => {
+						onBlur: () => {
 							setEditMode(false)
 						}
 					}
@@ -415,7 +421,7 @@ const EditableSingleValueTime = ({
 	) : (
 		<div onClick={() => setEditMode(true)} className="show-edit">
 			<span className="editable preserve-newlines">
-				{t("dateFormats.dateTime.short", { dateTime: new Date(text) }) || ""}
+				{t("dateFormats.dateTime.short", { dateTime: renderValidDate(text) }) || ""}
 			</span>
 			<div>
 				<i className="edit fa fa-pencil-square" />

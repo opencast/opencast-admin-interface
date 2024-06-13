@@ -2,6 +2,12 @@
 	"MATTERHORN": "Opencast",
 	"NAV_HOME": "Zur Startseite",
 	"NAV_ABOUT": "Über",
+	"BUILD": {
+		"BUILT_ON": "gebaut am",
+		"DATE_DESC": "Datum an welchem das Kernelmodul dieses Systems gebaut wurde.",
+		"COMMIT": "Git commit aus der diese Version von Opencast gebaut wurde.",
+		"VERSION": "Gemeinsame Bundle-Version von Opencast Modulen"
+	},
 	"NO": "Nein",
 	"SUBMIT": "Speichern",
 	"UPDATE": {
@@ -93,11 +99,13 @@
 			"SUBHEADING": "Wählen Sie die Standard-Daten, die Sie in der {{ tableName }}-Ansicht anzeigen möchten",
 			"AVAILABLE_COLUMNS": "Verfügbare Spalten",
 			"SELECTED_COLUMNS": "Ausgewählte Spalten",
-			"FOOTER_TEXT": "Die Reihenfolge und Auswahl werden automatisch gespeichert. Drücken Sie \"{{resetTranslation}}\", um die Standardansicht wiederherzustellen."
+			"FOOTER_TEXT": "Die Reihenfolge und Auswahl werden automatisch gespeichert. Drücken Sie \"{{resetTranslation}}\", um die Standardansicht wiederherzustellen.",
+			"ADD_COLUMN": "Spalte hinzufügen",
+			"REMOVE_COLUMN": "Spalte entfernen"
 		}
 	},
 	"CONFIRMATIONS": {
-		"EMBEDDING_CODE": "Einbettungscode wurde in die Zwischenablage kopiert:",
+		"EMBEDDING_CODE": "Einbettungscode wurde in die Zwischenablage kopiert: {{ size }}",
 		"CONTINUE_ACTION": "Sind Sie sicher, dass Sie fortfahren möchten?",
 		"METADATA": {
 			"NOTICE": {
@@ -120,7 +128,8 @@
 		},
 		"WARNINGS": {
 			"SERIES_HAS_EVENTS": "Diese Serie enthält noch Videos. Das Löschen der Serie löscht nicht die Videos.",
-			"EVENT_WILL_BE_GONE": "Wenn Sie fortfahren, wird das Video unwiderruflich gelöscht."
+			"EVENT_WILL_BE_GONE": "Wenn Sie fortfahren, wird das Video unwiderruflich gelöscht.",
+			"UNSAVED_CHANGES": "You have unsaved changes. If you continue, those changes will be discarded. Are you sure that you want to continue?"
 		},
 		"ERRORS": {
 			"SERIES_HAS_EVENTS": "Diese Serie enthält Videos und kann daher nicht gelöscht werden."
@@ -158,7 +167,7 @@
 		"SERIES_ADDED": "Die Serie wurde angelegt",
 		"SERIES_NOT_SAVED": "Die Serie konnte nicht gespeichert werden",
 		"EVENTS_CREATED": "Das Video wurde angelegt",
-		"EVENTS_UPLOAD_STARTED": "Das Video wird hochgeladen…",
+		"EVENTS_UPLOAD_STARTED": "Das Video wird hochgeladen… {{ progress }}%",
 		"EVENTS_NOT_CREATED": "Das Video konnte nicht angelegt werden",
 		"EVENTS_UPDATED_ALL": "Alle Videos wurden erfolgreich aktualisiert",
 		"EVENTS_NOT_UPDATED": "Das Video konnte nicht gespeichert werden",
@@ -406,7 +415,7 @@
 				"LAST_NAME": "Nachname",
 				"STREET": "Straße",
 				"NUMBER": "Hausnummer",
-				"ADDITIONAL_ADRESS_INFO": "Add. adress information",
+				"ADDITIONAL_ADRESS_INFO": "Zusätzl. Adressinformationen",
 				"MAIL": "E-Mail-Adresse",
 				"CONTACT_ME": "Kontaktiere mich für Aktualisierungen und Sicherheitsupdates",
 				"WHICH_DATA_TO_SHARE": "Welche Daten möchtest du teilen?",
@@ -495,6 +504,10 @@
 						"MULTIPLE_PARTS": {
 							"SHORT": "Mehrere Teile",
 							"DETAIL": "Eine Reihe von Dateien mit verschiedenen Teilen des Videos."
+						},
+						"SUBTITLES": {
+							"SHORT": "Subtitles",
+							"DETAIL": "A subtitle file in vtt format"
 						}
 					},
 					"DATE_TIME": {
@@ -571,7 +584,8 @@
 			"NAVIGATION": {
 				"EVENTS": "Videos",
 				"SERIES": "Serien",
-				"OVERVIEW": "Übersicht"
+				"OVERVIEW": "Übersicht",
+				"LABEL": "Zwischen Aufzeichnungen und Serien wechseln."
 			},
 			"UPLOAD": "Hochladen",
 			"ADD_SERIES": "Serie hinzufügen",
@@ -597,7 +611,7 @@
 				"NOCONTENT": "Keine Daten verfügbar",
 				"PUBLISHED": "Veröffentlicht",
 				"WEEKDAY": "Wochentag",
-				"ADMINUI_NOTES": "Notizen",
+				"ADMINUI_NOTES": "Notes",
 				"TOOLTIP": {
 					"ASSETS": "Anlagedetails öffnen",
 					"START": "Nach diesem Startdatum filtern",
@@ -612,7 +626,9 @@
 					"COMMENTS": "Kommentare ansehen",
 					"PAUSED_WORKFLOW": "Angehaltenen Workflow anzeigen",
 					"PRESENTER": "Nach diesem Vortragenden filtern"
-				}
+				},
+				"SELECT_ALL": "Alle Aufzeichnungen auswählen",
+				"SELECT_EVENT": "Aufzeichnung „{{title}}“ auswählen"
 			},
 			"STATUS": {
 				"SCHEDULED": "Geplant",
@@ -873,7 +889,7 @@
 						"REVIEW": "Überprüfung erforderlich",
 						"ASYNC": "A/V Spuren asynchron",
 						"AUDIO_ISSUE": "Fehlende oder beschädigte Audiospur",
-						"CANCELED": "Abgebrochenes Video",
+						"CANCELLED": "Cancelled event",
 						"CONFLICTING_METADATA": "Widersprüchliche Metadaten",
 						"IMPROPER_POINT": "Unpassender Start- oder Endzeitpunkt",
 						"MISSING_AGREEMENT": "Fehlende Vereinbarung",
@@ -887,7 +903,7 @@
 						"WRONG_SERIES_PUBLICATION": "Falsche Serie oder falscher Publikations-Kanal",
 						"WRONG_WORKFLOW": "Falscher Workflow",
 						"PROCESSING_FAILURE": "Verarbeitungs-Fehler",
-						"ADMINUI_NOTES": "Notizen in Admin UI"
+						"ADMINUI_NOTES": "Notes in Admin UI"
 					}
 				},
 				"STATISTICS": {
@@ -1154,7 +1170,7 @@
 						"DETAILS": "Details",
 						"REPLACE_EVENT_ACLS": "Zugriffsrechte der Serie aktualisieren",
 						"REPLACE_EVENT_ACLS_HINT": "Sicherstellen, dass alle Videos dieser Serie genau diese Zugriffsrechte haben",
-						"LOAD_MORE_LIMIT": "policies shown.",
+						"LOAD_MORE_LIMIT": "angezeigte Richtlinien.",
 						"LOAD_MORE_LINK": "Mehr laden"
 					},
 					"ROLES": {
@@ -1267,6 +1283,11 @@
 				"USERNAME": "Benutzername",
 				"EMAIL": "E-Mail",
 				"ROLES": "Rollen",
+				"COLLAPSED": {
+					"UI": "UI-Rollen",
+					"API": "API-Rollen",
+					"CAPTURE_AGENT": "Capture-Agent-Rollen"
+				},
 				"TYPE": "Typ",
 				"PROVIDER": "Anbieter",
 				"ACTION": "Aktionen",
@@ -1626,7 +1647,7 @@
 				"CORES": "Kerne",
 				"COMPLETED": "Jobs abgeschlossen",
 				"RUNNING": "Jobs in Bearbeitung",
-        "QUEUED": "Jobs in Warteschlange",
+				"QUEUED": "Jobs in Warteschlange",
 				"MAINTENANCE": "Wartungsarbeiten",
 				"MAINTENANCE_OFF": "Wartungsmodus aktivieren",
 				"MAINTENANCE_ON": "Wartungsmodus beenden"
@@ -1785,7 +1806,8 @@
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Bitte einen Filter wählen…",
-			"NO_OPTIONS": "Keine Filter gefunden"
+			"NO_OPTIONS": "Keine Filter gefunden",
+			"LABEL": "Tabellenzeilen filtern"
 		},
 		"FILTER_VALUE_SELECTION": {
 			"PLACEHOLDER": "Bitte einen Wert wählen…",
@@ -1805,7 +1827,8 @@
 			"NAME": "Name",
 			"NAME_PLACEHOLDER": "Name…",
 			"DESCRIPTION": "Beschreibung",
-			"DESCRIPTION_PLACEHOLDER": "Beschreibung…"
+			"DESCRIPTION_PLACEHOLDER": "Beschreibung…",
+			"ADD": "Hinzufügen"
 		}
 	},
 	"FILTERS": {
@@ -2026,6 +2049,8 @@
 	"TABLE_NO_RESULT": "Keine Treffer gefunden.",
 	"TABLE_LOADING": "Lädt…",
 	"TABLE_EDIT": "Bearbeiten",
+	"TABLE_NEXT": "Nächste Seite",
+	"TABLE_PREVIOUS": "Vorherige Seite",
 	"DASHBOARD": {
 		"RUNNING": "In Verarbeitung",
 		"FINISHED": "Verarbeitet",
@@ -2064,12 +2089,36 @@
 			"END": "Ende",
 			"HOME": "Pos1",
 			"INS": "Einfg",
-			"DEL": "Entf"
+			"DEL": "Entf",
+			"A": "a",
+			"B": "b",
+			"C": "c",
+			"D": "d",
+			"E": "e",
+			"F": "f",
+			"G": "g",
+			"H": "h",
+			"I": "i",
+			"J": "j",
+			"K": "k",
+			"L": "l",
+			"M": "m",
+			"N": "n",
+			"O": "o",
+			"P": "p",
+			"Q": "q",
+			"R": "r",
+			"S": "s",
+			"T": "t",
+			"U": "u",
+			"V": "v",
+			"W": "w",
+			"X": "x",
+			"Y": "y",
+			"Z": "z"
 		},
 		"GROUPS": {
-			"GENERAL": "Allgemein",
-			"PLAYER": "Player",
-			"EDITOR": "Editor"
+			"GENERAL": "Allgemein"
 		},
 		"DESCRIPTIONS": {
 			"GENERAL": {
@@ -2081,27 +2130,8 @@
 				"SERIES_VIEW": "Serien",
 				"NEW_EVENT": "Video hinzufügen",
 				"NEW_SERIES": "Serie hinzufügen",
-				"CHEAT_SHEET": "Tastenkürzel"
-			},
-			"PLAYER": {
-				"PLAY_PAUSE": "Wiedergabe/Pause",
-				"PREVIOUS_FRAME": "Vorheriges Bild",
-				"NEXT_FRAME": "Nächstes Bild",
-				"STEP_BACKWARD": "10s zurück springen",
-				"STEP_FORWARD": "10s vorwärts springen",
-				"PREVIOUS_SEGMENT": "Vorheriges Segment/zum Start springen",
-				"NEXT_SEGMENT": "Nächstes Segment/zum Ende springen",
-				"VOLUME_UP": "Lautstärke erhöhen",
-				"VOLUME_DOWN": "Lautstärke senken",
-				"MUTE": "Ton ein-/ausschalten"
-			},
-			"EDITOR": {
-				"SPLIT_AT_CURRENT_TIME": "Auftrennen",
-				"CUT_SELECTED_SEGMENT": "Schneiden",
-				"PLAY_CURRENT_SEGMENT": "Aktuelles Segment abspielen",
-				"CLEAR_LIST": "Segmente löschen",
-				"PLAY_CURRENT_SEGMENT_WITH_PRE-ROLL": "Segment mit Vorlauf abspielen",
-				"PLAY_ENDING_OF_CURRENT_SEGMENT": "Segmentende"
+				"CHEAT_SHEET": "Tastenkürzel",
+				"CLOSE_MODAL": "Dialog schließen"
 			}
 		}
 	},
@@ -2171,5 +2201,10 @@
 			"medium": "{{time, HH:mm:ss}}",
 			"full": "{{time, HH:mm [Uhr] z}}"
 		}
+	},
+	"ABOUT": {
+		"IMPRINT": "Imprint",
+		"PRIVACY": "Privacy statement",
+		"NOCONTENT": "Content not available"
 	}
 }

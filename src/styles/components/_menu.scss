@@ -63,13 +63,13 @@
             position: relative;
             line-height: 50px;
             transition: all .2s;
-            color: #c6c6c6;
+            color: #818181;
         }
 
         &:hover > i,
         &:active > i {
-            color: #818181;
-            @include fa-icon-color(before, "#818181");
+            color: #24425c;
+            @include fa-icon-color(before, "#24425c");
         }
 
         @keyframes fadeIn {

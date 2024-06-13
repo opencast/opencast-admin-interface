@@ -15,12 +15,13 @@ import { updateSeriesTheme } from "../../../../slices/seriesDetailsSlice";
  * This component renders the tab for editing the theme of a certain series
  */
 const SeriesDetailsThemeTab = ({
-// @ts-expect-error TS(7031): Binding element 'theme' implicitly has an 'any' ty... Remove this comment to see the full error message
 	theme,
-// @ts-expect-error TS(7031): Binding element 'seriesId' implicitly has an 'any'... Remove this comment to see the full error message
-	seriesId,
-// @ts-expect-error TS(7031): Binding element 'themeNames' implicitly has an 'an... Remove this comment to see the full error message
 	themeNames,
+	seriesId,
+}: {
+	theme: string,
+	themeNames: any[]
+	seriesId: string
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -52,8 +53,9 @@ const SeriesDetailsThemeTab = ({
 				<>
 					<div className="modal-content">
 						<div className="modal-body">
-							<Notifications context="not-corner" />
 							<div className="full-col">
+								{/* Notifications */}
+								<Notifications context="not_corner" />
 								<div className="obj quick-actions">
 									<header>{t("CONFIGURATION.NAVIGATION.THEMES")}</header>
 									<div className="obj-container padded">
@@ -90,7 +92,7 @@ const SeriesDetailsThemeTab = ({
 									{formik.dirty && (
 										<>
 											{/* Render buttons for updating theme */}
-											<footer style={{ padding: "15px" }}>
+											<footer>
 												<button
 													type="submit"
 													onClick={() => formik.handleSubmit()}
@@ -124,18 +126,4 @@ const SeriesDetailsThemeTab = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-
-});
-
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(SeriesDetailsThemeTab);
+export default SeriesDetailsThemeTab;

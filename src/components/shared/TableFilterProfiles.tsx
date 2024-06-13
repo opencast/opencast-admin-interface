@@ -3,13 +3,19 @@ import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { getFilterProfiles } from "../../selectors/tableFilterProfilesSelectors";
 import {
-	cancelEditFilterProfile,
+	FilterProfile,
 	createFilterProfile,
 	removeFilterProfile,
 } from "../../slices/tableFilterProfilesSlice";
+import {
+	goToPage,
+} from "../../thunks/tableThunks";
 import { getFilters } from "../../selectors/tableFilterSelectors";
 import { loadFilterProfile } from "../../slices/tableFilterSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
+import { useHotkeys } from "react-hotkeys-hook";
+import { availableHotkeys } from "../../configs/hotkeysConfig";
+import { Tooltip } from "./Tooltip";
 
 /**
  * This component renders the table filter profiles in the upper right corner when clicked on settings icon of the
@@ -38,10 +44,17 @@ const TableFiltersProfiles = ({
 	// State for helping saving and editing profiles
 	const [profileName, setProfileName] = useState("");
 	const [profileDescription, setProfileDescription] = useState("");
-	const [, setCurrentlyEditing] = useState("");
+	const [currentlyEditing, setCurrentlyEditing] = useState<FilterProfile | null>(null);
 	const [validName, setValidName] = useState(false);
 
 	const { t } = useTranslation();
+
+	useHotkeys(
+		availableHotkeys.general.CLOSE_MODAL.sequence,
+		() => setFilterSettings(false),
+		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
+		[setFilterSettings],
+  	);
 
 	const currentProfiles = profiles.filter(
 		(profile) => profile.resource === resource
@@ -73,20 +86,25 @@ const TableFiltersProfiles = ({
 	};
 
 	const cancelEditProfile = () => {
-		// What was this achieving?
-		// if (currentlyEditing !== "") {
-		// 	dispatch(createFilterProfile(currentlyEditing));
-		// }
-		dispatch(cancelEditFilterProfile());
-		setSettingsMode(!settingsMode);
-		setFilterSettings(!showFilterSettings);
+		// This holds the value of the profile being edited (in edit mode), and by cancelling the process, the profile won't vanish!
+		if (currentlyEditing) {
+			dispatch(createFilterProfile(currentlyEditing));
+		}
+		setSettingsMode(true);
 		resetStateValues();
+	};
+
+	const closeFilterSetting = () => {
+		if (currentlyEditing) {
+			cancelEditProfile();
+		}
+		setFilterSettings(!showFilterSettings);
 	};
 
 	const resetStateValues = () => {
 		setProfileName("");
 		setProfileDescription("");
-		setCurrentlyEditing("");
+		setCurrentlyEditing(null);
 		setValidName(false);
 	};
 
@@ -115,9 +133,12 @@ const TableFiltersProfiles = ({
 	const chooseFilterProfile = (filterMap) => {
 		dispatch(loadFilterProfile(filterMap));
 
-		// Reload resources when filters are removed
-		loadResource();
-		loadResourceIntoTable();
+		// No matter what, we go to page one.
+		dispatch(goToPage(0)).then(async () => {
+			// Reload resources when filters are removed
+			await loadResource();
+			loadResourceIntoTable();
+		});
 	};
 
 	return (
@@ -132,7 +153,7 @@ const TableFiltersProfiles = ({
 							<header>
 								<button
 									className="button-like-anchor icon close"
-									onClick={() => setFilterSettings(!showFilterSettings)}
+									onClick={closeFilterSetting}
 								/>
 								<h4>{t("TABLE_FILTERS.PROFILES.FILTERS_HEADER")}</h4>
 							</header>
@@ -144,25 +165,28 @@ const TableFiltersProfiles = ({
 									// repeat for each profile in profiles filtered for currently shown resource (else-case)
 									currentProfiles.map((profile, key) => (
 										<li key={key}>
-											<button
-												title="profile.description"
-												onClick={() => chooseFilterProfile(profile.filterMap)}
-                        className="button-like-anchor"
-											>
-												{profile.name.substr(0, 70)}
-											</button>
+											<Tooltip title="profile.description">
+												<button
+													onClick={() => chooseFilterProfile(profile.filterMap)}
+                        className="button-li	ke-anchor"
+												>
+													{profile.name.substr(0, 70)}
+												</button>
+											</Tooltip>
 											{/* Settings icon to edit profile */}
-											<button
-												onClick={() => editFilterProfile(profile)}
-												title={t("TABLE_FILTERS.PROFILES.EDIT")}
-												className="button-like-anchor icon edit"
-											/>
+											<Tooltip title={t("TABLE_FILTERS.PROFILES.EDIT")}>
+												<button
+													onClick={() => editFilterProfile(profile)}
+													className="button-like-anchor icon edit"
+												/>
+											</Tooltip>
 											{/* Remove icon to remove profile */}
-											<button
-												onClick={() => dispatch(removeFilterProfile(profile))}
-												title={t("TABLE_FILTERS.PROFILES.REMOVE")}
-												className="button-like-anchor icon remove"
-											/>
+											<Tooltip title={t("TABLE_FILTERS.PROFILES.REMOVE")}>
+												<button
+													onClick={() => dispatch(removeFilterProfile(profile))}
+													className="button-like-anchor icon remove"
+												/>
+											</Tooltip>
 										</li>
 									))
 								)}
@@ -176,7 +200,7 @@ const TableFiltersProfiles = ({
 										className="button-like-anchor save"
 										onClick={() => setSettingsMode(!settingsMode)}
 									>
-										{t("TABLE_FILTERS.PROFILES.SAVE_FILTERS").substr(0, 70)}
+										{t("TABLE_FILTERS.PROFILES.ADD").substr(0, 70)}
 									</button>
 								</div>
 							</div>
@@ -187,15 +211,12 @@ const TableFiltersProfiles = ({
 							<header>
 								<button
 									className="button-like-anchor icon close"
-									onClick={() => {
-										setFilterSettings(!showFilterSettings);
-										setSettingsMode(true);
-									}}
+									onClick={closeFilterSetting}
 								/>
 								<h4>{t("TABLE_FILTERS.PROFILES.FILTER_HEADER")}</h4>
 							</header>
 							{/* Input form for save/editing profile*/}
-							<div>
+							<div className="edit-details">
 								<label>
 									{t("TABLE_FILTERS.PROFILES.NAME")}{" "}
 									<i className="required">*</i>

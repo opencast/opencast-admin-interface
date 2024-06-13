@@ -5,6 +5,8 @@ import { getSelectedRows } from "../../../../selectors/tableSelectors";
 import { connect } from "react-redux";
 import { useAppDispatch } from "../../../../store";
 import { deleteMultipleEvent } from "../../../../slices/eventSlice";
+import { useHotkeys } from "react-hotkeys-hook";
+import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 
 /**
  * This component manages the delete bulk action
@@ -18,6 +20,13 @@ const DeleteEventsModal = ({
 
 	const [allChecked, setAllChecked] = useState(true);
 	const [selectedEvents, setSelectedEvents] = useState(selectedRows);
+
+	useHotkeys(
+		availableHotkeys.general.CLOSE_MODAL.sequence,
+		() => close(),
+		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
+		[close],
+  	);
 
 	const deleteSelectedEvents = () => {
 		dispatch(deleteMultipleEvent(selectedEvents));
@@ -64,6 +73,7 @@ const DeleteEventsModal = ({
 			setAllChecked(true);
 		}
 	};
+
 	return (
 		<>
 			<div className="modal-animation modal-overlay" />

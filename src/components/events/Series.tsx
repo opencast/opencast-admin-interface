@@ -17,8 +17,9 @@ import {
 import { fetchFilters, fetchStats, editTextFilter } from "../../slices/tableFilterSlice";
 import { getTotalSeries, isShowActions } from "../../selectors/seriesSeletctor";
 import { setOffset } from "../../actions/tableActions";
-import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
 import Header from "../Header";
+import NavBar from "../NavBar";
+import MainView from "../MainView";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
@@ -65,8 +66,8 @@ const Series = ({
 	const showActions = useAppSelector(state => isShowActions(state));
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchSeriesWrapper = () => {
-		dispatch(fetchSeries())
+	const fetchSeriesWrapper = async () => {
+		await dispatch(fetchSeries())
 	}
 
 	const loadEvents = () => {
@@ -163,7 +164,7 @@ const Series = ({
 	return (
 		<>
 			<Header />
-			<section className="action-nav-bar">
+			<NavBar>
 				<div className="btn-group">
 					{hasAccess("ROLE_UI_SERIES_CREATE", user) && (
 						<button className="add" onClick={() => showNewSeriesModal()}>
@@ -187,7 +188,7 @@ const Series = ({
 				{/* Include Burger-button menu */}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
 
-				<nav>
+				<nav aria-label={t("EVENTS.EVENTS.NAVIGATION.LABEL")}>
 					{hasAccess("ROLE_UI_EVENTS_VIEW", user) && (
 						<Link
 							to="/events/events"
@@ -207,12 +208,9 @@ const Series = ({
 						</Link>
 					)}
 				</nav>
-			</section>
+			</NavBar>
 
-			<div
-				className="main-view"
-				style={displayNavigation ? styleNavOpen : styleNavClosed}
-			>
+			<MainView open={displayNavigation}>
 				{/* Include notifications component */}
 				<Notifications />
 
@@ -249,7 +247,7 @@ const Series = ({
 					<h4>{t("TABLE_SUMMARY", { numberOfRows: series })}</h4>
 				</div>
 				<Table templateMap={seriesTemplateMap} />
-			</div>
+			</MainView>
 			<Footer />
 		</>
 	);

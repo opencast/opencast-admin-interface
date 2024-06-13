@@ -10,29 +10,27 @@ import {
 	NOTIFICATION_CONTEXT_ACCESS,
 } from "../../configs/modalConfig";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { setHidden } from "../../slices/notificationSlice";
+import { OurNotification, setHidden } from "../../slices/notificationSlice";
 
 /**
  * This component renders notifications about occurred errors, warnings and info
  */
 const Notifications : React.FC<{
-  context?: any,
+  context?: string,
 }> = ({
 	context,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const notifications = useAppSelector(state => getNotifications(state))
-	const globalPosition = useAppSelector(state => getGlobalPositions(state))
+const notifications = useAppSelector(state => getNotifications(state))
+const globalPosition = useAppSelector(state => getGlobalPositions(state))
 
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	const closeNotification = (id) => {
+	const closeNotification = (id: number) => {
 		dispatch(setHidden({id: id, isHidden: true}));
 	};
 
-// @ts-expect-error TS(7006): Parameter 'notification' implicitly has an 'any' t... Remove this comment to see the full error message
-	const renderNotification = (notification, key) => (
+	const renderNotification = (notification: OurNotification, key: number) => (
 		<li key={key}>
 			<div className={cn(notification.type, "alert sticky")}>
 				<button
@@ -68,6 +66,8 @@ const Notifications : React.FC<{
 			</ul>
 		) : (
 			<ul
+				role="status"
+				aria-live="polite"
 				className={cn({
 					"global-notifications": true,
 					"notifications-top-left": globalPosition === "top-left",

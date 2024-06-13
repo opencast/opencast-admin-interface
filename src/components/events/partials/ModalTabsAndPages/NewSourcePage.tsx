@@ -35,6 +35,7 @@ import {
 	changeStartHourMultiple,
 	changeStartMinute,
 	changeStartMinuteMultiple,
+	renderValidDate,
 } from "../../../../utils/dateUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { Recording, fetchRecordings } from "../../../../slices/recordingSlice";
@@ -76,7 +77,7 @@ const NewSourcePage = <T extends RequiredFormProps>({
 	const user = useAppSelector(state => getUserInformation(state));
 	const inputDevices = useAppSelector(state => getRecordings(state));
 
-	const [conflicts, setConflicts] = useState<{title: string, start: number, end: number}[]>([]);
+	const [conflicts, setConflicts] = useState<{title: string, start: string, end: string}[]>([]);
 
 	useEffect(() => {
 		// Load recordings that can be used for input
@@ -115,12 +116,12 @@ const NewSourcePage = <T extends RequiredFormProps>({
                         <td>{conflict.title}</td>
                         <td>
                           {t("dateFormats.dateTime.medium", {
-                            dateTime: new Date(conflict.start),
+                            dateTime: renderValidDate(conflict.start),
                           })}
                         </td>
                         <td>
                           {t("dateFormats.dateTime.medium", {
-                            dateTime: new Date(conflict.end),
+                            dateTime: renderValidDate(conflict.end),
                           })}
                         </td>
                       </tr>
@@ -170,7 +171,7 @@ const NewSourcePage = <T extends RequiredFormProps>({
 														className="source-toggle"
 														onClick={() =>
 															changeStartDate(
-																formik.values.scheduleStartDate,
+																new Date(formik.values.scheduleStartDate),
 																formik.values,
 																formik.setFieldValue
 															)
@@ -313,24 +314,17 @@ const Upload = ({ formik }) => {
 														name={`uploadAssetsTrack.${key}.file`}
 														tabIndex={0}
 													/>
-													{/* Show name of file that is uploaded */}
-													{formik.values.uploadAssetsTrack[key].file && (
-														<span className="ui-helper">
-															{formik.values.uploadAssetsTrack[
-																key
-															].file[0].name.substr(0, 50)}
-														</span>
-													)}
 												</div>
 											</td>
 											<td className="fit">
 												<button
 													className="button-like-anchor remove"
-													onClick={() => {
+													onClick={(e) => {
 														formik.setFieldValue(
 															`uploadAssetsTrack.${key}.file`,
 															null
 														);
+														(document.getElementById(asset.id) as HTMLInputElement).value = '';
 													}}
 												/>
 											</td>
@@ -445,7 +439,7 @@ const Schedule = <T extends {
 												formik.setFieldValue
 											);
 										} else {
-											changeStartDate(
+											value && changeStartDate(
 												value,
 												formik.values,
 												formik.setFieldValue

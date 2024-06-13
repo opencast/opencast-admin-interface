@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
+import { Tooltip } from "../../shared/Tooltip";
 
 /**
  * This component renders the location cells of events in the table view
@@ -34,13 +35,14 @@ const EventsLocationCell = ({
 
 	return (
 		// Link template for location of event
-		<button
-			className="button-like-anchor crosslink"
-			title={t("EVENTS.EVENTS.TABLE.TOOLTIP.LOCATION")}
-			onClick={() => addFilter(row.location)}
-		>
-			{row.location}
-		</button>
+		<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.LOCATION")}>
+			<button
+				className="button-like-anchor crosslink"
+				onClick={() => addFilter(row.location)}
+			>
+				{row.location}
+			</button>
+		</Tooltip>
 	);
 };
 

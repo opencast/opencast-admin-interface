@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
+import { Tooltip } from "../../shared/Tooltip";
 
 /**
  * This component renders the status cells of events in the table view
@@ -33,13 +34,14 @@ const EventsStatusCell = ({
 	};
 
 	return (
-		<button
-			className="button-like-anchor crosslink"
-			onClick={() => addFilter(row.event_status)}
-			title={t("EVENTS.EVENTS.TABLE.TOOLTIP.STATUS")}
-		>
-			{t(row.displayable_status)}
-		</button>
+		<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.STATUS")}>
+			<button
+				className="button-like-anchor crosslink"
+				onClick={() => addFilter(row.event_status)}
+			>
+				{t(row.displayable_status)}
+			</button>
+		</Tooltip>
 	);
 };
 

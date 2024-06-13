@@ -6,6 +6,8 @@ import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { connect } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
+import { renderValidDate } from "../../../utils/dateUtils";
+import { Tooltip } from "../../shared/Tooltip";
 
 /**
  * This component renders the technical date cells of events in the table view
@@ -34,14 +36,15 @@ const EventsTechnicalDateCell = ({
 
 	return (
 		// Link template for technical date of event
-		<button
-			className="button-like-anchor crosslink"
-			title={t("EVENTS.EVENTS.TABLE.TOOLTIP.START")}
+		<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.START")}>
+			<button
+				className="button-like-anchor crosslink"
 // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
-			onClick={() => addFilter()}
-		>
-			{t("dateFormats.date.short", { date: new Date(row.technical_start) })}
-		</button>
+				onClick={() => addFilter()}
+			>
+				{t("dateFormats.date.short", { date: renderValidDate(row.technical_start) })}
+			</button>
+		</Tooltip>
 	);
 };
 

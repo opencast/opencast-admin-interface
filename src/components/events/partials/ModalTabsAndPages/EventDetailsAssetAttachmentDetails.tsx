@@ -148,6 +148,7 @@ const EventDetailsAssetAttachmentDetails = ({
 												<a
 													className="fa fa-external-link"
 													href={attachment.url}
+													target="_blank" rel="noreferrer"
 												/>
 											</td>
 										</tr>

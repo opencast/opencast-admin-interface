@@ -16,8 +16,9 @@ import {
 } from "../../thunks/tableThunks";
 import { getTotalServices } from "../../selectors/serviceSelector";
 import { setOffset } from "../../actions/tableActions";
-import { styleNavClosed, styleNavOpen } from "../../utils/componentsUtils";
 import Header from "../Header";
+import NavBar from "../NavBar";
+import MainView from "../MainView";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
@@ -49,8 +50,8 @@ const Services = ({
 	const services = useAppSelector(state => getTotalServices(state));
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchServicesWrapper = () => {
-		dispatch(fetchServices())
+	const fetchServicesWrapper = async () => {
+		await dispatch(fetchServices())
 	}
 
 	const loadServices = async () => {
@@ -108,7 +109,7 @@ const Services = ({
 	return (
 		<>
 			<Header />
-			<section className="action-nav-bar">
+			<NavBar>
 				{/* Include Burger-button menu*/}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
 
@@ -141,12 +142,9 @@ const Services = ({
 						</Link>
 					)}
 				</nav>
-			</section>
+			</NavBar>
 
-			<div
-				className="main-view"
-				style={displayNavigation ? styleNavOpen : styleNavClosed}
-			>
+			<MainView open={displayNavigation}>
 				{/* Include notifications component */}
 				<Notifications />
 
@@ -162,7 +160,7 @@ const Services = ({
 				</div>
 				{/* Include table component */}
 				<Table templateMap={servicesTemplateMap} />
-			</div>
+			</MainView>
 			<Footer />
 		</>
 	);

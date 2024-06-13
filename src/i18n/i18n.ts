@@ -6,38 +6,23 @@ import HttpBackend, { HttpBackendOptions } from "i18next-http-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 
 // import language files
-// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import enUSTrans from "./org/opencastproject/adminui/languages/lang-en_US";
-// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import enGBTrans from "./org/opencastproject/adminui/languages/lang-en_GB";
-// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import daDKTrans from "./org/opencastproject/adminui/languages/lang-da_DK";
-// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import deDETrans from "./org/opencastproject/adminui/languages/lang-de_DE";
-// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import elGRTrans from "./org/opencastproject/adminui/languages/lang-el_GR";
-// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import esESTrans from "./org/opencastproject/adminui/languages/lang-es_ES";
-// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import frFRTrans from "./org/opencastproject/adminui/languages/lang-fr_FR";
-// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import glESTrans from "./org/opencastproject/adminui/languages/lang-gl_ES";
-// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import heILTrans from "./org/opencastproject/adminui/languages/lang-he_IL";
-// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import itITTrans from "./org/opencastproject/adminui/languages/lang-it_IT";
-// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import nlNLTrans from "./org/opencastproject/adminui/languages/lang-nl_NL";
-// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import plPLTrans from "./org/opencastproject/adminui/languages/lang-pl_PL";
-// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import slSITrans from "./org/opencastproject/adminui/languages/lang-sl_SI";
-// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import svSETrans from "./org/opencastproject/adminui/languages/lang-sv_SE";
-// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import trTRTrans from "./org/opencastproject/adminui/languages/lang-tr_TR";
-// @ts-expect-error TS(2307): Cannot find module './org/opencastproject/adminui/... Remove this comment to see the full error message
-import zhZWTrans from "./org/opencastproject/adminui/languages/lang-zh_TW";
+import enUSTrans from "./org/opencastproject/adminui/languages/lang-en_US.json";
+import enGBTrans from "./org/opencastproject/adminui/languages/lang-en_GB.json";
+import daDKTrans from "./org/opencastproject/adminui/languages/lang-da_DK.json";
+import deDETrans from "./org/opencastproject/adminui/languages/lang-de_DE.json";
+import elGRTrans from "./org/opencastproject/adminui/languages/lang-el_GR.json";
+import esESTrans from "./org/opencastproject/adminui/languages/lang-es_ES.json";
+import frFRTrans from "./org/opencastproject/adminui/languages/lang-fr_FR.json";
+import glESTrans from "./org/opencastproject/adminui/languages/lang-gl_ES.json";
+import heILTrans from "./org/opencastproject/adminui/languages/lang-he_IL.json";
+import itITTrans from "./org/opencastproject/adminui/languages/lang-it_IT.json";
+import nlNLTrans from "./org/opencastproject/adminui/languages/lang-nl_NL.json";
+import plPLTrans from "./org/opencastproject/adminui/languages/lang-pl_PL.json";
+import slSITrans from "./org/opencastproject/adminui/languages/lang-sl_SI.json";
+import svSETrans from "./org/opencastproject/adminui/languages/lang-sv_SE.json";
+import trTRTrans from "./org/opencastproject/adminui/languages/lang-tr_TR.json";
+import zhCNTrans from "./org/opencastproject/adminui/languages/lang-zh_CN.json";
+import zhTWTrans from "./org/opencastproject/adminui/languages/lang-zh_TW.json";
 
 // Assignment of language code to translation file
 // !!! If translation file of a new language is added, please add assignment here, too !!!
@@ -57,8 +42,9 @@ const resources = {
 	sl: { translation: slSITrans },
 	sv: { translation: svSETrans },
 	tr: { translation: trTRTrans },
-	zh: { translation: zhZWTrans },
-};
+	"zh-CN": { translation: zhCNTrans },
+	"zh-TW": { translation: zhTWTrans },
+} as const;
 
 // Configuration of i18next
 i18n

@@ -386,44 +386,60 @@ export const updateSeriesTheme = createAsyncThunk('seriesDetails/updateSeriesThe
 
 	let themeId = themeNames.find((theme) => theme.value === values.theme)?.id;
 
-	if (!themeId) {
-		console.error("Can't update series theme. " + values.theme + " not found");
-		dispatch(
-			addNotification({
-				type: "error",
-				key: "SERIES_NOT_SAVED",
-				duration: 10,
-				parameter: null,
-				context: NOTIFICATION_CONTEXT
-			})
-		);
-		return;
-	}
+	if (!values.theme) {
+        axios
+            .delete(`/admin-ng/series/${id}/theme`)
+            .then((response) => {
+                dispatch(
+                    addNotification({
+                        type: "warning",
+                        key:"SERIES_THEME_REPROCESS_EXISTING_EVENTS",
+                        duration: 10,
+                        parameter: null,
+                        context: NOTIFICATION_CONTEXT
+                    })
+                );
+            })
+            .catch((response) => {
+                console.error(response);
+            });
+	} else if (!themeId) {
+        console.error("Can't update series theme. " + values.theme + " not found");
+        dispatch(
+            addNotification({
+                type: "error",
+                key: "SERIES_NOT_SAVED",
+                duration: 10,
+                parameter: null,
+                context: NOTIFICATION_CONTEXT
+            })
+        );
+    } else {
+        let data = new URLSearchParams();
+        data.append("themeId", themeId);
 
-	let data = new URLSearchParams();
-	data.append("themeId", themeId);
+        axios
+            .put(`/admin-ng/series/${id}/theme`, data)
+            .then((response) => {
+                let themeResponse = response.data;
 
-	axios
-		.put(`/admin-ng/series/${id}/theme`, data)
-		.then((response) => {
-			let themeResponse = response.data;
+                let seriesTheme = transformToIdValueArray(themeResponse)[0].value;
 
-			let seriesTheme = transformToIdValueArray(themeResponse)[0].value;
-
-			dispatch(setSeriesDetailsTheme(seriesTheme));
-			dispatch(
-				addNotification({
-					type: "warning",
-					key:"SERIES_THEME_REPROCESS_EXISTING_EVENTS",
-					duration: 10,
-					parameter: null,
-					context: NOTIFICATION_CONTEXT
-				})
-			);
-		})
-		.catch((response) => {
-			console.error(response);
-		});
+                dispatch(setSeriesDetailsTheme(seriesTheme));
+                dispatch(
+                    addNotification({
+                        type: "warning",
+                        key:"SERIES_THEME_REPROCESS_EXISTING_EVENTS",
+                        duration: 10,
+                        parameter: null,
+                        context: NOTIFICATION_CONTEXT
+                    })
+                );
+            })
+            .catch((response) => {
+                console.error(response);
+            });
+    }
 });
 
 // fetch metadata of certain series from server

@@ -93,7 +93,7 @@ const Table = ({
 	reverse,
 }) => {
 	// Size options for pagination
-	const sizeOptions = [10, 20, 50, 100];
+	const sizeOptions = [10, 20, 50, 100, 1000];
 
 	const lengthDivStyle = {
 		position: "absolute" as const,
@@ -210,6 +210,7 @@ const Table = ({
 								<input
 									type="checkbox"
 									onChange={(e) => onChangeAllSelected(e)}
+									aria-label={t("EVENTS.EVENTS.TABLE.SELECT_ALL")}
 								/>
 							</th>
 						) : null}
@@ -269,6 +270,7 @@ const Table = ({
 											type="checkbox"
 											checked={row.selected}
 											onChange={() => rowSelectionChanged(row.id)}
+											aria-label={t("EVENTS.EVENTS.TABLE.SELECT_EVENT", { title: row.title })}
 										/>
 									</td>
 								)}
@@ -336,7 +338,9 @@ const Table = ({
 					<button
 						className={"button-like-anchor " + cn("prev", { disabled: !isNavigatePrevious() })}
 						onClick={() => goToPage(pageOffset - 1)}
-					/>
+					>
+						<span className="sr-only">{t("TABLE_PREVIOUS")}</span>
+					</button>
 					{directAccessible.map((page, key) =>
 						page.active ? (
 							<button key={key} className="button-like-anchor active">
@@ -352,7 +356,9 @@ const Table = ({
 					<button
 						className={"button-like-anchor " + cn("next", { disabled: !isNavigateNext() })}
 						onClick={() => goToPage(pageOffset + 1)}
-					/>
+					>
+						<span className="sr-only">{t("TABLE_NEXT")}</span>
+					</button>
 				</div>
 			</div>
 		</>

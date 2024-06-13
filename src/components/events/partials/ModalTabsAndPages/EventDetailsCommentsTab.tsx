@@ -17,6 +17,7 @@ import {
 	deleteComment as deleteOneComment,
 	deleteCommentReply,
 } from "../../../../slices/eventDetailsSlice";
+import { renderValidDate } from "../../../../utils/dateUtils";
 
 /**
  * This component manages the comment tab of the event details modal
@@ -133,7 +134,7 @@ const EventDetailsCommentsTab = ({
 											{/* details about the comment */}
 											<div className="date">
 												{t("dateFormats.dateTime.short", {
-													dateTime: new Date(comment.creationDate),
+													dateTime: renderValidDate(comment.creationDate),
 												}) || ""}
 											</div>
 											<h4>{comment.author.name}</h4>
@@ -188,7 +189,7 @@ const EventDetailsCommentsTab = ({
 														{/* details about the reply and reply text */}
 														<div className="date">
 															{t("dateFormats.dateTime.short", {
-																dateTime: new Date(reply.creationDate),
+																dateTime: renderValidDate(reply.creationDate),
 															}) || ""}
 														</div>
 														<h4>{reply.author.name}</h4>
@@ -309,7 +310,42 @@ const EventDetailsCommentsTab = ({
 										}
 									></textarea>
 
-									{/* submit button for comment reply (only active, if text has been written) */}
+                  {/* 'resolved' checkbox */}
+									{hasAccess(
+										"ROLE_UI_EVENTS_DETAILS_COMMENTS_RESOLVE",
+										user
+									) && (
+										<>
+										  <div className="resolved-checkbox">
+                        <input
+                          type="checkbox"
+                          id="resolved-checkbox"
+                          className="ios"
+                          onChange={() =>
+                            setCommentReplyIsResolved(!commentReplyIsResolved)
+                          }
+                        />
+                        <label>
+                          {
+                            t(
+                              "EVENTS.EVENTS.DETAILS.COMMENTS.RESOLVED"
+                            ) /* Resolved */
+                          }
+                        </label>
+                      </div>
+										</>
+									)}
+
+									{/* cancel button (exits reply mode) */}
+									<button className="cancel" onClick={() => exitReplyMode()}>
+										{
+											t(
+												"EVENTS.EVENTS.DETAILS.COMMENTS.CANCEL_REPLY"
+											) /* Cancel */
+										}
+									</button>
+
+                  {/* submit button for comment reply (only active, if text has been written) */}
 									<button
 										disabled={
 											!!(
@@ -335,39 +371,6 @@ const EventDetailsCommentsTab = ({
 									>
 										{t("EVENTS.EVENTS.DETAILS.COMMENTS.REPLY") /* Reply */}
 									</button>
-
-									{/* cancel button (exits reply mode) */}
-									<button className="red" onClick={() => exitReplyMode()}>
-										{
-											t(
-												"EVENTS.EVENTS.DETAILS.COMMENTS.CANCEL_REPLY"
-											) /* Cancel */
-										}
-									</button>
-
-									{/* 'resolved' checkbox */}
-									{hasAccess(
-										"ROLE_UI_EVENTS_DETAILS_COMMENTS_RESOLVE",
-										user
-									) && (
-										<>
-											<input
-												type="checkbox"
-												id="resolved-checkbox"
-												className="ios"
-												onChange={() =>
-													setCommentReplyIsResolved(!commentReplyIsResolved)
-												}
-											/>
-											<label>
-												{
-													t(
-														"EVENTS.EVENTS.DETAILS.COMMENTS.RESOLVED"
-													) /* Resolved */
-												}
-											</label>
-										</>
-									)}
 								</form>
 							)
 						}
