@@ -111,6 +111,11 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 		return result;
 	}
 
+	const findSeriesName = (seriesOptions: { name: string, value: string }[], editedEvents: EditedEvents[]) => {
+		const series = seriesOptions.find((e) => e.value === reduceGroupedEvent(editedEvents).changedSeries)
+		return series ? series.name : ""
+	}
+
 	return (
 		<>
 			<div className="modal-content active">
@@ -161,6 +166,87 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 							<FieldArray name="editedEvents">
 								{({ insert, remove, push }) => (
 									<>
+									{hasAccess(
+										"ROLE_UI_EVENTS_DETAILS_METADATA_EDIT",
+										user
+									) && (
+										<div className="obj tbl-details">
+											<header>{t("BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.TABLE.FIELDS")}</header>
+											<div className="obj-container">
+												<table className="main-tbl">
+													<tbody>
+														<tr>
+															<td>
+																<span>
+																	{t(
+																		"EVENTS.EVENTS.DETAILS.METADATA.TITLE"
+																	)}
+																</span>
+															</td>
+															<td className="editable ng-isolated-scope">
+															{/*
+																* Per event there are 14 input fields, so with 'key * 14', the right
+																* event is reached. After the '+' comes the number of the input field.
+																* This is the first input field for this event.
+																*/}
+																<input
+																	type={"text"}
+																	onChange={(element) => {
+																		for (const [i, value] of formik.values.editedEvents.entries()) {
+																			formik.setFieldValue(
+																				`editedEvents.${i}.changedTitle`,
+																				element.target.value
+																			)
+																		}
+																	}}
+																	defaultValue={formik.values.editedEvents.length > 0 ? reduceGroupedEvent(formik.values.editedEvents).title : ""}
+																/>
+															</td>
+														</tr>
+														<tr>
+															<td>
+																<span>
+																	{t(
+																		"EVENTS.EVENTS.DETAILS.METADATA.SERIES"
+																	)}
+																</span>
+															</td>
+															<td className="editable ng-isolated-scope">
+																{/*
+																	* Per event there are 14 input fields, so with 'key * 14', the right
+																	* event is reached. After the '+' comes the number of the input field.
+																	* This is the second input field for this event.
+																	*/}
+																<DropDown
+																	value={
+																		formik.values.editedEvents.length > 0 ? reduceGroupedEvent(formik.values.editedEvents).changedSeries : ""
+																	}
+																	text={
+																		formik.values.editedEvents.length > 0 ? findSeriesName(seriesOptions, formik.values.editedEvents) : ""
+																	}
+																	options={seriesOptions}
+																	type={"isPartOf"}
+																	required={false}
+																	handleChange={(element) => {
+																		if (element) {
+																			for (const [i, value] of formik.values.editedEvents.entries()) {
+																				formik.setFieldValue(
+																					`editedEvents.${i}.changedSeries`,
+																					element.value
+																				)
+																			}
+																		}
+																	}}
+																	placeholder={formik.values.editedEvents.length > 0 ? reduceGroupedEvent(formik.values.editedEvents).series : ""}
+																	tabIndex={2 * 14 + 2}
+																/>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									)}
 										{
 											reduceGroupEvents(Object.values(groupBy(formik.values.editedEvents, i => i.weekday))).map((groupedEvent, key) => (
 												<div className="obj tbl-details">
