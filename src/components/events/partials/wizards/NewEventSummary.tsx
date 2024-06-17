@@ -57,11 +57,6 @@ const NewEventSummary = <T extends RequiredFormProps>({
 	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
 	const workflowDef = useAppSelector(state => getWorkflowDef(state));
 
-	// Get upload assets that are not of type track
-	const uploadAssetsOptionsNonTrack = uploadAssetOptions.filter(
-		(asset) => asset.type !== "track"
-	);
-
 	// upload asset that user has provided
 	let uploadAssetsNonTrack: {
 		name: string,
@@ -71,18 +66,18 @@ const NewEventSummary = <T extends RequiredFormProps>({
 		flavorSubType: string,
 		value: any,
 	}[] = [];
-	for (let i = 0; uploadAssetsOptionsNonTrack.length > i; i++) {
-		let fieldValue = formik.values[uploadAssetsOptionsNonTrack[i].id];
+	for (let i = 0; uploadAssetOptions.length > i; i++) {
+		let fieldValue = formik.values[uploadAssetOptions[i].id];
 		if (!!fieldValue) {
-			const displayOverride = uploadAssetsOptionsNonTrack[i].displayOverride
+			const displayOverride = uploadAssetOptions[i].displayOverride
 			uploadAssetsNonTrack = uploadAssetsNonTrack.concat({
-				name: uploadAssetsOptionsNonTrack[i].id,
+				name: uploadAssetOptions[i].id,
 				translate: !!displayOverride
 					? t(displayOverride)
-					: translateOverrideFallback(uploadAssetsOptionsNonTrack[i], t),
-				type: uploadAssetsOptionsNonTrack[i].type,
-				flavorType: uploadAssetsOptionsNonTrack[i].flavorType,
-				flavorSubType: uploadAssetsOptionsNonTrack[i].flavorSubType,
+					: translateOverrideFallback(uploadAssetOptions[i], t),
+				type: uploadAssetOptions[i].type,
+				flavorType: uploadAssetOptions[i].flavorType,
+				flavorSubType: uploadAssetOptions[i].flavorSubType,
 				value: fieldValue,
 			});
 		}
