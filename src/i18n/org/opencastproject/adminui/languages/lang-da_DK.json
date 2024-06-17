@@ -8,7 +8,7 @@
 		"COMMIT": "Git commit this version of Opencast was built from.",
 		"VERSION": "Common bundle version of Opencast modules"
 	},
-	"NO": "No",
+	"NO": "Nej",
 	"SUBMIT": "Submit",
 	"UPDATE": {
 		"MINOR": "Minor update available",
