@@ -49,9 +49,6 @@
     "serve": "vite preview",
     "test": "vitest"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
