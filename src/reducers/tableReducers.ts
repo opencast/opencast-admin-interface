@@ -50,7 +50,7 @@ const initialState = {
 	resource: "",
 	pages: [],
 	columns: [],
-	sortBy: "",
+	sortBy: "title",
 	predicate: "",
 	reverse: "ASC",
 	rows: [],
