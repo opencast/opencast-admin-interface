@@ -40,7 +40,7 @@ import { fetchServices, setServiceColumns } from "../slices/serviceSlice";
 import { fetchUsers, setUserColumns } from "../slices/userSlice";
 import { fetchGroups } from "../slices/groupSlice";
 import { fetchThemes, setThemeColumns } from "../slices/themeSlice";
-import { setRecordingsColumns } from "../slices/recordingSlice";
+import { fetchRecordings, setRecordingsColumns } from "../slices/recordingSlice";
 import { setGroupColumns } from "../slices/groupSlice";
 import { fetchAcls, setAclColumns } from "../slices/aclSlice";
 
@@ -423,7 +423,6 @@ export const goToPage = (pageNumber) => async (dispatch, getState) => {
 			break;
 		}
 		case "recordings": {
-// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 			await dispatch(fetchRecordings());
 			dispatch(loadRecordingsIntoTable());
 			break;
@@ -494,7 +493,6 @@ export const updatePages = () => async (dispatch, getState) => {
 			break;
 		}
 		case "recordings": {
-// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 			await dispatch(fetchRecordings());
 			dispatch(loadRecordingsIntoTable());
 			break;
