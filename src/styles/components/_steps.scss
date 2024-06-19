@@ -22,8 +22,12 @@
 
 .step-by-step {
 
+    .MuiStepLabel-iconContainer svg {
+        color: $color-gray !important;
+    }
+
     .MuiStepLabel-labelContainer span {
-        color: #92a0ab;
+        color: $color-darkgray;
         margin: 3px 10px;
         position: relative;
     }
