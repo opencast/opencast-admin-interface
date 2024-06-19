@@ -45,7 +45,7 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && eslint . --max-warnings=0 && vite build",
     "serve": "vite preview",
     "test": "vitest"
   },
@@ -62,12 +62,18 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.5.0",
     "@redux-devtools/extension": "^3.3.0",
     "@types/lodash": "^4.17.4",
     "@types/node": "^20.14.1",
     "@types/react-dom": "^18.3.0",
     "@types/uuid": "^9.0.8",
+    "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@vitejs/plugin-react-swc": "^3.7.0",
+    "eslint": "^8.57.0",
+    "eslint-config-react-app": "^7.0.1",
     "prop-types": "^15.8.1",
     "rollup-preserve-directives": "^1.1.1",
     "sass": "^1.77.4",
