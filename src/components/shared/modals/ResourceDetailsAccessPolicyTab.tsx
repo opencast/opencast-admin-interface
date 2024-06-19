@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import RenderMultiField from "../wizard/RenderMultiField";
 import {
+	Acl,
 	Role,
 	fetchAclActions,
 	fetchAclTemplateById,
@@ -8,7 +9,7 @@ import {
 	fetchRolesWithTarget,
 } from "../../../slices/aclSlice";
 import Notifications from "../Notifications";
-import { Formik, Field, FieldArray } from "formik";
+import { Formik, Field, FieldArray, FormikErrors } from "formik";
 import { NOTIFICATION_CONTEXT } from "../../../configs/modalConfig";
 import {
 	createPolicy,
@@ -20,28 +21,15 @@ import DropDown from "../DropDown";
 import { filterRoles, getAclTemplateText } from "../../../utils/aclUtils";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { removeNotificationWizardForm, addNotification } from "../../../slices/notificationSlice";
+import { useTranslation } from "react-i18next";
+import { Ace, TransformedAcl } from "../../../slices/aclDetailsSlice";
 
 /**
  * This component manages the access policy tab of resource details modals
  */
-const ResourceDetailsAccessPolicyTab : React.FC <{
-  resourceId: any,
-	header: any,
-	t: any,
-	policies: any,
-	fetchHasActiveTransactions?: any,
-	fetchAccessPolicies: any,
-	saveNewAccessPolicies: any,
-	descriptionText: string,
-	buttonText: string,
-	saveButtonText: string,
-	editAccessRole: string,
-	policyChanged: any,
-	setPolicyChanged: any,
-}> = ({
+const ResourceDetailsAccessPolicyTab = ({
 	resourceId,
 	header,
-	t,
 	policies,
 	fetchHasActiveTransactions,
 	fetchAccessPolicies,
@@ -52,7 +40,21 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 	editAccessRole,
 	policyChanged,
 	setPolicyChanged,
+}: {
+	resourceId: string,
+	header: string,
+	policies: TransformedAcl[],
+	fetchHasActiveTransactions?: (id: string) => Promise<any>,
+	fetchAccessPolicies: (id: string) => void,
+	saveNewAccessPolicies: (id: string, policies: { acl: { ace: Ace[] } }) => Promise<any>,
+	descriptionText: string,
+	buttonText: string,
+	saveButtonText: string,
+	editAccessRole: string,
+	policyChanged: boolean,
+	setPolicyChanged: (value: boolean) => void,
 }) => {
+	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	const baseAclId = "";
 
@@ -116,16 +118,14 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 	}, []);
 
 	/* resets the formik form and hides the save and cancel buttons */
-// @ts-expect-error TS(7006): Parameter 'resetFormik' implicitly has an 'any' ty... Remove this comment to see the full error message
-	const resetPolicies = (resetFormik) => {
+	const resetPolicies = (resetFormik: () => void) => {
 		setPolicyChanged(false);
 		resetFormik();
 	};
 
 	/* transforms rules into proper format for saving and checks validity
 	 * if the policies are valid, the new policies are saved in the backend */
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const saveAccess = (values) => {
+	const saveAccess = (values: { policies: TransformedAcl[] }) => {
 		dispatch(removeNotificationWizardForm());
 		const { roleWithFullRightsExists, allRulesValid } = validatePolicies(
 			values
@@ -153,7 +153,6 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 		}
 
 		if (allRulesValid && roleWithFullRightsExists) {
-// @ts-expect-error TS(2693): 'any' only refers to a type, but is being used as ... Remove this comment to see the full error message
 			saveNewAccessPolicies(resourceId, access).then((success) => {
 				// fetch new policies from the backend, if save successful
 				if (success) {
@@ -165,15 +164,12 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 	};
 
 	/* validates the policies in the formik form */
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const validateFormik = (values) => {
-		const errors = {};
+	const validateFormik = (values: { policies: TransformedAcl[] }) => {
+		const errors: FormikErrors<{ emptyRole: string }> = {};
 		setPolicyChanged(isPolicyChanged(values.policies));
 
 		// each policy needs a role
-// @ts-expect-error TS(7006): Parameter 'policy' implicitly has an 'any' type.
 		if (values.policies.find((policy) => !policy.role || policy.role === "")) {
-// @ts-expect-error TS(2339): Property 'emptyRole' does not exist on type '{}'.
 			errors.emptyRole = "Empty role!";
 		}
 
@@ -183,12 +179,10 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 	/* checks validity of the policies
 	 * each policy needs a role and at least one of: read-rights, write-rights, additional action
 	 * there needs to be at least one role, which has both read and write rights */
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const validatePolicies = (values) => {
+	const validatePolicies = (values: { policies: TransformedAcl[] }) => {
 		let roleWithFullRightsExists = false;
 		let allRulesValid = true;
 
-// @ts-expect-error TS(7006): Parameter 'policy' implicitly has an 'any' type.
 		values.policies.forEach((policy) => {
 			if (policy.read && policy.write) {
 				roleWithFullRightsExists = true;
@@ -208,13 +202,11 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 
 	/* checks whether the current state of the policies from the formik is different form the
 	 * initial policies or equal to them */
-// @ts-expect-error TS(7006): Parameter 'newPolicies' implicitly has an 'any' ty... Remove this comment to see the full error message
-	const isPolicyChanged = (newPolicies) => {
+	const isPolicyChanged = (newPolicies: TransformedAcl[]) => {
 		if (newPolicies.length !== policies.length) {
 			return true;
 		}
-// @ts-expect-error TS(7006): Parameter 'pol1' implicitly has an 'any' type.
-		const sortSchema = (pol1, pol2) => {
+		const sortSchema = (pol1: TransformedAcl, pol2: TransformedAcl) => {
 			return pol1.role > pol2.role ? 1 : -1;
 		};
 		const sortedNewPolicies = [...newPolicies].sort(sortSchema);
@@ -248,8 +240,7 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 	};
 
 	/* fetches the policies for the chosen template and sets the policies in the formik form to those policies */
-// @ts-expect-error TS(7006): Parameter 'templateId' implicitly has an 'any' typ... Remove this comment to see the full error message
-	const handleTemplateChange = async (templateId, setFormikFieldValue) => {
+	const handleTemplateChange = async (templateId: string, setFormikFieldValue: (field: string, value: any) => Promise<any>) => {
 		// fetch information about chosen template from backend
 		let template = await fetchAclTemplateById(templateId);
 
@@ -282,9 +273,8 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 									}}
 									enableReinitialize
 									validate={(values) => validateFormik(values)}
-									onSubmit={(values, actions) =>
-// @ts-expect-error TS(2339): Property 'then' does not exist on type 'void'.
-										saveAccess(values).then((r) => {})
+									onSubmit={(values) =>
+										saveAccess(values)
 									}
 								>
 									{(formik) => (
@@ -489,8 +479,7 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 																											? "disabled"
 																											: "false"
 																									}`}
-// @ts-expect-error TS(7006): Parameter 'read' implicitly has an 'any' type.
-																									onChange={(read) =>
+																									onChange={(read: React.ChangeEvent<HTMLInputElement>) =>
 																										replace(index, {
 																											...policy,
 																											read: read.target.checked,
@@ -514,8 +503,7 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 																											? "disabled"
 																											: "false"
 																									}`}
-// @ts-expect-error TS(7006): Parameter 'write' implicitly has an 'any' type.
-																									onChange={(write) =>
+																									onChange={(write: React.ChangeEvent<HTMLInputElement>) =>
 																										replace(index, {
 																											...policy,
 																											write:
@@ -555,9 +543,7 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 																										)) &&
 																										policy.actions.map(
 																											(
-// @ts-expect-error TS(7006): Parameter 'customAction' implicitly has an 'any' t... Remove this comment to see the full error message
 																												customAction,
-// @ts-expect-error TS(7006): Parameter 'actionKey' implicitly has an 'any' type... Remove this comment to see the full error message
 																												actionKey
 																											) => (
 																												<div key={actionKey}>

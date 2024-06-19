@@ -31,12 +31,19 @@ import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './stati
 import { Ace, TransformedAcl, TransformedAcls } from './aclDetailsSlice';
 
 type MetadataField = {
+	collection?: { [key: string]: unknown }[],	// different for e.g. languages and presenters
 	id: string,
 	label: string,	// translation key
 	readOnly: boolean,
 	required: boolean,
 	type: string,
 	value: string,
+}
+
+export type MetadataCatalog = {
+	title: string, // translation key
+	flavor: string,
+	fields: MetadataField[] | undefined,
 }
 
 interface Assets {
@@ -67,7 +74,7 @@ type CommentAuthor = {
 type Workflow = {
 	scheduling: boolean,
 	entries: {
-		id: number,
+		id: string,
 		status: string,	//translation key
 		submitted: string,	//date
 		submitter: string,
@@ -162,16 +169,8 @@ type EventDetailsState = {
 	statusStatisticsValue: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorStatisticsValue: SerializedError | null,
 	eventId: string,
-	metadata: {
-		title: string,	// translation key
-		flavor: string,
-		fields: MetadataField[] | undefined
-	},
-	extendedMetadata: {
-		title: string,	// not (necessarily) translation key
-		flavor: string,
-		fields: MetadataField[] | undefined
-	}[],
+	metadata: MetadataCatalog,
+	extendedMetadata: MetadataCatalog[],
 	assets: {
 		attachments: number,
 		catalogs: number,
@@ -234,12 +233,7 @@ type EventDetailsState = {
 	assetPublicationDetails: AssetDetails & {
 		channel: string,
 	},
-	policies: {
-		actions: string[],
-		read: boolean,
-		role: string,
-		write: boolean,
-	}[],
+	policies: TransformedAcl[],
 	comments: {
 		author: CommentAuthor,
 		creationDate: string,
@@ -1296,7 +1290,7 @@ export const performWorkflowAction = createAsyncThunk('eventDetails/performWorkf
 	eventId: string,
 	workflowId: string,
 	action: string,
-	close: () => void,
+	close?: () => void,
 }, { dispatch }) => {
 	const { eventId, workflowId, action, close} = params;
 	let headers = {
@@ -1327,7 +1321,7 @@ export const performWorkflowAction = createAsyncThunk('eventDetails/performWorkf
 					context: NOTIFICATION_CONTEXT
 				})
 			);
-			close();
+			close && close();
 		})
 		.catch((response) => {
 			dispatch(
@@ -1345,7 +1339,7 @@ export const performWorkflowAction = createAsyncThunk('eventDetails/performWorkf
 
 export const deleteWorkflow = createAsyncThunk('eventDetails/deleteWorkflow', async (params: {
 	eventId: string,
-	workflowId: number
+	workflowId: string
 }, { dispatch, getState }) => {
 	const { eventId, workflowId } = params;
 
@@ -1505,11 +1499,7 @@ export const updateMetadata = createAsyncThunk('eventDetails/updateMetadata', as
 export const updateExtendedMetadata = createAsyncThunk('eventDetails/updateExtendedMetadata', async (params: {
 	eventId: string,
 	values: { [key: string]: any },
-	catalog: {
-		flavor: string,
-		title: string,
-		fields: { [key: string]: any }[]
-	}
+	catalog: MetadataCatalog
 }, { dispatch, getState }) => {
 	const { eventId, values, catalog } = params;
 
@@ -1617,7 +1607,7 @@ export const updateAssets = createAsyncThunk('eventDetails/updateAssets', async 
 
 export const saveAccessPolicies = createAsyncThunk('eventDetails/saveAccessPolicies', async (params: {
 	eventId: string,
-	policies: { [key: string]: TransformedAcl }
+	policies: { acl: { ace: Ace[] } }
 }, { dispatch }) => {
 	const { eventId, policies } = params;
 	const headers = getHttpHeaders();

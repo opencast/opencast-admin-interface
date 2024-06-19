@@ -10,23 +10,23 @@ import {
 	humanReadableBytesFilter,
 } from "../../../../utils/eventDetailsUtils";
 import { useAppSelector } from "../../../../store";
+import { AssetTabHierarchy } from "../modals/EventDetails";
+import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the media details sub-tab for assets tab of event details modal
  */
 const EventDetailsAssetMediaDetails = ({
-// @ts-expect-error TS(7031): Binding element 'eventId' implicitly has an 'any' ... Remove this comment to see the full error message
-	eventId,
-// @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
-	t,
-// @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
+}: {
+	setHierarchy: (subTabName: AssetTabHierarchy) => void,
 }) => {
+	const { t } = useTranslation();
+
 	const media = useAppSelector(state => getAssetMediaDetails(state));
 	const isFetching = useAppSelector(state => isFetchingAssetMediaDetails(state));
 
-// @ts-expect-error TS(7006): Parameter 'subTabName' implicitly has an 'any' typ... Remove this comment to see the full error message
-	const openSubTab = (subTabName) => {
+	const openSubTab = (subTabName: AssetTabHierarchy) => {
 		setHierarchy(subTabName);
 	};
 

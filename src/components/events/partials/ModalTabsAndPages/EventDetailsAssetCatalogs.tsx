@@ -7,25 +7,26 @@ import {
 } from "../../../../selectors/eventDetailsSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchAssetCatalogDetails } from "../../../../slices/eventDetailsSlice";
+import { AssetTabHierarchy } from "../modals/EventDetails";
+import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the catalogs sub-tab for assets tab of event details modal
  */
 const EventDetailsAssetCatalogs = ({
-// @ts-expect-error TS(7031): Binding element 'eventId' implicitly has an 'any' ... Remove this comment to see the full error message
 	eventId,
-// @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
-	t,
-// @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
+}: {
+	eventId: string,
+	setHierarchy: (subTabName: AssetTabHierarchy) => void,
 }) => {
+	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const catalogs = useAppSelector(state => getAssetCatalogs(state));
 	const isFetching = useAppSelector(state => isFetchingAssetCatalogs(state));
 
-// @ts-expect-error TS(7006): Parameter 'subTabName' implicitly has an 'any' typ... Remove this comment to see the full error message
-	const openSubTab = (subTabName, catalogId = "") => {
+	const openSubTab = (subTabName: AssetTabHierarchy, catalogId = "") => {
 		if (subTabName === "catalog-details") {
 			dispatch(fetchAssetCatalogDetails({eventId, catalogId})).then();
 		}

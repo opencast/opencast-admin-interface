@@ -18,18 +18,20 @@ import {
 	fetchAssetPublications,
 	fetchAssets,
 } from "../../../../slices/eventDetailsSlice";
+import { useTranslation } from "react-i18next";
+import { AssetTabHierarchy } from "../modals/EventDetails";
 
 /**
  * This component manages the main assets tab of event details modal
  */
 const EventDetailsAssetsTab = ({
-// @ts-expect-error TS(7031): Binding element 'eventId' implicitly has an 'any' ... Remove this comment to see the full error message
 	eventId,
-// @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
-	t,
-// @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
+}: {
+	eventId: string,
+	setHierarchy: (subTabName: AssetTabHierarchy) => void,
 }) => {
+	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const user = useAppSelector(state => getUserInformation(state));
@@ -42,23 +44,15 @@ const EventDetailsAssetsTab = ({
 	useEffect(() => {
 		dispatch(removeNotificationWizardForm());
 		dispatch(fetchAssets(eventId)).then();
-
-
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const openSubTab = (
-// @ts-expect-error TS(7006): Parameter 'subTabName' implicitly has an 'any' typ... Remove this comment to see the full error message
-		subTabName,
-// @ts-expect-error TS(7006): Parameter 'newassetupload' implicitly has an 'any'... Remove this comment to see the full error message
-		newassetupload,
-		bool1 = false,
-		bool2 = true
+		subTabName: AssetTabHierarchy,
+		newassetupload: string,
 	) => {
 		dispatch(removeNotificationWizardForm());
 		if (subTabName === "asset-attachments") {
-			dispatch(fetchAssetAttachments(eventId)).then();
-		} else if (subTabName === "asset-attachments") {
 			dispatch(fetchAssetAttachments(eventId)).then();
 		} else if (subTabName === "asset-catalogs") {
 			dispatch(fetchAssetCatalogs(eventId)).then();
@@ -112,8 +106,6 @@ const EventDetailsAssetsTab = ({
 																openSubTab(
 																	"add-asset",
 																	"newassetupload",
-																	false,
-																	true
 																)
 															}
 														>
