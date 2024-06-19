@@ -50,39 +50,44 @@ PROXY_TARGET=http://localhost:8080 PROXY_AUTH=jdoe:aligator3 npm start
 Similarly, if you want to change the port the development server itself runs at,
 you can specify an alternative port in the `PORT` environment variable.
 
+
 How to cut a release for Opencast
 ---------------------------------
 
-1. [NOT YET FUNCTIONAL] (Optional) Run the [Update translations](https://github.com/opencast/opencast-admin-interface/actions/workflows/update-translations.yml/actions/workflows/update-translations.yml) workflow to ensure all changes from crowdin are included in the next release.
-1. Switch to the commit you want to turn into the release
-1. Create and push a new tag
+1. (Optional) Run the GitHub Actions workflow [Crowdin » Download translations
+   ](https://github.com/opencast/opencast-admin-interface/actions/workflows/crowdin-download-translations.yml)
+   to ensure all changes from Crowdin are included in the new release.
 
+2. Switch to the commit you want to turn into the release
+
+3. Create and push a new tag
    ```sh
    DATE=$(date +%Y-%m-%d)
-   git tag -m Release -s "$DATE"
-   git push upstream "$DATE":"$DATE"
+   git tag -s -m "Release ${DATE}" "${DATE}"
+   git push upstream "${DATE}"
    ```
 
-1. Wait for the [Create release draft](https://github.com/opencast/opencast-admin-interface/actions/workflows/create-release.yml)
+4. Wait for the [Create release draft](https://github.com/opencast/opencast-admin-interface/actions/workflows/create-release.yml)
    workflow to finish
     - It will create a new [GitHub release draft](https://github.com/opencast/opencast-admin-interface/releases)
     - Review and publish the draft
-1. Submit a pull request against Opencast
-    - [Update the release](https://github.com/opencast/opencast/blob/b2bea8822b95b8692bb5bbbdf75c9931c2b7298a/modules/admin-ui-interface/pom.xml#L16-L17)
-    - [Adjust the documentation](https://github.com/opencast/opencast/blob/b2bea8822b95b8692bb5bbbdf75c9931c2b7298a/docs/guides/admin/docs/modules/admin-ui.md)
-      if necessary
+
+5. Submit a pull request against Opencast
+    - [Update the release](https://github.com/opencast/opencast/blob/542fc1f82181d1d4712ac8fc06c5ea9e16ae4033/modules/admin-ui-interface/pom.xml#L16-L17)
     - Verify that the new release runs in Opencast, then create the pull request.
 
-Translating the Admin UI
-------------------------
+
+Translating the Admin Interface
+-------------------------------
 
 You can help translate the Opencast Admin UI to your language on [crowdin.com/project/opencast-admin-interface](https://crowdin.com/project/opencast-admin-interface). Simply request to join the project on Crowdin and start translating. If you are interested in translating a language that is not a target language right now, please create [a GitHub issue](https://github.com/opencast/opencast-admin-interface/issues) and we will add the language.
 
 This project follows the general form of [Opencast's Localization Process](https://docs.opencast.org/develop/developer/#participate/localization/), especially regarding what happens when you need to [change an existing translation key](https://docs.opencast.org/develop/developer/#participate/localization/#i-need-to-update-the-wording-of-the-source-translation-what-happens).  Any questions not answered there should be referred to the mailing lists!
 
+
 Configuration
 -------------
 
 The Admin UI frontend cannot be directly configured. Rather, it adapts to the
-various configurations in the Opencast backend. TODO: Throw in some links to the
-docs, which ones?
+various configurations in the Opencast backend. Fore more information, take a look
+at [Opencast's documentation](https://docs.opencast.org).

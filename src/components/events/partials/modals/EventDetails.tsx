@@ -129,7 +129,7 @@ const EventDetails : React.FC<{
 			accessRole: "ROLE_UI_EVENTS_DETAILS_SCHEDULING_VIEW",
 			name: "scheduling",
 			hidden:
-				!hasSchedulingProperties && hasAnyDeviceAccess(user, captureAgents),
+				!hasSchedulingProperties || !hasAnyDeviceAccess(user, captureAgents),
 		},
 		{
 			tabNameTranslation: "EVENTS.EVENTS.DETAILS.TABS.WORKFLOWS",

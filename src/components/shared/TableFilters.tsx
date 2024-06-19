@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -18,6 +18,9 @@ import {
 	removeTextFilter,
 	resetFilterValues,
 } from "../../slices/tableFilterSlice";
+import {
+	goToPage,
+} from "../../thunks/tableThunks";
 import TableFilterProfiles from "./TableFilterProfiles";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { getResourceType } from "../../selectors/tableSelectors";
@@ -25,6 +28,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import moment from "moment";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { renderValidDate } from "../../utils/dateUtils";
+import { Tooltip } from "./Tooltip";
 
 /**
  * This component renders the table filters in the upper right corner of the table
@@ -48,6 +52,7 @@ const TableFilters = ({
 	// Variables for showing different dialogs depending on what was clicked
 	const [showFilterSelector, setFilterSelector] = useState(false);
 	const [showFilterSettings, setFilterSettings] = useState(false);
+	const [itemValue, setItemValue] = React.useState("");
 
 	// Variables containing selected start date and end date for date filter
 	const [startDate, setStartDate] = useState<Date | undefined>(undefined);
@@ -87,35 +92,59 @@ const TableFilters = ({
 		loadResourceIntoTable();
 	};
 
-	// Handle changes when a item of the component is clicked
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const handleChange = async (e) => {
-		const itemName = e.target.name;
-		const itemValue = e.target.value;
+	// Handle changes when an item of the component is changed
+	// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
+	const handleChange = (e) => {
+		let targetName = e.target.name;
+		let targetValue = e.target.value;
 
-		if (itemName === "textFilter") {
-			dispatch(editTextFilter(itemValue));
+		let mustApplyChanges = false;
+		if (targetName === "textFilter") {
+			dispatch(editTextFilter(targetValue));
+			mustApplyChanges = true;
 		}
 
-		if (itemName === "selectedFilter") {
-			dispatch(editSelectedFilter(itemValue))
+		if (targetName === "selectedFilter") {
+			dispatch(editSelectedFilter(targetValue));
 		}
 
 		// If the change is in secondFilter (filter is picked) then the selected value is saved in filterMap
 		// and the filter selections are cleared
-		if (itemName === "secondFilter") {
+		if (targetName === "secondFilter") {
 			let filter = filterMap.find(({ name }) => name === selectedFilter);
 			if (!!filter) {
-				dispatch(editFilterValue({filterName: filter.name, value: itemValue}));
+				dispatch(editFilterValue({filterName: filter.name, value: targetValue}));
 				setFilterSelector(false);
 				dispatch(removeSelectedFilter());
 				dispatch(removeSecondFilter());
+				mustApplyChanges = true;
 			}
 		}
-		// Reload of resource
-		await loadResource();
-		loadResourceIntoTable();
+
+		if (mustApplyChanges) {
+			setItemValue(e.target.value);
+		}
 	};
+
+	// Apply the filter changes (in debounced) accomulated in handleChange,
+	// simply by going to first page and then load resources.
+	// This helps increase performance by reducing the number of calls to load resources.
+	const applyFilterChangesDebounced = async () => {
+		// No matter what, we go to page one.
+		dispatch(goToPage(0)).then(async () => {
+			// Reload of resource
+			await loadResource();
+			loadResourceIntoTable();
+		});
+	};
+
+	useEffect(() => {
+		// Call to apply filter changes with 500MS debounce!
+		let applyFilterChangesDebouncedTimeoutId = setTimeout(applyFilterChangesDebounced, 500);
+
+		return () => clearTimeout(applyFilterChangesDebouncedTimeoutId);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [itemValue]);
 
 	// Set the sate of startDate and endDate picked with datepicker
 	const handleDatepickerChange = async (date: Date | null, isStart = false) => {
@@ -168,9 +197,11 @@ const TableFilters = ({
 				}));
 				setFilterSelector(false);
 				dispatch(removeSelectedFilter());
-				// Reload of resource
-				await loadResource();
-				loadResourceIntoTable();
+				// Reload of resource after going to very first page.
+				dispatch(goToPage(0)).then(async () => {
+					await loadResource();
+					loadResourceIntoTable();
+				});
 			}
 		}
 
@@ -201,7 +232,7 @@ const TableFilters = ({
 	const renderBlueBox = (filter) => {
 // @ts-expect-error TS(7006): Parameter 'opt' implicitly has an 'any' type.
 		let valueLabel = filter.options.find((opt) => opt.value === filter.value)
-			.label;
+			?.label || filter.value;
 		return (
 			<span>
 				{t(filter.label).substr(0, 40)}:
@@ -230,11 +261,12 @@ const TableFilters = ({
 				{!!filterMap && (
 					<div className="table-filter">
 						<div className="filters">
-							<i
-								title={t("TABLE_FILTERS.ADD")}
-								className="fa fa-filter"
-								onClick={() => setFilterSelector(!showFilterSelector)}
-							/>
+							<Tooltip title={t("TABLE_FILTERS.ADD")}>
+								<i
+									className="fa fa-filter"
+									onClick={() => setFilterSelector(!showFilterSelector)}
+								/>
+							</Tooltip>
 
 							{/*show if icon is clicked*/}
 							{showFilterSelector && (
@@ -247,6 +279,7 @@ const TableFilters = ({
 												"TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS"
 											)}
 											className="main-filter"
+											aria-label={t("TABLE_FILTERS.FILTER_SELECTION.LABEL")}
 										>
 											<option disabled>
 												{t("TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS")}
@@ -261,6 +294,7 @@ const TableFilters = ({
 											value={selectedFilter}
 											name="selectedFilter"
 											className="main-filter"
+											aria-label={t("TABLE_FILTERS.FILTER_SELECTION.LABEL")}
 										>
 											<option value="" disabled>
 												{t("TABLE_FILTERS.FILTER_SELECTION.PLACEHOLDER")}
@@ -322,30 +356,33 @@ const TableFilters = ({
 											}
 										</span>
 										{/* Remove icon in blue area around filter */}
-										<button
-											title={t("TABLE_FILTERS.REMOVE")}
-											onClick={() => removeFilter(filter)}
-											className="button-like-anchor"
-										>
-											<i className="fa fa-times" />
-										</button>
+										<Tooltip title={t("TABLE_FILTERS.REMOVE")}>
+											<button
+												onClick={() => removeFilter(filter)}
+												className="button-like-anchor"
+											>
+												<i className="fa fa-times" />
+											</button>
+										</Tooltip>
 									</span>
 								);
 							})}
 						</div>
 
 						{/* Remove icon to clear all filters */}
-						<i
-							onClick={removeFilters}
-							title={t("TABLE_FILTERS.CLEAR")}
-							className="clear fa fa-times"
-						/>
+						<Tooltip title={t("TABLE_FILTERS.CLEAR")}>
+							<i
+								onClick={removeFilters}
+								className="clear fa fa-times"
+							/>
+						</Tooltip>
 						{/* Settings icon to open filters profile dialog (save and editing filter profiles)*/}
-						<i
-							onClick={() => setFilterSettings(!showFilterSettings)}
-							title={t("TABLE_FILTERS.PROFILES.FILTERS_HEADER")}
-							className="settings fa fa-cog fa-times"
-						/>
+						<Tooltip title={t("TABLE_FILTERS.PROFILES.FILTERS_HEADER")}>
+							<i
+								onClick={() => setFilterSettings(!showFilterSettings)}
+								className="settings fa fa-cog fa-times"
+							/>
+						</Tooltip>
 
 						{/* Filter profile dialog for saving and editing filter profiles */}
 						<TableFilterProfiles
@@ -470,7 +507,7 @@ const FilterSwitch = ({
 						autoFocus={true}
 						inputRef={startDateRef}
 						className="small-search start-date"
-						value={startDate}
+						value={startDate ?? null}
 						format="dd/MM/yyyy"
 						onChange={(date) => handleDate(date as Date | null, true)}
 						// FixMe: onAccept does not trigger if the already set value is the same as the selected value
@@ -493,7 +530,7 @@ const FilterSwitch = ({
 					<DatePicker
 						inputRef={endDateRef}
 						className="small-search end-date"
-						value={endDate}
+						value={endDate ?? null}
 						format="dd/MM/yyyy"
 						onChange={(date) => handleDate(date as Date | null)}
 						// FixMe: See above

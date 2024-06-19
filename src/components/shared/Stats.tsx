@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import { loadEventsIntoTable } from "../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchEvents } from "../../slices/eventSlice";
+import { Tooltip } from "./Tooltip";
 
 /**
  * This component renders the status bar of the event view and filters depending on these
@@ -58,24 +59,25 @@ const Stats = ({
 				{/* Show one counter for each status */}
 				{stats.map((st, key) => (
 					<div className="col" key={key}>
-						<div
-							className="stat"
-							onClick={() => showStatsFilter(st)}
-							title={t(st.description)}
-						>
-							<h1>{st.count}</h1>
-							{/* Show the description of the status, if defined,
-                            else show name of filter and its value*/}
-							{!!st.description ? (
-								<span>{t(st.description)}</span>
-							) : (
-								st.filters.map((filter, key) => (
-									<span key={key}>
-										{t(filter.filter)}: {t(filter.value)}
-									</span>
-								))
-							)}
-						</div>
+						<Tooltip title={t(st.description)}>
+							<div
+								className="stat"
+								onClick={() => showStatsFilter(st)}
+							>
+								<h1>{st.count}</h1>
+								{/* Show the description of the status, if defined,
+                        	    else show name of filter and its value*/}
+								{!!st.description ? (
+									<span>{t(st.description)}</span>
+								) : (
+									st.filters.map((filter, key) => (
+										<span key={key}>
+											{t(filter.filter)}: {t(filter.value)}
+										</span>
+									))
+								)}
+							</div>
+						</Tooltip>
 					</div>
 				))}
 			</div>

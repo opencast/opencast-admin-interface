@@ -171,7 +171,7 @@ const NewSourcePage = <T extends RequiredFormProps>({
 														className="source-toggle"
 														onClick={() =>
 															changeStartDate(
-																formik.values.scheduleStartDate,
+																new Date(formik.values.scheduleStartDate),
 																formik.values,
 																formik.setFieldValue
 															)
@@ -314,24 +314,17 @@ const Upload = ({ formik }) => {
 														name={`uploadAssetsTrack.${key}.file`}
 														tabIndex={0}
 													/>
-													{/* Show name of file that is uploaded */}
-													{formik.values.uploadAssetsTrack[key].file && (
-														<span className="ui-helper">
-															{formik.values.uploadAssetsTrack[
-																key
-															].file[0].name.substr(0, 50)}
-														</span>
-													)}
 												</div>
 											</td>
 											<td className="fit">
 												<button
 													className="button-like-anchor remove"
-													onClick={() => {
+													onClick={(e) => {
 														formik.setFieldValue(
 															`uploadAssetsTrack.${key}.file`,
 															null
 														);
+														(document.getElementById(asset.id) as HTMLInputElement).value = '';
 													}}
 												/>
 											</td>
@@ -446,7 +439,7 @@ const Schedule = <T extends {
 												formik.setFieldValue
 											);
 										} else {
-											changeStartDate(
+											value && changeStartDate(
 												value,
 												formik.values,
 												formik.setFieldValue

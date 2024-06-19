@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
+import { Tooltip } from "../../shared/Tooltip";
 
 /**
  * This component renders the presenters cells of events in the table view
@@ -39,14 +40,14 @@ const EventsPresentersCell = ({
 		// Repeat for each presenter
 // @ts-expect-error TS(7006): Parameter 'presenter' implicitly has an 'any' type... Remove this comment to see the full error message
 		row.presenters.map((presenter, key) => (
-			<button
-				className="button-like-anchor metadata-entry"
-				key={key}
-				title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PRESENTER")}
-				onClick={() => addFilter(presenter)}
-			>
-				{presenter}
-			</button>
+			<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PRESENTER")} key={key}>
+				<button
+					className="button-like-anchor metadata-entry"
+					onClick={() => addFilter(presenter)}
+				>
+					{presenter}
+				</button>
+			</Tooltip>
 		))
 	);
 };

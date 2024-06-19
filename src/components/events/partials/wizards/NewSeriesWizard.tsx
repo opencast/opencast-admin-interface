@@ -15,7 +15,7 @@ import { NewSeriesSchema } from "../../../../utils/validate";
 import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { postNewSeries } from "../../../../slices/seriesSlice";
-import { getUserInformation } from "../../../../selectors/userInfoSelectors";
+import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
@@ -33,6 +33,9 @@ const NewSeriesWizard: React.FC<{
 	const metadataFields = useAppSelector(state => getSeriesMetadata(state));
 	const extendedMetadata = useAppSelector(state => getSeriesExtendedMetadata(state));
 	const user = useAppSelector(state => getUserInformation(state));
+	const orgProperties = useAppSelector(state => getOrgProperties(state));
+
+	const themesEnabled = (orgProperties['admin.themes.enabled']?.toLowerCase() || 'true') === 'true';
 
 	const initialValues = getInitialValues(metadataFields, extendedMetadata, user);
 
@@ -60,7 +63,7 @@ const NewSeriesWizard: React.FC<{
 		{
 			translation: "EVENTS.SERIES.NEW.THEME.CAPTION",
 			name: "theme",
-			hidden: false,
+			hidden: !themesEnabled,
 		},
 		{
 			translation: "EVENTS.SERIES.NEW.SUMMARY.CAPTION",
@@ -174,6 +177,7 @@ const NewSeriesWizard: React.FC<{
 										previousPage={previousPage}
 										formik={formik}
 										editAccessRole="ROLE_UI_SERIES_DETAILS_ACL_EDIT"
+										initEventAclWithSeriesAcl={false}
 									/>
 								)}
 								{page === 3 && (

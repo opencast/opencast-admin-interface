@@ -67,6 +67,8 @@ const Notifications : React.FC<{
 			</ul>
 		) : (
 			<ul
+				role="status"
+				aria-live="polite"
 				className={cn({
 					"global-notifications": true,
 					"notifications-top-left": globalPosition === "top-left",

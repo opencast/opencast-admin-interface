@@ -17,6 +17,8 @@ import { hasAccess } from "../../../../utils/utils";
 import DropDown from "../../../shared/DropDown";
 import { filterRoles, getAclTemplateText } from "../../../../utils/aclUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
+import { fetchSeriesDetailsAcls } from "../../../../slices/seriesDetailsSlice";
+import { getSeriesDetailsAcl } from "../../../../selectors/seriesDetailsSelectors";
 
 /**
  * This component renders the access page for new events and series in the wizards.
@@ -30,6 +32,8 @@ const NewAccessPage = ({
 	formik,
 // @ts-expect-error TS(7031): Binding element 'editAccessRole' implicitly has an... Remove this comment to see the full error message
 	editAccessRole,
+	// @ts-expect-error TS(7031): Binding element 'checkAcls' implicitly has an 'any... Remove this comment to see the full error messag
+	initEventAclWithSeriesAcl //boolean
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -41,6 +45,7 @@ const NewAccessPage = ({
 	const [loading, setLoading] = useState(false);
 
 	const user = useAppSelector(state => getUserInformation(state));
+	const seriesAcl = useAppSelector(state => getSeriesDetailsAcl(state));
 
 	useEffect(() => {
 		// fetch data about roles, acl templates and actions from backend
@@ -57,6 +62,22 @@ const NewAccessPage = ({
 
 		fetchData();
 	}, []);
+
+	// If we have to use series ACL, fetch it
+	useEffect(() => {
+		if (initEventAclWithSeriesAcl && formik.values.isPartOf) {
+			dispatch(fetchSeriesDetailsAcls(formik.values.isPartOf))
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values, initEventAclWithSeriesAcl]);
+
+	// If we have to use series ACL, overwrite existing rules
+	useEffect(() => {
+		if (initEventAclWithSeriesAcl && formik.values.isPartOf && seriesAcl) {
+			formik.setFieldValue("acls", seriesAcl)
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [initEventAclWithSeriesAcl, seriesAcl]);
 
 // @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	const handleTemplateChange = async (value) => {

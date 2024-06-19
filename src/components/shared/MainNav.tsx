@@ -17,7 +17,10 @@ import {
 import { fetchThemes } from "../../slices/themeSlice";
 import { fetchFilters, fetchStats } from "../../slices/tableFilterSlice";
 import { setOffset } from "../../actions/tableActions";
-import { getUserInformation } from "../../selectors/userInfoSelectors";
+import {
+	getOrgProperties,
+	getUserInformation
+} from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { fetchServices } from "../../slices/serviceSlice";
 import { fetchGroups } from "../../slices/groupSlice";
@@ -31,6 +34,7 @@ import { fetchServers } from "../../slices/serverSlice";
 import { fetchSeries } from "../../slices/seriesSlice";
 import { fetchJobs } from "../../slices/jobSlice";
 import { fetchEvents } from "../../slices/eventSlice";
+import { Tooltip } from "./Tooltip";
 
 /**
  * This component renders the main navigation that opens when the burger button is clicked
@@ -68,6 +72,10 @@ const MainNav = ({
 	let navigate = useNavigate();
 
 	const user = useAppSelector(state => getUserInformation(state));
+	const orgProperties = useAppSelector(state => getOrgProperties(state));
+
+	const statisticsEnabled = orgProperties['admin.statistics.enabled']?.toLowerCase() === 'true';
+	const themesEnabled = (orgProperties['admin.themes.enabled']?.toLowerCase() || 'true') === 'true';
 
 	const loadEvents = () => {
 		dispatch(fetchFilters("events"));
@@ -233,12 +241,16 @@ const MainNav = ({
 							{hasAccess("ROLE_UI_NAV_RECORDINGS_VIEW", user) &&
 								(hasAccess("ROLE_UI_EVENTS_VIEW", user) ? (
 									<Link to="/events/events" onClick={() => loadEvents()}>
-										<i className="events" title={t("NAV.EVENTS.TITLE")} />
+										<Tooltip title={t("NAV.EVENTS.TITLE")}>
+											<i className="events" />
+										</Tooltip>
 									</Link>
 								) : (
 									hasAccess("ROLE_UI_SERIES_VIEW", user) && (
 										<Link to="/events/series" onClick={() => loadSeries()}>
-											<i className="events" title={t("NAV.EVENTS.TITLE")} />
+											<Tooltip title={t("NAV.EVENTS.TITLE")}>
+												<i className="events" />
+											</Tooltip>
 										</Link>
 									)
 								))}
@@ -248,60 +260,73 @@ const MainNav = ({
 										to="/recordings/recordings"
 										onClick={() => loadRecordings()}
 									>
-										<i
-											className="recordings"
-											title={t("NAV.CAPTUREAGENTS.TITLE")}
-										/>
+										<Tooltip title={t("NAV.CAPTUREAGENTS.TITLE")}>
+											<i
+												className="recordings"
+											/>
+										</Tooltip>
 									</Link>
 								)}
 							{hasAccess("ROLE_UI_NAV_SYSTEMS_VIEW", user) &&
 								(hasAccess("ROLE_UI_JOBS_VIEW", user) ? (
 									<Link to="/systems/jobs" onClick={() => loadJobs()}>
-										<i className="systems" title={t("NAV.SYSTEMS.TITLE")} />
+										<Tooltip  title={t("NAV.SYSTEMS.TITLE")}>
+											<i className="systems" />
+										</Tooltip>
 									</Link>
 								) : hasAccess("ROLE_UI_SERVERS_VIEW", user) ? (
 									<Link to="/systems/servers" onClick={() => loadServers()}>
-										<i className="systems" title={t("NAV.SYSTEMS.TITLE")} />
+										<Tooltip title={t("NAV.SYSTEMS.TITLE")}>
+											<i className="systems" />
+										</Tooltip>
 									</Link>
 								) : (
 									hasAccess("ROLE_UI_SERVICES_VIEW", user) && (
 										<Link to="/systems/services" onClick={() => loadServices()}>
-											<i className="systems" title={t("NAV.SYSTEMS.TITLE")} />
+											<Tooltip title={t("NAV.SYSTEMS.TITLE")}>
+												<i className="systems" />
+											</Tooltip>
 										</Link>
 									)
 								))}
 							{hasAccess("ROLE_UI_NAV_ORGANIZATION_VIEW", user) &&
 								(hasAccess("ROLE_UI_USERS_VIEW", user) ? (
 									<Link to="/users/users" onClick={() => loadUsers()}>
-										<i className="users" title={t("NAV.USERS.TITLE")} />
+										<Tooltip title={t("NAV.USERS.TITLE")}>
+											<i className="users" />
+										</Tooltip>
 									</Link>
 								) : hasAccess("ROLE_UI_GROUPS_VIEW", user) ? (
 									<Link to="/users/groups" onClick={() => loadGroups()}>
-										<i className="users" title={t("NAV.USERS.TITLE")} />
+										<Tooltip title={t("NAV.USERS.TITLE")}>
+											<i className="users" />
+										</Tooltip>
 									</Link>
 								) : (
 									hasAccess("ROLE_UI_ACLS_VIEW", user) && (
 										<Link to="/users/acls" onClick={() => loadAcls()}>
-											<i className="users" title={t("NAV.USERS.TITLE")} />
+											<Tooltip title={t("NAV.USERS.TITLE")}>
+												<i className="users" />
+											</Tooltip>
 										</Link>
 									)
 								))}
-							{hasAccess("ROLE_UI_NAV_CONFIGURATION_VIEW", user) &&
+							{themesEnabled &&
+								hasAccess("ROLE_UI_NAV_CONFIGURATION_VIEW", user) &&
 								hasAccess("ROLE_UI_THEMES_VIEW", user) && (
 									<Link to="/configuration/themes" onClick={() => loadThemes()}>
-										<i
-											className="configuration"
-											title={t("NAV.CONFIGURATION.TITLE")}
-										/>
+										<Tooltip title={t("NAV.CONFIGURATION.TITLE")}>
+											<i className="configuration" />
+										</Tooltip>
 									</Link>
 								)}
-							{hasAccess("ROLE_UI_NAV_STATISTICS_VIEW", user) &&
+							{statisticsEnabled &&
+								hasAccess("ROLE_UI_NAV_STATISTICS_VIEW", user) &&
 								hasAccess("ROLE_UI_STATISTICS_ORGANIZATION_VIEW", user) && (
 									<Link to="/statistics/organization">
-										<i
-											className="statistics"
-											title={t("NAV.STATISTICS.TITLE")}
-										/>
+										<Tooltip title={t("NAV.STATISTICS.TITLE")}>
+											<i className="statistics" />
+										</Tooltip>
 									</Link>
 								)}
 						</div>
