@@ -83,6 +83,7 @@ export const loadEventsIntoTable = () => async (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		totalItems: total,
 	};
 
@@ -91,7 +92,8 @@ export const loadEventsIntoTable = () => async (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "title",
+			sortBy: "date",
+			reverse: "DESC",
 			multiSelect: multiSelect,
 		};
 	}
