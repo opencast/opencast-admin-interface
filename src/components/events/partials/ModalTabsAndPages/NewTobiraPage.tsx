@@ -122,12 +122,13 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 		}
 	}
 
-	const updatePath = (page: TobiraPage) => {
+	const updatePath = (page: TobiraPage, lastSegment: string) => {
 		return formik.values.breadcrumbs
 		.concat(page).map(function (page) {
 			return page.segment;
 		})
-		.join('/');
+		.join('/')
+		.replace(/([^\/]+$)/, lastSegment);
 	}
 
 	const goto = (page: TobiraPage) => {
@@ -292,15 +293,18 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 																			placeholder={t('EVENTS.SERIES.NEW.TOBIRA.PATH_SEGMENT')}
 																			value={page.segment}
 																			onChange={(e) => {
-																				dispatch(setTobiraPage({
+																				const payload = {
 																					...currentPage,
 																					children: currentPage.children.map((p, k) => {
 																							if (k === key) {
 																								let newPage = {
 																									...p,
-																									path: updatePath(p),
+																									path: updatePath(p, e.target.value),
 																									segment: e.target.value
 																								}
+
+																								console.log(newPage.path)
+																								console.log(e.target.value)
 
 																								formik.setFieldValue("selectedPage", newPage)
 
@@ -308,7 +312,8 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 																							}
 																							return {...p};
 																						})
-																				}))
+																				}
+																				dispatch(setTobiraPage(payload))
 																			}}
 																		></input>
 																	) : (
