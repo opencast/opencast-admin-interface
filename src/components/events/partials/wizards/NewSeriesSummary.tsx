@@ -12,6 +12,7 @@ import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButt
 import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
+import { TobiraPage } from "../../../../slices/seriesSlice";
 
 /**
  * This component renders the summary page for new series in the new series wizard.
@@ -19,6 +20,7 @@ import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 interface RequiredFormProps {
 	theme: string,
 	acls: TransformedAcl[],
+	selectedPage: TobiraPage | undefined,
 }
 
 const NewSeriesSummary = <T extends RequiredFormProps>({

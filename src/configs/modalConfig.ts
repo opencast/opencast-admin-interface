@@ -4,7 +4,6 @@ import { TransformedAcl } from "../slices/aclDetailsSlice";
 import { TobiraPage } from "../slices/seriesSlice";
 import { initArray } from "../utils/utils";
 import { EditedEvents, Event, UploadAssetsTrack } from "../slices/eventSlice";
-import { TransformedAcl } from "../slices/aclDetailsSlice";
 
 // Context for notifications shown in modals
 export const NOTIFICATION_CONTEXT = "modal-form";

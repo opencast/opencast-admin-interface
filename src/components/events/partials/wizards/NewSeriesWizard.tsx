@@ -15,7 +15,7 @@ import { initialFormValuesNewSeries } from "../../../../configs/modalConfig";
 import { NewSeriesSchema } from "../../../../utils/validate";
 import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { postNewSeries } from "../../../../slices/seriesSlice";
+import { TobiraPage, postNewSeries } from "../../../../slices/seriesSlice";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
 import NewTobiraPage from "../ModalTabsAndPages/NewTobiraPage";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
@@ -85,9 +85,10 @@ const NewSeriesWizard: React.FC<{
 
 	const nextPage = (
 		values: {
-			[key: string]: any;
 			acls: TransformedAcl[];
 			theme: string;
+			breadcrumbs: TobiraPage[];
+			selectedPage: TobiraPage | undefined;
 		}
 	) => {
 		setSnapshot(values);
@@ -106,9 +107,10 @@ const NewSeriesWizard: React.FC<{
 
 	const previousPage = (
 		values: {
-			[key: string]: any;
 			acls: TransformedAcl[];
 			theme: string;
+			breadcrumbs: TobiraPage[];
+			selectedPage: TobiraPage | undefined;
 		},
 		twoPagesBack?: boolean
 	) => {

@@ -13,7 +13,6 @@ import { Recording } from "../slices/recordingSlice";
 import { UserInfoState } from "../slices/userInfoSlice";
 import { hasAccess, isJson } from "./utils";
 import { RootState } from "../store";
-import { MetadataCatalog } from "../slices/eventSlice";
 
 /**
  * This file contains methods that are needed in more than one resource thunk
