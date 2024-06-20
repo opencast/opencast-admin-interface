@@ -135,6 +135,7 @@ export const loadSeriesIntoTable = () => (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		totalItems: total,
 	};
 
@@ -144,6 +145,7 @@ export const loadSeriesIntoTable = () => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "title",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -165,6 +167,7 @@ export const loadRecordingsIntoTable = () => (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		rows: resource,
 		totalItems: total,
 	};
@@ -175,6 +178,7 @@ export const loadRecordingsIntoTable = () => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "status",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -198,6 +202,7 @@ export const loadJobsIntoTable = () => (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		totalItems: total,
 	};
 
@@ -207,6 +212,7 @@ export const loadJobsIntoTable = () => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "id",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -229,6 +235,7 @@ export const loadServersIntoTable = () => (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		totalItems: total,
 	};
 
@@ -238,6 +245,7 @@ export const loadServersIntoTable = () => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "online",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -261,6 +269,7 @@ export const loadServicesIntoTable = () => (dispatch, getState) => {
 		columns: services.columns,
 		multiSelect: table.multiSelect,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 	};
 
 	if (table.resource !== "services") {
@@ -269,6 +278,7 @@ export const loadServicesIntoTable = () => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "status",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -292,6 +302,7 @@ export const loadUsersIntoTable = () => (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		totalItems: total,
 	};
 
@@ -301,6 +312,7 @@ export const loadUsersIntoTable = () => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "name",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -323,6 +335,7 @@ export const loadGroupsIntoTable = () => (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		totalItems: total,
 	};
 
@@ -332,6 +345,7 @@ export const loadGroupsIntoTable = () => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "name",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -354,6 +368,7 @@ export const loadAclsIntoTable = () => (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		totalItems: total,
 	};
 
@@ -362,6 +377,7 @@ export const loadAclsIntoTable = () => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "name",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -384,6 +400,7 @@ export const loadThemesIntoTable = () => (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		totalItems: total,
 	};
 
@@ -393,6 +410,7 @@ export const loadThemesIntoTable = () => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "name",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}

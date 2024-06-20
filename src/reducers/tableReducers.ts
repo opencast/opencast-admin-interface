@@ -52,7 +52,7 @@ const initialState = {
 	columns: [],
 	sortBy: "date",
 	predicate: "",
-	reverse: "ASC",
+	reverse: "DESC",
 	rows: [],
 	maxLabel: "",
 	pagination: {
