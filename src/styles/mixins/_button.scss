@@ -224,6 +224,31 @@
         }
     }
 
+    @else if $color == inactive {
+        box-shadow: inset 0px 1px 0px 0px lighten($color-gray, 10%), 0px 2px 3px 1px rgba(0,0,0,.05);
+
+        background: linear-gradient(lighten($color-gray, 5%), darken($color-gray, 5%));
+
+        border: $thin-border-stroke darken($color-gray, 20%);
+
+        &:hover {
+            cursor: not-allowed;
+            border: $thin-border-stroke darken($color-gray, 30%);
+            background: linear-gradient(lighten($color-gray, 10%), darken($color-gray, 10%));
+        }
+
+        &:focus {
+            cursor: not-allowed;
+            border: $thin-border-stroke darken($color-gray, 30%);
+            background: linear-gradient(lighten($color-gray, 10%), darken($color-gray, 10%));
+        }
+
+        &:active {
+            cursor: not-allowed;
+            box-shadow: inset 0px 3px 10px 1px darken($color-gray, 5%);
+        }
+    }
+
     > i {
         display: inline-block;
         margin-right: 10px;
