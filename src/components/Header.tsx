@@ -180,8 +180,8 @@ const Header = ({
                     otherwise the app crashes */}
 					{!!orgProperties &&
 						!!orgProperties["org.opencastproject.admin.mediamodule.url"] && (
-							<Tooltip  title={t("MEDIAMODULE")}>
-								<div className="nav-dd">
+							<div className="nav-dd">
+								<Tooltip  title={t("MEDIAMODULE")}>
 									<a
 										href={
 											orgProperties["org.opencastproject.admin.mediamodule.url"]
@@ -190,29 +190,29 @@ const Header = ({
 									>
 										<span className="fa fa-play-circle" />
 									</a>
-								</div>
-							</Tooltip>
+								</Tooltip>
+							</div>
 						)}
 
 					{/* Opencast Studio */}
 					{hasAccess("ROLE_STUDIO", user) && (
-						<Tooltip  title="Studio">
-							<div className="nav-dd">
+						<div className="nav-dd">
+							<Tooltip  title={t("STUDIO")}>
 								<a href={studioURL} target="_blank" rel="noreferrer">
 									<span className="fa fa-video-camera" />
 								</a>
-							</div>
-						</Tooltip>
+							</Tooltip>
+						</div>
 					)}
 
 					{/* System warnings and notifications */}
 					{hasAccess("ROLE_ADMIN", user) && (
-						<Tooltip title={t("SYSTEM_NOTIFICATIONS")}>
-							<div
-								className="nav-dd info-dd"
-								id="info-dd"
-								ref={containerNotify}
-							>
+						<div
+							className="nav-dd info-dd"
+							id="info-dd"
+							ref={containerNotify}
+						>
+							<Tooltip title={t("SYSTEM_NOTIFICATIONS")}>
 								<button onClick={() => setMenuNotify(!displayMenuNotify)}>
 									<i className="fa fa-bell" aria-hidden="true" />
 									{errorCounter !== 0 && (
@@ -228,8 +228,8 @@ const Header = ({
 										/>
 									)}
 								</button>
-							</div>
-						</Tooltip>
+							</Tooltip>
+						</div>
 					)}
 
 					{/* Help */}
@@ -243,30 +243,29 @@ const Header = ({
 							!!orgProperties[
 								"org.opencastproject.admin.help.restdocs.url"
 							]) && (
-							<Tooltip title="Help">
-								<div
-									className="nav-dd"
-									id="help-dd"
-									ref={containerHelp}
-								>
+							<div
+								className="nav-dd"
+								id="help-dd"
+								ref={containerHelp}
+							>
+								<Tooltip title={t("HELP.HELP")}>
 									<button
-										
 										onClick={() => setMenuHelp(!displayMenuHelp)}
 									>
 										<span className="fa fa-question-circle"></span>
 									</button>
-									{/* Click on the help icon, a dropdown menu with documentation, REST-docs and shortcuts (if available) opens */}
-									{displayMenuHelp && (
-										<MenuHelp
-											hideMenuHelp={hideMenuHelp}
-											showRegistrationModal={showRegistrationModal}
-											showHotKeyCheatSheet={showHotKeyCheatSheet}
-											orgProperties={orgProperties}
-											user={user}
-										/>
-									)}
-								</div>
-							</Tooltip>
+								</Tooltip>
+								{/* Click on the help icon, a dropdown menu with documentation, REST-docs and shortcuts (if available) opens */}
+								{displayMenuHelp && (
+									<MenuHelp
+										hideMenuHelp={hideMenuHelp}
+										showRegistrationModal={showRegistrationModal}
+										showHotKeyCheatSheet={showHotKeyCheatSheet}
+										orgProperties={orgProperties}
+										user={user}
+									/>
+								)}
+							</div>
 						)}
 
 					{/* Username */}
