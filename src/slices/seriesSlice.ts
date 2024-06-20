@@ -372,13 +372,16 @@ export const fetchSeriesDetailsTobiraNew = createAsyncThunk('seriesDetails/fetch
 
 				throw Error(response);
 			} else {
-				dispatch(addNotification({
-					type: "error",
-					key: "TOBIRA_SERVER_ERROR",
-					duration: -1,
-					parameter: null,
-					context: NOTIFICATION_CONTEXT
-				}));
+				// Add notification back once we can properly specify which tab of the modal it should be shown on
+				console.info("Could not fetch tobira page information.")
+				console.info(response)
+				// dispatch(addNotification({
+				// 	type: "error",
+				// 	key: "TOBIRA_SERVER_ERROR",
+				// 	duration: -1,
+				// 	parameter: null,
+				// 	context: NOTIFICATION_CONTEXT
+				// }));
 
 				throw Error(response);
 			}
