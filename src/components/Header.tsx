@@ -165,11 +165,11 @@ const Header = ({
 					{/* Select language */}
 					<div className="nav-dd lang-dd" id="lang-dd" ref={containerLang}>
 						<Tooltip title={t("LANGUAGE")}>
-							<div className="lang" onClick={() => setMenuLang(!displayMenuLang)}>
+							<button className="lang" onClick={() => setMenuLang(!displayMenuLang)}>
 								<IconContext.Provider value={{ style: {fontSize: "20px"} }}>
 									<HiTranslate />
 								</IconContext.Provider>
-							</div>
+							</button>
 						</Tooltip>
 						{displayMenuLang && <MenuLang />}
 					</div>
@@ -213,7 +213,7 @@ const Header = ({
 								id="info-dd"
 								ref={containerNotify}
 							>
-								<div onClick={() => setMenuNotify(!displayMenuNotify)}>
+								<button onClick={() => setMenuNotify(!displayMenuNotify)}>
 									<i className="fa fa-bell" aria-hidden="true" />
 									{errorCounter !== 0 && (
 										<span id="error-count" className="badge">
@@ -227,7 +227,7 @@ const Header = ({
 											redirectToServices={redirectToServices}
 										/>
 									)}
-								</div>
+								</button>
 							</div>
 						</Tooltip>
 					)}
@@ -249,10 +249,12 @@ const Header = ({
 									id="help-dd"
 									ref={containerHelp}
 								>
-									<div
-										className="fa fa-question-circle"
+									<button
+										
 										onClick={() => setMenuHelp(!displayMenuHelp)}
-									/>
+									>
+										<span className="fa fa-question-circle"></span>
+									</button>
 									{/* Click on the help icon, a dropdown menu with documentation, REST-docs and shortcuts (if available) opens */}
 									{displayMenuHelp && (
 										<MenuHelp
@@ -269,13 +271,13 @@ const Header = ({
 
 					{/* Username */}
 					<div className="nav-dd user-dd" id="user-dd" ref={containerUser}>
-						<div
+						<button
 							className="h-nav"
 							onClick={() => setMenuUser(!displayMenuUser)}
 						>
 							{user.user.name || user.user.username}
 							<span className="dropdown-icon" />
-						</div>
+						</button>
 						{/* Click on username, a dropdown menu with the option to logout opens */}
 						{displayMenuUser && <MenuUser />}
 					</div>
@@ -374,7 +376,7 @@ const MenuHelp = ({
 
 	return (
 		<>
-			<ul style={overflowStyle} className="dropdown-ul">
+			<ul className="dropdown-ul">
 				{/* Show only if documentationUrl is set */}
 				{!!orgProperties[
 					"org.opencastproject.admin.help.documentation.url"
