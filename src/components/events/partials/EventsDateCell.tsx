@@ -24,11 +24,19 @@ const EventsDateCell = ({
 	const filterMap = useAppSelector(state => getFilters(state));
 
 	// Filter with value of current cell
-// @ts-expect-error TS(7006): Parameter 'date' implicitly has an 'any' type.
-	const addFilter = async (date) => {
+	const addFilter = async (date: string) => {
 		let filter = filterMap.find(({ name }) => name === "startDate");
 		if (!!filter) {
-			await dispatch(editFilterValue({filterName: filter.name, value: date + "/" + date}));
+			let startDate = new Date(date);
+			startDate.setHours(0);
+			startDate.setMinutes(0);
+			startDate.setSeconds(0);
+			let endDate = new Date(date);
+			endDate.setHours(23);
+			endDate.setMinutes(59);
+			endDate.setSeconds(59);
+
+			await dispatch(editFilterValue({filterName: filter.name, value: startDate.toISOString() + "/" + endDate.toISOString()}));
 			await dispatch(fetchEvents());
 			loadEventsIntoTable();
 		}
