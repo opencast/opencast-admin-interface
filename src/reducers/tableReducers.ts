@@ -50,9 +50,9 @@ const initialState = {
 	resource: "",
 	pages: [],
 	columns: [],
-	sortBy: "",
+	sortBy: "date",
 	predicate: "",
-	reverse: "ASC",
+	reverse: "DESC",
 	rows: [],
 	maxLabel: "",
 	pagination: {
@@ -76,6 +76,7 @@ const table = (state = initialState, action) => {
 				pages,
 				rows,
 				sortBy,
+				reverse,
 				totalItems,
 			} = payload;
 			return {
@@ -86,6 +87,7 @@ const table = (state = initialState, action) => {
 				rows: rows,
 				pages: pages,
 				sortBy: sortBy,
+				reverse: reverse,
 				pagination: {
 					...state.pagination,
 					totalItems: totalItems,
