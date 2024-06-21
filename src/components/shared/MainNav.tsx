@@ -234,9 +234,11 @@ const MainNav = ({
 	return (
 		<>
 			<div className="menu-top" >
-				<button className="button-like-anchor" onClick={() => toggleMenu()}>
-					<i className="fa fa-bars" />
-				</button>
+				<Tooltip title={t("HOTKEYS.DESCRIPTIONS.GENERAL.MAIN_MENU")}>
+					<button className="button-like-anchor" onClick={() => toggleMenu()}>
+						<i className="fa fa-bars" />
+					</button>
+				</Tooltip>
 				{isOpen && (
 					<nav id="roll-up-menu">
 						<div id="nav-container">
