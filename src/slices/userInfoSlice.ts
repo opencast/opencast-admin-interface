@@ -1,6 +1,7 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { addNotification } from './notificationSlice';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 
 /**
  * This file contains redux reducer for actions affecting the state of information about current user
@@ -72,7 +73,7 @@ const initialState: UserInfoState = {
 	},
 };
 
-export const fetchUserInfo = createAsyncThunk('UserInfo/fetchUserInfo', async (_, { dispatch }) => {
+export const fetchUserInfo = createAppAsyncThunk('UserInfo/fetchUserInfo', async (_, { dispatch }) => {
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -93,7 +94,7 @@ export const fetchUserInfo = createAsyncThunk('UserInfo/fetchUserInfo', async (_
 	return res;
 });
 
-export const fetchOcVersion = createAsyncThunk('UserInfo/fetchOcVersion', async () => {
+export const fetchOcVersion = createAppAsyncThunk('UserInfo/fetchOcVersion', async () => {
 	const res = await axios.get("/sysinfo/bundles/version?prefix=opencast");
 	return res.data;
 });

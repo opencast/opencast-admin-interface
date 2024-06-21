@@ -1,10 +1,10 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import { recordingsTableConfig } from '../configs/tableConfigs/recordingsTableConfig';
 import axios from 'axios';
 import { getURLParams } from '../utils/resourceUtils';
 import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
-import { RootState } from '../store';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 
 /**
  * This file contains redux reducer for actions affecting the state of recordings
@@ -51,7 +51,7 @@ const initialState: RecordingState = {
 };
 
 // fetch recordings from server
-export const fetchRecordings = createAsyncThunk('recordings/fetchRecordings', async (flag: string | undefined, { getState }) => {
+export const fetchRecordings = createAppAsyncThunk('recordings/fetchRecordings', async (flag: string | undefined, { getState }) => {
 	let res;
 
 	if (flag === "inputs") {
@@ -60,7 +60,7 @@ export const fetchRecordings = createAsyncThunk('recordings/fetchRecordings', as
 			);
 		} else {
 			const state = getState();
-			let params = getURLParams(state as RootState);
+			let params = getURLParams(state);
 
 		// /agents.json?filter={filter}&limit=100&offset=0&inputs=false&sort={sort}
 		res = await axios.get("/admin-ng/capture-agents/agents.json", {
@@ -94,7 +94,7 @@ export const fetchRecordings = createAsyncThunk('recordings/fetchRecordings', as
 });
 
 // delete location with provided id
-export const deleteRecording = createAsyncThunk('recordings/deleteRecording', async (id: string, { dispatch }) => {
+export const deleteRecording = createAppAsyncThunk('recordings/deleteRecording', async (id: string, { dispatch }) => {
 	// API call for deleting a location
 	axios
 		.delete(`/admin-ng/capture-agents/${id}`)

@@ -1,4 +1,4 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import { seriesTableConfig } from '../configs/tableConfigs/seriesTableConfig';
 import axios from 'axios';
 import {
@@ -15,7 +15,7 @@ import {
 import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { TransformedAcls } from './aclDetailsSlice';
-import { RootState } from '../store';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 
 /**
  * This file contains redux reducer for actions affecting the state of series
@@ -108,9 +108,9 @@ const initialState: SeriesState = {
 };
 
 // fetch series from server
-export const fetchSeries = createAsyncThunk('series/fetchSeries', async (_, { getState }) => {
+export const fetchSeries = createAppAsyncThunk('series/fetchSeries', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state as RootState);
+	let params = getURLParams(state);
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -120,7 +120,7 @@ export const fetchSeries = createAsyncThunk('series/fetchSeries', async (_, { ge
 });
 
 // fetch series metadata from server
-export const fetchSeriesMetadata = createAsyncThunk('series/fetchSeriesMetadata', async () => {
+export const fetchSeriesMetadata = createAppAsyncThunk('series/fetchSeriesMetadata', async () => {
 	const res = await axios.get("/admin-ng/series/new/metadata");
 	const data = await res.data;
 
@@ -144,7 +144,7 @@ export const fetchSeriesMetadata = createAsyncThunk('series/fetchSeriesMetadata'
 });
 
 // fetch series themes from server
-export const fetchSeriesThemes = createAsyncThunk('series/fetchSeriesThemes', async () => {
+export const fetchSeriesThemes = createAppAsyncThunk('series/fetchSeriesThemes', async () => {
 	let res = await axios.get("/admin-ng/series/new/themes");
 	const data = await res.data;
 	const themes = transformToObjectArray(data);
@@ -152,7 +152,7 @@ export const fetchSeriesThemes = createAsyncThunk('series/fetchSeriesThemes', as
 });
 
 // post new series to backend
-export const postNewSeries = createAsyncThunk('series/postNewSeries', async (params: {
+export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (params: {
 	values: {
 		[key: string]: any;
 		acls: TransformedAcls,
@@ -234,7 +234,7 @@ export const postNewSeries = createAsyncThunk('series/postNewSeries', async (par
 });
 
 // check for events of the series and if deleting the series if it has events is allowed
-export const checkForEventsDeleteSeriesModal = createAsyncThunk('series/checkForEventsDeleteSeriesModal', async (id: string, {dispatch}) => {
+export const checkForEventsDeleteSeriesModal = createAppAsyncThunk('series/checkForEventsDeleteSeriesModal', async (id: string, {dispatch}) => {
 	const hasEventsRequest = await axios.get(
 		`/admin-ng/series/${id}/hasEvents.json`
 	);
@@ -254,7 +254,7 @@ export const checkForEventsDeleteSeriesModal = createAsyncThunk('series/checkFor
 });
 
 // delete series with provided id
-export const deleteSeries = createAsyncThunk('series/deleteSeries', async (id: string, {dispatch}) => {
+export const deleteSeries = createAppAsyncThunk('series/deleteSeries', async (id: string, {dispatch}) => {
 	// API call for deleting a series
 	axios
 		.delete(`/admin-ng/series/${id}`)
@@ -271,7 +271,7 @@ export const deleteSeries = createAsyncThunk('series/deleteSeries', async (id: s
 });
 
 // delete series with provided ids
-export const deleteMultipleSeries = createAsyncThunk('series/deleteMultipleSeries', async (
+export const deleteMultipleSeries = createAppAsyncThunk('series/deleteMultipleSeries', async (
 	series: {
 		contributors: string[],
 		createdBy: string,

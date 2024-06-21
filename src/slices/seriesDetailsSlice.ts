@@ -1,4 +1,4 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import _ from "lodash";
 import {
@@ -15,7 +15,7 @@ import {
 } from "../utils/resourceUtils";
 import { transformToIdValueArray } from "../utils/utils";
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
-import { RootState } from '../store';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 import { Ace, TransformedAcl, TransformedAcls } from './aclDetailsSlice';
 
@@ -108,7 +108,7 @@ const initialState: SeriesDetailsState = {
 };
 
 // fetch metadata of certain series from server
-export const fetchSeriesDetailsMetadata = createAsyncThunk('seriesDetails/fetchSeriesDetailsMetadata', async (id: string) => {
+export const fetchSeriesDetailsMetadata = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsMetadata', async (id: string) => {
 	const res = await axios.get(`/admin-ng/series/${id}/metadata.json`);
 	const metadataResponse = res.data;
 
@@ -130,7 +130,7 @@ export const fetchSeriesDetailsMetadata = createAsyncThunk('seriesDetails/fetchS
 });
 
 // fetch acls of certain series from server
-export const fetchSeriesDetailsAcls = createAsyncThunk('seriesDetails/fetchSeriesDetailsAcls', async (id: string, {dispatch}) => {
+export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsAcls', async (id: string, {dispatch}) => {
 	const res = await axios.get(`/admin-ng/series/${id}/access.json`);
 	const response = res.data;
 
@@ -169,7 +169,7 @@ export const fetchSeriesDetailsAcls = createAsyncThunk('seriesDetails/fetchSerie
 });
 
 // fetch feeds of certain series from server
-export const fetchSeriesDetailsFeeds = createAsyncThunk('seriesDetails/fetchSeriesDetailsFeeds', async (id: string) => {
+export const fetchSeriesDetailsFeeds = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsFeeds', async (id: string) => {
 	const res = await axios.get("/admin-ng/feeds/feeds");
 	const feedsResponse = res.data;
 
@@ -208,7 +208,7 @@ export const fetchSeriesDetailsFeeds = createAsyncThunk('seriesDetails/fetchSeri
 });
 
 // fetch theme of certain series from server
-export const fetchSeriesDetailsTheme = createAsyncThunk('seriesDetails/fetchSeriesDetailsTheme', async (id: string) => {
+export const fetchSeriesDetailsTheme = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsTheme', async (id: string) => {
 	const res = await axios.get(`/admin-ng/series/${id}/theme.json`);
 	const themeResponse = res.data;
 
@@ -224,7 +224,7 @@ export const fetchSeriesDetailsTheme = createAsyncThunk('seriesDetails/fetchSeri
 });
 
 // fetch names of possible themes from server
-export const fetchSeriesDetailsThemeNames = createAsyncThunk('seriesDetails/fetchSeriesDetailsThemeNames', async () => {
+export const fetchSeriesDetailsThemeNames = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsThemeNames', async () => {
 	const res = await axios.get("/admin-ng/resources/THEMES.NAME.json");
 	const response = res.data;
 
@@ -235,7 +235,7 @@ export const fetchSeriesDetailsThemeNames = createAsyncThunk('seriesDetails/fetc
 });
 
 // update series with new metadata
-export const updateSeriesMetadata = createAsyncThunk('seriesDetails/updateSeriesMetadata', async (params: {
+export const updateSeriesMetadata = createAppAsyncThunk('seriesDetails/updateSeriesMetadata', async (params: {
 	id: string,
 	values: {
 		contributor: string[],
@@ -252,7 +252,7 @@ export const updateSeriesMetadata = createAsyncThunk('seriesDetails/updateSeries
 	}
 }, {dispatch, getState}) => {
 	const { id, values } = params;
-	let metadataInfos = getSeriesDetailsMetadata(getState() as RootState);
+	let metadataInfos = getSeriesDetailsMetadata(getState());
 
 	const { fields, data, headers } = transformMetadataForUpdate(
 		metadataInfos,
@@ -271,7 +271,7 @@ export const updateSeriesMetadata = createAsyncThunk('seriesDetails/updateSeries
 });
 
 // update series with new metadata
-export const updateExtendedSeriesMetadata = createAsyncThunk('seriesDetails/updateExtendedSeriesMetadata', async (params: {
+export const updateExtendedSeriesMetadata = createAppAsyncThunk('seriesDetails/updateExtendedSeriesMetadata', async (params: {
 	id: string,
 	values: { [key: string]: any },
 	catalog: {
@@ -296,7 +296,7 @@ export const updateExtendedSeriesMetadata = createAsyncThunk('seriesDetails/upda
 		fields: fields,
 	};
 
-	const oldExtendedMetadata = getSeriesDetailsExtendedMetadata(getState() as RootState);
+	const oldExtendedMetadata = getSeriesDetailsExtendedMetadata(getState());
 	let newExtendedMetadata = [];
 
 	for (const catalog of oldExtendedMetadata) {
@@ -313,7 +313,7 @@ export const updateExtendedSeriesMetadata = createAsyncThunk('seriesDetails/upda
 	dispatch(setSeriesDetailsExtendedMetadata(newExtendedMetadata));
 });
 
-export const updateSeriesAccess = createAsyncThunk('seriesDetails/updateSeriesAccess', async (params: {
+export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSeriesAccess', async (params: {
 	id: string,
 	policies: { [key: string]: TransformedAcl }
 }, {dispatch}) => {
@@ -358,13 +358,13 @@ export const updateSeriesAccess = createAsyncThunk('seriesDetails/updateSeriesAc
 		});
 });
 
-export const updateSeriesTheme = createAsyncThunk('seriesDetails/updateSeriesTheme', async (params: {
+export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeriesTheme', async (params: {
 	id: string,
 	values: { theme: string},
 }, {dispatch, getState}) => {
 	const { id, values } = params;
 
-	let themeNames = getSeriesDetailsThemeNames(getState() as RootState);
+	let themeNames = getSeriesDetailsThemeNames(getState());
 
 	let themeId = themeNames.find((theme) => theme.value === values.theme)?.id;
 
@@ -425,10 +425,10 @@ export const updateSeriesTheme = createAsyncThunk('seriesDetails/updateSeriesThe
 });
 
 // thunks for statistics
-export const fetchSeriesStatistics = createAsyncThunk('seriesDetails/fetchSeriesStatistics', async (seriesId: string, {getState}) => {
+export const fetchSeriesStatistics = createAppAsyncThunk('seriesDetails/fetchSeriesStatistics', async (seriesId: string, {getState}) => {
 	// get prior statistics
 	const state = getState();
-	const statistics = getStatistics(state as RootState);
+	const statistics = getStatistics(state);
 
 	return await (
 		fetchStatistics(
@@ -439,7 +439,7 @@ export const fetchSeriesStatistics = createAsyncThunk('seriesDetails/fetchSeries
 	);
 });
 
-export const fetchSeriesStatisticsValueUpdate = createAsyncThunk('seriesDetails/fetchSeriesStatisticsValueUpdate', async (params: {
+export const fetchSeriesStatisticsValueUpdate = createAppAsyncThunk('seriesDetails/fetchSeriesStatisticsValueUpdate', async (params: {
 	seriesId: string,
 	providerId: string,
 	from: string,
@@ -451,7 +451,7 @@ export const fetchSeriesStatisticsValueUpdate = createAsyncThunk('seriesDetails/
 
 	// get prior statistics
 	const state = getState();
-	const statistics = getStatistics(state as RootState);
+	const statistics = getStatistics(state);
 
 	return await (
 		fetchStatisticsValueUpdate(

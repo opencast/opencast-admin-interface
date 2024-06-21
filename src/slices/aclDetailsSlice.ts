@@ -1,7 +1,8 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { prepareAccessPolicyRulesForPost } from '../utils/resourceUtils';
 import { addNotification } from './notificationSlice';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 
 /**
  * This file contains redux reducer for actions affecting the state of details of an ACL
@@ -43,7 +44,7 @@ const initialState: AclDetailsState = {
 };
 
 // fetch details about a certain acl from server
-export const fetchAclDetails = createAsyncThunk('aclDetails/fetchAclDetails', async (aclId: number) => {
+export const fetchAclDetails = createAppAsyncThunk('aclDetails/fetchAclDetails', async (aclId: number) => {
 	const res = await axios.get(`/admin-ng/acl/${aclId}`);
 
 	let aclDetails = res.data;
@@ -128,7 +129,7 @@ export const fetchAclDetails = createAsyncThunk('aclDetails/fetchAclDetails', as
 });
 
 // update details of a certain acl
-export const updateAclDetails = createAsyncThunk('aclDetails/updateAclDetails', async (params: {
+export const updateAclDetails = createAppAsyncThunk('aclDetails/updateAclDetails', async (params: {
 	values: {
 		name: string,
 		acls: TransformedAcls,
