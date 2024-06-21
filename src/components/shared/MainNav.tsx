@@ -233,7 +233,10 @@ const MainNav = ({
 
 	return (
 		<>
-			<div className="menu-top" onClick={() => toggleMenu()}>
+			<div className="menu-top" >
+				<button className="button-like-anchor" onClick={() => toggleMenu()}>
+					<i className="fa fa-bars" />
+				</button>
 				{isOpen && (
 					<nav id="roll-up-menu">
 						<div id="nav-container">
