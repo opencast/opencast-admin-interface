@@ -442,6 +442,7 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 																										}
 																										type={"aclRole"}
 																										required={true}
+																										creatable={policy.allowNewRole}
 																										handleChange={(element) => {
 																											if (element) {
 																												replace(index, {
@@ -451,13 +452,17 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 																											}
 																										}}
 																										placeholder={
-																											roles.length > 0
+																											policy.allowNewRole
+																												? t(
+																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.CREATE"
+																													)
+																												: roles.length > 0
 																												? t(
 																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.LABEL"
-																												  )
+																													)
 																												: t(
 																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.EMPTY"
-																												  )
+																													)
 																										}
 																										tabIndex={index + 1}
 																										disabled={
@@ -602,6 +607,17 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 																								+{" "}
 																								{t(
 																									"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW"
+																								)}
+																							</button>
+																							<button
+																								onClick={() =>
+																									push(createPolicy("", true))
+																								}
+                                                className="button-like-anchor"
+																							>
+																								+{" "}
+																								{t(
+																									"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW_ROLE"
 																								)}
 																							</button>
 																						</td>
