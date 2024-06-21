@@ -91,9 +91,9 @@ const initialState: TableState = {
 	resource: "",
 	pages: [],
 	columns: [],
-	sortBy: "",
+	sortBy: "date",
 	predicate: "",
-	reverse: "ASC",
+	reverse: "DESC",
 	rows: [],
 	maxLabel: "",
 	pagination: {
@@ -115,6 +115,7 @@ const tableSlice = createSlice({
 			pages: TableState["pages"],
 			rows: TableState["rows"],
 			sortBy: TableState["sortBy"],
+			reverse: TableState["reverse"],
 			totalItems: TableState["pagination"]["totalItems"],
 		}>) {
 			state.multiSelect = action.payload.multiSelect;
@@ -123,6 +124,7 @@ const tableSlice = createSlice({
 			state.pages = action.payload.pages;
 			state.rows = action.payload.rows;
 			state.sortBy = action.payload.sortBy;
+			state.reverse = action.payload.reverse;
 			state.pagination = {
 				...state.pagination,
 				totalItems: action.payload.totalItems,

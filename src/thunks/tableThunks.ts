@@ -40,7 +40,7 @@ import { fetchServices, setServiceColumns } from "../slices/serviceSlice";
 import { fetchUsers, setUserColumns } from "../slices/userSlice";
 import { fetchGroups } from "../slices/groupSlice";
 import { fetchThemes, setThemeColumns } from "../slices/themeSlice";
-import { setRecordingsColumns } from "../slices/recordingSlice";
+import { fetchRecordings, setRecordingsColumns } from "../slices/recordingSlice";
 import { setGroupColumns } from "../slices/groupSlice";
 import { fetchAcls, setAclColumns } from "../slices/aclSlice";
 import { AppThunk, RootState } from "../store";
@@ -81,6 +81,7 @@ export const loadEventsIntoTable = (): AppThunk => async (dispatch, getState) =>
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		totalItems: total,
 	};
 
@@ -89,7 +90,8 @@ export const loadEventsIntoTable = (): AppThunk => async (dispatch, getState) =>
 
 		tableData = {
 			...tableData,
-			sortBy: "title",
+			sortBy: "date",
+			reverse: "DESC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -128,6 +130,7 @@ export const loadSeriesIntoTable = (): AppThunk => (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		totalItems: total,
 	};
 
@@ -137,6 +140,7 @@ export const loadSeriesIntoTable = (): AppThunk => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "title",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -157,6 +161,7 @@ export const loadRecordingsIntoTable = (): AppThunk => (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		rows: resource.map((obj) => {
 			return { ...obj, selected: false }
 		}),
@@ -169,6 +174,7 @@ export const loadRecordingsIntoTable = (): AppThunk => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "status",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -193,6 +199,7 @@ export const loadJobsIntoTable = (): AppThunk => (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		totalItems: total,
 	};
 
@@ -202,6 +209,7 @@ export const loadJobsIntoTable = (): AppThunk => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "id",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -225,6 +233,7 @@ export const loadServersIntoTable = (): AppThunk => (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		totalItems: total,
 	};
 
@@ -234,6 +243,7 @@ export const loadServersIntoTable = (): AppThunk => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "online",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -258,6 +268,7 @@ export const loadServicesIntoTable = (): AppThunk => (dispatch, getState) => {
 		columns: services.columns,
 		multiSelect: table.multiSelect,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 	};
 
 	if (table.resource !== "services") {
@@ -266,6 +277,7 @@ export const loadServicesIntoTable = (): AppThunk => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "status",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -290,6 +302,7 @@ export const loadUsersIntoTable = (): AppThunk => (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		totalItems: total,
 	};
 
@@ -299,6 +312,7 @@ export const loadUsersIntoTable = (): AppThunk => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "name",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -322,6 +336,7 @@ export const loadGroupsIntoTable = (): AppThunk => (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		totalItems: total,
 	};
 
@@ -331,6 +346,7 @@ export const loadGroupsIntoTable = (): AppThunk => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "name",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -354,6 +370,7 @@ export const loadAclsIntoTable = (): AppThunk => (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		totalItems: total,
 	};
 
@@ -362,6 +379,7 @@ export const loadAclsIntoTable = (): AppThunk => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "name",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -385,6 +403,7 @@ export const loadThemesIntoTable = (): AppThunk => (dispatch, getState) => {
 		multiSelect: table.multiSelect,
 		pages: pages,
 		sortBy: table.sortBy,
+		reverse: table.reverse,
 		totalItems: total,
 	};
 
@@ -394,6 +413,7 @@ export const loadThemesIntoTable = (): AppThunk => (dispatch, getState) => {
 		tableData = {
 			...tableData,
 			sortBy: "name",
+			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -425,7 +445,6 @@ export const goToPage = (pageNumber: number): AppThunk => async (dispatch, getSt
 			break;
 		}
 		case "recordings": {
-// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 			await dispatch(fetchRecordings());
 			dispatch(loadRecordingsIntoTable());
 			break;
@@ -495,7 +514,6 @@ export const updatePages = (): AppThunk => async (dispatch, getState) => {
 			break;
 		}
 		case "recordings": {
-// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 			await dispatch(fetchRecordings());
 			dispatch(loadRecordingsIntoTable());
 			break;

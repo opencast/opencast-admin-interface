@@ -18,8 +18,8 @@ import {
 	getExtendedEventMetadata,
 } from "../../../../selectors/eventSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
+import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { MetadataCatalog, UploadAssetOption, postNewEvent } from "../../../../slices/eventSlice";
-import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
 
 /**
@@ -36,12 +36,20 @@ const NewEventWizard: React.FC<{
 	const metadataFields = useAppSelector(state => getEventMetadata(state));
 	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
 	const user = useAppSelector(state => getUserInformation(state));
+	const orgProperties = useAppSelector(state => getOrgProperties(state));
+
+	// Whether the ACL of a new event is initialized with the ACL of its series.
+	let initEventAclWithSeriesAcl = true
+	const ADMIN_INIT_EVENT_ACL_WITH_SERIES_ACL = "admin.init.event.acl.with.series.acl";
+	if (!!orgProperties && !!orgProperties[ADMIN_INIT_EVENT_ACL_WITH_SERIES_ACL]) {
+		initEventAclWithSeriesAcl = user.org.properties[ADMIN_INIT_EVENT_ACL_WITH_SERIES_ACL] === 'true';
+	}
 
 	const initialValues = getInitialValues(
 		metadataFields,
 		extendedMetadata,
 		uploadAssetOptions,
-		user
+		user,
 	);
 
 	const [page, setPage] = useState(0);
@@ -193,6 +201,7 @@ const NewEventWizard: React.FC<{
 										nextPage={nextPage}
 										formik={formik}
 										editAccessRole="ROLE_UI_SERIES_DETAILS_ACL_EDIT"
+										initEventAclWithSeriesAcl={initEventAclWithSeriesAcl}
 									/>
 								)}
 								{page === 6 && (

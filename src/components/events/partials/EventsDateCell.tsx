@@ -26,7 +26,16 @@ const EventsDateCell = ({
 	const addFilter = async (date: string) => {
 		let filter = filterMap.find(({ name }) => name === "startDate");
 		if (!!filter) {
-			await dispatch(editFilterValue({filterName: filter.name, value: date + "/" + date}));
+			let startDate = new Date(date);
+			startDate.setHours(0);
+			startDate.setMinutes(0);
+			startDate.setSeconds(0);
+			let endDate = new Date(date);
+			endDate.setHours(23);
+			endDate.setMinutes(59);
+			endDate.setSeconds(59);
+
+			await dispatch(editFilterValue({filterName: filter.name, value: startDate.toISOString() + "/" + endDate.toISOString()}));
 			await dispatch(fetchEvents());
 			dispatch(loadEventsIntoTable());
 		}
