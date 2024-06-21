@@ -260,7 +260,6 @@ const EventDetailsCommentsTab = ({
 												placeholder={t(
 													"EVENTS.EVENTS.DETAILS.COMMENTS.SELECTPLACEHOLDER"
 												)}
-												tabIndex={5}
 											/>
 										</div>
 
