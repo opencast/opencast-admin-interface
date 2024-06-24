@@ -172,13 +172,17 @@ const EmbeddingCodeModal = ({
 				</div>
 
 				{/* copy confirmation */}
-				{showCopySuccess && (
-					<div className="copyConfirm">
+				<div
+					className="copyConfirm"
+					aria-live={"polite"}
+					role={"status"}
+				>
+					{showCopySuccess && (
 						<span id="copy_confirm_pre">
 							{t("CONFIRMATIONS.EMBEDDING_CODE",{size: currentSize})}
 						</span>
-					</div>
-				)}
+					)}
+				</div>
 
 				{/* copy button */}
 				<div className="embedded-code-copy-to-clipboard">
