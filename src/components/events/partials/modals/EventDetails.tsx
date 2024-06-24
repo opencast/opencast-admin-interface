@@ -98,7 +98,20 @@ const EventDetails : React.FC<{
 	const isLoadingStatistics = useAppSelector(state => isFetchingStatistics(state));
 	const captureAgents = useAppSelector(state => getRecordings(state));
 
-	const tabs = [
+	type Tab = {
+		tabNameTranslation: string,
+		bodyHeaderTranslation?: string,
+		accessRole: string,
+		name: string,
+		hidden?: boolean,
+	}
+
+	type Tabs = [
+		Tab, Tab, Tab, Tab, Tab,
+		Tab, Tab, Tab, Tab,
+	]
+
+	const tabs: Tabs = [
 		{
 			tabNameTranslation: "EVENTS.EVENTS.DETAILS.TABS.METADATA",
 			bodyHeaderTranslation: "EVENTS.EVENTS.DETAILS.METADATA.CAPTION",
@@ -221,7 +234,7 @@ const EventDetails : React.FC<{
 					<DetailsMetadataTab
 						metadataFields={metadata}
 						resourceId={eventId}
-						header={tabs[page].bodyHeaderTranslation}
+						header={tabs[page]!.bodyHeaderTranslation}
 						updateResource={updateMetadataWrapper}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
 					/>
@@ -355,7 +368,7 @@ const EventDetails : React.FC<{
 				{page === 6 && (
 					<EventDetailsAccessPolicyTab
 						eventId={eventId}
-						header={tabs[page].bodyHeaderTranslation}
+						header={tabs[page]!.bodyHeaderTranslation}
 						t={t}
 						policyChanged={policyChanged}
 						setPolicyChanged={setPolicyChanged}
@@ -364,14 +377,14 @@ const EventDetails : React.FC<{
 				{page === 7 && (
 					<EventDetailsCommentsTab
 						eventId={eventId}
-						header={tabs[page].bodyHeaderTranslation}
+						header={tabs[page]!.bodyHeaderTranslation}
 						t={t}
 					/>
 				)}
 				{page === 8 && !isLoadingStatistics && (
 					<EventDetailsStatisticsTab
 						eventId={eventId}
-						header={tabs[page].bodyHeaderTranslation}
+						header={tabs[page]!.bodyHeaderTranslation}
 						t={t}
 					/>
 				)}

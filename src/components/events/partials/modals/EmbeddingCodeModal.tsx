@@ -58,11 +58,11 @@ const EmbeddingCodeModal = ({
 
 		// iterate through embedSizeButtons and mark the chosen size
 		if (frameSize) {
-			for (let i = 0; i < embedSizeButtons.length; i++) {
-				if (frameSize === embedSizeButtons[i].id) {
-					embedSizeButtons[i].classList.add("embedSizeButtonSelected");
+			for (const embedSizeButton of embedSizeButtons) {
+				if (frameSize === embedSizeButton.id) {
+					embedSizeButton.classList.add("embedSizeButtonSelected");
 				} else {
-					embedSizeButtons[i].classList.remove("embedSizeButtonSelected");
+					embedSizeButton.classList.remove("embedSizeButtonSelected");
 				}
 			}
 		}

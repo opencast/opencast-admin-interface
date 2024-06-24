@@ -41,9 +41,9 @@ export const getURLParams = (
 		filters.push("textFilter:" + textFilter);
 	}
 	// transform filters for use as URL param
-	for (let key in filterMap) {
-		if (!!filterMap[key].value) {
-			filters.push(filterMap[key].name + ":" + filterMap[key].value.toString());
+	for (const filter of filterMap) {
+		if (!!filter.value) {
+			filters.push(filter.name + ":" + filter.value.toString());
 		}
 	}
 
@@ -443,33 +443,33 @@ export const prepareAccessPolicyRulesForPost = (policies) => {
 export const transformAclTemplatesResponse = (acl: Acl) => {
 	let template: TransformedAcl[] = [];
 
-	for (let i = 0; acl.ace.length > i; i++) {
-		if (template.find((rule) => rule.role === acl.ace[i].role)) {
-			for (let j = 0; template.length > j; j++) {
+	for (const ace of acl.ace) {
+		if (template.find((rule) => rule.role === ace.role)) {
+			for (const [j, templateEntry] of template.entries()) {
 				// Only update entry for policy if already added with other action
-				if (template[j].role === acl.ace[i].role) {
-					if (acl.ace[i].action === "read") {
+				if (templateEntry.role === ace.role) {
+					if (ace.action === "read") {
 						template[j] = {
-							...template[j],
-							read: acl.ace[i].allow,
+							...templateEntry,
+							read: ace.allow,
 						};
 						break;
 					}
-					if (acl.ace[i].action === "write") {
+					if (ace.action === "write") {
 						template[j] = {
-							...template[j],
-							write: acl.ace[i].allow,
+							...templateEntry,
+							write: ace.allow,
 						};
 						break;
 					}
 					if (
-						acl.ace[i].action !== "read" &&
-						acl.ace[i].action !== "write" &&
-						acl.ace[i].allow === true
+						ace.action !== "read" &&
+						ace.action !== "write" &&
+						ace.allow === true
 					) {
 						template[j] = {
-							...template[j],
-							actions: template[j].actions.concat(acl.ace[i].action),
+							...templateEntry,
+							actions: templateEntry.actions.concat(ace.action),
 						};
 						break;
 					}
@@ -477,32 +477,32 @@ export const transformAclTemplatesResponse = (acl: Acl) => {
 			}
 		} else {
 			// add policy if role not seen before
-			if (acl.ace[i].action === "read") {
+			if (ace.action === "read") {
 				template = template.concat({
-					role: acl.ace[i].role,
-					read: acl.ace[i].allow,
+					role: ace.role,
+					read: ace.allow,
 					write: false,
 					actions: [],
 				});
 			}
-			if (acl.ace[i].action === "write") {
+			if (ace.action === "write") {
 				template = template.concat({
-					role: acl.ace[i].role,
+					role: ace.role,
 					read: false,
-					write: acl.ace[i].allow,
+					write: ace.allow,
 					actions: [],
 				});
 			}
 			if (
-				acl.ace[i].action !== "read" &&
-				acl.ace[i].action !== "write" &&
-				acl.ace[i].allow === true
+				ace.action !== "read" &&
+				ace.action !== "write" &&
+				ace.allow === true
 			) {
 				template = template.concat({
-					role: acl.ace[i].role,
+					role: ace.role,
 					read: false,
 					write: false,
-					actions: [acl.ace[i].action],
+					actions: [ace.action],
 				});
 			}
 		}

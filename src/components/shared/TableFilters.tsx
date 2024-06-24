@@ -344,11 +344,11 @@ const TableFilters = ({
 														<span>
 															{t(filter.label).substr(0, 40)}:
 															{t("dateFormats.date.short", {
-																date: renderValidDate(filter.value.split("/")[0]),
+																date: renderValidDate(filter.value.split("/")[0]!),
 															})}
 															-
 															{t("dateFormats.date.short", {
-																date: renderValidDate(filter.value.split("/")[1]),
+																date: renderValidDate(filter.value.split("/")[1]!),
 															})}
 														</span>
 													</span>

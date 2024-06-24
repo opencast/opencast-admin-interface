@@ -157,12 +157,12 @@ export const fetchSeriesDetailsAcls = createAsyncThunk('seriesDetails/fetchSerie
 				policyRoles.push(policy.role);
 			}
 			if (policy.action === "read" || policy.action === "write") {
-				policies[policy.role][policy.action] = policy.allow;
+				policies[policy.role]![policy.action] = policy.allow;
 			} else if (policy.allow === true) { //|| policy.allow === "true") {
-				policies[policy.role].actions.push(policy.action);
+				policies[policy.role]!.actions.push(policy.action);
 			}
 		});
-		seriesAcls = policyRoles.map((role) => policies[role]);
+		seriesAcls = policyRoles.map((role) => policies[role]) && [];
 	}
 
 	return seriesAcls;
@@ -181,7 +181,7 @@ export const fetchSeriesDetailsFeeds = createAsyncThunk('seriesDetails/fetchSeri
 				feedsResponse[i].pattern;
 			let uidLink = pattern.split("<series_id>")[0] + id;
 			let typeLink = uidLink.split("<type>");
-			let versionLink = typeLink[1].split("<version>");
+			let versionLink = typeLink[1]!.split("<version>");
 			seriesFeeds = [
 				{
 					type: "atom",
@@ -217,7 +217,7 @@ export const fetchSeriesDetailsTheme = createAsyncThunk('seriesDetails/fetchSeri
 	// check if series has a theme
 	if (!_.isEmpty(themeResponse)) {
 		// transform response for further use
-		seriesTheme = transformToIdValueArray(themeResponse)[0].value;
+		seriesTheme = transformToIdValueArray(themeResponse)[0]!.value;
 	}
 
 	return seriesTheme;
@@ -405,7 +405,7 @@ export const updateSeriesTheme = createAsyncThunk('seriesDetails/updateSeriesThe
             .then((response) => {
                 let themeResponse = response.data;
 
-                let seriesTheme = transformToIdValueArray(themeResponse)[0].value;
+                let seriesTheme = transformToIdValueArray(themeResponse)[0]!.value;
 
                 dispatch(setSeriesDetailsTheme(seriesTheme));
                 dispatch(

@@ -40,7 +40,7 @@ const WizardStepperEvent = ({
 
 			let previousPageIndex = key - 1 > 0 ? key - 1 : 0;
 			while (previousPageIndex >= 0) {
-				if (steps[previousPageIndex].hidden) {
+				if (steps[previousPageIndex]!.hidden) {
 					previousPageIndex = previousPageIndex - 1;
 				} else {
 					break;

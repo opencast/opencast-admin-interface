@@ -65,11 +65,11 @@ const StartTaskSummaryPage = <T extends RequiredFormProps>({
 										<span>
 											{t("BULK_ACTIONS.SCHEDULE_TASK.SUMMARY.CONFIGURATION")}
 										</span>
-										{Object.keys(formik.values.configuration).map(
-											(config, key) => (
+										{Object.entries(formik.values.configuration).map(
+											([config, configValue], key) => (
 												<p key={key}>
 													{config} :{" "}
-													{formik.values.configuration[config].toString()}
+													{configValue.toString()}
 												</p>
 											)
 										)}

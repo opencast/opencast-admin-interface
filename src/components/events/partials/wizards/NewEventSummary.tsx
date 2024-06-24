@@ -71,18 +71,18 @@ const NewEventSummary = <T extends RequiredFormProps>({
 		flavorSubType: string,
 		value: any,
 	}[] = [];
-	for (let i = 0; uploadAssetsOptionsNonTrack.length > i; i++) {
-		let fieldValue = formik.values[uploadAssetsOptionsNonTrack[i].id];
+	for (const uploadAssetOption of uploadAssetsOptionsNonTrack) {
+		let fieldValue = formik.values[uploadAssetOption.id];
 		if (!!fieldValue) {
-			const displayOverride = uploadAssetsOptionsNonTrack[i].displayOverride
+			const displayOverride = uploadAssetOption.displayOverride
 			uploadAssetsNonTrack = uploadAssetsNonTrack.concat({
-				name: uploadAssetsOptionsNonTrack[i].id,
+				name: uploadAssetOption.id,
 				translate: !!displayOverride
 					? t(displayOverride)
-					: translateOverrideFallback(uploadAssetsOptionsNonTrack[i], t),
-				type: uploadAssetsOptionsNonTrack[i].type,
-				flavorType: uploadAssetsOptionsNonTrack[i].flavorType,
-				flavorSubType: uploadAssetsOptionsNonTrack[i].flavorSubType,
+					: translateOverrideFallback(uploadAssetOption, t),
+				type: uploadAssetOption.type,
+				flavorType: uploadAssetOption.flavorType,
+				flavorSubType: uploadAssetOption.flavorSubType,
 				value: fieldValue,
 			});
 		}
@@ -294,12 +294,12 @@ const NewEventSummary = <T extends RequiredFormProps>({
 										</td>
 									</tr>
 									{/* Repeat entry for each configuration key/value pair */}
-									{Object.keys(formik.values.configuration).map(
-										(config, key) => (
+									{Object.entries(formik.values.configuration).map(
+										([config, configValue], key) => (
 											<tr key={key}>
 												<td>{config}</td>
 												<td>
-													{formik.values.configuration[config].toString()}
+													{configValue.toString()}
 												</td>
 											</tr>
 										)

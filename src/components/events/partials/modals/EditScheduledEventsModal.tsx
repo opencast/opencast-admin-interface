@@ -91,7 +91,7 @@ const EditScheduledEventsModal = ({
 // @ts-expect-error TS(2339): Property 'events' does not exist on type '{}'.
 			errors.events = "Not all events editable!";
 		}
-		if (steps[page].name !== "general") {
+		if (steps[page]!.name !== "general") {
 			return checkSchedulingConflicts(
 				values,
 				setConflicts,

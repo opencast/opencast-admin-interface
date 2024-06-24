@@ -1,15 +1,4 @@
-// keymap containing information about available hotkeys
-type HotkeyMapType = {
-	[key: string]: {
-		[key: string]: {
-			name: string,
-			description: string,
-			sequence: string[],
-		}
-	}
-}
-
-export const availableHotkeys: HotkeyMapType = {
+export const availableHotkeys = {
 	general: {
 		HOTKEY_CHEATSHEET: {
 			name: "hotkey_cheatsheet",

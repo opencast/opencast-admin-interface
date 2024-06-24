@@ -72,6 +72,9 @@ const EventDetailsWorkflowTab = ({
 // @ts-expect-error TS(7006): Parameter 'workflowId' implicitly has an 'any' typ... Remove this comment to see the full error message
 	const isCurrentWorkflow = (workflowId) => {
 		let currentWorkflow = workflows.entries[workflows.entries.length - 1];
+		if (!currentWorkflow) {
+			return false;
+		}
 		return currentWorkflow.id === workflowId;
 	};
 

@@ -52,35 +52,35 @@ export const fetchAclDetails = createAsyncThunk('aclDetails/fetchAclDetails', as
 	let transformedAcls: TransformedAcls = [];
 
 	// transform policies for further use
-  // TODO: Investigate why we do this and write down the reason here
-  // (or simplify the code if we don't actually need to transform)
-	for (let i = 0; acl.ace.length > i; i++) {
-		if (transformedAcls.find((rule) => rule.role === acl.ace[i].role)) {
-			for (let j = 0; transformedAcls.length > j; j++) {
+	// TODO: Investigate why we do this and write down the reason here
+	// (or simplify the code if we don't actually need to transform)
+	for (const ace of acl.ace) {
+		if (transformedAcls.find((rule) => rule.role === ace.role)) {
+			for (const [j, transformedAcl] of transformedAcls.entries()) {
 				// only update entry for policy if already added with other action
-				if (transformedAcls[j].role === acl.ace[i].role) {
-					if (acl.ace[i].action === "read") {
+				if (transformedAcl.role === ace.role) {
+					if (ace.action === "read") {
 						transformedAcls[j] = {
-							...transformedAcls[j],
-							read: acl.ace[i].allow,
+							...transformedAcl,
+							read: ace.allow,
 						};
 						break;
 					}
-					if (acl.ace[i].action === "write") {
+					if (ace.action === "write") {
 						transformedAcls[j] = {
-							...transformedAcls[j],
-							write: acl.ace[i].allow,
+							...transformedAcl,
+							write: ace.allow,
 						};
 						break;
 					}
 					if (
-						acl.ace[i].action !== "read" &&
-						acl.ace[i].action !== "write" &&
-						acl.ace[i].allow === true
+						ace.action !== "read" &&
+						ace.action !== "write" &&
+						ace.allow === true
 					) {
 						transformedAcls[j] = {
-							...transformedAcls[j],
-							actions: transformedAcls[j].actions.concat(acl.ace[i].action),
+							...transformedAcl,
+							actions: transformedAcl.actions.concat(ace.action),
 						};
 						break;
 					}
@@ -88,32 +88,32 @@ export const fetchAclDetails = createAsyncThunk('aclDetails/fetchAclDetails', as
 			}
 		} else {
 			// add policy if role not seen before
-			if (acl.ace[i].action === "read") {
+			if (ace.action === "read") {
 				transformedAcls = transformedAcls.concat({
-					role: acl.ace[i].role,
-					read: acl.ace[i].allow,
+					role: ace.role,
+					read: ace.allow,
 					write: false,
 					actions: [],
 				});
 			}
-			if (acl.ace[i].action === "write") {
+			if (ace.action === "write") {
 				transformedAcls = transformedAcls.concat({
-					role: acl.ace[i].role,
+					role: ace.role,
 					read: false,
-					write: acl.ace[i].allow,
+					write: ace.allow,
 					actions: [],
 				});
 			}
 			if (
-				acl.ace[i].action !== "read" &&
-				acl.ace[i].action !== "write" &&
-				acl.ace[i].allow === true
+				ace.action !== "read" &&
+				ace.action !== "write" &&
+				ace.allow === true
 			) {
 				transformedAcls = transformedAcls.concat({
-					role: acl.ace[i].role,
+					role: ace.role,
 					read: false,
 					write: false,
-					actions: [acl.ace[i].action],
+					actions: [ace.action],
 				});
 			}
 		}

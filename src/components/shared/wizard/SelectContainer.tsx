@@ -82,9 +82,9 @@ const SelectContainer = ({
 		let selectedOptions = [];
 
 		// put marked options in array
-		for (let i = 0; i < options.length; i++) {
-			if (options[i].selected) {
-				selectedOptions.push(options[i].value);
+		for (const option of options) {
+			if (option.selected) {
+				selectedOptions.push(option.value);
 			}
 		}
 
@@ -97,9 +97,9 @@ const SelectContainer = ({
 		let deselectedOptions = [];
 
 		// put all marked options in array
-		for (let i = 0; i < options.length; i++) {
-			if (options[i].selected) {
-				deselectedOptions.push(options[i].value);
+		for (const option of options) {
+			if (option.selected) {
+				deselectedOptions.push(option.value);
 			}
 		}
 
@@ -113,11 +113,11 @@ const SelectContainer = ({
 		let editableDefaultItems = [...defaultItems];
 
 		// move marked items to selected items
-		for (let i = 0; i < markedForAddition.length; i++) {
-			move(markedForAddition[i], editableItems, editableSelectedItems);
+		for (const marked of markedForAddition) {
+			move(marked, editableItems, editableSelectedItems);
 
 			// remove marked item from items considered for search bar
-			remove(markedForAddition[i], editableDefaultItems);
+			remove(marked, editableDefaultItems);
 		}
 
 		// update state with current values
@@ -136,15 +136,15 @@ const SelectContainer = ({
 		let editableDefaultItems = [...defaultItems];
 
 		// move marked items from selected items back to items
-		for (let i = 0; i < markedForRemoval.length; i++) {
-			move(markedForRemoval[i], editableSelectedItems, editableItems);
+		for (const marked of markedForAddition) {
+			move(marked, editableSelectedItems, editableItems);
 
 			// add marked item to items considered for search bar if not already containing
 			if (
-				!editableDefaultItems.some((item) => item.name === markedForRemoval[i])
+				!editableDefaultItems.some((item) => item.name === marked)
 			) {
 				editableDefaultItems.push({
-					name: markedForRemoval[i],
+					name: marked,
 				});
 			}
 		}
@@ -161,9 +161,9 @@ const SelectContainer = ({
 
 	// move item from one array to another when matching key
 	const move = (key: string, from: Item[], to: Item[]) => {
-		for (let i = 0; i < from.length; i++) {
-			if (from[i].name === key) {
-				to.push(from[i]);
+		for (const [i, fromItem] of from.entries()) {
+			if (fromItem.name === key) {
+				to.push(fromItem);
 				from.splice(i, 1);
 				return;
 			}
@@ -172,8 +172,8 @@ const SelectContainer = ({
 
 	// remove item from array when matching key
 	const remove = (key: string, compare: Item[]) => {
-		for (let i = 0; i < compare.length; i++) {
-			if (compare[i].name === key) {
+		for (const [i, comp] of compare.entries()) {
+			if (comp.name === key) {
 				compare.splice(i, 1);
 				return;
 			}

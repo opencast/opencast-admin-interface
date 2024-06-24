@@ -64,8 +64,19 @@ const SeriesDetails = ({
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
 	const themesEnabled = (orgProperties['admin.themes.enabled']?.toLowerCase() || 'true') === 'true';
 
+	type Tab = {
+		tabNameTranslation: string,
+		accessRole: string,
+		name: string,
+		hidden?: boolean,
+	}
+
+	type Tabs = [
+		Tab, Tab, Tab, Tab, Tab,
+	]
+
 	// information about each tab
-	const tabs = [
+	const tabs: Tabs = [
 		{
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.METADATA",
 			accessRole: "ROLE_UI_SERIES_DETAILS_METADATA_VIEW",

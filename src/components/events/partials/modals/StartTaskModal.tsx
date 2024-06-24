@@ -64,7 +64,7 @@ const StartTaskModal = ({
 			errors.events = "Not on all events task startable!";
 		}
 		if (
-			steps[page].name !== "general" &&
+			steps[page]!.name !== "general" &&
 			!(
 				!!values.workflow &&
 				values.workflow !== ""

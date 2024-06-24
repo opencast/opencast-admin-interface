@@ -89,7 +89,7 @@ const NewSeriesWizard: React.FC<{
 		updatedPageCompleted[page] = true;
 		setPageCompleted(updatedPageCompleted);
 
-		if (steps[page + 1].hidden) {
+		if (steps[page + 1]!.hidden) {
 			setPage(page + 2);
 		} else {
 			setPage(page + 1);
@@ -106,7 +106,7 @@ const NewSeriesWizard: React.FC<{
 	) => {
 		setSnapshot(values);
 		// if previous page is hidden or not always shown, then go back two pages
-		if (steps[page - 1].hidden || twoPagesBack) {
+		if (steps[page - 1]!.hidden || twoPagesBack) {
 			setPage(page - 2);
 		} else {
 			setPage(page - 1);
@@ -160,7 +160,7 @@ const NewSeriesWizard: React.FC<{
 										nextPage={nextPage}
 										formik={formik}
 										metadataFields={metadataFields}
-										header={steps[page].translation}
+										header={steps[page]!.translation}
 									/>
 								)}
 								{page === 1 && (
@@ -191,7 +191,7 @@ const NewSeriesWizard: React.FC<{
 									<NewSeriesSummary
 										previousPage={previousPage}
 										formik={formik}
-										metaDataExtendedHidden={steps[1].hidden}
+										metaDataExtendedHidden={steps[1]!.hidden}
 									/>
 								)}
 							</div>
