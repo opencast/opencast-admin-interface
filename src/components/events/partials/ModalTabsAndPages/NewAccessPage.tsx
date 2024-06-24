@@ -10,7 +10,8 @@ import {
 	fetchAclTemplates,
 	fetchRolesWithTarget,
 } from "../../../../slices/aclSlice";
-import { Field, FieldArray } from "formik";
+import { FieldArray } from "formik";
+import { Field } from "../../../shared/Field";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";

@@ -1,7 +1,8 @@
 import React from "react";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { useTranslation } from "react-i18next";
-import { Field, FormikProps } from "formik";
+import { FormikProps } from "formik";
+import { Field } from "../../../shared/Field";
 
 /**
  * This component renders the metadata page for groups in the new groups wizard and group details modal

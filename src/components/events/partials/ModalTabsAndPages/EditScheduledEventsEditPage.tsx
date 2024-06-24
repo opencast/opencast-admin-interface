@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { Field, FieldArray, FormikProps } from "formik";
+import { FieldArray, FormikProps } from "formik";
+import { Field } from "../../../shared/Field";
 import Notifications from "../../../shared/Notifications";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getTimezoneOffset, hasAccess } from "../../../../utils/utils";

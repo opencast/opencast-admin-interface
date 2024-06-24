@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { Field } from "formik";
+import { Field } from "../../../shared/Field";
 
 /**
  * This component renders the general user information tab in the users details modal.
