@@ -2,6 +2,7 @@ import React from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useTranslation } from "react-i18next";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
+import { focusTrap } from "../../utils/modalUtils";
 
 const ConfirmModal = ({
 // @ts-expect-error TS(7031): Binding element 'close' implicitly has an 'any' ty... Remove this comment to see the full error message
@@ -20,6 +21,13 @@ const ConfirmModal = ({
 	deleteWithCautionMessage = "",
 }) => {
 	const { t } = useTranslation();
+
+	const confirmModalRef = React.useRef(null);
+	const [focusEneabled, setFocusEneabled] = React.useState(false);
+	React.useEffect(() => {
+		focusTrap(confirmModalRef, focusEneabled, setFocusEneabled);
+	});
+
 
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
@@ -44,6 +52,7 @@ const ConfirmModal = ({
 				className="modal modal-animation"
 				id="confirm-modal"
 				style={{ fontSize: "14px" }}
+				ref={confirmModalRef}
 			>
 				<header>
 					<button

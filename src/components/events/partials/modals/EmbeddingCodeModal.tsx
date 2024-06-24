@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { getSourceURL } from "../../../../utils/embeddedCodeUtils";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { focusTrap } from "../../../../utils/modalUtils";
 
 /**
  * This component renders the embedding code modal
@@ -17,6 +18,12 @@ const EmbeddingCodeModal = ({
 	const [sourceURL, setSourceURL] = useState("");
 	const [currentSize, setCurrentSize] = useState("0x0");
 	const [showCopySuccess, setCopySuccess] = useState(false);
+
+	const embeddingCodeModalRef = React.useRef(null);
+	const [focusEneabled, setFocusEneabled] = React.useState(false);
+	React.useEffect(() => {
+		focusTrap(embeddingCodeModalRef, focusEneabled, setFocusEneabled);
+	});
 
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
@@ -90,7 +97,7 @@ const EmbeddingCodeModal = ({
 	return (
 		<>
 			<div className="modal-animation modal-overlay" />
-			<section className="modal modal-animation" id="embedding-code">
+			<section className="modal modal-animation" id="embedding-code" ref={embeddingCodeModalRef}>
 				<header>
 					<button
 						className="button-like-anchor fa fa-times close-modal"

@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import ThemeDetails from "./ThemeDetails";
+import { focusTrap } from "../../../../utils/modalUtils";
 
 /**
  * This component renders the modal for displaying theme details
@@ -12,6 +13,12 @@ const ThemeDetailsModal = ({
 }: any) => {
 	const { t } = useTranslation();
 
+	const themeDetailsModalRef = React.useRef(null);
+	const [focusEneabled, setFocusEneabled] = React.useState(false);
+	React.useEffect(() => {
+		focusTrap(themeDetailsModalRef,focusEneabled, setFocusEneabled);
+	});
+
 	const close = () => {
 		handleClose();
 	};
@@ -22,6 +29,7 @@ const ThemeDetailsModal = ({
 			<section
 				id="theme-details-modal"
 				className="modal wizard modal-animation"
+				ref={themeDetailsModalRef}
 			>
 				<header>
 					<button className="button-like-anchor fa fa-times close-modal" onClick={() => close()} />

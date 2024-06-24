@@ -7,6 +7,7 @@ import { useAppDispatch } from "../../../../store";
 import { deleteMultipleEvent } from "../../../../slices/eventSlice";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { focusTrap } from "../../../../utils/modalUtils";
 
 /**
  * This component manages the delete bulk action
@@ -20,6 +21,12 @@ const DeleteEventsModal = ({
 
 	const [allChecked, setAllChecked] = useState(true);
 	const [selectedEvents, setSelectedEvents] = useState(selectedRows);
+
+	const deleteEventsModalRef = React.useRef(null);
+
+	React.useEffect(() => {
+		focusTrap(deleteEventsModalRef);
+	});
 
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
@@ -81,6 +88,7 @@ const DeleteEventsModal = ({
 				className="modal active modal-open"
 				id="delete-events-status-modal"
 				style={{ display: "block" }}
+				ref={deleteEventsModalRef}
 			>
 				<header>
 					<button onClick={close} className="button-like-anchor fa fa-times close-modal" />

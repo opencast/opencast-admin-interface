@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import GroupDetails from "./GroupDetails";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { focusTrap } from "../../../../utils/modalUtils";
 
 /**
  * This component renders the modal for displaying group details
@@ -12,6 +13,14 @@ const GroupDetailsModal = ({
     groupName
 }: any) => {
 	const { t } = useTranslation();
+	const closeButtonRef = React.useRef(null);
+	
+	const groupDetailsModalRef = React.useRef(null);
+
+	const [focusEneabled, setFocusEneabled] = React.useState(false);
+	React.useEffect(() => {
+		focusTrap(groupDetailsModalRef, focusEneabled, setFocusEneabled);
+	});
 
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
@@ -37,11 +46,13 @@ const GroupDetailsModal = ({
 				id="group-modal"
 				className="modal wizard modal-animation"
 				style={modalStyle}
+				ref={groupDetailsModalRef}
 			>
 				<header>
 					<button
 						className="button-like-anchor fa fa-times close-modal"
 						onClick={() => handleClose()}
+						ref={closeButtonRef}
 					/>
 					<h2>{t("USERS.GROUPS.DETAILS.EDITCAPTION", { name: groupName })}</h2>
 				</header>

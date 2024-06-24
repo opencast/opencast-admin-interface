@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import UserDetails from "./UserDetails";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { focusTrap } from "../../../../utils/modalUtils";
 
 /**
  * This component renders the modal for displaying user details
@@ -13,12 +14,19 @@ const UserDetailsModal = ({
 }: any) => {
 	const { t } = useTranslation();
 
+	const userDetailsModalRef = React.useRef(null);
+	const [focusEneabled, setFocusEneabled] = React.useState(false);
+	React.useEffect(() => {
+		focusTrap(userDetailsModalRef, focusEneabled, setFocusEneabled);
+	});
+
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
 		() => close(),
 		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
 		[close],
   	);
+	
 
 	const handleClose = () => {
 		close();
@@ -36,6 +44,7 @@ const UserDetailsModal = ({
 				id="user-details-modal"
 				className="modal wizard modal-animation"
 				style={modalStyle}
+				ref={userDetailsModalRef}
 			>
 				<header>
 					<button

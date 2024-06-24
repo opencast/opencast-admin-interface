@@ -11,6 +11,7 @@ import {
 } from "../../../../slices/seriesSlice";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { focusTrap } from "../../../../utils/modalUtils";
 
 /**
  * This component manges the delete series bulk action
@@ -24,6 +25,12 @@ const DeleteSeriesModal = ({ close, selectedRows }) => {
 	const [selectedSeries, setSelectedSeries] = useState(selectedRows);
 	const [deleteWithSeriesAllowed, setDeleteWithSeriesAllowed] = useState(false);
 
+	const deleteSeriesModalRef = React.useRef(null);
+	const [focusEneabled, setFocusEneabled] = React.useState(false);
+	React.useEffect(() => {
+		focusTrap(deleteSeriesModalRef, focusEneabled, setFocusEneabled);
+	});
+	
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
 		() => close(),
@@ -127,6 +134,7 @@ const DeleteSeriesModal = ({ close, selectedRows }) => {
 				className="modal active modal-open"
 				id="delete-series-status-modal"
 				style={{ display: "block" }}
+				ref={deleteSeriesModalRef}
 			>
 				<header>
 					<button onClick={() => close()} className="button-like-anchor fa fa-times close-modal" />

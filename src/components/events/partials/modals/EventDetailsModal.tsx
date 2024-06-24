@@ -5,6 +5,7 @@ import { useAppDispatch } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { focusTrap } from "../../../../utils/modalUtils";
 
 /**
  * This component renders the modal for displaying event details
@@ -39,6 +40,12 @@ const EventDetailsModal = ({
 		}
 	};
 
+	const eventDetailsModalRef = React.useRef(null);
+	const [focusEneabled, setFocusEneabled] = React.useState(false);
+	React.useEffect(() => {
+		focusTrap(eventDetailsModalRef, focusEneabled, setFocusEneabled);
+	});
+
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
 		() => close(),
@@ -53,8 +60,8 @@ const EventDetailsModal = ({
 				<div className="modal-animation modal-overlay" />
 				<section
 					id="event-details-modal"
-					tabIndex={tabIndex}
 					className="modal wizard modal-animation"
+					ref={eventDetailsModalRef}
 				>
 					<header>
 						<button className="button-like-anchor fa fa-times close-modal" onClick={() => close()} />
