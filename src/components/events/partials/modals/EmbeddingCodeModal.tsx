@@ -39,6 +39,12 @@ const EmbeddingCodeModal = ({
 		close();
 	};
 
+	const handleKeyDown = (e: React.KeyboardEvent) => {
+		if (e.key === 'Enter') {
+			updateTextArea(e);
+		}
+	};
+
 	const copy = () => {
 		let copyText = document.getElementById("social_embed-textarea");
 // @ts-expect-error TS(2531): Object is possibly 'null'.
@@ -105,6 +111,8 @@ const EmbeddingCodeModal = ({
 						id="620x349"
 						className="embedSizeButton size_620x349"
 						onClick={(e) => updateTextArea(e)}
+						onKeyDown={handleKeyDown}
+						tabIndex={0}
 					>
 						<span className="span-embedded-code">620x349</span>
 					</div>
@@ -112,6 +120,8 @@ const EmbeddingCodeModal = ({
 						id="540x304"
 						className="embedSizeButton size_540x304"
 						onClick={(e) => updateTextArea(e)}
+						onKeyDown={handleKeyDown}
+						tabIndex={0}
 					>
 						<span className="span-embedded-code">540x304</span>
 					</div>
@@ -119,6 +129,8 @@ const EmbeddingCodeModal = ({
 						id="460x259"
 						className="embedSizeButton size_460x259"
 						onClick={(e) => updateTextArea(e)}
+						onKeyDown={handleKeyDown}
+						tabIndex={0}
 					>
 						<span className="span-embedded-code">460x259</span>
 					</div>
@@ -126,6 +138,8 @@ const EmbeddingCodeModal = ({
 						id="380x214"
 						className="embedSizeButton size_380x214"
 						onClick={(e) => updateTextArea(e)}
+						onKeyDown={handleKeyDown}
+						tabIndex={0}
 					>
 						<span className="span-embedded-code">380x214</span>
 					</div>
@@ -133,6 +147,8 @@ const EmbeddingCodeModal = ({
 						id="300x169"
 						className="embedSizeButton size_300x169"
 						onClick={(e) => updateTextArea(e)}
+						onKeyDown={handleKeyDown}
+						tabIndex={0}
 					>
 						<span className="span-embedded-code">300x169</span>
 					</div>
