@@ -1,6 +1,7 @@
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Field, FormikProps } from "formik";
+import { FormikProps } from "formik";
+import { Field } from "../../../shared/Field";
 import {
 	getWorkflowDefById,
 } from "../../../../selectors/workflowSelectors";
