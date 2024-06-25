@@ -95,6 +95,15 @@ export const fetchAclActions = async () => {
 	return actions;
 };
 
+// fetch defaults for the access policy tab in the details views
+export const fetchAclDefaults = async () => {
+	let data = await axios.get("/admin-ng/resources/ACL.DEFAULTS.json");
+
+	const response = await data.data;
+
+	return response;
+};
+
 // fetch all policies of an certain acl template
 export const fetchAclTemplateById = async (id: string) => {
 	let response = await axios.get(`/acl-manager/acl/${id}`);

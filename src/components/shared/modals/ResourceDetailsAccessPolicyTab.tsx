@@ -3,6 +3,7 @@ import RenderMultiField from "../wizard/RenderMultiField";
 import {
 	Role,
 	fetchAclActions,
+	fetchAclDefaults,
 	fetchAclTemplateById,
 	fetchAclTemplates,
 	fetchRolesWithTarget,
@@ -62,6 +63,8 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 	// list of possible additional actions
 	const [aclActions, setAclActions] = useState<{ id: string, value: string }[]>([]);
 
+	const [aclDefaults, setAclDefaults] = useState<{ [key: string]: string }>();
+
 	// shows, whether a resource has additional actions on top of normal read and write rights
 	const [hasActions, setHasActions] = useState(false);
 
@@ -86,6 +89,8 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 			const responseActions = await fetchAclActions();
 			setAclActions(responseActions);
 			setHasActions(responseActions.length > 0);
+			const responseDefaults = await fetchAclDefaults();
+			await setAclDefaults(responseDefaults);
 			await fetchAccessPolicies(resourceId);
 			fetchRolesWithTarget("ACL").then((roles) => setRoles(roles));
 			if (fetchHasActiveTransactions) {
@@ -249,7 +254,7 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 
 	/* fetches the policies for the chosen template and sets the policies in the formik form to those policies */
 // @ts-expect-error TS(7006): Parameter 'templateId' implicitly has an 'any' typ... Remove this comment to see the full error message
-	const handleTemplateChange = async (templateId, setFormikFieldValue) => {
+	const handleTemplateChange = async (templateId, setFormikFieldValue, currentPolicies) => {
 		// fetch information about chosen template from backend
 		let template = await fetchAclTemplateById(templateId);
 
@@ -260,6 +265,16 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 			write: true,
 			actions: [],
 		});
+
+		// If configured, keep roles that match the configured prefix
+		if (aclDefaults && aclDefaults["keep_on_template_switch_role_prefixes"]) {
+			const prefix = aclDefaults["keep_on_template_switch_role_prefixes"];
+			for (const policy of currentPolicies) {
+				if (policy.role.startsWith(prefix) && !template.find((acl) => acl.role === policy.role)) {
+					template.push(policy)
+				}
+			}
+		}
 
 		setFormikFieldValue("policies", template);
 		setFormikFieldValue("template", templateId);
@@ -333,7 +348,8 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 																						if (element) {
 																						handleTemplateChange(
 																							element.value,
-																							formik.setFieldValue
+																							formik.setFieldValue,
+																							formik.values.policies,
 																						)
 																					}
 																				}}
