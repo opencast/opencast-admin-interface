@@ -252,6 +252,31 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 		return false;
 	};
 
+	/* Sets default values for a new policy and returns it */
+	const handleNewPolicy = () => {
+		let role = createPolicy("");
+		role.read = true;
+
+		// If config exists, set defaults according to config
+		if (aclDefaults) {
+			if (aclDefaults["read_enabled"] && aclDefaults["read_enabled"] === "true") {
+				role.read = true;
+			} else if (aclDefaults["read_enabled"] && aclDefaults["read_enabled"] === "false") {
+				role.read = false;
+			}
+			if (aclDefaults["write_enabled"] && aclDefaults["write_enabled"] === "true") {
+				role.write = true;
+			} else if (aclDefaults["read_enabled"] && aclDefaults["write_enabled"] === "false") {
+				role.write = false;
+			}
+			if (aclDefaults["default_actions"]) {
+				role.actions = role.actions.concat(aclDefaults["default_actions"].split(","))
+			}
+		}
+
+		return role;
+	}
+
 	/* fetches the policies for the chosen template and sets the policies in the formik form to those policies */
 // @ts-expect-error TS(7006): Parameter 'templateId' implicitly has an 'any' typ... Remove this comment to see the full error message
 	const handleTemplateChange = async (templateId, setFormikFieldValue, currentPolicies) => {
@@ -498,7 +523,10 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 																										!hasAccess(
 																											editAccessRole,
 																											user
-																										)
+																										) ||
+																										(aclDefaults
+																											&& aclDefaults["read_readonly"]
+																											&& aclDefaults["read_readonly"] === "true")
 																									}
 																									className={`${
 																										transactions.read_only
@@ -523,7 +551,10 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 																										!hasAccess(
 																											editAccessRole,
 																											user
-																										)
+																										) ||
+																										(aclDefaults
+																											&& aclDefaults["write_readonly"]
+																											&& aclDefaults["write_readonly"] === "true")
 																									}
 																									className={`${
 																										transactions.read_only
@@ -611,7 +642,7 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 																						<td colSpan={5}>
 																							<button
 																								onClick={() =>
-																									push(createPolicy(""))
+																									push(handleNewPolicy())
 																								}
                                                 className="button-like-anchor"
 																							>
