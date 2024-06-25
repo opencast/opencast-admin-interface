@@ -23,9 +23,9 @@ const DeleteEventsModal = ({
 	const [selectedEvents, setSelectedEvents] = useState(selectedRows);
 
 	const deleteEventsModalRef = React.useRef(null);
-
+	const [focusEneabled, setFocusEneabled] = React.useState(false);
 	React.useEffect(() => {
-		focusTrap(deleteEventsModalRef);
+		focusTrap(deleteEventsModalRef, focusEneabled, setFocusEneabled);
 	});
 
 	useHotkeys(
