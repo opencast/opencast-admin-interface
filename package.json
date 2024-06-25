@@ -69,6 +69,7 @@
     "@types/uuid": "^9.0.8",
     "@vitejs/plugin-react-swc": "^3.7.0",
     "prop-types": "^15.8.1",
+    "rollup-preserve-directives": "^1.1.1",
     "sass": "^1.77.4",
     "typescript": "^5.4.5",
     "uuid": "^9.0.1",
