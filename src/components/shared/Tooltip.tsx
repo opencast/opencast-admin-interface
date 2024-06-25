@@ -11,6 +11,7 @@ export const Tooltip = ({ className, ...props }: TooltipProps) => {
 			classes={{ popper: className }}
 			arrow
 			describeChild
+			disableInteractive
 			enterDelay={100}
 			enterNextDelay={100}
 			leaveDelay={150}
