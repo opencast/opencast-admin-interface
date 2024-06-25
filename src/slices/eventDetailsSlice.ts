@@ -29,6 +29,7 @@ import { Workflow as WorkflowDefinitions} from "./workflowSlice";
 import { RootState } from '../store';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 import { Ace, TransformedAcl, TransformedAcls } from './aclDetailsSlice';
+import { enrichPublications } from '../thunks/assetsThunks';
 
 type MetadataField = {
 	id: string,
@@ -100,6 +101,18 @@ export type UploadAssetOption = {
 	flavorSubType: string,
 	accept: string,
 	displayOrder: number,
+}
+
+export type Publication = {
+	enabled: boolean,
+	icon?: string,
+	id: string,
+	label?: string,
+	hide?: boolean,
+	name: string,	// translation key
+	order: number,
+	url: string,
+	description?: string,
 }
 
 type EventDetailsState = {
@@ -340,15 +353,7 @@ type EventDetailsState = {
 		timestamp: string,	// date
 		title: string,
 	},
-	publications: {
-		enabled: boolean,
-		icon?: string,
-		id: string,
-		name: string,	// translation key
-		order: number,
-		url: string,
-		description?: string,
-	}[],
+	publications: Publication[],
 	statistics: Statistics[],
 	hasStatisticsError: boolean,
 }
@@ -870,49 +875,20 @@ export const fetchComments = createAsyncThunk('eventDetails/fetchComments', asyn
 	return { comments, commentReasons }
 });
 
-export const fetchEventPublications = createAsyncThunk('eventDetails/fetchEventPublications', async (eventId: string) => {
+export const fetchEventPublications = createAsyncThunk('eventDetails/fetchEventPublications', async (eventId: string, { dispatch }) => {
 	let data = await axios.get(`/admin-ng/event/${eventId}/publications.json`);
 
-	let publications = await data.data;
+	let publications: {
+		publications: {
+			id: string,
+			name: string,
+			url: string,
+		}[],
+		"start-date": string,
+		"end-date": string,
+	} = await data.data;
 
-	// get information about possible publication channels
-	data = await axios.get("/admin-ng/resources/PUBLICATION.CHANNELS.json");
-
-	let publicationChannels = await data.data;
-
-	let now = new Date();
-
-	// fill publication objects with additional information
-// @ts-expect-error TS(7006): Parameter 'publication' implicitly has an 'any' ty... Remove this comment to see the full error message
-	publications.publications.forEach((publication) => {
-		publication.enabled = !(
-			publication.id === "engage-live" &&
-			(now < new Date(publications["start-date"]) ||
-				now > new Date(publications["end-date"]))
-		);
-
-		if (publicationChannels[publication.id]) {
-			let channel = JSON.parse(publicationChannels[publication.id]);
-
-			if (channel.label) {
-				publication.label = channel.label;
-			}
-			if (channel.icon) {
-				publication.icon = channel.icon;
-			}
-			if (channel.hide) {
-				publication.hide = channel.hide;
-			}
-			if (channel.description) {
-				publication.description = channel.description;
-			}
-			if (channel.order) {
-				publication.order = channel.order;
-			}
-		}
-	});
-
-	return publications.publications;
+	return await dispatch(enrichPublications(publications)).unwrap();
 });
 
 export const saveComment = createAsyncThunk('eventDetails/saveComment', async (params: {

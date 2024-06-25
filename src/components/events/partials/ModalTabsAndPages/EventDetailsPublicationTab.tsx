@@ -60,7 +60,7 @@ const EventDetailsPublicationTab = ({
 															)}
 														</span>
 														<div>
-															<span>{t(publication.name)}</span>
+															<span>{publication.label ? t(publication.label) : t(publication.name)}</span>
 															{publication.description && (
 																<p className="description">
 																	{publication.description}
