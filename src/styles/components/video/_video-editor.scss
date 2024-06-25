@@ -144,7 +144,6 @@ $segment-deleted-selected: saturate(darken($segment-deleted, 25%), 5%);
                     @include btn(white);
                     padding: 1px 4px;
                     float: right;
-                    @include fa-icon($fa-var-cog, before, inline-block, 0, 0, $medium-prim-color, 10px, normal, 0);
                     &:before {
                         vertical-align: middle;
                     }
@@ -386,18 +385,6 @@ $segment-deleted-selected: saturate(darken($segment-deleted, 25%), 5%);
                                         color: $black !important; // force this for mouseover
                                     }
                                 }
-
-                                &.unused {
-                                  @include fa-icon($fa-var-eye-slash , before, inline-block, 0 0 0 0, 0, $l-blue, 1em);
-                                }
-
-                                &.used {
-                                  @include fa-icon($fa-var-eye, before, inline-block, 0 0 0 0, 0, $l-blue, 1em);
-                                }
-
-                                &.remove {
-                                    @include fa-icon($fa-var-times, before, inline-block, 0 0 0 0, 0, $l-blue, 1em);
-                                }
                             }
 
                             a:last-child {
@@ -524,8 +511,6 @@ $segment-deleted-selected: saturate(darken($segment-deleted, 25%), 5%);
                 &:active {
                   color: rgba(193,56,50,1);
                 }
-
-                @include fa-icon($fa-var-scissors, before, block, 0, 2px 4px, inherit, 12px);
             }
 
             &.active {
@@ -719,18 +704,6 @@ $segment-deleted-selected: saturate(darken($segment-deleted, 25%), 5%);
                       color: $black !important; // force this for mouseover
                   }
               }
-
-              &.unused {
-                @include fa-icon($fa-var-eye-slash , before, inline-block, 0 0 0 0, 0, lighten($black, 10%), 1em);
-              }
-
-              &.used {
-                @include fa-icon($fa-var-eye, before, inline-block, 0 0 0 0, 0, lighten($black, 10%), 1em);
-              }
-
-              &.remove {
-                  @include fa-icon($fa-var-times, before, inline-block, 0 0 0 0, 0, lighten($black, 10%), 1em);
-              }
           }
 
 
@@ -752,12 +725,6 @@ $segment-deleted-selected: saturate(darken($segment-deleted, 25%), 5%);
           .segment-start-end {
             float: left;
             padding: 6px;
-          }
-
-          .segment-start {
-          }
-
-          .segment-end {
           }
 
           .segment-remove {
@@ -894,12 +861,10 @@ $segment-deleted-selected: saturate(darken($segment-deleted, 25%), 5%);
 
   .video-track-hidden-icon {
     line-height: 120px;
-    @include fa-icon($fa-var-eye-slash, before, inline-block, 0 0 0 0, 0, lighten($black, 90%), 60px);
   }
 
   .audio-track-hidden-icon {
     line-height: 80px;
-    @include fa-icon($fa-var-microphone-slash, before, inline-block, 0 0 0 0, 0, lighten($black, 90%), 60px);
   }
 
   .track-hidden:hover {

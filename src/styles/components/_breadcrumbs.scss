@@ -50,8 +50,6 @@
             }
         }
 
-        @include fa-icon($fa-var-chevron-right, after, inline-block, 0, 0, inherit, 9px);
-
         &:after {
             position: relative;
             top: -1px;

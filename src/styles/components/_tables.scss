@@ -229,11 +229,9 @@
 
             &.play {
                 color: $color-silver;
-                @include fa-icon($fa-var-play-circle-o, before, inline-block, 0, 0, $color-silver, 17px, normal, inherit);
 
                 &.on {
                     color: $primary-color-green;
-                    @include fa-icon($fa-var-play-circle-o, before, inline-block, 0, 0, $primary-color-green, 17px, normal, inherit);
                 }
             }
 
@@ -254,18 +252,7 @@
                 @include build-icon(auto, auto, more-series-icon, 19px, 15px);
             }
 
-            &.comments {
-                @include fa-icon($fa-var-comment-o, before, block, -3px 0 0 0, 0, inherit, 20px, normal,
-                                 inherit);
-            }
-
-            &.comments-open {
-                @include fa-icon($fa-var-comment, before, block, -3px 0 0 0, 0, inherit, 20px, normal, inherit);
-            }
-
             &.cut {
-                @include fa-icon($fa-var-scissors, before, inline-block, 2px 0 0 0, 0, inherit, 18px, normal, inherit);
-
                 .badge {
                   position: relative;
                   margin-right: -9px;
@@ -281,11 +268,6 @@
 
             &.edit {
                 color: $l-blue;
-            }
-
-            &.fa {
-                font-size: 18px;
-                color: $color-darkgray;
             }
 
             &.crosslink {
@@ -439,8 +421,6 @@
         }
 
         &.js-has-check {
-            @include fa-icon($fa-var-check, after, inline-block, 3px 0 0 0, 0, $green, 18px);
-
             &:after {
                 opacity: 0;
                 visibility: hidden;

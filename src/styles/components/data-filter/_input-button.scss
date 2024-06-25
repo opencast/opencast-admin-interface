@@ -26,7 +26,6 @@
     user-select: none;
 
     $icon-pseudo-position: before;
-    @include fa-icon($fa-var-ellipsis-v, $icon-pseudo-position, inline-block, 0 8px 0 0, 0, inherit, 14px);
 
     transition-property: padding, visibility, opacity;
     transition-duration: 300ms;

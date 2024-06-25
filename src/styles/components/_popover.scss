@@ -75,7 +75,6 @@
 }
 
 .popover__list-item {
-    @include fa-icon($fa-var-play-circle-o, before, inline-block, 0, 0, #37c180, 20px, normal, inherit);
     background-position-y: center;
     margin: 6px 0;
     padding-left: 30px;
@@ -89,7 +88,6 @@
 }
 
 .popover__list-item-disabled {
-    @include fa-icon($fa-var-play-circle-o, before, inline-block, 0, 0, inherit, 20px, normal, inherit);
     margin: 6px 0;
     padding-left: 30px;
     line-height: 22px;

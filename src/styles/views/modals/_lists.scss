@@ -86,10 +86,6 @@
       height: 24px;
     }
 
-    .video-icon {
-        @include fa-icon($fa-var-play-circle, before, inherit, 0, 0, $primary-color-green-light-2, 24px);
-    }
-
 
     // Right side icons / elements
     // ----------------------------------------
@@ -98,7 +94,6 @@
         display: inline-block;
         float: right;
         margin-left: auto;
-        @include fa-icon($fa-var-play-circle-o, before, inherit, 0, 0, $primary-color-green-light-2, 24px);
 
         &:active:before,
         &:hover:before {

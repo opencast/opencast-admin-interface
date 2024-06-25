@@ -68,14 +68,6 @@
     .navigation {
 
       @include btn($white);
-
-      &.prev {
-        @include fa-icon($fa-var-chevron-left, before, inline-block, 0 0 0 0, 0, inherit, 10px);
-      }
-
-      &.next {
-        @include fa-icon($fa-var-chevron-right, after, inline-block, 0 0 0 0, 0, inherit, 10px);
-      }
     }
 
     > div {
@@ -98,10 +90,6 @@
     padding-top: 14px;
     padding-right: 14px;
     margin-left: -100%;
-
-    .download-icon {
-        @include fa-icon($fa-var-download, before, inline-block, 0 0 0 0, 0, inherit, 30px);
-    }
   }
 
 

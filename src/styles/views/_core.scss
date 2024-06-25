@@ -108,11 +108,6 @@ body {
                 color: $medium-prim-color;
             }
 
-            .fa-info-circle {
-                color: $l-blue;
-                cursor: pointer;
-            }
-
             .drop-down-container {
                 margin-right: 10px;
 
@@ -174,14 +169,6 @@ body {
 
                 > i {
                     font-size: 10px;
-                }
-
-                &.prev {
-                    @include fa-icon($fa-var-chevron-left, before, inline-block, 0 5px 0 0, 0, inherit, 10px);
-                }
-
-                &.next {
-                    @include fa-icon($fa-var-chevron-right, after, inline-block, 0 0 0 5px, 0, inherit, 10px);
                 }
             }
 

@@ -105,20 +105,6 @@
                     float: right;
                 }
 
-                .fa {
-                    font-size: 20px;
-                    vertical-align: middle;
-                    margin-right: 10px;
-                }
-
-                .fa-plus-circle {
-                    color: $green;
-                }
-
-                .fa-minus-circle {
-                    color: $red;
-                }
-
                 .btn {
                     @include btn(green);
                 }
@@ -160,10 +146,6 @@
 
             span {
                 font-size: 12px;
-            }
-
-            .fa-plus-circle {
-                color: $green;
             }
 
             .cancel {

@@ -533,16 +533,6 @@ main.main-view {
         background: -moz-linear-gradient(0% 0% 270deg, #fefefe, #f0f0f0);
       }
 
-      &.prev {
-        //override right margin with 0
-        @include fa-icon($fa-var-chevron-left, before, inline-block, 0 0 0 0, 0, inherit, 10px);
-      }
-
-      &.next {
-        //override left margin with 0
-        @include fa-icon($fa-var-chevron-right, after, inline-block, 0 0 0 0, 0, inherit, 10px);
-      }
-
       .active {
         border: 1px solid #616161;
       }
@@ -566,24 +556,6 @@ table.main-tbl {
   td {
     max-width: 800px;
     word-wrap: anywhere;
-  }
-
-  td {
-    .fa-check {
-      float: right;
-      color: $green;
-      margin-top: 3px;
-      font-size: 18px;
-      opacity: 0;
-      visibility: hidden;
-      transition: all .2s;
-
-      &.active {
-        opacity: 1;
-        visibility: visible;
-      }
-
-    } // fa-check
   }
 }
 

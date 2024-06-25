@@ -69,7 +69,6 @@
         &:hover > i,
         &:active > i {
             color: #24425c;
-            @include fa-icon-color(before, "#24425c");
         }
 
         @keyframes fadeIn {
@@ -82,30 +81,6 @@
             100% {
                 opacity: 0.9;
             }
-        }
-
-        .events {
-            @include fa-icon($fa-var-calendar-check-o, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
-        }
-
-        .systems {
-            @include fa-icon($fa-var-server, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
-        }
-
-        .recordings {
-            @include fa-icon($fa-var-video-camera, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
-        }
-
-        .users {
-            @include fa-icon($fa-var-user, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
-        }
-
-        .statistics {
-            @include fa-icon($fa-var-signal, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
-        }
-
-        .configuration {
-            @include fa-icon($fa-var-cogs, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
         }
     }
 }
