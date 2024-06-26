@@ -501,7 +501,8 @@
 						"SUBTITLES": {
 							"SHORT": "Subtitles",
 							"DETAIL": "A subtitle file in vtt format"
-						}
+						},
+						"RESET": "Reset file selection"
 					},
 					"DATE_TIME": {
 						"CAPTION": "Schedule",
@@ -1081,6 +1082,7 @@
 						"READ": "Read",
 						"ADDITIONAL_ACTIONS": "Additional Actions",
 						"ACTION": "Actions",
+						"DELETE": "Delete",
 						"NEW": "New policy",
 						"DETAILS": "Details"
 					},

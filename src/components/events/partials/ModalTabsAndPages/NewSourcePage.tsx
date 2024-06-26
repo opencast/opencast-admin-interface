@@ -42,6 +42,7 @@ import { Recording, fetchRecordings } from "../../../../slices/recordingSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { parseISO } from "date-fns";
 import { checkConflicts } from "../../../../slices/eventSlice";
+import { Tooltip } from "@mui/material";
 
 /**
  * This component renders the source page for new events in the new event wizard.
@@ -242,14 +243,12 @@ const NewSourcePage = <T extends RequiredFormProps>({
 							nextPage(formik.values);
 						}
 					}}
-					tabIndex={100}
 				>
 					{t("WIZARD.NEXT_STEP")}
 				</button>
 				<button
 					className="cancel"
 					onClick={() => previousPage(formik.values, false)}
-					tabIndex={101}
 				>
 					{t("WIZARD.BACK")}
 				</button>
@@ -283,7 +282,7 @@ const Upload = ({ formik }) => {
 					{t("EVENTS.EVENTS.NEW.SOURCE.UPLOAD.RECORDING_ELEMENTS")}
 				</header>
 				<div className="obj-container">
-					<table className="main-tbl">
+					<table className="main-tbl" role="presentation">
 						<tbody>
 							<FieldArray name="uploadAssetsTrack">
 								{/*File upload button for each upload asset*/}
@@ -292,7 +291,7 @@ const Upload = ({ formik }) => {
 // @ts-expect-error TS(7006): Parameter 'asset' implicitly has an 'any' type.
 									formik.values.uploadAssetsTrack.map((asset, key) => (
 										<tr key={key}>
-											<td>
+											<td id={asset.id + '_description'}>
 												<span style={{ fontWeight: "bold" }}>
 													{translateOverrideFallback(asset, t, "SHORT")}
 												</span>
@@ -312,21 +311,24 @@ const Upload = ({ formik }) => {
 														type="file"
 														multiple={asset.multiple}
 														name={`uploadAssetsTrack.${key}.file`}
-														tabIndex={0}
+														aria-labelledby={asset.id + '_description'}
 													/>
 												</div>
 											</td>
 											<td className="fit">
-												<button
-													className="button-like-anchor remove"
-													onClick={(e) => {
-														formik.setFieldValue(
-															`uploadAssetsTrack.${key}.file`,
-															null
-														);
-														(document.getElementById(asset.id) as HTMLInputElement).value = '';
-													}}
-												/>
+												<Tooltip title={t("EVENTS.EVENTS.NEW.SOURCE.UPLOAD.RESET")}>
+													<button
+														className="button-like-anchor remove"
+														onClick={(e) => {
+															formik.setFieldValue(
+																`uploadAssetsTrack.${key}.file`,
+																null
+															);
+															(document.getElementById(asset.id) as HTMLInputElement).value = '';
+														}}
+														
+													/>
+												</Tooltip>
 											</td>
 										</tr>
 									))
@@ -404,7 +406,6 @@ const Schedule = <T extends {
 						type="checkbox"
 						name="deviceInputs"
 						value={input.id}
-						tabIndex={12}
 					/>
 					{t(input.value)}
 				</label>
@@ -416,7 +417,7 @@ const Schedule = <T extends {
 		<div className="obj">
 			<header>{t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.CAPTION")}</header>
 			<div className="obj-container">
-				<table className="main-tbl">
+				<table className="main-tbl" role="presentation">
 					<tbody>
 						<tr>
 							<td>{t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.TIMEZONE")}</td>
@@ -430,6 +431,7 @@ const Schedule = <T extends {
 							<td>
 								<DatePicker
 									name="scheduleStartDate"
+									slotProps={{ textField: { placeholder: '', inputProps: { "aria-label": t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.START_DATE")} } }}
 									value={typeof formik.values.scheduleStartDate === "string" ? parseISO(formik.values.scheduleStartDate): formik.values.scheduleStartDate}
 									onChange={(value) => {
 										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
@@ -446,8 +448,6 @@ const Schedule = <T extends {
 											);
 										}
 									}}
-									// @ts-expect-error TS(2322):
-									tabIndex={4}
 								/>
 							</td>
 						</tr>
@@ -463,6 +463,7 @@ const Schedule = <T extends {
 										<DatePicker
 											name="scheduleEndDate"
 											value={typeof formik.values.scheduleEndDate === "string" ? parseISO(formik.values.scheduleEndDate) : formik.values.scheduleEndDate}
+											slotProps={{ textField: { placeholder: '', inputProps: { "aria-label": t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.END_DATE")} } }}
 											onChange={(value) =>
 												changeEndDateMultiple(
 													value,
@@ -470,8 +471,6 @@ const Schedule = <T extends {
 													formik.setFieldValue
 												)
 											}
-											// @ts-expect-error TS(2322):
-											tabIndex={5}
 										/>
 									</td>
 								</tr>
@@ -490,7 +489,7 @@ const Schedule = <T extends {
 													type="checkbox"
 													name="repeatOn"
 													value={day.name}
-													tabIndex={6 + key}
+													aria-label={t("EVENTS.EVENTS.NEW.SOURCE.SCHEDULE_MULTIPLE.REPEAT_ON") + t(day.readableName)}
 												/>
 											</div>
 										))}
@@ -509,6 +508,7 @@ const Schedule = <T extends {
 								 * This is the 13th input field.
 								 */}
 								<DropDown
+									ariaLabel={t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.START_TIME") + t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
 									value={formik.values.scheduleStartHour}
 									text={formik.values.scheduleStartHour.toString()}
 									options={hours}
@@ -532,7 +532,7 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
-									tabIndex={13}
+									tabIndex={0}
 								/>
 
 								{/* drop-down for minute
@@ -540,6 +540,7 @@ const Schedule = <T extends {
 								 * This is the 14th input field.
 								 */}
 								<DropDown
+								ariaLabel={t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.START_TIME") + t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
 									value={formik.values.scheduleStartMinute}
 									text={formik.values.scheduleStartMinute.toString()}
 									options={minutes}
@@ -563,7 +564,7 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
-									tabIndex={14}
+									tabIndex={0}
 								/>
 							</td>
 						</tr>
@@ -578,6 +579,7 @@ const Schedule = <T extends {
 								 * This is the 15th input field.
 								 */}
 								<DropDown
+									ariaLabel={t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.DURATION") + t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
 									value={formik.values.scheduleDurationHours}
 									text={formik.values.scheduleDurationHours.toString()}
 									options={hours}
@@ -601,7 +603,7 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
-									tabIndex={15}
+									tabIndex={0}
 								/>
 
 								{/* drop-down for minute
@@ -609,6 +611,7 @@ const Schedule = <T extends {
 								 * This is the 16th input field.
 								 */}
 								<DropDown
+									ariaLabel={t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.DURATION") + t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
 									value={formik.values.scheduleDurationMinutes}
 									text={formik.values.scheduleDurationMinutes.toString()}
 									options={minutes}
@@ -632,7 +635,7 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
-									tabIndex={16}
+									tabIndex={0}
 								/>
 							</td>
 						</tr>
@@ -647,6 +650,7 @@ const Schedule = <T extends {
 								 * This is the 17th input field.
 								 */}
 								<DropDown
+									ariaLabel={t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.END_TIME") + t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
 									value={formik.values.scheduleEndHour}
 									text={formik.values.scheduleEndHour.toString()}
 									options={hours}
@@ -670,7 +674,7 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
-									tabIndex={17}
+									tabIndex={0}
 								/>
 
 								{/* drop-down for minute
@@ -678,6 +682,7 @@ const Schedule = <T extends {
 								 * This is the 18th input field.
 								 */}
 								<DropDown
+									ariaLabel={t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.END_TIME") + t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
 									value={formik.values.scheduleEndMinute}
 									text={formik.values.scheduleEndMinute.toString()}
 									options={minutes}
@@ -701,7 +706,7 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
-									tabIndex={18}
+									tabIndex={0}
 								/>
 
 								{/* display end date if on different day to start date, only if this is current source mode */}
@@ -728,6 +733,7 @@ const Schedule = <T extends {
 							 */}
 							<td className="editable ng-isolated-scope">
 								<DropDown
+								ariaLabel={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.LOCATION")}
 									value={formik.values.location}
 									text={formik.values.location}
 									options={inputDevices}
@@ -741,7 +747,7 @@ const Schedule = <T extends {
 									placeholder={t(
 										"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.LOCATION"
 									)}
-									tabIndex={19}
+									tabIndex={0}
 								/>
 							</td>
 						</tr>

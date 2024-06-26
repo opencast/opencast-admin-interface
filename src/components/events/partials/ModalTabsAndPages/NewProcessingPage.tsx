@@ -71,6 +71,7 @@ const NewProcessingPage = <T extends RequiredFormProps>({
 								{workflowDef.length > 0 ? (
 									<div className="editable">
 										<DropDown
+											ariaLabel={t("EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW")}
 											value={formik.values.processingWorkflow}
 											text={
 												workflowDef.find(
@@ -89,7 +90,7 @@ const NewProcessingPage = <T extends RequiredFormProps>({
 											placeholder={t(
 												"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW"
 											)}
-											tabIndex={99}
+											tabIndex={0}
 										/>
 									</div>
 								) : (

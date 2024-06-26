@@ -56,30 +56,37 @@ export const weekdays = [
 	{
 		name: "MO",
 		label: "EVENTS.EVENTS.NEW.WEEKDAYS.MO",
+		readableName: "EVENTS.EVENTS.NEW.WEEKDAYSLONG.MO"
 	},
 	{
 		name: "TU",
 		label: "EVENTS.EVENTS.NEW.WEEKDAYS.TU",
+		readableName: "EVENTS.EVENTS.NEW.WEEKDAYSLONG.TU",
 	},
 	{
 		name: "WE",
 		label: "EVENTS.EVENTS.NEW.WEEKDAYS.WE",
+		readableName: "EVENTS.EVENTS.NEW.WEEKDAYSLONG.WE",
 	},
 	{
 		name: "TH",
 		label: "EVENTS.EVENTS.NEW.WEEKDAYS.TH",
+		readableName: "EVENTS.EVENTS.NEW.WEEKDAYSLONG.TH",
 	},
 	{
 		name: "FR",
 		label: "EVENTS.EVENTS.NEW.WEEKDAYS.FR",
+		readableName: "EVENTS.EVENTS.NEW.WEEKDAYSLONG.FR",
 	},
 	{
 		name: "SA",
 		label: "EVENTS.EVENTS.NEW.WEEKDAYS.SA",
+		readableName: "EVENTS.EVENTS.NEW.WEEKDAYSLONG.SA",
 	},
 	{
 		name: "SU",
 		label: "EVENTS.EVENTS.NEW.WEEKDAYS.SU",
+		readableName: "EVENTS.EVENTS.NEW.WEEKDAYSLONG.SU",
 	},
 ];
 

@@ -297,6 +297,13 @@
                 }
              }
 
+             &.show-edit {
+                display: flex !important;
+                justify-content: space-between;
+                width: 100%;
+                color: #333;;
+            }
+
             .notification {
                 position: absolute;
                 top: -3px;

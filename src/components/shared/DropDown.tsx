@@ -47,6 +47,8 @@ const DropDown = <T,>({
 	autoFocus = false,
 	defaultOpen = false,
 	disabled = false,
+	ariaLabel,
+	ariaRequired = false
 }: {
 	value: T
 	text: string,
@@ -59,6 +61,8 @@ const DropDown = <T,>({
 	autoFocus?: boolean,
 	defaultOpen?: boolean,
 	disabled?: boolean,
+	ariaLabel?: string
+	ariaRequired?: boolean
 }) => {
 	const { t } = useTranslation();
 
@@ -87,6 +91,8 @@ const DropDown = <T,>({
 			onInputChange={(value) => setSearch(value)}
 			onChange={(element) => handleChange(element)}
 			isDisabled={disabled}
+			aria-label={ariaLabel}
+			aria-required={ariaRequired}
 		/>
 	);
 };

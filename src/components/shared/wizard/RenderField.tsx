@@ -22,12 +22,16 @@ const RenderField = ({
 	form,
 	showCheck = false,
 	isFirstField = false,
+	ariaLabel,
+	ariaRequired = false,
 }: {
 	field: FieldProps["field"]
 	metadataField: MetadataField
 	form: FieldProps["form"]
 	showCheck?: boolean,
 	isFirstField?: boolean,
+	ariaLabel?: string
+	ariaRequired?: boolean
 }) => {
 	const { t } = useTranslation();
 
@@ -58,6 +62,8 @@ const RenderField = ({
 					form={form}
 					showCheck={showCheck}
 					handleKeyDown={handleKeyDown}
+					ariaLabel={ariaLabel}
+					ariaRequired={ariaRequired}
 				/>
 			)}
 			{metadataField.type === "text" &&
@@ -80,6 +86,8 @@ const RenderField = ({
 						setEditMode={setEditMode}
 						showCheck={showCheck}
 						handleKeyDown={handleKeyDown}
+						ariaLabel={ariaLabel}
+						ariaRequired={ariaRequired}
 					/>
 				)}
 			{metadataField.type === "ordered_text" && (
@@ -92,6 +100,8 @@ const RenderField = ({
 					setEditMode={setEditMode}
 					showCheck={showCheck}
 					handleKeyDown={handleKeyDown}
+					ariaLabel={ariaLabel}
+					ariaRequired={ariaRequired}
 				/>
 			)}
 			{metadataField.type === "text" &&
@@ -106,6 +116,8 @@ const RenderField = ({
 						setEditMode={setEditMode}
 						showCheck={showCheck}
 						handleKeyDown={handleKeyDown}
+						ariaLabel={ariaLabel}
+						ariaRequired={ariaRequired}
 					/>
 				)}
 			{metadataField.type === "text_long" && (
@@ -117,6 +129,8 @@ const RenderField = ({
 					setEditMode={setEditMode}
 					showCheck={showCheck}
 					handleKeyDown={handleKeyDown}
+					ariaLabel={ariaLabel}
+					ariaRequired={ariaRequired}
 				/>
 			)}
 			{metadataField.type === "date" && (
@@ -128,6 +142,8 @@ const RenderField = ({
 					setEditMode={setEditMode}
 					showCheck={showCheck}
 					handleKeyDown={handleKeyDown}
+					ariaLabel={ariaLabel}
+					ariaRequired={ariaRequired}
 				/>
 			)}
 			{metadataField.type === "boolean" && (
@@ -136,6 +152,8 @@ const RenderField = ({
 					form={form}
 					showCheck={showCheck}
 					handleKeyDown={handleKeyDown}
+					ariaLabel={ariaLabel}
+					ariaRequired={ariaRequired}
 				/>
 			)}
 		</>
@@ -148,15 +166,19 @@ const EditableBooleanValue = ({
 	handleKeyDown,
 	form: { initialValues },
 	showCheck,
+	ariaLabel,
+	ariaRequired
 }: {
 	field: FieldProps["field"]
 	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
 	form: FieldProps["form"]
 	showCheck?: boolean,
+	ariaLabel?: string,
+	ariaRequired?: boolean,
 }) => {
 	return (
 		<div onKeyDown={(e) => handleKeyDown(e, "input")} ref={childRef}>
-			<input type="checkbox" checked={field.value} {...field} />
+			<input type="checkbox" checked={field.value} {...field} aria-label={ariaLabel} aria-required={ariaRequired} />
 			<i className="edit fa fa-pencil-square" />
 			{showCheck && (
 				<i
@@ -177,7 +199,9 @@ const EditableDateValue = ({
 	editMode,
 	setEditMode,
 	showCheck,
-	handleKeyDown
+	handleKeyDown,
+	ariaLabel,
+	ariaRequired,
 }: {
 	field: FieldProps["field"]
 	text: string
@@ -185,6 +209,8 @@ const EditableDateValue = ({
 	editMode: boolean | undefined
 	setEditMode: (e: boolean) => void
 	showCheck?: boolean,
+	ariaLabel?: string,
+	ariaRequired?: boolean
 	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
 }) => editMode ? (
 	<div>
@@ -203,13 +229,17 @@ const EditableDateValue = ({
 					},
 					onBlur: (event) => {
 						setEditMode(false)
+					},
+					inputProps: {
+						"aria-label": ariaLabel,
+						"aria-required": ariaRequired
 					}
 				}
 			}}
 		/>
 	</div>
 ) : (
-	<div onClick={() => setEditMode(true)} className="show-edit">
+	<button onClick={() => setEditMode(true)} className="show-edit  button-like-anchor">
 		<span className="editable preserve-newlines">
 			<RenderDate date={text} />
 		</span>
@@ -223,7 +253,7 @@ const EditableDateValue = ({
 				/>
 			)}
 		</div>
-	</div>
+	</button>
 );
 
 // renders editable field for selecting value via dropdown
@@ -236,6 +266,8 @@ const EditableSingleSelect = ({
 	handleKeyDown,
 	form: { setFieldValue, initialValues },
 	showCheck,
+	ariaLabel,
+	ariaRequired
 }: {
 	field: FieldProps["field"]
 	metadataField: MetadataField
@@ -245,6 +277,8 @@ const EditableSingleSelect = ({
 	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
 	form: FieldProps["form"]
 	showCheck?: boolean,
+	ariaLabel?: string,
+	ariaRequired?: boolean,
 }) => {
 	const { t } = useTranslation();
 
@@ -265,10 +299,12 @@ const EditableSingleSelect = ({
 				tabIndex={10}
 				autoFocus={true}
 				defaultOpen={true}
+				ariaLabel={ariaLabel}
+				ariaRequired={ariaRequired}
 			/>
 		</div>
 	) : (
-		<div onClick={() => setEditMode(true)} className="show-edit">
+		<button onClick={() => setEditMode(true)} className="show-edit button-like-anchor">
 			<span className="editable preserve-newlines">
 				{text || t("SELECT_NO_OPTION_SELECTED")}
 			</span>
@@ -282,7 +318,7 @@ const EditableSingleSelect = ({
 					/>
 				)}
 			</div>
-		</div>
+		</button>
 	);
 };
 
@@ -295,6 +331,8 @@ const EditableSingleValueTextArea = ({
 	handleKeyDown,
 	form: { initialValues },
 	showCheck,
+	ariaLabel,
+	ariaRequired,
 }: {
 	field: FieldProps["field"]
 	text: string
@@ -303,6 +341,8 @@ const EditableSingleValueTextArea = ({
 	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
 	form: FieldProps["form"]
 	showCheck?: boolean,
+	ariaLabel?: string,
+	ariaRequired?: boolean
 }) => {
 	return editMode ? (
 		<div
@@ -314,10 +354,12 @@ const EditableSingleValueTextArea = ({
 				{...field}
 				autoFocus={true}
 				className="editable vertical-resize"
+				aria-label={ariaLabel}
+				aria-required={ariaRequired}
 			/>
 		</div>
 	) : (
-		<div onClick={() => setEditMode(true)} className="show-edit">
+		<button onClick={() => setEditMode(true)} className="show-edit button-like-anchor">
 			<span className="editable preserve-newlines">{text || ""}</span>
 			<div>
 				<i className="edit fa fa-pencil-square" />
@@ -329,7 +371,7 @@ const EditableSingleValueTextArea = ({
 					/>
 				)}
 			</div>
-		</div>
+		</button>
 	);
 };
 
@@ -342,6 +384,8 @@ const EditableSingleValue = ({
 	setEditMode,
 	handleKeyDown,
 	showCheck,
+	ariaLabel,
+	ariaRequired,
 }: {
 	field: FieldProps["field"]
 	form: FieldProps["form"]
@@ -350,6 +394,9 @@ const EditableSingleValue = ({
 	setEditMode: (e: boolean) => void
 	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
 	showCheck?: boolean,
+	ariaLabel?: string,
+	ariaRequired?: boolean
+
 }) => {
 	return editMode ? (
 		<div
@@ -357,10 +404,10 @@ const EditableSingleValue = ({
 			onKeyDown={(e) => handleKeyDown(e, "input")}
 			ref={childRef}
 		>
-			<input {...field} autoFocus={true} type="text" />
+			<input {...field} autoFocus={true} type="text" aria-label={ariaLabel} aria-required={ariaRequired} />
 		</div>
 	) : (
-		<div onClick={() => setEditMode(true)} className="show-edit">
+		<button onClick={() => setEditMode(true)}  className="show-edit button-like-anchor">
 			<span className="editable preserve-newlines">{text || ""}</span>
 			<div>
 				<i className="edit fa fa-pencil-square" />
@@ -372,7 +419,7 @@ const EditableSingleValue = ({
 					/>
 				)}
 			</div>
-		</div>
+		</button>
 	);
 };
 
@@ -385,6 +432,8 @@ const EditableSingleValueTime = ({
 	setEditMode,
 	showCheck,
 	handleKeyDown,
+	ariaLabel,
+	ariaRequired
 }: {
 	field: FieldProps["field"]
 	text: string
@@ -392,7 +441,9 @@ const EditableSingleValueTime = ({
 	editMode: boolean | undefined
 	setEditMode: (e: boolean) => void
 	showCheck?: boolean,
-	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
+	ariaLabel?: string,
+	ariaRequired?: boolean,
+	handleKeyDown: (event: React.KeyboardEvent, type: string) => void,
 }) => {
 	const { t } = useTranslation();
 
@@ -413,13 +464,18 @@ const EditableSingleValueTime = ({
 						},
 						onBlur: () => {
 							setEditMode(false)
+						},
+						inputProps: {
+							"aria-label": ariaLabel,
+							"aria-required": ariaRequired
 						}
-					}
+					},
+					
 				}}
 			/>
 		</div>
 	) : (
-		<div onClick={() => setEditMode(true)} className="show-edit">
+		<button onClick={() => setEditMode(true)} className="show-edit button-like-anchor">
 			<span className="editable preserve-newlines">
 				{t("dateFormats.dateTime.short", { dateTime: renderValidDate(text) }) || ""}
 			</span>
@@ -433,7 +489,7 @@ const EditableSingleValueTime = ({
 					/>
 				)}
 			</div>
-		</div>
+		</button>
 	);
 };
 

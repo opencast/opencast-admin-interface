@@ -5,6 +5,7 @@ import RenderField from "../../../shared/wizard/RenderField";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
+import { Tooltip } from "@mui/material";
 
 /**
  * This component renders the metadata page for new events and series in the wizards.
@@ -31,7 +32,7 @@ const NewMetadataPage = <T,>({
 							<header className="no-expand">{t(header)}</header>
 							{/* Table view containing input fields for metadata */}
 							<div className="obj-container">
-								<table className="main-tbl">
+								<table className="main-tbl" role="presentation">
 									<tbody>
 										{/* Render table row for each metadata field depending on type*/}
 										{!!metadataFields.fields &&
@@ -51,6 +52,8 @@ const NewMetadataPage = <T,>({
 																name={field.id}
 																fieldInfo={field}
 																component={RenderMultiField}
+																ariaLabel={t(field.label)}
+																ariaRequired={field.required}
 															/>
 														) : (
 															<Field
@@ -58,6 +61,8 @@ const NewMetadataPage = <T,>({
 																metadataField={field}
 																isFirstField={key === 0}
 																component={RenderField}
+																ariaLabel={t(field.label)}
+																ariaRequired={field.required}
 															/>
 														)}
 													</td>

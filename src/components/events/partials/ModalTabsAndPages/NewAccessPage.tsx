@@ -19,6 +19,7 @@ import { filterRoles, getAclTemplateText } from "../../../../utils/aclUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchSeriesDetailsAcls } from "../../../../slices/seriesDetailsSlice";
 import { getSeriesDetailsAcl } from "../../../../selectors/seriesDetailsSelectors";
+import { Tooltip } from "@mui/material";
 
 /**
  * This component renders the access page for new events and series in the wizards.
@@ -120,7 +121,7 @@ const NewAccessPage = ({
 
 											{/* Template selection*/}
 											<div className="obj tbl-list">
-												<table className="main-tbl">
+												<table className="main-tbl" role="presentation">
 													<thead>
 														<tr>
 															<th>
@@ -135,6 +136,7 @@ const NewAccessPage = ({
 																	<div className="obj-container padded">
 																		{/* dropdown for selecting a policy template */}
 																		<DropDown
+																			ariaLabel={t("EVENTS.SERIES.NEW.ACCESS.TEMPLATES.TITLE")}
 																			value={formik.values.aclTemplate}
 																			text={getAclTemplateText(
 																				aclTemplates,
@@ -151,7 +153,7 @@ const NewAccessPage = ({
 																			placeholder={t(
 																				"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.LABEL"
 																			)}
-																			tabIndex={1}
+																			tabIndex={0}
 																			autoFocus={true}
 																		/>
 																	</div>
@@ -246,7 +248,7 @@ const NewAccessPage = ({
 																								placeholder={t(
 																									"EVENTS.SERIES.NEW.ACCESS.ROLES.LABEL"
 																								)}
-																								tabIndex={index + 1}
+																								tabIndex={0}
 																								disabled={
 																									!hasAccess(
 																										editAccessRole,
@@ -287,10 +289,12 @@ const NewAccessPage = ({
 																						)}
 																						{/*Remove policy*/}
 																						<td>
-																							<button
-																								onClick={() => remove(index)}
-																								className="button-like-anchor remove"
-																							/>
+																							<Tooltip title={t("EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DELETE")}>
+																								<button
+																									onClick={() => remove(index)}
+																									className="button-like-anchor remove"
+																								/>
+																							</Tooltip>
 																						</td>
 																					</tr>
 																				)
@@ -359,14 +363,14 @@ const NewAccessPage = ({
 							nextPage(formik.values);
 						}
 					}}
-					tabIndex={100}
+					tabIndex={0}
 				>
 					{t("WIZARD.NEXT_STEP")}
 				</button>
 				<button
 					className="cancel"
 					onClick={() => previousPage(formik.values, false)}
-					tabIndex={101}
+					tabIndex={0}
 				>
 					{t("WIZARD.BACK")}
 				</button>

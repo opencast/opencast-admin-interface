@@ -201,8 +201,9 @@ a.disabled, button.disabled, div.disabled {
 }
 
 div.show-edit {
-  display: flex;
+  display: flex !important;
   justify-content: space-between;
+  width: 100%;
 }
 
 span.editable {
@@ -248,6 +249,7 @@ td.editable {
 
   .preserve-newlines {
     white-space: pre-wrap;
+    line-height: 25px;
   }
 
   .vertical-resize {
