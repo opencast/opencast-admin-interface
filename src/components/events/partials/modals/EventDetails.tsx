@@ -235,77 +235,14 @@ const EventDetails : React.FC<{
 					/>
 				)}
 				{page === 2 && <EventDetailsPublicationTab eventId={eventId} />}
-				{page === 3 &&
-					((assetsTabHierarchy === "entry" && (
-						<EventDetailsAssetsTab
-							eventId={eventId}
-							t={t}
-							setHierarchy={setAssetsTabHierarchy}
-						/>
-					)) ||
-						(assetsTabHierarchy === "add-asset" && (
-							<EventDetailsAssetsAddAsset
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "asset-attachments" && (
-							<EventDetailsAssetAttachments
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "attachment-details" && (
-							<EventDetailsAssetAttachmentDetails
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "asset-catalogs" && (
-							<EventDetailsAssetCatalogs
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "catalog-details" && (
-							<EventDetailsAssetCatalogDetails
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "asset-media" && (
-							<EventDetailsAssetMedia
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "media-details" && (
-							<EventDetailsAssetMediaDetails
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "asset-publications" && (
-							<EventDetailsAssetPublications
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "publication-details" && (
-							<EventDetailsAssetPublicationDetails
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)))}
+				{page === 3 && (
+					<EventDetailsAssetsTab
+						eventId={eventId}
+						t={t}
+						assetsTabHierarchy={assetsTabHierarchy}
+						setAssetsTabHierarchy={setAssetsTabHierarchy}
+					/>
+				)}
 				{page === 4 && !isLoadingScheduling && (
 					<EventDetailsSchedulingTab eventId={eventId} t={t} />
 				)}

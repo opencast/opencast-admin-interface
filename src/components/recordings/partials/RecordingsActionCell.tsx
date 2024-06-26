@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import ConfirmModal from "../../shared/ConfirmModal";
 import RecordingDetailsModal from "./modal/RecordingDetailsModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";

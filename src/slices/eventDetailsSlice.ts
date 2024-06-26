@@ -1639,6 +1639,7 @@ export const saveAccessPolicies = createAsyncThunk('eventDetails/saveAccessPolic
 		.post(`/admin-ng/event/${eventId}/access`, data.toString(), headers)
 		.then((response) => {
 			console.info(response);
+			dispatch(fetchAccessPolicies(eventId))
 			dispatch(
 				addNotification({
 					type: "info",

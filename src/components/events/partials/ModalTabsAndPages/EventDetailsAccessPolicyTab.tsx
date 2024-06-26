@@ -34,7 +34,7 @@ const EventDetailsAccessPolicyTab = ({
 		return await dispatch(fetchHasActiveTransactions(eventId)).then(unwrapResult);
 	}
 	const saveNewAccessPoliciesWrapper = async(eventId: any, policies: any) => {
-		dispatch(saveAccessPolicies({eventId, policies}));
+		return dispatch(saveAccessPolicies({eventId, policies}));
 	}
 
 	const policies = useAppSelector(state => getPolicies(state));
