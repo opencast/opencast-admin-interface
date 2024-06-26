@@ -9,7 +9,7 @@ export default defineConfig({
     plugins: [react(), svgr(), viteTsconfigPaths(), preserveDirectives()],
     build: {
         outDir: "build",
-        sourcemap: true,
+        sourcemap: false,
     },
     server: {
         open: true,
