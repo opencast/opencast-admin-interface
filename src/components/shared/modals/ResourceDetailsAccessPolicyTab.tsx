@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import RenderMultiField from "../wizard/RenderMultiField";
 import {
-	Acl,
 	Role,
 	fetchAclActions,
 	fetchAclTemplateById,
