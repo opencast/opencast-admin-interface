@@ -29,16 +29,6 @@ const EventDetailsAssetCatalogDetails = ({
 
 	return (
 		<div className="modal-content">
-			{/* Hierarchy navigation */}
-			<EventDetailsTabHierarchyNavigation
-				openSubTab={openSubTab}
-				hierarchyDepth={1}
-				translationKey0={"EVENTS.EVENTS.DETAILS.ASSETS.CATALOGS.TITLE"}
-				subTabArgument0={"asset-catalogs"}
-				translationKey1={"EVENTS.EVENTS.DETAILS.ASSETS.CATALOGS.DETAILS.TITLE"}
-				subTabArgument1={"catalog-details"}
-			/>
-
 			<div className="modal-body">
 				{/* Notifications */}
 				<Notifications context="not_corner" />
