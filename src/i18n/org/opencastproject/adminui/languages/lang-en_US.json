@@ -171,6 +171,7 @@
 		"EVENTS_CREATED": "The event has been created",
 		"EVENTS_UPLOAD_STARTED": "The event is being uploaded… {{ progress }}%",
 		"EVENTS_NOT_CREATED": "The event could not be created",
+		"EVENTS_UPDATED": "The event have been successfully updated",
 		"EVENTS_UPDATED_ALL": "All events have been successfully updated",
 		"EVENTS_NOT_UPDATED": "The event could not be saved",
 		"EVENTS_NOT_UPDATED_ID": "The event {{ id }} could not be saved",
