@@ -5,7 +5,6 @@ import RenderField from "../../../shared/wizard/RenderField";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
-import { Tooltip } from "@mui/material";
 
 /**
  * This component renders the metadata page for new events and series in the wizards.
