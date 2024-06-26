@@ -162,11 +162,11 @@ const Header = ({
 					{/* Select language */}
 					<div className="nav-dd lang-dd" id="lang-dd" ref={containerLang}>
 						<Tooltip title={t("LANGUAGE")}>
-							<div className="lang" onClick={() => setMenuLang(!displayMenuLang)}>
+							<button className="lang" onClick={() => setMenuLang(!displayMenuLang)}>
 								<IconContext.Provider value={{ style: {fontSize: "20px"} }}>
 									<HiTranslate />
 								</IconContext.Provider>
-							</div>
+							</button>
 						</Tooltip>
 						{displayMenuLang && <MenuLang />}
 					</div>
@@ -177,8 +177,8 @@ const Header = ({
                     otherwise the app crashes */}
 					{!!orgProperties &&
 						!!orgProperties["org.opencastproject.admin.mediamodule.url"] && (
-							<Tooltip  title={t("MEDIAMODULE")}>
-								<div className="nav-dd">
+							<div className="nav-dd">
+								<Tooltip  title={t("MEDIAMODULE")}>
 									<a
 										href={
 											orgProperties["org.opencastproject.admin.mediamodule.url"]
@@ -187,30 +187,30 @@ const Header = ({
 									>
 										<span className="fa fa-play-circle" />
 									</a>
-								</div>
-							</Tooltip>
+								</Tooltip>
+							</div>
 						)}
 
 					{/* Opencast Studio */}
 					{hasAccess("ROLE_STUDIO", user) && (
-						<Tooltip  title="Studio">
-							<div className="nav-dd">
+						<div className="nav-dd">
+							<Tooltip  title={t("STUDIO")}>
 								<a href={studioURL} target="_blank" rel="noreferrer">
 									<span className="fa fa-video-camera" />
 								</a>
-							</div>
-						</Tooltip>
+							</Tooltip>
+						</div>
 					)}
 
 					{/* System warnings and notifications */}
 					{hasAccess("ROLE_ADMIN", user) && (
-						<Tooltip title={t("SYSTEM_NOTIFICATIONS")}>
-							<div
-								className="nav-dd info-dd"
-								id="info-dd"
-								ref={containerNotify}
-							>
-								<div onClick={() => setMenuNotify(!displayMenuNotify)}>
+						<div
+							className="nav-dd info-dd"
+							id="info-dd"
+							ref={containerNotify}
+						>
+							<Tooltip title={t("SYSTEM_NOTIFICATIONS")}>
+								<button onClick={() => setMenuNotify(!displayMenuNotify)}>
 									<i className="fa fa-bell" aria-hidden="true" />
 									{errorCounter !== 0 && (
 										<span id="error-count" className="badge">
@@ -224,9 +224,9 @@ const Header = ({
 											redirectToServices={redirectToServices}
 										/>
 									)}
-								</div>
-							</div>
-						</Tooltip>
+								</button>
+							</Tooltip>
+						</div>
 					)}
 
 					{/* Help */}
@@ -240,39 +240,40 @@ const Header = ({
 							!!orgProperties[
 								"org.opencastproject.admin.help.restdocs.url"
 							]) && (
-							<Tooltip title="Help">
-								<div
-									className="nav-dd"
-									id="help-dd"
-									ref={containerHelp}
-								>
-									<div
-										className="fa fa-question-circle"
+							<div
+								className="nav-dd"
+								id="help-dd"
+								ref={containerHelp}
+							>
+								<Tooltip title={t("HELP.HELP")}>
+									<button
 										onClick={() => setMenuHelp(!displayMenuHelp)}
+									>
+										<span className="fa fa-question-circle"></span>
+									</button>
+								</Tooltip>
+								{/* Click on the help icon, a dropdown menu with documentation, REST-docs and shortcuts (if available) opens */}
+								{displayMenuHelp && (
+									<MenuHelp
+										hideMenuHelp={hideMenuHelp}
+										showRegistrationModal={showRegistrationModal}
+										showHotKeyCheatSheet={showHotKeyCheatSheet}
+										orgProperties={orgProperties}
+										user={user}
 									/>
-									{/* Click on the help icon, a dropdown menu with documentation, REST-docs and shortcuts (if available) opens */}
-									{displayMenuHelp && (
-										<MenuHelp
-											hideMenuHelp={hideMenuHelp}
-											showRegistrationModal={showRegistrationModal}
-											showHotKeyCheatSheet={showHotKeyCheatSheet}
-											orgProperties={orgProperties}
-											user={user}
-										/>
-									)}
-								</div>
-							</Tooltip>
+								)}
+							</div>
 						)}
 
 					{/* Username */}
 					<div className="nav-dd user-dd" id="user-dd" ref={containerUser}>
-						<div
+						<button
 							className="h-nav"
 							onClick={() => setMenuUser(!displayMenuUser)}
 						>
 							{user.user.name || user.user.username}
 							<span className="dropdown-icon" />
-						</div>
+						</button>
 						{/* Click on username, a dropdown menu with the option to logout opens */}
 						{displayMenuUser && <MenuUser />}
 					</div>
@@ -371,7 +372,7 @@ const MenuHelp = ({
 
 	return (
 		<>
-			<ul style={overflowStyle} className="dropdown-ul">
+			<ul className="dropdown-ul">
 				{/* Show only if documentationUrl is set */}
 				{!!orgProperties[
 					"org.opencastproject.admin.help.documentation.url"

@@ -133,7 +133,6 @@ const AclAccessPage = <T extends RequiredFormProps>({
 																				placeholder={t(
 																					"USERS.ACLS.NEW.ACCESS.ACCESS_POLICY.LABEL"
 																				)}
-																				tabIndex={1}
 																				autoFocus={true}
 																			/>
 																		</div>
@@ -228,7 +227,6 @@ const AclAccessPage = <T extends RequiredFormProps>({
 																								placeholder={t(
 																									"USERS.ACLS.NEW.ACCESS.ROLES.LABEL"
 																								)}
-																								tabIndex={index + 1}
 																								disabled={!isAccess}
 																							/>
 																						</td>
@@ -354,14 +352,12 @@ const AclAccessPage = <T extends RequiredFormProps>({
 									nextPage(formik.values);
 								}
 							}}
-							tabIndex={100}
 						>
 							{t("WIZARD.NEXT_STEP")}
 						</button>
 						<button
 							className="cancel"
 							onClick={() => previousPage(formik.values)}
-							tabIndex={101}
 						>
 							{t("WIZARD.BACK")}
 						</button>

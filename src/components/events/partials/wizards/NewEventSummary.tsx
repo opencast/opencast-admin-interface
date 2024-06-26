@@ -61,9 +61,6 @@ const NewEventSummary = <T extends RequiredFormProps>({
 	let uploadAssetsNonTrack: {
 		name: string,
 		translate?: string,
-		type: string,
-		flavorType: string,
-		flavorSubType: string,
 		value: any,
 	}[] = [];
 	for (let i = 0; uploadAssetOptions.length > i; i++) {
@@ -75,9 +72,6 @@ const NewEventSummary = <T extends RequiredFormProps>({
 				translate: !!displayOverride
 					? t(displayOverride)
 					: translateOverrideFallback(uploadAssetOptions[i], t),
-				type: uploadAssetOptions[i].type,
-				flavorType: uploadAssetOptions[i].flavorType,
-				flavorSubType: uploadAssetOptions[i].flavorSubType,
 				value: fieldValue,
 			});
 		}
@@ -130,11 +124,6 @@ const NewEventSummary = <T extends RequiredFormProps>({
 												<tr key={key}>
 													<td>
 														{asset.translate}
-														<span className="ui-helper-hidden">
-                              {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
-                              ({asset.type} "{asset.flavorType}//
-															{asset.flavorSubType}")
-														</span>
 													</td>
 													<td>{asset.value.name}</td>
 												</tr>
@@ -162,11 +151,6 @@ const NewEventSummary = <T extends RequiredFormProps>({
 													<tr key={key}>
 														<td>
 															{translateOverrideFallback(asset, t, "SHORT")}
-															<span className="ui-helper-hidden">
-                                {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
-                                ({asset.type} "{asset.flavorType}/
-																{asset.flavorSubType}")
-															</span>
 														</td>
 														<td>{asset.file[0].name}</td>
 													</tr>
