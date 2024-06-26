@@ -559,6 +559,14 @@ table.main-tbl {
     display: none !important;
   }
 
+  th {
+    span {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
   td {
     max-width: 800px;
     word-wrap: anywhere;
