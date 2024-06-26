@@ -52,9 +52,9 @@
 // ----------------------------------------
 
 .header-nav {
-    float: right;
-    margin-right: $side-margin;
-    margin-top: 13px;
+    position: absolute;
+    right: $side-margin;
+    top: 5px;
 
     // Nav items
     .nav-dd {
@@ -63,7 +63,9 @@
         vertical-align: middle;
         font-size: 12px;
         position: relative;
-        margin-left: 15px;
+        margin-left: -10px;
+        min-width: 50px;
+        text-align: center;
         cursor: pointer;
 
         &.active .dropdown-ul {
@@ -87,28 +89,16 @@
 
 
 .nav-dd-container {
-
-    $header-dropdown-top-position: 37px;
-
-    // User Dropdown
-    // ----------------------------------------
-
-    .user-dd .dropdown-ul {
-        width: 150px;
-        top: 31px;
-        right: -11px;
-    }
-
     .nav-dd .dropdown-ul {
         width: 150px;
-        top: 31px;
-        right: -11px;
+        top: 40px;
+        right: 7px;
     }
-
-    .help-dd .dropdown-ul {
-        width: 150px;
-        top: 34px;
-        right: -8px;
+    .user-dd {
+        margin-left: 0;
+        .dropdown-ul {
+            right: -7px;
+        }
     }
 
     // Menu Icon Settings
@@ -130,44 +120,42 @@
         font-size: 20px;
     }
 
+    button {
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+    }
+
     // Language Dropdown
     // ----------------------------------------
 
     .lang-dd .dropdown-ul {
         width: 120px;
-        top: $header-dropdown-top-position;
-        right: -7px;
     }
 
     // RestService Dropdown
     // ----------------------------------------
     .info-dd{
-        max-height: 20px;
-        max-width: 20px;
         .dropdown-ul{
             width: auto;
-            top: 31px;
-            right: -7px;
+            right: 8px;
         }
         .fa-bell-o{
             float: right;
         }
         #error-count{
-            display: inline-block;
             min-width: 10px;
             padding: 4px 7px;
             font-size: 10px;
             font-weight: 700;
-            line-height: 1;
             color: #fff;
             text-align: center;
             white-space: nowrap;
-            vertical-align: middle;
             border-radius: 100%;
             background-color: red;
-            position: relative;
-            bottom: 25px;
-            left: 10px;
+            position: absolute;
+            top: 3px;
+            right: 3px;
         }
     }
 }
