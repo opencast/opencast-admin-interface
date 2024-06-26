@@ -15,7 +15,6 @@ import {
 import { availableHotkeys } from "../configs/hotkeysConfig";
 import { studioURL } from "../configs/generalConfig";
 import { hasAccess } from "../utils/utils";
-import { overflowStyle } from "../utils/componentStyles";
 import RegistrationModal from "./shared/RegistrationModal";
 import HotKeyCheatSheet from "./shared/HotKeyCheatSheet";
 import { useHotkeys } from "react-hotkeys-hook";
