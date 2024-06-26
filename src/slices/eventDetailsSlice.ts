@@ -2214,20 +2214,6 @@ const eventDetailsSlice = createSlice({
 				// This is the empty workflow data from the original reducer
 				// TODO: Figure out why it is so vastly different from our initial state
 				// and maybe fix our initial state if this is actually correct
-				// const emptyWorkflowData = {
-				// 	creator: {
-				// 		name: "",
-				// 		email: "",
-				// 	},
-				// 	title: "",
-				// 	description: "",
-				// 	submittedAt: "",
-				// 	state: "",
-				// 	executionTime: "",
-				// 	wiid: "",
-				// 	wdid: "",
-				// 	configuration: {},
-				// };
 				const emptyWorkflowData = {
 					workflowId: "",
 					description: "",
