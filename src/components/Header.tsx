@@ -14,7 +14,7 @@ import {
 } from "../selectors/userInfoSelectors";
 import { availableHotkeys } from "../configs/hotkeysConfig";
 import { studioURL } from "../configs/generalConfig";
-import { getCurrentLanguageInformation, hasAccess } from "../utils/utils";
+import { hasAccess } from "../utils/utils";
 import { overflowStyle } from "../utils/componentStyles";
 import RegistrationModal from "./shared/RegistrationModal";
 import HotKeyCheatSheet from "./shared/HotKeyCheatSheet";
@@ -25,9 +25,6 @@ import { UserInfoState } from "../slices/userInfoSlice";
 import { Tooltip } from "./shared/Tooltip";
 import { HiTranslate } from "react-icons/hi";
 import { IconContext } from "react-icons";
-
-// Get code, flag and name of the current language
-const currentLanguage = getCurrentLanguageInformation();
 
 // References for detecting a click outside of the container of the dropdown menus
 const containerLang = React.createRef<HTMLDivElement>();
