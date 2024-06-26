@@ -75,7 +75,6 @@ const SeriesDetailsThemeTab = ({
 																}
 															}}
 															placeholder={t("EVENTS.SERIES.NEW.THEME.LABEL")}
-															tabIndex={8}
 															disabled={
 																!hasAccess(
 																	"ROLE_UI_SERIES_DETAILS_THEMES_EDIT",

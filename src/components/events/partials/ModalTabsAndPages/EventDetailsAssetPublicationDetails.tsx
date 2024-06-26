@@ -1,5 +1,4 @@
 import React from "react";
-import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import Notifications from "../../../shared/Notifications";
 import {
 	getAssetPublicationDetails,
@@ -22,11 +21,6 @@ const EventDetailsAssetPublicationDetails = ({
 
 	const publication = useAppSelector(state => getAssetPublicationDetails(state));
 	const isFetching = useAppSelector(state => isFetchingAssetPublicationDetails(state));
-
-// @ts-expect-error TS(7006): Parameter 'subTabName' implicitly has an 'any' typ... Remove this comment to see the full error message
-	const openSubTab = (subTabName) => {
-		setHierarchy(subTabName);
-	};
 
 	return (
 		<div className="modal-content">

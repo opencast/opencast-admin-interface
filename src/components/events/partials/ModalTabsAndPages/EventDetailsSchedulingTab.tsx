@@ -344,7 +344,6 @@ const EventDetailsSchedulingTab = ({
 																	placeholder={t(
 																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
 																	)}
-																	tabIndex={2}
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
@@ -374,7 +373,6 @@ const EventDetailsSchedulingTab = ({
 																	placeholder={t(
 																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
 																	)}
-																	tabIndex={3}
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
@@ -420,7 +418,6 @@ const EventDetailsSchedulingTab = ({
 																		}
 																	}}
 																	placeholder={t("WIZARD.DURATION.HOURS")}
-																	tabIndex={4}
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
@@ -450,7 +447,6 @@ const EventDetailsSchedulingTab = ({
 																		}
 																	}}
 																	placeholder={t("WIZARD.DURATION.MINUTES")}
-																	tabIndex={5}
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
@@ -498,7 +494,6 @@ const EventDetailsSchedulingTab = ({
 																	placeholder={t(
 																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
 																	)}
-																	tabIndex={6}
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
@@ -528,7 +523,6 @@ const EventDetailsSchedulingTab = ({
 																	placeholder={t(
 																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
 																	)}
-																	tabIndex={7}
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
@@ -600,7 +594,6 @@ const EventDetailsSchedulingTab = ({
 																	placeholder={t(
 																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"
 																	)}
-																	tabIndex={8}
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}

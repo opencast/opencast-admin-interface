@@ -335,7 +335,6 @@ const ResourceDetailsAccessPolicyTab = ({
 																								"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.EMPTY"
 																						  )
 																				}
-																				tabIndex={1}
 																			/>
 																		) : (
 																			baseAclId
@@ -449,7 +448,6 @@ const ResourceDetailsAccessPolicyTab = ({
 																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.EMPTY"
 																												  )
 																										}
-																										tabIndex={index + 1}
 																										disabled={
 																											!hasAccess(
 																												editAccessRole,

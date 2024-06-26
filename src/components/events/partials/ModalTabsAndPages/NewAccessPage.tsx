@@ -151,7 +151,6 @@ const NewAccessPage = ({
 																			placeholder={t(
 																				"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.LABEL"
 																			)}
-																			tabIndex={1}
 																			autoFocus={true}
 																		/>
 																	</div>
@@ -246,7 +245,6 @@ const NewAccessPage = ({
 																								placeholder={t(
 																									"EVENTS.SERIES.NEW.ACCESS.ROLES.LABEL"
 																								)}
-																								tabIndex={index + 1}
 																								disabled={
 																									!hasAccess(
 																										editAccessRole,

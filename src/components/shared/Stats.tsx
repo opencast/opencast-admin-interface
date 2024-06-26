@@ -60,7 +60,7 @@ const Stats = ({
 				{stats.map((st, key) => (
 					<div className="col" key={key}>
 						<Tooltip title={t(st.description)}>
-							<div
+							<button
 								className="stat"
 								onClick={() => showStatsFilter(st)}
 							>
@@ -76,7 +76,7 @@ const Stats = ({
 										</span>
 									))
 								)}
-							</div>
+							</button>
 						</Tooltip>
 					</div>
 				))}

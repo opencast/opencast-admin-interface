@@ -245,7 +245,6 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					placeholder={t(
 																						"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
 																					)}
-																					tabIndex={key * 14 + 3}
 																				/>
 
 																				{/* drop-down for minute
@@ -277,7 +276,6 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					placeholder={t(
 																						"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
 																					)}
-																					tabIndex={key * 14 + 4}
 																				/>
 																			</td>
 																		</tr>
@@ -317,7 +315,6 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					placeholder={t(
 																						"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
 																					)}
-																					tabIndex={key * 14 + 5}
 																				/>
 
 																				{/* drop-down for minute
@@ -349,7 +346,6 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					placeholder={t(
 																						"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
 																					)}
-																					tabIndex={key * 14 + 6}
 																				/>
 																			</td>
 																		</tr>
@@ -394,7 +390,6 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					placeholder={`-- ${t(
 																						"SELECT_NO_OPTION_SELECTED"
 																					)} --`}
-																					tabIndex={key * 14 + 7}
 																				/>
 																			</td>
 																		</tr>
@@ -462,7 +457,6 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 							nextPage(formik.values);
 						}
 					}}
-					tabIndex={100}
 				>
 					{t("WIZARD.NEXT_STEP")}
 				</button>
@@ -476,7 +470,6 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 							setPageCompleted([]);
 						}
 					}}
-					tabIndex={101}
 				>
 					{t("WIZARD.BACK")}
 				</button>

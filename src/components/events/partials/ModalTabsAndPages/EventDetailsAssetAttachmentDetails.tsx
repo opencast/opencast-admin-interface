@@ -1,5 +1,4 @@
 import React from "react";
-import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import Notifications from "../../../shared/Notifications";
 import {
 	getAssetAttachmentDetails,
@@ -21,10 +20,6 @@ const EventDetailsAssetAttachmentDetails = ({
 	const { t } = useTranslation();
 	const attachment = useAppSelector(state => getAssetAttachmentDetails(state));
 	const isFetching = useAppSelector(state => isFetchingAssetAttachmentDetails(state));
-
-	const openSubTab = (subTabName: AssetTabHierarchy) => {
-		setHierarchy(subTabName);
-	};
 
 	return (
 		<div className="modal-content">
