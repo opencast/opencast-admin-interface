@@ -309,7 +309,7 @@ const Table = ({
 
 			{/* Selection of page size */}
 			<div id="tbl-view-controls-container">
-				<div
+				<button
 					className="drop-down-container small flipped"
 					onClick={() => setShowPageSizes(!showPageSizes)}
 // @ts-expect-error TS(2322): Type 'RefObject<unknown>' is not assignable to typ... Remove this comment to see the full error message
@@ -331,7 +331,7 @@ const Table = ({
 							))}
 						</ul>
 					)}
-				</div>
+				</button>
 
 				{/* Pagination and navigation trough pages */}
 				<div className="pagination">

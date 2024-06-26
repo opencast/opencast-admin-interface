@@ -62,7 +62,7 @@ const SeriesDetails = ({
 
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
-	const themesEnabled = (orgProperties['admin.themes.enabled']?.toLowerCase() || 'true') === 'true';
+	const themesEnabled = (orgProperties['admin.themes.enabled'] || 'true').toLowerCase() === 'true';
 
 	type Tab = {
 		tabNameTranslation: string,

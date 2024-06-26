@@ -262,10 +262,9 @@ const TableFilters = ({
 					<div className="table-filter">
 						<div className="filters">
 							<Tooltip title={t("TABLE_FILTERS.ADD")}>
-								<i
-									className="fa fa-filter"
-									onClick={() => setFilterSelector(!showFilterSelector)}
-								/>
+								<button className="button-like-anchor" onClick={() => setFilterSelector(!showFilterSelector)}>
+									<i className="fa fa-filter" />
+								</button>
 							</Tooltip>
 
 							{/*show if icon is clicked*/}
@@ -371,17 +370,15 @@ const TableFilters = ({
 
 						{/* Remove icon to clear all filters */}
 						<Tooltip title={t("TABLE_FILTERS.CLEAR")}>
-							<i
-								onClick={removeFilters}
-								className="clear fa fa-times"
-							/>
+							<button className="button-like-anchor" onClick={removeFilters}>
+								<i className="clear fa fa-times" />
+							</button>
 						</Tooltip>
 						{/* Settings icon to open filters profile dialog (save and editing filter profiles)*/}
 						<Tooltip title={t("TABLE_FILTERS.PROFILES.FILTERS_HEADER")}>
-							<i
-								onClick={() => setFilterSettings(!showFilterSettings)}
-								className="settings fa fa-cog fa-times"
-							/>
+							<button className="button-like-anchor" onClick={() => setFilterSettings(!showFilterSettings)}>
+								<i className="settings fa fa-cog fa-times" />
+							</button>
 						</Tooltip>
 
 						{/* Filter profile dialog for saving and editing filter profiles */}
