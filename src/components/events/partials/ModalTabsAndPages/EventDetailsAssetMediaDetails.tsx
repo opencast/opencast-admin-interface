@@ -32,16 +32,6 @@ const EventDetailsAssetMediaDetails = ({
 
 	return (
 		<div className="modal-content">
-			{/* Hierarchy navigation */}
-			<EventDetailsTabHierarchyNavigation
-				openSubTab={openSubTab}
-				hierarchyDepth={1}
-				translationKey0={"EVENTS.EVENTS.DETAILS.ASSETS.MEDIA.TITLE"}
-				subTabArgument0={"asset-media"}
-				translationKey1={"EVENTS.EVENTS.DETAILS.ASSETS.MEDIA.DETAILS.TITLE"}
-				subTabArgument1={"media-details"}
-			/>
-
 			<div className="modal-body">
 				{/* Notifications */}
 				<Notifications context="not_corner" />

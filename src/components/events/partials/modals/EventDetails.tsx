@@ -12,15 +12,6 @@ import EventDetailsWorkflowOperationDetails from "../ModalTabsAndPages/EventDeta
 import EventDetailsWorkflowErrors from "../ModalTabsAndPages/EventDetailsWorkflowErrors";
 import EventDetailsWorkflowErrorDetails from "../ModalTabsAndPages/EventDetailsWorkflowErrorDetails";
 import EventDetailsAssetsTab from "../ModalTabsAndPages/EventDetailsAssetsTab";
-import EventDetailsAssetAttachments from "../ModalTabsAndPages/EventDetailsAssetAttachments";
-import EventDetailsAssetCatalogs from "../ModalTabsAndPages/EventDetailsAssetCatalogs";
-import EventDetailsAssetMedia from "../ModalTabsAndPages/EventDetailsAssetMedia";
-import EventDetailsAssetPublications from "../ModalTabsAndPages/EventDetailsAssetPublications";
-import EventDetailsAssetAttachmentDetails from "../ModalTabsAndPages/EventDetailsAssetAttachmentDetails";
-import EventDetailsAssetCatalogDetails from "../ModalTabsAndPages/EventDetailsAssetCatalogDetails";
-import EventDetailsAssetMediaDetails from "../ModalTabsAndPages/EventDetailsAssetMediaDetails";
-import EventDetailsAssetPublicationDetails from "../ModalTabsAndPages/EventDetailsAssetPublicationDetails";
-import EventDetailsAssetsAddAsset from "../ModalTabsAndPages/EventDetailsAssetsAddAsset";
 import EventDetailsSchedulingTab from "../ModalTabsAndPages/EventDetailsSchedulingTab";
 import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsExtendedMetadataTab";
 import DetailsMetadataTab from "../ModalTabsAndPages/DetailsMetadataTab";
@@ -237,63 +228,13 @@ const EventDetails = ({
 					/>
 				)}
 				{page === 2 && <EventDetailsPublicationTab eventId={eventId} />}
-				{page === 3 &&
-					((assetsTabHierarchy === "entry" && (
-						<EventDetailsAssetsTab
-							eventId={eventId}
-							setHierarchy={setAssetsTabHierarchy}
-						/>
-					)) ||
-						(assetsTabHierarchy === "add-asset" && (
-							<EventDetailsAssetsAddAsset
-								eventId={eventId}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "asset-attachments" && (
-							<EventDetailsAssetAttachments
-								eventId={eventId}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "attachment-details" && (
-							<EventDetailsAssetAttachmentDetails
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "asset-catalogs" && (
-							<EventDetailsAssetCatalogs
-								eventId={eventId}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "catalog-details" && (
-							<EventDetailsAssetCatalogDetails
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "asset-media" && (
-							<EventDetailsAssetMedia
-								eventId={eventId}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "media-details" && (
-							<EventDetailsAssetMediaDetails
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "asset-publications" && (
-							<EventDetailsAssetPublications
-								eventId={eventId}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "publication-details" && (
-							<EventDetailsAssetPublicationDetails
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)))}
+				{page === 3 && (
+					<EventDetailsAssetsTab
+						eventId={eventId}
+						assetsTabHierarchy={assetsTabHierarchy}
+						setAssetsTabHierarchy={setAssetsTabHierarchy}
+					/>
+				)}
 				{page === 4 && !isLoadingScheduling && (
 					<EventDetailsSchedulingTab eventId={eventId} />
 				)}

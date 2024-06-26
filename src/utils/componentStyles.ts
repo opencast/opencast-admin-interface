@@ -28,7 +28,6 @@ export const dropDownStyle = (type: DropDownType) => {
 			display: "inline-block",
 			verticalAlign: "middle",
 			font: "inherit",
-			outline: "none",
 			paddingTop: 0,
 			paddingBottom: 0,
 			marginTop: 0,

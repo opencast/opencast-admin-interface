@@ -128,7 +128,6 @@ a {
 
 .modal {
   top: 30px;
-  outline: 0;
   input[readonly] {
     border: none;
   }
@@ -397,7 +396,6 @@ div.table-filter {
       border: 1px solid #c9d0d3;
       border-radius: 3px;
       background-color: white;
-      outline: 0;
     }
 
     select {
@@ -405,7 +403,7 @@ div.table-filter {
     }
 
     .ng-multi-value {
-      padding: 5px;
+      align-self: center;
     }
 
     .MuiInputBase-root {
@@ -462,7 +460,6 @@ select {
   border: 1px solid #c9d0d3;
   border-radius: 3px;
   background-color: white;
-  outline: 0;
 }
 
 // Disabled input field
