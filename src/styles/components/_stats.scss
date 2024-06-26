@@ -43,9 +43,19 @@
       cursor: pointer;
       overflow: hidden;
       color: $stats-color;
+      border: none;
+      border-radius: 0;
+      background-color: transparent;
+      height: unset;
+      width: 100%;
+      font-weight: unset;
+      font-size: unset;
 
       &:hover {
         color: $stats-hover-color;
+      }
+      &:focus {
+        outline: $stats-color solid thin;
       }
 
       h1 {

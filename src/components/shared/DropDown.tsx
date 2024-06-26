@@ -43,7 +43,7 @@ const DropDown = <T,>({
 	required,
 	handleChange,
 	placeholder,
-	tabIndex,
+	tabIndex = 0,
 	autoFocus = false,
 	defaultOpen = false,
 	disabled = false,
@@ -57,7 +57,7 @@ const DropDown = <T,>({
 	required: boolean,
 	handleChange: (option: {value: T, label: string} | null) => void
 	placeholder: string
-	tabIndex: number,
+	tabIndex?: number,
 	autoFocus?: boolean,
 	defaultOpen?: boolean,
 	disabled?: boolean,

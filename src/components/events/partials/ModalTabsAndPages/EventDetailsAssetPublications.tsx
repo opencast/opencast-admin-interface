@@ -1,5 +1,4 @@
 import React from "react";
-import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import Notifications from "../../../shared/Notifications";
 import {
 	getAssetPublications,
@@ -31,14 +30,6 @@ const EventDetailsAssetPublications = ({
 
 	return (
 		<div className="modal-content">
-			{/* Hierarchy navigation */}
-			<EventDetailsTabHierarchyNavigation
-				openSubTab={openSubTab}
-				hierarchyDepth={0}
-				translationKey0={"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.TITLE"}
-				subTabArgument0={"asset-publications"}
-			/>
-
 			<div className="modal-body">
 				{/* Notifications */}
 				<Notifications context="not_corner" />

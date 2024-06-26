@@ -101,41 +101,41 @@ const EmbeddingCodeModal = ({
 
 				{/* embed size buttons */}
 				<div className="embedded-code-boxes">
-					<div
+					<button
 						id="620x349"
-						className="embedSizeButton size_620x349"
+						className="embedSizeButton size_620x349 button-like-anchor"
 						onClick={(e) => updateTextArea(e)}
 					>
 						<span className="span-embedded-code">620x349</span>
-					</div>
-					<div
+					</button>
+					<button
 						id="540x304"
-						className="embedSizeButton size_540x304"
+						className="embedSizeButton size_540x304 button-like-anchor"
 						onClick={(e) => updateTextArea(e)}
 					>
 						<span className="span-embedded-code">540x304</span>
-					</div>
-					<div
+					</button>
+					<button
 						id="460x259"
-						className="embedSizeButton size_460x259"
+						className="embedSizeButton size_460x259 button-like-anchor"
 						onClick={(e) => updateTextArea(e)}
 					>
 						<span className="span-embedded-code">460x259</span>
-					</div>
-					<div
+					</button>
+					<button
 						id="380x214"
-						className="embedSizeButton size_380x214"
+						className="embedSizeButton size_380x214 button-like-anchor"
 						onClick={(e) => updateTextArea(e)}
 					>
 						<span className="span-embedded-code">380x214</span>
-					</div>
-					<div
+					</button>
+					<button
 						id="300x169"
-						className="embedSizeButton size_300x169"
+						className="embedSizeButton size_300x169 button-like-anchor"
 						onClick={(e) => updateTextArea(e)}
 					>
 						<span className="span-embedded-code">300x169</span>
-					</div>
+					</button>
 				</div>
 
 				<span id="id_video" className="embedded-code-no-visible">
@@ -147,17 +147,15 @@ const EmbeddingCodeModal = ({
 					<textarea
 						id="social_embed-textarea"
 						className="social_embed-textarea embedded-code-textarea"
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-						rows="4"
+						rows={4}
 						value={textAreaContent}
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type 'number'.
-						cols="1"
+						cols={1}
 					/>
 				</div>
 
 				{/* copy confirmation */}
 				{showCopySuccess && (
-					<div className="copyConfirm">
+					<div className="copyConfirm" role="alert">
 						<span id="copy_confirm_pre">
 							{t("CONFIRMATIONS.EMBEDDING_CODE",{size: currentSize})}
 						</span>
