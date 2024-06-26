@@ -398,18 +398,6 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																				/>
 																			</td>
 																		</tr>
-
-																		{/* the following seven lines can be commented in, when the possibility of a selection of individual inputs is desired and the backend has been adapted to support it
-                                                                    <tr>
-                                                                        <td>{t('EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.INPUTS')}</td>
-                                                                        <td>
-                                                                            {/* Render checkbox for each input option of the selected input device*/
-																		/*}
-                                                                            {renderInputDeviceOptions(key)}
-                                                                        </td>
-                                                                    </tr>
-                                                                    */}
-
 																		{/* Radio buttons for weekdays
 																		 *
 																		 * Per event there are 14 input fields, so with 'key * 14', the right

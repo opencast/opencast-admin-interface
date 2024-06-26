@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
 	const lastModified = user?.ocVersion?.['last-modified']
 		? new Date(user.ocVersion['last-modified']).toISOString().substring(0, 10)
 		: 'unknown';
-	const aboutEnabled = orgProperties['org.opencastproject.admin.display_about']?.toLowerCase() === 'true';
+	const aboutEnabled = (orgProperties['org.opencastproject.admin.display_about'] || 'false').toLowerCase() === 'true';
 
 	return (
 		<footer id="main-footer">

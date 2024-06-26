@@ -617,10 +617,10 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 											</div>
 
 											{/* Save and cancel buttons */}
-											{!transactions.read_only &&
-												policyChanged &&
-												formik.dirty && (
-													<footer style={{ padding: "0 15px" }}>
+											{!transactions.read_only && (
+												<footer style={{ padding: "0 15px" }}>
+													{policyChanged &&
+														formik.dirty && (
 														<div className="pull-left">
 															<button
 																type="reset"
@@ -630,18 +630,19 @@ const ResourceDetailsAccessPolicyTab : React.FC <{
 																{t("CANCEL") /* Cancel */}
 															</button>
 														</div>
-														<div className="pull-right">
-															<button
-																onClick={() => saveAccess(formik.values)}
-																disabled={!formik.isValid}
-																className={`save green  ${
-																	!formik.isValid ? "disabled" : ""
-																}`}
-															>
-																{t(saveButtonText) /* Save */}
-															</button>
-														</div>
-													</footer>
+													)}
+													<div className="pull-right">
+														<button
+															onClick={() => saveAccess(formik.values)}
+															disabled={!formik.isValid || !(policyChanged && formik.dirty)}
+															className={`save green  ${
+																!formik.isValid || !(policyChanged && formik.dirty) ? "disabled" : ""
+															}`}
+														>
+															{t(saveButtonText) /* Save */}
+														</button>
+													</div>
+												</footer>
 												)}
 										</div>
 									)}
