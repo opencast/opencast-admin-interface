@@ -582,7 +582,7 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 			) {
 				formData.append(
 					uploadAssetOptions[i].id + ".0",
-					String(values[uploadAssetOptions[i].id])
+					values[uploadAssetOptions[i].id] as File
 				);
 				assets.options = assets.options.concat(uploadAssetOptions[i]);
 			}
