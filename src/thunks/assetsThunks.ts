@@ -1,16 +1,15 @@
 import axios from "axios";
 import { getAssetUploadOptions } from "../selectors/eventSelectors";
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { RootState } from "../store";
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { UploadAssetOption } from "../slices/eventSlice";
 import { Publication } from "../slices/eventDetailsSlice";
 
 // thunks for assets, especially for getting asset options
 
-export const fetchAssetUploadOptions = createAsyncThunk('assets/fetchAssetUploadOptionsAsyncThunk', async (_, { getState }) => {
+export const fetchAssetUploadOptions = createAppAsyncThunk('assets/fetchAssetUploadOptionsAsyncThunk', async (_, { getState }) => {
 	// get old asset upload options
 	const state = getState();
-	const assetUploadOptions = getAssetUploadOptions(state as RootState);
+	const assetUploadOptions = getAssetUploadOptions(state);
 
 	const sourcePrefix = "EVENTS.EVENTS.NEW.SOURCE.UPLOAD";
 	const assetPrefix = "EVENTS.EVENTS.NEW.UPLOAD_ASSET.OPTION";
@@ -61,7 +60,7 @@ export const fetchAssetUploadOptions = createAsyncThunk('assets/fetchAssetUpload
  * Adds information from the publication list provider to publications.
  * The additional info is used for rendering purposes
  */
-export const enrichPublications = createAsyncThunk('assets/fetchAssetUploadOptionsAsyncThunk', async (
+export const enrichPublications = createAppAsyncThunk('assets/fetchAssetUploadOptionsAsyncThunk', async (
 	publications: {
 		publications: {
 			id: string,

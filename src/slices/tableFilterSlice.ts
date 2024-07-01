@@ -1,7 +1,7 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { relativeDateSpanToFilterValue } from '../utils/dateUtils';
-import { RootState } from '../store';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { setOffset } from '../actions/tableActions';
 import { fetchEvents } from './eventSlice';
 import { fetchServices } from './serviceSlice';
@@ -64,7 +64,7 @@ const initialState: TableFilterState = {
 };
 
 // Fetch table filters from opencast instance and transform them for further use
-export const fetchFilters = createAsyncThunk('tableFilters/fetchFilters', async (resource: any, { getState }) => {
+export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', async (resource: any, { getState }) => {
 	const data = await axios.get(
 		`/admin-ng/resources/${resource}/filters.json`
 	);
@@ -85,7 +85,7 @@ export const fetchFilters = createAsyncThunk('tableFilters/fetchFilters', async 
 	return { filtersList, resource };
 });
 
-export const fetchStats = createAsyncThunk('tableFilters/fetchStats', async () => {
+export const fetchStats = createAppAsyncThunk('tableFilters/fetchStats', async () => {
 	// fetch information about possible status an event can have
 	let data = await axios.get("/admin-ng/resources/STATS.json");
 	let response = await data.data;
@@ -141,11 +141,11 @@ export const fetchStats = createAsyncThunk('tableFilters/fetchStats', async () =
 	return stats;
 });
 
-export const setSpecificEventFilter = createAsyncThunk('tableFilters/setSpecificEventFilter', async (params: { filter: any, filterValue: any }, { dispatch, getState }) => {
+export const setSpecificEventFilter = createAppAsyncThunk('tableFilters/setSpecificEventFilter', async (params: { filter: any, filterValue: any }, { dispatch, getState }) => {
 	const { filter, filterValue } = params;
 	await dispatch(fetchFilters("events"));
 
-	const { tableFilters } = getState() as RootState;
+	const { tableFilters } = getState();
 
 	let filterToChange = tableFilters.data.find(({ name }) => name === filter);
 
@@ -163,11 +163,11 @@ export const setSpecificEventFilter = createAsyncThunk('tableFilters/setSpecific
 	dispatch(fetchEvents());
 });
 
-export const setSpecificServiceFilter = createAsyncThunk('tableFilters/setSpecificServiceFilter', async (params: { filter: any, filterValue: any }, { dispatch, getState }) => {
+export const setSpecificServiceFilter = createAppAsyncThunk('tableFilters/setSpecificServiceFilter', async (params: { filter: any, filterValue: any }, { dispatch, getState }) => {
 	const { filter, filterValue } = params;
 	await dispatch(fetchFilters("services"));
 
-	const { tableFilters } = getState() as RootState;
+	const { tableFilters } = getState();
 
 	let filterToChange = tableFilters.data.find(({ name }) => name === filter);
 

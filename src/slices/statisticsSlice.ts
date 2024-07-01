@@ -1,4 +1,4 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import moment from "moment";
 import {
@@ -7,7 +7,7 @@ import {
 } from "../utils/statisticsUtils";
 import { getHttpHeaders } from "../utils/resourceUtils";
 import { getStatistics } from "../selectors/statisticsSelectors";
-import { RootState } from '../store';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 
 /**
  * This file contains redux reducer for actions affecting the state of statistics
@@ -50,20 +50,20 @@ const initialState: StatisticsState = {
 
 /* thunks for fetching statistics data */
 
-export const fetchStatisticsPageStatistics = createAsyncThunk('statistics/fetchStatisticsPageStatistics', async (organizationId: any, { getState }) => {
+export const fetchStatisticsPageStatistics = createAppAsyncThunk('statistics/fetchStatisticsPageStatistics', async (organizationId: any, { getState }) => {
 	// get prior statistics
 	const state = getState();
-	const statistics = getStatistics(state as RootState);
+	const statistics = getStatistics(state);
 
 	return await fetchStatistics(organizationId, "organization", statistics)
 });
 
-export const fetchStatisticsPageStatisticsValueUpdate = createAsyncThunk('statistics/fetchStatisticsPageStatisticsValueUpdate', async (params: {organizationId: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any}, { getState }) => {
+export const fetchStatisticsPageStatisticsValueUpdate = createAppAsyncThunk('statistics/fetchStatisticsPageStatisticsValueUpdate', async (params: {organizationId: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any}, { getState }) => {
 	const { organizationId, providerId, from, to, dataResolution, timeMode } = params;
 
 	// get prior statistics
 	const state = getState();
-	const statistics = getStatistics(state as RootState);
+	const statistics = getStatistics(state);
 
 	return await fetchStatisticsValueUpdate(organizationId, "organization", providerId, from, to, dataResolution, timeMode, statistics)
 });

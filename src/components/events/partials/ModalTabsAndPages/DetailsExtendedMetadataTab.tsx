@@ -14,38 +14,36 @@ import {
 } from "../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
 import { useAppSelector } from "../../../../store";
+import { MetadataCatalog } from "../../../../slices/eventDetailsSlice";
 
 /**
  * This component renders metadata details of a certain event or series
  */
-const DetailsExtendedMetadataTab: React.FC<{
-	resourceId: any,	//TODO: Type this
-	editAccessRole: any,	//TODO: Type this
-	metadata: any,	//TODO: Type this
-	updateResource: any,	//TODO: Type this
-}> = ({
+const DetailsExtendedMetadataTab = ({
 	resourceId,
 	editAccessRole,
 	metadata,
 	updateResource,
+}: {
+	resourceId: string,
+	editAccessRole: string,
+	metadata: MetadataCatalog[],
+	updateResource: (id: string, values: { [key: string]: any }, catalog: MetadataCatalog) => void,
 }) => {
 	const { t } = useTranslation();
 
 	const user = useAppSelector(state => getUserInformation(state));
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values, catalog) => {
+	const handleSubmit = (values: { [key: string]: any }, catalog: MetadataCatalog) => {
 		updateResource(resourceId, values, catalog);
 	};
 
 	// set current values of metadata fields as initial values
-// @ts-expect-error TS(7006): Parameter 'metadataCatalog' implicitly has an 'any... Remove this comment to see the full error message
-	const getInitialValues = (metadataCatalog) => {
+	const getInitialValues = (metadataCatalog: MetadataCatalog) => {
 		let initialValues = {};
 
 		// Transform metadata fields and their values provided by backend (saved in redux)
 		if (!!metadataCatalog.fields && metadataCatalog.fields.length > 0) {
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
 			metadataCatalog.fields.forEach((field) => {
 				let value = parseValueForBooleanStrings(field.value);
 // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
@@ -77,7 +75,6 @@ const DetailsExtendedMetadataTab: React.FC<{
 						//iterate through metadata catalogs
 						!!metadata &&
 							metadata.length > 0 &&
-// @ts-expect-error TS(7006): Parameter 'catalog' implicitly has an 'any' type.
 							metadata.map((catalog, key) => (
 								// initialize form
 								<Formik
@@ -96,7 +93,6 @@ const DetailsExtendedMetadataTab: React.FC<{
 													<tbody>
 														{/* Render table row for each metadata field depending on type */}
 														{!!catalog.fields &&
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
 															catalog.fields.map((field, index) => (
 																<tr key={index}>
 																	<td>

@@ -6,8 +6,9 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchEventPublications } from "../../../../slices/eventDetailsSlice";
 
 const EventDetailsPublicationTab = ({
-// @ts-expect-error TS(7031): Binding element 'eventId' implicitly has an 'any' ... Remove this comment to see the full error message
 	eventId,
+}: {
+	eventId: string,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
