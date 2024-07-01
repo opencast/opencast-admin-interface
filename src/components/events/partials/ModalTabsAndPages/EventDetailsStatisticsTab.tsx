@@ -6,18 +6,19 @@ import {
 import TimeSeriesStatistics from "../../../shared/TimeSeriesStatistics";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchEventStatisticsValueUpdate } from "../../../../slices/eventDetailsSlice";
+import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the statistics tab of the event details modal
  */
 const EventDetailsStatisticsTab = ({
-// @ts-expect-error TS(7031): Binding element 'eventId' implicitly has an 'any' ... Remove this comment to see the full error message
 	eventId,
-// @ts-expect-error TS(7031): Binding element 'header' implicitly has an 'any' t... Remove this comment to see the full error message
 	header,
-// @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
-	t,
+}: {
+	eventId: string,
+	header: string,
 }) => {
+	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const statistics = useAppSelector(state => getStatistics(state));

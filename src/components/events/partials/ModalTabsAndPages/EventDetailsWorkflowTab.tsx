@@ -28,20 +28,20 @@ import {
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
 import { Tooltip } from "../../../shared/Tooltip";
+import { WorkflowTabHierarchy } from "../modals/EventDetails";
+import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the workflows tab of the event details modal
  */
 const EventDetailsWorkflowTab = ({
-// @ts-expect-error TS(7031): Binding element 'eventId' implicitly has an 'any' ... Remove this comment to see the full error message
 	eventId,
-// @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
-	t,
-// @ts-expect-error TS(7031): Binding element 'close' implicitly has an 'any' ty... Remove this comment to see the full error message
-	close,
-// @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
+}: {
+	eventId: string,
+	setHierarchy: (subTabName: WorkflowTabHierarchy) => void,
 }) => {
+	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const user = useAppSelector(state => getUserInformation(state));
@@ -69,8 +69,7 @@ const EventDetailsWorkflowTab = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-// @ts-expect-error TS(7006): Parameter 'workflowId' implicitly has an 'any' typ... Remove this comment to see the full error message
-	const isCurrentWorkflow = (workflowId) => {
+	const isCurrentWorkflow = (workflowId: string) => {
 		let currentWorkflow = workflows.entries[workflows.entries.length - 1];
 		if (!currentWorkflow) {
 			return false;
@@ -78,22 +77,19 @@ const EventDetailsWorkflowTab = ({
 		return currentWorkflow.id === workflowId;
 	};
 
-// @ts-expect-error TS(7006): Parameter 'workflowId' implicitly has an 'any' typ... Remove this comment to see the full error message
-	const workflowAction = (workflowId, action) => {
+	const workflowAction = (workflowId: string, action: string) => {
 		if (!performingWorkflowAction) {
-			dispatch(performWorkflowAction({eventId, workflowId, action, close}));
+			dispatch(performWorkflowAction({eventId, workflowId, action}));
 		}
 	};
 
-// @ts-expect-error TS(7006): Parameter 'workflowId' implicitly has an 'any' typ... Remove this comment to see the full error message
-	const deleteWorkflow = (workflowId) => {
+	const deleteWorkflow = (workflowId: string) => {
 		if (!deletingWorkflow) {
 			dispatch(deleteWf({eventId, workflowId}));
 		}
 	};
 
-// @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
-	const openSubTab = (tabType, workflowId) => {
+	const openSubTab = (tabType: WorkflowTabHierarchy, workflowId: string) => {
 		dispatch(fetchWorkflowDetails({eventId, workflowId})).then();
 		setHierarchy(tabType);
 		dispatch(removeNotificationWizardForm());
