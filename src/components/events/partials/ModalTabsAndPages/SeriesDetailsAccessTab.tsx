@@ -32,7 +32,7 @@ const SeriesDetailsAccessTab = ({
 		dispatch(fetchSeriesDetailsAcls(id));
 	}
 	const updateSeriesAccessWrapper = (id: any, policies: any) => {
-		dispatch(updateSeriesAccess({id, policies}));
+		return dispatch(updateSeriesAccess({id, policies}));
 	}
 
 	useEffect(() => {
