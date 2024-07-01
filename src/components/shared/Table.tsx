@@ -126,7 +126,7 @@ const Table = ({
 // @ts-expect-error TS(7006): Parameter 'size' implicitly has an 'any' type.
 	const changePageSize = (size) => {
 		dispatch(updatePageSize(size));
-		dispatch(setOffset(0)),
+		dispatch(setOffset(0));
 		dispatch(updatePages());
 	};
 
@@ -299,7 +299,7 @@ const Table = ({
 
 			{/* Selection of page size */}
 			<div id="tbl-view-controls-container">
-				<div
+				<button
 					className="drop-down-container small flipped"
 					onClick={() => setShowPageSizes(!showPageSizes)}
 // @ts-expect-error TS(2322): Type 'RefObject<unknown>' is not assignable to typ... Remove this comment to see the full error message
@@ -321,7 +321,7 @@ const Table = ({
 							))}
 						</ul>
 					)}
-				</div>
+				</button>
 
 				{/* Pagination and navigation trough pages */}
 				<div className="pagination">

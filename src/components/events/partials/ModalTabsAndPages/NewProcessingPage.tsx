@@ -89,7 +89,6 @@ const NewProcessingPage = <T extends RequiredFormProps>({
 											placeholder={t(
 												"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW"
 											)}
-											tabIndex={99}
 										/>
 									</div>
 								) : (

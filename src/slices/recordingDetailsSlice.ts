@@ -1,5 +1,6 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 
 /**
  * This file contains redux reducer for actions affecting the state of a recording/capture agent
@@ -33,7 +34,7 @@ const initialState: RecordingDetailsState = {
 };
 
 // fetch details of certain recording from server
-export const fetchRecordingDetails = createAsyncThunk('recordingDetails/fetchRecordingDetails', async (name: string) => {
+export const fetchRecordingDetails = createAppAsyncThunk('recordingDetails/fetchRecordingDetails', async (name: string) => {
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.

@@ -10,7 +10,7 @@ import {
 } from "../../../../slices/seriesSlice";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
-import { Row, isSeries } from "../../../../slices/tableSlice";
+import { isSeries } from "../../../../slices/tableSlice";
 
 /**
  * This component manges the delete series bulk action

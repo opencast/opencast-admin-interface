@@ -43,7 +43,7 @@ import { fetchThemes, setThemeColumns } from "../slices/themeSlice";
 import { fetchRecordings, setRecordingsColumns } from "../slices/recordingSlice";
 import { setGroupColumns } from "../slices/groupSlice";
 import { fetchAcls, setAclColumns } from "../slices/aclSlice";
-import { AppThunk, RootState } from "../store";
+import { AppDispatch, AppThunk, RootState } from "../store";
 
 /**
  * This file contains methods/thunks used to manage the table in the main view and its state changes
@@ -421,11 +421,11 @@ export const loadThemesIntoTable = (): AppThunk => (dispatch, getState) => {
 };
 
 // Navigate between pages
-export const goToPage = (pageNumber: number): AppThunk => async (dispatch, getState) => {
+export const goToPage = (pageNumber: number) => async (dispatch: AppDispatch, getState: () => RootState) => {
 	dispatch(deselectAll());
 	dispatch(setOffset(pageNumber));
 
-	const state = getState() as RootState;
+	const state = getState();
 	const offset = getPageOffset(state);
 	const pages = getTablePages(state);
 
@@ -488,7 +488,7 @@ export const goToPage = (pageNumber: number): AppThunk => async (dispatch, getSt
 };
 
 // Update pages for example if page size was changed
-export const updatePages = (): AppThunk => async (dispatch, getState) => {
+export const updatePages = () => async (dispatch: AppDispatch, getState: () => RootState) => {
 	const state = getState() as RootState;
 
 	const pagination = getTablePagination(state);
@@ -590,9 +590,8 @@ export const changeAllSelected = (selected: boolean): AppThunk => (dispatch, get
 };
 
 // Select certain columns
-export const changeColumnSelection = (updatedColumns: TableConfig["columns"]): AppThunk => async (
-	dispatch,
-	getState
+export const changeColumnSelection = (updatedColumns: TableConfig["columns"]) => async (
+	dispatch: AppDispatch, getState: () => RootState
 ) => {
 	const state = getState();
 

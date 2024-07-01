@@ -69,7 +69,6 @@ const NewThemePage = <T extends RequiredFormProps>({
 																}
 															}}
 															placeholder={t("EVENTS.SERIES.NEW.THEME.LABEL")}
-															tabIndex={1}
 														/>
 													</div>
 												</p>

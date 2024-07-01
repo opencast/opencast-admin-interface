@@ -10,26 +10,27 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { fetchWorkflowErrorDetails } from "../../../../slices/eventDetailsSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
+import { WorkflowTabHierarchy } from "../modals/EventDetails";
+import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the workflow errors for the workflows tab of the event details modal
  */
 const EventDetailsWorkflowErrors = ({
-// @ts-expect-error TS(7031): Binding element 'eventId' implicitly has an 'any' ... Remove this comment to see the full error message
 	eventId,
-// @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
-	t,
-// @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
+}: {
+	eventId: string,
+	setHierarchy: (subTabName: WorkflowTabHierarchy) => void,
 }) => {
+	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const workflow = useAppSelector(state => getWorkflow(state));
 	const errors = useAppSelector(state => getWorkflowErrors(state));
 	const isFetching = useAppSelector(state => isFetchingWorkflowErrors(state));
 
-// @ts-expect-error TS(7006): Parameter 'severity' implicitly has an 'any' type.
-	const severityColor = (severity) => {
+	const severityColor = (severity: "FAILURE" | "INFO" | "WARNING" | string) => {
 		switch (severity.toUpperCase()) {
 			case "FAILURE":
 				return "red";
@@ -42,8 +43,7 @@ const EventDetailsWorkflowErrors = ({
 		}
 	};
 
-// @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
-	const openSubTab = (tabType, errorId: number | undefined = undefined) => {
+	const openSubTab = (tabType: WorkflowTabHierarchy, errorId: number | undefined = undefined) => {
 		dispatch(removeNotificationWizardForm());
 		setHierarchy(tabType);
 		if (tabType === "workflow-error-details") {

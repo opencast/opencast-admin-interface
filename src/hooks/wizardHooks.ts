@@ -1,7 +1,7 @@
 import { FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import { Event } from "../slices/eventSlice";
-import { Row, isEvent } from "../slices/tableSlice";
+import { isEvent } from "../slices/tableSlice";
 
 export const usePageFunctions = <initialValuesType>(initialPage: number, initialValues: initialValuesType) => {
 	const [page, setPage] = useState(initialPage);
