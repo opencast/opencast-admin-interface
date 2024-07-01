@@ -18,25 +18,11 @@ import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
 import { RootState } from '../store';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 import { Ace, TransformedAcl, TransformedAcls } from './aclDetailsSlice';
+import { MetadataCatalog } from './eventDetailsSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of a series
  */
-type MetadataCatalog = {
-	title: string,
-	flavor: string,
-	fields: {
-		collection?: {}[],	// different for e.g. languages and presenters
-		id: string,
-		label: string,
-		readOnly: boolean,
-		required: boolean,
-		translatable?: boolean,
-		type: string,
-		value: string | string[],
-	}[]
-}
-
 type Feed = {
 	link: string,
 	type: string,
