@@ -1,10 +1,10 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import { groupsTableConfig } from '../configs/tableConfigs/groupsTableConfig';
 import axios from 'axios';
 import { buildGroupBody, getURLParams } from '../utils/resourceUtils';
 import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
-import { RootState } from '../store';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 
 /**
  * This file contains redux reducer for actions affecting the state of groups
@@ -47,9 +47,9 @@ const initialState: GroupState = {
 };
 
 // fetch groups from server
-export const fetchGroups = createAsyncThunk('groups/fetchGroups', async (_, { getState }) => {
+export const fetchGroups = createAppAsyncThunk('groups/fetchGroups', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state as RootState);
+	let params = getURLParams(state);
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -58,7 +58,7 @@ export const fetchGroups = createAsyncThunk('groups/fetchGroups', async (_, { ge
 });
 
 // post new group to backend
-export const postNewGroup = createAsyncThunk('groups/postNewGroup', async (values: Group, {dispatch}) => {
+export const postNewGroup = createAppAsyncThunk('groups/postNewGroup', async (values: Group, {dispatch}) => {
 	// get URL params used for post request
 	let data = buildGroupBody(values);
 
@@ -83,7 +83,7 @@ export const postNewGroup = createAsyncThunk('groups/postNewGroup', async (value
 		});
 });
 
-export const deleteGroup = createAsyncThunk('groups/deleteGroup', async (id: string, {dispatch}) => {
+export const deleteGroup = createAppAsyncThunk('groups/deleteGroup', async (id: string, {dispatch}) => {
 	// API call for deleting a group
 	axios
 		.delete(`/admin-ng/groups/${id}`)

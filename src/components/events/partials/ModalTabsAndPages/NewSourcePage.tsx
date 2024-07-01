@@ -532,7 +532,6 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
-									tabIndex={13}
 								/>
 
 								{/* drop-down for minute
@@ -563,7 +562,6 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
-									tabIndex={14}
 								/>
 							</td>
 						</tr>
@@ -601,7 +599,6 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
-									tabIndex={15}
 								/>
 
 								{/* drop-down for minute
@@ -632,7 +629,6 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
-									tabIndex={16}
 								/>
 							</td>
 						</tr>
@@ -670,7 +666,6 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
-									tabIndex={17}
 								/>
 
 								{/* drop-down for minute
@@ -701,7 +696,6 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
-									tabIndex={18}
 								/>
 
 								{/* display end date if on different day to start date, only if this is current source mode */}
@@ -741,7 +735,6 @@ const Schedule = <T extends {
 									placeholder={t(
 										"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.LOCATION"
 									)}
-									tabIndex={19}
 								/>
 							</td>
 						</tr>

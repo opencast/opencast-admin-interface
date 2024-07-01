@@ -1,3 +1,4 @@
+import { Ace } from './../slices/aclDetailsSlice';
 import { getFilters, getTextFilter } from "../selectors/tableFilterSelectors";
 import {
 	getPageLimit,
@@ -397,10 +398,13 @@ export const getMetadataCollectionFieldName = (metadataField, field) => {
 };
 
 // Prepare rules of access policies for post of new events or series
-// @ts-expect-error TS(7006): Parameter 'policies' implicitly has an 'any' type.
-export const prepareAccessPolicyRulesForPost = (policies) => {
+export const prepareAccessPolicyRulesForPost = (policies: TransformedAcl[]) => {
 	// access policies for post request
-	let access = {
+	let access : {
+		acl : {
+			ace: Ace[]
+		}
+	} = {
 		acl: {
 			ace: [],
 		},
@@ -410,7 +414,6 @@ export const prepareAccessPolicyRulesForPost = (policies) => {
 	for (let i = 0; policies.length > i; i++) {
 		if (policies[i].read) {
 			access.acl.ace = access.acl.ace.concat({
-// @ts-expect-error TS(2769): No overload matches this call.
 				action: "read",
 				allow: policies[i].read,
 				role: policies[i].role,
@@ -418,7 +421,6 @@ export const prepareAccessPolicyRulesForPost = (policies) => {
 		}
 		if (policies[i].write) {
 			access.acl.ace = access.acl.ace.concat({
-// @ts-expect-error TS(2769): No overload matches this call.
 				action: "write",
 				allow: policies[i].write,
 				role: policies[i].role,
@@ -427,7 +429,6 @@ export const prepareAccessPolicyRulesForPost = (policies) => {
 		if (policies[i].actions.length > 0) {
 			for (let j = 0; policies[i].actions.length > j; j++) {
 				access.acl.ace = access.acl.ace.concat({
-// @ts-expect-error TS(2769): No overload matches this call.
 					action: policies[i].actions[j],
 					allow: true,
 					role: policies[i].role,

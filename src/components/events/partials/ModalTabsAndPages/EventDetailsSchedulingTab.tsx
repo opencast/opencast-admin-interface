@@ -47,16 +47,17 @@ import {
 	addNotification,
 } from "../../../../slices/notificationSlice";
 import { Recording } from "../../../../slices/recordingSlice";
+import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the main assets tab of event details modal
  */
 const EventDetailsSchedulingTab = ({
-// @ts-expect-error TS(7031): Binding element 'eventId' implicitly has an 'any' ... Remove this comment to see the full error message
 	eventId,
-// @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
-	t,
+}: {
+	eventId: string,
 }) => {
+	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const user = useAppSelector(state => getUserInformation(state));
@@ -343,7 +344,6 @@ const EventDetailsSchedulingTab = ({
 																	placeholder={t(
 																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
 																	)}
-																	tabIndex={2}
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
@@ -373,7 +373,6 @@ const EventDetailsSchedulingTab = ({
 																	placeholder={t(
 																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
 																	)}
-																	tabIndex={3}
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
@@ -419,7 +418,6 @@ const EventDetailsSchedulingTab = ({
 																		}
 																	}}
 																	placeholder={t("WIZARD.DURATION.HOURS")}
-																	tabIndex={4}
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
@@ -449,7 +447,6 @@ const EventDetailsSchedulingTab = ({
 																		}
 																	}}
 																	placeholder={t("WIZARD.DURATION.MINUTES")}
-																	tabIndex={5}
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
@@ -497,7 +494,6 @@ const EventDetailsSchedulingTab = ({
 																	placeholder={t(
 																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
 																	)}
-																	tabIndex={6}
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
@@ -527,7 +523,6 @@ const EventDetailsSchedulingTab = ({
 																	placeholder={t(
 																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
 																	)}
-																	tabIndex={7}
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
@@ -599,7 +594,6 @@ const EventDetailsSchedulingTab = ({
 																	placeholder={t(
 																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"
 																	)}
-																	tabIndex={8}
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
@@ -647,7 +641,7 @@ const EventDetailsSchedulingTab = ({
 																						formik.values.captureAgent
 																					).find(
 																						(agent) => agent.id === input
-																					)?.value
+																					)?.value ?? ""
 																				)}
 																				<br />
 																			</span>

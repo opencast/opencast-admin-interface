@@ -1,5 +1,4 @@
 import React from "react";
-import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import Notifications from "../../../shared/Notifications";
 import {
 	getAssetAttachmentDetails,
@@ -7,40 +6,23 @@ import {
 } from "../../../../selectors/eventDetailsSelectors";
 import { humanReadableBytesFilter } from "../../../../utils/eventDetailsUtils";
 import { useAppSelector } from "../../../../store";
+import { AssetTabHierarchy } from "../modals/EventDetails";
+import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the attachment details sub-tab for assets tab of event details modal
  */
 const EventDetailsAssetAttachmentDetails = ({
-// @ts-expect-error TS(7031): Binding element 'eventId' implicitly has an 'any' ... Remove this comment to see the full error message
-	eventId,
-// @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
-	t,
-// @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
+}: {
+	setHierarchy: (subTabName: AssetTabHierarchy) => void,
 }) => {
+	const { t } = useTranslation();
 	const attachment = useAppSelector(state => getAssetAttachmentDetails(state));
 	const isFetching = useAppSelector(state => isFetchingAssetAttachmentDetails(state));
 
-// @ts-expect-error TS(7006): Parameter 'subTabName' implicitly has an 'any' typ... Remove this comment to see the full error message
-	const openSubTab = (subTabName) => {
-		setHierarchy(subTabName);
-	};
-
 	return (
 		<div className="modal-content">
-			{/* Hierarchy navigation */}
-			<EventDetailsTabHierarchyNavigation
-				openSubTab={openSubTab}
-				hierarchyDepth={1}
-				translationKey0={"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.TITLE"}
-				subTabArgument0={"asset-attachments"}
-				translationKey1={
-					"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.TITLE"
-				}
-				subTabArgument1={"attachment-details"}
-			/>
-
 			<div className="modal-body">
 				{/* Notifications */}
 				<Notifications context="not_corner" />

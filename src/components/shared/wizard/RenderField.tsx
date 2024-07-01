@@ -262,7 +262,6 @@ const EditableSingleSelect = ({
 				required={metadataField.required}
 				handleChange={(element) => element && setFieldValue(field.name, element.value)}
 				placeholder={`-- ${t("SELECT_NO_OPTION_SELECTED")} --`}
-				tabIndex={10}
 				autoFocus={true}
 				defaultOpen={true}
 			/>

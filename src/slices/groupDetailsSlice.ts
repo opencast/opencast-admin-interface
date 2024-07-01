@@ -1,7 +1,8 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { buildGroupBody } from '../utils/resourceUtils';
 import { addNotification } from './notificationSlice';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 
 /**
  * This file contains redux reducer for actions affecting the state of details of a group
@@ -30,7 +31,7 @@ const initialState: GroupDetailsState = {
 };
 
 // fetch details about certain group from server
-export const fetchGroupDetails = createAsyncThunk('groupDetails/fetchGroupDetails', async (groupName: string) => {
+export const fetchGroupDetails = createAppAsyncThunk('groupDetails/fetchGroupDetails', async (groupName: string) => {
 	const res = await axios.get(`/admin-ng/groups/${groupName}`);
 	const response = await res.data;
 
@@ -58,7 +59,7 @@ export const fetchGroupDetails = createAsyncThunk('groupDetails/fetchGroupDetail
 });
 
 // update details of a certain group
-export const updateGroupDetails = createAsyncThunk('groupDetails/updateGroupDetails', async (params: {
+export const updateGroupDetails = createAppAsyncThunk('groupDetails/updateGroupDetails', async (params: {
 	values: GroupDetailsState,
 	groupId: string
 }, {dispatch}) => {

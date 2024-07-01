@@ -18,18 +18,19 @@ import {
 	deleteCommentReply,
 } from "../../../../slices/eventDetailsSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
+import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the comment tab of the event details modal
  */
 const EventDetailsCommentsTab = ({
-// @ts-expect-error TS(7031): Binding element 'eventId' implicitly has an 'any' ... Remove this comment to see the full error message
 	eventId,
-// @ts-expect-error TS(7031): Binding element 'header' implicitly has an 'any' t... Remove this comment to see the full error message
 	header,
-// @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
-	t,
+}: {
+	eventId: string,
+	header: string,
 }) => {
+	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const comments = useAppSelector(state => getComments(state));
@@ -260,7 +261,6 @@ const EventDetailsCommentsTab = ({
 												placeholder={t(
 													"EVENTS.EVENTS.DETAILS.COMMENTS.SELECTPLACEHOLDER"
 												)}
-												tabIndex={5}
 											/>
 										</div>
 
