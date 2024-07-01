@@ -32,7 +32,7 @@ import { Ace, TransformedAcl, TransformedAcls } from './aclDetailsSlice';
 
 type MetadataField = {
 	id: string,
-	label: string,	// translation key
+	label: string,  // translation key
 	readOnly: boolean,
 	required: boolean,
 	type: string,
@@ -68,8 +68,8 @@ type Workflow = {
 	scheduling: boolean,
 	entries: {
 		id: number,
-		status: string,	//translation key
-		submitted: string,	//date
+		status: string,  //translation key
+		submitted: string,  //date
 		submitter: string,
 		submitterEmail: string,
 		submitterName: string,
@@ -94,8 +94,8 @@ type Device = {
 
 export type UploadAssetOption = {
 	id: string,
-	title: string,	// translation key
-	type: string,		// "track", "attachment" etc.
+	title: string,  // translation key
+	type: string,  // "track", "attachment" etc.
 	flavorType: string,
 	flavorSubType: string,
 	accept: string,
@@ -107,7 +107,7 @@ type EventDetailsState = {
 	errorMetadata: SerializedError | null,
 	statusAssets: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAssets: SerializedError | null,
-	statusAssetAttachments: 'uninitialized' | 'loading' | 'succeeded' | 'failed',	// These were previously all just statusAssets
+	statusAssetAttachments: 'uninitialized' | 'loading' | 'succeeded' | 'failed',  // These were previously all just statusAssets
 	errorAssetAttachments: SerializedError | null,
 	statusAssetAttachmentDetails: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAssetAttachmentDetails: SerializedError | null,
@@ -163,12 +163,12 @@ type EventDetailsState = {
 	errorStatisticsValue: SerializedError | null,
 	eventId: string,
 	metadata: {
-		title: string,	// translation key
+		title: string,  // translation key
 		flavor: string,
 		fields: MetadataField[] | undefined
 	},
 	extendedMetadata: {
-		title: string,	// not (necessarily) translation key
+		title: string,  // not (necessarily) translation key
 		flavor: string,
 		fields: MetadataField[] | undefined
 	}[],
@@ -245,7 +245,7 @@ type EventDetailsState = {
 		creationDate: string,
 		id: number,
 		modificationDate: string,
-		reason: string,	// translation key
+		reason: string,  // translation key
 		replies: {
 			author: CommentAuthor,
 			creationDate: string,
@@ -291,18 +291,18 @@ type EventDetailsState = {
 		description?: string,
 	},
 	workflowDefinitions: WorkflowDefinitions[],
-	baseWorkflow: any,	// TODO: proper typing
+	baseWorkflow: any,  // TODO: proper typing
 	workflowOperations: {
 		entries: {
 			configuration: { [key: string]: string },
 			description: string,
 			id: number,
-			status: string,	// translation key
+			status: string,  // translation key
 			title: string,
 		}[]
 	},
 	workflowOperationDetails: {
-		completed: string,	// date
+		completed: string,  // date
 		description: string,
 		exception_handler_workflow: string,
 		execution_host: string,
@@ -312,8 +312,8 @@ type EventDetailsState = {
 		max_attempts: number,
 		name: string,
 		retry_strategy: string,
-		started: string,	// date
-		state: string,	// translation key
+		started: string,  // date
+		state: string,  // translation key
 		time_in_queue: number,
 	},
 	workflowErrors: {
@@ -321,7 +321,7 @@ type EventDetailsState = {
 			description: string,
 			id: number,
 			severity: string,
-			timestamp: string,	// date
+			timestamp: string,  // date
 			title: string,
 		}[]
 	},
@@ -337,14 +337,14 @@ type EventDetailsState = {
 		service_type: string,
 		severity: string,
 		technical_details: string,
-		timestamp: string,	// date
+		timestamp: string,  // date
 		title: string,
 	},
 	publications: {
 		enabled: boolean,
 		icon?: string,
 		id: string,
-		name: string,	// translation key
+		name: string,  // translation key
 		order: number,
 		url: string,
 		description?: string,
@@ -2215,18 +2215,18 @@ const eventDetailsSlice = createSlice({
 				// TODO: Figure out why it is so vastly different from our initial state
 				// and maybe fix our initial state if this is actually correct
 				// const emptyWorkflowData = {
-				// 	creator: {
-				// 		name: "",
-				// 		email: "",
-				// 	},
-				// 	title: "",
-				// 	description: "",
-				// 	submittedAt: "",
-				// 	state: "",
-				// 	executionTime: "",
-				// 	wiid: "",
-				// 	wdid: "",
-				// 	configuration: {},
+				//     creator: {
+				//         name: "",
+				//         email: "",
+				//     },
+				//     title: "",
+				//     description: "",
+				//     submittedAt: "",
+				//     state: "",
+				//     executionTime: "",
+				//     wiid: "",
+				//     wdid: "",
+				//     configuration: {},
 				// };
 				const emptyWorkflowData = {
 					workflowId: "",

@@ -19,10 +19,10 @@ import { useAppSelector } from "../../../../store";
  * This component renders metadata details of a certain event or series
  */
 const DetailsExtendedMetadataTab: React.FC<{
-	resourceId: any,	//TODO: Type this
-	editAccessRole: any,	//TODO: Type this
-	metadata: any,	//TODO: Type this
-	updateResource: any,	//TODO: Type this
+	resourceId: any,  //TODO: Type this
+	editAccessRole: any,  //TODO: Type this
+	metadata: any,  //TODO: Type this
+	updateResource: any,  //TODO: Type this
 }> = ({
 	resourceId,
 	editAccessRole,

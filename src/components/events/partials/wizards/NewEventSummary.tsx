@@ -36,7 +36,7 @@ interface RequiredFormProps {
 	deviceInputs?: string[]
 	configuration: { [key: string]: string }
 	acls: TransformedAcl[]
-	[key: string]: unknown,	// Metadata fields
+	[key: string]: unknown,  // Metadata fields
 }
 
 const NewEventSummary = <T extends RequiredFormProps>({

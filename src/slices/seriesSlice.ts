@@ -37,7 +37,7 @@ type MetadataCatalog = {
 	title: string,
 	flavor: string,
 	fields: {
-		collection?: {}[],	// different for e.g. languages and presenters
+		collection?: {}[],  // different for e.g. languages and presenters
 		id: string,
 		label: string,
 		readOnly: boolean,

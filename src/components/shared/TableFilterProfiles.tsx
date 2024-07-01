@@ -168,7 +168,7 @@ const TableFiltersProfiles = ({
 											<Tooltip title="profile.description">
 												<button
 													onClick={() => chooseFilterProfile(profile.filterMap)}
-                        className="button-li	ke-anchor"
+                        className="button-li ke-anchor"
 												>
 													{profile.name.substr(0, 70)}
 												</button>
