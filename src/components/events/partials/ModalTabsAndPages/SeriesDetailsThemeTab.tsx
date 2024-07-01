@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { Formik } from "formik";
 import _ from "lodash";
 import cn from "classnames";
-import { connect } from "react-redux";
 import Notifications from "../../../shared/Notifications";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
@@ -76,7 +75,6 @@ const SeriesDetailsThemeTab = ({
 																}
 															}}
 															placeholder={t("EVENTS.SERIES.NEW.THEME.LABEL")}
-															tabIndex={8}
 															disabled={
 																!hasAccess(
 																	"ROLE_UI_SERIES_DETAILS_THEMES_EDIT",

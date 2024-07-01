@@ -52,14 +52,6 @@ strong {
     font-weight: 600;
 }
 
-textarea,
-input,
-button {
-    &:focus {
-        outline: none;
-    }
-}
-
 .text-left {
     text-align: left;
 }

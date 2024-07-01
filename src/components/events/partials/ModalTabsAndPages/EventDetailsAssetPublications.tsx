@@ -1,5 +1,4 @@
 import React from "react";
-import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import Notifications from "../../../shared/Notifications";
 import {
 	getAssetPublications,
@@ -7,22 +6,26 @@ import {
 } from "../../../../selectors/eventDetailsSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchAssetPublicationDetails } from "../../../../slices/eventDetailsSlice";
+import { AssetTabHierarchy } from "../modals/EventDetails";
+import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the publications sub-tab for assets tab of event details modal
  */
 const EventDetailsAssetPublications = ({
-    eventId,
-    t,
-    setHierarchy,
-}: any) => {
+	eventId,
+	setHierarchy,
+}: {
+	eventId: string,
+	setHierarchy: (subTabName: AssetTabHierarchy) => void,
+}) => {
+	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const publications = useAppSelector(state => getAssetPublications(state));
 	const isFetching = useAppSelector(state => isFetchingAssetPublications(state));
 
-// @ts-expect-error TS(7006): Parameter 'subTabName' implicitly has an 'any' typ... Remove this comment to see the full error message
-	const openSubTab = (subTabName, publicationId = "") => {
+	const openSubTab = (subTabName: AssetTabHierarchy, publicationId = "") => {
 		if (subTabName === "publication-details") {
 			dispatch(fetchAssetPublicationDetails({eventId, publicationId})).then();
 		}
@@ -31,14 +34,6 @@ const EventDetailsAssetPublications = ({
 
 	return (
 		<div className="modal-content">
-			{/* Hierarchy navigation */}
-			<EventDetailsTabHierarchyNavigation
-				openSubTab={openSubTab}
-				hierarchyDepth={0}
-				translationKey0={"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.TITLE"}
-				subTabArgument0={"asset-publications"}
-			/>
-
 			<div className="modal-body">
 				{/* Notifications */}
 				<Notifications context="not_corner" />

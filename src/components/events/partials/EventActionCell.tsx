@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import { connect } from "react-redux";
 import EventDetailsModal from "./modals/EventDetailsModal";
 import EmbeddingCodeModal from "./modals/EmbeddingCodeModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
@@ -102,13 +101,14 @@ const EventActionCell = ({
 	return (
 		<>
 			{/* Display modal for editing table view if table edit button is clicked */}
-			<EventDetailsModal
-				showModal={displayEventDetailsModal}
-				handleClose={hideEventDetailsModal}
-				tabIndex={eventDetailsTabIndex}
-				eventTitle={row.title}
-				eventId={row.id}
-			/>
+			{displayEventDetailsModal &&
+				<EventDetailsModal
+					handleClose={hideEventDetailsModal}
+					tabIndex={eventDetailsTabIndex}
+					eventTitle={row.title}
+					eventId={row.id}
+				/>
+			}
 
 			{displaySeriesDetailsModal && (
 				<SeriesDetailsModal

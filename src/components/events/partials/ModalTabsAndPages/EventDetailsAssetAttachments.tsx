@@ -1,5 +1,4 @@
 import React from "react";
-import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import Notifications from "../../../shared/Notifications";
 import {
 	getAssetAttachments,
@@ -7,25 +6,26 @@ import {
 } from "../../../../selectors/eventDetailsSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchAssetAttachmentDetails } from "../../../../slices/eventDetailsSlice";
+import { AssetTabHierarchy } from "../modals/EventDetails";
+import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the attachments sub-tab for assets tab of event details modal
  */
 const EventDetailsAssetAttachments = ({
-// @ts-expect-error TS(7031): Binding element 'eventId' implicitly has an 'any' ... Remove this comment to see the full error message
 	eventId,
-// @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
-	t,
-// @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
+}: {
+	eventId: string,
+	setHierarchy: (subTabName: AssetTabHierarchy) => void,
 }) => {
+	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const attachments = useAppSelector(state => getAssetAttachments(state));
 	const isFetching = useAppSelector(state => isFetchingAssetAttachments(state));
 
-// @ts-expect-error TS(7006): Parameter 'subTabName' implicitly has an 'any' typ... Remove this comment to see the full error message
-	const openSubTab = (subTabName, attachmentId = "") => {
+	const openSubTab = (subTabName: AssetTabHierarchy, attachmentId = "") => {
 		if (subTabName === "attachment-details") {
 			dispatch(fetchAssetAttachmentDetails({eventId, attachmentId})).then();
 		}
@@ -34,14 +34,6 @@ const EventDetailsAssetAttachments = ({
 
 	return (
 		<div className="modal-content">
-			{/* Hierarchy navigation */}
-			<EventDetailsTabHierarchyNavigation
-				openSubTab={openSubTab}
-				hierarchyDepth={0}
-				translationKey0={"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.TITLE"}
-				subTabArgument0={"asset-attachments"}
-			/>
-
 			<div className="modal-body">
 				{/* Notifications */}
 				<Notifications context="not_corner" />

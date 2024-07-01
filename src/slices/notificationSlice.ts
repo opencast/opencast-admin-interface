@@ -1,4 +1,4 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import {
 	NOTIFICATION_CONTEXT,
 	NOTIFICATION_CONTEXT_ACCESS,
@@ -10,7 +10,7 @@ import {
 	ADMIN_NOTIFICATION_DURATION_WARNING,
 } from "../configs/generalConfig";
 import { getLastAddedNotification } from '../selectors/notificationSelector';
-import { RootState } from '../store';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 
 /**
  * This file contains redux reducer for actions affecting the state of table
@@ -42,7 +42,7 @@ const initialState: NotificationState = {
 // Counter for id of notifications
 let nextNotificationId = 0;
 
-export const addNotification = createAsyncThunk('notifications/addNotification', async (params: {
+export const addNotification = createAppAsyncThunk('notifications/addNotification', async (params: {
 	type: OurNotification["type"],
 	key: OurNotification["key"],
 	duration?: OurNotification["duration"],
@@ -54,7 +54,7 @@ export const addNotification = createAsyncThunk('notifications/addNotification',
 	let { type, key, duration, parameter, context, id, noDuplicates } = params
 
 	if (noDuplicates) {
-		const state = getState() as RootState;
+		const state = getState();
 		for (const notif of state.notifications.notifications) {
 			if (notif.key === key && notif.context === context) {
 				console.log("Did not add notification with key " + key + " because a notification with that key already exists.")
@@ -110,7 +110,7 @@ export const addNotification = createAsyncThunk('notifications/addNotification',
 	}
 
 	// Get newly created notification and its id
-	let latestNotification = getLastAddedNotification(getState() as RootState);
+	let latestNotification = getLastAddedNotification(getState());
 
 	// Fade out notification if it is not -1 -> -1 means 'stay forever'
 	// Start timeout for fading out after time in duration is over

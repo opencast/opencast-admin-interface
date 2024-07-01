@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
-import { Field, FormikProps } from "formik";
+import { FormikProps } from "formik";
 import Notifications from "../../../shared/Notifications";
 import { OurNotification, addNotification, removeNotificationByKey, removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store";
@@ -128,6 +128,7 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 			return page.segment;
 		})
 		.join('/')
+		/* eslint-disable */
 		.replace(/([^\/]+$)/, lastSegment);
 	}
 

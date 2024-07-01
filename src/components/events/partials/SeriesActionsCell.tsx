@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import { connect } from "react-redux";
 import SeriesDetailsModal from "./modals/SeriesDetailsModal";
 import {
 	fetchSeriesDetailsThemeNames,

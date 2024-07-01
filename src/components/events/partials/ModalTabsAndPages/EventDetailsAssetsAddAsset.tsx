@@ -7,18 +7,20 @@ import { getAssetUploadOptions } from "../../../../selectors/eventSelectors";
 import { translateOverrideFallback } from "../../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { updateAssets } from "../../../../slices/eventDetailsSlice";
+import { AssetTabHierarchy } from "../modals/EventDetails";
+import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the add asset sub-tab for assets tab of event details modal
  */
 const EventDetailsAssetsAddAsset = ({
-// @ts-expect-error TS(7031): Binding element 'eventId' implicitly has an 'any' ... Remove this comment to see the full error message
 	eventId,
-// @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
-	t,
-// @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
+}: {
+	eventId: string,
+	setHierarchy: (subTabName: AssetTabHierarchy) => void,
 }) => {
+	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
@@ -28,8 +30,7 @@ const EventDetailsAssetsAddAsset = ({
 		(asset) => asset.type !== "track"
 	);
 
-// @ts-expect-error TS(7006): Parameter 'subTabName' implicitly has an 'any' typ... Remove this comment to see the full error message
-	const openSubTab = (subTabName) => {
+	const openSubTab = (subTabName: AssetTabHierarchy) => {
 		setHierarchy(subTabName);
 	};
 
@@ -89,11 +90,6 @@ const EventDetailsAssetsAddAsset = ({
 															<td>
 																{" "}
 																{translateOverrideFallback(asset, t)}
-																<span className="ui-helper-hidden">
-                                  {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
-                                  ({asset.type} "{asset.flavorType}//
-																	{asset.flavorSubType}")
-																</span>
 															</td>
 															<td>
 																<div className="file-upload">

@@ -12,15 +12,6 @@ import EventDetailsWorkflowOperationDetails from "../ModalTabsAndPages/EventDeta
 import EventDetailsWorkflowErrors from "../ModalTabsAndPages/EventDetailsWorkflowErrors";
 import EventDetailsWorkflowErrorDetails from "../ModalTabsAndPages/EventDetailsWorkflowErrorDetails";
 import EventDetailsAssetsTab from "../ModalTabsAndPages/EventDetailsAssetsTab";
-import EventDetailsAssetAttachments from "../ModalTabsAndPages/EventDetailsAssetAttachments";
-import EventDetailsAssetCatalogs from "../ModalTabsAndPages/EventDetailsAssetCatalogs";
-import EventDetailsAssetMedia from "../ModalTabsAndPages/EventDetailsAssetMedia";
-import EventDetailsAssetPublications from "../ModalTabsAndPages/EventDetailsAssetPublications";
-import EventDetailsAssetAttachmentDetails from "../ModalTabsAndPages/EventDetailsAssetAttachmentDetails";
-import EventDetailsAssetCatalogDetails from "../ModalTabsAndPages/EventDetailsAssetCatalogDetails";
-import EventDetailsAssetMediaDetails from "../ModalTabsAndPages/EventDetailsAssetMediaDetails";
-import EventDetailsAssetPublicationDetails from "../ModalTabsAndPages/EventDetailsAssetPublicationDetails";
-import EventDetailsAssetsAddAsset from "../ModalTabsAndPages/EventDetailsAssetsAddAsset";
 import EventDetailsSchedulingTab from "../ModalTabsAndPages/EventDetailsSchedulingTab";
 import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsExtendedMetadataTab";
 import DetailsMetadataTab from "../ModalTabsAndPages/DetailsMetadataTab";
@@ -48,21 +39,24 @@ import {
 } from "../../../../slices/eventDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
+export type WorkflowTabHierarchy = "entry" | "workflow-details" | "workflow-operations" | "workflow-operation-details" | "errors-and-warnings" | "workflow-error-details"
+export type AssetTabHierarchy = "entry" | "add-asset" | "asset-attachments" | "attachment-details" | "asset-catalogs" | "catalog-details" | "asset-media" | "media-details" | "asset-publications" | "publication-details";
+
 /**
  * This component manages the pages of the event details
  */
-const EventDetails : React.FC<{
-  tabIndex: any,
-	eventId: any,
-	close?: any,
-	policyChanged: any,
-	setPolicyChanged: any,
-}>= ({
+const EventDetails = ({
 	tabIndex,
 	eventId,
 	close,
 	policyChanged,
 	setPolicyChanged,
+}: {
+	tabIndex: number,
+	eventId: string,
+	close?: () => void,
+	policyChanged: boolean,
+	setPolicyChanged: (value: boolean) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -77,8 +71,8 @@ const EventDetails : React.FC<{
 	}, []);
 
 	const [page, setPage] = useState(tabIndex);
-	const [workflowTabHierarchy, setWorkflowTabHierarchy] = useState("entry");
-	const [assetsTabHierarchy, setAssetsTabHierarchy] = useState("entry");
+	const [workflowTabHierarchy, setWorkflowTabHierarchy] = useState<WorkflowTabHierarchy>("entry");
+	const [assetsTabHierarchy, setAssetsTabHierarchy] = useState<AssetTabHierarchy>("entry");
 
 	// TODO: Get rid of the wrappers when modernizing redux is done
 	const updateMetadataWrapper = (id: any, values: any) => {
@@ -157,8 +151,7 @@ const EventDetails : React.FC<{
 		},
 	];
 
-// @ts-expect-error TS(7006): Parameter 'tabNr' implicitly has an 'any' type.
-	const openTab = (tabNr) => {
+	const openTab = (tabNr: number) => {
 		dispatch(removeNotificationWizardForm());
 		setWorkflowTabHierarchy("entry");
 		setAssetsTabHierarchy("entry");
@@ -221,7 +214,7 @@ const EventDetails : React.FC<{
 					<DetailsMetadataTab
 						metadataFields={metadata}
 						resourceId={eventId}
-						header={tabs[page].bodyHeaderTranslation}
+						header={tabs[page].bodyHeaderTranslation ?? ""}
 						updateResource={updateMetadataWrapper}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
 					/>
@@ -235,93 +228,26 @@ const EventDetails : React.FC<{
 					/>
 				)}
 				{page === 2 && <EventDetailsPublicationTab eventId={eventId} />}
-				{page === 3 &&
-					((assetsTabHierarchy === "entry" && (
-						<EventDetailsAssetsTab
-							eventId={eventId}
-							t={t}
-							setHierarchy={setAssetsTabHierarchy}
-						/>
-					)) ||
-						(assetsTabHierarchy === "add-asset" && (
-							<EventDetailsAssetsAddAsset
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "asset-attachments" && (
-							<EventDetailsAssetAttachments
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "attachment-details" && (
-							<EventDetailsAssetAttachmentDetails
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "asset-catalogs" && (
-							<EventDetailsAssetCatalogs
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "catalog-details" && (
-							<EventDetailsAssetCatalogDetails
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "asset-media" && (
-							<EventDetailsAssetMedia
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "media-details" && (
-							<EventDetailsAssetMediaDetails
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "asset-publications" && (
-							<EventDetailsAssetPublications
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)) ||
-						(assetsTabHierarchy === "publication-details" && (
-							<EventDetailsAssetPublicationDetails
-								eventId={eventId}
-								t={t}
-								setHierarchy={setAssetsTabHierarchy}
-							/>
-						)))}
+				{page === 3 && (
+					<EventDetailsAssetsTab
+						eventId={eventId}
+						assetsTabHierarchy={assetsTabHierarchy}
+						setAssetsTabHierarchy={setAssetsTabHierarchy}
+					/>
+				)}
 				{page === 4 && !isLoadingScheduling && (
-					<EventDetailsSchedulingTab eventId={eventId} t={t} />
+					<EventDetailsSchedulingTab eventId={eventId} />
 				)}
 				{page === 5 &&
 					((workflowTabHierarchy === "entry" && (
 						<EventDetailsWorkflowTab
 							eventId={eventId}
-							t={t}
-							close={close}
 							setHierarchy={setWorkflowTabHierarchy}
 						/>
 					)) ||
 						(workflowTabHierarchy === "workflow-details" && (
 							<EventDetailsWorkflowDetails
 								eventId={eventId}
-								t={t}
 								setHierarchy={setWorkflowTabHierarchy}
 							/>
 						)) ||
@@ -333,30 +259,24 @@ const EventDetails : React.FC<{
 						)) ||
 						(workflowTabHierarchy === "workflow-operation-details" && (
 							<EventDetailsWorkflowOperationDetails
-								eventId={eventId}
-								t={t}
 								setHierarchy={setWorkflowTabHierarchy}
 							/>
 						)) ||
 						(workflowTabHierarchy === "errors-and-warnings" && (
 							<EventDetailsWorkflowErrors
 								eventId={eventId}
-								t={t}
 								setHierarchy={setWorkflowTabHierarchy}
 							/>
 						)) ||
 						(workflowTabHierarchy === "workflow-error-details" && (
 							<EventDetailsWorkflowErrorDetails
-								eventId={eventId}
-								t={t}
 								setHierarchy={setWorkflowTabHierarchy}
 							/>
 						)))}
 				{page === 6 && (
 					<EventDetailsAccessPolicyTab
 						eventId={eventId}
-						header={tabs[page].bodyHeaderTranslation}
-						t={t}
+						header={tabs[page].bodyHeaderTranslation ?? ""}
 						policyChanged={policyChanged}
 						setPolicyChanged={setPolicyChanged}
 					/>
@@ -364,15 +284,13 @@ const EventDetails : React.FC<{
 				{page === 7 && (
 					<EventDetailsCommentsTab
 						eventId={eventId}
-						header={tabs[page].bodyHeaderTranslation}
-						t={t}
+						header={tabs[page].bodyHeaderTranslation ?? ""}
 					/>
 				)}
 				{page === 8 && !isLoadingStatistics && (
 					<EventDetailsStatisticsTab
 						eventId={eventId}
-						header={tabs[page].bodyHeaderTranslation}
-						t={t}
+						header={tabs[page].bodyHeaderTranslation ?? ""}
 					/>
 				)}
 			</div>

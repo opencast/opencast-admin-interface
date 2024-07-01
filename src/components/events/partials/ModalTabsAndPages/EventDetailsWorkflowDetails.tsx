@@ -15,26 +15,27 @@ import {
 } from "../../../../slices/eventDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
+import { WorkflowTabHierarchy } from "../modals/EventDetails";
+import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the workflow details for the workflows tab of the event details modal
  */
 const EventDetailsWorkflowDetails = ({
-// @ts-expect-error TS(7031): Binding element 'eventId' implicitly has an 'any' ... Remove this comment to see the full error message
 	eventId,
-// @ts-expect-error TS(7031): Binding element 't' implicitly has an 'any' type.
-	t,
-// @ts-expect-error TS(7031): Binding element 'setHierarchy' implicitly has an '... Remove this comment to see the full error message
 	setHierarchy,
+}: {
+	eventId: string,
+	setHierarchy: (subTabName: WorkflowTabHierarchy) => void,
 }) => {
+	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const user = useAppSelector(state => getUserInformation(state));
 	const workflowData = useAppSelector(state => getWorkflow(state));
 	const isFetching = useAppSelector(state => isFetchingWorkflowDetails(state));
 
-// @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
-	const openSubTab = (tabType) => {
+	const openSubTab = (tabType: WorkflowTabHierarchy) => {
 		dispatch(removeNotificationWizardForm());
 		setHierarchy(tabType);
 		if (tabType === "workflow-operations") {
