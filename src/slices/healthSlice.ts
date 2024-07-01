@@ -1,6 +1,7 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { WritableDraft } from 'immer';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 
 /**
  * This file contains redux reducer for actions affecting the state of information about health status
@@ -55,7 +56,7 @@ type FetchHealthStatusResponse = {
 }
 
 // Fetch health status and transform it to further use
-export const fetchHealthStatus = createAsyncThunk('health/fetchHealthStatus', async () => {
+export const fetchHealthStatus = createAppAsyncThunk('health/fetchHealthStatus', async () => {
 	const res = await axios.get<FetchHealthStatusResponse>("/services/health.json");
 	return res.data;
 });

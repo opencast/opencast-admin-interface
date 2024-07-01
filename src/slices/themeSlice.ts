@@ -1,10 +1,10 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import { themesTableConfig } from "../configs/tableConfigs/themesTableConfig";
 import axios from 'axios';
 import { buildThemeBody, getURLParams } from '../utils/resourceUtils';
 import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
-import { RootState } from '../store';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 
 /**
  * This file contains redux reducer for actions affecting the state of themes
@@ -61,9 +61,9 @@ const initialState: ThemeState = {
 };
 
 // fetch themes from server
-export const fetchThemes = createAsyncThunk('theme/fetchThemes', async (_, { getState }) => {
+export const fetchThemes = createAppAsyncThunk('theme/fetchThemes', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state as RootState);
+	let params = getURLParams(state);
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -73,7 +73,7 @@ export const fetchThemes = createAsyncThunk('theme/fetchThemes', async (_, { get
 });
 
 // post new theme to backend
-export const postNewTheme = createAsyncThunk('theme/postNewTheme', async (values: Details, {dispatch}) => {
+export const postNewTheme = createAppAsyncThunk('theme/postNewTheme', async (values: Details, {dispatch}) => {
 	// get URL params used for post request
 	let data = buildThemeBody(values);
 
@@ -97,7 +97,7 @@ export const postNewTheme = createAsyncThunk('theme/postNewTheme', async (values
 });
 
 // delete theme with provided id
-export const deleteTheme = createAsyncThunk('theme/deleteTheme', async (id: number, {dispatch}) => {
+export const deleteTheme = createAppAsyncThunk('theme/deleteTheme', async (id: number, {dispatch}) => {
 	axios
 		.delete(`/admin-ng/themes/${id}`)
 		.then((res) => {

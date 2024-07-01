@@ -9,22 +9,24 @@ import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNaviga
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
+import { WorkflowTabHierarchy } from "../modals/EventDetails";
+import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the workflow error details for the workflows tab of the event details modal
  */
 const EventDetailsWorkflowErrorDetails = ({
-    eventId,
-    t,
-    setHierarchy,
-}: any) => {
+	setHierarchy,
+}: {
+	setHierarchy: (subTabName: WorkflowTabHierarchy) => void,
+}) => {
+	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const errorDetails = useAppSelector(state => getWorkflowErrorDetails(state));
 	const isFetching = useAppSelector(state => isFetchingWorkflowErrorDetails(state));
 
-// @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
-	const openSubTab = (tabType) => {
+	const openSubTab = (tabType: WorkflowTabHierarchy) => {
 		dispatch(removeNotificationWizardForm());
 		setHierarchy(tabType);
 	};
