@@ -12,6 +12,7 @@ import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { checkValidityStartTaskEventSelection } from "../../../../utils/bulkActionUtils";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { focusTrap } from "../../../../utils/modalUtils";
 
 /**
  * This component manages the pages of the task start bulk action
@@ -34,6 +35,12 @@ const StartTaskModal = ({
 		setPageCompleted,
 	} = usePageFunctions(0, initialValues);
 
+	const startTaskModalRef = React.useRef(null);
+	const [focusEneabled, setFocusEneabled] = React.useState(false);
+	React.useEffect(() => {
+		focusTrap(startTaskModalRef, focusEneabled, setFocusEneabled);
+	});
+	
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
 		() => close(),
@@ -85,7 +92,7 @@ const StartTaskModal = ({
 	return (
 		<>
 			<div className="modal-animation modal-overlay" />
-			<section className="modal wizard modal-animation">
+			<section className="modal wizard modal-animation" ref={startTaskModalRef}>
 				<header>
 					<button className="button-like-anchor fa fa-times close-modal" onClick={() => close()} />
 					<h2>{t("BULK_ACTIONS.SCHEDULE_TASK.CAPTION")}</h2>

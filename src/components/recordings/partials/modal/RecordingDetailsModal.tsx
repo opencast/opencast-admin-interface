@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import RecordingsDetails from "./RecordingsDetails";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 import { useHotkeys } from "react-hotkeys-hook";
+import { focusTrap } from "../../../../utils/modalUtils";
 
 /**
  * This component renders the modal for displaying recording details
@@ -12,6 +13,12 @@ const RecordingDetailsModal = ({
     recordingId
 }: any) => {
 	const { t } = useTranslation();
+
+	const recordingDetailsModalRef = React.useRef(null);
+	const [focusEneabled, setFocusEneabled] = React.useState(false);
+	React.useEffect(() => {
+		focusTrap(recordingDetailsModalRef, focusEneabled, setFocusEneabled);
+	});
 
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
@@ -31,6 +38,7 @@ const RecordingDetailsModal = ({
 			<section
 				id="capture-agent-details-modal"
 				className="modal wizard modal-animation"
+				ref={recordingDetailsModalRef}
 			>
 				<header>
 					<button

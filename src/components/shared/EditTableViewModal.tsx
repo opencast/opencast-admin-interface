@@ -11,6 +11,7 @@ import {
 import { DragDropContext, Droppable, OnDragEndResponder, Draggable as Draggablee } from "@hello-pangea/dnd";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { useHotkeys } from "react-hotkeys-hook";
+import { focusTrap } from "../../utils/modalUtils";
 
 /**
  * This component renders the modal for editing which columns are shown in the table
@@ -47,6 +48,12 @@ const EditTableViewModal = ({
 			}
 		}
 	}, [activeColumns, deactivatedColumns, isColsLoaded]);
+
+	const editTableViewModalRef = React.useRef(null);
+	const [focusEneabled, setFocusEneabled] = React.useState(false);
+	React.useEffect(() => {
+		focusTrap(editTableViewModalRef, focusEneabled, setFocusEneabled);
+	});
 
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
@@ -109,6 +116,7 @@ const EditTableViewModal = ({
 					<section
 						className="modal active modal-animation"
 						id="edit-table-view-modal"
+						ref={editTableViewModalRef}
 					>
 						<header>
 							<button

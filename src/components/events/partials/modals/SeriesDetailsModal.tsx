@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import SeriesDetails from "./SeriesDetails";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { focusTrap } from "../../../../utils/modalUtils";
 
 /**
  * This component renders the modal for displaying series details
@@ -28,6 +29,12 @@ const SeriesDetailsModal = ({
 		}
 	};
 
+	const seriesDetailsModalRef = React.useRef(null);
+	const [focusEneabled, setFocusEneabled] = React.useState(false);
+	React.useEffect(() => {
+		focusTrap(seriesDetailsModalRef, focusEneabled, setFocusEneabled);
+	});
+
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
 		() => close(),
@@ -39,7 +46,7 @@ const SeriesDetailsModal = ({
 	return (
 		<>
 			<div className="modal-animation modal-overlay" />
-			<section className="modal modal-animation" id="series-details-modal">
+			<section className="modal modal-animation" id="series-details-modal" ref={seriesDetailsModalRef}>
 				<header>
 					<button className="button-like-anchor fa fa-times close-modal" onClick={() => close()} />
 					<h2>

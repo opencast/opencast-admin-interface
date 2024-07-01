@@ -8,6 +8,7 @@ import NewGroupWizard from "../users/partials/wizard/NewGroupWizard";
 import NewUserWizard from "../users/partials/wizard/NewUserWizard";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
+import { focusTrap } from "../../utils/modalUtils";
 
 /**
  * This component renders the modal for adding new resources
@@ -18,6 +19,12 @@ const NewResourceModal = ({
     resource
 }: any) => {
 	const { t } = useTranslation();
+
+	const newResourceModalRef = React.useRef(null);
+	const [focusEneabled, setFocusEneabled] = React.useState(false);
+	React.useEffect(() => {
+		focusTrap(newResourceModalRef, focusEneabled, setFocusEneabled);
+	});
 
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
@@ -36,9 +43,9 @@ const NewResourceModal = ({
 			<>
 				<div className="modal-animation modal-overlay" />
 				<section
-					tabIndex={1}
 					className="modal wizard modal-animation"
 					id="add-event-modal"
+					ref={newResourceModalRef}
 				>
 					<header>
 						<button

@@ -19,6 +19,7 @@ import {
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { focusTrap } from "../../../../utils/modalUtils";
 
 /**
  * This component manges the edit metadata bulk action
@@ -47,6 +48,12 @@ const EditMetadataEventsModal = ({
 	const [fetchedValues, setFetchedValues] = useState(null);
 
 	const user = useAppSelector(state => getUserInformation(state));
+	
+	const editMetadataEventsModalRef = React.useRef(null);
+	const [focusEneabled, setFocusEneabled] = React.useState(false);
+	React.useEffect(() => {
+		focusTrap(editMetadataEventsModalRef, focusEneabled, setFocusEneabled);
+	});
 
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
@@ -148,7 +155,7 @@ const EditMetadataEventsModal = ({
 	return (
 		<>
 			<div className="modal-animation modal-overlay" />
-			<section className="modal wizard modal-animation">
+			<section className="modal wizard modal-animation" ref={editMetadataEventsModalRef}>
 				<header>
 					<button className="button-like-anchor fa fa-times close-modal" onClick={() => close()} />
 					<h2>{t("BULK_ACTIONS.EDIT_EVENTS_METADATA.CAPTION")}</h2>

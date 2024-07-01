@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import AclDetails from "./AclDetails";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { focusTrap } from "../../../../utils/modalUtils";
 
 /**
  * This component renders the modal for displaying acl details
@@ -12,6 +13,12 @@ const AclDetailsModal = ({
     aclName
 }: any) => {
 	const { t } = useTranslation();
+
+	const aclDetailsModalRef = React.useRef(null);
+	const [focusEneabled, setFocusEneabled] = React.useState(false);
+	React.useEffect(() => {
+		focusTrap(aclDetailsModalRef, focusEneabled, setFocusEneabled);
+	});
 
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
@@ -37,6 +44,7 @@ const AclDetailsModal = ({
 				className="modal wizard modal-animation"
 				id="acl-details-modal"
 				style={modalStyle}
+				ref={aclDetailsModalRef}
 			>
 				<header>
 					<button

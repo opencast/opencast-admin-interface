@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { useHotkeys, useHotkeysContext } from "react-hotkeys-hook";
 import { Hotkey } from "react-hotkeys-hook/dist/types";
+import { focusTrap } from "../../utils/modalUtils";
 
 /**
  * This component renders the hotkey cheat sheet showing all available hotkeys
@@ -13,6 +14,12 @@ const HotKeyCheatSheet: React.FC<{
 	close
 }) => {
 	const { t } = useTranslation();
+
+	const hotKeyCheatSheetRef = React.useRef(null);
+	const [focusEneabled, setFocusEneabled] = React.useState(false);
+	React.useEffect(() => {
+		focusTrap(hotKeyCheatSheetRef, focusEneabled, setFocusEneabled);
+	});
 
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
@@ -42,7 +49,7 @@ const HotKeyCheatSheet: React.FC<{
 	return (
 		<>
 			<div className="modal-animation modal-overlay" />
-			<div className="modal modal-animation">
+			<div className="modal modal-animation" ref={hotKeyCheatSheetRef}>
 				<header>
 					<button
 						className="button-like-anchor fa fa-times close-modal"

@@ -22,6 +22,7 @@ import {
 import { fetchRecordings } from "../../../../slices/recordingSlice";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { focusTrap } from "../../../../utils/modalUtils";
 
 /**
  * This component manages the pages of the edit scheduled bulk action
@@ -55,6 +56,12 @@ const EditScheduledEventsModal = ({
 	const [conflicts, setConflicts] = useState([]);
 
 	const user = useAppSelector(state => getUserInformation(state));
+
+	const editScheduledEventsModalRef = React.useRef(null);
+	const [focusEneabled, setFocusEneabled] = React.useState(false);
+	React.useEffect(() => {
+		focusTrap(editScheduledEventsModalRef, focusEneabled, setFocusEneabled);
+	});
 
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
@@ -123,7 +130,7 @@ const EditScheduledEventsModal = ({
 	return (
 		<>
 			<div className="modal-animation modal-overlay" />
-			<section className="modal wizard modal-animation">
+			<section className="modal wizard modal-animation" ref={editScheduledEventsModalRef}>
 				<header>
 					<button className="button-like-anchor fa fa-times close-modal" onClick={() => close()} />
 					<h2>{t("BULK_ACTIONS.EDIT_EVENTS.CAPTION")}</h2>
