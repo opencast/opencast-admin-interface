@@ -18,9 +18,9 @@ import { availableHotkeys } from "../../../../configs/hotkeysConfig";
  * This component manages the pages of the task start bulk action
  */
 const StartTaskModal = ({
-    close,
-    postTasks,
-		changeAllSelected
+	close,
+	postTasks,
+	changeAllSelected
 }: any) => {
 	const { t } = useTranslation();
 
