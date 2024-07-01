@@ -433,7 +433,7 @@ const Schedule = <T extends {
 									value={typeof formik.values.scheduleStartDate === "string" ? parseISO(formik.values.scheduleStartDate): formik.values.scheduleStartDate}
 									onChange={(value) => {
 										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-											changeStartDateMultiple(
+											value && changeStartDateMultiple(
 												value,
 												formik.values,
 												formik.setFieldValue
@@ -464,7 +464,7 @@ const Schedule = <T extends {
 											name="scheduleEndDate"
 											value={typeof formik.values.scheduleEndDate === "string" ? parseISO(formik.values.scheduleEndDate) : formik.values.scheduleEndDate}
 											onChange={(value) =>
-												changeEndDateMultiple(
+												value && changeEndDateMultiple(
 													value,
 													formik.values,
 													formik.setFieldValue
