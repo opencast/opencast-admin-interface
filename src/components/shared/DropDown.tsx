@@ -69,7 +69,7 @@ const DropDown = <T,>({
 	return (
 		<Select
 			tabIndex={tabIndex}
-			theme={dropDownSpacingTheme}
+			theme={(theme) => (dropDownSpacingTheme(theme))}
 			styles={style}
 			defaultMenuIsOpen={defaultOpen}
 			autoFocus={autoFocus}
@@ -85,7 +85,7 @@ const DropDown = <T,>({
 			placeholder={placeholder}
 			noOptionsMessage={() => "No matching results."}
 			onInputChange={(value) => setSearch(value)}
-			onChange={(element) => handleChange(element)}
+			onChange={(element) => handleChange(element as {value: T, label: string} )}
 			isDisabled={disabled}
 		/>
 	);
