@@ -1,16 +1,15 @@
 import axios from "axios";
 import { getAssetUploadOptions, getSourceUploadOptions } from "../selectors/eventSelectors";
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { RootState } from "../store";
 import { UploadOption } from "../slices/eventSlice";
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes'
 
 // thunks for assets, especially for getting asset options
 
-export const fetchAssetUploadOptions = createAsyncThunk('assets/fetchAssetUploadOptionsAsyncThunk', async (_, { getState }) => {
+export const fetchAssetUploadOptions = createAppAsyncThunk('assets/fetchAssetUploadOptionsAsyncThunk', async (_, { getState }) => {
 	// get old asset upload options
 	const state = getState();
-	const assetUploadOptions = getAssetUploadOptions(state as RootState);
-	const assetSourceOptions = getSourceUploadOptions(state as RootState);
+	const assetUploadOptions = getAssetUploadOptions(state);
+	const assetSourceOptions = getSourceUploadOptions(state);
 
 	const sourcePrefix = "EVENTS.EVENTS.NEW.SOURCE.UPLOAD";
 	const assetPrefix = "EVENTS.EVENTS.NEW.UPLOAD_ASSET.OPTION";

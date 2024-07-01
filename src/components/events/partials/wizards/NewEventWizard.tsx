@@ -13,7 +13,6 @@ import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
 import { initialFormValuesNewEvents } from "../../../../configs/modalConfig";
 import {
-	getAssetUploadOptions,
 	getEventMetadata,
 	getExtendedEventMetadata,
 	getSourceUploadOptions,
@@ -33,7 +32,6 @@ const NewEventWizard: React.FC<{
 }) => {
 	const dispatch = useAppDispatch();
 
-	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
 	const uploadSourceOptions = useAppSelector(state => getSourceUploadOptions(state));
 	const metadataFields = useAppSelector(state => getEventMetadata(state));
 	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));

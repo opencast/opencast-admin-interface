@@ -1,4 +1,4 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import { eventsTableConfig } from "../configs/tableConfigs/eventsTableConfig";
 import axios, { AxiosProgressEvent } from 'axios';
 import moment from "moment-timezone";
@@ -22,10 +22,11 @@ import {
 } from "./notificationSlice";
 import { getAssetUploadOptions, getSchedulingEditedEvents, getSourceUploadOptions } from '../selectors/eventSelectors';
 import { fetchSeriesOptions } from "./seriesSlice";
-import { AppDispatch, RootState } from '../store';
+import { AppDispatch } from '../store';
 import { fetchAssetUploadOptions } from '../thunks/assetsThunks';
 import { TransformedAcls } from './aclDetailsSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 
 /**
  * This file contains redux reducer for actions affecting the state of events
@@ -221,8 +222,8 @@ const initialState: EventState = {
 };
 
 // fetch events from server
-export const fetchEvents = createAsyncThunk('events/fetchEvents', async (_, { getState }) => {
-	const state = getState() as RootState;
+export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, { getState }) => {
+	const state = getState();
 	let params: { limit: any, offset: number, getComments?: boolean }= getURLParams(state);
 
 	// Only if the notes column is enabled, fetch comment information for events
@@ -269,7 +270,7 @@ export const fetchEvents = createAsyncThunk('events/fetchEvents', async (_, { ge
 });
 
 // fetch event metadata from server
-export const fetchEventMetadata = createAsyncThunk('events/fetchEventMetadata', async () => {
+export const fetchEventMetadata = createAppAsyncThunk('events/fetchEventMetadata', async () => {
 	let data = await axios.get("/admin-ng/event/new/metadata");
 	const response = await data.data;
 
@@ -293,7 +294,7 @@ export const fetchEventMetadata = createAsyncThunk('events/fetchEventMetadata', 
 });
 
 // get merged metadata for provided event ids
-export const postEditMetadata = createAsyncThunk('events/postEditMetadata', async (ids: string[]) => {
+export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', async (ids: string[]) => {
 	let formData = new URLSearchParams();
 	formData.append("eventIds", JSON.stringify(ids));
 
@@ -330,7 +331,7 @@ export const postEditMetadata = createAsyncThunk('events/postEditMetadata', asyn
 	}
 });
 
-export const updateBulkMetadata = createAsyncThunk('events/updateBulkMetadata', async (params: {
+export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata', async (params: {
 	metadataFields: {
 		merged: string[],
 		mergedMetadata: MetadataFieldSelected[],
@@ -416,7 +417,7 @@ export const updateBulkMetadata = createAsyncThunk('events/updateBulkMetadata', 
 		});
 });
 
-export const postNewEvent = createAsyncThunk('events/postNewEvent', async (params: {
+export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (params: {
 	values: {
 		acls: TransformedAcls,
 		configuration: { [key: string]: any },
@@ -442,8 +443,8 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 
 	// get asset upload options from redux store
 	const state = getState();
-	const uploadAssetOptions = getAssetUploadOptions(state as RootState);
-	const uploadSourceOptions = getSourceUploadOptions(state as RootState);
+	const uploadAssetOptions = getAssetUploadOptions(state);
+	const uploadSourceOptions = getSourceUploadOptions(state);
 
 	let formData = new FormData();
 	let metadataFields, extendedMetadataFields, metadata, source, access;
@@ -652,7 +653,7 @@ export const postNewEvent = createAsyncThunk('events/postNewEvent', async (param
 });
 
 // delete event with provided id
-export const deleteEvent = createAsyncThunk('events/deleteEvent', async (id: string, { dispatch }) => {
+export const deleteEvent = createAppAsyncThunk('events/deleteEvent', async (id: string, { dispatch }) => {
 	// API call for deleting an event
 	axios
 		.delete(`/admin-ng/event/${id}`)
@@ -674,7 +675,7 @@ export const deleteEvent = createAsyncThunk('events/deleteEvent', async (id: str
 		});
 });
 
-export const deleteMultipleEvent = createAsyncThunk('events/deleteMultipleEvent', async (events: Event[], { dispatch }) => {
+export const deleteMultipleEvent = createAppAsyncThunk('events/deleteMultipleEvent', async (events: Event[], { dispatch }) => {
 	let data = [];
 
 	for (let i = 0; i < events.length; i++) {
@@ -697,7 +698,7 @@ export const deleteMultipleEvent = createAsyncThunk('events/deleteMultipleEvent'
 		});
 });
 
-export const fetchScheduling = createAsyncThunk('events/fetchScheduling', async (params: {
+export const fetchScheduling = createAppAsyncThunk('events/fetchScheduling', async (params: {
 	events: Event[],
 	fetchNewScheduling: boolean,
 	setFormikValue: any
@@ -762,7 +763,7 @@ export const fetchScheduling = createAsyncThunk('events/fetchScheduling', async 
 		}
 	} else {
 		const state = getState();
-		editedEvents = getSchedulingEditedEvents(state as RootState);
+		editedEvents = getSchedulingEditedEvents(state);
 	}
 
 	const responseSeriesOptions = await fetchSeriesOptions();
@@ -773,7 +774,7 @@ export const fetchScheduling = createAsyncThunk('events/fetchScheduling', async 
 });
 
 // update multiple scheduled events at once
-export const updateScheduledEventsBulk = createAsyncThunk('events/updateScheduledEventsBulk', async (
+export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateScheduledEventsBulk', async (
 	values: {
 		changedEvent: number,
 		changedEvents: string[],

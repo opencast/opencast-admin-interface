@@ -1,7 +1,8 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { buildThemeBody } from '../utils/resourceUtils';
 import { addNotification } from './notificationSlice';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 
 /**
  * This file contains redux reducer for actions affecting the state of a theme
@@ -72,7 +73,7 @@ const initialState: ThemeDetailsState = {
 };
 
 // fetch details of certain theme from server
-export const fetchThemeDetails = createAsyncThunk('themeDetails/fetchThemeDetails', async (id: number) => {
+export const fetchThemeDetails = createAppAsyncThunk('themeDetails/fetchThemeDetails', async (id: number) => {
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -81,13 +82,13 @@ export const fetchThemeDetails = createAsyncThunk('themeDetails/fetchThemeDetail
 });
 
 // fetch usage of a certain theme
-export const fetchUsage = createAsyncThunk('themeDetails/fetchUsage', async (id: number) => {
+export const fetchUsage = createAppAsyncThunk('themeDetails/fetchUsage', async (id: number) => {
 	const res = await axios.get(`/admin-ng/themes/${id}/usage.json`);
 	return res.data;
 });
 
 // update a certain theme
-export const updateThemeDetails = createAsyncThunk('themeDetails/updateThemeDetails', async (params: {
+export const updateThemeDetails = createAppAsyncThunk('themeDetails/updateThemeDetails', async (params: {
 	id: number,
 	values: Details
 }, {dispatch}) => {
