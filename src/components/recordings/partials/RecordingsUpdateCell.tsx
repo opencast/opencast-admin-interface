@@ -1,13 +1,16 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { renderValidDate } from "../../../utils/dateUtils";
+import { Recording } from "../../../slices/recordingSlice";
 
 /**
  * This component renders the updated cells of recordings in the table view
  */
 const RecordingsUpdateCell = ({
-    row
-}: any) => {
+	row
+}: {
+	row: Recording
+}) => {
 	const { t } = useTranslation();
 
 	return (

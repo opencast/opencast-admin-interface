@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import { initialFormValuesStartTask } from "../../../../configs/modalConfig";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
 import StartTaskGeneralPage from "../ModalTabsAndPages/StartTaskGeneralPage";
@@ -12,15 +11,18 @@ import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { checkValidityStartTaskEventSelection } from "../../../../utils/bulkActionUtils";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { useAppDispatch } from "../../../../store";
 
 /**
  * This component manages the pages of the task start bulk action
  */
 const StartTaskModal = ({
-    close,
-    postTasks
-}: any) => {
+	close,
+}: {
+	close: () => void
+}) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const initialValues = initialFormValuesStartTask;
 
@@ -78,7 +80,7 @@ const StartTaskModal = ({
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
-		postTasks(values);
+		dispatch(postTasks(values));
 		close();
 	};
 
@@ -119,9 +121,7 @@ const StartTaskModal = ({
 								<div>
 									{page === 0 && (
 										<StartTaskGeneralPage
-											// @ts-expect-error: Type-checking gets confused by redux-connect in the child
 											formik={formik}
-											// @ts-expect-error: Type-checking gets confused by redux-connect in the child
 											nextPage={nextPage}
 										/>
 									)}
@@ -149,10 +149,4 @@ const StartTaskModal = ({
 	);
 };
 
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToState = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	postTasks: (values) => dispatch(postTasks(values)),
-});
-
-export default connect(null, mapDispatchToState)(StartTaskModal);
+export default StartTaskModal;

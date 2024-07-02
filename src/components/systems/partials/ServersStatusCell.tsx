@@ -1,11 +1,14 @@
 import React from "react";
+import { Server } from "../../../slices/serverSlice";
 
 /**
  * This component renders the status cells of servers in the table view
  */
 const ServersStatusCell = ({
-    row
-}: any) => {
+	row
+}: {
+	row: Server
+}) => {
 	return row.online && !row.maintenance ? (
 		<div className="circle green" />
 	) : row.online && row.maintenance ? (

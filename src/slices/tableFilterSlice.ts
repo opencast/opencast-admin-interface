@@ -1,8 +1,8 @@
 import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { relativeDateSpanToFilterValue } from '../utils/dateUtils';
+import { setOffset } from '../slices/tableSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { setOffset } from '../actions/tableActions';
 import { fetchEvents } from './eventSlice';
 import { fetchServices } from './serviceSlice';
 import { FilterProfile } from './tableFilterProfilesSlice';

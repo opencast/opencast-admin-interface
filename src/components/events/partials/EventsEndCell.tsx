@@ -1,13 +1,16 @@
 import { useTranslation } from "react-i18next";
 import React from "react";
 import { renderValidDate } from "../../../utils/dateUtils";
+import { Event } from "../../../slices/eventSlice";
 
 /**
  * This component renders the end cells of events in the table view
  */
 const EventsEndCell = ({
-    row
-}: any) => {
+	row
+}: {
+	row: Event
+}) => {
 	const { t } = useTranslation();
 
 	return (

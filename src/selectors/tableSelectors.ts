@@ -1,35 +1,27 @@
 import { createSelector } from "reselect";
+import { RootState } from "../store";
 
 /**
  * This file contains selectors regarding the table view
  */
 
-export const getTableRows = (state: any) => state.table.rows;
-export const getTableColumns = (state: any) => state.table.columns;
-export const getTablePagination = (state: any) => state.table.pagination;
-export const getTablePages = (state: any) => state.table.pages;
-export const getTotalItems = (state: any) => state.table.pagination.totalItems;
-export const getPageLimit = (state: any) => state.table.pagination.limit;
-export const getPageOffset = (state: any) => state.table.pagination.offset;
-export const getNumberDirectAccessiblePages = (state: any) => state.table.pagination.directAccessibleNo;
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-export const getResourceType = (state) => state.table.resource;
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-export const getTableSorting = (state) => state.table.sortBy;
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-export const getTableDirection = (state) => state.table.reverse;
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-export const getTable = (state) => state.table;
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-export const getDeactivatedColumns = (state) =>
-// @ts-expect-error TS(7006): Parameter 'column' implicitly has an 'any' type.
+export const getTableRows = (state: RootState) => state.table.rows;
+export const getTableColumns = (state: RootState) => state.table.columns;
+export const getTablePagination = (state: RootState) => state.table.pagination;
+export const getTablePages = (state: RootState) => state.table.pages;
+export const getTotalItems = (state: RootState) => state.table.pagination.totalItems;
+export const getPageLimit = (state: RootState) => state.table.pagination.limit;
+export const getPageOffset = (state: RootState) => state.table.pagination.offset;
+export const getNumberDirectAccessiblePages = (state: RootState) => state.table.pagination.directAccessibleNo;
+export const getResourceType = (state: RootState) => state.table.resource;
+export const getTableSorting = (state: RootState) => state.table.sortBy;
+export const getTableDirection = (state: RootState) => state.table.reverse;
+export const getTable = (state: RootState) => state.table;
+export const getDeactivatedColumns = (state: RootState) =>
 	state.table.columns.filter((column) => column.deactivated);
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-export const getActivatedColumns = (state) =>
-// @ts-expect-error TS(7006): Parameter 'column' implicitly has an 'any' type.
+export const getActivatedColumns = (state: RootState) =>
 	state.table.columns.filter((column) => !column.deactivated);
 
 export const getSelectedRows = createSelector(getTableRows, (rows) =>
-// @ts-expect-error TS(7006): Parameter 'row' implicitly has an 'any' type.
 	rows.filter((row) => row.selected)
 );

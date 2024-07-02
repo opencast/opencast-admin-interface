@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Notifications from "../../../shared/Notifications";
-import { connect } from "react-redux";
 import cn from "classnames";
 import { getSelectedRows } from "../../../../selectors/tableSelectors";
 import { useSelectionChanges } from "../../../../hooks/wizardHooks";
@@ -14,6 +13,7 @@ import { FormikProps } from "formik";
 import {
 	Event,
 } from "../../../../slices/eventSlice";
+import { useAppSelector } from "../../../../store";
 
 /**
  * This component renders the table overview of selected events in start task bulk action
@@ -25,19 +25,20 @@ interface RequiredFormProps {
 const StartTaskGeneralPage = <T extends RequiredFormProps>({
 	formik,
 	nextPage,
-// @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
-	selectedRows
 }: {
 	formik: FormikProps<T>,
 	nextPage: (values: T) => void,
 }) => {
 	const { t } = useTranslation();
 
+	const selectedRows = useAppSelector(state => getSelectedRows(state));
+
 	const {
 		selectedEvents,
 		allChecked,
 		onChangeSelected,
 		onChangeAllSelected,
+		// @ts-expect-error TS(7006):
 	} = useSelectionChanges(formik, selectedRows);
 
 	useEffect(() => {
@@ -148,10 +149,4 @@ const StartTaskGeneralPage = <T extends RequiredFormProps>({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	selectedRows: getSelectedRows(state),
-});
-
-export default connect(mapStateToProps)(StartTaskGeneralPage);
+export default StartTaskGeneralPage;

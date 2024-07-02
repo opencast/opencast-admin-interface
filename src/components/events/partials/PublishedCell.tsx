@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Event } from "../../../slices/eventSlice";
 
 // References for detecting a click outside of the container of the popup listing publications of an event
 const containerPublications = React.createRef<HTMLDivElement>();
@@ -8,8 +9,10 @@ const containerPublications = React.createRef<HTMLDivElement>();
  * This component renders the published cells of events in the table view
  */
 const PublishCell = ({
-    row
-}: any) => {
+	row
+}: {
+	row: Event
+}) => {
 	const { t } = useTranslation();
 
 	// State of popup listing publications of an event
@@ -47,7 +50,6 @@ const PublishCell = ({
 							<div className="popover__header" />
 							<div className="popover__content">
 								{/* Show a list item for each publication of an event that isn't hidden*/}
-{/* @ts-expect-error TS(7006): Parameter 'publication' implicitly has an 'any' ty... Remove this comment to see the full error message */}
 								{row.publications.map((publication, key) =>
 									!publication.hiding ? (
 										// Check if publications is enabled and choose icon according

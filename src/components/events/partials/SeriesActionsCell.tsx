@@ -17,6 +17,7 @@ import {
 } from "../../../selectors/seriesSeletctor";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import {
+	Series,
 	checkForEventsDeleteSeriesModal,
 	deleteSeries,
 } from "../../../slices/seriesSlice";
@@ -27,8 +28,9 @@ import { Tooltip } from "../../shared/Tooltip";
  * This component renders the action cells of series in the table view
  */
 const SeriesActionsCell = ({
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
+}: {
+	row: Series
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();

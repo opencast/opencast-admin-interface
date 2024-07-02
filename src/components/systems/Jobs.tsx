@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import cn from "classnames";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
@@ -15,7 +14,7 @@ import {
 	loadServersIntoTable,
 	loadServicesIntoTable,
 } from "../../thunks/tableThunks";
-import { setOffset } from "../../actions/tableActions";
+import { setOffset } from "../../slices/tableSlice";
 import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
@@ -31,16 +30,7 @@ import { fetchServices } from "../../slices/serviceSlice";
 /**
  * This component renders the table view of jobs
  */
-const Jobs = ({
-// @ts-expect-error TS(7031): Binding element 'loadingJobsIntoTable' implicitly ... Remove this comment to see the full error message
-	loadingJobsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingServersIntoTable' implicit... Remove this comment to see the full error message
-	loadingServersIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
-	loadingServicesIntoTable,
-// @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
-	resetOffset,
-}) => {
+const Jobs = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
@@ -49,39 +39,34 @@ const Jobs = ({
 	const user = useAppSelector(state => getUserInformation(state));
 	const jobs = useAppSelector(state => getTotalJobs(state));
 
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchJobsWrapper = async () => {
-		await dispatch(fetchJobs())
-	}
-
 	const loadJobs = async () => {
 		// Fetching jobs from server
 		await dispatch(fetchJobs());
 
 		// Load jobs into table
-		loadingJobsIntoTable();
+		dispatch(loadJobsIntoTable());
 	};
 
 	const loadServers = () => {
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching servers from server
 		dispatch(fetchServers());
 
 		// Load servers into table
-		loadingServersIntoTable();
+		dispatch(loadServersIntoTable());
 	};
 
 	const loadServices = () => {
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching services from server
 		dispatch(fetchServices());
 
 		// Load services into table
-		loadingServicesIntoTable();
+		dispatch(loadServicesIntoTable());
 	};
 
 	useEffect(() => {
@@ -151,8 +136,8 @@ const Jobs = ({
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={fetchJobsWrapper}
-						loadResourceIntoTable={loadingJobsIntoTable}
+						loadResource={fetchJobs}
+						loadResourceIntoTable={loadJobsIntoTable}
 						resource={"jobs"}
 					/>
 					<h1>{t("SYSTEMS.JOBS.TABLE.CAPTION")}</h1>
@@ -166,18 +151,4 @@ const Jobs = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	loadingJobsIntoTable: () => dispatch(loadJobsIntoTable()),
-	loadingServersIntoTable: () => dispatch(loadServersIntoTable()),
-	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
-	resetOffset: () => dispatch(setOffset(0)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Jobs);
+export default Jobs;

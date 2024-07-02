@@ -5,7 +5,7 @@ import GroupDetailsModal from "./modal/GroupDetailsModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch, useAppSelector  } from "../../../store";
-import { deleteGroup } from "../../../slices/groupSlice";
+import { Group, deleteGroup } from "../../../slices/groupSlice";
 import { fetchGroupDetails } from "../../../slices/groupDetailsSlice";
 import { Tooltip } from "../../shared/Tooltip";
 
@@ -14,7 +14,9 @@ import { Tooltip } from "../../shared/Tooltip";
  */
 const GroupsActionsCell = ({
 	row,
-}: any) => {
+}: {
+	row: Group
+}) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 

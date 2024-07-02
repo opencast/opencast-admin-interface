@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import MainNav from "../shared/MainNav";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
 import cn from "classnames";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
@@ -24,10 +23,7 @@ import { fetchRecordings } from "../../slices/recordingSlice";
 /**
  * This component renders the table view of recordings
  */
-const Recordings = ({
-// @ts-expect-error TS(7031): Binding element 'loadingRecordingsIntoTable' impli... Remove this comment to see the full error message
-	loadingRecordingsIntoTable,
-}) => {
+const Recordings = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
@@ -36,9 +32,8 @@ const Recordings = ({
 	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 	const recordings = useAppSelector(state => getTotalRecordings(state));
 
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchRecordingsWrapper = async () => {
-		await dispatch(fetchRecordings(undefined))
+	const fetchRecordingsWrapper = () => {
+		fetchRecordings(undefined)
 	}
 
 	const loadRecordings = async () => {
@@ -46,7 +41,7 @@ const Recordings = ({
 		await dispatch(fetchRecordings(undefined));
 
 		// Load recordings into table
-		loadingRecordingsIntoTable();
+		dispatch(loadRecordingsIntoTable());
 	};
 
 	useEffect(() => {
@@ -94,7 +89,7 @@ const Recordings = ({
 					{/* Include filters component */}
 					<TableFilters
 						loadResource={fetchRecordingsWrapper}
-						loadResourceIntoTable={loadingRecordingsIntoTable}
+						loadResourceIntoTable={loadRecordingsIntoTable}
 						resource={"recordings"}
 					/>
 
@@ -109,15 +104,4 @@ const Recordings = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	loadingRecordingsIntoTable: () => dispatch(loadRecordingsIntoTable()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Recordings);
+export default Recordings;
