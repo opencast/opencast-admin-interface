@@ -430,6 +430,7 @@ const ResourceDetailsAccessPolicyTab = ({
 																										}
 																										type={"aclRole"}
 																										required={true}
+																										creatable={policy.allowNewRole}
 																										handleChange={(element) => {
 																											if (element) {
 																												replace(index, {
@@ -439,13 +440,17 @@ const ResourceDetailsAccessPolicyTab = ({
 																											}
 																										}}
 																										placeholder={
-																											roles.length > 0
+																											policy.allowNewRole
+																												? t(
+																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.CREATE"
+																													)
+																												: roles.length > 0
 																												? t(
 																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.LABEL"
-																												  )
+																													)
 																												: t(
 																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.EMPTY"
-																												  )
+																													)
 																										}
 																										disabled={
 																											!hasAccess(
@@ -585,6 +590,17 @@ const ResourceDetailsAccessPolicyTab = ({
 																								+{" "}
 																								{t(
 																									"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW"
+																								)}
+																							</button>
+																							<button
+																								onClick={() =>
+																									push(createPolicy("", true))
+																								}
+                                                className="button-like-anchor"
+																							>
+																								+{" "}
+																								{t(
+																									"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW_ROLE"
 																								)}
 																							</button>
 																						</td>
