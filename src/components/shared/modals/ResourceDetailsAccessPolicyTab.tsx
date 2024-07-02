@@ -183,7 +183,7 @@ const ResourceDetailsAccessPolicyTab = ({
 		let allRulesValid = true;
 
 		values.policies.forEach((policy) => {
-			if (policy.read && policy.write || user.isAdmin) {
+			if ((policy.read && policy.write) || user.isAdmin) {
 				roleWithFullRightsExists = true;
 			}
 

@@ -165,7 +165,7 @@ export const checkAcls = (acls) => async (dispatch: AppDispatch, getState) => {
 	// Helps to prevent multiple notifications for same problem
 	dispatch(removeNotificationWizardAccess());
 
-	let user = getUserInformation(getState() as RootState);
+	let user = getUserInformation(getState());
 
 	let check = true;
 	let bothRights = false;
@@ -177,7 +177,7 @@ export const checkAcls = (acls) => async (dispatch: AppDispatch, getState) => {
 		}
 
 		// if not admin, check if there is at least one policy with read and write rights
-		if (acls[i].read && acls[i].write || user.isAdmin) {
+		if ((acls[i].read && acls[i].write) || user.isAdmin) {
 			bothRights = true;
 		}
 
