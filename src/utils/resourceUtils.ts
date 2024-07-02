@@ -14,6 +14,7 @@ import { UserInfoState } from "../slices/userInfoSlice";
 import { hasAccess, isJson } from "./utils";
 import { RootState } from "../store";
 import { MetadataCatalog } from "../slices/eventSlice";
+import { initialFormValuesNewGroup } from '../configs/modalConfig';
 
 /**
  * This file contains methods that are needed in more than one resource thunk
@@ -86,8 +87,9 @@ export const buildUserBody = (values: NewUser) => {
 };
 
 // used for create URLSearchParams for API requests used to create/update group
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-export const buildGroupBody = (values) => {
+export const buildGroupBody = (
+	values: typeof initialFormValuesNewGroup
+) => {
 	let roles = [],
 		users = [];
 

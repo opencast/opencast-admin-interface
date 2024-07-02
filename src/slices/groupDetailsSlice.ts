@@ -7,7 +7,7 @@ import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 /**
  * This file contains redux reducer for actions affecting the state of details of a group
  */
-type GroupDetailsState = {
+export type GroupDetailsState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
   role: string,
@@ -16,6 +16,10 @@ type GroupDetailsState = {
 	description: string,
 	id: string,
 	users: {id: string, name: string}[],
+}
+
+export interface UpdateGroupDetailsState extends Omit<GroupDetailsState, 'roles'> {
+  roles: { name: string}[]
 }
 
 // initial redux state
@@ -37,8 +41,7 @@ export const fetchGroupDetails = createAppAsyncThunk('groupDetails/fetchGroupDet
 
 	let users: GroupDetailsState["users"] = [];
 	if (response.users.length > 0) {
-// @ts-expect-error TS(7006): Parameter 'user' implicitly has an 'any' type.
-		users = response.users.map((user) => {
+		users = response.users.map((user: { username: string, name: string }) => {
 			return {
 				id: user.username,
 				name: user.name,
@@ -60,7 +63,7 @@ export const fetchGroupDetails = createAppAsyncThunk('groupDetails/fetchGroupDet
 
 // update details of a certain group
 export const updateGroupDetails = createAppAsyncThunk('groupDetails/updateGroupDetails', async (params: {
-	values: GroupDetailsState,
+	values: UpdateGroupDetailsState,
 	groupId: string
 }, {dispatch}) => {
 	const { values, groupId } = params
