@@ -1,3 +1,4 @@
+import React from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { Step, StepButton, StepLabel, Stepper } from "@mui/material";
@@ -63,9 +64,8 @@ const WizardStepper = ({
 			activeStep={page}
 			nonLinear
 			alternativeLabel
-// @ts-expect-error TS(2322): Type 'boolean' is not assignable to type 'ReactEle... Remove this comment to see the full error message
-			connector={false}
-			sx={stepperStyle.root }
+			connector={<></>}
+			sx={stepperStyle.root}
 			className={cn("step-by-step")}
 		>
 			{steps.map((label, key) =>
@@ -77,7 +77,7 @@ const WizardStepper = ({
 							</StepLabel>
 						</StepButton>
 					</Step>
-				) : <></>
+				) : <React.Fragment key={label.translation} />
 			)}
 		</Stepper>
 	);
