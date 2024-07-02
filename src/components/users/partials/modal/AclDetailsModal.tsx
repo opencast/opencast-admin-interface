@@ -8,9 +8,12 @@ import { availableHotkeys } from "../../../../configs/hotkeysConfig";
  * This component renders the modal for displaying acl details
  */
 const AclDetailsModal = ({
-    close,
-    aclName
-}: any) => {
+	close,
+	aclName
+}: {
+	close: () => void,
+	aclName: string,
+}) => {
 	const { t } = useTranslation();
 
 	useHotkeys(
