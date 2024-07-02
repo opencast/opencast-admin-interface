@@ -9,7 +9,7 @@ export const Field = (props: FieldAttributes<any>) => {
     <FormikField
       {...props}
       onKeyDown={(event: KeyboardEvent) => {
-        // Remove focus
+        // Handler for basic html inputs to remove focus, if no custom component is passed
         if (event.key === "Enter" || event.key === "Escape") {
           (event.currentTarget as HTMLInputElement).blur();
         }
