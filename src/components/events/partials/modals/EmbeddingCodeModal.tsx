@@ -72,14 +72,10 @@ const EmbeddingCodeModal = ({
 		// build whole url
 		let url = sourceURL + "/play/" + eventId;
 		// code displayed in text area containing the iFrame to copy
-		let iFrameString =
-			'<iframe allowfullscreen src="' +
-			url +
-			'" style="border:0px #FFFFFF none;" name="Player" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px" width="' +
-			size[0] +
-			'" height="' +
-			size[1] +
-			'"></iframe>';
+		let iFrameString = `<iframe allowfullscreen src="${url}"
+			style="border: 0; margin 0;" name="Player" scrolling="no"
+			width="${size[0]}" height="${size[1]}"></iframe>`
+			.replace(/\s\s+/g, ' ');
 
 		// set state with new inputs
 		setTextAreaContent(iFrameString);
@@ -147,7 +143,7 @@ const EmbeddingCodeModal = ({
 					<textarea
 						id="social_embed-textarea"
 						className="social_embed-textarea embedded-code-textarea"
-						rows={4}
+						rows={2}
 						value={textAreaContent}
 						cols={1}
 					/>
