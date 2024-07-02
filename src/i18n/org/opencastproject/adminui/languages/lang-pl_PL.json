@@ -136,6 +136,7 @@
 		}
 	},
 	"MEDIAMODULE": "Galeria",
+	"STUDIO": "Studio",
 	"SYSTEM_NOTIFICATIONS": "Ostrzeżenia i uwagi systemowe",
 	"LANGUAGE": "Wybierz język",
 	"HELP": {
@@ -480,8 +481,8 @@
 						"RECORDING_ELEMENTS": "Elementy nagrywające",
 						"RECORDING_METADATA": "Informacje o nagraniu",
 						"SEGMENTABLE": {
-							"SHORT": "Slajdy",
-							"DETAIL": "Plik zawiera nagranie prezentacji slajdów (Keynote, Powerpoint itd.)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Prezenter",
@@ -702,8 +703,8 @@
 						"CAPTION": "Wysyłanie",
 						"RECORDING_ELEMENTS": "Elementy nagrywające",
 						"SEGMENTABLE": {
-							"SHORT": "Slajdy",
-							"DETAIL": "Plik zawiera nagranie prezentacji slajdów (Keynote, Powerpoint itd.)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Prezenter",

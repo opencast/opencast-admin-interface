@@ -136,6 +136,7 @@
 		}
 	},
 	"MEDIAMODULE": "Ortam Modülü",
+	"STUDIO": "Studio",
 	"SYSTEM_NOTIFICATIONS": "Sistem uyarıları ve bildirimleri",
 	"LANGUAGE": "Dil seç",
 	"HELP": {
@@ -480,8 +481,8 @@
 						"RECORDING_ELEMENTS": "Ögeler kaydediliyor",
 						"RECORDING_METADATA": "Metaveri kaydediliyor",
 						"SEGMENTABLE": {
-							"SHORT": "Slaytlar",
-							"DETAIL": "Dosya bir slayt sunumunun kaydını içeriyor (Keynote, Powerpoint vb.)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Hediye Eden",
@@ -702,8 +703,8 @@
 						"CAPTION": "Karşıya Yükle",
 						"RECORDING_ELEMENTS": "Öğeler kaydediliyor",
 						"SEGMENTABLE": {
-							"SHORT": "Slaytlar",
-							"DETAIL": "Bu dosya bir slayt sunum kaydını içerir (Keynote, Powerpoint, vs.)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Sunan",
