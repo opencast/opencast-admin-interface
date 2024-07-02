@@ -31,7 +31,7 @@ const NewMetadataPage = <T,>({
 							<header className="no-expand">{t(header)}</header>
 							{/* Table view containing input fields for metadata */}
 							<div className="obj-container">
-								<table className="main-tbl">
+								<table className="main-tbl" role="presentation">
 									<tbody>
 										{/* Render table row for each metadata field depending on type*/}
 										{!!metadataFields.fields &&
@@ -51,6 +51,8 @@ const NewMetadataPage = <T,>({
 																name={field.id}
 																fieldInfo={field}
 																component={RenderMultiField}
+																ariaLabel={t(field.label)}
+																ariaRequired={field.required}
 															/>
 														) : (
 															<Field
@@ -58,6 +60,8 @@ const NewMetadataPage = <T,>({
 																metadataField={field}
 																isFirstField={key === 0}
 																component={RenderField}
+																ariaLabel={t(field.label)}
+																ariaRequired={field.required}
 															/>
 														)}
 													</td>

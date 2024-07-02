@@ -16,12 +16,16 @@ const RenderMultiField = ({
 	field,
 	form,
 	showCheck = false,
+	ariaLabel,
+	ariaRequired = false,
 }: {
 	fieldInfo: MetadataField
 	onlyCollectionValues?: boolean
 	field: FieldProps["field"]
 	form: FieldProps["form"]
 	showCheck?: boolean,
+	ariaLabel?: string
+	ariaRequired?: boolean
 }) => {
 	// Indicator if currently edit mode is activated
 	const {editMode, setEditMode} = useClickOutsideField(childRef);
@@ -37,11 +41,13 @@ const RenderMultiField = ({
 	};
 
 	const handleKeyDown = (event: React.KeyboardEvent) => {
-		// Check if pressed key is Enter
-		if (event.keyCode === 13 && inputValue !== "") {
+		const { key } = event;
+		if (key === "Enter" && inputValue !== "") {
 			event.preventDefault();
-
 			submitValue();
+		}
+		if (key === "Escape") {
+			setEditMode(false);
 		}
 	};
 
@@ -97,6 +103,8 @@ const RenderMultiField = ({
 						handleChange={handleChange}
 						handleKeyDown={handleKeyDown}
 						handleBlur={submitValue}
+						ariaLabel={ariaLabel}
+						ariaRequired={ariaRequired}
 					/>
 				) : (
 					fieldInfo.type === "mixed_text" && (
@@ -108,6 +116,8 @@ const RenderMultiField = ({
 							removeItem={removeItem}
 							handleChange={handleChange}
 							handleKeyDown={handleKeyDown}
+							ariaLabel={ariaLabel}
+							ariaRequired={ariaRequired}
 						/>
 					)
 				)}
@@ -133,6 +143,8 @@ const EditMultiSelect = ({
 	removeItem,
 	field,
 	fieldValue,
+	ariaLabel,
+	ariaRequired
 }: {
 	collection: { [key: string]: unknown }[]
 	handleKeyDown: (event: React.KeyboardEvent) => void
@@ -141,7 +153,9 @@ const EditMultiSelect = ({
 	inputValue: HTMLInputElement["value"]
 	removeItem: (key: number) => void
 	field: FieldProps["field"]
-	fieldValue: FieldInputProps<unknown>["value"]
+	fieldValue: FieldInputProps<unknown>["value"],
+	ariaLabel?: string,
+	ariaRequired?: boolean,
 }) => {
 	const { t } = useTranslation();
 
@@ -169,6 +183,8 @@ const EditMultiSelect = ({
 						placeholder={t("EDITABLE.MULTI.PLACEHOLDER")}
 						list="data-list"
 						autoFocus={true}
+						aria-label={ariaLabel}
+						aria-required={ariaRequired}
 					/>
 					{/* Display possible options for values as some kind of dropdown */}
 					<datalist id="data-list">
@@ -202,6 +218,8 @@ const EditMultiValue = ({
 	handleKeyDown,
 	field,
 	fieldValue,
+	ariaLabel,
+	ariaRequired,
 }: {
 	setEditMode: (e: boolean) => void
 	inputValue: HTMLInputElement["value"]
@@ -210,6 +228,8 @@ const EditMultiValue = ({
 	handleKeyDown: (event: React.KeyboardEvent) => void
 	field: FieldProps["field"]
 	fieldValue: FieldInputProps<unknown>["value"]
+	ariaLabel?: string
+	ariaRequired?: boolean
 }) => {
 	const { t } = useTranslation();
 
@@ -223,6 +243,8 @@ const EditMultiValue = ({
 					onChange={(e) => handleChange(e)}
 					value={inputValue}
 					placeholder={t("EDITABLE.MULTI.PLACEHOLDER")}
+					aria-label={ariaLabel}
+					aria-required={ariaRequired}
 				/>
 			</div>
 			{fieldValue instanceof Array &&
@@ -252,7 +274,7 @@ const ShowValue = ({
 	showCheck: any,
 }) => {
 	return (
-		<div onClick={() => setEditMode(true)} className="show-edit">
+		<button onClick={() => setEditMode(true)} className="show-edit button-like-anchor">
 			{field.value instanceof Array && field.value.length !== 0 ? (
 				<ul>
 					{field.value.map((item, key) => (
@@ -274,7 +296,7 @@ const ShowValue = ({
 					/>
 				)}
 			</div>
-		</div>
+		</button>
 	);
 };
 
