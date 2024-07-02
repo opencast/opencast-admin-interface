@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Formik, Field } from "formik";
+import { Formik } from "formik";
+import { Field } from "../../../shared/Field";
 import { useTranslation } from "react-i18next";
 import { getSelectedRows } from "../../../../selectors/tableSelectors";
 import { connect } from "react-redux";
