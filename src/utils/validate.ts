@@ -10,10 +10,6 @@ today.setHours(0, 0, 0, 0);
 // Validation Schema used in new event wizard (each step has its own yup validation object)
 export const NewEventSchema = [
 	Yup.object().shape({
-		title: Yup.string().required("Required"),
-	}),
-	Yup.object().shape({}),
-	Yup.object().shape({
 		uploadAssetsTrack: Yup.array().when("sourceMode", {
 // @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 			is: (value) => value === "UPLOAD",
@@ -84,7 +80,11 @@ export const NewEventSchema = [
 		}),
 	}),
 	Yup.object().shape({
-		processingWorkflow: Yup.string().required("Required"),
+		title: Yup.string().required("Title is required"),
+	}),
+	Yup.object().shape({}),
+	Yup.object().shape({
+		processingWorkflow: Yup.string().required("Workflow is required"),
 	}),
 ];
 
