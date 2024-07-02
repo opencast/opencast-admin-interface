@@ -29,10 +29,10 @@ const GroupRolesPage = <T,>({
 			setLoading(true);
 			const responseRoles = await fetchRolesWithTarget("USER");
 			let roleNames = [];
-			for (let i = 0; i < responseRoles.length; i++) {
-				if (responseRoles[i].type !== "GROUP") {
+			for (const responseRole of responseRoles) {
+				if (responseRole.type !== "GROUP") {
 					roleNames.push({
-						name: responseRoles[i].name,
+						name: responseRole.name,
 					});
 				}
 			}

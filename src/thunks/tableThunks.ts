@@ -712,9 +712,9 @@ const calculatePages = (numberOfPages, offset) => {
 		});
 	}
 
-  if (pages.every(page => page.active === false)) {
-    pages[0].active = true;
-  }
+	if (pages.every(page => page.active === false) && pages[0]) {
+		pages[0].active = true;
+	}
 
 	return pages;
 };

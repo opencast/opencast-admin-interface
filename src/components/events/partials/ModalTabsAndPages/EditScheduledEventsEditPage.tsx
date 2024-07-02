@@ -187,8 +187,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																						collection: seriesOptions,
 																						id: "isPartOf",
 																						required:
-																							formik.values.editedEvents[key]
-																								.series !== "",
+																						event.series !== "",
 																					}}
 																					component={RenderField}
 																				/>
@@ -224,12 +223,10 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																				 */}
 																				<DropDown
 																					value={
-																						formik.values.editedEvents[key]
-																							.changedStartTimeHour
+																						event.changedStartTimeHour
 																					}
 																					text={
-																						formik.values.editedEvents[key]
-																							.changedStartTimeHour
+																						event.changedStartTimeHour
 																					}
 																					options={hours}
 																					type={"time"}
@@ -255,12 +252,10 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																				 */}
 																				<DropDown
 																					value={
-																						formik.values.editedEvents[key]
-																							.changedStartTimeMinutes
+																						event.changedStartTimeMinutes
 																					}
 																					text={
-																						formik.values.editedEvents[key]
-																							.changedStartTimeMinutes
+																						event.changedStartTimeMinutes
 																					}
 																					options={minutes}
 																					type={"time"}
@@ -294,12 +289,10 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																				 */}
 																				<DropDown
 																					value={
-																						formik.values.editedEvents[key]
-																							.changedEndTimeHour
+																						event.changedEndTimeHour
 																					}
 																					text={
-																						formik.values.editedEvents[key]
-																							.changedEndTimeHour
+																						event.changedEndTimeHour
 																					}
 																					options={hours}
 																					type={"time"}
@@ -325,12 +318,10 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																				 */}
 																				<DropDown
 																					value={
-																						formik.values.editedEvents[key]
-																							.changedEndTimeMinutes
+																						event.changedEndTimeMinutes
 																					}
 																					text={
-																						formik.values.editedEvents[key]
-																							.changedEndTimeMinutes
+																						event.changedEndTimeMinutes
 																					}
 																					options={minutes}
 																					type={"time"}
@@ -365,12 +356,10 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																			<td className="editable ng-isolated-scope">
 																				<DropDown
 																					value={
-																						formik.values.editedEvents[key]
-																							.changedLocation
+																						event.changedLocation
 																					}
 																					text={
-																						formik.values.editedEvents[key]
-																							.changedLocation
+																						event.changedLocation
 																					}
 																					options={inputDevices}
 																					type={"captureAgent"}

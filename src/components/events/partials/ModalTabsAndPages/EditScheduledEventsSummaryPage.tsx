@@ -39,8 +39,7 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 		let changed = [];
 
 		// Loop through each event selected for editing and compare original values and changed values
-		for (let i = 0; i < formik.values.editedEvents.length; i++) {
-			let event = formik.values.editedEvents[i];
+		for (const event of formik.values.editedEvents) {
 			let eventChanges : {eventId: string, title: string, changes: any[]}= {
 				eventId: event.eventId,
 				title: event.title,

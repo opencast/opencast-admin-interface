@@ -52,7 +52,14 @@ export const hours = initArray(24);
 export const minutes = initArray(60);
 
 // sorted weekdays and their translation key
-export const weekdays = [
+type Weekday = {
+	name: string,
+	label: string,
+}
+type Weekdays = [
+	Weekday, Weekday, Weekday, Weekday, Weekday, Weekday, Weekday
+]
+export const weekdays: Weekdays = [
 	{
 		name: "MO",
 		label: "EVENTS.EVENTS.NEW.WEEKDAYS.MO",

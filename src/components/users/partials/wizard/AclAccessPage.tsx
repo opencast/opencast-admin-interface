@@ -263,9 +263,7 @@ const AclAccessPage = <T extends RequiredFormProps>({
 																							) : (
 																								<td className="fit">
 																									{/*repeat for each additional action*/}
-																									{formik.values.acls[
-																										index
-																									].actions.map(
+																									{acl.actions.map(
 																										(action, key) => (
 																											<div key={key}>
 																												{action}

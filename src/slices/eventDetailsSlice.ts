@@ -841,12 +841,12 @@ export const fetchAccessPolicies = createAppAsyncThunk('eventDetails/fetchAccess
 				policyRoles.push(policy.role);
 			}
 			if (policy.action === "read" || policy.action === "write") {
-				newPolicies[policy.role][policy.action] = policy.allow;
+				newPolicies[policy.role]![policy.action] = policy.allow;
 			} else if (policy.allow === true) { //|| policy.allow === "true") {
-				newPolicies[policy.role].actions.push(policy.action);
+				newPolicies[policy.role]!.actions.push(policy.action);
 			}
 		}
-		policies = policyRoles.map((role) => newPolicies[role]);
+		policies = policyRoles.map((role) => newPolicies[role]) && [];
 	}
 
 	return policies;
@@ -1563,7 +1563,7 @@ export const updateAssets = createAppAsyncThunk('eventDetails/updateAssets', asy
 
 	uploadAssetOptions.forEach((option) => {
 		if (!!values[option.id]) {
-			formData.append(option.id + ".0", values[option.id]);
+			formData.append(option.id + ".0", values[option.id]!);
 			assets.options = assets.options.concat(option);
 		}
 	});
