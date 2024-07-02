@@ -9,10 +9,17 @@ import { useAppSelector } from "../../../store";
  * This component renders the navigation in details modals
  */
 const ModalNavigation = ({
-    tabInformation,
-    page,
-    openTab,
-}: any) => {
+	tabInformation,
+	page,
+	openTab,
+}: {
+	tabInformation: {
+		accessRole: string,
+		tabTranslation: string
+	}[],
+	page: number,
+	openTab: (key: number) => unknown,
+}) => {
 	const { t } = useTranslation();
 
 	const user = useAppSelector(state => getUserInformation(state));
@@ -20,7 +27,6 @@ const ModalNavigation = ({
 	return (
 		<nav className="modal-nav" id="modal-nav">
 			{tabInformation.map(
-// @ts-expect-error TS(7006): Parameter 'tab' implicitly has an 'any' type.
 				(tab, key) =>
 					hasAccess(tab.accessRole, user) && (
 						<button

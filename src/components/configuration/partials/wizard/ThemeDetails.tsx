@@ -48,31 +48,37 @@ const ThemeDetails : React.FC<{
 			name: "generalForm",
 			tabTranslation: "CONFIGURATION.THEMES.DETAILS.GENERAL.CAPTION",
 			translation: "CONFIGURATION.THEMES.DETAILS.GENERAL.CAPTION",
+			accessRole: "ROLE_UI_THEMES_EDIT",
 		},
 		{
 			name: "bumperForm",
 			tabTranslation: "CONFIGURATION.THEMES.DETAILS.BUMPER.CAPTION",
 			translation: "CONFIGURATION.THEMES.DETAILS.BUMPER.CAPTION",
+			accessRole: "ROLE_UI_THEMES_EDIT",
 		},
 		{
 			name: "trailerForm",
 			tabTranslation: "CONFIGURATION.THEMES.DETAILS.TRAILER.CAPTION",
 			translation: "CONFIGURATION.THEMES.DETAILS.TRAILER.CAPTION",
+			accessRole: "ROLE_UI_THEMES_EDIT",
 		},
 		{
 			name: "titleSlideForm",
 			tabTranslation: "CONFIGURATION.THEMES.DETAILS.TITLE.CAPTION",
 			translation: "CONFIGURATION.THEMES.DETAILS.TITLE.CAPTION",
+			accessRole: "ROLE_UI_THEMES_EDIT",
 		},
 		{
 			name: "watermarkForm",
 			tabTranslation: "CONFIGURATION.THEMES.DETAILS.WATERMARK.CAPTION",
 			translation: "CONFIGURATION.THEMES.DETAILS.WATERMARK.CAPTION",
+			accessRole: "ROLE_UI_THEMES_EDIT",
 		},
 		{
 			name: "usage",
 			tabTranslation: "CONFIGURATION.THEMES.DETAILS.USAGE.CAPTION",
 			translation: "CONFIGURATION.THEMES.DETAILS.USAGE.CAPTION",
+			accessRole: "ROLE_UI_THEMES_EDIT",
 		},
 	];
 
