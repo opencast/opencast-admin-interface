@@ -20,9 +20,8 @@
  */
 
 
-#breadcrumb {
+.breadcrumb {
     $height: 35px;
-    display: none;
     background: lighten($modal-nav-bg-color, 4%);
     border-bottom: 1px solid $modal-nav-border-color;
     line-height: $height;
@@ -31,7 +30,7 @@
         display: block;
     }
 
-    > a {
+    > button {
         color: $modal-nav-link-color;
         font-size: 12px;
         position: relative;
@@ -39,7 +38,7 @@
         text-transform: capitalize;
 
         &:first-child {
-            margin-left: 30px;
+            margin-left: 30px !important;
         }
 
         &:hover {
@@ -69,4 +68,10 @@
             display: none;
         }
     }
+}
+
+/* The main breadcrumbs in the resource modals */
+#breadcrumb {
+    @extend .breadcrumb;
+    display: none;
 }
