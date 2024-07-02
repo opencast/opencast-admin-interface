@@ -6,6 +6,7 @@ import { buildUserBody, getURLParams } from "../utils/resourceUtils";
 import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { Role } from './aclSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of users
@@ -23,7 +24,7 @@ export type NewUser = {
 	email: string,
 	name: string,
 	password: string,
-	roles: string,
+	roles: Role[],
 	username: string,
 }
 

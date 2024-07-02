@@ -1,12 +1,21 @@
+import { FormikProps } from "formik";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 /**
  * This component renders the effective role tab of the user details modal
  */
-const UserEffectiveRolesTab = ({
-    formik
-}: any) => {
+interface RequiredFormProps {
+	roles: {
+		name: string
+	}[]
+}
+
+const UserEffectiveRolesTab = <T extends RequiredFormProps>({
+	formik
+}: {
+	formik: FormikProps<T>
+}) => {
 	const { t } = useTranslation();
 
 	const [searchField, setSearchField] = useState("");
@@ -18,9 +27,7 @@ const UserEffectiveRolesTab = ({
 		setItems(defaultItems);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'input' implicitly has an 'any' type.
-	const handleChangeSearch = async (input) => {
-// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
+	const handleChangeSearch = async (input: string) => {
 		const filtered = defaultItems.filter((item) => {
 			return item.name.toLowerCase().includes(input.toLowerCase());
 		});
@@ -47,7 +54,6 @@ const UserEffectiveRolesTab = ({
 					/>
 
 					<select multiple style={{ height: "26em" }}>
-{/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}
 						{items.map((item, key) => (
 							<option key={key} value={item.name}>
 								{item.name}

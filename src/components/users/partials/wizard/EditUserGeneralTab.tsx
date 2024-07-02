@@ -1,14 +1,25 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { Field } from "formik";
+import { Field, FormikProps } from "formik";
 
 /**
  * This component renders the general user information tab in the users details modal.
  */
-const EditUserGeneralTab = ({
-    formik
-}: any) => {
+interface RequiredFormProps {
+	manageable: boolean,
+	username: string,
+	name: string,
+	email: string,
+	password: string,
+	passwordConfirmation: string,
+}
+
+const EditUserGeneralTab = <T extends RequiredFormProps>({
+	formik
+}: {
+	formik: FormikProps<T>
+}) => {
 	const { t } = useTranslation();
 
 	// style used in user details modal
