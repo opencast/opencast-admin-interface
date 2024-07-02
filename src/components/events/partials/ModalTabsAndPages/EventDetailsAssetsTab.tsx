@@ -159,9 +159,6 @@ const EventDetailsAssetsTab = ({
 													<th className="medium">
 														{!isFetchingAssetUploadOptions &&
 															!!uploadAssetOptions &&
-															uploadAssetOptions.filter(
-																(asset) => asset.type !== "track"
-															).length > 0 &&
 															!transactionsReadOnly &&
 															hasAccess(
 																"ROLE_UI_EVENTS_DETAILS_ASSETS_EDIT",

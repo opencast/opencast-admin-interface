@@ -30,6 +30,8 @@ export const isTransactionReadOnly = (state: RootState) =>
 	state.eventDetails.transactionsReadOnly;
 export const getUploadAssetOptions = (state: RootState) =>
 	state.eventDetails.uploadAssetOptions;
+export const getUploadSourceOptions = (state: RootState) =>
+	state.eventDetails.uploadSourceOptions;
 export const getAssetAttachments = (state: RootState) =>
 	state.eventDetails.assetAttachments;
 export const getAssetAttachmentDetails = (state: RootState) =>
