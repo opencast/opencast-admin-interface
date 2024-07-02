@@ -7,7 +7,6 @@ import {
 } from "../../../../selectors/eventDetailsSelectors";
 import { formatDuration } from "../../../../utils/eventDetailsUtils";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
-import { hasAccess } from "../../../../utils/utils";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
@@ -146,7 +145,7 @@ const EventDetailsWorkflowDetails = ({
 													<td>{formatDuration(workflowData.executionTime)}</td>
 												</tr>
 											)}
-											{hasAccess("ROLE_ADMIN", user) && (
+											{user.isAdmin && (
 												<>
 													<tr>
 														<td>
@@ -172,7 +171,7 @@ const EventDetailsWorkflowDetails = ({
 							</div>
 
 							{/* 'Workflow configuration' table */}
-							{hasAccess("ROLE_ADMIN", user) && (
+							{user.isAdmin && (
 								<div className="obj tbl-details">
 									<header>
 										{
@@ -278,7 +277,7 @@ const EventDetailsWorkflowDetails = ({
 							</div>
 
 							{/* 'Workflow configuration' table */}
-							{hasAccess("ROLE_ADMIN", user) && (
+							{user.isAdmin && (
 								<div className="obj tbl-details">
 									<header>
 										{
