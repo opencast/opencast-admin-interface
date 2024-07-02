@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Publication } from "../../../slices/eventDetailsSlice";
 
 // References for detecting a click outside of the container of the popup listing publications of an event
 const containerPublications = React.createRef<HTMLDivElement>();
@@ -48,8 +49,8 @@ const PublishCell = ({
 							<div className="popover__content">
 								{/* Show a list item for each publication of an event that isn't hidden*/}
 {/* @ts-expect-error TS(7006): Parameter 'publication' implicitly has an 'any' ty... Remove this comment to see the full error message */}
-								{row.publications.map((publication, key) =>
-									!publication.hiding ? (
+								{row.publications.map((publication: Publication, key) =>
+									!publication.hide ? (
 										// Check if publications is enabled and choose icon according
 										publication.enabled ? (
 											<a
@@ -59,11 +60,11 @@ const PublishCell = ({
                         rel='noreferrer'
 												key={key}
 											>
-												<span>{t(publication.name)}</span>
+												<span>{publication.label ? t(publication.label) : t(publication.name)}</span>
 											</a>
 										) : (
 											<button key={key} className="button-like-anchor popover__list-item">
-												<span>{t(publication.name)}</span>
+												<span>{publication.label ? t(publication.label) : t(publication.name)}</span>
 											</button>
 										)
 									) : null
