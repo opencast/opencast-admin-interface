@@ -7,7 +7,7 @@
   "dependencies": {
     "@hello-pangea/dnd": "^16.5.0",
     "@mui/material": "^5.15.21",
-    "@mui/x-date-pickers": "^7.6.1",
+    "@mui/x-date-pickers": "^7.8.0",
     "@reduxjs/toolkit": "^2.2.6",
     "@types/dompurify": "^3.0.5",
     "@types/react-router-dom": "^5.3.3",
