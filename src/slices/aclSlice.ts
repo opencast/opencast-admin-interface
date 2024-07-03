@@ -5,6 +5,7 @@ import { getURLParams, prepareAccessPolicyRulesForPost, transformAclTemplatesRes
 import { transformToIdValueArray } from '../utils/utils';
 import { NOTIFICATION_CONTEXT_ACCESS } from '../configs/modalConfig';
 import { addNotification, removeNotificationWizardAccess } from './notificationSlice';
+import { getUserInformation } from "../selectors/userInfoSelectors";
 import { AppDispatch } from '../store';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { initialFormValuesNewAcl } from "../configs/modalConfig";
@@ -158,10 +159,13 @@ export const deleteAcl = (id: string) => async (dispatch: AppDispatch) => {
 		});
 };
 
-export const checkAcls = (acls: TransformedAcl[]) => async (dispatch: AppDispatch) => {
+// @ts-expect-error TS(7006):
+export const checkAcls = (acls: TransformedAcl[]) => async (dispatch: AppDispatch, getState) => {
 	// Remove old notifications of context event-access
 	// Helps to prevent multiple notifications for same problem
 	dispatch(removeNotificationWizardAccess());
+
+	let user = getUserInformation(getState());
 
 	let check = true;
 	let bothRights = false;
@@ -172,8 +176,8 @@ export const checkAcls = (acls: TransformedAcl[]) => async (dispatch: AppDispatc
 			check = false;
 		}
 
-		// check if there is at least one policy with read and write rights
-		if (acls[i].read && acls[i].write) {
+		// if not admin, check if there is at least one policy with read and write rights
+		if ((acls[i].read && acls[i].write) || user.isAdmin) {
 			bothRights = true;
 		}
 

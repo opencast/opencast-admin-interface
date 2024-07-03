@@ -177,13 +177,13 @@ const ResourceDetailsAccessPolicyTab = ({
 
 	/* checks validity of the policies
 	 * each policy needs a role and at least one of: read-rights, write-rights, additional action
-	 * there needs to be at least one role, which has both read and write rights */
+	 * if not admin, there needs to be at least one role, which has both read and write rights */
 	const validatePolicies = (values: { policies: TransformedAcl[] }) => {
 		let roleWithFullRightsExists = false;
 		let allRulesValid = true;
 
 		values.policies.forEach((policy) => {
-			if (policy.read && policy.write) {
+			if ((policy.read && policy.write) || user.isAdmin) {
 				roleWithFullRightsExists = true;
 			}
 
