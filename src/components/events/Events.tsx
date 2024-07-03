@@ -182,15 +182,6 @@ const Events = () => {
 		<>
 			<Header />
 			<NavBar>
-				<div className="btn-group">
-					{hasAccess("ROLE_UI_EVENTS_CREATE", user) && (
-						<button className="add" onClick={() => showNewEventModal()}>
-							<i className="fa fa-plus" />
-							<span>{t("EVENTS.EVENTS.ADD_EVENT")}</span>
-						</button>
-					)}
-				</div>
-
 				{
 					/* Display modal for new event if add event button is clicked */
 					!isFetchingAssetUploadOptions && (
@@ -245,6 +236,15 @@ const Events = () => {
 						<Stats />
 					</div>
 				)}
+				
+				<div className="btn-group">
+					{hasAccess("ROLE_UI_EVENTS_CREATE", user) && (
+						<button className="add" onClick={() => showNewEventModal()}>
+							<i className="fa fa-plus" />
+							<span>{t("EVENTS.EVENTS.ADD_EVENT")}</span>
+						</button>
+					)}
+				</div>
 			</NavBar>
 
 			<MainView open={displayNavigation}>

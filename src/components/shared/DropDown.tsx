@@ -19,19 +19,6 @@ import Select from "react-select";
  */
 export type DropDownType = "language" | "isPartOf" | "license" | "captureAgent" | "aclRole" | "workflow" | "aclTemplate" | "newTheme" | "comment" | "theme" | "time";
 
-// type DPTime = {
-// 	index: number,
-// 	value: string,
-// }
-// type DPCaptureAgent = any;
-// type DPComment = string[];
-// type DPWorkflow = Workflow[];
-// type DPAclTemplate = never[];
-// type DPAclRole = any;
-// type DPNewTheme = Theme[];
-// type DPTheme = any;
-
-
 /**
  * This component provides a bar chart for visualising (statistics) data
  */

@@ -78,16 +78,6 @@ const Themes = () => {
 		<>
 			<Header />
 			<NavBar>
-				{/* Add theme button */}
-				<div className="btn-group">
-					{hasAccess("ROLE_UI_THEMES_CREATE", user) && (
-						<button className="add" onClick={() => showNewThemesModal()}>
-							<i className="fa fa-plus" />
-							<span>{t("CONFIGURATION.ACTIONS.ADD_THEME")}</span>
-						</button>
-					)}
-				</div>
-
 				{/* Display modal for new series if add series button is clicked */}
 				<NewResourceModal
 					showModal={displayNewThemesModal}
@@ -109,6 +99,16 @@ const Themes = () => {
 						</Link>
 					)}
 				</nav>
+
+				{/* Add theme button */}
+				<div className="btn-group">
+					{hasAccess("ROLE_UI_THEMES_CREATE", user) && (
+						<button className="add" onClick={() => showNewThemesModal()}>
+							<i className="fa fa-plus" />
+							<span>{t("CONFIGURATION.ACTIONS.ADD_THEME")}</span>
+						</button>
+					)}
+				</div>
 			</NavBar>
 
 			<MainView open={displayNavigation}>

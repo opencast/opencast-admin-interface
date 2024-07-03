@@ -150,15 +150,6 @@ const Series = () => {
 		<>
 			<Header />
 			<NavBar>
-				<div className="btn-group">
-					{hasAccess("ROLE_UI_SERIES_CREATE", user) && (
-						<button className="add" onClick={() => showNewSeriesModal()}>
-							<i className="fa fa-plus" />
-							<span>{t("EVENTS.EVENTS.ADD_SERIES")}</span>
-						</button>
-					)}
-				</div>
-
 				{/* Display modal for new series if add series button is clicked */}
 				<NewResourceModal
 					showModal={displayNewSeriesModal}
@@ -193,6 +184,15 @@ const Series = () => {
 						</Link>
 					)}
 				</nav>
+				
+				<div className="btn-group">
+					{hasAccess("ROLE_UI_SERIES_CREATE", user) && (
+						<button className="add" onClick={() => showNewSeriesModal()}>
+							<i className="fa fa-plus" />
+							<span>{t("EVENTS.EVENTS.ADD_SERIES")}</span>
+						</button>
+					)}
+				</div>
 			</NavBar>
 
 			<MainView open={displayNavigation}>

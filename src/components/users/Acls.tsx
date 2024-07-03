@@ -105,16 +105,6 @@ const Acls: React.FC = () => {
 		<>
 			<Header />
 			<NavBar>
-				{/* Add acl button */}
-				<div className="btn-group">
-					{hasAccess("ROLE_UI_ACLS_CREATE", user) && (
-						<button className="add" onClick={() => showNewAclModal()}>
-							<i className="fa fa-plus" />
-							<span>{t("USERS.ACTIONS.ADD_ACL")}</span>
-						</button>
-					)}
-				</div>
-
 				{/* Display modal for new acl if add acl button is clicked */}
 				<NewResourceModal
 					showModal={displayNewAclModal}
@@ -154,6 +144,16 @@ const Acls: React.FC = () => {
 						</Link>
 					)}
 				</nav>
+				
+				{/* Add acl button */}
+				<div className="btn-group">
+					{hasAccess("ROLE_UI_ACLS_CREATE", user) && (
+						<button className="add" onClick={() => showNewAclModal()}>
+							<i className="fa fa-plus" />
+							<span>{t("USERS.ACTIONS.ADD_ACL")}</span>
+						</button>
+					)}
+				</div>
 			</NavBar>
 
 			<MainView open={displayNavigation}>

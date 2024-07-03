@@ -318,6 +318,7 @@ const Upload = ({ formik }) => {
 											</td>
 											<td className="fit">
 												<button
+													style={{ visibility: asset.file ? "visible" : "hidden" }}
 													className="button-like-anchor remove"
 													onClick={(e) => {
 														formik.setFieldValue(
