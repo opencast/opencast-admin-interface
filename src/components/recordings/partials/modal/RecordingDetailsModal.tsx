@@ -8,9 +8,12 @@ import { useHotkeys } from "react-hotkeys-hook";
  * This component renders the modal for displaying recording details
  */
 const RecordingDetailsModal = ({
-    close,
-    recordingId
-}: any) => {
+	close,
+	recordingId
+}: {
+	close: () => void,
+	recordingId: string,
+}) => {
 	const { t } = useTranslation();
 
 	useHotkeys(
