@@ -120,6 +120,7 @@
     "username": "oliver.queen",
     "email": "admin@opencast.org",
     "name": "Oliver Queen",
-    "provider": "matterhorn-in-memory,matterhorn"
+    "provider": "matterhorn-in-memory,matterhorn",
+    "agreedToTerms": false
   }
 }

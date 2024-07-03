@@ -294,7 +294,7 @@ const Header = ({
 				<RegistrationModal close={hideRegistrationModal} />
 			)}
 
-			{true && (<TermsOfUseModal />)}
+			{!user.user.agreedToTerms && (<TermsOfUseModal />)}
 
 			{/* Hotkey Cheat Sheet */}
 			{displayHotKeyCheatSheet && (

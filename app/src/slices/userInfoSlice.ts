@@ -25,6 +25,7 @@ type UserInfoUser = {
 	name: string,
 	provider: string,
 	username: string,
+	agreedToTerms: boolean
 }
 
 export type UserInfoState = {
@@ -63,6 +64,7 @@ const initialState: UserInfoState = {
 		name: "",
 		provider: "",
 		username: "",
+		agreedToTerms: false,
 	},
 	ocVersion: {
 		buildNumber: undefined,
@@ -135,6 +137,7 @@ const userInfoSlice = createSlice({
 					name: "",
 					provider: "",
 					username: "",
+					agreedToTerms: false,
 				};
 				state.error = action.error;
 			})

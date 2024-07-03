@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Field, Formik } from "formik";
 import cn from "classnames";
+import axios from "axios";
 
 
 const TermsOfUseModal = () => {
@@ -9,7 +10,16 @@ const TermsOfUseModal = () => {
 	const [initialValues, setInitialValues] = useState({});
 
 	// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {};
+	const handleSubmit = async (values) => {
+		let body = new URLSearchParams();
+		body.append("agreedToTerms", values.agreedToTerms);
+
+		await axios.post("/admin-ng/termsofuse", body, {
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+			},
+		});
+	};
 
 	return (
 		<>
