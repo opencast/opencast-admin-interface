@@ -121,8 +121,9 @@ const EventDetailsAssetsTab = ({
 		<>
 			{/* Assets tabs */}
 			<nav style={assetsNavStyle}>
-				{assetsTabs.map((tab) => (
+				{assetsTabs.map((tab, key) => (
 					<button
+						key={key}
 						className={"button-like-anchor"}
 						style={tab.tabHierarchies.includes(assetsTabHierarchy) ? assetsTabActive: assetsTabInactive}
 						onClick={tab.open}
