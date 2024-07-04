@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Notifications from "../../../shared/Notifications";
 import {
 	getAssetMediaDetails,
@@ -24,6 +24,14 @@ const EventDetailsAssetMediaDetails = ({
 
 	const media = useAppSelector(state => getAssetMediaDetails(state));
 	const isFetching = useAppSelector(state => isFetchingAssetMediaDetails(state));
+
+	const videoRef = useRef<HTMLVideoElement>(null);
+
+	// Make sure to reload the video player when the url changes, React will not do that for us
+	// This is necessary for proper rerendering when switching between assets
+	useEffect(() => {
+		videoRef.current?.load();
+	}, [media.url]);
 
 	return (
 		<div className="modal-content">
@@ -366,8 +374,8 @@ const EventDetailsAssetMediaDetails = ({
 								{/* video player */}
 								<div className="video-player">
 									<div>
-										<video id="player" controls>
-											<source src={media.url} type="video/mp4" />
+										<video ref={videoRef} id="player" controls>
+											<source src={media.url} />
 										</video>
 									</div>
 								</div>
