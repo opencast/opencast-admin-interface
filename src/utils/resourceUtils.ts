@@ -125,7 +125,7 @@ export const getInitialMetadataFieldValues = (
 		for (const metadataCatalog of extendedMetadata) {
 			if (!!metadataCatalog.fields && metadataCatalog.fields.length > 0) {
 				metadataCatalog.fields.forEach((field) => {
-					let value = false;
+					let value: string | string[] | boolean = field.value;
 					if (field.value === "true") {
 						value = true;
 					} else if (field.value === "false") {
