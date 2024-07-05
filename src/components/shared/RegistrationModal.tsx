@@ -659,7 +659,7 @@ const RegistrationModal = ({
 
 								{/* back, delete or cancel button depending on state */}
 								<div className="pull-left">
-									{state !== "form" && states[state].buttons.back && (
+									{states[state].buttons.back && (
 										<button
 											className="cancel"
 // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
