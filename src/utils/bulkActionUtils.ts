@@ -2,9 +2,12 @@
 import { hasDeviceAccess } from "./resourceUtils";
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
 import { addNotification } from "../slices/notificationSlice";
+import { EditedEvents, Event } from "../slices/eventSlice";
+import { UserInfoState } from "../slices/userInfoSlice";
+import { AppDispatch } from "../store";
 
 // Check if event is scheduled and therefore the schedule is editable
-export const isScheduleEditable = (event: any) => {
+export const isScheduleEditable = (event: Event) => {
 	return (
 		event.event_status.toUpperCase().indexOf("SCHEDULED") > -1 ||
 		!event.selected
@@ -12,8 +15,7 @@ export const isScheduleEditable = (event: any) => {
 };
 
 // Check if multiple events are scheduled and therefore the schedule is editable
-// @ts-expect-error TS(7006): Parameter 'events' implicitly has an 'any' type.
-export const isAllScheduleEditable = (events) => {
+export const isAllScheduleEditable = (events: Event[]) => {
 	for (let i = 0; i < events.length; i++) {
 		if (!isScheduleEditable(events[i])) {
 			return false;
@@ -23,14 +25,12 @@ export const isAllScheduleEditable = (events) => {
 };
 
 // Check if user has access rights for capture agent of event
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
-export const isAgentAccess = (event, user) => {
+export const isAgentAccess = (event: Event, user: UserInfoState) => {
 	return !event.selected || hasDeviceAccess(user, event.agent_id);
 };
 
 // Check if user has access rights for capture agent of several events
-// @ts-expect-error TS(7006): Parameter 'events' implicitly has an 'any' type.
-export const isAllAgentAccess = (events, user) => {
+export const isAllAgentAccess = (events: Event[], user: UserInfoState) => {
 	for (let i = 0; i < events.length; i++) {
 		if (!events[i].selected || !isScheduleEditable(events[i])) {
 			continue;
@@ -44,17 +44,16 @@ export const isAllAgentAccess = (events, user) => {
 
 // Check validity of selected event list for bulk schedule update for activating next button
 export const checkValidityUpdateScheduleEventSelection = (
-// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
-	formikValues,
-// @ts-expect-error TS(7006): Parameter 'user' implicitly has an 'any' type.
-	user
+	formikValues: {
+		events: Event[]
+	},
+	user: UserInfoState
 ) => {
 	if (formikValues.events.length > 0) {
 		if (
 			isAllScheduleEditable(formikValues.events) &&
 			isAllAgentAccess(formikValues.events, user)
 		) {
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 			return formikValues.events.some((event) => event.selected === true);
 		} else {
 			return false;
@@ -66,29 +65,27 @@ export const checkValidityUpdateScheduleEventSelection = (
 
 // check changed events in formik for scheduling conflicts
 export const checkSchedulingConflicts = async (
-// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
-	formikValues,
-// @ts-expect-error TS(7006): Parameter 'setConflicts' implicitly has an 'any' t... Remove this comment to see the full error message
-	setConflicts,
-// @ts-expect-error TS(7006): Parameter 'checkConflicts' implicitly has an 'any'... Remove this comment to see the full error message
-	checkConflicts,
-// @ts-expect-error TS(7006):
-	dispatch,
+	formikValues: {
+		editedEvents: EditedEvents[]
+	},
+	setConflicts: (conflicts: any) => void,
+	checkConflicts: (editedEvents: EditedEvents[]) => Promise<any[]>,
+	dispatch: AppDispatch,
 ) => {
 	// Check if each start is before end
 	for (let i = 0; i < formikValues.editedEvents.length; i++) {
 		let event = formikValues.editedEvents[i];
 		let startTime = new Date();
 		startTime.setHours(
-			event.changedStartTimeHour,
-			event.changedStartTimeMinutes,
+			parseInt(event.changedStartTimeHour),
+			parseInt(event.changedStartTimeMinutes),
 			0,
 			0
 		);
 		let endTime = new Date();
 		endTime.setHours(
-			event.changedEndTimeHour,
-			event.changedEndTimeMinutes,
+			parseInt(event.changedEndTimeHour),
+			parseInt(event.changedEndTimeMinutes),
 			0,
 			0
 		);
@@ -118,8 +115,7 @@ export const checkSchedulingConflicts = async (
 };
 
 // Check if an event is in a state that a task on it can be started
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
-export const isStartable = (event) => {
+export const isStartable = (event: Event) => {
 	return (
 		event.event_status.toUpperCase().indexOf("PROCESSED") > -1 ||
 		event.event_status.toUpperCase().indexOf("PROCESSING_FAILURE") > -1 ||
@@ -129,8 +125,7 @@ export const isStartable = (event) => {
 };
 
 // Check if multiple events are in a state that a task on them can be started
-// @ts-expect-error TS(7006): Parameter 'events' implicitly has an 'any' type.
-export const isTaskStartable = (events) => {
+export const isTaskStartable = (events: Event[]) => {
 	for (let i = 0; i < events.length; i++) {
 		if (!isStartable(events[i])) {
 			return false;
@@ -140,11 +135,9 @@ export const isTaskStartable = (events) => {
 };
 
 // Check validity of selected event list for bulk start task for activating next button
-// @ts-expect-error TS(7006): Parameter 'formikValues' implicitly has an 'any' t... Remove this comment to see the full error message
-export const checkValidityStartTaskEventSelection = (formikValues) => {
+export const checkValidityStartTaskEventSelection = (formikValues: { events: Event[] }) => {
 	if (formikValues.events.length > 0) {
 		if (isTaskStartable(formikValues.events)) {
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
 			return formikValues.events.some((event) => event.selected === true);
 		} else {
 			return false;
