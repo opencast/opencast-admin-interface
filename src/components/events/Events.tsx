@@ -197,9 +197,8 @@ const Events = ({
 			<NavBar>
 				{
 					/* Display modal for new event if add event button is clicked */
-					!isFetchingAssetUploadOptions && (
+					!isFetchingAssetUploadOptions && displayNewEventModal && (
 						<NewResourceModal
-							showModal={displayNewEventModal}
 							handleClose={hideNewEventModal}
 							resource={"events"}
 						/>

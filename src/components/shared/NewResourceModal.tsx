@@ -13,10 +13,12 @@ import { availableHotkeys } from "../../configs/hotkeysConfig";
  * This component renders the modal for adding new resources
  */
 const NewResourceModal = ({
-    handleClose,
-    showModal,
-    resource
-}: any) => {
+	handleClose,
+	resource
+}: {
+	handleClose: () => void,
+	resource: "events" | "series" | "user" | "group" | "acl" | "themes"
+}) => {
 	const { t } = useTranslation();
 
 	useHotkeys(
@@ -32,57 +34,55 @@ const NewResourceModal = ({
 
 	return (
 		// todo: add hotkeys
-		showModal && (
-			<>
-				<div className="modal-animation modal-overlay" />
-				<section
-					tabIndex={1}
-					className="modal wizard modal-animation"
-					id="add-event-modal"
-				>
-					<header>
-						<button
-              className="button-like-anchor fa fa-times close-modal"
-              onClick={() => close()}
-            />
-						{resource === "events" && <h2>{t("EVENTS.EVENTS.NEW.CAPTION")}</h2>}
-						{resource === "series" && <h2>{t("EVENTS.SERIES.NEW.CAPTION")}</h2>}
-						{resource === "themes" && (
-							<h2>{t("CONFIGURATION.THEMES.DETAILS.NEWCAPTION")}</h2>
-						)}
-						{resource === "acl" && <h2>{t("USERS.ACLS.NEW.CAPTION")}</h2>}
-						{resource === "group" && <h2>{t("USERS.GROUPS.NEW.CAPTION")}</h2>}
-						{resource === "user" && (
-							<h2>{t("USERS.USERS.DETAILS.NEWCAPTION")}</h2>
-						)}
-					</header>
-					{resource === "events" && (
-						//New Event Wizard
-						<NewEventWizard close={close} />
-					)}
-					{resource === "series" && (
-						// New Series Wizard
-						<NewSeriesWizard close={close} />
-					)}
+		<>
+			<div className="modal-animation modal-overlay" />
+			<section
+				tabIndex={1}
+				className="modal wizard modal-animation"
+				id="add-event-modal"
+			>
+				<header>
+					<button
+						className="button-like-anchor fa fa-times close-modal"
+						onClick={() => close()}
+					/>
+					{resource === "events" && <h2>{t("EVENTS.EVENTS.NEW.CAPTION")}</h2>}
+					{resource === "series" && <h2>{t("EVENTS.SERIES.NEW.CAPTION")}</h2>}
 					{resource === "themes" && (
-						// New Theme Wizard
-						<NewThemeWizard close={close} />
+						<h2>{t("CONFIGURATION.THEMES.DETAILS.NEWCAPTION")}</h2>
 					)}
-					{resource === "acl" && (
-						// New ACL Wizard
-						<NewAclWizard close={close} />
-					)}
-					{resource === "group" && (
-						// New Group Wizard
-						<NewGroupWizard close={close} />
-					)}
+					{resource === "acl" && <h2>{t("USERS.ACLS.NEW.CAPTION")}</h2>}
+					{resource === "group" && <h2>{t("USERS.GROUPS.NEW.CAPTION")}</h2>}
 					{resource === "user" && (
-						// New User Wizard
-						<NewUserWizard close={close} />
+						<h2>{t("USERS.USERS.DETAILS.NEWCAPTION")}</h2>
 					)}
-				</section>
-			</>
-		)
+				</header>
+				{resource === "events" && (
+					//New Event Wizard
+					<NewEventWizard close={close} />
+				)}
+				{resource === "series" && (
+					// New Series Wizard
+					<NewSeriesWizard close={close} />
+				)}
+				{resource === "themes" && (
+					// New Theme Wizard
+					<NewThemeWizard close={close} />
+				)}
+				{resource === "acl" && (
+					// New ACL Wizard
+					<NewAclWizard close={close} />
+				)}
+				{resource === "group" && (
+					// New Group Wizard
+					<NewGroupWizard close={close} />
+				)}
+				{resource === "user" && (
+					// New User Wizard
+					<NewUserWizard close={close} />
+				)}
+			</section>
+		</>
 	);
 };
 

@@ -106,11 +106,12 @@ const Acls: React.FC = () => {
 			<Header />
 			<NavBar>
 				{/* Display modal for new acl if add acl button is clicked */}
-				<NewResourceModal
-					showModal={displayNewAclModal}
-					handleClose={hideNewAclModal}
-					resource="acl"
-				/>
+				{ displayNewAclModal &&
+					<NewResourceModal
+						handleClose={hideNewAclModal}
+						resource="acl"
+					/>
+				}
 
 				{/* Include Burger-button menu*/}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
