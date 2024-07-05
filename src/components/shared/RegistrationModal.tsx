@@ -607,9 +607,9 @@ const RegistrationModal = ({
 																setState(states[state].nextState[2] as keyof typeof states)
 															}
 														>
-															{t(
+															{" " + t(
 																"ADOPTER_REGISTRATION.MODAL.FORM_STATE.READ_TERMS_OF_USE_LINK"
-															)}
+															) + " "}
 														</span>
 														<span>
 															{t(
