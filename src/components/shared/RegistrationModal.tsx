@@ -25,7 +25,7 @@ const RegistrationModal = ({
 	const { t } = useTranslation();
 
 	// current state of the modal that is shown
-	const [state, setState] = useState<keyof typeof states>("form");
+	const [state, setState] = useState<keyof typeof states>("information");
 	// initial values for Formik
 	const [initialValues, setInitialValues] = useState<Registration & { agreedToPolicy: boolean, registered: boolean }>({
 		contactMe: false,
