@@ -8,6 +8,8 @@ import { addNotification, removeNotificationWizardAccess } from './notificationS
 import { getUserInformation } from "../selectors/userInfoSelectors";
 import { AppDispatch } from '../store';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { initialFormValuesNewAcl } from "../configs/modalConfig";
+import { TransformedAcl } from './aclDetailsSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of acls
@@ -119,8 +121,7 @@ export const fetchRolesWithTarget = async (target: string) => {
 };
 
 // post new acl to backend
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-export const postNewAcl = (values) => async (dispatch: AppDispatch) => {
+export const postNewAcl = (values: typeof initialFormValuesNewAcl) => async (dispatch: AppDispatch) => {
 	let acls = prepareAccessPolicyRulesForPost(values.acls);
 
 	let data = new URLSearchParams();
@@ -143,8 +144,7 @@ export const postNewAcl = (values) => async (dispatch: AppDispatch) => {
 		});
 };
 // delete acl with provided id
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-export const deleteAcl = (id) => async (dispatch: AppDispatch) => {
+export const deleteAcl = (id: string) => async (dispatch: AppDispatch) => {
 	axios
 		.delete(`/admin-ng/acl/${id}`)
 		.then((res) => {
@@ -160,7 +160,7 @@ export const deleteAcl = (id) => async (dispatch: AppDispatch) => {
 };
 
 // @ts-expect-error TS(7006):
-export const checkAcls = (acls) => async (dispatch: AppDispatch, getState) => {
+export const checkAcls = (acls: TransformedAcl[]) => async (dispatch: AppDispatch, getState) => {
 	// Remove old notifications of context event-access
 	// Helps to prevent multiple notifications for same problem
 	dispatch(removeNotificationWizardAccess());

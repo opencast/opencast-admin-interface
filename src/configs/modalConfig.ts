@@ -122,7 +122,10 @@ export const initialFormValuesNewThemes = {
 
 // All fields for new acl form that are fix and not depending on response of backend
 // InitialValues of Formik form (others computed dynamically depending on responses from backend)
-export const initialFormValuesNewAcl = {
+export const initialFormValuesNewAcl: {
+	name: string,
+	acls: TransformedAcl[],
+} = {
 	name: "",
 	acls: [],
 };
