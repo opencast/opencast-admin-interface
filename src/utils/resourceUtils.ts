@@ -14,6 +14,7 @@ import { UserInfoState } from "../slices/userInfoSlice";
 import { hasAccess, isJson } from "./utils";
 import { RootState } from "../store";
 import { MetadataCatalog } from "../slices/eventSlice";
+import { UpdateUser } from '../slices/userDetailsSlice';
 
 /**
  * This file contains methods that are needed in more than one resource thunk
@@ -73,7 +74,7 @@ export const getURLParams = (
 };
 
 // used for create URLSearchParams for API requests used to create/update user
-export const buildUserBody = (values: NewUser) => {
+export const buildUserBody = (values: NewUser | UpdateUser) => {
 	let data = new URLSearchParams();
 	// fill form data with user inputs
 	data.append("username", values.username);
