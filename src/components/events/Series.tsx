@@ -151,11 +151,12 @@ const Series = () => {
 			<Header />
 			<NavBar>
 				{/* Display modal for new series if add series button is clicked */}
-				<NewResourceModal
-					showModal={displayNewSeriesModal}
-					handleClose={hideNewSeriesModal}
-					resource={"series"}
-				/>
+				{ displayNewSeriesModal &&
+					<NewResourceModal
+						handleClose={hideNewSeriesModal}
+						resource={"series"}
+					/>
+				}
 
 				{displayDeleteSeriesModal && (
 					<DeleteSeriesModal close={hideDeleteModal} />

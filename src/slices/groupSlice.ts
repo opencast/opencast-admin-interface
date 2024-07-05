@@ -5,6 +5,7 @@ import { buildGroupBody, getURLParams } from '../utils/resourceUtils';
 import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { initialFormValuesNewGroup } from '../configs/modalConfig';
 
 /**
  * This file contains redux reducer for actions affecting the state of groups
@@ -58,7 +59,7 @@ export const fetchGroups = createAppAsyncThunk('groups/fetchGroups', async (_, {
 });
 
 // post new group to backend
-export const postNewGroup = createAppAsyncThunk('groups/postNewGroup', async (values: Group, {dispatch}) => {
+export const postNewGroup = createAppAsyncThunk('groups/postNewGroup', async (values: typeof initialFormValuesNewGroup, {dispatch}) => {
 	// get URL params used for post request
 	let data = buildGroupBody(values);
 

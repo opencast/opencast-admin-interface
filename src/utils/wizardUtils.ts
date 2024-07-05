@@ -35,10 +35,16 @@ export const stepIcon = {
  * If the clicked page is summary then it only should be clickable/reachable if all other
  * visible pages of the wizard are valid.
  */
-// @ts-expect-error TS(7006): Parameter 'key' implicitly has an 'any' type.
-export const isSummaryReachable = (key, steps, completed) => {
+
+export const isSummaryReachable = (
+	key: number,
+	steps: {
+		name: string,
+		hidden?: boolean,
+	}[],
+	completed: Record<number, boolean>,
+) => {
 	if (steps[key].name === "summary") {
-// @ts-expect-error TS(7006): Parameter 'step' implicitly has an 'any' type.
 		const visibleSteps = steps.filter((step) => !step.hidden);
 
 		return Object.keys(completed).length >= visibleSteps.length - 2;

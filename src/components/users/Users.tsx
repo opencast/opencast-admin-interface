@@ -111,11 +111,12 @@ const Users: React.FC = () => {
 			<Header />
 			<NavBar>
 				{/* Display modal for new acl if add acl button is clicked */}
-				<NewResourceModal
-					showModal={displayNewUserModal}
-					handleClose={hideNewUserModal}
-					resource="user"
-				/>
+				{ displayNewUserModal &&
+					<NewResourceModal
+						handleClose={hideNewUserModal}
+						resource="user"
+					/>
+				}
 
 				{/* Include Burger-button menu*/}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />

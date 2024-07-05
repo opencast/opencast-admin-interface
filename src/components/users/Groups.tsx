@@ -106,11 +106,12 @@ const Groups = () => {
 			<Header />
 			<NavBar>
 				{/* Display modal for new acl if add acl button is clicked */}
-				<NewResourceModal
-					showModal={displayNewGroupModal}
-					handleClose={hideNewGroupModal}
-					resource="group"
-				/>
+				{ displayNewGroupModal &&
+					<NewResourceModal
+						handleClose={hideNewGroupModal}
+						resource="group"
+					/>
+				}
 
 				{/* Include Burger-button menu*/}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />

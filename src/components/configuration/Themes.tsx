@@ -79,11 +79,12 @@ const Themes = () => {
 			<Header />
 			<NavBar>
 				{/* Display modal for new series if add series button is clicked */}
-				<NewResourceModal
-					showModal={displayNewThemesModal}
-					handleClose={hideNewThemesModal}
-					resource={"themes"}
-				/>
+				{ displayNewThemesModal &&
+					<NewResourceModal
+						handleClose={hideNewThemesModal}
+						resource={"themes"}
+					/>
+				}
 
 				{/* Include Burger-button menu*/}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />

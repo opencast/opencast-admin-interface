@@ -6,6 +6,7 @@ import { countries, states } from "../../configs/adopterRegistrationConfig";
 import cn from "classnames";
 import { AdopterRegistrationSchema } from "../../utils/validate";
 import {
+	Registration,
 	deleteAdopterRegistration,
 	fetchAdopterRegistration,
 	postRegistration,
@@ -16,14 +17,33 @@ import { availableHotkeys } from "../../configs/hotkeysConfig";
 /**
  * This component renders the adopter registration modal. This modal has various states.
  */
-// @ts-expect-error TS(7031): Binding element 'close' implicitly has an 'any' ty... Remove this comment to see the full error message
-const RegistrationModal = ({ close }) => {
+const RegistrationModal = ({
+	close
+}: {
+	close: () => void
+}) => {
 	const { t } = useTranslation();
 
 	// current state of the modal that is shown
-	const [state, setState] = useState("form");
+	const [state, setState] = useState<keyof typeof states>("form");
 	// initial values for Formik
-	const [initialValues, setInitialValues] = useState({});
+	const [initialValues, setInitialValues] = useState<Registration & { agreedToPolicy: boolean, registered: boolean }>({
+		contactMe: false,
+		allowsStatistics: false,
+		allowsErrorReports: false,
+		organisationName: "",
+		departmentName: "",
+		country: "",
+		postalCode: "",
+		city: "",
+		firstName: "",
+		lastName: "",
+		street: "",
+		streetNo: "",
+		email: "",
+		agreedToPolicy: false,
+		registered: false,
+	});
 
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
@@ -45,8 +65,7 @@ const RegistrationModal = ({ close }) => {
 		if (state === "delete_submit") {
 			await resetRegistrationData();
 		} else {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-			setState(states[state].nextState[1]);
+			setState(states[state].nextState[1] as keyof typeof states);
 		}
 	};
 
@@ -57,19 +76,16 @@ const RegistrationModal = ({ close }) => {
 		setInitialValues(registrationInfo);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (values: Registration) => {
 		// post request for adopter information
 		postRegistration(values)
 			.then(() => {
 				// show thank you state
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-				return setState(states[state].nextState[0]);
+				return setState(states[state].nextState[0] as keyof typeof states);
 			})
 			.catch(() => {
 				// show error state
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-				return setState(states[state].nextState[1]);
+				return setState(states[state].nextState[1] as keyof typeof states);
 			});
 	};
 
@@ -78,13 +94,11 @@ const RegistrationModal = ({ close }) => {
 		deleteAdopterRegistration()
 			.then(() => {
 				// show thank you state
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-				return setState(states[state].nextState[0]);
+				return setState(states[state].nextState[0] as keyof typeof states);
 			})
 			.catch(() => {
 				// show error state
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-				return setState(states[state].nextState[1]);
+				return setState(states[state].nextState[1] as keyof typeof states);
 			});
 	};
 
@@ -289,7 +303,6 @@ const RegistrationModal = ({ close }) => {
 																className="form-control-placeholder"
 																htmlFor="adopter_organisation"
 																style={
-// @ts-expect-error TS(2339): Property 'organisationName' does not exist on type... Remove this comment to see the full error message
 																	formik.values.organisationName
 																		? styleWithContent
 																		: {}
@@ -313,7 +326,6 @@ const RegistrationModal = ({ close }) => {
 																className="form-control-placeholder"
 																htmlFor="adopter_department"
 																style={
-// @ts-expect-error TS(2339): Property 'departmentName' does not exist on type '... Remove this comment to see the full error message
 																	formik.values.departmentName
 																		? styleWithContent
 																		: {}
@@ -347,7 +359,6 @@ const RegistrationModal = ({ close }) => {
 																className="form-control-placeholder"
 																htmlFor="adopter_country"
 																style={
-// @ts-expect-error TS(2339): Property 'country' does not exist on type '{}'.
 																	formik.values.country ? styleWithContent : {}
 																}
 															>
@@ -370,7 +381,6 @@ const RegistrationModal = ({ close }) => {
 																	className="form-control-placeholder"
 																	htmlFor="adopter_postalcode"
 																	style={
-// @ts-expect-error TS(2339): Property 'postalCode' does not exist on type '{}'.
 																		formik.values.postalCode
 																			? styleWithContent
 																			: {}
@@ -392,7 +402,6 @@ const RegistrationModal = ({ close }) => {
 																	className="form-control-placeholder"
 																	htmlFor="adopter_city"
 																	style={
-// @ts-expect-error TS(2339): Property 'city' does not exist on type '{}'.
 																		formik.values.city ? styleWithContent : {}
 																	}
 																>
@@ -424,7 +433,6 @@ const RegistrationModal = ({ close }) => {
 																className="form-control-placeholder"
 																htmlFor="adopter_firstname"
 																style={
-// @ts-expect-error TS(2339): Property 'firstName' does not exist on type '{}'.
 																	formik.values.firstName
 																		? styleWithContent
 																		: {}
@@ -448,7 +456,6 @@ const RegistrationModal = ({ close }) => {
 																className="form-control-placeholder"
 																htmlFor="adopter_lastname"
 																style={
-// @ts-expect-error TS(2339): Property 'lastName' does not exist on type '{}'.
 																	formik.values.lastName ? styleWithContent : {}
 																}
 															>
@@ -472,7 +479,6 @@ const RegistrationModal = ({ close }) => {
 																className="form-control-placeholder"
 																htmlFor="adopter_street"
 																style={
-// @ts-expect-error TS(2339): Property 'street' does not exist on type '{}'.
 																	formik.values.street ? styleWithContent : {}
 																}
 															>
@@ -494,7 +500,6 @@ const RegistrationModal = ({ close }) => {
 																className="form-control-placeholder"
 																htmlFor="adopter_streetnumber"
 																style={
-// @ts-expect-error TS(2339): Property 'streetNo' does not exist on type '{}'.
 																	formik.values.streetNo ? styleWithContent : {}
 																}
 															>
@@ -518,7 +523,6 @@ const RegistrationModal = ({ close }) => {
 																className="form-control-placeholder"
 																htmlFor="adopter_emailadr"
 																style={
-// @ts-expect-error TS(2339): Property 'email' does not exist on type '{}'.
 																	formik.values.email ? styleWithContent : {}
 																}
 															>
@@ -600,7 +604,7 @@ const RegistrationModal = ({ close }) => {
 														<span
 															className="link"
 															onClick={() =>
-																setState(states[state].nextState[2])
+																setState(states[state].nextState[2] as keyof typeof states)
 															}
 														>
 															{t(
@@ -622,23 +626,19 @@ const RegistrationModal = ({ close }) => {
 
 							{/* navigation buttons depending on state of modal */}
 							<footer>
-{/* @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
 								{states[state].buttons.submit && (
 									<div className="pull-right">
 										{/* submit of form content */}
 										{state === "form" ? (
 											<button
 												disabled={
-// @ts-expect-error TS(2339): Property 'agreedToPolicy' does not exist on type '... Remove this comment to see the full error message
 													!(formik.isValid && formik.values.agreedToPolicy)
 												}
 												onClick={() => formik.handleSubmit()}
 												className={cn("submit", {
 													active:
-// @ts-expect-error TS(2339): Property 'agreedToPolicy' does not exist on type '... Remove this comment to see the full error message
 														formik.isValid && formik.values.agreedToPolicy,
 													inactive: !(
-// @ts-expect-error TS(2339): Property 'agreedToPolicy' does not exist on type '... Remove this comment to see the full error message
 														formik.isValid && formik.values.agreedToPolicy
 													),
 												})}
@@ -651,7 +651,6 @@ const RegistrationModal = ({ close }) => {
 												className="continue-registration"
 												onClick={() => onClickContinue()}
 											>
-{/* @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
 												{t(states[state].buttons.submitButtonText)}
 											</button>
 										)}
@@ -660,7 +659,6 @@ const RegistrationModal = ({ close }) => {
 
 								{/* back, delete or cancel button depending on state */}
 								<div className="pull-left">
-{/* @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
 									{state !== "form" && states[state].buttons.back && (
 										<button
 											className="cancel"
@@ -670,16 +668,14 @@ const RegistrationModal = ({ close }) => {
 											{t("ADOPTER_REGISTRATION.MODAL.BACK")}
 										</button>
 									)}
-{/* @ts-expect-error TS(2339): Property 'registered' does not exist on type '{}'. */}
 									{state === "form" && formik.values.registered && (
 										<button
 											className="danger"
-											onClick={() => setState(states[state].nextState[4])}
+											onClick={() => setState(states[state].nextState[4] as keyof typeof states)}
 										>
 											{t("WIZARD.DELETE")}
 										</button>
 									)}
-{/* @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
 									{states[state].buttons.skip && (
 										<button
 											className="cancel"
