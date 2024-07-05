@@ -3,6 +3,7 @@
 import { initArray } from "../utils/utils";
 import { EditedEvents, Event, UploadAssetsTrack } from "../slices/eventSlice";
 import { TransformedAcl } from "../slices/aclDetailsSlice";
+import { Role } from "../slices/aclSlice";
 
 // Context for notifications shown in modals
 export const NOTIFICATION_CONTEXT = "modal-form";
@@ -148,7 +149,8 @@ export const initialFormValuesNewUser: {
 	email: string,
 	password: string,
 	passwordConfirmation: string,
-	roles: string[],
+	roles: Role[],
+	manageable: boolean,
 } = {
 	username: "",
 	name: "",
@@ -156,6 +158,7 @@ export const initialFormValuesNewUser: {
 	password: "",
 	passwordConfirmation: "",
 	roles: [],
+	manageable: true,
 };
 
 // All fields for start task form that are fix and not depending on response of backend

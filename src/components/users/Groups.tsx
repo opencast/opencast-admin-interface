@@ -120,16 +120,6 @@ const Groups = ({
 		<>
 			<Header />
 			<NavBar>
-				{/* Add group button */}
-				<div className="btn-group">
-					{hasAccess("ROLE_UI_GROUPS_CREATE", user) && (
-						<button className="add" onClick={() => showNewGroupModal()}>
-							<i className="fa fa-plus" />
-							<span>{t("USERS.ACTIONS.ADD_GROUP")}</span>
-						</button>
-					)}
-				</div>
-
 				{/* Display modal for new acl if add acl button is clicked */}
 				<NewResourceModal
 					showModal={displayNewGroupModal}
@@ -169,6 +159,16 @@ const Groups = ({
 						</Link>
 					)}
 				</nav>
+				
+				{/* Add group button */}
+				<div className="btn-group">
+					{hasAccess("ROLE_UI_GROUPS_CREATE", user) && (
+						<button className="add" onClick={() => showNewGroupModal()}>
+							<i className="fa fa-plus" />
+							<span>{t("USERS.ACTIONS.ADD_GROUP")}</span>
+						</button>
+					)}
+				</div>
 			</NavBar>
 
 			<MainView open={displayNavigation}>

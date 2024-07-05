@@ -136,6 +136,7 @@
 		}
 	},
 	"MEDIAMODULE": "Predstavnostni modul",
+	"STUDIO": "Studio",
 	"SYSTEM_NOTIFICATIONS": "Sistemska opozorila in obvestila",
 	"LANGUAGE": "Izberite jezik",
 	"HELP": {
@@ -480,8 +481,8 @@
 						"RECORDING_ELEMENTS": "Elementi posnetka",
 						"RECORDING_METADATA": "Metapodatki posnetka",
 						"SEGMENTABLE": {
-							"SHORT": "Diapozitivi",
-							"DETAIL": "Datoteka vsebuje posnetek predstavitve z diapozitivi (Keynote, Powerpoint ipd.)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Predavatelj",
@@ -702,8 +703,8 @@
 						"CAPTION": "Naloži",
 						"RECORDING_ELEMENTS": "Elementi posnetka",
 						"SEGMENTABLE": {
-							"SHORT": "Diapozitivi",
-							"DETAIL": "Datoteka vsebuje posnetek predstavitve z diapozitivi (Keynote, Powerpoint ipd.)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Predavatelj",
