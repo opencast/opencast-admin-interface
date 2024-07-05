@@ -138,6 +138,7 @@
 		}
 	},
 	"MEDIAMODULE": "Media Module",
+	"STUDIO": "Studio",
 	"SYSTEM_NOTIFICATIONS": "System warnings and notifications",
 	"LANGUAGE": "Select language",
 	"HELP": {
@@ -494,8 +495,8 @@
 						"RECORDING_ELEMENTS": "Recording elements",
 						"RECORDING_METADATA": "Recording metadata",
 						"SEGMENTABLE": {
-							"SHORT": "Slides",
-							"DETAIL": "The file contains a recording of a slide presentation (Keynote, Powerpoint, etc)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Presenter",
@@ -716,8 +717,8 @@
 						"CAPTION": "Upload",
 						"RECORDING_ELEMENTS": "Recording elements",
 						"SEGMENTABLE": {
-							"SHORT": "Slides",
-							"DETAIL": "The file contains a recording of a slide presentation (Keynote, Powerpoint, etc)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Presenter",

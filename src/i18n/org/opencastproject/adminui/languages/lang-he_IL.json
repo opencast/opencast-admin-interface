@@ -136,6 +136,7 @@
 		}
 	},
 	"MEDIAMODULE": "מודול מדיה",
+	"STUDIO": "Studio",
 	"SYSTEM_NOTIFICATIONS": "אזהרות והתראות מערכתיות",
 	"LANGUAGE": "בחירת שפה",
 	"HELP": {
@@ -480,8 +481,8 @@
 						"RECORDING_ELEMENTS": "רכיבי הקלטה",
 						"RECORDING_METADATA": "הקלטת מטא נתונים",
 						"SEGMENTABLE": {
-							"SHORT": "שקופיות",
-							"DETAIL": "הקובץ מכיל הקלטה של מצגת שקופיות (Keynote, Powerpoint, וכו ')."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "מציג",
@@ -702,8 +703,8 @@
 						"CAPTION": "העלאה",
 						"RECORDING_ELEMENTS": "רכיבי הקלטה",
 						"SEGMENTABLE": {
-							"SHORT": "שקופיות",
-							"DETAIL": "הקובץ מכיל הקלטה של מצגת שקופיות (Keynote, Powerpoint, וכו ')."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "מציג",

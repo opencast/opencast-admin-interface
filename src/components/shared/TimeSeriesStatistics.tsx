@@ -160,7 +160,7 @@ const TimeSeriesStatistics = ({
 	// format selected time to display as name of timeframe
 // @ts-expect-error TS(7006): Parameter 'from' implicitly has an 'any' type.
 	const formatSelectedTimeframeName = (from, timeMode) => {
-		return localizedMoment(from, currentLanguage).format(
+		return localizedMoment(from, currentLanguage ? currentLanguage.dateLocale.code : "en").format(
 // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 			formatStrings[timeMode]
 		);

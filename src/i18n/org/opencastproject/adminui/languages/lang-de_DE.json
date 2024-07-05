@@ -136,6 +136,7 @@
 		}
 	},
 	"MEDIAMODULE": "Medienübersicht",
+	"STUDIO": "Opencast Studio",
 	"SYSTEM_NOTIFICATIONS": "Systemwarnungen und Benachrichtigungen",
 	"LANGUAGE": "Sprache wählen",
 	"HELP": {
@@ -490,7 +491,7 @@
 						"RECORDING_ELEMENTS": "Aufnahme-Elemente",
 						"RECORDING_METADATA": "Aufnahme-Metadaten",
 						"SEGMENTABLE": {
-							"SHORT": "Folien",
+							"SHORT": "Präsentation",
 							"DETAIL": "Die Datei enthält die Aufnahme einer Präsentation (Keynote, Powerpoint, etc.)."
 						},
 						"NON_SEGMENTABLE": {
@@ -712,7 +713,7 @@
 						"CAPTION": "Hochladen",
 						"RECORDING_ELEMENTS": "Aufnahme-Elemente",
 						"SEGMENTABLE": {
-							"SHORT": "Folien",
+							"SHORT": "Präsentation",
 							"DETAIL": "Die Datei enthält die Aufnahme einer Präsentation (Keynote, Powerpoint, etc.)."
 						},
 						"NON_SEGMENTABLE": {
