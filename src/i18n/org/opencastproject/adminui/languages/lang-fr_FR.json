@@ -136,6 +136,7 @@
 		}
 	},
 	"MEDIAMODULE": "Module Multimédia",
+	"STUDIO": "Studio",
 	"SYSTEM_NOTIFICATIONS": "Avertissements et notifications du système",
 	"LANGUAGE": "Choisir une langue",
 	"HELP": {
@@ -480,8 +481,8 @@
 						"RECORDING_ELEMENTS": "Éléments de l'enregistrement",
 						"RECORDING_METADATA": "Métadonnées de l'enregistrement",
 						"SEGMENTABLE": {
-							"SHORT": "Diapositives",
-							"DETAIL": "Le fichier contient un enregistrement d'une présentation de diapositives (Keynote, Powerpoint, etc.)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Présentateur",
@@ -702,8 +703,8 @@
 						"CAPTION": "Envoi",
 						"RECORDING_ELEMENTS": "Éléments de l'enregistrement",
 						"SEGMENTABLE": {
-							"SHORT": "Diapositives",
-							"DETAIL": "Le fichier contient un enregistrement d'une présentation de diapositives (Keynote, Powerpoint, etc.)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Présentateur",

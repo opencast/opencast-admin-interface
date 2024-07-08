@@ -1,12 +1,15 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import { TableConfig, aclsTableConfig } from "../configs/tableConfigs/aclsTableConfig";
 import axios from 'axios';
 import { getURLParams, prepareAccessPolicyRulesForPost, transformAclTemplatesResponse } from '../utils/resourceUtils';
 import { transformToIdValueArray } from '../utils/utils';
 import { NOTIFICATION_CONTEXT_ACCESS } from '../configs/modalConfig';
 import { addNotification, removeNotificationWizardAccess } from './notificationSlice';
+import { getUserInformation } from "../selectors/userInfoSelectors";
 import { AppDispatch } from '../store';
-import { RootState } from '../store';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { initialFormValuesNewAcl } from "../configs/modalConfig";
+import { TransformedAcl } from './aclDetailsSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of acls
@@ -64,9 +67,9 @@ const initialState: AclsState = {
 	limit: 0,
 };
 
-export const fetchAcls = createAsyncThunk('acls/fetchAcls', async (_, { getState }) => {
+export const fetchAcls = createAppAsyncThunk('acls/fetchAcls', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state as RootState);
+	let params = getURLParams(state);
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -118,8 +121,7 @@ export const fetchRolesWithTarget = async (target: string) => {
 };
 
 // post new acl to backend
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-export const postNewAcl = (values) => async (dispatch: AppDispatch) => {
+export const postNewAcl = (values: typeof initialFormValuesNewAcl) => async (dispatch: AppDispatch) => {
 	let acls = prepareAccessPolicyRulesForPost(values.acls);
 
 	let data = new URLSearchParams();
@@ -142,8 +144,7 @@ export const postNewAcl = (values) => async (dispatch: AppDispatch) => {
 		});
 };
 // delete acl with provided id
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-export const deleteAcl = (id) => async (dispatch: AppDispatch) => {
+export const deleteAcl = (id: string) => async (dispatch: AppDispatch) => {
 	axios
 		.delete(`/admin-ng/acl/${id}`)
 		.then((res) => {
@@ -159,10 +160,12 @@ export const deleteAcl = (id) => async (dispatch: AppDispatch) => {
 };
 
 // @ts-expect-error TS(7006):
-export const checkAcls = (acls) => async (dispatch: AppDispatch) => {
+export const checkAcls = (acls: TransformedAcl[]) => async (dispatch: AppDispatch, getState) => {
 	// Remove old notifications of context event-access
 	// Helps to prevent multiple notifications for same problem
 	dispatch(removeNotificationWizardAccess());
+
+	let user = getUserInformation(getState());
 
 	let check = true;
 	let bothRights = false;
@@ -173,8 +176,8 @@ export const checkAcls = (acls) => async (dispatch: AppDispatch) => {
 			check = false;
 		}
 
-		// check if there is at least one policy with read and write rights
-		if (acls[i].read && acls[i].write) {
+		// if not admin, check if there is at least one policy with read and write rights
+		if ((acls[i].read && acls[i].write) || user.isAdmin) {
 			bothRights = true;
 		}
 

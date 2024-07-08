@@ -1,11 +1,12 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import { usersTableConfig } from "../configs/tableConfigs/usersTableConfig";
 import axios from 'axios';
 import { transformToIdValueArray } from "../utils/utils";
 import { buildUserBody, getURLParams } from "../utils/resourceUtils";
 import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
-import { RootState } from '../store';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { Role } from './aclSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of users
@@ -23,7 +24,7 @@ export type NewUser = {
 	email: string,
 	name: string,
 	password: string,
-	roles: string,
+	roles: Role[],
 	username: string,
 }
 
@@ -57,9 +58,9 @@ const initialState: UsersState = {
 };
 
 // fetch users from server
-export const fetchUsers = createAsyncThunk('users/fetchUsers', async (_, { getState }) => {
+export const fetchUsers = createAppAsyncThunk('users/fetchUsers', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state as RootState);
+	let params = getURLParams(state);
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -68,7 +69,7 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async (_, { getSt
 });
 
 // new user to backend
-export const postNewUser = createAsyncThunk('users/postNewUser', async (values: NewUser, {dispatch}) => {
+export const postNewUser = createAppAsyncThunk('users/postNewUser', async (values: NewUser, {dispatch}) => {
 	// get URL params used for post request
 	let data = buildUserBody(values);
 
@@ -92,7 +93,7 @@ export const postNewUser = createAsyncThunk('users/postNewUser', async (values: 
 });
 
 // delete user with provided id
-export const deleteUser = createAsyncThunk('users/deleteUser', async (id: string, {dispatch}) => {
+export const deleteUser = createAppAsyncThunk('users/deleteUser', async (id: string, {dispatch}) => {
 	// API call for deleting an user
 	axios
 		.delete(`/admin-ng/users/${id}.json`)

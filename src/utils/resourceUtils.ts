@@ -1,3 +1,4 @@
+import { Ace } from './../slices/aclDetailsSlice';
 import { getFilters, getTextFilter } from "../selectors/tableFilterSelectors";
 import {
 	getPageLimit,
@@ -13,6 +14,8 @@ import { UserInfoState } from "../slices/userInfoSlice";
 import { hasAccess, isJson } from "./utils";
 import { RootState } from "../store";
 import { MetadataCatalog } from "../slices/eventSlice";
+import { initialFormValuesNewGroup } from '../configs/modalConfig';
+import { UpdateUser } from '../slices/userDetailsSlice';
 
 /**
  * This file contains methods that are needed in more than one resource thunk
@@ -72,7 +75,7 @@ export const getURLParams = (
 };
 
 // used for create URLSearchParams for API requests used to create/update user
-export const buildUserBody = (values: NewUser) => {
+export const buildUserBody = (values: NewUser | UpdateUser) => {
 	let data = new URLSearchParams();
 	// fill form data with user inputs
 	data.append("username", values.username);
@@ -85,8 +88,9 @@ export const buildUserBody = (values: NewUser) => {
 };
 
 // used for create URLSearchParams for API requests used to create/update group
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-export const buildGroupBody = (values) => {
+export const buildGroupBody = (
+	values: typeof initialFormValuesNewGroup
+) => {
 	let roles = [],
 		users = [];
 
@@ -397,10 +401,13 @@ export const getMetadataCollectionFieldName = (metadataField, field) => {
 };
 
 // Prepare rules of access policies for post of new events or series
-// @ts-expect-error TS(7006): Parameter 'policies' implicitly has an 'any' type.
-export const prepareAccessPolicyRulesForPost = (policies) => {
+export const prepareAccessPolicyRulesForPost = (policies: TransformedAcl[]) => {
 	// access policies for post request
-	let access = {
+	let access : {
+		acl : {
+			ace: Ace[]
+		}
+	} = {
 		acl: {
 			ace: [],
 		},
@@ -410,7 +417,6 @@ export const prepareAccessPolicyRulesForPost = (policies) => {
 	for (let i = 0; policies.length > i; i++) {
 		if (policies[i].read) {
 			access.acl.ace = access.acl.ace.concat({
-// @ts-expect-error TS(2769): No overload matches this call.
 				action: "read",
 				allow: policies[i].read,
 				role: policies[i].role,
@@ -418,7 +424,6 @@ export const prepareAccessPolicyRulesForPost = (policies) => {
 		}
 		if (policies[i].write) {
 			access.acl.ace = access.acl.ace.concat({
-// @ts-expect-error TS(2769): No overload matches this call.
 				action: "write",
 				allow: policies[i].write,
 				role: policies[i].role,
@@ -427,7 +432,6 @@ export const prepareAccessPolicyRulesForPost = (policies) => {
 		if (policies[i].actions.length > 0) {
 			for (let j = 0; policies[i].actions.length > j; j++) {
 				access.acl.ace = access.acl.ace.concat({
-// @ts-expect-error TS(2769): No overload matches this call.
 					action: policies[i].actions[j],
 					allow: true,
 					role: policies[i].role,

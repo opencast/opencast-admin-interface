@@ -11,29 +11,29 @@ import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess, isJson } from "../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
 import { useAppSelector } from "../../../../store";
+import { MetadataCatalog } from "../../../../slices/eventDetailsSlice";
 
 /**
  * This component renders metadata details of a certain event or series
  */
-const DetailsMetadataTab: React.FC<{
-	metadataFields: any,  //TODO: Type this
-	updateResource: any,  //TODO: Type this
-	resourceId: any,  //TODO: Type this
-	header: any,  //TODO: Type this
-	editAccessRole: any,  //TODO: Type this
-}> = ({
+const DetailsMetadataTab = ({
 	metadataFields,
 	updateResource,
 	resourceId,
 	header,
 	editAccessRole,
+}: {
+	metadataFields: MetadataCatalog,
+	updateResource: (id: string, values: { [key: string]: any }) => void,
+	resourceId: string,
+	header: string,
+	editAccessRole: string,
 }) => {
 	const { t } = useTranslation();
 
 	const user = useAppSelector(state => getUserInformation(state));
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (values: { [key: string]: any }) => {
 		updateResource(resourceId, values);
 	};
 
@@ -47,7 +47,6 @@ const DetailsMetadataTab: React.FC<{
 			!!metadataFields.fields &&
 			metadataFields.fields.length > 0
 		) {
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
 			metadataFields.fields.forEach((field) => {
 // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 				initialValues[field.id] = field.value;
@@ -88,7 +87,6 @@ const DetailsMetadataTab: React.FC<{
 												{/* Render table row for each metadata field depending on type */}
 												{!!metadataFields &&
 													!!metadataFields.fields &&
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
 													metadataFields.fields.map((field, key) => (
 														<tr key={key}>
 															<td>
@@ -126,7 +124,7 @@ const DetailsMetadataTab: React.FC<{
 																) : (
 																	<td>{
 																		field.type === "time" || field.type === "date"
-																			? <RenderDate date={field.value} />
+																			? <RenderDate date={field.value as string} />
 																			: field.value
 																	}</td>
 																)

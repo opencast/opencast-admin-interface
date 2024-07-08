@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Role, fetchRolesWithTarget } from "../../../../slices/aclSlice";
 import SelectContainer from "../../../shared/wizard/SelectContainer";
+import { FormikProps } from "formik";
 
 /**
  * This component renders the role selection tab of the new user wizard and the user details modal
  */
-const UserRolesTab = ({
-    formik
-}: any) => {
+interface RequiredFormProps {
+	manageable: boolean,
+}
+
+const UserRolesTab = <T extends RequiredFormProps>({
+	formik
+}: {
+	formik: FormikProps<T>
+}) => {
 	// roles that can be chosen by user
 	const [roles, setRoles] = useState<Role[]>([]);
 	// flag for API call

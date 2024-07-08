@@ -1,22 +1,35 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { addNotification } from './notificationSlice';
 import { buildUserBody } from "../utils/resourceUtils";
-import { NewUser } from './userSlice';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 
 /**
  * This file contains redux reducer for actions affecting the state of details of a user
  */
+export type UserDetailsRole = {
+	name: string,
+	type: string,
+}
+
 export type UserDetailsState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
 	provider: string,
-	roles: string[],
+	roles: UserDetailsRole[],
 	name: string,
 	username: string,
 	email: string,
 	manageable: boolean,
 };
+
+export type UpdateUser = {
+	email: string,
+	name: string,
+	password: string,
+	roles: UserDetailsRole[],
+	username: string,
+}
 
 // Initial state of userDetails in redux store
 const initialState: UserDetailsState = {
@@ -31,7 +44,7 @@ const initialState: UserDetailsState = {
 };
 
 // fetch details about certain user from server
-export const fetchUserDetails = createAsyncThunk('userDetails/fetchUserDetails', async (username: string) => {
+export const fetchUserDetails = createAppAsyncThunk('userDetails/fetchUserDetails', async (username: string) => {
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -40,8 +53,8 @@ export const fetchUserDetails = createAsyncThunk('userDetails/fetchUserDetails',
 });
 
 // update existing user with changed values
-export const updateUserDetails = createAsyncThunk('userDetails/updateUserDetails', async (params: {
-	values: NewUser,
+export const updateUserDetails = createAppAsyncThunk('userDetails/updateUserDetails', async (params: {
+	values: UpdateUser,
 	username: string
 }, {dispatch}) => {
 	const { username, values } = params

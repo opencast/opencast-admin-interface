@@ -1,5 +1,5 @@
 import React from "react";
-import { Field } from "formik";
+import { Field, FormikProps } from "formik";
 import Notifications from "../../../shared/Notifications";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
@@ -7,9 +7,19 @@ import cn from "classnames";
 /**
  * This component renders the general user information tab for new users in the new users wizard.
  */
-const NewUserGeneralTab = ({
-    formik
-}: any) => {
+interface RequiredFormProps {
+	username: string,
+	name: string,
+	email: string,
+	password: string,
+	passwordConfirmation: string,
+}
+
+const NewUserGeneralTab = <T extends RequiredFormProps>({
+	formik
+}: {
+	formik: FormikProps<T>
+}) => {
 	const { t } = useTranslation();
 
 	return (

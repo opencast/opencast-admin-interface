@@ -32,7 +32,7 @@ const SeriesDetailsAccessTab = ({
 		dispatch(fetchSeriesDetailsAcls(id));
 	}
 	const updateSeriesAccessWrapper = (id: any, policies: any) => {
-		dispatch(updateSeriesAccess({id, policies}));
+		return dispatch(updateSeriesAccess({id, policies}));
 	}
 
 	useEffect(() => {
@@ -44,7 +44,6 @@ const SeriesDetailsAccessTab = ({
 		<ResourceDetailsAccessPolicyTab
 			resourceId={seriesId}
 			header={header}
-			t={t}
 			buttonText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.LABEL"}
 			saveButtonText={"SAVE"}
 			descriptionText={t("EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION")}

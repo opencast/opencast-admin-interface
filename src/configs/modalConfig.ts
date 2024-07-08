@@ -3,6 +3,7 @@
 import { initArray } from "../utils/utils";
 import { EditedEvents, Event, UploadAssetsTrack } from "../slices/eventSlice";
 import { TransformedAcl } from "../slices/aclDetailsSlice";
+import { Role } from "../slices/aclSlice";
 
 // Context for notifications shown in modals
 export const NOTIFICATION_CONTEXT = "modal-form";
@@ -121,14 +122,22 @@ export const initialFormValuesNewThemes = {
 
 // All fields for new acl form that are fix and not depending on response of backend
 // InitialValues of Formik form (others computed dynamically depending on responses from backend)
-export const initialFormValuesNewAcl = {
+export const initialFormValuesNewAcl: {
+	name: string,
+	acls: TransformedAcl[],
+} = {
 	name: "",
 	acls: [],
 };
 
 // All fields for new group form that are fix and not depending on response of backend
 // InitialValues of Formik form (others computed dynamically depending on responses from backend)
-export const initialFormValuesNewGroup = {
+export const initialFormValuesNewGroup: {
+	name: string,
+	description: string,
+	roles: { name: string }[],
+	users: { id: string, name: string }[],
+} = {
 	name: "",
 	description: "",
 	roles: [],
@@ -143,7 +152,8 @@ export const initialFormValuesNewUser: {
 	email: string,
 	password: string,
 	passwordConfirmation: string,
-	roles: string[],
+	roles: Role[],
+	manageable: boolean,
 } = {
 	username: "",
 	name: "",
@@ -151,6 +161,7 @@ export const initialFormValuesNewUser: {
 	password: "",
 	passwordConfirmation: "",
 	roles: [],
+	manageable: true,
 };
 
 // All fields for start task form that are fix and not depending on response of backend

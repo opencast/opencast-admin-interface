@@ -1,5 +1,6 @@
-import { PayloadAction, SerializedError, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
+import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 
 /**
  * This file contains redux reducer for actions affecting the state of workflows
@@ -38,7 +39,7 @@ const initialState: WorkflowState = {
 };
 
 // fetch workflow definitions from server
-export const fetchWorkflowDef = createAsyncThunk('workflow/fetchWorkflowDef', async (type: string) => {
+export const fetchWorkflowDef = createAppAsyncThunk('workflow/fetchWorkflowDef', async (type: string) => {
 	let urlParams;
 
 	switch (type) {

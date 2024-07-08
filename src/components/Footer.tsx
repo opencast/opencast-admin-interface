@@ -7,6 +7,7 @@ import { hasAccess } from "../utils/utils";
 import { useAppSelector } from "../store";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Tooltip } from "./shared/Tooltip";
 
 /**
  * Component that renders the footer
@@ -29,14 +30,18 @@ const Footer: React.FC = () => {
 			<div className="default-footer">
 				<ul>
 					{/* Only render if a version is set */}
-					{!!user.ocVersion && (
+					{user.ocVersion && (
 						<li>
 							{"Opencast "}
-							<span title={t('BUILD.VERSION')}>{user.ocVersion.version}</span>
+							<Tooltip title={t('BUILD.VERSION')}><span>{user.ocVersion.version}</span></Tooltip>
 							{hasAccess("ROLE_ADMIN", user) && (
 								<span>
-								{" – "} <span title={t('BUILD.COMMIT')}>{user.ocVersion.buildNumber || "undefined"}</span>
-								{" – "} <span title={t('BUILD.DATE_DESC')}>{t("BUILD.BUILT_ON")} {lastModified}</span>
+								{user.ocVersion.buildNumber && (
+									<>{" – "} <Tooltip title={t('BUILD.COMMIT')}><span>{user.ocVersion.buildNumber}</span></Tooltip></>
+								)}
+								{lastModified && (
+									<>{" – "} <Tooltip title={t('BUILD.DATE_DESC')}><span>{t("BUILD.BUILT_ON")} {lastModified}</span></Tooltip></>
+								)}
 								</span>
 							)}
 						</li>
