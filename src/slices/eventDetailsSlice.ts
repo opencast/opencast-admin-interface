@@ -1569,13 +1569,13 @@ export const updateAssets = createAsyncThunk('eventDetails/updateAssets', async 
 		options: [],
 	};
 
-	let assetFlavors: string = "";
+	let assetFlavors = "";
 
 	uploadAssetOptions.forEach((option) => {
 		if (!!values[option.id]) {
 			formData.append(option.id + ".0", values[option.id]);
 			assets.options = assets.options.concat(option);
-			let uploadAssetFlavor = [option.flavorType, option.flavorSubType].join("/");
+			const uploadAssetFlavor = [option.flavorType, option.flavorSubType].join("/");
 			if (assetFlavors.length > 0) {
 				assetFlavors = [assetFlavors, uploadAssetFlavor].join(",");
 			} else {
@@ -1584,7 +1584,7 @@ export const updateAssets = createAsyncThunk('eventDetails/updateAssets', async 
 		}
 	});
 
-	let uploadAssetWorkflowConfiguration: {
+	const uploadAssetWorkflowConfiguration: {
 		"downloadSourceflavorsExist": string,
 		"download-source-flavors": string,
 	} = {
@@ -1592,9 +1592,9 @@ export const updateAssets = createAsyncThunk('eventDetails/updateAssets', async 
 		"download-source-flavors": assetFlavors,
 	};
 
-	let processing: {
+	const processing: {
 		workflow: string | undefined,
-        configuration: typeof uploadAssetWorkflowConfiguration,
+		configuration: typeof uploadAssetWorkflowConfiguration,
 	} = {
 		workflow: uploadAssetWorkflow,
 		configuration: uploadAssetWorkflowConfiguration,
