@@ -624,17 +624,41 @@ const RegistrationModal = ({
 								</div>
 							)}
 
+							{/* shows summary of information */}
+							{state === "summary" && (
+								<div className="modal-content" style={{ display: "block" }}>
+									<div className="modal-body">
+										<p>{t("ADOPTER_REGISTRATION.MODAL.SUMMARY_STATE.HEADER")}</p>
+										<p>{t("ADOPTER_REGISTRATION.MODAL.SUMMARY_STATE.GENERAL_HEADER")}</p>
+										<div className="scrollbox">
+											<pre>
+												{JSON.stringify(formik.values, null, "\t")}
+											</pre>
+										</div>
+										<br />
+										<p>{t("ADOPTER_REGISTRATION.MODAL.SUMMARY_STATE.STATS_HEADER")}</p>
+									</div>
+								</div>
+							)}
+
 							{/* navigation buttons depending on state of modal */}
 							<footer>
 								{states[state].buttons.submit && (
 									<div className="pull-right">
 										{/* submit of form content */}
-										{state === "form" ? (
+										{state === "summary" ?
+												<button
+												onClick={() => formik.handleSubmit()}
+												className={cn("submit")}
+											>
+												{t(states[state].buttons.submitButtonText)}
+											</button>
+										: state === "form" ?
 											<button
 												disabled={
 													!(formik.isValid && formik.values.agreedToPolicy)
 												}
-												onClick={() => formik.handleSubmit()}
+												onClick={() => onClickContinue()}
 												className={cn("submit", {
 													active:
 														formik.isValid && formik.values.agreedToPolicy,
@@ -645,7 +669,7 @@ const RegistrationModal = ({
 											>
 												{t(states[state].buttons.submitButtonText)}
 											</button>
-										) : (
+										:
 											// continue button or confirm button (depending on state)
 											<button
 												className="continue-registration"
@@ -653,7 +677,7 @@ const RegistrationModal = ({
 											>
 												{t(states[state].buttons.submitButtonText)}
 											</button>
-										)}
+										}
 									</div>
 								)}
 
