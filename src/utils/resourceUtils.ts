@@ -582,12 +582,11 @@ export const buildThemeBody = (values) => {
 
 // creates an empty policy with the role from the argument
 // @ts-expect-error TS(7006): Parameter 'role' implicitly has an 'any' type.
-export const createPolicy = (role, allowNewRole: boolean = false) => {
+export const createPolicy = (role) => {
 	return {
 		role: role,
 		read: false,
 		write: false,
 		actions: [],
-		allowNewRole: allowNewRole,
 	};
 };

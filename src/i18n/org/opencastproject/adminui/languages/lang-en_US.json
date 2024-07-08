@@ -861,13 +861,10 @@
 						"ADDITIONAL_ACTIONS": "Additional Actions",
 						"ACTION": "Actions",
 						"NEW": "New policy",
-						"NEW_ROLE": "New custom role",
 						"DETAILS": "Details"
 					},
 					"ROLES": {
-						"LABEL": "Select a role",
-						"CREATE": "Enter a new role",
-						"EMPTY": "No role found"
+						"LABEL": "Select or create a role"
 					}
 				},
 				"COMMENTS": {
