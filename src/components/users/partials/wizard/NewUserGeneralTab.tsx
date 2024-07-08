@@ -148,10 +148,10 @@ const PasswordStrengthIndicator = ({
 
 	const setProgBar = (strength: number) => {
 		if (strength >= 90) {
-			return ["#388ed6", "USERS.USERS.DETAILS.STRENGTH.VERYSTRONG"]
+			return ["green", "USERS.USERS.DETAILS.STRENGTH.VERYSTRONG"]
 		}
 		else if (strength >= 70) {
-			return ["green", "USERS.USERS.DETAILS.STRENGTH.STRONG"]
+			return ["#388ed6", "USERS.USERS.DETAILS.STRENGTH.STRONG"]
 		}
 		else if (strength >= 50) {
 			return ["gold", "USERS.USERS.DETAILS.STRENGTH.GOOD"]
