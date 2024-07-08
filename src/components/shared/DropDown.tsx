@@ -8,7 +8,7 @@ import {
 	filterBySearch,
 	formatDropDownOptions,
 } from "../../utils/dropDownUtils";
-import Select, { Theme } from "react-select";
+import Select, { Props } from "react-select";
 import CreatableSelect from "react-select/creatable";
 
 /**
@@ -56,9 +56,9 @@ const DropDown = <T,>({
 
 	const style = dropDownStyle(type);
 
-	const commonProps = {
+	const commonProps: Props = {
 		tabIndex: tabIndex,
-		theme: (theme: Theme) => (dropDownSpacingTheme(theme)),
+		theme: (theme) => (dropDownSpacingTheme(theme)),
 		styles: style,
 		defaultMenuIsOpen: defaultOpen,
 		autoFocus: autoFocus,
@@ -73,7 +73,7 @@ const DropDown = <T,>({
 		),
 		placeholder: placeholder,
 		onInputChange: (value: string) => setSearch(value),
-		onChange: (element: {value: T, label: string} | null) => handleChange(element),
+		onChange: (element) => handleChange(element as {value: T, label: string}),
 		isDisabled: disabled,
 	};
 
