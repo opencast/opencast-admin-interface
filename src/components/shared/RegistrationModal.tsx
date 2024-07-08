@@ -237,7 +237,9 @@ const RegistrationModal = ({
 										</span>
 										<b>
 											(<span>{t("HELP.HELP")}</span>)
+											{" "}
 											<span className="fa fa-question-circle" />
+											{" > "}
 											<span>{t("HELP.ADOPTER_REGISTRATION")}</span>
 										</b>
 										<span>
