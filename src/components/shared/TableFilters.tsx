@@ -302,6 +302,7 @@ const TableFilters = ({
 												.filter(
 													(filter) => filter.name !== "presentersBibliographic"
 												)
+												.sort((a, b) => t(a.label).localeCompare(t(b.label))) // Sort alphabetically
 												.map((filter, key) => (
 													<option key={key} value={filter.name}>
 														{t(filter.label).substr(0, 40)}
