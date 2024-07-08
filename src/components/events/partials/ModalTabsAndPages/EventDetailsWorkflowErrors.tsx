@@ -8,7 +8,7 @@ import {
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
-import { fetchWorkflowErrorDetails } from "../../../../slices/eventDetailsSlice";
+import { fetchWorkflowErrorDetails, setModalWorkflowTabHierarchy } from "../../../../slices/eventDetailsSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
@@ -18,10 +18,8 @@ import { useTranslation } from "react-i18next";
  */
 const EventDetailsWorkflowErrors = ({
 	eventId,
-	setHierarchy,
 }: {
 	eventId: string,
-	setHierarchy: (subTabName: WorkflowTabHierarchy) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -45,7 +43,7 @@ const EventDetailsWorkflowErrors = ({
 
 	const openSubTab = (tabType: WorkflowTabHierarchy, errorId: number | undefined = undefined) => {
 		dispatch(removeNotificationWizardForm());
-		setHierarchy(tabType);
+		dispatch(setModalWorkflowTabHierarchy(tabType));
 		if (tabType === "workflow-error-details") {
 			dispatch(fetchWorkflowErrorDetails({eventId, workflowId: workflow.wiid, errorId})).then();
 		}

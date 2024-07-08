@@ -6,17 +6,12 @@ import {
 } from "../../../../selectors/eventDetailsSelectors";
 import { humanReadableBytesFilter } from "../../../../utils/eventDetailsUtils";
 import { useAppSelector } from "../../../../store";
-import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the attachment details sub-tab for assets tab of event details modal
  */
-const EventDetailsAssetAttachmentDetails = ({
-	setHierarchy,
-}: {
-	setHierarchy: (subTabName: AssetTabHierarchy) => void,
-}) => {
+const EventDetailsAssetAttachmentDetails = () => {
 	const { t } = useTranslation();
 	const attachment = useAppSelector(state => getAssetAttachmentDetails(state));
 	const isFetching = useAppSelector(state => isFetchingAssetAttachmentDetails(state));

@@ -1,21 +1,25 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import EventDetailsModal from "./modals/EventDetailsModal";
 import EmbeddingCodeModal from "./modals/EmbeddingCodeModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import SeriesDetailsModal from "./modals/SeriesDetailsModal";
+import { EventDetailsPage } from "./modals/EventDetails";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import {
-	fetchSeriesDetailsThemeNames,
 	fetchSeriesDetailsAcls,
 	fetchSeriesDetailsFeeds,
 	fetchSeriesDetailsMetadata,
 	fetchSeriesDetailsTheme,
+	fetchSeriesDetailsThemeNames,
 } from "../../../slices/seriesDetailsSlice";
 import { Event, deleteEvent } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import {
+	openModal,
+	setModalPage
+} from "../../../slices/eventDetailsSlice";
 
 /**
  * This component renders the action cells of events in the table view
@@ -29,9 +33,7 @@ const EventActionCell = ({
 	const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
-	const [displayEventDetailsModal, setEventDetailsModal] = useState(false);
 	const [displaySeriesDetailsModal, setSeriesDetailsModal] = useState(false);
-	const [eventDetailsTabIndex, setEventDetailsTabIndex] = useState(0);
 	const [displayEmbeddingCodeModal, setEmbeddingCodeModal] = useState(false);
 
 	const user = useAppSelector(state => getUserInformation(state));
@@ -54,11 +56,7 @@ const EventActionCell = ({
 	};
 
 	const showEventDetailsModal = () => {
-		setEventDetailsModal(true);
-	};
-
-	const hideEventDetailsModal = () => {
-		setEventDetailsModal(false);
+		dispatch(openModal(EventDetailsPage.Metadata, row))
 	};
 
 	const showSeriesDetailsModal = () => {
@@ -82,37 +80,27 @@ const EventActionCell = ({
 	};
 
 	const onClickEventDetails = () => {
-		setEventDetailsTabIndex(0);
+		dispatch(setModalPage(EventDetailsPage.Metadata));
 		showEventDetailsModal();
 	};
 
 	const onClickComments = () => {
-		setEventDetailsTabIndex(7);
+		dispatch(setModalPage(EventDetailsPage.Comments));
 		showEventDetailsModal();
 	};
 
 	const onClickWorkflow = () => {
-		setEventDetailsTabIndex(5);
+		dispatch(setModalPage(EventDetailsPage.Workflow));
 		showEventDetailsModal();
 	};
 
 	const onClickAssets = () => {
-		setEventDetailsTabIndex(3);
+		dispatch(setModalPage(EventDetailsPage.Assets));
 		showEventDetailsModal();
 	};
 
 	return (
 		<>
-			{/* Display modal for editing table view if table edit button is clicked */}
-			{displayEventDetailsModal &&
-				<EventDetailsModal
-					handleClose={hideEventDetailsModal}
-					tabIndex={eventDetailsTabIndex}
-					eventTitle={row.title}
-					eventId={row.id}
-				/>
-			}
-
 			{!!row.series && displaySeriesDetailsModal && (
 				<SeriesDetailsModal
 					handleClose={hideSeriesDetailsModal}

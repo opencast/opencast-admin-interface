@@ -9,17 +9,12 @@ import {
 	humanReadableBytesFilter,
 } from "../../../../utils/eventDetailsUtils";
 import { useAppSelector } from "../../../../store";
-import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the media details sub-tab for assets tab of event details modal
  */
-const EventDetailsAssetMediaDetails = ({
-	setHierarchy,
-}: {
-	setHierarchy: (subTabName: AssetTabHierarchy) => void,
-}) => {
+const EventDetailsAssetMediaDetails = () => {
 	const { t } = useTranslation();
 
 	const media = useAppSelector(state => getAssetMediaDetails(state));

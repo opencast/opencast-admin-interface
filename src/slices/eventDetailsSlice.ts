@@ -8,7 +8,7 @@ import {
 	transformMetadataForUpdate,
 } from "../utils/resourceUtils";
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
-import { fetchWorkflowDef } from "./workflowSlice";
+import { fetchWorkflowDef, Workflow as WorkflowDefinitions } from "./workflowSlice";
 import {
 	getMetadata,
 	getExtendedMetadata,
@@ -25,10 +25,25 @@ import {
 import { calculateDuration } from "../utils/dateUtils";
 import { fetchRecordings } from "./recordingSlice";
 import { getRecordings } from "../selectors/recordingSelectors";
-import { Workflow as WorkflowDefinitions} from "./workflowSlice";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 import { Ace, TransformedAcl, TransformedAcls } from './aclDetailsSlice';
+import { Event } from "./eventSlice";
+import {
+	AssetTabHierarchy,
+	EventDetailsPage,
+	WorkflowTabHierarchy
+} from "../components/events/partials/modals/EventDetails";
+import { AppDispatch } from "../store";
+
+// Contains the navigation logic for the modal
+type EventDetailsModal = {
+	show: boolean,
+	page: EventDetailsPage,
+	event: Event | null,
+	workflowTabHierarchy: WorkflowTabHierarchy,
+	assetsTabHierarchy: AssetTabHierarchy,
+}
 
 type MetadataField = {
 	collection?: { [key: string]: unknown }[],	// different for e.g. languages and presenters
@@ -169,6 +184,7 @@ type EventDetailsState = {
 	statusStatisticsValue: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorStatisticsValue: SerializedError | null,
 	eventId: string,
+	modal: EventDetailsModal,
 	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	assets: {
@@ -408,6 +424,13 @@ const initialState: EventDetailsState = {
 	statusStatisticsValue: 'uninitialized',
 	errorStatisticsValue: null,
 	eventId: "",
+	modal: {
+		show: false,
+		page: EventDetailsPage.Metadata,
+		event: null,
+		workflowTabHierarchy: 'entry',
+		assetsTabHierarchy: 'entry',
+	},
 	metadata: {
 		title: "",
 		flavor: "",
@@ -1393,6 +1416,35 @@ export const fetchWorkflowOperations = createAppAsyncThunk('eventDetails/fetchWo
 	return { entries: workflowOperationsData };
 });
 
+/**
+ * Open event details modal externally
+ *
+ * @param page modal page
+ * @param event event to show
+ * @param workflowTab workflow tab
+ * @param assetsTab assets tab
+ */
+export const openModal = (
+	page: EventDetailsPage,
+	event: Event,
+	workflowTab: WorkflowTabHierarchy = 'entry',
+	assetsTab: AssetTabHierarchy = 'entry',
+) => (dispatch: AppDispatch) => {
+	dispatch(setModalEvent(event));
+	dispatch(openModalTab(page, workflowTab, assetsTab))
+	dispatch(setShowModal(true));
+};
+
+export const openModalTab = (
+	page: EventDetailsPage,
+	workflowTab: WorkflowTabHierarchy,
+	assetsTab: AssetTabHierarchy
+) => (dispatch: AppDispatch) => {
+	dispatch(setModalPage(page));
+	dispatch(setModalWorkflowTabHierarchy(workflowTab));
+	dispatch(setModalAssetsTabHierarchy(assetsTab));
+};
+
 export const fetchWorkflowOperationDetails = createAppAsyncThunk('eventDetails/fetchWorkflowOperationDetails', async (params: {
 	eventId: string,
 	workflowId: string,
@@ -1769,6 +1821,31 @@ const eventDetailsSlice = createSlice({
 	name: 'eventDetails',
 	initialState,
 	reducers: {
+		setShowModal(state, action: PayloadAction<
+			EventDetailsState["modal"]["show"]
+		>) {
+			state.modal.show = action.payload;
+		},
+		setModalPage(state, action: PayloadAction<
+			EventDetailsState["modal"]["page"]
+		>) {
+			state.modal.page = action.payload;
+		},
+		setModalEvent(state, action: PayloadAction<
+			EventDetailsState["modal"]["event"]
+		>) {
+			state.modal.event = action.payload;
+		},
+		setModalWorkflowTabHierarchy(state, action: PayloadAction<
+			EventDetailsState["modal"]["workflowTabHierarchy"]
+		>) {
+			state.modal.workflowTabHierarchy = action.payload;
+		},
+		setModalAssetsTabHierarchy(state, action: PayloadAction<
+			EventDetailsState["modal"]["assetsTabHierarchy"]
+		>) {
+			state.modal.assetsTabHierarchy = action.payload;
+		},
 		setEventMetadata(state, action: PayloadAction<
 			EventDetailsState["metadata"]
 		>) {
@@ -2416,6 +2493,11 @@ const eventDetailsSlice = createSlice({
 });
 
 export const {
+	setShowModal,
+	setModalPage,
+	setModalEvent,
+	setModalWorkflowTabHierarchy,
+	setModalAssetsTabHierarchy,
 	setEventMetadata,
 	setExtendedEventMetadata,
 	setEventWorkflow,

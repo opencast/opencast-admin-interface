@@ -1,5 +1,14 @@
 import { RootState } from "../store";
 
+/* selectors for modal */
+export const showModal = (state: RootState) => state.eventDetails.modal.show;
+export const getModalPage = (state: RootState) => state.eventDetails.modal.page;
+export const getModalEvent = (state: RootState) => state.eventDetails.modal.event;
+export const getModalWorkflowTabHierarchy = (state: RootState) =>
+	state.eventDetails.modal.workflowTabHierarchy;
+export const getModalAssetsTabHierarchy = (state: RootState) =>
+	state.eventDetails.modal.assetsTabHierarchy;
+
 /* selectors for metadata */
 export const getMetadata = (state: RootState) => state.eventDetails.metadata;
 export const getExtendedMetadata = (state: RootState) => state.eventDetails.extendedMetadata;
