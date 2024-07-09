@@ -9,7 +9,7 @@ import DOMPurify from "dompurify";
 
 const TermsOfUseModal = () => {
 	const { t } = useTranslation();
-	const [initialValues, setInitialValues] = useState({});
+	const initialValues = {};
 	const [termsContent, setTermsContent] = useState<string>("");
 	const [agreedToTerms, setAgreedToTerms] = useState(true);
 
@@ -50,6 +50,7 @@ const TermsOfUseModal = () => {
 						setTermsContent(t("TERMS.NOCONTENT").toString());
 					});
 			});
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [agreedToTerms]); // Listen to changes in agreedToTerms
 
 	// Set terms to user settings
