@@ -298,7 +298,10 @@ const MenuLang = () => {
 			{/* one list item for each available language */}
 			{languages.map((language, key) => (
 				<li key={key}>
-					<button className="button-like-anchor" onClick={() => changeLanguage(language.code)}>
+					<button
+						className={"button-like-anchor" + (i18n.language === language.code ? " selected" : "")}
+						onClick={() => changeLanguage(language.code)}
+					>
 						{language.long}
 					</button>
 				</li>
