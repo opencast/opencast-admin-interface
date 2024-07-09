@@ -13,7 +13,7 @@ import { Recording } from "../slices/recordingSlice";
 import { UserInfoState } from "../slices/userInfoSlice";
 import { hasAccess, isJson } from "./utils";
 import { RootState } from "../store";
-import { MetadataCatalog } from "../slices/eventSlice";
+import { MetadataCatalog, MetadataField, MetadataFieldSelected } from "../slices/eventSlice";
 import { initialFormValuesNewGroup } from '../configs/modalConfig';
 import { UpdateUser } from '../slices/userDetailsSlice';
 
@@ -50,7 +50,12 @@ export const getURLParams = (
 		}
 	}
 
-	let params = {
+	let params: {
+		limit: number,
+		offset: number,
+		filter?: string,
+		sort?: string,
+	} = {
 		limit: getPageLimit(state),
 		offset: getPageOffset(state) * getPageLimit(state),
 	};
@@ -58,7 +63,6 @@ export const getURLParams = (
 	if (filters.length) {
 		params = {
 			...params,
-// @ts-expect-error TS(2322): Type '{ filter: string; limit: any; offset: number... Remove this comment to see the full error message
 			filter: filters.join(","),
 		};
 	}
@@ -66,7 +70,6 @@ export const getURLParams = (
 	if (getTableSorting(state) !== "") {
 		params = {
 			...params,
-// @ts-expect-error TS(2322): Type '{ sort: string; limit: any; offset: number; ... Remove this comment to see the full error message
 			sort: getTableSorting(state) + ":" + getTableDirection(state),
 		};
 	}
@@ -145,60 +148,59 @@ export const getInitialMetadataFieldValues = (
 };
 
 // transform collection of metadata into object with name and value
-export const transformMetadataCollection = (metadata: any, noField: boolean) => {
-	if (noField) {
-		for (let i = 0; metadata.length > i; i++) {
-			if (!!metadata[i].collection) {
-				metadata[i].collection = Object.keys(metadata[i].collection).map(
-					(key) => {
-						return {
-							name: key,
-							value: metadata[i].collection[key],
-						};
-					}
-				);
-			}
-			metadata[i] = {
-				...metadata[i],
-				selected: false,
-			};
-		}
-	} else {
-		for (let i = 0; metadata.fields.length > i; i++) {
-			if (!!metadata.fields[i].collection) {
-				metadata.fields[i].collection = Object.keys(
-					metadata.fields[i].collection
-				).map((key) => {
-					if (isJson(key)) {
-						let collectionParsed = JSON.parse(key);
-						return {
-							name: collectionParsed.label ? collectionParsed.label : key,
-							value: metadata.fields[i].collection[key],
-							...collectionParsed,
-						};
-					} else {
-						return {
-							name: key,
-							value: metadata.fields[i].collection[key],
-						};
-					}
-				});
-			}
+export const transformMetadataCollection = (metadata: MetadataCatalog) => {
+	for (const [i, field] of metadata.fields.entries()) {
+		if (!!field.collection) {
+			metadata.fields[i].collection = Object.entries(
+				field.collection
+			).map(([key, value]) => {
+				if (isJson(key)) {
+					let collectionParsed = JSON.parse(key);
+					return {
+						name: collectionParsed.label ? collectionParsed.label : key,
+						value: value,
+						...collectionParsed,
+					};
+				} else {
+					return {
+						name: key,
+						value: value,
+					};
+				}
+			});
 		}
 	}
 
 	return metadata;
-};
+}
+
+// Same as above, but different!
+export const transformMetadataCollectionFields = (metadata: MetadataFieldSelected[]) => {
+	for (const [i, field] of metadata.entries()) {
+		if (!!field) {
+			metadata[i].collection = Object.entries(field).map(
+				([key, value]) => {
+					return {
+						name: key,
+						value: value,
+					};
+				}
+			);
+		}
+		metadata[i] = {
+			...metadata[i],
+			selected: false,
+		};
+	}
+
+	return metadata;
+}
 
 // transform metadata catalog for update via post request
-// @ts-expect-error TS(7006): Parameter 'catalog' implicitly has an 'any' type.
-export const transformMetadataForUpdate = (catalog, values) => {
-// @ts-expect-error TS(7034): Variable 'fields' implicitly has type 'any[]' in s... Remove this comment to see the full error message
-	let fields = [];
-// @ts-expect-error TS(7034): Variable 'updatedFields' implicitly has type 'any[... Remove this comment to see the full error message
-	let updatedFields = [];
+export const transformMetadataForUpdate = (catalog: MetadataCatalog, values: { [key: string]: MetadataCatalog["fields"][0]["value"] }) => {
+	let fields: MetadataCatalog["fields"] = [];
+	let updatedFields: MetadataCatalog["fields"] = [];
 
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
 	catalog.fields.forEach((field) => {
 		if (field.value !== values[field.id]) {
 			let updatedField = {
@@ -218,46 +220,47 @@ export const transformMetadataForUpdate = (catalog, values) => {
 			{
 				flavor: catalog.flavor,
 				title: catalog.title,
-// @ts-expect-error TS(7005): Variable 'updatedFields' implicitly has an 'any[]'... Remove this comment to see the full error message
 				fields: updatedFields,
 			},
 		])
 	);
 	const headers = getHttpHeaders();
 
-// @ts-expect-error TS(7005): Variable 'fields' implicitly has an 'any[]' type.
 	return { fields, data, headers };
 };
 
 // Prepare metadata for post of new events or series
 export const prepareMetadataFieldsForPost = (
-// @ts-expect-error TS(7006): Parameter 'metadataInfo' implicitly has an 'any' t... Remove this comment to see the full error message
-	metadataInfo,
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	values,
+	metadataInfo: MetadataField[],
+	values: { [key: string]: unknown },
 	formikIdPrefix = ""
 ) => {
-// @ts-expect-error TS(7034): Variable 'metadataFields' implicitly has type 'any... Remove this comment to see the full error message
-	let metadataFields = [];
+	type FieldValue = {
+		id: string,
+		type: string,
+		value: unknown,
+		tabindex: number,
+		$$hashKey?: string,
+		translatable?: boolean,
+	}
+	let metadataFields: FieldValue[] = [];
 
 	// fill metadataField with field information send by server previously and values provided by user
 	// Todo: What is hashkey?
-	for (let i = 0; metadataInfo.length > i; i++) {
-		let fieldValue = {
-			id: metadataInfo[i].id,
-			type: metadataInfo[i].type,
-			value: values[formikIdPrefix + metadataInfo[i].id],
+	for (const [i, info] of metadataInfo.entries()) {
+		let fieldValue: FieldValue = {
+			id: info.id,
+			type: info.type,
+			value: values[formikIdPrefix + info.id],
 			tabindex: i + 1,
 			$$hashKey: "object:123",
 		};
-		if (!!metadataInfo[i].translatable) {
+		if (!!info.translatable) {
 			fieldValue = {
 				...fieldValue,
-// @ts-expect-error TS(2322): Type '{ translatable: any; id: any; type: any; val... Remove this comment to see the full error message
-				translatable: metadataInfo[i].translatable,
+				translatable: info.translatable,
 			};
 		}
-// @ts-expect-error TS(7005): Variable 'metadataFields' implicitly has an 'any[]... Remove this comment to see the full error message
 		metadataFields = metadataFields.concat(fieldValue);
 	}
 
@@ -266,10 +269,8 @@ export const prepareMetadataFieldsForPost = (
 
 // Prepare extended metadata for post of new events or series
 export const prepareExtendedMetadataFieldsForPost = (
-// @ts-expect-error TS(7006): Parameter 'extendedMetadata' implicitly has an 'an... Remove this comment to see the full error message
-	extendedMetadata,
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	values
+	extendedMetadata: MetadataCatalog[],
+	values: { [key: string]: unknown },
 ) => {
 	const extendedMetadataFields = [];
 
@@ -296,60 +297,63 @@ export const prepareExtendedMetadataFieldsForPost = (
 };
 
 export const prepareSeriesMetadataFieldsForPost = (
-// @ts-expect-error TS(7006): Parameter 'metadataInfo' implicitly has an 'any' t... Remove this comment to see the full error message
-	metadataInfo,
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	values,
+	metadataInfo: MetadataCatalog["fields"],
+	values: { [key: string]: string[] },
 	formikIdPrefix = ""
 ) => {
-// @ts-expect-error TS(7034): Variable 'metadataFields' implicitly has type 'any... Remove this comment to see the full error message
-	let metadataFields = [];
+	type FieldValue = {
+		readOnly: boolean,
+		id: string,
+		label: string,
+		type: string,
+		value: string[],
+		tabindex: number,
+		translatable?: boolean,
+		collection?: unknown[],
+		required?: boolean,
+		presentableValue?: string | string[],
+	}
+	let metadataFields: FieldValue[] = [];
 
 	// fill metadataField with field information sent by server previously and values provided by user
-	for (let i = 0; metadataInfo.length > i; i++) {
-		let fieldValue = {
-			readOnly: metadataInfo[i].readOnly,
-			id: metadataInfo[i].id,
-			label: metadataInfo[i].label,
-			type: metadataInfo[i].type,
-			value: values[formikIdPrefix + metadataInfo[i].id],
+	for (const [i, info] of metadataInfo.entries()) {
+		let fieldValue: FieldValue = {
+			readOnly: info.readOnly,
+			id: info.id,
+			label: info.label,
+			type: info.type,
+			value: values[formikIdPrefix + info.id],
 			tabindex: i + 1,
 		};
-		if (!!metadataInfo[i].translatable) {
+		if (!!info.translatable) {
 			fieldValue = {
 				...fieldValue,
-// @ts-expect-error TS(2322): Type '{ translatable: any; readOnly: any; id: any;... Remove this comment to see the full error message
-				translatable: metadataInfo[i].translatable,
+				translatable: info.translatable,
 			};
 		}
-		if (!!metadataInfo[i].collection) {
+		if (!!info.collection) {
 			fieldValue = {
 				...fieldValue,
-// @ts-expect-error TS(2322): Type '{ collection: never[]; readOnly: any; id: an... Remove this comment to see the full error message
 				collection: [],
 			};
 		}
-		if (!!metadataInfo[i].required) {
+		if (!!info.required) {
 			fieldValue = {
 				...fieldValue,
-// @ts-expect-error TS(2322): Type '{ required: any; readOnly: any; id: any; lab... Remove this comment to see the full error message
-				required: metadataInfo[i].required,
+				required: info.required,
 			};
 		}
-		if (metadataInfo[i].type === "mixed_text") {
+		if (info.type === "mixed_text") {
 			fieldValue = {
 				...fieldValue,
-// @ts-expect-error TS(2322): Type '{ presentableValue: any; readOnly: any; id: ... Remove this comment to see the full error message
-				presentableValue: values[formikIdPrefix + metadataInfo[i].id].join(),
+				presentableValue: values[formikIdPrefix + info.id].join(),
 			};
 		} else {
 			fieldValue = {
 				...fieldValue,
-// @ts-expect-error TS(2322): Type '{ presentableValue: any; readOnly: any; id: ... Remove this comment to see the full error message
-				presentableValue: values[formikIdPrefix + metadataInfo[i].id],
+				presentableValue: values[formikIdPrefix + info.id],
 			};
 		}
-// @ts-expect-error TS(7005): Variable 'metadataFields' implicitly has an 'any[]... Remove this comment to see the full error message
 		metadataFields = metadataFields.concat(fieldValue);
 	}
 
@@ -358,10 +362,8 @@ export const prepareSeriesMetadataFieldsForPost = (
 
 // Prepare extended metadata for post of new events or series
 export const prepareSeriesExtendedMetadataFieldsForPost = (
-// @ts-expect-error TS(7006): Parameter 'extendedMetadata' implicitly has an 'an... Remove this comment to see the full error message
-	extendedMetadata,
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	values
+	extendedMetadata: MetadataCatalog[],
+	values: { [key: string]: string[] },
 ) => {
 	const extendedMetadataFields = [];
 
@@ -387,14 +389,16 @@ export const prepareSeriesExtendedMetadataFieldsForPost = (
 };
 
 // returns the name for a field value from the collection
-// @ts-expect-error TS(7006): Parameter 'metadataField' implicitly has an 'any' ... Remove this comment to see the full error message
-export const getMetadataCollectionFieldName = (metadataField, field) => {
+export const getMetadataCollectionFieldName = (metadataField: { collection?: { [key: string]: unknown }[] }, field: { value: unknown }) => {
 	try {
-		const collectionField = metadataField.collection.find(
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
-			(element) => element.value === field.value
-		);
-		return collectionField.name;
+		if (!!metadataField.collection) {
+			const collectionField = metadataField.collection.find(
+				(element) => element.value === field.value
+			);
+			return collectionField ? collectionField.name as string : "";
+		}
+
+		return "";
 	} catch (e) {
 		return "";
 	}
