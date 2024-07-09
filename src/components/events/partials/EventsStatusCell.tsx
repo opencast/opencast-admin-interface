@@ -4,10 +4,8 @@ import { useAppDispatch } from "../../../store";
 import { Tooltip } from "../../shared/Tooltip";
 import { Event } from "../../../slices/eventSlice";
 import {
-	fetchWorkflowDetails,
-	fetchWorkflowOperations,
 	fetchWorkflows,
-	openModal
+	openModal,
 } from "../../../slices/eventDetailsSlice";
 import { EventDetailsPage } from "./modals/EventDetails";
 import { hasScheduledStatus } from "../../../utils/eventDetailsUtils";
@@ -38,12 +36,7 @@ const EventsStatusCell = ({
 
 				// Show operations of last workflow
 				const lastWorkflow = workflows.entries[workflows.entries.length-1];
-
-				// Load necessary workflow data
-				await dispatch(fetchWorkflowDetails({ eventId: row.id, workflowId: lastWorkflow.id }));
-				await dispatch(fetchWorkflowOperations({ eventId: row.id, workflowId: lastWorkflow.id }));
-
-				dispatch(openModal(EventDetailsPage.Workflow, row, 'workflow-operations'));
+				dispatch(openModal(EventDetailsPage.Workflow, row, 'workflow-operations', 'entry', lastWorkflow.id));
 			});
 	};
 

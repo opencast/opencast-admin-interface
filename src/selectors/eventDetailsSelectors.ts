@@ -4,6 +4,7 @@ import { RootState } from "../store";
 export const showModal = (state: RootState) => state.eventDetails.modal.show;
 export const getModalPage = (state: RootState) => state.eventDetails.modal.page;
 export const getModalEvent = (state: RootState) => state.eventDetails.modal.event;
+export const getModalWorkflowId = (state: RootState) => state.eventDetails.modal.workflowId;
 export const getModalWorkflowTabHierarchy = (state: RootState) =>
 	state.eventDetails.modal.workflowTabHierarchy;
 export const getModalAssetsTabHierarchy = (state: RootState) =>

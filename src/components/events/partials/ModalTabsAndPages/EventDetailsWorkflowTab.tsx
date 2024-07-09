@@ -19,10 +19,10 @@ import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
 	deleteWorkflow as deleteWf,
-	fetchWorkflowDetails,
 	fetchWorkflows,
 	performWorkflowAction,
 	saveWorkflowConfig,
+	setModalWorkflowId,
 	setModalWorkflowTabHierarchy,
 	updateWorkflow,
 } from "../../../../slices/eventDetailsSlice";
@@ -86,7 +86,7 @@ const EventDetailsWorkflowTab = ({
 	};
 
 	const openSubTab = (tabType: WorkflowTabHierarchy, workflowId: string) => {
-		dispatch(fetchWorkflowDetails({eventId, workflowId})).then();
+		dispatch(setModalWorkflowId(workflowId));
 		dispatch(setModalWorkflowTabHierarchy(tabType));
 		dispatch(removeNotificationWizardForm());
 	};

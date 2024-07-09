@@ -19,21 +19,25 @@ import { useTranslation } from "react-i18next";
  */
 const EventDetailsWorkflowOperations = ({
 	eventId,
+	workflowId,
 }: {
 	eventId: string,
+	workflowId: string,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const workflow = useAppSelector(state => getWorkflow(state));
 	const operations = useAppSelector(state => getWorkflowOperations(state));
 
   const loadWorkflowOperations = async () => {
 		// Fetching workflow operations from server
-		dispatch(fetchWorkflowOperations({eventId, workflowId: workflow.wiid}));
+		dispatch(fetchWorkflowOperations({eventId, workflowId}));
 	};
 
   useEffect(() => {
+		// Fetch workflow operations initially
+		loadWorkflowOperations().then();
+
 		// Fetch workflow operations every 5 seconds
 		let fetchWorkflowOperationsInterval = setInterval(loadWorkflowOperations, 5000);
 
@@ -47,7 +51,7 @@ const EventDetailsWorkflowOperations = ({
 		dispatch(removeNotificationWizardForm());
 		dispatch(setModalWorkflowTabHierarchy(tabType));
 		if (tabType === "workflow-operation-details") {
-			dispatch(fetchWorkflowOperationDetails({eventId, workflowId: workflow.wiid, operationId})).then();
+			dispatch(fetchWorkflowOperationDetails({eventId, workflowId, operationId})).then();
 		}
 	};
 

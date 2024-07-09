@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
 import {
 	getWorkflow,
@@ -10,8 +10,8 @@ import { hasAccess } from "../../../../utils/utils";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
-	fetchWorkflowErrors,
-	fetchWorkflowOperations, setModalWorkflowTabHierarchy,
+	fetchWorkflowDetails,
+	setModalWorkflowTabHierarchy,
 } from "../../../../slices/eventDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
@@ -23,8 +23,10 @@ import { useTranslation } from "react-i18next";
  */
 const EventDetailsWorkflowDetails = ({
 	eventId,
+	workflowId,
 }: {
 	eventId: string,
+	workflowId: string,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -33,15 +35,13 @@ const EventDetailsWorkflowDetails = ({
 	const workflowData = useAppSelector(state => getWorkflow(state));
 	const isFetching = useAppSelector(state => isFetchingWorkflowDetails(state));
 
+	useEffect(() => {
+		dispatch(fetchWorkflowDetails({eventId, workflowId}));
+	}, []);
+
 	const openSubTab = (tabType: WorkflowTabHierarchy) => {
 		dispatch(removeNotificationWizardForm());
 		dispatch(setModalWorkflowTabHierarchy(tabType));
-
-		if (tabType === "workflow-operations") {
-			dispatch(fetchWorkflowOperations({eventId, workflowId: workflowData.wiid})).then();
-		} else if (tabType === "errors-and-warnings") {
-			dispatch(fetchWorkflowErrors({eventId, workflowId: workflowData.wiid})).then();
-		}
 	};
 
 	return (

@@ -25,6 +25,7 @@ import {
 	isFetchingStatistics,
 	getModalWorkflowTabHierarchy,
 	getModalPage,
+	getModalWorkflowId,
 } from "../../../../selectors/eventDetailsSelectors";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import EventDetailsStatisticsTab from "../ModalTabsAndPages/EventDetailsStatisticsTab";
@@ -73,6 +74,8 @@ const EventDetails = ({
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
+
+	const workflowId = useAppSelector(state => getModalWorkflowId(state))!;
 
 	useEffect(() => {
 		dispatch(removeNotificationWizardForm());
@@ -263,11 +266,13 @@ const EventDetails = ({
 						(workflowTabHierarchy === "workflow-details" && (
 							<EventDetailsWorkflowDetails
 								eventId={eventId}
+								workflowId={workflowId}
 							/>
 						)) ||
 						(workflowTabHierarchy === "workflow-operations" && (
 							<EventDetailsWorkflowOperations
 								eventId={eventId}
+								workflowId={workflowId}
 							/>
 						)) ||
 						(workflowTabHierarchy === "workflow-operation-details" && (
@@ -276,6 +281,7 @@ const EventDetails = ({
 						(workflowTabHierarchy === "errors-and-warnings" && (
 							<EventDetailsWorkflowErrors
 								eventId={eventId}
+								workflowId={workflowId}
 							/>
 						)) ||
 						(workflowTabHierarchy === "workflow-error-details" && (

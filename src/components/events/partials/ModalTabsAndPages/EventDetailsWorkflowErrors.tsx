@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
 import {
 	getWorkflow,
@@ -8,7 +8,11 @@ import {
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
-import { fetchWorkflowErrorDetails, setModalWorkflowTabHierarchy } from "../../../../slices/eventDetailsSlice";
+import {
+	fetchWorkflowErrorDetails,
+	fetchWorkflowErrors,
+	setModalWorkflowTabHierarchy
+} from "../../../../slices/eventDetailsSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
@@ -18,8 +22,10 @@ import { useTranslation } from "react-i18next";
  */
 const EventDetailsWorkflowErrors = ({
 	eventId,
+	workflowId,
 }: {
 	eventId: string,
+	workflowId: string;
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -40,6 +46,11 @@ const EventDetailsWorkflowErrors = ({
 				return "red";
 		}
 	};
+
+	useEffect(() => {
+		dispatch(fetchWorkflowErrors({eventId, workflowId})).then();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const openSubTab = (tabType: WorkflowTabHierarchy, errorId: number | undefined = undefined) => {
 		dispatch(removeNotificationWizardForm());

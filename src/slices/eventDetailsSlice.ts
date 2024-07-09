@@ -43,6 +43,7 @@ type EventDetailsModal = {
 	event: Event | null,
 	workflowTabHierarchy: WorkflowTabHierarchy,
 	assetsTabHierarchy: AssetTabHierarchy,
+	workflowId: string,
 }
 
 type MetadataField = {
@@ -430,6 +431,7 @@ const initialState: EventDetailsState = {
 		event: null,
 		workflowTabHierarchy: 'entry',
 		assetsTabHierarchy: 'entry',
+		workflowId: "",
 	},
 	metadata: {
 		title: "",
@@ -1423,14 +1425,17 @@ export const fetchWorkflowOperations = createAppAsyncThunk('eventDetails/fetchWo
  * @param event event to show
  * @param workflowTab workflow tab
  * @param assetsTab assets tab
+ * @param workflowId workflow id required for workflow sub tabs
  */
 export const openModal = (
 	page: EventDetailsPage,
 	event: Event,
 	workflowTab: WorkflowTabHierarchy = 'entry',
 	assetsTab: AssetTabHierarchy = 'entry',
+	workflowId: string = '',
 ) => (dispatch: AppDispatch) => {
 	dispatch(setModalEvent(event));
+	dispatch(setModalWorkflowId(workflowId));
 	dispatch(openModalTab(page, workflowTab, assetsTab))
 	dispatch(setShowModal(true));
 };
@@ -1835,6 +1840,11 @@ const eventDetailsSlice = createSlice({
 			EventDetailsState["modal"]["event"]
 		>) {
 			state.modal.event = action.payload;
+		},
+		setModalWorkflowId(state, action: PayloadAction<
+			EventDetailsState["modal"]["workflowId"]
+		>) {
+			state.modal.workflowId = action.payload;
 		},
 		setModalWorkflowTabHierarchy(state, action: PayloadAction<
 			EventDetailsState["modal"]["workflowTabHierarchy"]
@@ -2496,6 +2506,7 @@ export const {
 	setShowModal,
 	setModalPage,
 	setModalEvent,
+	setModalWorkflowId,
 	setModalWorkflowTabHierarchy,
 	setModalAssetsTabHierarchy,
 	setEventMetadata,
