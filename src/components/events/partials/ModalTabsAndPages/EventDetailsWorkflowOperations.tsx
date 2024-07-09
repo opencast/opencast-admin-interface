@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
-import {
-	getWorkflow,
-	getWorkflowOperations,
-} from "../../../../selectors/eventDetailsSelectors";
+import { getWorkflowOperations } from "../../../../selectors/eventDetailsSelectors";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";

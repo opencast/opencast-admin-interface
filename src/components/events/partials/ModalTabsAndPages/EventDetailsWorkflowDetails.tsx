@@ -37,6 +37,7 @@ const EventDetailsWorkflowDetails = ({
 
 	useEffect(() => {
 		dispatch(fetchWorkflowDetails({eventId, workflowId}));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const openSubTab = (tabType: WorkflowTabHierarchy) => {
