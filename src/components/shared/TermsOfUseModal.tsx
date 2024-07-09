@@ -18,6 +18,7 @@ const TermsOfUseModal = () => {
 		const checkTerms = async () => {
 		  try {
 			const response = await axios.get("/admin-ng/user-settings/settings.json");
+			// @ts-expect-error TS(7006): Parameter 'result' implicitly has an 'any' type.
 			const isAgreed = response.data.results.some(result => result.key === "agreedToTerms" && result.value === "true");
 			setAgreedToTerms(isAgreed);
 		  } catch (error) {
@@ -52,6 +53,7 @@ const TermsOfUseModal = () => {
 	}, [agreedToTerms]); // Listen to changes in agreedToTerms
 
 	// Set terms to user settings
+	// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = async (values) => {
 		let body = new URLSearchParams();
 		body.append("key", "agreedToTerms");
