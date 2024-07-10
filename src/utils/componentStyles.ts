@@ -17,7 +17,7 @@ export function dropDownStyle(type: DropDownType): StylesConfig {
 			? 70
 			: type === "aclRole"
 			? 360
-			: type === "aclTemplate" || type === "comment"
+			: type === "aclTemplate" || type === "comment" || type === "filter"
 			? 200
 			: 250;
 
@@ -103,11 +103,11 @@ export function dropDownStyle(type: DropDownType): StylesConfig {
 		option: (provided, state) => ({
 			...provided,
 			paddingTop:
-				type === "aclRole" || type === "aclTemplate" || type === "comment"
+				type === "aclRole" || type === "aclTemplate" || type === "comment" || type === "filter"
 					? 5
 					: 0,
 			paddingBottom:
-				type === "aclRole" || type === "aclTemplate" || type === "comment"
+				type === "aclRole" || type === "aclTemplate" || type === "comment" || type === "filter"
 					? 5
 					: 0,
 			backgroundColor: state.isSelected
