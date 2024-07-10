@@ -9,6 +9,7 @@ import {
 	Registration,
 	deleteAdopterRegistration,
 	fetchAdopterRegistration,
+	fetchAdopterStatisticsSummary,
 	postRegistration,
 } from "../../utils/adopterRegistrationUtils";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -45,6 +46,11 @@ const RegistrationModal = ({
 		registered: false,
 	});
 
+	const [statisticsSummary, setStatisticsSummary] = useState<{
+		general: { [key: string]: unknown },
+		statistics: { [key: string]: unknown },
+	}>();
+
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
 		() => close(),
@@ -58,6 +64,7 @@ const RegistrationModal = ({
 
 	useEffect(() => {
 		fetchRegistrationInfos().then((r) => console.log(r));
+		fetchStatisticSummary();
 	}, []);
 
 	const onClickContinue = async () => {
@@ -75,6 +82,12 @@ const RegistrationModal = ({
 		// set response as initial values for formik
 		setInitialValues(registrationInfo);
 	};
+
+	const fetchStatisticSummary = async () => {
+		const info = await fetchAdopterStatisticsSummary();
+
+		setStatisticsSummary(info);
+	}
 
 	const handleSubmit = (values: Registration) => {
 		// post request for adopter information
@@ -638,7 +651,15 @@ const RegistrationModal = ({
 											</pre>
 										</div>
 										<br />
+
 										<p>{t("ADOPTER_REGISTRATION.MODAL.SUMMARY_STATE.STATS_HEADER")}</p>
+										{formik.values.allowsStatistics &&
+											<div className="scrollbox">
+												<pre>
+													{JSON.stringify(statisticsSummary?.statistics, null, "\t")}
+												</pre>
+											</div>
+										}
 									</div>
 								</div>
 							)}
