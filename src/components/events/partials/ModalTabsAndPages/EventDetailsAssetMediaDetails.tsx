@@ -375,7 +375,7 @@ const EventDetailsAssetMediaDetails = ({
 								<div className="video-player">
 									<div>
 										<video ref={videoRef} id="player" controls>
-											<source src={media.url} />
+											<source src={media.url} type={media.mimetype}/>
 										</video>
 									</div>
 								</div>
