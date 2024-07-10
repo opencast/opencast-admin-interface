@@ -234,11 +234,11 @@ const MainNav = ({
 	return (
 		<>
 			<div className="menu-top" >
-				<Tooltip title={t("HOTKEYS.DESCRIPTIONS.GENERAL.MAIN_MENU")}>
-					<button className="button-like-anchor" onClick={() => toggleMenu()}>
+				<button className="button-like-anchor" onClick={() => toggleMenu()}>
+					<Tooltip title={t("HOTKEYS.DESCRIPTIONS.GENERAL.MAIN_MENU")} placement={"right"}>
 						<i className="fa fa-bars" />
-					</button>
-				</Tooltip>
+					</Tooltip>
+				</button>
 				{isOpen && (
 					<nav id="roll-up-menu">
 						<div id="nav-container">

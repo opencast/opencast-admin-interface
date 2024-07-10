@@ -19,7 +19,7 @@ const GroupUsersPage = <T,>({
 	isEdit?: boolean,
 }) => {
 	// users that can be chosen by user
-	const [users, setUsers] = useState([]);
+	const [users, setUsers] = useState<{ id: string, name: string }[]>([]);
 	// flag for API call
 	const [loading, setLoading] = useState(false);
 
@@ -37,7 +37,6 @@ const GroupUsersPage = <T,>({
 				});
 			}
 
-// @ts-expect-error TS(2345): Argument of type '{ id: string; name: any; }[]' is... Remove this comment to see the full error message
 			setUsers(userNames);
 			setLoading(false);
 		}

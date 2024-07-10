@@ -138,6 +138,7 @@
 		}
 	},
 	"MEDIAMODULE": "Media Module",
+	"STUDIO": "Studio",
 	"SYSTEM_NOTIFICATIONS": "System warnings and notifications",
 	"LANGUAGE": "Select language",
 	"HELP": {
@@ -171,6 +172,7 @@
 		"EVENTS_CREATED": "The event has been created",
 		"EVENTS_UPLOAD_STARTED": "The event is being uploaded… {{ progress }}%",
 		"EVENTS_NOT_CREATED": "The event could not be created",
+		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "All events have been successfully updated",
 		"EVENTS_NOT_UPDATED": "The event could not be saved",
 		"EVENTS_NOT_UPDATED_ID": "The event {{ id }} could not be saved",
@@ -483,8 +485,8 @@
 						"RECORDING_ELEMENTS": "Recording elements",
 						"RECORDING_METADATA": "Recording metadata",
 						"SEGMENTABLE": {
-							"SHORT": "Slides",
-							"DETAIL": "The file contains a recording of a slide presentation (Keynote, Powerpoint, etc)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Presenter",
@@ -634,7 +636,7 @@
 				"PROCESSED": "Finished",
 				"RECORDING_FAILURE": "Recording failure",
 				"PROCESSING_FAILURE": "Processing failure",
-				"PROCESSING_CANCELED": "Processing canceled"
+				"PROCESSING_CANCELLED": "Processing canceled"
 			},
 			"STATE_MAPPING": {
 				"RETRACTING": "Retracting",
@@ -705,8 +707,8 @@
 						"CAPTION": "Upload",
 						"RECORDING_ELEMENTS": "Recording elements",
 						"SEGMENTABLE": {
-							"SHORT": "Slides",
-							"DETAIL": "The file contains a recording of a slide presentation (Keynote, Powerpoint, etc)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Presenter",
@@ -1293,7 +1295,15 @@
 					"RIGHT": "Selected roles",
 					"REMOVE": "Remove role",
 					"ADD": "Add role"
-				}
+				},
+				"STRENGTH": {
+					"BAD": "Bad password",
+					"VERYWEAK": "Very weak password",
+					"WEAK": "Weak password",
+					"GOOD": "Good password",
+					"STRONG": "Strong password",
+					"VERYSTRONG": "Very strong password"
+				 }
 			}
 		},
 		"GROUPS": {

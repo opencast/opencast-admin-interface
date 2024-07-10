@@ -8,6 +8,7 @@ import StartTaskGeneralPage from "../ModalTabsAndPages/StartTaskGeneralPage";
 import StartTaskWorkflowPage from "../ModalTabsAndPages/StartTaskWorkflowPage";
 import StartTaskSummaryPage from "../ModalTabsAndPages/StartTaskSummaryPage";
 import { postTasks } from "../../../../thunks/taskThunks";
+import { changeAllSelected } from "../../../../thunks/tableThunks";
 import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { checkValidityStartTaskEventSelection } from "../../../../utils/bulkActionUtils";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -17,8 +18,9 @@ import { availableHotkeys } from "../../../../configs/hotkeysConfig";
  * This component manages the pages of the task start bulk action
  */
 const StartTaskModal = ({
-    close,
-    postTasks
+	close,
+	postTasks,
+	changeAllSelected
 }: any) => {
 	const { t } = useTranslation();
 
@@ -79,6 +81,7 @@ const StartTaskModal = ({
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
 		postTasks(values);
+		changeAllSelected(false);
 		close();
 	};
 
@@ -153,6 +156,8 @@ const StartTaskModal = ({
 const mapDispatchToState = (dispatch) => ({
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	postTasks: (values) => dispatch(postTasks(values)),
+	// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
+	changeAllSelected: (selected) => dispatch(changeAllSelected(selected)),
 });
 
 export default connect(null, mapDispatchToState)(StartTaskModal);

@@ -67,8 +67,7 @@ const AclAccessPage = <T extends RequiredFormProps>({
 		fetchData();
 	}, []);
 
-// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
-	const handleTemplateChange = async (value) => {
+	const handleTemplateChange = async (value: string) => {
 		// fetch information about chosen template from backend
 		const template = await fetchAclTemplateById(value);
 
