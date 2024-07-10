@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
 import {
+	getModalWorkflowId,
 	getWorkflow,
 	isFetchingWorkflowDetails,
 } from "../../../../selectors/eventDetailsSelectors";
@@ -23,15 +24,14 @@ import { useTranslation } from "react-i18next";
  */
 const EventDetailsWorkflowDetails = ({
 	eventId,
-	workflowId,
 }: {
 	eventId: string,
-	workflowId: string,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const user = useAppSelector(state => getUserInformation(state));
+	const workflowId = useAppSelector(state => getModalWorkflowId(state));
 	const workflowData = useAppSelector(state => getWorkflow(state));
 	const isFetching = useAppSelector(state => isFetchingWorkflowDetails(state));
 

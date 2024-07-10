@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
-import { getWorkflowOperations } from "../../../../selectors/eventDetailsSelectors";
+import { getModalWorkflowId, getWorkflowOperations } from "../../../../selectors/eventDetailsSelectors";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
@@ -16,14 +16,13 @@ import { useTranslation } from "react-i18next";
  */
 const EventDetailsWorkflowOperations = ({
 	eventId,
-	workflowId,
 }: {
 	eventId: string,
-	workflowId: string,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
+	const workflowId = useAppSelector(state => getModalWorkflowId(state));
 	const operations = useAppSelector(state => getWorkflowOperations(state));
 
   const loadWorkflowOperations = async () => {
