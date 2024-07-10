@@ -1562,24 +1562,47 @@ export const updateAssets = createAppAsyncThunk('eventDetails/updateAssets', asy
 	let formData = new FormData();
 
 	let assets: {
-		workflow: string | undefined,
 		options: UploadOption[],
 	} = {
-		workflow: uploadAssetWorkflow,
 		options: [],
 	};
+
+	let assetFlavors = "";
 
 	uploadAssetOptions.forEach((option) => {
 		if (!!values[option.id]) {
 			formData.append(option.id + ".0", values[option.id]);
 			assets.options = assets.options.concat(option);
+			const uploadAssetFlavor = [option.flavorType, option.flavorSubType].join("/");
+			if (assetFlavors.length > 0) {
+				assetFlavors = [assetFlavors, uploadAssetFlavor].join(",");
+			} else {
+				assetFlavors = uploadAssetFlavor;
+			}
 		}
 	});
+
+	const uploadAssetWorkflowConfiguration: {
+		"downloadSourceflavorsExist": string,
+		"download-source-flavors": string,
+	} = {
+		"downloadSourceflavorsExist": String(assetFlavors.length > 0),
+		"download-source-flavors": assetFlavors,
+	};
+
+	const processing: {
+		workflow: string | undefined,
+		configuration: typeof uploadAssetWorkflowConfiguration,
+	} = {
+		workflow: uploadAssetWorkflow,
+		configuration: uploadAssetWorkflowConfiguration,
+	};
 
 	formData.append(
 		"metadata",
 		JSON.stringify({
 			assets: assets,
+			processing: processing,
 		})
 	);
 
@@ -2214,20 +2237,6 @@ const eventDetailsSlice = createSlice({
 				// This is the empty workflow data from the original reducer
 				// TODO: Figure out why it is so vastly different from our initial state
 				// and maybe fix our initial state if this is actually correct
-				// const emptyWorkflowData = {
-				// 	creator: {
-				// 		name: "",
-				// 		email: "",
-				// 	},
-				// 	title: "",
-				// 	description: "",
-				// 	submittedAt: "",
-				// 	state: "",
-				// 	executionTime: "",
-				// 	wiid: "",
-				// 	wdid: "",
-				// 	configuration: {},
-				// };
 				const emptyWorkflowData = {
 					workflowId: "",
 					description: "",

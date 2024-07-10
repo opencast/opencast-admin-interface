@@ -170,7 +170,7 @@ $z-70:                          700;
 $z-80:                          800;
 $z-90:                          900;
 $z-100:                         1000;
-$max-z:                         2147483647 - 100;
+$max-z:                         1400;  // Prevent tooltip overlap as tooltip has index of 1500
 
 // Global Values
 $modal-container-padding:       20px;

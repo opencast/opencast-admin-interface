@@ -124,13 +124,20 @@
         background-color: transparent;
         border: none;
         border-radius: 0;
+        cursor: pointer;
     }
 
     // Language Dropdown
     // ----------------------------------------
 
     .lang-dd .dropdown-ul {
-        width: 120px;
+        .selected {
+            @include fa-icon($fa-var-check, $icon-pesudo-position, $icon-display-value, 0 7px 0 0, 0, $green, $icon-font-size);
+        }
+
+        button:not(.selected) {
+            padding-left: 37px;
+        }
     }
 
     // RestService Dropdown
@@ -174,14 +181,15 @@
 .action-nav-bar {
     $height: 80px;
     width: 100%;
-    height: $height;
-    position: relative;
+    min-height: $height;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
     background: $d-blue;
 
     .btn-group {
-         float: right;
          margin-right: $side-margin;
-         margin-top: 18px;
+         align-self: center;
 
         // btn specific styles
         .add {
@@ -250,9 +258,8 @@
         @include border-top-radius(4px);
         border: $thin-border-stroke darken(#1e364b, 3%);
         border-bottom: none;
-        position: absolute;
-        top: 36px;
-        left: $side-margin;
+        margin: 0 $side-margin;
+        position: relative;
 
         > button {
             width: 100%;
@@ -268,9 +275,7 @@
 
     // Subpage Navigation
     nav {
-        position: absolute;
-        top: 50px;
-        left: 120px;
+        flex-grow: 1;
 
         a {
             display: inline-block;
@@ -278,6 +283,7 @@
             text-align: center;
             position: relative;
             padding: 0 20px;
+            margin-bottom: 16px;
 
             &:hover {
                 color: $subpage-navigation-link-hover-color;

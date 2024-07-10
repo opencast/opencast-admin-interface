@@ -79,7 +79,11 @@ export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', asy
 	});
 
 	if (resource === "events") {
-		filtersList.push({ name: "presentersBibliographic" });
+		filtersList.push({
+			label: "FILTERS.EVENTS.PRESENTERS_BIBLIOGRAPHIC.LABEL",
+			name: "presentersBibliographic",
+			translatable: false
+		});
 	}
 
 	return { filtersList, resource };

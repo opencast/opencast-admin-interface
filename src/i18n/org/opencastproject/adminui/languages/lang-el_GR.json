@@ -136,6 +136,7 @@
 		}
 	},
 	"MEDIAMODULE": "Μονάδα πολυμέσων",
+	"STUDIO": "Studio",
 	"SYSTEM_NOTIFICATIONS": "Προειδοποιήσεις και ειδοποιήσεις συστήματος",
 	"LANGUAGE": "Επιλέξτε γλώσσα",
 	"HELP": {
@@ -480,8 +481,8 @@
 						"RECORDING_ELEMENTS": "Στοιχεία καταγραφής",
 						"RECORDING_METADATA": "Μετά-δεδομένα εγγραφής",
 						"SEGMENTABLE": {
-							"SHORT": "Διαφάνειες",
-							"DETAIL": "Το αρχείο περιέχει μια καταγραφή  παρουσίασης διαφανειών (Keynote, Powerpoint, κλπ)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Παρουσιαστής",
@@ -702,8 +703,8 @@
 						"CAPTION": "Ανέβασμα αρχείων",
 						"RECORDING_ELEMENTS": "Στοιχεία καταγραφής",
 						"SEGMENTABLE": {
-							"SHORT": "Διαφάνειες",
-							"DETAIL": "Το αρχείο περιέχει μια καταγραφή παρουσίασης διαφανειών (Keynote, Powerpoint, κλπ)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Παρουσιαστής",
