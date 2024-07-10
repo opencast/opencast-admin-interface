@@ -636,7 +636,7 @@
 				"PROCESSED": "Finished",
 				"RECORDING_FAILURE": "Recording failure",
 				"PROCESSING_FAILURE": "Processing failure",
-				"PROCESSING_CANCELED": "Processing canceled"
+				"PROCESSING_CANCELLED": "Processing canceled"
 			},
 			"STATE_MAPPING": {
 				"RETRACTING": "Retracting",
