@@ -67,15 +67,7 @@ const RenderField = ({
 						metadataField={metadataField}
 						field={field}
 						form={form}
-						text={
-							isJson(getMetadataCollectionFieldName(metadataField, field))
-								? t(
-										JSON.parse(
-											getMetadataCollectionFieldName(metadataField, field)
-										).label
-								  )
-								: t(getMetadataCollectionFieldName(metadataField, field))
-						}
+						text={getMetadataCollectionFieldName(metadataField, field, t)}
 						editMode={editMode}
 						setEditMode={setEditMode}
 						showCheck={showCheck}
@@ -87,7 +79,7 @@ const RenderField = ({
 					metadataField={metadataField}
 					field={field}
 					form={form}
-					text={t(getMetadataCollectionFieldName(metadataField, field))}
+					text={getMetadataCollectionFieldName(metadataField, field, t)}
 					editMode={editMode}
 					setEditMode={setEditMode}
 					showCheck={showCheck}

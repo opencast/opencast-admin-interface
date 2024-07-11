@@ -388,13 +388,18 @@ export const prepareSeriesExtendedMetadataFieldsForPost = (
 
 // returns the name for a field value from the collection
 // @ts-expect-error TS(7006): Parameter 'metadataField' implicitly has an 'any' ... Remove this comment to see the full error message
-export const getMetadataCollectionFieldName = (metadataField, field) => {
+export const getMetadataCollectionFieldName = (metadataField, field, t) => {
 	try {
 		const collectionField = metadataField.collection.find(
 // @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 			(element) => element.value === field.value
 		);
-		return collectionField.name;
+
+		if (isJson(collectionField.name)) {
+			return t(JSON.parse(collectionField.name).label);
+		}
+
+		return t(collectionField.name);
 	} catch (e) {
 		return "";
 	}
