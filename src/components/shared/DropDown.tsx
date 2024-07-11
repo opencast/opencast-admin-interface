@@ -82,11 +82,11 @@ const DropDown = <T,>({
 			{creatable ? (
 				<CreatableSelect
 					{...commonProps}
-					noOptionsMessage={() => "No matching results."}
 				/>
 			) : (
 				<Select
 					{...commonProps}
+					noOptionsMessage={() => t("SELECT_NO_MATCHING_RESULTS")}
 				/>
 			)}
 		</div>
