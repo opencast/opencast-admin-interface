@@ -71,39 +71,27 @@ const NewMetadataPage = <T extends RequiredFormProps>({
 													</td>
 												</tr>
 											))}
+											{formik.values.sourceMode === "UPLOAD"
+												&& sourceMetadata.UPLOAD
+												&& sourceMetadata.UPLOAD.metadata.map((field, key) => (
+												<tr key={key}>
+													<td>
+														<span>{t(field.label)}</span>
+														{field.required && <i className="required">*</i>}
+													</td>
+													<td className="editable">
+														<Field
+															name={field.id}
+															metadataField={field}
+															component={RenderField}
+														/>
+													</td>
+												</tr>
+											))}
 									</tbody>
 								</table>
 							</div>
 						</div>
-						{formik.values.sourceMode === "UPLOAD" && (
-						<div className="obj list-obj">
-							<header className="no-expand">
-								{t("EVENTS.EVENTS.NEW.SOURCE.UPLOAD.RECORDING_METADATA")}
-							</header>
-							<div className="obj-container">
-								<table className="main-tbl">
-									<tbody>
-										{/* One row for each metadata field*/}
-										{sourceMetadata.UPLOAD && sourceMetadata.UPLOAD.metadata.map((field, key) => (
-											<tr key={key}>
-												<td>
-													<span>{t(field.label)}</span>
-													{field.required && <i className="required">*</i>}
-												</td>
-												<td className="editable">
-													<Field
-														name={field.id}
-														metadataField={field}
-														component={RenderField}
-													/>
-												</td>
-											</tr>
-										))}
-									</tbody>
-								</table>
-							</div>
-						</div>
-						)}
 					</div>
 				</div>
 			</div>

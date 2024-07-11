@@ -484,7 +484,6 @@
 					"UPLOAD": {
 						"CAPTION": "Upload",
 						"RECORDING_ELEMENTS": "Recording elements",
-						"RECORDING_METADATA": "Recording metadata",
 						"SEGMENTABLE": {
 							"SHORT": "Presentation",
 							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."

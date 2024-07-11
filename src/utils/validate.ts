@@ -69,10 +69,10 @@ export const NewEventSchema = [
 			then: () => Yup.string().required("Required"),
 		}),
 	}),
+	Yup.object().shape({}),
 	Yup.object().shape({
 		title: Yup.string().required("Title is required"),
 	}),
-	Yup.object().shape({}),
 	Yup.object().shape({
 		processingWorkflow: Yup.string().required("Workflow is required"),
 	}),
