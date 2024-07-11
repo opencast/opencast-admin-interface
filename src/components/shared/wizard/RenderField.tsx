@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import cn from "classnames";
 import { useClickOutsideField } from "../../../hooks/wizardHooks";
-import { isJson } from "../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../utils/resourceUtils";
 import DropDown, { DropDownType } from "../DropDown";
 import RenderDate from "../RenderDate";

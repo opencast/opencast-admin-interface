@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { isJson } from "../../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../../utils/resourceUtils";
 
 /**

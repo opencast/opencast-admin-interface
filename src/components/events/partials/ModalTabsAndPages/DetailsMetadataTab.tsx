@@ -8,7 +8,7 @@ import RenderDate from "../../../shared/RenderDate";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
-import { hasAccess, isJson } from "../../../../utils/utils";
+import { hasAccess } from "../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
 import { useAppSelector } from "../../../../store";
 import { MetadataCatalog } from "../../../../slices/eventDetailsSlice";

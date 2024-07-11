@@ -9,7 +9,6 @@ import RenderField from "../../../shared/wizard/RenderField";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import {
 	hasAccess,
-	isJson,
 	parseValueForBooleanStrings,
 } from "../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
