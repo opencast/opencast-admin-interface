@@ -1,7 +1,11 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import MuiTooltip, { TooltipProps } from "@mui/material/Tooltip";
 
-export const Tooltip = ({ className, placement="top", ...props }: TooltipProps) => {
+export const Tooltip = (
+	{ active=true, className, placement="top", ...props }: TooltipProps & { active?: boolean },
+) => {
+	const [open, setOpen] = useState(false);
+
 	const positionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 	const areaRef = useRef<HTMLDivElement>(null);
 
@@ -43,6 +47,9 @@ export const Tooltip = ({ className, placement="top", ...props }: TooltipProps) 
 	return (
 		<MuiTooltip
 			{...props}
+			open={open && active}
+			onOpen={() => setOpen(true)}
+			onClose={() => setOpen(false)}
 			classes={{ popper: className }}
 			arrow
 			describeChild

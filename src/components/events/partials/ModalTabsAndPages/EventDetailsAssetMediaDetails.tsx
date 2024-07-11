@@ -227,7 +227,7 @@ const EventDetailsAssetMediaDetails = ({
 										<tbody>
 											{!!media.streams.audio &&
 												media.streams.audio.map((audioStream, key) => (
-													<tr>
+													<tr key={key}>
 														<td>{key}</td>
 														<td>{audioStream.type}</td>
 														<td>{audioStream.channels}</td>
@@ -317,7 +317,7 @@ const EventDetailsAssetMediaDetails = ({
 										<tbody>
 											{!!media.streams.video &&
 												media.streams.video.map((videoStream, key) => (
-													<tr>
+													<tr key={key}>
 														<td>{key}</td>
 														<td>
 															{videoStream.type}

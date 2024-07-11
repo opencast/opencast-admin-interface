@@ -1554,24 +1554,47 @@ export const updateAssets = createAppAsyncThunk('eventDetails/updateAssets', asy
 	let formData = new FormData();
 
 	let assets: {
-		workflow: string | undefined,
 		options: UploadAssetOption[],
 	} = {
-		workflow: uploadAssetWorkflow,
 		options: [],
 	};
+
+	let assetFlavors = "";
 
 	uploadAssetOptions.forEach((option) => {
 		if (!!values[option.id]) {
 			formData.append(option.id + ".0", values[option.id]);
 			assets.options = assets.options.concat(option);
+			const uploadAssetFlavor = [option.flavorType, option.flavorSubType].join("/");
+			if (assetFlavors.length > 0) {
+				assetFlavors = [assetFlavors, uploadAssetFlavor].join(",");
+			} else {
+				assetFlavors = uploadAssetFlavor;
+			}
 		}
 	});
+
+	const uploadAssetWorkflowConfiguration: {
+		"downloadSourceflavorsExist": string,
+		"download-source-flavors": string,
+	} = {
+		"downloadSourceflavorsExist": String(assetFlavors.length > 0),
+		"download-source-flavors": assetFlavors,
+	};
+
+	const processing: {
+		workflow: string | undefined,
+		configuration: typeof uploadAssetWorkflowConfiguration,
+	} = {
+		workflow: uploadAssetWorkflow,
+		configuration: uploadAssetWorkflowConfiguration,
+	};
 
 	formData.append(
 		"metadata",
 		JSON.stringify({
 			assets: assets,
+			processing: processing,
 		})
 	);
 

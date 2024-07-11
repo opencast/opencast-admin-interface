@@ -124,13 +124,20 @@
         background-color: transparent;
         border: none;
         border-radius: 0;
+        cursor: pointer;
     }
 
     // Language Dropdown
     // ----------------------------------------
 
     .lang-dd .dropdown-ul {
-        width: 120px;
+        .selected {
+            @include fa-icon($fa-var-check, $icon-pesudo-position, $icon-display-value, 0 7px 0 0, 0, $green, $icon-font-size);
+        }
+
+        button:not(.selected) {
+            padding-left: 37px;
+        }
     }
 
     // RestService Dropdown

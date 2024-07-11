@@ -165,10 +165,10 @@ const TableFiltersProfiles = ({
 									// repeat for each profile in profiles filtered for currently shown resource (else-case)
 									currentProfiles.map((profile, key) => (
 										<li key={key}>
-											<Tooltip title="profile.description">
+											<Tooltip title={profile.description}>
 												<button
 													onClick={() => chooseFilterProfile(profile.filterMap)}
-                        className="button-like-anchor"
+													className="button-like-anchor"
 												>
 													{profile.name.substr(0, 70)}
 												</button>

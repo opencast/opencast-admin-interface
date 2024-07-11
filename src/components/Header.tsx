@@ -160,7 +160,7 @@ const Header = ({
 				<nav className="header-nav nav-dd-container" id="nav-dd-container">
 					{/* Select language */}
 					<div className="nav-dd lang-dd" id="lang-dd" ref={containerLang}>
-						<Tooltip title={t("LANGUAGE")}>
+						<Tooltip active={!displayMenuLang} title={t("LANGUAGE")}>
 							<button className="lang" onClick={() => setMenuLang(!displayMenuLang)}>
 								<IconContext.Provider value={{ style: {fontSize: "20px"} }}>
 									<HiTranslate />
@@ -208,7 +208,7 @@ const Header = ({
 							id="info-dd"
 							ref={containerNotify}
 						>
-							<Tooltip title={t("SYSTEM_NOTIFICATIONS")}>
+							<Tooltip active={!displayMenuNotify} title={t("SYSTEM_NOTIFICATIONS")}>
 								<button onClick={() => setMenuNotify(!displayMenuNotify)}>
 									<i className="fa fa-bell" aria-hidden="true" />
 									{errorCounter !== 0 && (
@@ -216,15 +216,15 @@ const Header = ({
 											{errorCounter}
 										</span>
 									)}
-									{/* Click on the bell icon, a dropdown menu with all services in serviceList and their status opens */}
-									{displayMenuNotify && (
-										<MenuNotify
-											healthStatus={healthStatus}
-											redirectToServices={redirectToServices}
-										/>
-									)}
 								</button>
 							</Tooltip>
+							{/* Click on the bell icon, a dropdown menu with all services in serviceList and their status opens */}
+							{displayMenuNotify && (
+								<MenuNotify
+									healthStatus={healthStatus}
+									redirectToServices={redirectToServices}
+								/>
+							)}
 						</div>
 					)}
 
@@ -244,7 +244,7 @@ const Header = ({
 								id="help-dd"
 								ref={containerHelp}
 							>
-								<Tooltip title={t("HELP.HELP")}>
+								<Tooltip active={!displayMenuHelp} title={t("HELP.HELP")}>
 									<button
 										onClick={() => setMenuHelp(!displayMenuHelp)}
 									>
@@ -298,7 +298,10 @@ const MenuLang = () => {
 			{/* one list item for each available language */}
 			{languages.map((language, key) => (
 				<li key={key}>
-					<button className="button-like-anchor" onClick={() => changeLanguage(language.code)}>
+					<button
+						className={"button-like-anchor" + (i18n.language === language.code ? " selected" : "")}
+						onClick={() => changeLanguage(language.code)}
+					>
 						{language.long}
 					</button>
 				</li>
