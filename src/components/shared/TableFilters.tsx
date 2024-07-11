@@ -454,6 +454,7 @@ const FilterSwitch = ({
 									"TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS"
 									)
 						}
+						autoFocus
 						defaultOpen
 					/>
 				</div>
