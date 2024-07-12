@@ -28,23 +28,9 @@ import { getRecordings } from "../selectors/recordingSelectors";
 import { Workflow as WorkflowDefinitions} from "./workflowSlice";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
-import { Ace, TransformedAcl, TransformedAcls } from './aclDetailsSlice';
-
-type MetadataField = {
-	collection?: { [key: string]: unknown }[],	// different for e.g. languages and presenters
-	id: string,
-	label: string,	// translation key
-	readOnly: boolean,
-	required: boolean,
-	type: string,
-	value: string,
-}
-
-export type MetadataCatalog = {
-	title: string, // translation key
-	flavor: string,
-	fields: MetadataField[] | undefined,
-}
+import { TransformedAcl } from './aclDetailsSlice';
+import { Ace } from './aclSlice';
+import { MetadataCatalog } from './eventSlice';
 
 interface Assets {
 	id: string,
@@ -411,7 +397,7 @@ const initialState: EventDetailsState = {
 	metadata: {
 		title: "",
 		flavor: "",
-		fields: undefined
+		fields: []
 	},
 	extendedMetadata: [],
 	assets: {
@@ -566,10 +552,10 @@ export const fetchMetadata = createAppAsyncThunk('eventDetails/fetchMetadata', a
 	const metadataResponse = await metadataRequest.data;
 
 	const mainCatalog = "dublincore/episode";
-	let metadata = {
+	let metadata: MetadataCatalog = {
 		title: "",
 		flavor: "",
-		fields: undefined
+		fields: []
 	};
 	let extendedMetadata = [];
 
@@ -829,7 +815,7 @@ export const fetchAccessPolicies = createAppAsyncThunk('eventDetails/fetchAccess
 	);
 	let accessPolicies = await policyData.data;
 
-	let policies: TransformedAcls = [];
+	let policies: TransformedAcl[] = [];
 	if (!!accessPolicies.episode_access) {
 		const json = JSON.parse(accessPolicies.episode_access.acl).acl.ace;
 		let newPolicies: { [key: string]: TransformedAcl } = {};
@@ -1819,7 +1805,7 @@ const eventDetailsSlice = createSlice({
 				state.metadata = {
 					title: "",
 					flavor: "",
-					fields: undefined
+					fields: []
 				};
 				state.extendedMetadata = [];
 				state.errorMetadata = action.error;
