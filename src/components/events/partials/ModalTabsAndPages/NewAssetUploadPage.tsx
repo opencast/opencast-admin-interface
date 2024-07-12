@@ -47,6 +47,7 @@ const NewAssetUploadPage = <T extends RequiredFormProps>({
 			formik.setFieldValue(assetId, e.target.files[0]);
 		}
 	};
+
 	return (
 		<>
 			<div className="modal-content">

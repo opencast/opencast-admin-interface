@@ -8,6 +8,8 @@ import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchWorkflowDef } from "../../../../slices/workflowSlice";
 import { FormikProps } from "formik";
+import { useHotkeys } from "react-hotkeys-hook";
+import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 
 /**
  * This component renders the processing page for new events in the new event wizard.
@@ -56,6 +58,20 @@ const NewProcessingPage = <T extends RequiredFormProps>({
 		// set chosen workflow in formik
 		formik.setFieldValue("processingWorkflow", workflowId);
 	};
+
+	useHotkeys(
+		availableHotkeys.general.NEXT_TAB.sequence,
+		() => nextPage(formik.values),
+		{ description: t(availableHotkeys.general.NEXT_TAB.description) ?? undefined },
+		[nextPage],
+	);
+
+	useHotkeys(
+		availableHotkeys.general.PREVIOUS_TAB.sequence,
+		() => previousPage(formik.values),
+		{ description: t(availableHotkeys.general.PREVIOUS_TAB.description) ?? undefined },
+		[previousPage],
+	);
 
 	return (
 		<>

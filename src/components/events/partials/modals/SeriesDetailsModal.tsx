@@ -35,7 +35,6 @@ const SeriesDetailsModal = ({
 		[close],
   	);
 
-	// todo: add hotkeys
 	return (
 		<>
 			<div className="modal-animation modal-overlay" />

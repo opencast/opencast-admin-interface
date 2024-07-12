@@ -42,6 +42,8 @@ import { Recording, fetchRecordings } from "../../../../slices/recordingSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { parseISO } from "date-fns";
 import { checkConflicts } from "../../../../slices/eventSlice";
+import { useHotkeys } from "react-hotkeys-hook";
+import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 
 /**
  * This component renders the source page for new events in the new event wizard.
@@ -97,6 +99,20 @@ const NewSourcePage = <T extends RequiredFormProps>({
 	const scheduleOptionAvailable = () => {
 		return inputDevices.length > 0 && hasAnyDeviceAccess(user, inputDevices);
 	};
+
+	useHotkeys(
+		availableHotkeys.general.NEXT_TAB.sequence,
+		() => nextPage(formik.values),
+		{ description: t(availableHotkeys.general.NEXT_TAB.description) ?? undefined },
+		[nextPage],
+	);
+
+	useHotkeys(
+		availableHotkeys.general.PREVIOUS_TAB.sequence,
+		() => previousPage(formik.values),
+		{ description: t(availableHotkeys.general.PREVIOUS_TAB.description) ?? undefined },
+		[previousPage],
+	);
 
 	return (
 		<>

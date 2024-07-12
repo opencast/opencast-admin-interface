@@ -19,6 +19,8 @@ import { filterRoles, getAclTemplateText } from "../../../../utils/aclUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchSeriesDetailsAcls } from "../../../../slices/seriesDetailsSlice";
 import { getSeriesDetailsAcl } from "../../../../selectors/seriesDetailsSelectors";
+import { useHotkeys } from "react-hotkeys-hook";
+import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 
 /**
  * This component renders the access page for new events and series in the wizards.
@@ -96,6 +98,20 @@ const NewAccessPage = ({
 		formik.setFieldValue("acls", template);
 		await dispatch(checkAcls(formik.values.acls));
 	};
+
+	useHotkeys(
+		availableHotkeys.general.NEXT_TAB.sequence,
+		() => nextPage(formik.values),
+		{ description: t(availableHotkeys.general.NEXT_TAB.description) ?? undefined },
+		[nextPage],
+	);
+
+	useHotkeys(
+		availableHotkeys.general.PREVIOUS_TAB.sequence,
+		() => previousPage(formik.values),
+		{ description: t(availableHotkeys.general.PREVIOUS_TAB.description) ?? undefined },
+		[previousPage],
+	);
 
 	return (
 		<>

@@ -2112,7 +2112,9 @@
 				"NEW_EVENT": "Add event",
 				"NEW_SERIES": "Add series",
 				"CHEAT_SHEET": "Keyboard shortcuts",
-				"CLOSE_MODAL": "Close dialog"
+				"CLOSE_MODAL": "Close dialog",
+				"NEXT_TAB": "Switch to next tab",
+				"PREVIOUS_TAB": "Switch to previous tab"
 			}
 		}
 	},

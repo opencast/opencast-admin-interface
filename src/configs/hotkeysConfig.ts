@@ -66,6 +66,16 @@ export const availableHotkeys: HotkeyMapType = {
 			name: "close_modal",
 			description: "HOTKEYS.DESCRIPTIONS.GENERAL.CLOSE_MODAL",
 			sequence: ["Esc"],
+		},
+		NEXT_TAB: {
+			name: "next_tab",
+			description: "HOTKEYS.DESCRIPTIONS.GENERAL.NEXT_TAB",
+			sequence: ["alt+enter"]
+		},
+		PREVIOUS_TAB: {
+			name: "previous_tab",
+			description: "HOTKEYS.DESCRIPTIONS.GENERAL.PREVIOUS_TAB",
+			sequence: ["alt+backspace"]
 		}
 	},
 };
