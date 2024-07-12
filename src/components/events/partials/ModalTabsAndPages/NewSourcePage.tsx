@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import cn from "classnames";
 import Notifications from "../../../shared/Notifications";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
@@ -42,6 +41,7 @@ import { Recording, fetchRecordings } from "../../../../slices/recordingSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { parseISO } from "date-fns";
 import { checkConflicts } from "../../../../slices/eventSlice";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
  * This component renders the source page for new events in the new event wizard.
@@ -223,37 +223,21 @@ const NewSourcePage = <T extends RequiredFormProps>({
 			</div>
 
 			{/* Button for navigation to next page and previous page */}
-			<footer>
-				<button
-					type="submit"
-					className={cn("submit", {
-						active: formik.dirty && formik.isValid,
-						inactive: !(formik.dirty && formik.isValid),
-					})}
-					disabled={!(formik.dirty && formik.isValid)}
-					onClick={async () => {
-						removeOldNotifications();
-						const noConflicts = await dispatch(checkConflicts(formik.values));
-						if (Array.isArray(noConflicts)) {
-							setConflicts(noConflicts);
-						}
-						if ((typeof noConflicts == "boolean" && noConflicts)
-							|| (Array.isArray(noConflicts) && noConflicts.length === 0)) {
-							nextPage(formik.values);
-						}
-					}}
-					tabIndex={100}
-				>
-					{t("WIZARD.NEXT_STEP")}
-				</button>
-				<button
-					className="cancel"
-					onClick={() => previousPage(formik.values, false)}
-					tabIndex={101}
-				>
-					{t("WIZARD.BACK")}
-				</button>
-			</footer>
+			<WizardNavigationButtons
+				formik={formik}
+				nextPage={async () => {
+					removeOldNotifications();
+					const noConflicts = await dispatch(checkConflicts(formik.values));
+					if (Array.isArray(noConflicts)) {
+						setConflicts(noConflicts);
+					}
+					if ((typeof noConflicts == "boolean" && noConflicts)
+						|| (Array.isArray(noConflicts) && noConflicts.length === 0)) {
+						nextPage(formik.values);
+					}
+				}}
+				previousPage={previousPage}
+			/>
 
 			<div className="btm-spacer" />
 		</>

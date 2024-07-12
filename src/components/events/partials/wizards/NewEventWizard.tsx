@@ -115,7 +115,7 @@ const NewEventWizard: React.FC<{
 		}
 	};
 
-	const previousPage = (values: typeof initialValues, twoPagesBack?: boolean) => {
+	const previousPage = (values: typeof initialValues, twoPagesBack: boolean = false) => {
 		setSnapshot(values);
 		// if previous page is hidden or not always shown, than go back two pages
 		if (steps[page - 1].hidden || twoPagesBack) {
