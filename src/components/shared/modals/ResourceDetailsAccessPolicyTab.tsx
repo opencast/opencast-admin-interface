@@ -430,6 +430,7 @@ const ResourceDetailsAccessPolicyTab = ({
 																										}
 																										type={"aclRole"}
 																										required={true}
+																										creatable={true}
 																										handleChange={(element) => {
 																											if (element) {
 																												replace(index, {
@@ -439,13 +440,7 @@ const ResourceDetailsAccessPolicyTab = ({
 																											}
 																										}}
 																										placeholder={
-																											roles.length > 0
-																												? t(
-																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.LABEL"
-																												  )
-																												: t(
-																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.EMPTY"
-																												  )
+																											t("EVENTS.EVENTS.DETAILS.ACCESS.ROLES.LABEL")
 																										}
 																										disabled={
 																											!hasAccess(

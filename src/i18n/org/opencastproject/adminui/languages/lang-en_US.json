@@ -20,6 +20,7 @@
 	"RESET": "Reset",
 	"SELECT_NO_OPTION_SELECTED": "No option selected",
 	"SELECT_NO_OPTIONS_AVAILABLE": "No options available",
+	"SELECT_NO_MATCHING_RESULTS": "No matching results.",
 	"YES": "Yes",
 	"COPY": "Copy to clipboard",
 	"UPDATE": {
@@ -865,8 +866,7 @@
 						"DETAILS": "Details"
 					},
 					"ROLES": {
-						"LABEL": "Select a role",
-						"EMPTY": "No role found"
+						"LABEL": "Select or create a role"
 					}
 				},
 				"COMMENTS": {
