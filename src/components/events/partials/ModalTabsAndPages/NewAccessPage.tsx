@@ -66,10 +66,10 @@ const NewAccessPage = ({
 	// If we have to use series ACL, fetch it
 	useEffect(() => {
 		if (initEventAclWithSeriesAcl && formik.values.isPartOf) {
-			dispatch(fetchSeriesDetailsAcls(formik.values.isPartOf))
+			dispatch(fetchSeriesDetailsAcls(formik.values.isPartOf));
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [formik.values, initEventAclWithSeriesAcl]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.isPartOf, initEventAclWithSeriesAcl]);
 
 	// If we have to use series ACL, overwrite existing rules
 	useEffect(() => {
