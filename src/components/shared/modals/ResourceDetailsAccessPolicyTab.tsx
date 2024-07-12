@@ -8,7 +8,8 @@ import {
 	fetchRolesWithTarget,
 } from "../../../slices/aclSlice";
 import Notifications from "../Notifications";
-import { Formik, Field, FieldArray, FormikErrors } from "formik";
+import { Formik, FieldArray, FormikErrors } from "formik";
+import { Field } from "../Field";
 import { NOTIFICATION_CONTEXT } from "../../../configs/modalConfig";
 import {
 	createPolicy,
