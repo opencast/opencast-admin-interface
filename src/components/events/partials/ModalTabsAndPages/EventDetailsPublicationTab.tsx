@@ -3,7 +3,9 @@ import { useTranslation } from "react-i18next";
 import Notifications from "../../../shared/Notifications";
 import { getPublications } from "../../../../selectors/eventDetailsSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { fetchEventPublications } from "../../../../slices/eventDetailsSlice";
+import { fetchEventPublications, fetchHasActiveTransactions } from "../../../../slices/eventDetailsSlice";
+import { addNotification, removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 
 const EventDetailsPublicationTab = ({
 	eventId,
@@ -22,7 +24,24 @@ const EventDetailsPublicationTab = ({
 	};
 
 	useEffect(() => {
+		dispatch(removeNotificationWizardForm());
 		dispatch(fetchEventPublications(eventId)).then((r) => console.info(r));
+
+		dispatch(fetchHasActiveTransactions(eventId)).then((fetchTransactionResult) => {
+			if (
+				fetchTransactionResult.payload.active === undefined ||
+				fetchTransactionResult.payload.active
+			) {
+				dispatch(addNotification({
+					type: "warning",
+					key: "ACTIVE_TRANSACTION",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				}));
+			}
+		});
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -30,7 +49,7 @@ const EventDetailsPublicationTab = ({
 		<>
 			<div className="modal-content">
 				<div className="modal-body">
-					<Notifications />
+					<Notifications context="not_corner" />
 					<div className="full-col">
 						<div className="obj list-obj">
 							<header>{t("EVENTS.EVENTS.DETAILS.PUBLICATIONS.CAPTION")}</header>
