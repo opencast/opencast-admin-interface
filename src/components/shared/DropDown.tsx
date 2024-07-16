@@ -8,7 +8,8 @@ import {
 	filterBySearch,
 	formatDropDownOptions,
 } from "../../utils/dropDownUtils";
-import Select from "react-select";
+import Select, { Props } from "react-select";
+import CreatableSelect from "react-select/creatable";
 
 /**
  * TODO: Ideally, we would remove "type", and just type the "options" array properly.
@@ -18,19 +19,6 @@ import Select from "react-select";
  * I would suggest waiting with typing options until all of its inputs are properly typed
  */
 export type DropDownType = "language" | "isPartOf" | "license" | "captureAgent" | "aclRole" | "workflow" | "aclTemplate" | "newTheme" | "comment" | "theme" | "time";
-
-// type DPTime = {
-// 	index: number,
-// 	value: string,
-// }
-// type DPCaptureAgent = any;
-// type DPComment = string[];
-// type DPWorkflow = Workflow[];
-// type DPAclTemplate = never[];
-// type DPAclRole = any;
-// type DPNewTheme = Theme[];
-// type DPTheme = any;
-
 
 /**
  * This component provides a bar chart for visualising (statistics) data
@@ -46,6 +34,7 @@ const DropDown = <T,>({
 	tabIndex = 0,
 	autoFocus = false,
 	defaultOpen = false,
+	creatable = false,
 	disabled = false,
 }: {
 	value: T
@@ -58,6 +47,7 @@ const DropDown = <T,>({
 	tabIndex?: number,
 	autoFocus?: boolean,
 	defaultOpen?: boolean,
+	creatable?: boolean,
 	disabled?: boolean,
 }) => {
 	const { t } = useTranslation();
@@ -66,28 +56,40 @@ const DropDown = <T,>({
 
 	const style = dropDownStyle(type);
 
+	const commonProps: Props = {
+		tabIndex: tabIndex,
+		theme: (theme) => (dropDownSpacingTheme(theme)),
+		styles: style,
+		defaultMenuIsOpen: defaultOpen,
+		autoFocus: autoFocus,
+		isSearchable: true,
+		value: { value: value, label: text === "" ? placeholder : text },
+		inputValue: searchText,
+		options: formatDropDownOptions(
+			filterBySearch(searchText.toLowerCase(), type, options, t),
+			type,
+			required,
+			t
+		),
+		placeholder: placeholder,
+		onInputChange: (value: string) => setSearch(value),
+		onChange: (element) => handleChange(element as {value: T, label: string}),
+		isDisabled: disabled,
+	};
+
 	return (
-		<Select
-			tabIndex={tabIndex}
-			theme={dropDownSpacingTheme}
-			styles={style}
-			defaultMenuIsOpen={defaultOpen}
-			autoFocus={autoFocus}
-			isSearchable
-			value={{ value: value, label: text === "" ? placeholder : text }}
-			inputValue={searchText}
-			options={formatDropDownOptions(
-				filterBySearch(searchText.toLowerCase(), type, options, t),
-				type,
-				required,
-				t
+		<div>
+			{creatable ? (
+				<CreatableSelect
+					{...commonProps}
+				/>
+			) : (
+				<Select
+					{...commonProps}
+					noOptionsMessage={() => t("SELECT_NO_MATCHING_RESULTS")}
+				/>
 			)}
-			placeholder={placeholder}
-			noOptionsMessage={() => "No matching results."}
-			onInputChange={(value) => setSearch(value)}
-			onChange={(element) => handleChange(element)}
-			isDisabled={disabled}
-		/>
+		</div>
 	);
 };
 

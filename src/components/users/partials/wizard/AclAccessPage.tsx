@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { Field, FieldArray, FormikProps } from "formik";
+import { FieldArray, FormikProps } from "formik";
+import { Field } from "../../../shared/Field";
 import Notifications from "../../../shared/Notifications";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import {
@@ -67,8 +68,7 @@ const AclAccessPage = <T extends RequiredFormProps>({
 		fetchData();
 	}, []);
 
-// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
-	const handleTemplateChange = async (value) => {
+	const handleTemplateChange = async (value: string) => {
 		// fetch information about chosen template from backend
 		const template = await fetchAclTemplateById(value);
 

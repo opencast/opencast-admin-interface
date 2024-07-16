@@ -8,7 +8,8 @@ import {
 	fetchRolesWithTarget,
 } from "../../../slices/aclSlice";
 import Notifications from "../Notifications";
-import { Formik, Field, FieldArray, FormikErrors } from "formik";
+import { Formik, FieldArray, FormikErrors } from "formik";
+import { Field } from "../Field";
 import { NOTIFICATION_CONTEXT } from "../../../configs/modalConfig";
 import {
 	createPolicy,
@@ -177,13 +178,13 @@ const ResourceDetailsAccessPolicyTab = ({
 
 	/* checks validity of the policies
 	 * each policy needs a role and at least one of: read-rights, write-rights, additional action
-	 * there needs to be at least one role, which has both read and write rights */
+	 * if not admin, there needs to be at least one role, which has both read and write rights */
 	const validatePolicies = (values: { policies: TransformedAcl[] }) => {
 		let roleWithFullRightsExists = false;
 		let allRulesValid = true;
 
 		values.policies.forEach((policy) => {
-			if (policy.read && policy.write) {
+			if ((policy.read && policy.write) || user.isAdmin) {
 				roleWithFullRightsExists = true;
 			}
 
@@ -430,6 +431,7 @@ const ResourceDetailsAccessPolicyTab = ({
 																										}
 																										type={"aclRole"}
 																										required={true}
+																										creatable={true}
 																										handleChange={(element) => {
 																											if (element) {
 																												replace(index, {
@@ -439,13 +441,7 @@ const ResourceDetailsAccessPolicyTab = ({
 																											}
 																										}}
 																										placeholder={
-																											roles.length > 0
-																												? t(
-																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.LABEL"
-																												  )
-																												: t(
-																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.EMPTY"
-																												  )
+																											t("EVENTS.EVENTS.DETAILS.ACCESS.ROLES.LABEL")
 																										}
 																										disabled={
 																											!hasAccess(

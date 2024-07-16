@@ -1,26 +1,33 @@
 import React, { useEffect } from "react";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import { initialFormValuesStartTask } from "../../../../configs/modalConfig";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
 import StartTaskGeneralPage from "../ModalTabsAndPages/StartTaskGeneralPage";
 import StartTaskWorkflowPage from "../ModalTabsAndPages/StartTaskWorkflowPage";
 import StartTaskSummaryPage from "../ModalTabsAndPages/StartTaskSummaryPage";
 import { postTasks } from "../../../../thunks/taskThunks";
+import { changeAllSelected } from "../../../../thunks/tableThunks";
 import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { checkValidityStartTaskEventSelection } from "../../../../utils/bulkActionUtils";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { useAppDispatch } from "../../../../store";
+import { connect } from "react-redux";
 
 /**
  * This component manages the pages of the task start bulk action
  */
 const StartTaskModal = ({
-    close,
-    postTasks
-}: any) => {
+	close,
+	postTasks,
+}: {
+	close: () => void,
+	// @ts-expect-error
+	postTasks,
+}) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const initialValues = initialFormValuesStartTask;
 
@@ -79,6 +86,7 @@ const StartTaskModal = ({
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
 	const handleSubmit = (values) => {
 		postTasks(values);
+		dispatch(changeAllSelected(false));
 		close();
 	};
 
@@ -119,9 +127,7 @@ const StartTaskModal = ({
 								<div>
 									{page === 0 && (
 										<StartTaskGeneralPage
-											// @ts-expect-error: Type-checking gets confused by redux-connect in the child
 											formik={formik}
-											// @ts-expect-error: Type-checking gets confused by redux-connect in the child
 											nextPage={nextPage}
 										/>
 									)}

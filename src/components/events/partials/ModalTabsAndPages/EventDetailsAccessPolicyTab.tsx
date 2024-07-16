@@ -34,7 +34,7 @@ const EventDetailsAccessPolicyTab = ({
 	const fetchHasActiveTransactionsWrapper = async(eventId: any) => {
 		return await dispatch(fetchHasActiveTransactions(eventId)).then(unwrapResult);
 	}
-	const saveNewAccessPoliciesWrapper = async(eventId: any, policies: any) => {
+	const saveNewAccessPoliciesWrapper = (eventId: any, policies: any) => {
 		return dispatch(saveAccessPolicies({eventId, policies}));
 	}
 

@@ -25,6 +25,7 @@
 	"RESET": "Restablecer",
 	"SELECT_NO_OPTION_SELECTED": "Sen opcións seleccionadas",
 	"SELECT_NO_OPTIONS_AVAILABLE": "Sen opcións dispoñibles",
+	"SELECT_NO_MATCHING_RESULTS": "No matching results.",
 	"YES": "Si",
 	"COPY": "Copiar ó portapapeis",
 	"LTI": {
@@ -136,6 +137,7 @@
 		}
 	},
 	"MEDIAMODULE": "Módulo Multimedia",
+	"STUDIO": "Studio",
 	"SYSTEM_NOTIFICATIONS": "Alertas de sistema e notificacións",
 	"LANGUAGE": "Seleccione idioma",
 	"HELP": {
@@ -169,6 +171,7 @@
 		"EVENTS_CREATED": "Evento creado",
 		"EVENTS_UPLOAD_STARTED": "Cargando o evento…",
 		"EVENTS_NOT_CREATED": "Non se puido crear o evento",
+		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "Todos os eventos foron actualizados correctamente",
 		"EVENTS_NOT_UPDATED": "Non se puido gardar o evento",
 		"EVENTS_NOT_UPDATED_ID": "Non se puido gardar o evento {{ id }}",
@@ -480,8 +483,8 @@
 						"RECORDING_ELEMENTS": "Elementos da gravación",
 						"RECORDING_METADATA": "Metadatos da gravación",
 						"SEGMENTABLE": {
-							"SHORT": "Diapositivas",
-							"DETAIL": "O arquivo contén a gravación dunha presentación de diapositivas (Keynote, Powerpoint, etc.)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Relator",
@@ -631,7 +634,7 @@
 				"PROCESSED": "Finalizado",
 				"RECORDING_FAILURE": "Fallo na gravación",
 				"PROCESSING_FAILURE": "Fallo no procesamento",
-				"PROCESSING_CANCELED": "Procesamento cancelado"
+				"PROCESSING_CANCELLED": "Processing canceled"
 			},
 			"STATE_MAPPING": {
 				"RETRACTING": "Retirando",
@@ -702,8 +705,8 @@
 						"CAPTION": "Subir",
 						"RECORDING_ELEMENTS": "Elementos da gravación",
 						"SEGMENTABLE": {
-							"SHORT": "Diapositivas",
-							"DETAIL": "O arquivo contén a gravación dunha presentación de diapositivas (Keynote, Powerpoint, etc.)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Relator",
@@ -860,8 +863,7 @@
 						"DETAILS": "Detalles"
 					},
 					"ROLES": {
-						"LABEL": "Seleccione un rol",
-						"EMPTY": "Non hai roles dispoñibles"
+						"LABEL": "Select or create a role"
 					}
 				},
 				"COMMENTS": {
@@ -1290,6 +1292,14 @@
 					"RIGHT": "Roles seleccionados",
 					"REMOVE": "Eliminar rol",
 					"ADD": "Engadir rol"
+				},
+				"STRENGTH": {
+					"BAD": "Bad password",
+					"VERYWEAK": "Very weak password",
+					"WEAK": "Weak password",
+					"GOOD": "Good password",
+					"STRONG": "Strong password",
+					"VERYSTRONG": "Very strong password"
 				}
 			}
 		},

@@ -8,7 +8,8 @@ import {
 	getTimezoneOffset,
 	translateOverrideFallback,
 } from "../../../../utils/utils";
-import { Field, FieldArray, FormikProps } from "formik";
+import { FieldArray, FormikProps } from "formik";
+import { Field } from "../../../shared/Field";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
@@ -318,6 +319,7 @@ const Upload = ({ formik }) => {
 											</td>
 											<td className="fit">
 												<button
+													style={{ visibility: asset.file ? "visible" : "hidden" }}
 													className="button-like-anchor remove"
 													onClick={(e) => {
 														formik.setFieldValue(
@@ -433,7 +435,7 @@ const Schedule = <T extends {
 									value={typeof formik.values.scheduleStartDate === "string" ? parseISO(formik.values.scheduleStartDate): formik.values.scheduleStartDate}
 									onChange={(value) => {
 										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-											changeStartDateMultiple(
+											value && changeStartDateMultiple(
 												value,
 												formik.values,
 												formik.setFieldValue
@@ -464,7 +466,7 @@ const Schedule = <T extends {
 											name="scheduleEndDate"
 											value={typeof formik.values.scheduleEndDate === "string" ? parseISO(formik.values.scheduleEndDate) : formik.values.scheduleEndDate}
 											onChange={(value) =>
-												changeEndDateMultiple(
+												value && changeEndDateMultiple(
 													value,
 													formik.values,
 													formik.setFieldValue

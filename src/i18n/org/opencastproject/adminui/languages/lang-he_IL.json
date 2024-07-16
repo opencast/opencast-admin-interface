@@ -25,6 +25,7 @@
 	"RESET": "איפוס",
 	"SELECT_NO_OPTION_SELECTED": "לא נבחרה כל אופציה",
 	"SELECT_NO_OPTIONS_AVAILABLE": "אין אפשרויות זמינות",
+	"SELECT_NO_MATCHING_RESULTS": "No matching results.",
 	"YES": "כן",
 	"COPY": "Copy to clipboard",
 	"LTI": {
@@ -136,6 +137,7 @@
 		}
 	},
 	"MEDIAMODULE": "מודול מדיה",
+	"STUDIO": "Studio",
 	"SYSTEM_NOTIFICATIONS": "אזהרות והתראות מערכתיות",
 	"LANGUAGE": "בחירת שפה",
 	"HELP": {
@@ -169,6 +171,7 @@
 		"EVENTS_CREATED": "הארוע נוצר",
 		"EVENTS_UPLOAD_STARTED": "האירוע מועלה לשרת…",
 		"EVENTS_NOT_CREATED": "לא ניתן היה ליצור את האירוע",
+		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "כל האירועים עודכנו בהצלחה",
 		"EVENTS_NOT_UPDATED": "לא היתה אפשרות לשמור את האירוע",
 		"EVENTS_NOT_UPDATED_ID": "לא היתה אפשרות לשמור את האירוע {{ id }}",
@@ -480,8 +483,8 @@
 						"RECORDING_ELEMENTS": "רכיבי הקלטה",
 						"RECORDING_METADATA": "הקלטת מטא נתונים",
 						"SEGMENTABLE": {
-							"SHORT": "שקופיות",
-							"DETAIL": "הקובץ מכיל הקלטה של מצגת שקופיות (Keynote, Powerpoint, וכו ')."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "מציג",
@@ -631,7 +634,7 @@
 				"PROCESSED": "הסתיים",
 				"RECORDING_FAILURE": "הקלטה נכשלה",
 				"PROCESSING_FAILURE": "עיבוד נכשל",
-				"PROCESSING_CANCELED": "עיבוד בוטל"
+				"PROCESSING_CANCELLED": "Processing canceled"
 			},
 			"STATE_MAPPING": {
 				"RETRACTING": "Retracting",
@@ -702,8 +705,8 @@
 						"CAPTION": "העלאה",
 						"RECORDING_ELEMENTS": "רכיבי הקלטה",
 						"SEGMENTABLE": {
-							"SHORT": "שקופיות",
-							"DETAIL": "הקובץ מכיל הקלטה של מצגת שקופיות (Keynote, Powerpoint, וכו ')."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "מציג",
@@ -860,8 +863,7 @@
 						"DETAILS": "פרטים"
 					},
 					"ROLES": {
-						"LABEL": "בחר תפקיד",
-						"EMPTY": "לא נצאו תפקידים"
+						"LABEL": "Select or create a role"
 					}
 				},
 				"COMMENTS": {
@@ -1290,6 +1292,14 @@
 					"RIGHT": "תפקידים שנבחרו",
 					"REMOVE": "הסר תפקיד",
 					"ADD": "הוסף תפקיד"
+				},
+				"STRENGTH": {
+					"BAD": "Bad password",
+					"VERYWEAK": "Very weak password",
+					"WEAK": "Weak password",
+					"GOOD": "Good password",
+					"STRONG": "Strong password",
+					"VERYSTRONG": "Very strong password"
 				}
 			}
 		},

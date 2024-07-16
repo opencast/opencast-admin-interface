@@ -25,6 +25,7 @@
 	"RESET": "Επαναφορά",
 	"SELECT_NO_OPTION_SELECTED": "Δεν επιλέχθηκε κάποια επιλογή",
 	"SELECT_NO_OPTIONS_AVAILABLE": "Δεν υπάρχουν διαθέσιμες επιλογές",
+	"SELECT_NO_MATCHING_RESULTS": "No matching results.",
 	"YES": "Ναί",
 	"COPY": "Αντιγραφή στο πρόχειρο",
 	"LTI": {
@@ -136,6 +137,7 @@
 		}
 	},
 	"MEDIAMODULE": "Μονάδα πολυμέσων",
+	"STUDIO": "Studio",
 	"SYSTEM_NOTIFICATIONS": "Προειδοποιήσεις και ειδοποιήσεις συστήματος",
 	"LANGUAGE": "Επιλέξτε γλώσσα",
 	"HELP": {
@@ -169,6 +171,7 @@
 		"EVENTS_CREATED": "Η εκδήλωση έχει δημιουργηθεί",
 		"EVENTS_UPLOAD_STARTED": "Μια εκδήλωση ανέβηκε…",
 		"EVENTS_NOT_CREATED": "Δεν ήταν δυνατή η δημιουργία της εκδήλωσης",
+		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "Όλες οι εκδηλώσεις έχουν ενημερωθεί με επιτυχία",
 		"EVENTS_NOT_UPDATED": "Δεν ήταν δυνατή η αποθήκευση της εκδήλωσης",
 		"EVENTS_NOT_UPDATED_ID": "Δεν ήταν δυνατή η αποθήκευση της εκδήλωσης {{ id }}",
@@ -480,8 +483,8 @@
 						"RECORDING_ELEMENTS": "Στοιχεία καταγραφής",
 						"RECORDING_METADATA": "Μετά-δεδομένα εγγραφής",
 						"SEGMENTABLE": {
-							"SHORT": "Διαφάνειες",
-							"DETAIL": "Το αρχείο περιέχει μια καταγραφή  παρουσίασης διαφανειών (Keynote, Powerpoint, κλπ)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Παρουσιαστής",
@@ -631,7 +634,7 @@
 				"PROCESSED": "Ολοκληρώθηκε",
 				"RECORDING_FAILURE": "Αποτυχία εγγραφής",
 				"PROCESSING_FAILURE": "Αποτυχία επεξεργασίας",
-				"PROCESSING_CANCELED": "Ακύρωση επεξεργασίας"
+				"PROCESSING_CANCELLED": "Processing canceled"
 			},
 			"STATE_MAPPING": {
 				"RETRACTING": "Ανάκληση",
@@ -702,8 +705,8 @@
 						"CAPTION": "Ανέβασμα αρχείων",
 						"RECORDING_ELEMENTS": "Στοιχεία καταγραφής",
 						"SEGMENTABLE": {
-							"SHORT": "Διαφάνειες",
-							"DETAIL": "Το αρχείο περιέχει μια καταγραφή παρουσίασης διαφανειών (Keynote, Powerpoint, κλπ)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Παρουσιαστής",
@@ -860,8 +863,7 @@
 						"DETAILS": "Λεπτομέρειες"
 					},
 					"ROLES": {
-						"LABEL": "Επιλέξτε ένα ρόλο",
-						"EMPTY": "Κανένας ρόλος δεν βρέθηκε"
+						"LABEL": "Select or create a role"
 					}
 				},
 				"COMMENTS": {
@@ -1290,6 +1292,14 @@
 					"RIGHT": "Επιλεγμένοι ρόλοι",
 					"REMOVE": "Κατάργηση ρόλου",
 					"ADD": "Προσθήκη ρόλου"
+				},
+				"STRENGTH": {
+					"BAD": "Bad password",
+					"VERYWEAK": "Very weak password",
+					"WEAK": "Weak password",
+					"GOOD": "Good password",
+					"STRONG": "Strong password",
+					"VERYSTRONG": "Very strong password"
 				}
 			}
 		},

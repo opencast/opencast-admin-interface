@@ -9,7 +9,7 @@ import { EditGroupSchema } from "../../../../utils/validate";
 import { getGroupDetails } from "../../../../selectors/groupDetailsSelectors";
 import ModalNavigation from "../../../shared/modals/ModalNavigation";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { updateGroupDetails } from "../../../../slices/groupDetailsSlice";
+import { UpdateGroupDetailsState, updateGroupDetails } from "../../../../slices/groupDetailsSlice";
 
 /**
  * This component manages the pages of the group details
@@ -60,13 +60,11 @@ const GroupDetails: React.FC<{
 		},
 	];
 
-// @ts-expect-error TS(7006): Parameter 'tabNr' implicitly has an 'any' type.
-	const openTab = (tabNr) => {
+	const openTab = (tabNr: number) => {
 		setPage(tabNr);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (values: UpdateGroupDetailsState) => {
 		dispatch(updateGroupDetails({values: values, groupId: groupDetails.id}));
 		close();
 	};

@@ -25,6 +25,7 @@
 	"RESET": "Sıfırla",
 	"SELECT_NO_OPTION_SELECTED": "Seçili seçenek yok",
 	"SELECT_NO_OPTIONS_AVAILABLE": "Mevcut Seçenek yok",
+	"SELECT_NO_MATCHING_RESULTS": "No matching results.",
 	"YES": "Evet",
 	"COPY": "Copy to clipboard",
 	"LTI": {
@@ -136,6 +137,7 @@
 		}
 	},
 	"MEDIAMODULE": "Ortam Modülü",
+	"STUDIO": "Studio",
 	"SYSTEM_NOTIFICATIONS": "Sistem uyarıları ve bildirimleri",
 	"LANGUAGE": "Dil seç",
 	"HELP": {
@@ -169,6 +171,7 @@
 		"EVENTS_CREATED": "Etkinlik oluşturuldu",
 		"EVENTS_UPLOAD_STARTED": "Etkinlik yüklenmekte…",
 		"EVENTS_NOT_CREATED": "Etkinlik oluşturulamadı",
+		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "Tüm etkinlikler başarıyla güncellendi",
 		"EVENTS_NOT_UPDATED": "Etkinlik kaydedilemedi",
 		"EVENTS_NOT_UPDATED_ID": "{{ id }} etkinliği kaydedilemedi",
@@ -480,8 +483,8 @@
 						"RECORDING_ELEMENTS": "Ögeler kaydediliyor",
 						"RECORDING_METADATA": "Metaveri kaydediliyor",
 						"SEGMENTABLE": {
-							"SHORT": "Slaytlar",
-							"DETAIL": "Dosya bir slayt sunumunun kaydını içeriyor (Keynote, Powerpoint vb.)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Hediye Eden",
@@ -631,7 +634,7 @@
 				"PROCESSED": "Tamamlandı",
 				"RECORDING_FAILURE": "Kayıt hatası",
 				"PROCESSING_FAILURE": "İşlem hatası",
-				"PROCESSING_CANCELED": "İşlem iptal edildi"
+				"PROCESSING_CANCELLED": "Processing canceled"
 			},
 			"STATE_MAPPING": {
 				"RETRACTING": "Geri çekilmekte",
@@ -702,8 +705,8 @@
 						"CAPTION": "Karşıya Yükle",
 						"RECORDING_ELEMENTS": "Öğeler kaydediliyor",
 						"SEGMENTABLE": {
-							"SHORT": "Slaytlar",
-							"DETAIL": "Bu dosya bir slayt sunum kaydını içerir (Keynote, Powerpoint, vs.)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Sunan",
@@ -860,8 +863,7 @@
 						"DETAILS": "Ayrıntılar"
 					},
 					"ROLES": {
-						"LABEL": "Bir rol seç",
-						"EMPTY": "Rol bulunamadı"
+						"LABEL": "Select or create a role"
 					}
 				},
 				"COMMENTS": {
@@ -1290,6 +1292,14 @@
 					"RIGHT": "Seçilen roller",
 					"REMOVE": "Rolü sil",
 					"ADD": "Rol ekle"
+				},
+				"STRENGTH": {
+					"BAD": "Bad password",
+					"VERYWEAK": "Very weak password",
+					"WEAK": "Weak password",
+					"GOOD": "Good password",
+					"STRONG": "Strong password",
+					"VERYSTRONG": "Very strong password"
 				}
 			}
 		},

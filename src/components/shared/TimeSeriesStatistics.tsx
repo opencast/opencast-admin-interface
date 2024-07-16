@@ -2,7 +2,8 @@ import React from "react";
 import moment from "moment";
 import { getCurrentLanguageInformation } from "../../utils/utils";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Field, Formik } from "formik";
+import { Formik } from "formik";
+import { Field } from "./Field";
 import BarChart from "./BarChart";
 import {
 	availableCustomStatisticDataResolutions,
@@ -160,7 +161,7 @@ const TimeSeriesStatistics = ({
 	// format selected time to display as name of timeframe
 // @ts-expect-error TS(7006): Parameter 'from' implicitly has an 'any' type.
 	const formatSelectedTimeframeName = (from, timeMode) => {
-		return localizedMoment(from, currentLanguage).format(
+		return localizedMoment(from, currentLanguage ? currentLanguage.dateLocale.code : "en").format(
 // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 			formatStrings[timeMode]
 		);

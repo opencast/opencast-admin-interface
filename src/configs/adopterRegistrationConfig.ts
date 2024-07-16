@@ -42,7 +42,7 @@ export const states = {
 			back: false,
 			skip: false,
 			close: false,
-			submitButtonText: null,
+			submitButtonText: "",
 		},
 	},
 	update: {
@@ -55,7 +55,7 @@ export const states = {
 			back: false,
 			skip: false,
 			close: false,
-			submitButtonText: null,
+			submitButtonText: "",
 		},
 	},
 	delete_submit: {
@@ -82,7 +82,7 @@ export const states = {
 			back: false,
 			skip: false,
 			close: false,
-			submitButtonText: null,
+			submitButtonText: "",
 		},
 	},
 	thank_you: {
@@ -95,19 +95,20 @@ export const states = {
 			back: false,
 			skip: false,
 			close: true,
-			submitButtonText: null,
+			submitButtonText: "",
 		},
 	},
 	error: {
 		nextState: {
 			0: "close",
+			1: "error",
 		},
 		buttons: {
 			submit: false,
 			back: false,
 			skip: false,
 			close: true,
-			submitButtonText: null,
+			submitButtonText: "",
 		},
 	},
 	skip: {
@@ -120,7 +121,7 @@ export const states = {
 			back: false,
 			skip: false,
 			close: true,
-			submitButtonText: null,
+			submitButtonText: "",
 		},
 	},
 	legal_info: {
@@ -134,7 +135,7 @@ export const states = {
 			back: true,
 			skip: false,
 			close: true,
-			submitButtonText: null,
+			submitButtonText: "",
 		},
 	},
 };

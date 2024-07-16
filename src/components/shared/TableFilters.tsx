@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
 	getFilters,
@@ -23,10 +22,9 @@ import {
 } from "../../thunks/tableThunks";
 import TableFilterProfiles from "./TableFilterProfiles";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
-import { getResourceType } from "../../selectors/tableSelectors";
 import { useHotkeys } from "react-hotkeys-hook";
 import moment from "moment";
-import { useAppDispatch, useAppSelector } from "../../store";
+import { AppThunk, useAppDispatch, useAppSelector } from "../../store";
 import { renderValidDate } from "../../utils/dateUtils";
 import { Tooltip } from "./Tooltip";
 
@@ -34,12 +32,14 @@ import { Tooltip } from "./Tooltip";
  * This component renders the table filters in the upper right corner of the table
  */
 const TableFilters = ({
-// @ts-expect-error TS(7031): Binding element 'loadResource' implicitly has an '... Remove this comment to see the full error message
 	loadResource,
-// @ts-expect-error TS(7031): Binding element 'loadResourceIntoTable' implicitly... Remove this comment to see the full error message
 	loadResourceIntoTable,
-// @ts-expect-error TS(7031): Binding element 'resource' implicitly has an 'any'... Remove this comment to see the full error message
 	resource,
+}: {
+	// TODO: Figure out proper typings
+	loadResource: any,   // (() => AppThunk ) | AsyncThunkAction<any, unknown, AsyncThunkConfig>
+	loadResourceIntoTable: () => AppThunk,
+	resource: string,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -72,8 +72,8 @@ const TableFilters = ({
 		dispatch(resetFilterValues())
 
 		// Reload resources when filters are removed
-		await loadResource();
-		loadResourceIntoTable();
+		await dispatch(loadResource);
+		dispatch(loadResourceIntoTable());
 	};
 
 	// Remove a certain filter
@@ -88,8 +88,8 @@ const TableFilters = ({
 		dispatch(editFilterValue({filterName: filter.name, value: ""}));
 
 		// Reload resources when filter is removed
-		await loadResource();
-		loadResourceIntoTable();
+		await dispatch(loadResource());
+		dispatch(loadResourceIntoTable());
 	};
 
 	// Handle changes when an item of the component is changed
@@ -131,11 +131,10 @@ const TableFilters = ({
 	// This helps increase performance by reducing the number of calls to load resources.
 	const applyFilterChangesDebounced = async () => {
 		// No matter what, we go to page one.
-		dispatch(goToPage(0)).then(async () => {
-			// Reload of resource
-			await loadResource();
-			loadResourceIntoTable();
-		});
+		dispatch(goToPage(0))
+		// Reload of resource
+		await dispatch(loadResource());
+		dispatch(loadResourceIntoTable());
 	};
 
 	useEffect(() => {
@@ -198,10 +197,9 @@ const TableFilters = ({
 				setFilterSelector(false);
 				dispatch(removeSelectedFilter());
 				// Reload of resource after going to very first page.
-				dispatch(goToPage(0)).then(async () => {
-					await loadResource();
-					loadResourceIntoTable();
-				});
+				dispatch(goToPage(0))
+				await dispatch(loadResource());
+				dispatch(loadResourceIntoTable());
 			}
 		}
 
@@ -231,7 +229,7 @@ const TableFilters = ({
 // @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
 	const renderBlueBox = (filter) => {
 // @ts-expect-error TS(7006): Parameter 'opt' implicitly has an 'any' type.
-		let valueLabel = filter.options.find((opt) => opt.value === filter.value)
+		let valueLabel = filter.options?.find((opt) => opt.value === filter.value)
 			?.label || filter.value;
 		return (
 			<span>
@@ -302,6 +300,7 @@ const TableFilters = ({
 												.filter(
 													(filter) => filter.name !== "presentersBibliographic"
 												)
+												.sort((a, b) => t(a.label).localeCompare(t(b.label))) // Sort alphabetically
 												.map((filter, key) => (
 													<option key={key} value={filter.name}>
 														{t(filter.label).substr(0, 40)}
@@ -336,9 +335,7 @@ const TableFilters = ({
 										<span>
 											{
 												// Use different representation of name and value depending on type of filter
-												filter.type === "select" ? (
-													renderBlueBox(filter)
-												) : filter.type === "period" ? (
+												filter.type === "period" ? (
 													<span>
 														<span>
 															{t(filter.label).substr(0, 40)}:
@@ -351,7 +348,9 @@ const TableFilters = ({
 															})}
 														</span>
 													</span>
-												) : null
+												) : (
+													renderBlueBox(filter)
+												)
 											}
 										</span>
 										{/* Remove icon in blue area around filter */}
@@ -553,16 +552,4 @@ const FilterSwitch = ({
 	}
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	resourceType: getResourceType(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TableFilters);
+export default TableFilters;

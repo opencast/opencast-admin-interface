@@ -7,7 +7,7 @@ import UserRolesTab from "./UserRolesTab";
 import { initialFormValuesNewUser } from "../../../../configs/modalConfig";
 import { getUsernames } from "../../../../selectors/userSelectors";
 import { NewUserSchema } from "../../../../utils/validate";
-import { postNewUser } from "../../../../slices/userSlice";
+import { NewUser, postNewUser } from "../../../../slices/userSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { Tooltip } from "../../../shared/Tooltip";
 
@@ -36,8 +36,7 @@ const NewUserWizard = ({
 		setTab(tabNr);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (values: NewUser) => {
 		const response = dispatch(postNewUser(values));
 		console.info(response);
 		close();

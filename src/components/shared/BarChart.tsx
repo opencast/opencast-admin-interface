@@ -1,14 +1,19 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
+import type { ChartDataset, ChartOptions } from 'chart.js';
 
 /**
  * This component provides a bar chart for visualising (statistics) data
  */
 const BarChart = ({
-    values,
-    axisLabels,
-    options
-}: any) => {
+	values,
+	axisLabels,
+	options
+}: {
+	values: ChartDataset<'bar'>,
+	axisLabels: string[],
+	options: ChartOptions<'bar'>,
+}) => {
 	const data = {
 		labels: axisLabels,
 		datasets: [

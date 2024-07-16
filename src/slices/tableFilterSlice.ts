@@ -1,8 +1,8 @@
 import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { relativeDateSpanToFilterValue } from '../utils/dateUtils';
+import { setOffset } from '../slices/tableSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { setOffset } from '../actions/tableActions';
 import { fetchEvents } from './eventSlice';
 import { fetchServices } from './serviceSlice';
 import { FilterProfile } from './tableFilterProfilesSlice';
@@ -79,7 +79,11 @@ export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', asy
 	});
 
 	if (resource === "events") {
-		filtersList.push({ name: "presentersBibliographic" });
+		filtersList.push({
+			label: "FILTERS.EVENTS.PRESENTERS_BIBLIOGRAPHIC.LABEL",
+			name: "presentersBibliographic",
+			translatable: false
+		});
 	}
 
 	return { filtersList, resource };

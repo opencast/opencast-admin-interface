@@ -15,7 +15,7 @@ import {
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
 import { getTotalAcls } from "../../selectors/aclSelectors";
-import { setOffset } from "../../actions/tableActions";
+import { setOffset } from "../../slices/tableSlice";
 import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
@@ -105,22 +105,13 @@ const Acls: React.FC = () => {
 		<>
 			<Header />
 			<NavBar>
-				{/* Add acl button */}
-				<div className="btn-group">
-					{hasAccess("ROLE_UI_ACLS_CREATE", user) && (
-						<button className="add" onClick={() => showNewAclModal()}>
-							<i className="fa fa-plus" />
-							<span>{t("USERS.ACTIONS.ADD_ACL")}</span>
-						</button>
-					)}
-				</div>
-
 				{/* Display modal for new acl if add acl button is clicked */}
-				<NewResourceModal
-					showModal={displayNewAclModal}
-					handleClose={hideNewAclModal}
-					resource="acl"
-				/>
+				{ displayNewAclModal &&
+					<NewResourceModal
+						handleClose={hideNewAclModal}
+						resource="acl"
+					/>
+				}
 
 				{/* Include Burger-button menu*/}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
@@ -154,6 +145,16 @@ const Acls: React.FC = () => {
 						</Link>
 					)}
 				</nav>
+				
+				{/* Add acl button */}
+				<div className="btn-group">
+					{hasAccess("ROLE_UI_ACLS_CREATE", user) && (
+						<button className="add" onClick={() => showNewAclModal()}>
+							<i className="fa fa-plus" />
+							<span>{t("USERS.ACTIONS.ADD_ACL")}</span>
+						</button>
+					)}
+				</div>
 			</NavBar>
 
 			<MainView open={displayNavigation}>
@@ -163,8 +164,8 @@ const Acls: React.FC = () => {
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={() => dispatch(fetchAcls())}
-						loadResourceIntoTable={() => dispatch(loadAclsIntoTable())}
+						loadResource={fetchAcls}
+						loadResourceIntoTable={loadAclsIntoTable}
 						resource={"acls"}
 					/>
 					<h1>{t("USERS.ACLS.TABLE.CAPTION")}</h1>
