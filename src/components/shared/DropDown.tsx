@@ -77,19 +77,15 @@ const DropDown = <T,>({
 		isDisabled: disabled,
 	};
 
-	return (
-		<div>
-			{creatable ? (
-				<CreatableSelect
-					{...commonProps}
-				/>
-			) : (
-				<Select
-					{...commonProps}
-					noOptionsMessage={() => t("SELECT_NO_MATCHING_RESULTS")}
-				/>
-			)}
-		</div>
+	return creatable ? (
+		<CreatableSelect
+			{...commonProps}
+		/>
+	) : (
+		<Select
+			{...commonProps}
+			noOptionsMessage={() => t("SELECT_NO_MATCHING_RESULTS")}
+		/>
 	);
 };
 
