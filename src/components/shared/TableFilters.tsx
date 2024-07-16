@@ -332,27 +332,23 @@ const TableFilters = ({
 							{filterMap.map((filter, key) => {
 								return filter.value && (
 									<span className="ng-multi-value" key={key}>
-										<span>
-											{
-												// Use different representation of name and value depending on type of filter
-												filter.type === "period" ? (
-													<span>
-														<span>
-															{t(filter.label).substr(0, 40)}:
-															{t("dateFormats.date.short", {
-																date: renderValidDate(filter.value.split("/")[0]),
-															})}
-															-
-															{t("dateFormats.date.short", {
-																date: renderValidDate(filter.value.split("/")[1]),
-															})}
-														</span>
-													</span>
-												) : (
-													renderBlueBox(filter)
-												)
-											}
-										</span>
+										{
+											// Use different representation of name and value depending on type of filter
+											filter.type === "period" ? (
+												<span>
+													{t(filter.label).substr(0, 40)}:
+													{t("dateFormats.date.short", {
+														date: renderValidDate(filter.value.split("/")[0]),
+													})}
+													-
+													{t("dateFormats.date.short", {
+														date: renderValidDate(filter.value.split("/")[1]),
+													})}
+												</span>
+											) : (
+												renderBlueBox(filter)
+											)
+										}
 										{/* Remove icon in blue area around filter */}
 										<Tooltip title={t("TABLE_FILTERS.REMOVE")}>
 											<button
