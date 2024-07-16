@@ -1234,9 +1234,6 @@ if (endDate < now) {
 });
 
 export const fetchWorkflows = createAppAsyncThunk('eventDetails/fetchWorkflows', async (eventId: string, { dispatch, getState }) => {
-	// todo: show notification if there are active transactions
-	// dispatch(addNotification('warning', 'ACTIVE_TRANSACTION', -1, null, NOTIFICATION_CONTEXT));
-
 	const data = await axios.get(`/admin-ng/event/${eventId}/workflows.json`);
 	const workflowsData = await data.data;
 	let workflows: Workflow;

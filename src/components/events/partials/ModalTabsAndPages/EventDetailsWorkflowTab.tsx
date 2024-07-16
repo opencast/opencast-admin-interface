@@ -19,17 +19,19 @@ import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
 	deleteWorkflow as deleteWf,
+	fetchHasActiveTransactions,
 	fetchWorkflowDetails,
 	fetchWorkflows,
 	performWorkflowAction,
 	saveWorkflowConfig,
 	updateWorkflow,
 } from "../../../../slices/eventDetailsSlice";
-import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { addNotification, removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
 import { Tooltip } from "../../../shared/Tooltip";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 
 /**
  * This component manages the workflows tab of the event details modal
@@ -66,6 +68,20 @@ const EventDetailsWorkflowTab = ({
 	useEffect(() => {
 		dispatch(removeNotificationWizardForm());
 		dispatch(fetchWorkflows(eventId)).then();
+		dispatch(fetchHasActiveTransactions(eventId)).then((fetchTransactionResult) => {
+			if (
+				fetchTransactionResult.payload.active === undefined ||
+				fetchTransactionResult.payload.active
+			) {
+				dispatch(addNotification({
+					type: "warning",
+					key: "ACTIVE_TRANSACTION",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				}));
+			}
+		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

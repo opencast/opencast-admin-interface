@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Formik } from "formik";
 import { Field } from "../../../shared/Field";
@@ -14,8 +14,10 @@ import {
 	parseValueForBooleanStrings,
 } from "../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
-import { useAppSelector } from "../../../../store";
-import { MetadataCatalog } from "../../../../slices/eventDetailsSlice";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { MetadataCatalog, fetchHasActiveTransactions } from "../../../../slices/eventDetailsSlice";
+import { addNotification, removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 
 /**
  * This component renders metadata details of a certain event or series
@@ -32,8 +34,27 @@ const DetailsExtendedMetadataTab = ({
 	updateResource: (id: string, values: { [key: string]: any }, catalog: MetadataCatalog) => void,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const user = useAppSelector(state => getUserInformation(state));
+
+	useEffect(() => {
+		dispatch(removeNotificationWizardForm());
+		dispatch(fetchHasActiveTransactions(resourceId)).then((fetchTransactionResult) => {
+			if (
+				fetchTransactionResult.payload.active === undefined ||
+				fetchTransactionResult.payload.active
+			) {
+				dispatch(addNotification({
+					type: "warning",
+					key: "ACTIVE_TRANSACTION",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				}));
+			}
+		});
+	}, []);
 
 	const handleSubmit = (values: { [key: string]: any }, catalog: MetadataCatalog) => {
 		updateResource(resourceId, values, catalog);
