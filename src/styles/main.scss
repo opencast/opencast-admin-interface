@@ -87,6 +87,8 @@ $disable-warnings: true !default; // disables deprecation warnings
 @import "vendor/chosen";
 
 .filters-container {
+  display: flex;
+
   div.chosen-container {
     width: 230px !important;
     ul.chosen-choices {
@@ -428,20 +430,20 @@ div.table-filter {
     }
   }
 
+  .fa {
+    font-size: 13px;
+  }
+
   i {
     color: #8a8f99;
     cursor: pointer;
 
     &.clear {
-      font-size: 20px;
-      float: left;
-      padding: 8px 8px 8px 0;
+      padding: 0 8px 0 0;
     }
 
     &.settings {
-      font-size: 20px;
-      float: left;
-      padding: 8px 8px 8px 0;
+      padding: 0 8px 0 0;
     }
   }
 
