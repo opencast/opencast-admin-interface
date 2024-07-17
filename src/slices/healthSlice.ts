@@ -84,16 +84,6 @@ const healthSlice = createSlice({
 		builder
 			.addCase(fetchHealthStatus.pending, (state) => {
 				state.statusHealth = 'loading';
-
-				// Reset state of health status
-				let healthStatus = {
-					name: STATES_NAMES,
-					status: "",
-					error: false,
-				};
-				state.service = mapHealthStatus(state, healthStatus);
-				state.numErr = 0;
-				state.error = false;
 			})
 			.addCase(fetchHealthStatus.fulfilled, (state, action: PayloadAction<
 				FetchHealthStatusResponse
@@ -121,6 +111,7 @@ const healthSlice = createSlice({
 							error: false,
 						};
 						state.service = mapHealthStatus(state, healthStatus);
+						state.error = false;
 					} else {
 						healthStatus = {
 							name: BACKEND_NAMES,
@@ -128,10 +119,9 @@ const healthSlice = createSlice({
 							error: true,
 						};
 						state.service = mapHealthStatus(state, healthStatus);
-
 						state.error = true;
-						state.numErr += 1;
 					}
+					state.numErr = abnormal;
 				}
 			})
 			.addCase(fetchHealthStatus.rejected, (state, action) => {
