@@ -19,10 +19,11 @@ import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
 	deleteWorkflow as deleteWf,
-	fetchWorkflowDetails,
 	fetchWorkflows,
 	performWorkflowAction,
 	saveWorkflowConfig,
+	setModalWorkflowId,
+	setModalWorkflowTabHierarchy,
 	updateWorkflow,
 } from "../../../../slices/eventDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
@@ -36,10 +37,8 @@ import { useTranslation } from "react-i18next";
  */
 const EventDetailsWorkflowTab = ({
 	eventId,
-	setHierarchy,
 }: {
 	eventId: string,
-	setHierarchy: (subTabName: WorkflowTabHierarchy) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -87,8 +86,8 @@ const EventDetailsWorkflowTab = ({
 	};
 
 	const openSubTab = (tabType: WorkflowTabHierarchy, workflowId: string) => {
-		dispatch(fetchWorkflowDetails({eventId, workflowId})).then();
-		setHierarchy(tabType);
+		dispatch(setModalWorkflowId(workflowId));
+		dispatch(setModalWorkflowTabHierarchy(tabType));
 		dispatch(removeNotificationWizardForm());
 	};
 

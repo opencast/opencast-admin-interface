@@ -6,7 +6,7 @@ import { Formik } from "formik";
 import { getAssetUploadOptions } from "../../../../selectors/eventSelectors";
 import { translateOverrideFallback } from "../../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { updateAssets } from "../../../../slices/eventDetailsSlice";
+import { setModalAssetsTabHierarchy, updateAssets } from "../../../../slices/eventDetailsSlice";
 import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
 
@@ -15,10 +15,8 @@ import { useTranslation } from "react-i18next";
  */
 const EventDetailsAssetsAddAsset = ({
 	eventId,
-	setHierarchy,
 }: {
 	eventId: string,
-	setHierarchy: (subTabName: AssetTabHierarchy) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -31,7 +29,7 @@ const EventDetailsAssetsAddAsset = ({
 	);
 
 	const openSubTab = (subTabName: AssetTabHierarchy) => {
-		setHierarchy(subTabName);
+		dispatch(setModalAssetsTabHierarchy(subTabName));
 	};
 
 // @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.

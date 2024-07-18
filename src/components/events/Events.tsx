@@ -41,6 +41,8 @@ import {
 	setShowActions,
 } from "../../slices/eventSlice";
 import { fetchSeries } from "../../slices/seriesSlice";
+import EventDetailsModal from "./partials/modals/EventDetailsModal";
+import { showModal } from "../../selectors/eventDetailsSelectors";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef<HTMLDivElement>();
@@ -53,6 +55,7 @@ const Events = () => {
 	const dispatch = useAppDispatch();
 
 	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
+	const displayEventDetailsModal = useAppSelector(state => showModal(state));
 
 	const [displayActionMenu, setActionMenu] = useState(false);
 	const [displayNavigation, setNavigation] = useState(false);
@@ -304,6 +307,12 @@ const Events = () => {
 					<h1>{t("EVENTS.EVENTS.TABLE.CAPTION")}</h1>
 					<h4>{t("TABLE_SUMMARY", { numberOfRows: events })}</h4>
 				</div>
+
+				{/*Include table modal*/}
+				{displayEventDetailsModal &&
+					<EventDetailsModal />
+				}
+
 				{/*Include table component*/}
 				{/* <Table templateMap={eventsTemplateMap} resourceType="events" /> */}
         <Table templateMap={eventsTemplateMap} />
