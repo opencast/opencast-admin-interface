@@ -609,7 +609,7 @@
 					"ASSETS": "Detayları görüntüle",
 					"START": "Bu başlangıç tarihi için filtre",
 					"SERIES": "Bu dizi için filtre",
-					"STATUS": "Bu etkinlik durumu için filtre",
+					"STATUS": "Open event status",
 					"LOCATION": "Yere göre filtrele",
 					"DETAILS": "Etkinlik detaylarını görüntüle",
 					"DELETE": "Etkinliği sil",

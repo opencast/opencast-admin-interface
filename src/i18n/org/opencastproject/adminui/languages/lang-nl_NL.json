@@ -609,7 +609,7 @@
 					"ASSETS": "Open asset details",
 					"START": "Filtrer til denne startdato",
 					"SERIES": "Filter til denne serie",
-					"STATUS": "Filter til denne status",
+					"STATUS": "Open event status",
 					"LOCATION": "Filter til denne placering",
 					"DETAILS": "Åbn begivenhedsoplysninger",
 					"DELETE": "Slet begivenhed",

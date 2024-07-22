@@ -609,7 +609,7 @@
 					"ASSETS": "Open asset details",
 					"START": "Filter for this start date",
 					"SERIES": "Filter for this series",
-					"STATUS": "Filter for this event status",
+					"STATUS": "Open event status",
 					"LOCATION": "Filter for this location",
 					"DETAILS": "Open event details",
 					"DELETE": "Delete event",
