@@ -37,6 +37,13 @@ const NewProcessingPage = <T extends RequiredFormProps>({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	// Preselect the first item
+	useEffect(() => {
+		if (workflowDef.length == 1) {
+			setDefaultValues(workflowDef[0].id);
+		}
+	}, [workflowDef]);
+
 	const previous = () => {
 		// if not UPLOAD is chosen as source mode, then back to source page
 		if (formik.values.sourceMode !== "UPLOAD") {
