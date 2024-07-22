@@ -38,6 +38,13 @@ const StartTaskWorkflowPage = <T extends RequiredFormProps>({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	// Preselect the first item
+	useEffect(() => {
+		if (workflowDef.length == 1) {
+			setDefaultValues(workflowDef[0].id);
+		}
+	}, [workflowDef]);
+
 // @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 	const setDefaultValues = (value) => {
 		let workflowId = value;
