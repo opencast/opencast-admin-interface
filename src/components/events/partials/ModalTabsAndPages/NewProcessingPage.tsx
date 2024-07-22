@@ -39,9 +39,10 @@ const NewProcessingPage = <T extends RequiredFormProps>({
 
 	// Preselect the first item
 	useEffect(() => {
-		if (workflowDef.length == 1) {
+		if (workflowDef.length === 1) {
 			setDefaultValues(workflowDef[0].id);
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [workflowDef]);
 
 	const previous = () => {
