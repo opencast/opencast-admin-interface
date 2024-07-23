@@ -92,7 +92,7 @@ export type Event = {
 
 export type MetadataField = {
 	differentValues?: boolean,
-	collection?: { [key: string]: unknown }[],	// different for e.g. languages and presenters
+	collection?: { [key: string]: unknown }[],  // different for e.g. languages and presenters
 	id: string,
 	label: string,
 	readOnly: boolean,
@@ -161,7 +161,7 @@ type EventState = {
 	statusAssetUploadOptions: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAssetUploadOptions: SerializedError | null,
 	results: Event[],
-	columns: TableConfig["columns"],			 // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],  // TODO: proper typing, derive from `initialColumns`
 	total: number,
 	count: number,
 	offset: number,
@@ -171,7 +171,7 @@ type EventState = {
 	extendedMetadata: MetadataCatalog[],
 	isFetchingAssetUploadOptions: boolean,
 	uploadAssetOptions: UploadAssetOption[],
-	uploadAssetWorkflow: string | undefined,		// TODO: proper typing
+	uploadAssetWorkflow: string | undefined,  // TODO: proper typing
 	schedulingInfo: {
 		editedEvents: EditedEvents[],
 		seriesOptions: {

@@ -14,7 +14,7 @@ import CreatableSelect from "react-select/creatable";
 /**
  * TODO: Ideally, we would remove "type", and just type the "options" array properly.
  * However, typing options is hard because
- * 	- Creating reasonable generic typing is difficult, as different utility functions handle types for "options" differently
+ *  - Creating reasonable generic typing is difficult, as different utility functions handle types for "options" differently
  *  - Creating typescript types for each "type" is moot atm, as a lot of them (i.e. capture agents) are not properly typed yet
  * I would suggest waiting with typing options until all of its inputs are properly typed
  */
