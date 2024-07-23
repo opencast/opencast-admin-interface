@@ -58,11 +58,13 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 					type: "EVENTS.EVENTS.DETAILS.METADATA.SERIES",
 					previous: getMetadataCollectionFieldName(
 						{ collection: seriesOptions },
-						{ value: event.series }
+						{ value: event.series },
+						t
 					),
 					next: getMetadataCollectionFieldName(
 						{ collection: seriesOptions },
-						{ value: event.changedSeries }
+						{ value: event.changedSeries },
+						t
 					),
 				});
 			}
