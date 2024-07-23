@@ -20,11 +20,10 @@ const PublishCell = ({
 
 	useEffect(() => {
 		// Function for handling clicks outside of popup
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-		const handleClickOutside = (e) => {
+		const handleClickOutside = (e: MouseEvent) => {
 			if (
 				containerPublications.current &&
-				!containerPublications.current.contains(e.target)
+				!containerPublications.current.contains(e.target as Node)
 			) {
 				setShowPopup(false);
 			}
