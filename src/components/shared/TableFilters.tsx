@@ -245,14 +245,16 @@ const TableFilters = ({
 		<>
 			<div className="filters-container">
 				{/* Text filter - Search Query */}
-				<input
-					type="text"
-					className="search expand"
-					placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
-					onChange={(e) => handleChange(e)}
-					name="textFilter"
-					value={textFilter}
-				/>
+				<div className="search-container">
+					<input
+						type="text"
+						className="search expand"
+						placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
+						onChange={(e) => handleChange(e)}
+						name="textFilter"
+						value={textFilter}
+					/>
+				</div>
 
 				{/* Selection of filters and management of filter profiles*/}
 				{/*show only if filters.filters contains filters*/}
