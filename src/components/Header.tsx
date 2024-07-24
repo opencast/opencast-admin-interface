@@ -131,12 +131,13 @@ const Header = () => {
 		// Fetching health status information at mount
 		loadHealthStatus().then((r) => console.info(r));
 		// Fetch health status every minute
-		setInterval(() => dispatch(fetchHealthStatus()), 5000);
+		const interval = setInterval(() => dispatch(fetchHealthStatus()), 5000);
 
 		// Event listener for handle a click outside of dropdown menu
 		window.addEventListener("mousedown", handleClickOutside);
 
 		return () => {
+			clearInterval(interval);
 			window.removeEventListener("mousedown", handleClickOutside);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
