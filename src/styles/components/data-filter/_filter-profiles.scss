@@ -122,9 +122,10 @@
         } // ul
 
         li {
+            display: flex;
             border-top: 1px solid #e2e2e2;
             border-bottom: 1px solid #e2e2e2;
-            padding: 0px 10px 0px 10px;
+            padding: 7px 10px;
 
             .remove {
                 @include fa-icon($fa-var-close, before, inline-block, 0, 0, $medium-prim-color, 17px);
@@ -137,10 +138,13 @@
             }
 
             > button {
-              word-wrap: break-word;
-              font-size: inherit;
+                overflow-wrap: anywhere;
+                font-size: inherit;
+                text-align: start;
 
               &.active { color: $l-blue; }
+
+              &:first-child { flex-grow: 1; }
             }
 
         } // li

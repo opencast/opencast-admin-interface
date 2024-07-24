@@ -26,7 +26,7 @@ import { MetadataCatalog } from './eventDetailsSlice';
 type Feed = {
 	link: string,
 	type: string,
-	version: string
+	version: string,
 }
 
 type Acl = {

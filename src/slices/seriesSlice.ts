@@ -22,7 +22,7 @@ import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 /**
  * This file contains redux reducer for actions affecting the state of series
  */
-type Series = {
+export type Series = {
 	contributors: string[],
 	createdBy?: string,
 	creation_date?: string,

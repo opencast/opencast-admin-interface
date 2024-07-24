@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import i18n from "../i18n/i18n";
 import languages from "../i18n/languages";
@@ -45,10 +44,7 @@ function logout() {
 /**
  * Component that renders the header and the navigation in the upper right corner.
  */
-const Header = ({
-// @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
-	loadingServicesIntoTable,
-}) => {
+const Header = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	// State for opening (true) and closing (false) the dropdown menus for language, notification, help and user
@@ -82,7 +78,7 @@ const Header = ({
 
 	const redirectToServices = async () => {
 		// Load services into table
-		await loadingServicesIntoTable();
+		await dispatch(loadServicesIntoTable());
 
 		// set the action filter value of services to true
 		await dispatch(setSpecificServiceFilter({ filter: "actions", filterValue: "true" }));
@@ -160,7 +156,7 @@ const Header = ({
 				<nav className="header-nav nav-dd-container" id="nav-dd-container">
 					{/* Select language */}
 					<div className="nav-dd lang-dd" id="lang-dd" ref={containerLang}>
-						<Tooltip title={t("LANGUAGE")}>
+						<Tooltip active={!displayMenuLang} title={t("LANGUAGE")}>
 							<button className="lang" onClick={() => setMenuLang(!displayMenuLang)}>
 								<IconContext.Provider value={{ style: {fontSize: "20px"} }}>
 									<HiTranslate />
@@ -208,7 +204,7 @@ const Header = ({
 							id="info-dd"
 							ref={containerNotify}
 						>
-							<Tooltip title={t("SYSTEM_NOTIFICATIONS")}>
+							<Tooltip active={!displayMenuNotify} title={t("SYSTEM_NOTIFICATIONS")}>
 								<button onClick={() => setMenuNotify(!displayMenuNotify)}>
 									<i className="fa fa-bell" aria-hidden="true" />
 									{errorCounter !== 0 && (
@@ -216,15 +212,15 @@ const Header = ({
 											{errorCounter}
 										</span>
 									)}
-									{/* Click on the bell icon, a dropdown menu with all services in serviceList and their status opens */}
-									{displayMenuNotify && (
-										<MenuNotify
-											healthStatus={healthStatus}
-											redirectToServices={redirectToServices}
-										/>
-									)}
 								</button>
 							</Tooltip>
+							{/* Click on the bell icon, a dropdown menu with all services in serviceList and their status opens */}
+							{displayMenuNotify && (
+								<MenuNotify
+									healthStatus={healthStatus}
+									redirectToServices={redirectToServices}
+								/>
+							)}
 						</div>
 					)}
 
@@ -244,7 +240,7 @@ const Header = ({
 								id="help-dd"
 								ref={containerHelp}
 							>
-								<Tooltip title={t("HELP.HELP")}>
+								<Tooltip active={!displayMenuHelp} title={t("HELP.HELP")}>
 									<button
 										onClick={() => setMenuHelp(!displayMenuHelp)}
 									>
@@ -298,7 +294,10 @@ const MenuLang = () => {
 			{/* one list item for each available language */}
 			{languages.map((language, key) => (
 				<li key={key}>
-					<button className="button-like-anchor" onClick={() => changeLanguage(language.code)}>
+					<button
+						className={"button-like-anchor" + (i18n.language === language.code ? " selected" : "")}
+						onClick={() => changeLanguage(language.code)}
+					>
 						{language.long}
 					</button>
 				</li>
@@ -434,15 +433,4 @@ const MenuUser = () => {
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;
