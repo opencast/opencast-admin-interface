@@ -8,6 +8,13 @@ export const fetchAdopterRegistration = async () => {
 	return await response.data;
 };
 
+// get statistics information about adopter
+export const fetchAdopterStatisticsSummary = async () => {
+	const response = await axios.get("/admin-ng/adopter/summary");
+
+	return await response.data;
+};
+
 export type Registration = {
 	contactMe: boolean,
 	allowsStatistics: boolean,

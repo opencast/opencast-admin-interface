@@ -389,8 +389,16 @@
 			"SKIP": "Not now",
 			"CONTINUE": "Continue",
 			"BACK": "Back",
+			"SUBMIT": "Submit",
+			"CONFIRM": "Confirm",
 			"LEGAL_INFO_STATE": {
 				"HEADER": "Terms of Service and Privacy Policy"
+			},
+			"SUMMARY_STATE": {
+				"HEADER": "This is a JSON summary of exactly what would be sent to Opencast's servers",
+				"GENERAL_HEADER": "Adopter Information",
+				"STATS_HEADER": "Statistical Information",
+				"NO_STATS_HEADER": "No statistics data will be shared"
 			},
 			"INFORMATION_STATE": {
 				"HEADER": "Thank you for using Opencast!",

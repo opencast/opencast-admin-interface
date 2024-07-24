@@ -16,8 +16,8 @@ export const states = {
 	},
 	form: {
 		nextState: {
-			0: "thank_you",
-			1: "error",
+			0: "close",
+			1: "summary",
 			2: "legal_info",
 			3: "update",
 			4: "delete_submit",
@@ -29,7 +29,7 @@ export const states = {
 			skip: false,
 			close: true,
 			delete: false,
-			submitButtonText: "SUBMIT",
+			submitButtonText: "ADOPTER_REGISTRATION.MODAL.CONTINUE",
 		},
 	},
 	save: {
@@ -69,7 +69,7 @@ export const states = {
 			back: true,
 			skip: false,
 			close: true,
-			submitButtonText: "CONFIRM",
+			submitButtonText: "ADOPTER_REGISTRATION.MODAL.CONFIRM",
 		},
 	},
 	delete: {
@@ -83,6 +83,20 @@ export const states = {
 			skip: false,
 			close: false,
 			submitButtonText: "",
+		},
+	},
+	summary: {
+		nextState: {
+			0: "thank_you",
+			1: "error",
+			5: "form",
+		},
+		buttons: {
+			submit: true,
+			back: true,
+			skip: false,
+			close: true,
+			submitButtonText: "ADOPTER_REGISTRATION.MODAL.SUBMIT",
 		},
 	},
 	thank_you: {
