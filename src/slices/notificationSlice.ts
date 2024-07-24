@@ -20,7 +20,7 @@ export type OurNotification = {
 	message: string,
 	id: number,
 	hidden: boolean,
-	duration: number,		// in milliseconds. -1 means stay forever
+	duration: number,  // in milliseconds. -1 means stay forever
 	type: "error" | "success" | "warning" | "info",
 	parameter: any,
 	key: string,
@@ -81,7 +81,7 @@ export const addNotification = createAppAsyncThunk('notifications/addNotificatio
 
 	// Create new notification
 	const notification = {
-		id: 0,		// value does not matter, id is set in action
+		id: 0,  // value does not matter, id is set in action
 		type: type,
 		key: key,
 		message: "NOTIFICATIONS." + key,

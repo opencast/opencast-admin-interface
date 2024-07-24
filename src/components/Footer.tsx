@@ -20,6 +20,9 @@ const Footer: React.FC = () => {
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
 
+	const version = (user?.ocVersion?.version ?? '')
+		.replace(/0\.0\.SNAPSHOT/, 'x')
+		.replace(/\.([0-9]+)\.0/, '.$1');
 	const lastModified = user?.ocVersion?.['last-modified']
 		? new Date(user.ocVersion['last-modified']).toISOString().substring(0, 10)
 		: 'unknown';
@@ -33,7 +36,7 @@ const Footer: React.FC = () => {
 					{user.ocVersion && (
 						<li>
 							{"Opencast "}
-							<Tooltip title={t('BUILD.VERSION')}><span>{user.ocVersion.version}</span></Tooltip>
+							<Tooltip title={t('BUILD.VERSION')}><span>{version}</span></Tooltip>
 							{hasAccess("ROLE_ADMIN", user) && (
 								<span>
 								{user.ocVersion.buildNumber && (

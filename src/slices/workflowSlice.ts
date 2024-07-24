@@ -8,14 +8,14 @@ import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 type ConfigurationPanelField = {
 	// We could potentially specify 'fieldset' more, but I cannot find a definition
 	// for which key value pairs are allowed
-	fieldset?: { [key: string]: any }	// Values can be anything
+	fieldset?: { [key: string]: any }  // Values can be anything
 	legend?: string,
 	description?: string,
 }
 
 export type Workflow = {
-	configuration_panel: string,	//XML
-	configuration_panel_json: string | ConfigurationPanelField[],	// 'string' will always be the empty string
+	configuration_panel: string,  //XML
+	configuration_panel_json: string | ConfigurationPanelField[],  // 'string' will always be the empty string
 	description: string,
 	displayOrder: number,
 	id: string,

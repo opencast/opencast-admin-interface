@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { isJson } from "../../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../../utils/resourceUtils";
 
 /**
@@ -45,23 +44,13 @@ const MetadataExtendedSummaryTable = ({
 						!!metadataFields[i].collection &&
 						metadataFields[i].collection.length > 0
 					) {
-						fieldValue = isJson(
-							getMetadataCollectionFieldName(metadataFields[i], {
+						fieldValue = getMetadataCollectionFieldName(
+							metadataFields[i],
+							{
 								value: fieldValue,
-							})
-						)
-							? t(
-									JSON.parse(
-										getMetadataCollectionFieldName(metadataFields[i], {
-											value: fieldValue,
-										})
-									).label
-							  )
-							: t(
-									getMetadataCollectionFieldName(metadataFields[i], {
-										value: fieldValue,
-									})
-							  );
+							},
+							t
+						);
 					}
 
 // @ts-expect-error TS(7005): Variable 'metadata' implicitly has an 'any[]' type... Remove this comment to see the full error message

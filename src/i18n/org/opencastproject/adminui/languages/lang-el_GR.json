@@ -25,6 +25,7 @@
 	"RESET": "Επαναφορά",
 	"SELECT_NO_OPTION_SELECTED": "Δεν επιλέχθηκε κάποια επιλογή",
 	"SELECT_NO_OPTIONS_AVAILABLE": "Δεν υπάρχουν διαθέσιμες επιλογές",
+	"SELECT_NO_MATCHING_RESULTS": "No matching results.",
 	"YES": "Ναί",
 	"COPY": "Αντιγραφή στο πρόχειρο",
 	"LTI": {
@@ -170,6 +171,7 @@
 		"EVENTS_CREATED": "Η εκδήλωση έχει δημιουργηθεί",
 		"EVENTS_UPLOAD_STARTED": "Μια εκδήλωση ανέβηκε…",
 		"EVENTS_NOT_CREATED": "Δεν ήταν δυνατή η δημιουργία της εκδήλωσης",
+		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "Όλες οι εκδηλώσεις έχουν ενημερωθεί με επιτυχία",
 		"EVENTS_NOT_UPDATED": "Δεν ήταν δυνατή η αποθήκευση της εκδήλωσης",
 		"EVENTS_NOT_UPDATED_ID": "Δεν ήταν δυνατή η αποθήκευση της εκδήλωσης {{ id }}",
@@ -607,7 +609,7 @@
 					"ASSETS": "Άνοιγμα λεπτομερειών αντικιεμένων",
 					"START": "Φίλτρο για αυτήν την ημερομηνία έναρξης",
 					"SERIES": "Φίλτρο για αυτή τη σειρά",
-					"STATUS": "Φίλτρο για την κατάσταση της εκδήλωσης",
+					"STATUS": "Open event status",
 					"LOCATION": "Εκδήλωση για αυτήν την τοποθεσία",
 					"DETAILS": "Προβολή λεπτομερειών εκδήλωσης",
 					"DELETE": "Διαγραφή εκδήλωσης",
@@ -632,7 +634,7 @@
 				"PROCESSED": "Ολοκληρώθηκε",
 				"RECORDING_FAILURE": "Αποτυχία εγγραφής",
 				"PROCESSING_FAILURE": "Αποτυχία επεξεργασίας",
-				"PROCESSING_CANCELED": "Ακύρωση επεξεργασίας"
+				"PROCESSING_CANCELLED": "Processing canceled"
 			},
 			"STATE_MAPPING": {
 				"RETRACTING": "Ανάκληση",
@@ -861,8 +863,7 @@
 						"DETAILS": "Λεπτομέρειες"
 					},
 					"ROLES": {
-						"LABEL": "Επιλέξτε ένα ρόλο",
-						"EMPTY": "Κανένας ρόλος δεν βρέθηκε"
+						"LABEL": "Select or create a role"
 					}
 				},
 				"COMMENTS": {
@@ -1291,6 +1292,14 @@
 					"RIGHT": "Επιλεγμένοι ρόλοι",
 					"REMOVE": "Κατάργηση ρόλου",
 					"ADD": "Προσθήκη ρόλου"
+				},
+				"STRENGTH": {
+					"BAD": "Bad password",
+					"VERYWEAK": "Very weak password",
+					"WEAK": "Weak password",
+					"GOOD": "Good password",
+					"STRONG": "Strong password",
+					"VERYSTRONG": "Very strong password"
 				}
 			}
 		},

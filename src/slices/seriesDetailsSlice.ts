@@ -27,7 +27,7 @@ import { Ace } from './aclSlice';
 type Feed = {
 	link: string,
 	type: string,
-	version: string
+	version: string,
 }
 
 type SeriesDetailsState = {
@@ -45,7 +45,7 @@ type SeriesDetailsState = {
 	errorStatistics: SerializedError | null,
 	statusStatisticsValue: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorStatisticsValue: SerializedError | null,
-  metadata: MetadataCatalog,
+  	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	feeds: Feed[],
 	acl: TransformedAcl[],

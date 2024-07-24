@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { getSelectedRows } from "../../../../selectors/tableSelectors";
-import { connect } from "react-redux";
 import { useSelectionChanges } from "../../../../hooks/wizardHooks";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import {
@@ -26,14 +25,13 @@ interface RequiredFormProps {
 const EditScheduledEventsGeneralPage = <T extends RequiredFormProps>({
 	nextPage,
 	formik,
-// @ts-expect-error TS(7031): Binding element 'selectedRows' implicitly has an '... Remove this comment to see the full error message
-	selectedRows,
 }: {
 	formik: FormikProps<T>,
 	nextPage: (values: T) => void,
 }) => {
 	const { t } = useTranslation();
 
+	const selectedRows = useAppSelector(state => getSelectedRows(state));
 	const user = useAppSelector(state => getUserInformation(state));
 
 	const {
@@ -41,6 +39,7 @@ const EditScheduledEventsGeneralPage = <T extends RequiredFormProps>({
 		allChecked,
 		onChangeSelected,
 		onChangeAllSelected,
+		// @ts-expect-error TS(7006):
 	} = useSelectionChanges(formik, selectedRows);
 
 	useEffect(() => {
@@ -161,10 +160,4 @@ const EditScheduledEventsGeneralPage = <T extends RequiredFormProps>({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	selectedRows: getSelectedRows(state),
-});
-
-export default connect(mapStateToProps)(EditScheduledEventsGeneralPage);
+export default EditScheduledEventsGeneralPage;
