@@ -8,7 +8,7 @@ import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 /**
  * This file contains redux reducer for actions affecting the state of services
  */
-type Service = {
+export type Service = {
 	completed: number,
 	hostname: string,
 	meanQueueTime: number,

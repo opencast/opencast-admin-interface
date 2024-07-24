@@ -8,7 +8,8 @@ import {
 	fetchRolesWithTarget,
 } from "../../../slices/aclSlice";
 import Notifications from "../Notifications";
-import { Formik, Field, FieldArray, FormikErrors } from "formik";
+import { Formik, FieldArray, FormikErrors } from "formik";
+import { Field } from "../Field";
 import { NOTIFICATION_CONTEXT } from "../../../configs/modalConfig";
 import {
 	createPolicy,
@@ -430,6 +431,7 @@ const ResourceDetailsAccessPolicyTab = ({
 																										}
 																										type={"aclRole"}
 																										required={true}
+																										creatable={true}
 																										handleChange={(element) => {
 																											if (element) {
 																												replace(index, {
@@ -439,13 +441,7 @@ const ResourceDetailsAccessPolicyTab = ({
 																											}
 																										}}
 																										placeholder={
-																											roles.length > 0
-																												? t(
-																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.LABEL"
-																												  )
-																												: t(
-																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.EMPTY"
-																												  )
+																											t("EVENTS.EVENTS.DETAILS.ACCESS.ROLES.LABEL")
 																										}
 																										disabled={
 																											!hasAccess(

@@ -11,15 +11,12 @@ import { removeNotificationWizardForm } from "../../../../slices/notificationSli
 import { renderValidDate } from "../../../../utils/dateUtils";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import { setModalWorkflowTabHierarchy } from "../../../../slices/eventDetailsSlice";
 
 /**
  * This component manages the workflow error details for the workflows tab of the event details modal
  */
-const EventDetailsWorkflowErrorDetails = ({
-	setHierarchy,
-}: {
-	setHierarchy: (subTabName: WorkflowTabHierarchy) => void,
-}) => {
+const EventDetailsWorkflowErrorDetails = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
@@ -28,7 +25,7 @@ const EventDetailsWorkflowErrorDetails = ({
 
 	const openSubTab = (tabType: WorkflowTabHierarchy) => {
 		dispatch(removeNotificationWizardForm());
-		setHierarchy(tabType);
+		dispatch(setModalWorkflowTabHierarchy(tabType));
 	};
 
 	return (

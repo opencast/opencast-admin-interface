@@ -8,17 +8,13 @@ import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNaviga
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
-import { WorkflowTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import { setModalWorkflowTabHierarchy } from "../../../../slices/eventDetailsSlice";
 
 /**
  * This component manages the workflow operation details for the workflows tab of the event details modal
  */
-const EventDetailsWorkflowOperationDetails = ({
-	setHierarchy,
-}: {
-	setHierarchy: (subTabName: WorkflowTabHierarchy) => void,
-}) => {
+const EventDetailsWorkflowOperationDetails = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
@@ -28,7 +24,7 @@ const EventDetailsWorkflowOperationDetails = ({
 // @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
 	const openSubTab = (tabType) => {
 		dispatch(removeNotificationWizardForm());
-		setHierarchy(tabType);
+		dispatch(setModalWorkflowTabHierarchy(tabType));
 	};
 
 	return (

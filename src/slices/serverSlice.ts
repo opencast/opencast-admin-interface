@@ -8,7 +8,7 @@ import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 /**
  * This file contains redux reducer for actions affecting the state of servers
  */
-type Server = {
+export type Server = {
 	cores: number,
 	hostname: string,
 	maintenance: boolean,

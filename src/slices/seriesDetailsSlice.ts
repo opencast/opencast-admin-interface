@@ -26,7 +26,7 @@ import { MetadataCatalog } from './eventDetailsSlice';
 type Feed = {
 	link: string,
 	type: string,
-	version: string
+	version: string,
 }
 
 type Acl = {
@@ -51,7 +51,7 @@ type SeriesDetailsState = {
 	errorStatistics: SerializedError | null,
 	statusStatisticsValue: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorStatisticsValue: SerializedError | null,
-  metadata: MetadataCatalog,
+  	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	feeds: Feed[],
 	acl: Acl[],

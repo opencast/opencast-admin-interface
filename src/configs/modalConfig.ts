@@ -28,7 +28,7 @@ export const initialFormValuesNewEvents: {
 	aclTemplate: string,
 	acls: TransformedAcl[],
 	uploadAssetsTrack?: UploadAssetsTrack[]
-	[key: string]: unknown,	// Metadata fields that are getting added later
+	[key: string]: unknown,  // Metadata fields that are getting added later
 } = {
 	sourceMode: "UPLOAD",
 	scheduleStartDate: new Date().toISOString(),
@@ -99,7 +99,7 @@ export const WORKFLOW_UPLOAD_ASSETS_NON_TRACK = "publish-uploaded-assets";
 export const initialFormValuesNewSeries: {
 	acls: TransformedAcl[],
 	theme: string,
-	[key: string]: any,	// Metadata fields that are getting added later
+	[key: string]: any,  // Metadata fields that are getting added later
 } = {
 	acls: [],
 	theme: "",

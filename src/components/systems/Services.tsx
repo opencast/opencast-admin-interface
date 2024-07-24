@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
 import cn from "classnames";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
@@ -11,11 +10,10 @@ import { servicesTemplateMap } from "../../configs/tableConfigs/servicesTableMap
 import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
 import {
 	loadJobsIntoTable,
-	loadServersIntoTable,
 	loadServicesIntoTable,
 } from "../../thunks/tableThunks";
 import { getTotalServices } from "../../selectors/serviceSelector";
-import { setOffset } from "../../actions/tableActions";
+import { setOffset } from "../../slices/tableSlice";
 import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
@@ -31,16 +29,7 @@ import { fetchServices } from "../../slices/serviceSlice";
 /**
  * This component renders the table view of services
  */
-const Services = ({
-// @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
-	loadingServicesIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingJobsIntoTable' implicitly ... Remove this comment to see the full error message
-	loadingJobsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingServersIntoTable' implicit... Remove this comment to see the full error message
-	loadingServersIntoTable,
-// @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
-	resetOffset,
-}) => {
+const Services = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
@@ -49,39 +38,34 @@ const Services = ({
 	const user = useAppSelector(state => getUserInformation(state));
 	const services = useAppSelector(state => getTotalServices(state));
 
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchServicesWrapper = async () => {
-		await dispatch(fetchServices())
-	}
-
 	const loadServices = async () => {
 		// Fetching services from server
 		await dispatch(fetchServices());
 
 		// Load services into table
-		loadingServicesIntoTable();
+		dispatch(loadServicesIntoTable());
 	};
 
 	const loadJobs = () => {
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching jobs from server
 		dispatch(fetchJobs());
 
 		// Load jobs into table
-		loadingJobsIntoTable();
+		dispatch(loadJobsIntoTable());
 	};
 
 	const loadServers = () => {
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching servers from server
 		dispatch(fetchServers());
 
 		// Load servers into table
-		loadingServersIntoTable();
+		dispatch(fetchServers());
 	};
 
 	useEffect(() => {
@@ -151,8 +135,8 @@ const Services = ({
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={fetchServicesWrapper}
-						loadResourceIntoTable={loadingServicesIntoTable}
+						loadResource={fetchServices}
+						loadResourceIntoTable={loadServicesIntoTable}
 						resource={"services"}
 					/>
 					<h1>{t("SYSTEMS.SERVICES.TABLE.CAPTION")}</h1>
@@ -166,20 +150,4 @@ const Services = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	currentFilterType: getCurrentFilterResource(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
-	loadingJobsIntoTable: () => dispatch(loadJobsIntoTable()),
-	loadingServers: () => dispatch(fetchServers()),
-	loadingServersIntoTable: () => dispatch(loadServersIntoTable()),
-	resetOffset: () => dispatch(setOffset(0)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Services);
+export default Services;
