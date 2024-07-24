@@ -6,17 +6,12 @@ import {
 } from "../../../../selectors/eventDetailsSelectors";
 import { humanReadableBytesFilter } from "../../../../utils/eventDetailsUtils";
 import { useAppSelector } from "../../../../store";
-import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the publication details sub-tab for assets tab of event details modal
  */
-const EventDetailsAssetPublicationDetails = ({
-	setHierarchy,
-}: {
-	setHierarchy: (subTabName: AssetTabHierarchy) => void,
-}) => {
+const EventDetailsAssetPublicationDetails = () => {
 	const { t } = useTranslation();
 
 	const publication = useAppSelector(state => getAssetPublicationDetails(state));

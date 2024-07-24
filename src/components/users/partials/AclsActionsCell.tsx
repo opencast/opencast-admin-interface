@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import { deleteAcl } from "../../../slices/aclSlice";
+import { AclResult, deleteAcl } from "../../../slices/aclSlice";
 import AclDetailsModal from "./modal/AclDetailsModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
@@ -14,7 +14,9 @@ import { Tooltip } from "../../shared/Tooltip";
  */
 const AclsActionsCell = ({
 	row,
-}: any) => {
+}: {
+	row: AclResult
+}) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 

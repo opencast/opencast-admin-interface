@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Notifications from "../../../shared/Notifications";
 import {
 	getAssetMediaDetails,
@@ -9,21 +9,26 @@ import {
 	humanReadableBytesFilter,
 } from "../../../../utils/eventDetailsUtils";
 import { useAppSelector } from "../../../../store";
-import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the media details sub-tab for assets tab of event details modal
  */
-const EventDetailsAssetMediaDetails = ({
-	setHierarchy,
-}: {
-	setHierarchy: (subTabName: AssetTabHierarchy) => void,
-}) => {
+const EventDetailsAssetMediaDetails = () => {
 	const { t } = useTranslation();
 
 	const media = useAppSelector(state => getAssetMediaDetails(state));
 	const isFetching = useAppSelector(state => isFetchingAssetMediaDetails(state));
+
+	const PlayerType = media.has_video ? 'video' : 'audio';
+
+	const videoRef = useRef<HTMLVideoElement>(null);
+
+	// Make sure to reload the video player when the url changes, React will not do that for us
+	// This is necessary for proper rerendering when switching between assets
+	useEffect(() => {
+		videoRef.current?.load();
+	}, [media.url]);
 
 	return (
 		<div className="modal-content">
@@ -356,24 +361,26 @@ const EventDetailsAssetMediaDetails = ({
 						</div>
 					</div>
 
-					{/* preview video player */}
-					<div className="obj tbl-container media-stream-details">
-						<header>
-							{t("EVENTS.EVENTS.DETAILS.ASSETS.PREVIEW") /* Preview */}
-						</header>
-						<div className="obj-container">
-							<div>
-								{/* video player */}
-								<div className="video-player">
-									<div>
-										<video id="player" controls>
-											<source src={media.url} type="video/mp4" />
-										</video>
+					{/* preview video/audio player (only if we actually have video/audio) */}
+					{(media.has_video || media.has_audio) && (
+						<div className="obj tbl-container media-stream-details">
+							<header>
+								{t("EVENTS.EVENTS.DETAILS.ASSETS.PREVIEW") /* Preview */}
+							</header>
+							<div className="obj-container">
+								<div>
+									{/* video player */}
+									<div className="video-player">
+										<div>
+											<PlayerType ref={videoRef} id="player" controls>
+													<source src={media.url} type={media.mimetype}/>
+											</PlayerType>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					)}
 				</div>
 			</div>
 		</div>

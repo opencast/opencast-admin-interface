@@ -1,4 +1,5 @@
 import moment from "moment";
+import { Event } from "../slices/eventSlice";
 
 /**
  * This file contains functions and constants that are needed in the event details modal
@@ -61,4 +62,9 @@ export const humanReadableBytesFilter = (bytesValue: string | number) => {
 	} while (Math.abs(bytes) >= thresh && u < units.length - 1);
 
 	return bytes.toFixed(1) + " " + units[u];
+};
+
+export const hasScheduledStatus = (event: Event) => {
+	return event.event_status.toUpperCase().indexOf("SCHEDULED") > -1 ||
+		event.event_status.toUpperCase().indexOf("RECORDING") > -1
 };
