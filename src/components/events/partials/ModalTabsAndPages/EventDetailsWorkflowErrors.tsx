@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
 import {
+	getModalWorkflowId,
 	getWorkflow,
 	getWorkflowErrors,
 	isFetchingWorkflowErrors,
@@ -8,7 +9,11 @@ import {
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
-import { fetchWorkflowErrorDetails } from "../../../../slices/eventDetailsSlice";
+import {
+	fetchWorkflowErrorDetails,
+	fetchWorkflowErrors,
+	setModalWorkflowTabHierarchy
+} from "../../../../slices/eventDetailsSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
@@ -18,14 +23,13 @@ import { useTranslation } from "react-i18next";
  */
 const EventDetailsWorkflowErrors = ({
 	eventId,
-	setHierarchy,
 }: {
 	eventId: string,
-	setHierarchy: (subTabName: WorkflowTabHierarchy) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
+	const workflowId = useAppSelector(state => getModalWorkflowId(state));
 	const workflow = useAppSelector(state => getWorkflow(state));
 	const errors = useAppSelector(state => getWorkflowErrors(state));
 	const isFetching = useAppSelector(state => isFetchingWorkflowErrors(state));
@@ -43,9 +47,14 @@ const EventDetailsWorkflowErrors = ({
 		}
 	};
 
+	useEffect(() => {
+		dispatch(fetchWorkflowErrors({eventId, workflowId})).then();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	const openSubTab = (tabType: WorkflowTabHierarchy, errorId: number | undefined = undefined) => {
 		dispatch(removeNotificationWizardForm());
-		setHierarchy(tabType);
+		dispatch(setModalWorkflowTabHierarchy(tabType));
 		if (tabType === "workflow-error-details") {
 			dispatch(fetchWorkflowErrorDetails({eventId, workflowId: workflow.wiid, errorId})).then();
 		}

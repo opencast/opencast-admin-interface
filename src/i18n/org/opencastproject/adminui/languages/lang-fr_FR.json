@@ -609,7 +609,7 @@
 					"ASSETS": "Voir les détails de l'élément",
 					"START": "Filtrer pour cette date de début",
 					"SERIES": "Filtrer pour cette série",
-					"STATUS": "Filtrer pour le statut de cet événement",
+					"STATUS": "Open event status",
 					"LOCATION": "Filtrer pour cet emplacement",
 					"DETAILS": "Voir les détails de l’évènement",
 					"DELETE": "Supprimer l’événement",

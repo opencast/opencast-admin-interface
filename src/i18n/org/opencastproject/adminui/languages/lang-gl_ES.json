@@ -609,7 +609,7 @@
 					"ASSETS": "Abrir o detalles do recurso",
 					"START": "Filtro para esta data de inicio",
 					"SERIES": "Filtro para esta serie",
-					"STATUS": "Filtro para o estado deste evento",
+					"STATUS": "Open event status",
 					"LOCATION": "Filtro para esta ubicación",
 					"DETAILS": "Abrir detalles do evento",
 					"DELETE": "Borrar evento",

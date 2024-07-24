@@ -6,17 +6,12 @@ import {
 } from "../../../../selectors/eventDetailsSelectors";
 import { humanReadableBytesFilter } from "../../../../utils/eventDetailsUtils";
 import { useAppSelector } from "../../../../store";
-import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
 
 /**
  * This component manages the catalog details sub-tab for assets tab of event details modal
  */
-const EventDetailsAssetCatalogDetails = ({
-	setHierarchy,
-}: {
-	setHierarchy: (subTabName: AssetTabHierarchy) => void,
-}) => {
+const EventDetailsAssetCatalogDetails = () => {
 	const { t } = useTranslation();
 
 	const catalog = useAppSelector(state => getAssetCatalogDetails(state));

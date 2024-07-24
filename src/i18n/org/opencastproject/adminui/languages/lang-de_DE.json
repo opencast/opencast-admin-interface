@@ -609,7 +609,7 @@
 					"ASSETS": "Anlagedetails öffnen",
 					"START": "Nach diesem Startdatum filtern",
 					"SERIES": "Nach dieser Serie filtern",
-					"STATUS": "Nach diesem Verarbeitungsstatus filtern",
+					"STATUS": "Open event status",
 					"LOCATION": "Nach diesem Standort filtern",
 					"DETAILS": "Video-Details anzeigen",
 					"DELETE": "Video löschen",
@@ -2181,8 +2181,8 @@
 		}
 	},
 	"ABOUT": {
-		"IMPRINT": "Imprint",
-		"PRIVACY": "Privacy statement",
-		"NOCONTENT": "Content not available"
+		"IMPRINT": "Impressum",
+		"PRIVACY": "Datenschutzerklärung",
+		"NOCONTENT": "Inhalt nicht verfügbar"
 	}
 }
