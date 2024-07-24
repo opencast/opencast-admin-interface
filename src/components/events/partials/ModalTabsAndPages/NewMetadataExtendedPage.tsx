@@ -1,10 +1,10 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Field, FormikProps } from "formik";
+import { FormikProps } from "formik";
+import { Field } from "../../../shared/Field";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import RenderField from "../../../shared/wizard/RenderField";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
-import { isJson } from "../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
 
@@ -51,28 +51,7 @@ const NewMetadataExtendedPage = <T,>({
 																	// non-editable field if readOnly is set or user doesn't have edit access rights
 																	!!field.collection &&
 																	field.collection.length !== 0 ? (
-																		<td>
-																			{isJson(
-																				getMetadataCollectionFieldName(
-																					field,
-																					field
-																				)
-																			)
-																				? t(
-																						JSON.parse(
-																							getMetadataCollectionFieldName(
-																								field,
-																								field
-																							)
-																						).label
-																				  )
-																				: t(
-																						getMetadataCollectionFieldName(
-																							field,
-																							field
-																						)
-																				  )}
-																		</td>
+																		<td>{getMetadataCollectionFieldName(field, field, t)}</td>
 																	) : (
 																		<td>{field.value}</td>
 																	)

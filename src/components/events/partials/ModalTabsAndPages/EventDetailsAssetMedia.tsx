@@ -5,7 +5,7 @@ import {
 	isFetchingAssetMedia,
 } from "../../../../selectors/eventDetailsSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { fetchAssetMediaDetails } from "../../../../slices/eventDetailsSlice";
+import { fetchAssetMediaDetails, setModalAssetsTabHierarchy } from "../../../../slices/eventDetailsSlice";
 import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
 
@@ -14,10 +14,8 @@ import { useTranslation } from "react-i18next";
  */
 const EventDetailsAssetMedia = ({
 	eventId,
-	setHierarchy,
 }: {
 	eventId: string,
-	setHierarchy: (subTabName: AssetTabHierarchy) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -29,7 +27,7 @@ const EventDetailsAssetMedia = ({
 		if (subTabName === "media-details") {
 			dispatch(fetchAssetMediaDetails({eventId, mediaId})).then();
 		}
-		setHierarchy(subTabName);
+		dispatch(setModalAssetsTabHierarchy(subTabName));
 	};
 
 	return (

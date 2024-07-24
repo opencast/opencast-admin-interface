@@ -5,7 +5,7 @@ import {
 	isFetchingAssetAttachments,
 } from "../../../../selectors/eventDetailsSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { fetchAssetAttachmentDetails } from "../../../../slices/eventDetailsSlice";
+import { fetchAssetAttachmentDetails, setModalAssetsTabHierarchy } from "../../../../slices/eventDetailsSlice";
 import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
 
@@ -14,10 +14,8 @@ import { useTranslation } from "react-i18next";
  */
 const EventDetailsAssetAttachments = ({
 	eventId,
-	setHierarchy,
 }: {
 	eventId: string,
-	setHierarchy: (subTabName: AssetTabHierarchy) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -29,7 +27,7 @@ const EventDetailsAssetAttachments = ({
 		if (subTabName === "attachment-details") {
 			dispatch(fetchAssetAttachmentDetails({eventId, attachmentId})).then();
 		}
-		setHierarchy(subTabName);
+		dispatch(setModalAssetsTabHierarchy(subTabName));
 	};
 
 	return (

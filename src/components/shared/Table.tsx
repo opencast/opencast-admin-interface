@@ -11,18 +11,18 @@ import {
 	getTableSorting,
 } from "../../selectors/tableSelectors";
 import {
+	Row,
 	reverseTable,
 	setOffset,
 	setSortBy,
 	updatePageSize,
-} from "../../actions/tableActions";
+} from "../../slices/tableSlice";
 import {
 	changeAllSelected,
 	changeRowSelection,
 	goToPage,
 	updatePages,
 } from "../../thunks/tableThunks";
-import { connect } from "react-redux";
 import cn from "classnames";
 
 import EditTableViewModal from "../shared/EditTableViewModal";
@@ -31,6 +31,7 @@ import sortIcon from "../../img/tbl-sort.png";
 import sortUpIcon from "../../img/tbl-sort-up.png";
 import sortDownIcon from "../../img/tbl-sort-down.png";
 import Notifications from "./Notifications";
+import { useAppDispatch, useAppSelector } from "../../store";
 
 const SortIcon = styled.i`
 	float: right;
@@ -59,39 +60,19 @@ const containerPageSize = React.createRef();
  * This component renders the table in the table views of resources
  */
 const Table = ({
-// @ts-expect-error TS(7031): Binding element 'table' implicitly has an 'any' ty... Remove this comment to see the full error message
-	table,
-// @ts-expect-error TS(7031): Binding element 'rowSelectionChanged' implicitly h... Remove this comment to see the full error message
-	rowSelectionChanged,
-// @ts-expect-error TS(7031): Binding element 'updatePageSize' implicitly has an... Remove this comment to see the full error message
-	updatePageSize,
 // @ts-expect-error TS(7031): Binding element 'templateMap' implicitly has an 'a... Remove this comment to see the full error message
 	templateMap,
-// @ts-expect-error TS(7031): Binding element 'pageOffset' implicitly has an 'an... Remove this comment to see the full error message
-	pageOffset,
-// @ts-expect-error TS(7031): Binding element 'pages' implicitly has an 'any' ty... Remove this comment to see the full error message
-	pages,
-// @ts-expect-error TS(7031): Binding element 'goToPage' implicitly has an 'any'... Remove this comment to see the full error message
-	goToPage,
-// @ts-expect-error TS(7031): Binding element 'updatePages' implicitly has an 'a... Remove this comment to see the full error message
-	updatePages,
-// @ts-expect-error TS(7031): Binding element 'setOffset' implicitly has an 'any... Remove this comment to see the full error message
-	setOffset,
-// @ts-expect-error TS(7031): Binding element 'changeSelectAll' implicitly has a... Remove this comment to see the full error message
-	changeSelectAll,
-// @ts-expect-error TS(7031): Binding element 'setSortBy' implicitly has an 'any... Remove this comment to see the full error message
-	setSortBy,
-// @ts-expect-error TS(7031): Binding element 'reverseTable' implicitly has an '... Remove this comment to see the full error message
-	reverseTable,
-// @ts-expect-error TS(7031): Binding element 'pagination' implicitly has an 'an... Remove this comment to see the full error message
-	pagination,
-// @ts-expect-error TS(7031): Binding element 'rows' implicitly has an 'any' typ... Remove this comment to see the full error message
-	rows,
-// @ts-expect-error TS(7031): Binding element 'rows' implicitly has an 'any' typ... Remove this comment to see the full error message
-	sortBy,
-// @ts-expect-error TS(7031): Binding element 'rows' implicitly has an 'any' typ... Remove this comment to see the full error message
-	reverse,
 }) => {
+	const dispatch = useAppDispatch();
+
+	const table = useAppSelector(state => getTable(state));
+	const pageOffset = useAppSelector(state => getPageOffset(state));
+	const pages = useAppSelector(state => getTablePages(state));
+	const pagination = useAppSelector(state => getTablePagination(state));
+	const rows = useAppSelector(state => getTableRows(state));
+	const sortBy = useAppSelector(state => getTableSorting(state));
+	const reverse = useAppSelector(state => getTableDirection(state));
+
 	// Size options for pagination
 	const sizeOptions = [10, 20, 50, 100, 1000];
 
@@ -139,14 +120,14 @@ const Table = ({
 // @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
 	const onChangeAllSelected = (e) => {
 		const selected = e.target.checked;
-		changeSelectAll(selected);
+		dispatch(changeAllSelected(selected));
 	};
 
 // @ts-expect-error TS(7006): Parameter 'size' implicitly has an 'any' type.
 	const changePageSize = (size) => {
-		updatePageSize(size);
-		setOffset(0);
-		updatePages();
+		dispatch(updatePageSize(size));
+		dispatch(setOffset(0));
+		dispatch(updatePages());
 	};
 
 	// Navigation to previous page possible?
@@ -160,13 +141,13 @@ const Table = ({
 	};
 
 	const sortByColumn = (colName: string) => {
-		setSortBy(colName);
+		dispatch(setSortBy(colName));
 		let direction = "ASC";
 		if (reverse && reverse === "ASC") {
 			direction = "DESC";
 		}
-		reverseTable(direction);
-		updatePages();
+		dispatch(reverseTable(direction));
+		dispatch(updatePages());
 	};
 
 	const showEditTableViewModal = async () => {
@@ -176,6 +157,17 @@ const Table = ({
 	const hideEditTableViewModal = () => {
 		setEditTableViewModal(false);
 	};
+
+	const tryToGetValueForKeyFromRowAsString = (row: Row, key: string) => {
+		if (key in row) {
+			const value = row[key as keyof Row];
+			if (typeof value === "string") {
+				return value;
+			}
+		}
+
+		return "";
+	}
 
 	return (
 		<>
@@ -194,10 +186,11 @@ const Table = ({
 			</div>
 
 			{/* Display modal for editing table view if table edit button is clicked */}
-			<EditTableViewModal
-				showModal={displayEditTableViewModal}
-				handleClose={hideEditTableViewModal}
-			/>
+			{ displayEditTableViewModal &&
+				<EditTableViewModal
+					handleClose={hideEditTableViewModal}
+				/>
+			}
 
 			<div id="length-div" style={lengthDivStyle}></div>
 			<table className={"main-tbl highlight-hover"}>
@@ -216,7 +209,6 @@ const Table = ({
 						) : null}
 
 						{/* todo: if not column.deactivated*/}
-{/* @ts-expect-error TS(7006): Parameter 'column' implicitly has an 'any' type. */}
 						{table.columns.map((column, key) =>
 							column.deactivated ? null : column.sortable ? ( // Check if column is sortable and render accordingly
 								<th
@@ -245,47 +237,45 @@ const Table = ({
 					</tr>
 				</thead>
 				<tbody>
-					{table.loading && rows.length === 0 ? (
+					{table.status === 'loading' && rows.length === 0 ? (
 						<tr>
 							<td colSpan={table.columns.length} style={loadingTdStyle}>
 								<i className="fa fa-spinner fa-spin fa-2x fa-fw" />
 							</td>
 						</tr>
-					) : !table.loading && rows.length === 0 ? (
+					) : !(table.status === 'loading') && rows.length === 0 ? (
 						//Show if no results and table is not loading
 						<tr>
 							<td colSpan={table.columns.length}>{t("TABLE_NO_RESULT")}</td>
 						</tr>
 					) : (
-						!table.loading &&
+						!(table.status === 'loading') &&
 						//Repeat for each row in table.rows
-// @ts-expect-error TS(2339):
 						rows.map((row, key) => (
 							<tr key={key}>
 								{/* Show if multi selection is possible */}
 								{/* Checkbox for selection of row */}
-								{table.multiSelect && (
+								{table.multiSelect && "id" in row && (
 									<td>
 										<input
 											type="checkbox"
 											checked={row.selected}
-											onChange={() => rowSelectionChanged(row.id)}
-											aria-label={t("EVENTS.EVENTS.TABLE.SELECT_EVENT", { title: row.title })}
+											onChange={() => dispatch(changeRowSelection(row.id, false))}
+											aria-label={t("EVENTS.EVENTS.TABLE.SELECT_EVENT", { title: "title" in row ? row.title : row.id })}
 										/>
 									</td>
 								)}
 								{/* Populate table */}
-{/* @ts-expect-error TS(7006): Parameter 'column' implicitly has an 'any' type. */}
 								{table.columns.map((column, key) =>
 									!column.template &&
 									!column.translate &&
 									!column.deactivated ? (
-										<td key={key}>{row[column.name]}</td>
+										<td key={key}>{column.name in row ? row[column.name as keyof Row] : ""}</td>
 									) : !column.template &&
 									  column.translate &&
 									  !column.deactivated ? (
 										//Show only if column not template, translate, not deactivated
-										<td key={key}>{t(row[column.name])}</td>
+										<td key={key}>{t(tryToGetValueForKeyFromRowAsString(row, column.name))}</td>
 									) : !!column.template &&
 									  !column.deactivated &&
 									  !!templateMap[column.template] ? (
@@ -337,7 +327,7 @@ const Table = ({
 				<div className="pagination">
 					<button
 						className={"button-like-anchor " + cn("prev", { disabled: !isNavigatePrevious() })}
-						onClick={() => goToPage(pageOffset - 1)}
+						onClick={() => dispatch(goToPage(pageOffset - 1))}
 					>
 						<span className="sr-only">{t("TABLE_PREVIOUS")}</span>
 					</button>
@@ -347,7 +337,7 @@ const Table = ({
 								{page.label}
 							</button>
 						) : (
-							<button key={key} className="button-like-anchor" onClick={() => goToPage(page.number)}>
+							<button key={key} className="button-like-anchor" onClick={() => dispatch(goToPage(page.number))}>
 								{page.label}
 							</button>
 						)
@@ -355,7 +345,7 @@ const Table = ({
 
 					<button
 						className={"button-like-anchor " + cn("next", { disabled: !isNavigateNext() })}
-						onClick={() => goToPage(pageOffset + 1)}
+						onClick={() => dispatch(goToPage(pageOffset + 1))}
 					>
 						<span className="sr-only">{t("TABLE_NEXT")}</span>
 					</button>
@@ -423,37 +413,4 @@ const ColumnTemplate = ({ row, column, templateMap }) => {
 	return <Template row={row} />;
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	table: getTable(state),
-	pageOffset: getPageOffset(state),
-	pages: getTablePages(state),
-	pagination: getTablePagination(state),
-	rows: getTableRows(state),
-	sortBy: getTableSorting(state),
-	reverse: getTableDirection(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	rowSelectionChanged: (id, selected) =>
-		dispatch(changeRowSelection(id, selected)),
-// @ts-expect-error TS(7006): Parameter 'size' implicitly has an 'any' type.
-	updatePageSize: (size) => dispatch(updatePageSize(size)),
-// @ts-expect-error TS(7006): Parameter 'pageNumber' implicitly has an 'any' typ... Remove this comment to see the full error message
-	goToPage: (pageNumber) => dispatch(goToPage(pageNumber)),
-	updatePages: () => dispatch(updatePages()),
-// @ts-expect-error TS(7006): Parameter 'pageNumber' implicitly has an 'any' typ... Remove this comment to see the full error message
-	setOffset: (pageNumber) => dispatch(setOffset(pageNumber)),
-// @ts-expect-error TS(7006): Parameter 'selected' implicitly has an 'any' type.
-	changeSelectAll: (selected) => dispatch(changeAllSelected(selected)),
-// @ts-expect-error TS(7006): Parameter 'order' implicitly has an 'any' type.
-	reverseTable: (order) => dispatch(reverseTable(order)),
-// @ts-expect-error TS(7006): Parameter 'column' implicitly has an 'any' type.
-	setSortBy: (column) => dispatch(setSortBy(column)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Table);
+export default Table;

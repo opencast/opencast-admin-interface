@@ -1,7 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Notifications from "../../../shared/Notifications";
-import { Field, FormikProps } from "formik";
+import { FormikProps } from "formik";
+import { Field } from "../../../shared/Field";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**

@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Field, Formik } from "formik";
+import { Formik } from "formik";
+import { Field } from "../../../shared/Field";
 import cn from "classnames";
 import _ from "lodash";
 import Notifications from "../../../shared/Notifications";
@@ -8,7 +9,7 @@ import RenderDate from "../../../shared/RenderDate";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
-import { hasAccess, isJson } from "../../../../utils/utils";
+import { hasAccess } from "../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
 import { useAppSelector } from "../../../../store";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
@@ -99,28 +100,7 @@ const DetailsMetadataTab = ({
 																// non-editable field if readOnly is set
 																!!field.collection &&
 																field.collection.length !== 0 ? (
-																	<td>
-																		{isJson(
-																			getMetadataCollectionFieldName(
-																				field,
-																				field
-																			)
-																		)
-																			? t(
-																					JSON.parse(
-																						getMetadataCollectionFieldName(
-																							field,
-																							field
-																						)
-																					).label
-																			  )
-																			: t(
-																					getMetadataCollectionFieldName(
-																						field,
-																						field
-																					)
-																			  )}
-																	</td>
+																	<td>{getMetadataCollectionFieldName(field, field, t)}</td>
 																) : (
 																	<td>{
 																		field.type === "time" || field.type === "date"

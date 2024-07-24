@@ -25,6 +25,7 @@
 	"RESET": "Nulstil",
 	"SELECT_NO_OPTION_SELECTED": "Ingen mulighed valgt",
 	"SELECT_NO_OPTIONS_AVAILABLE": "Ingen tilgængelige muligheder",
+	"SELECT_NO_MATCHING_RESULTS": "No matching results.",
 	"YES": "Ja",
 	"COPY": "Copy to clipboard",
 	"LTI": {
@@ -170,6 +171,7 @@
 		"EVENTS_CREATED": "Begivenheden er blevet oprettet",
 		"EVENTS_UPLOAD_STARTED": "Begivenheden uploades…",
 		"EVENTS_NOT_CREATED": "Begivenheden kunne ikke oprettes",
+		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "Alle begivenheder blev opdateret",
 		"EVENTS_NOT_UPDATED": "Begivenheden kunne ikke gemmes",
 		"EVENTS_NOT_UPDATED_ID": "Begivenheden {{ id }} kunne ikke gemmes",
@@ -607,7 +609,7 @@
 					"ASSETS": "Open asset details",
 					"START": "Filtrer til denne startdato",
 					"SERIES": "Filter til denne serie",
-					"STATUS": "Filter til denne status",
+					"STATUS": "Open event status",
 					"LOCATION": "Filter til denne placering",
 					"DETAILS": "Åbn begivenhedsoplysninger",
 					"DELETE": "Slet begivenhed",
@@ -632,7 +634,7 @@
 				"PROCESSED": "Afsluttet",
 				"RECORDING_FAILURE": "Optagefejl",
 				"PROCESSING_FAILURE": "Behandlingsfejl",
-				"PROCESSING_CANCELED": "Behandling annulleret"
+				"PROCESSING_CANCELLED": "Processing canceled"
 			},
 			"STATE_MAPPING": {
 				"RETRACTING": "Retracting",
@@ -861,8 +863,7 @@
 						"DETAILS": "Oplysninger"
 					},
 					"ROLES": {
-						"LABEL": "Vælg en rolle",
-						"EMPTY": "Ingen rolle fundet"
+						"LABEL": "Select or create a role"
 					}
 				},
 				"COMMENTS": {
@@ -1291,6 +1292,14 @@
 					"RIGHT": "Valgte roller",
 					"REMOVE": "Fjern rolle",
 					"ADD": "Tilføj rolle"
+				},
+				"STRENGTH": {
+					"BAD": "Bad password",
+					"VERYWEAK": "Very weak password",
+					"WEAK": "Weak password",
+					"GOOD": "Good password",
+					"STRONG": "Strong password",
+					"VERYSTRONG": "Very strong password"
 				}
 			}
 		},

@@ -20,7 +20,7 @@ import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 /**
  * This file contains redux reducer for actions affecting the state of series
  */
-type Series = {
+export type Series = {
 	contributors: string[],
 	createdBy?: string,
 	creation_date?: string,
@@ -37,7 +37,7 @@ type MetadataCatalog = {
 	title: string,
 	flavor: string,
 	fields: {
-		collection?: {}[],	// different for e.g. languages and presenters
+		collection?: {}[],  // different for e.g. languages and presenters
 		id: string,
 		label: string,
 		readOnly: boolean,

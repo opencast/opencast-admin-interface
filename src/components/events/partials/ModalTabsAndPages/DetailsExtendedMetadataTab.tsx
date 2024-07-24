@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Field, Formik } from "formik";
+import { Formik } from "formik";
+import { Field } from "../../../shared/Field";
 import cn from "classnames";
 import _ from "lodash";
 import Notifications from "../../../shared/Notifications";
@@ -9,7 +10,6 @@ import RenderField from "../../../shared/wizard/RenderField";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import {
 	hasAccess,
-	isJson,
 	parseValueForBooleanStrings,
 } from "../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
@@ -106,28 +106,7 @@ const DetailsExtendedMetadataTab = ({
 																		// non-editable field if readOnly is set or user doesn't have edit access rights
 																		!!field.collection &&
 																		field.collection.length !== 0 ? (
-																			<td>
-																				{isJson(
-																					getMetadataCollectionFieldName(
-																						field,
-																						field
-																					)
-																				)
-																					? t(
-																							JSON.parse(
-																								getMetadataCollectionFieldName(
-																									field,
-																									field
-																								)
-																							).label
-																					  )
-																					: t(
-																							getMetadataCollectionFieldName(
-																								field,
-																								field
-																							)
-																					  )}
-																			</td>
+																			<td>{getMetadataCollectionFieldName(field, field, t)}</td>
 																		) : (
 																			<td>{field.value}</td>
 																		)

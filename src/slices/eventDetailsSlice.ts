@@ -8,7 +8,7 @@ import {
 	transformMetadataForUpdate,
 } from "../utils/resourceUtils";
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
-import { fetchWorkflowDef } from "./workflowSlice";
+import { fetchWorkflowDef, Workflow as WorkflowDefinitions } from "./workflowSlice";
 import {
 	getMetadata,
 	getExtendedMetadata,
@@ -25,27 +25,27 @@ import {
 import { calculateDuration } from "../utils/dateUtils";
 import { fetchRecordings } from "./recordingSlice";
 import { getRecordings } from "../selectors/recordingSelectors";
-import { Workflow as WorkflowDefinitions} from "./workflowSlice";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 import { Ace, TransformedAcl, TransformedAcls } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
+import { Event } from "./eventSlice";
+import {
+	AssetTabHierarchy,
+	EventDetailsPage,
+	WorkflowTabHierarchy
+} from "../components/events/partials/modals/EventDetails";
+import { AppDispatch } from "../store";
 
-// type MetadataField = {
-// 	collection?: { [key: string]: unknown }[],	// different for e.g. languages and presenters
-// 	id: string,
-// 	label: string,	// translation key
-// 	readOnly: boolean,
-// 	required: boolean,
-// 	type: string,
-// 	value: string,
-// }
-
-// export type MetadataCatalog = {
-// 	title: string, // translation key
-// 	flavor: string,
-// 	fields: MetadataField[],
-// }
+// Contains the navigation logic for the modal
+type EventDetailsModal = {
+	show: boolean,
+	page: EventDetailsPage,
+	event: Event | null,
+	workflowTabHierarchy: WorkflowTabHierarchy,
+	assetsTabHierarchy: AssetTabHierarchy,
+	workflowId: string,
+}
 
 interface Assets {
 	id: string,
@@ -76,8 +76,8 @@ type Workflow = {
 	scheduling: boolean,
 	entries: {
 		id: string,
-		status: string,	//translation key
-		submitted: string,	//date
+		status: string,  //translation key
+		submitted: string,  //date
 		submitter: string,
 		submitterEmail: string,
 		submitterName: string,
@@ -102,8 +102,8 @@ type Device = {
 
 export type UploadAssetOption = {
 	id: string,
-	title: string,	// translation key
-	type: string,		// "track", "attachment" etc.
+	title: string,  // translation key
+	type: string,  // "track", "attachment" etc.
 	flavorType: string,
 	flavorSubType: string,
 	accept: string,
@@ -127,7 +127,7 @@ type EventDetailsState = {
 	errorMetadata: SerializedError | null,
 	statusAssets: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAssets: SerializedError | null,
-	statusAssetAttachments: 'uninitialized' | 'loading' | 'succeeded' | 'failed',	// These were previously all just statusAssets
+	statusAssetAttachments: 'uninitialized' | 'loading' | 'succeeded' | 'failed',  // These were previously all just statusAssets
 	errorAssetAttachments: SerializedError | null,
 	statusAssetAttachmentDetails: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAssetAttachmentDetails: SerializedError | null,
@@ -182,6 +182,7 @@ type EventDetailsState = {
 	statusStatisticsValue: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorStatisticsValue: SerializedError | null,
 	eventId: string,
+	modal: EventDetailsModal,
 	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	assets: {
@@ -252,7 +253,7 @@ type EventDetailsState = {
 		creationDate: string,
 		id: number,
 		modificationDate: string,
-		reason: string,	// translation key
+		reason: string,  // translation key
 		replies: {
 			author: CommentAuthor,
 			creationDate: string,
@@ -298,18 +299,18 @@ type EventDetailsState = {
 		description?: string,
 	},
 	workflowDefinitions: WorkflowDefinitions[],
-	baseWorkflow: any,	// TODO: proper typing
+	baseWorkflow: any,  // TODO: proper typing
 	workflowOperations: {
 		entries: {
 			configuration: { [key: string]: string },
 			description: string,
 			id: number,
-			status: string,	// translation key
+			status: string,  // translation key
 			title: string,
 		}[]
 	},
 	workflowOperationDetails: {
-		completed: string,	// date
+		completed: string,  // date
 		description: string,
 		exception_handler_workflow: string,
 		execution_host: string,
@@ -319,8 +320,8 @@ type EventDetailsState = {
 		max_attempts: number,
 		name: string,
 		retry_strategy: string,
-		started: string,	// date
-		state: string,	// translation key
+		started: string,  // date
+		state: string,  // translation key
 		time_in_queue: number,
 	},
 	workflowErrors: {
@@ -328,7 +329,7 @@ type EventDetailsState = {
 			description: string,
 			id: number,
 			severity: string,
-			timestamp: string,	// date
+			timestamp: string,  // date
 			title: string,
 		}[]
 	},
@@ -344,7 +345,7 @@ type EventDetailsState = {
 		service_type: string,
 		severity: string,
 		technical_details: string,
-		timestamp: string,	// date
+		timestamp: string,  // date
 		title: string,
 	},
 	publications: Publication[],
@@ -413,6 +414,14 @@ const initialState: EventDetailsState = {
 	statusStatisticsValue: 'uninitialized',
 	errorStatisticsValue: null,
 	eventId: "",
+	modal: {
+		show: false,
+		page: EventDetailsPage.Metadata,
+		event: null,
+		workflowTabHierarchy: 'entry',
+		assetsTabHierarchy: 'entry',
+		workflowId: "",
+	},
 	metadata: {
 		title: "",
 		flavor: "",
@@ -1414,6 +1423,38 @@ export const fetchWorkflowOperations = createAppAsyncThunk('eventDetails/fetchWo
 	return { entries: workflowOperationsData };
 });
 
+/**
+ * Open event details modal externally
+ *
+ * @param page modal page
+ * @param event event to show
+ * @param workflowTab workflow tab
+ * @param assetsTab assets tab
+ * @param workflowId workflow id required for workflow sub tabs
+ */
+export const openModal = (
+	page: EventDetailsPage,
+	event: Event,
+	workflowTab: WorkflowTabHierarchy = 'entry',
+	assetsTab: AssetTabHierarchy = 'entry',
+	workflowId: string = '',
+) => (dispatch: AppDispatch) => {
+	dispatch(setModalEvent(event));
+	dispatch(setModalWorkflowId(workflowId));
+	dispatch(openModalTab(page, workflowTab, assetsTab))
+	dispatch(setShowModal(true));
+};
+
+export const openModalTab = (
+	page: EventDetailsPage,
+	workflowTab: WorkflowTabHierarchy,
+	assetsTab: AssetTabHierarchy
+) => (dispatch: AppDispatch) => {
+	dispatch(setModalPage(page));
+	dispatch(setModalWorkflowTabHierarchy(workflowTab));
+	dispatch(setModalAssetsTabHierarchy(assetsTab));
+};
+
 export const fetchWorkflowOperationDetails = createAppAsyncThunk('eventDetails/fetchWorkflowOperationDetails', async (params: {
 	eventId: string,
 	workflowId: string,
@@ -1575,24 +1616,47 @@ export const updateAssets = createAppAsyncThunk('eventDetails/updateAssets', asy
 	let formData = new FormData();
 
 	let assets: {
-		workflow: string | undefined,
 		options: UploadAssetOption[],
 	} = {
-		workflow: uploadAssetWorkflow,
 		options: [],
 	};
+
+	let assetFlavors = "";
 
 	uploadAssetOptions.forEach((option) => {
 		if (!!values[option.id]) {
 			formData.append(option.id + ".0", values[option.id]);
 			assets.options = assets.options.concat(option);
+			const uploadAssetFlavor = [option.flavorType, option.flavorSubType].join("/");
+			if (assetFlavors.length > 0) {
+				assetFlavors = [assetFlavors, uploadAssetFlavor].join(",");
+			} else {
+				assetFlavors = uploadAssetFlavor;
+			}
 		}
 	});
+
+	const uploadAssetWorkflowConfiguration: {
+		"downloadSourceflavorsExist": string,
+		"download-source-flavors": string,
+	} = {
+		"downloadSourceflavorsExist": String(assetFlavors.length > 0),
+		"download-source-flavors": assetFlavors,
+	};
+
+	const processing: {
+		workflow: string | undefined,
+		configuration: typeof uploadAssetWorkflowConfiguration,
+	} = {
+		workflow: uploadAssetWorkflow,
+		configuration: uploadAssetWorkflowConfiguration,
+	};
 
 	formData.append(
 		"metadata",
 		JSON.stringify({
 			assets: assets,
+			processing: processing,
 		})
 	);
 
@@ -1767,6 +1831,36 @@ const eventDetailsSlice = createSlice({
 	name: 'eventDetails',
 	initialState,
 	reducers: {
+		setShowModal(state, action: PayloadAction<
+			EventDetailsState["modal"]["show"]
+		>) {
+			state.modal.show = action.payload;
+		},
+		setModalPage(state, action: PayloadAction<
+			EventDetailsState["modal"]["page"]
+		>) {
+			state.modal.page = action.payload;
+		},
+		setModalEvent(state, action: PayloadAction<
+			EventDetailsState["modal"]["event"]
+		>) {
+			state.modal.event = action.payload;
+		},
+		setModalWorkflowId(state, action: PayloadAction<
+			EventDetailsState["modal"]["workflowId"]
+		>) {
+			state.modal.workflowId = action.payload;
+		},
+		setModalWorkflowTabHierarchy(state, action: PayloadAction<
+			EventDetailsState["modal"]["workflowTabHierarchy"]
+		>) {
+			state.modal.workflowTabHierarchy = action.payload;
+		},
+		setModalAssetsTabHierarchy(state, action: PayloadAction<
+			EventDetailsState["modal"]["assetsTabHierarchy"]
+		>) {
+			state.modal.assetsTabHierarchy = action.payload;
+		},
 		setEventMetadata(state, action: PayloadAction<
 			EventDetailsState["metadata"]
 		>) {
@@ -2414,6 +2508,12 @@ const eventDetailsSlice = createSlice({
 });
 
 export const {
+	setShowModal,
+	setModalPage,
+	setModalEvent,
+	setModalWorkflowId,
+	setModalWorkflowTabHierarchy,
+	setModalAssetsTabHierarchy,
 	setEventMetadata,
 	setExtendedEventMetadata,
 	setEventWorkflow,

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import MainNav from "../shared/MainNav";
 import { Link } from "react-router-dom";
@@ -16,7 +15,7 @@ import {
 	loadGroupsIntoTable,
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
-import { setOffset } from "../../actions/tableActions";
+import { setOffset } from "../../slices/tableSlice";
 import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
@@ -32,16 +31,7 @@ import { fetchGroups } from "../../slices/groupSlice";
 /**
  * This component renders the table view of groups
  */
-const Groups = ({
-// @ts-expect-error TS(7031): Binding element 'loadingGroupsIntoTable' implicitl... Remove this comment to see the full error message
-	loadingGroupsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingUsersIntoTable' implicitly... Remove this comment to see the full error message
-	loadingUsersIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingAclsIntoTable' implicitly ... Remove this comment to see the full error message
-	loadingAclsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
-	resetOffset,
-}) => {
+const Groups = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
@@ -51,39 +41,34 @@ const Groups = ({
 	const groups = useAppSelector(state => getTotalGroups(state));
 	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchGroupsWrapper = async () => {
-		await dispatch(fetchGroups())
-	}
-
 	const loadGroups = async () => {
 		// Fetching groups from server
 		await dispatch(fetchGroups());
 
 		// Load groups into table
-		loadingGroupsIntoTable();
+		dispatch(loadGroupsIntoTable());
 	};
 
 	const loadUsers = () => {
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching users from server
 		dispatch(fetchUsers());
 
 		// Load users into table
-		loadingUsersIntoTable();
+		dispatch(loadUsersIntoTable());
 	};
 
 	const loadAcls = () => {
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching acls from server
 		dispatch(fetchAcls());
 
 		// Load acls into table
-		loadingAclsIntoTable();
+		dispatch(loadAclsIntoTable());
 	};
 
 	useEffect(() => {
@@ -179,8 +164,8 @@ const Groups = ({
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={fetchGroupsWrapper}
-						loadResourceIntoTable={loadingGroupsIntoTable}
+						loadResource={fetchGroups}
+						loadResourceIntoTable={loadGroupsIntoTable}
 						resource={"groups"}
 					/>
 					<h1>{t("USERS.GROUPS.TABLE.CAPTION")}</h1>
@@ -194,18 +179,4 @@ const Groups = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	loadingGroupsIntoTable: () => dispatch(loadGroupsIntoTable()),
-	loadingUsersIntoTable: () => dispatch(loadUsersIntoTable()),
-	loadingAclsIntoTable: () => dispatch(loadAclsIntoTable()),
-	resetOffset: () => dispatch(setOffset(0)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Groups);
+export default Groups;

@@ -16,6 +16,7 @@ import { RootState } from "../store";
 import { MetadataCatalog, MetadataField, MetadataFieldSelected } from "../slices/eventSlice";
 import { initialFormValuesNewGroup } from '../configs/modalConfig';
 import { UpdateUser } from '../slices/userDetailsSlice';
+import { TFunction } from 'i18next';
 
 /**
  * This file contains methods that are needed in more than one resource thunk
@@ -389,13 +390,18 @@ export const prepareSeriesExtendedMetadataFieldsForPost = (
 };
 
 // returns the name for a field value from the collection
-export const getMetadataCollectionFieldName = (metadataField: { collection?: { [key: string]: unknown }[] }, field: { value: unknown }) => {
+export const getMetadataCollectionFieldName = (metadataField: { collection?: { [key: string]: unknown }[] }, field: { value: unknown }, t: TFunction) => {
 	try {
 		if (!!metadataField.collection) {
 			const collectionField = metadataField.collection.find(
 				(element) => element.value === field.value
 			);
-			return collectionField ? collectionField.name as string : "";
+
+			if (collectionField && isJson(collectionField.name as string)) {
+				return t(JSON.parse(collectionField.name as string).label);
+			}
+
+			return collectionField ? t(collectionField.name as string) : "";
 		}
 
 		return "";

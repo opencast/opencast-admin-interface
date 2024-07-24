@@ -94,7 +94,7 @@ export type Event = {
 
 export type MetadataField = {
 	differentValues?: boolean,
-	collection?: { [key: string]: unknown }[],	// different for e.g. languages and presenters
+	collection?: { [key: string]: unknown }[],  // different for e.g. languages and presenters
 	id: string,
 	label: string,
 	readOnly: boolean,
@@ -163,7 +163,7 @@ type EventState = {
 	statusAssetUploadOptions: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAssetUploadOptions: SerializedError | null,
 	results: Event[],
-	columns: TableConfig["columns"],			 // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],  // TODO: proper typing, derive from `initialColumns`
 	total: number,
 	count: number,
 	offset: number,
@@ -173,7 +173,7 @@ type EventState = {
 	extendedMetadata: MetadataCatalog[],
 	isFetchingAssetUploadOptions: boolean,
 	uploadAssetOptions: UploadAssetOption[],
-	uploadAssetWorkflow: string | undefined,		// TODO: proper typing
+	uploadAssetWorkflow: string | undefined,  // TODO: proper typing
 	schedulingInfo: {
 		editedEvents: EditedEvents[],
 		seriesOptions: {
@@ -227,7 +227,6 @@ export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, {
 	let params: ReturnType<typeof getURLParams> & { getComments?: boolean } = getURLParams(state);
 
 	// Only if the notes column is enabled, fetch comment information for events
-	// @ts-expect-error TS(7006):
 	if (state.table.columns.find(column => column.label === "EVENTS.EVENTS.TABLE.ADMINUI_NOTES" && !column.deactivated)) {
 		params = {
 			...params,
@@ -584,7 +583,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 			) {
 				formData.append(
 					uploadAssetOptions[i].id + ".0",
-					String(values[uploadAssetOptions[i].id])
+					values[uploadAssetOptions[i].id] as File
 				);
 				assets.options = assets.options.concat(uploadAssetOptions[i]);
 			}
