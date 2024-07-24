@@ -652,13 +652,16 @@ const RegistrationModal = ({
 										</div>
 										<br />
 
-										<p>{t("ADOPTER_REGISTRATION.MODAL.SUMMARY_STATE.STATS_HEADER")}</p>
-										{formik.values.allowsStatistics &&
+										{formik.values.allowsStatistics ?
+										<>
+											<p>{t("ADOPTER_REGISTRATION.MODAL.SUMMARY_STATE.STATS_HEADER")}</p>
 											<div className="scrollbox">
 												<pre>
 													{JSON.stringify(statisticsSummary?.statistics, null, "\t")}
 												</pre>
 											</div>
+										</>
+										: <p>{t("ADOPTER_REGISTRATION.MODAL.SUMMARY_STATE.NO_STATS_HEADER")}</p>
 										}
 									</div>
 								</div>
