@@ -49,7 +49,7 @@ export const addNotification = createAppAsyncThunk('notifications/addNotificatio
 	parameter?: OurNotification["parameter"],
 	context?: OurNotification["context"],
 	id?: OurNotification["id"]
-	noDuplicates?: boolean,		// Do not add this notification if one with the same key already exists (in the same context)
+	noDuplicates?: boolean,   // Do not add this notification if one with the same key already exists (in the same context)
 }, {dispatch, getState}) => {
 	let { type, key, duration, parameter, context, id, noDuplicates } = params
 

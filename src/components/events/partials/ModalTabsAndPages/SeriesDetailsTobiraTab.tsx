@@ -19,16 +19,6 @@ const SeriesDetailsTobiraTab = ({
 	const tobiraData = useAppSelector(state => getSeriesDetailsTobiraData(state));
 	const error = useAppSelector(state => getSeriesDetailsTobiraDataError(state));
 
-	// const tobiraData = {
-	// 	baseURL: "abc.de",
-	// 	hostPages: [{
-	// 		title: "Uno title",
-	// 		path: "le path",
-	// 		ancestors: [{
-	// 			title: "One title"
-	// 		}]
-	// 	}],
-	// };
 	const directTobiraLink = tobiraData.baseURL + '/!s/:' + seriesId;
 
 	const copyTobiraDirectLink = () => {

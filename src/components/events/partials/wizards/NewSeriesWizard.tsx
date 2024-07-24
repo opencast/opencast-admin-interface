@@ -71,7 +71,7 @@ const NewSeriesWizard: React.FC<{
 		{
 			translation: "EVENTS.SERIES.NEW.TOBIRA.CAPTION",
 			name: "tobira",
-			hidden: statusTobiraPage !== "succeeded",	// TODO: Figure out condition for this to be true
+			hidden: statusTobiraPage !== "succeeded",  // TODO: Figure out condition for this to be true
 		},
 		{
 			translation: "EVENTS.SERIES.NEW.SUMMARY.CAPTION",

@@ -48,8 +48,8 @@ export interface TobiraPageChild {
 	blocks: {
 		id: string,
 	}[],
-	subpages?: string,	// not returned by endpoint
-	new?: boolean,			// not returned by endpoint
+	subpages?: string,  // not returned by endpoint
+	new?: boolean,      // not returned by endpoint
 	children?: TobiraPageChild[],
 }
 
@@ -59,11 +59,11 @@ export interface TobiraPage {
 	segment: string,
 	children: TobiraPage[],
 
-	subpages?: string,	// not returned by endpoint
-	new?: boolean,			// not returned by endpoint
+	subpages?: string,  // not returned by endpoint
+	new?: boolean,      // not returned by endpoint
 	blocks?: {
 		id: string,
-	}[],		// not returned by endpoint, only in children. has "id"
+	}[],    // not returned by endpoint, only in children. has "id"
 }
 
 type SeriesState = {
@@ -376,11 +376,11 @@ export const fetchSeriesDetailsTobiraNew = createAppAsyncThunk('seriesDetails/fe
 				console.info("Could not fetch tobira page information.")
 				console.info(response)
 				// dispatch(addNotification({
-				// 	type: "error",
-				// 	key: "TOBIRA_SERVER_ERROR",
-				// 	duration: -1,
-				// 	parameter: null,
-				// 	context: NOTIFICATION_CONTEXT
+				//  type: "error",
+				//  key: "TOBIRA_SERVER_ERROR",
+				//  duration: -1,
+				//  parameter: null,
+				//  context: NOTIFICATION_CONTEXT
 				// }));
 
 				throw Error(response);

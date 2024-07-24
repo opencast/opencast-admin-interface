@@ -6,7 +6,7 @@ import { FormikProps } from "formik";
 const WizardNavigationButtons = <T,>({
 	isFirst,
 	isLast,
-	noValidation,					// Do not validate
+	noValidation,         // Do not validate
 	additionalValidation, // Custom validation. If your component does its own validation instead of using Yup
 	formik,
 	nextPage,
