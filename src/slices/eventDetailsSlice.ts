@@ -843,25 +843,34 @@ export const fetchAccessPolicies = createAppAsyncThunk('eventDetails/fetchAccess
 	);
 	let accessPolicies = await policyData.data;
 
-	let policies: TransformedAcl[] = [];
-	if (!!accessPolicies.episode_access) {
-		const json = JSON.parse(accessPolicies.episode_access.acl).acl.ace;
-		let newPolicies: { [key: string]: TransformedAcl } = {};
-		let policyRoles: string[] = [];
-		for (let i = 0; i < json.length; i++) {
-			const policy: Ace = json[i];
-			if (!newPolicies[policy.role]) {
-				newPolicies[policy.role] = createPolicy(policy.role);
-				policyRoles.push(policy.role);
-			}
-			if (policy.action === "read" || policy.action === "write") {
-				newPolicies[policy.role][policy.action] = policy.allow;
-			} else if (policy.allow === true) { //|| policy.allow === "true") {
-				newPolicies[policy.role].actions.push(policy.action);
-			}
-		}
-		policies = policyRoles.map((role) => newPolicies[role]);
+  let policies: TransformedAcl[] = [];
+
+	if (!accessPolicies.episode_access) {
+		return policies;
 	}
+
+	const json = JSON.parse(accessPolicies.episode_access.acl).acl.ace;
+	if (json === undefined) {
+		return policies;
+	}
+
+	let newPolicies: { [key: string]: TransformedAcl } = {};
+	let policyRoles: string[] = [];
+
+	for (let i = 0; i < json.length; i++) {
+		const policy: Ace = json[i];
+		if (!newPolicies[policy.role]) {
+			newPolicies[policy.role] = createPolicy(policy.role);
+			policyRoles.push(policy.role);
+		}
+		if (policy.action === "read" || policy.action === "write") {
+			newPolicies[policy.role][policy.action] = policy.allow;
+		} else if (policy.allow === true) { //|| policy.allow === "true") {
+			newPolicies[policy.role].actions.push(policy.action);
+		}
+	}
+
+	policies = policyRoles.map((role) => newPolicies[role]);
 
 	return policies;
 });
