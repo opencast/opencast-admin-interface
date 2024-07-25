@@ -672,7 +672,8 @@
 					"WORKFLOWS": "Workflows",
 					"ACCESS": "Access policy",
 					"COMMENTS": "Comments",
-					"STATISTICS": "Statistics"
+					"STATISTICS": "Statistics",
+					"TOBIRA": "Tobira"
 				},
 				"PUBLICATIONS": {
 					"CAPTION": "Publications",
@@ -945,6 +946,13 @@
 					"LOCKED": {
 						"RUNNING": "Editing metadata is not allowed when operations are running on an event"
 					}
+				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to event",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This event is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this event"
 				},
 				"SCHEDULING": {
 					"CAPTION": "Scheduling configuration",

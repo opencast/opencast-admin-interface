@@ -215,6 +215,8 @@ type EventDetailsState = {
 	errorStatistics: SerializedError | null,
 	statusStatisticsValue: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorStatisticsValue: SerializedError | null,
+	statusTobiraData: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	errorTobiraData: SerializedError | null,
 	eventId: string,
 	modal: EventDetailsModal,
 	metadata: MetadataCatalog,
@@ -374,6 +376,16 @@ type EventDetailsState = {
 	publications: Publication[],
 	statistics: Statistics[],
 	hasStatisticsError: boolean,
+	tobiraData: {
+		baseURL: string,
+		hostPages: {
+			title: string,
+			path: string,
+			ancestors: {
+				title: string,
+			}[],
+		}[],
+	},
 }
 
 // Initial state of event details in redux store
@@ -436,6 +448,8 @@ const initialState: EventDetailsState = {
 	errorStatistics: null,
 	statusStatisticsValue: 'uninitialized',
 	errorStatisticsValue: null,
+	statusTobiraData: 'uninitialized',
+	errorTobiraData: null,
 	eventId: "",
 	modal: {
 		show: false,
@@ -597,6 +611,10 @@ const initialState: EventDetailsState = {
 	publications: [],
 	statistics: [],
 	hasStatisticsError: false,
+	tobiraData: {
+		baseURL: "",
+		hostPages: [],
+	},
 };
 
 
@@ -962,6 +980,48 @@ export const fetchEventPublications = createAppAsyncThunk('eventDetails/fetchEve
 	});
 
 	return transformedPublications;
+});
+
+// fetch Tobira data of certain series from server
+export const fetchEventDetailsTobira = createAppAsyncThunk('eventDetails/fetchEventDetailsTobira', async (
+	id: string,
+	{ dispatch },
+) => {
+	const res = await axios.get(`/admin-ng/event/${id}/tobira/pages`)
+		.catch(response => {
+			console.error(response);
+			const data = response.response;
+
+			if (data.status === 500) {
+				dispatch(addNotification({
+					type: "error",
+					key: "TOBIRA_SERVER_ERROR",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				}));
+
+				throw Error(response);
+			} else if (data.status === 404) {
+				dispatch(addNotification({
+					type: "warning",
+					key: "TOBIRA_NOT_FOUND",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				}));
+
+				throw Error(response);
+			}
+			return undefined;
+		});
+
+	if (!res) {
+		throw Error;
+	}
+
+	const data = res.data;
+	return data;
 });
 
 export const saveComment = createAppAsyncThunk('eventDetails/saveComment', async (params: {
@@ -2531,6 +2591,20 @@ const eventDetailsSlice = createSlice({
 				} else {
 					state.workflowConfiguration = state.baseWorkflow;
 				}
+			})
+			// fetch Tobira data
+			.addCase(fetchEventDetailsTobira.pending, (state) => {
+				state.statusTobiraData = 'loading';
+			})
+			.addCase(fetchEventDetailsTobira.fulfilled, (state, action: PayloadAction<
+				EventDetailsState['tobiraData']
+			>) => {
+				state.statusTobiraData = 'succeeded';
+				state.tobiraData = action.payload;
+			})
+			.addCase(fetchEventDetailsTobira.rejected, (state, action) => {
+				state.statusTobiraData = 'failed';
+				state.errorTobiraData = action.error;
 			})
 	}
 });
