@@ -409,7 +409,7 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
     }
 });
 
-// fetch metadata of certain series from server
+// fetch Tobira data of certain series from server
 export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsTobira', async (id: string, {dispatch}) => {
 	const res = await axios.get(`/admin-ng/series/${id}/tobira/pages`)
 		.then((response) => {

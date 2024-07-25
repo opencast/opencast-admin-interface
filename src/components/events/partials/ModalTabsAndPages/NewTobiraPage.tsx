@@ -304,9 +304,6 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 																									segment: e.target.value
 																								}
 
-																								console.log(newPage.path)
-																								console.log(e.target.value)
-
 																								formik.setFieldValue("selectedPage", newPage)
 
 																								return newPage;

@@ -114,6 +114,11 @@ export const getWorkflowErrorDetails = (state: RootState) =>
 export const isFetchingWorkflowErrorDetails = (state: RootState) =>
 	state.eventDetails.statusWorkflowErrorDetails === 'loading';
 
+export const getEventDetailsTobiraData = (state: RootState) =>
+	state.eventDetails.tobiraData
+export const getEventDetailsTobiraDataError = (state: RootState) =>
+	state.eventDetails.errorTobiraData
+
 /* selectors for publications */
 export const getPublications = (state: RootState) => state.eventDetails.publications;
 

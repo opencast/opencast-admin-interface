@@ -4,22 +4,32 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { getSeriesDetailsTobiraData, getSeriesDetailsTobiraDataError } from "../../../../selectors/seriesDetailsSelectors";
 import { addNotification } from "../../../../slices/notificationSlice";
 import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
+import { getEventDetailsTobiraData, getEventDetailsTobiraDataError } from "../../../../selectors/eventDetailsSelectors";
 
 /**
- * This component renders the theme page for new series in the new series wizard.
+ * This component renders the Tobira tab for new series and events
+ * in their respective details modal.
  */
-const SeriesDetailsTobiraTab = ({
-	seriesId
-}: {
-	seriesId: string,
-}) => {
+type DetailsTobiraTabProps = {
+	kind: "series" | "event";
+	id: string;
+}
+const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const tobiraData = useAppSelector(state => getSeriesDetailsTobiraData(state));
-	const error = useAppSelector(state => getSeriesDetailsTobiraDataError(state));
+	const tobiraData = useAppSelector(state => kind === "series"
+		? getSeriesDetailsTobiraData(state)
+		: getEventDetailsTobiraData(state)
+	);
+	const error = useAppSelector(state => kind === "series"
+		? getSeriesDetailsTobiraDataError(state)
+		: getEventDetailsTobiraDataError(state)
+	);
 
-	const directTobiraLink = tobiraData.baseURL + '/!s/:' + seriesId;
+	const i18nKey = kind === "series" ? "SERIES" : "EVENTS";
+	const prefix = kind === "series" ? "s" : "v";
+	const directTobiraLink = tobiraData.baseURL + `/!${prefix}/:` + id;
 
 	const copyTobiraDirectLink = () => {
 		navigator.clipboard.writeText(directTobiraLink).then(function () {
@@ -49,30 +59,30 @@ const SeriesDetailsTobiraTab = ({
 				<div className="full-col">
 					<div className="obj list-obj">
 						<header>
-							{t("EVENTS.SERIES.DETAILS.TABS.TOBIRA")}
+							{t(`EVENTS.${i18nKey}.DETAILS.TABS.TOBIRA`)}
 						</header>
 						{ !error &&
 							<>
 								<div className="obj-container">
 									<a href={directTobiraLink}>
-										{t("EVENTS.SERIES.DETAILS.TOBIRA.DIRECT_LINK")}
+										{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.DIRECT_LINK`)}
 									</a>
 									<button
 										className="tobira-copy-direct-link"
 										onClick={() => copyTobiraDirectLink()}
-										aria-label={t('EVENTS.SERIES.DETAILS.TOBIRA.COPY_DIRECT_LINK')}
+										aria-label={t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.COPY_DIRECT_LINK`)}
 									>
 										<i
 											aria-hidden="true"
 											className="fa fa-copy"
-											title={t('EVENTS.SERIES.DETAILS.TOBIRA.COPY_DIRECT_LINK')}
+											title={t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.COPY_DIRECT_LINK`)}
 										/>
 									</button>
 								</div>
 								<div className="obj-container">
 									<div className="obj tbl-list">
 										<header>
-											{t("EVENTS.SERIES.DETAILS.TOBIRA.PAGES")}
+											{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.PAGES`)}
 										</header>
 										<div className="obj-container">
 											<table className="main-tbl">
@@ -80,15 +90,15 @@ const SeriesDetailsTobiraTab = ({
 													{(!tobiraData.hostPages || tobiraData.hostPages.length === 0) &&
 														<tr>
 															<td className="tobira-not-mounted">
-															{t("EVENTS.SERIES.DETAILS.TOBIRA.NOT_MOUNTED")}
+															{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.NOT_MOUNTED`)}
 															</td>
 														</tr>
 													}
-													{ tobiraData.hostPages.map((hostPage) => (
+													{tobiraData.hostPages.map(hostPage => (
 														<tr key={hostPage.path}>
 															<td>
 																<a href={tobiraData.baseURL + hostPage.path}>
-																	{ hostPage.path !== '/' &&
+																	{hostPage.path !== '/' &&
 																		<div>
 																			<span className="tobira-page-separator">/</span>
 																			{ hostPage.ancestors.map((ancestor, key) => (
@@ -100,14 +110,14 @@ const SeriesDetailsTobiraTab = ({
 																		</div>
 																	}
 																	<span className="tobira-leaf-page">
-																		{ hostPage.path !== '/' &&
+																		{hostPage.path !== '/' &&
 																			<span>
 																				{hostPage.title}
 																			</span>
 																		}
-																		{ hostPage.path === '/' &&
+																		{hostPage.path === '/' &&
 																			<span>
-																				{t("EVENTS.SERIES.DETAILS.TOBIRA.HOMEPAGE")}
+																				{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.HOMEPAGE`)}
 																			</span>
 																		}
 																	</span>
@@ -129,4 +139,4 @@ const SeriesDetailsTobiraTab = ({
 	);
 }
 
-export default SeriesDetailsTobiraTab;
+export default DetailsTobiraTab;
