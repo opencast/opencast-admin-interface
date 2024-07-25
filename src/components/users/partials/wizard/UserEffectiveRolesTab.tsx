@@ -43,15 +43,17 @@ const UserEffectiveRolesTab = <T extends RequiredFormProps>({
 					<p>{t("USERS.USERS.DETAILS.DESCRIPTION.EFFECTIVEROLES")}</p>
 
 					{/* list  all roles a user got */}
-					<button className="button-like-anchor clear" onClick={() => clearSearchField()} />
-					<input
-						type="text"
-						id="search_effective"
-						className="search"
-						value={searchField}
-						onChange={(e) => handleChangeSearch(e.target.value)}
-						placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
-					/>
+					<div className="search-container">
+						<button className="button-like-anchor clear" onClick={() => clearSearchField()} />
+						<input
+							type="text"
+							id="search_effective"
+							className="search"
+							value={searchField}
+							onChange={(e) => handleChangeSearch(e.target.value)}
+							placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
+						/>
+					</div>
 
 					<select multiple style={{ height: "26em" }}>
 						{items.map((item, key) => (
