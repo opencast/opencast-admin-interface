@@ -54,6 +54,7 @@ const TableFilters = ({
 	const [showFilterSelector, setFilterSelector] = useState(false);
 	const [showFilterSettings, setFilterSettings] = useState(false);
 	const [itemValue, setItemValue] = React.useState("");
+	const [openSecondFilterMenu, setOpenSecondFilterMenu] = useState(false);
 
 	// Variables containing selected start date and end date for date filter
 	const [startDate, setStartDate] = useState<Date | undefined>(undefined);
@@ -106,6 +107,7 @@ const TableFilters = ({
 
 		if (name === "selectedFilter") {
 			dispatch(editSelectedFilter(value));
+			setOpenSecondFilterMenu(true);
 		}
 
 		// If the change is in secondFilter (filter is picked) then the selected value is saved in filterMap
@@ -117,6 +119,7 @@ const TableFilters = ({
 				setFilterSelector(false);
 				dispatch(removeSelectedFilter());
 				dispatch(removeSecondFilter());
+				setOpenSecondFilterMenu(false);
 				mustApplyChanges = true;
 			}
 		}
@@ -303,6 +306,9 @@ const TableFilters = ({
 												"TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS"
 												)
 									}
+									defaultOpen
+									autoFocus
+									openMenuOnFocus
 								/>
 							)}
 
@@ -318,6 +324,8 @@ const TableFilters = ({
 										handleDate={handleDatepickerChange}
 										handleDateConfirm={handleDatepickerConfirm}
 										handleChange={handleChange}
+										openSecondFilterMenu={openSecondFilterMenu}
+										setOpenSecondFilterMenu={setOpenSecondFilterMenu}
 									/>
 								</div>
 							)}
@@ -398,6 +406,8 @@ const FilterSwitch = ({
 	handleDate,
 	handleDateConfirm,
 	secondFilter,
+	openSecondFilterMenu,
+	setOpenSecondFilterMenu,
 } : {
 	filter: FilterData | undefined,
 	handleChange: (name: string, value: string) => void,
@@ -406,6 +416,8 @@ const FilterSwitch = ({
 	handleDate: (date: Date | null, isStart?: boolean) => void,
 	handleDateConfirm: (date: Date | undefined | null, isStart?: boolean) => void,
 	secondFilter: string,
+	openSecondFilterMenu: boolean,
+	setOpenSecondFilterMenu: (open: boolean) => void,
 }) => {
 	const { t } = useTranslation();
 
@@ -456,6 +468,9 @@ const FilterSwitch = ({
 						}
 						autoFocus
 						defaultOpen
+						openMenuOnFocus
+						menuIsOpen={openSecondFilterMenu}
+						handleMenuIsOpen={setOpenSecondFilterMenu}
 					/>
 				</div>
 			);
