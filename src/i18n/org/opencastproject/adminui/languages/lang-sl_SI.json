@@ -386,8 +386,16 @@
 			"SKIP": "Not now",
 			"CONTINUE": "Continue",
 			"BACK": "Back",
+			"SUBMIT": "Submit",
+			"CONFIRM": "Confirm",
 			"LEGAL_INFO_STATE": {
 				"HEADER": "Terms of Service and Privacy Policy"
+			},
+			"SUMMARY_STATE": {
+				"HEADER": "This is a JSON summary of exactly what would be sent to Opencast's servers",
+				"GENERAL_HEADER": "Adopter Information",
+				"STATS_HEADER": "Statistical Information",
+				"NO_STATS_HEADER": "No statistics data will be shared"
 			},
 			"INFORMATION_STATE": {
 				"HEADER": "Thank you for using Opencast!",
@@ -1654,131 +1662,6 @@
 				"WARNING": "Opozorilo",
 				"ERROR": "Napaka"
 			}
-		}
-	},
-	"VIDEO_TOOL": {
-		"WARNING_UNSAVED": "Opozorilo: Nekatere spremembe niso bile shranjene. Če zapustite video urejevalnik, bodo spremembe izgubljene. Ali res želite nadaljevati?",
-		"TIMELINE": "Časovnica",
-		"ZOOMLEVEL": "Stopnja povečave",
-		"PREVIEW_MODE": "Predogled",
-		"PREVIEW_MODE_TOOLTIP": "Predvajaj samo izbrane dele",
-		"ZOOM": "Povečava/pomanjšava",
-		"BUTTONS": {
-			"CLOSE": "Zapri",
-			"SAVE": "Shrani",
-			"PROCESS": "Shrani in nadaljuj",
-			"ADD_COMMENT": "Dodaj komentar"
-		},
-		"TABS": {
-			"EDIT": "Urejevalnik",
-			"CAPTIONS": "Pripisi",
-			"ANNOTATIONS": "Pripisi"
-		},
-		"AREAS": {
-			"METADATA": "Metapodatki",
-			"THUMBNAIL": "Predogledna slika",
-			"COMMENTS": "Komentarji",
-			"SEGMENTS": "Segmenti",
-			"TRACKS": "Sledi"
-		},
-		"ACTIONS": {
-			"SPLIT": "Razdelitev",
-			"SPLIT_TOOLTIP": "Split segment at the current cursor position.",
-			"CUT": "Hide/Show",
-			"CUT_TOOLTIP": "Hide or show the selected part of the video.",
-			"REPLAY_SEGMENT": "Play Start of Segment",
-			"REPLAY_SEGMENT_TOOLTIP": "Play the current segment from the beginning.",
-			"REPLAY_END_OF_SEGMENT": "Play End of Segment",
-			"REPLAY_END_OF_SEGMENT_TOOLTIP": "Play a few seconds at the end of the current segment.",
-			"REPLAY_SEGMENT_WITH_PREROLL": "Play Transition",
-			"REPLAY_SEGMENT_WITH_PREROLL_TOOLTIP": "Play a few seconds containing the end of the previous and the beginning of the next segment.",
-			"UNDO": "Razveljavi",
-			"REDO": "Uveljavi",
-			"CLEAR_SEGMENTS": "Clear All Segments",
-			"CLEAR_SEGMENTS_TOOLTIP": "Clear all segments, leaving one big segment."
-		},
-		"SEGMENTS": {
-			"REMOVE_SEGMENT": "Odstrani segment",
-			"SHOW_SEGMENT": "Show this Segment",
-			"HIDE_SEGMENT": "Hide this Segment",
-			"START": "Začetek",
-			"END": "Konec"
-		},
-		"THUMBNAIL": {
-			"DESCRIPTION": "Privzeta predogledna slika se ustvari avtomatično. V kolikor bi jo želeli zamenjati, jo lahko ustvarite iz video posnetka v kateremkoli času ali naložite poljubno sliko.",
-			"ACTIONS": {
-				"EXTRACT": {
-					"FROM_VIDEO": {
-						"LABEL": "Ustvari iz videa",
-						"TOOLTIP": "Ustvari prikazno sliko iz video posnetka na trenutni poziciji"
-					},
-					"FROM_LEFT_VIDEO": {
-						"LABEL": "Ustvari iz videa na levi",
-						"TOOLTIP": "Ustvari prikazno sliko iz levega video posnetka na trenutni poziciji"
-					},
-					"FROM_RIGHT_VIDEO": {
-						"LABEL": "Ustvari iz videa na desni",
-						"TOOLTIP": "Ustvari prikazno sliko iz desnega video posnetka na trenutni poziciji"
-					}
-				},
-				"UPLOAD": {
-					"LABEL": "Nalaganje slike",
-					"TOOLTIP": "Naloži predogledno sliko"
-				},
-				"USE_DEFAULT": {
-					"LABEL": "Uporabi privzeto prikazno sliko",
-					"TOOLTIP": "Uporabi privzeto prikazno sliko, ki se ustvari samodejno"
-				}
-			},
-			"PREVIEW": {
-				"NOT_AVAILABLE": "Predogled ni na voljo",
-				"OUTDATED": "Predogled ni prikazuje realnega stanja, ker so bili nekateri deli spremenjeni. Posodobljen bo, ko boste shranili spremembe."
-			},
-			"CURRENT": {
-				"DEFAULT": "Trenutno uporabljate privzeto prikazno sliko.",
-				"SNAPSHOT": "Trenutna prikazna slika je bila ustvarjena iz video posnetka.",
-				"UPLOAD": "Trenutno uporabljate prikazno sliko, ki ste jo naložili."
-			}
-		},
-		"TRACKS": {
-			"DESCRIPTION": "Posnetkov, ki jih ne želite obdelati, lahko odznačite. Če želite uveljaviti spremembe, morate posnetek ponovno objaviti.",
-			"NOTIFICATION": {
-				"NO_VIDEO_TRACK_SELECTED": "Izbrati morate vsaj eno video datoteko",
-				"NO_AUDIO_TRACK_SELECTED": "Izbrati morate vsaj eno audio datoteko"
-			},
-			"TRACK": {
-				"HEADER": "Datoteka"
-			},
-			"VIDEO": {
-				"HEADER": "Video datoteka",
-				"NOT_AVAILABLE": "Video datoteke niso na voljo",
-				"NO_PREVIEW_AVAILABLE": "Prikazne slike niso na voljo",
-				"NO_TRACK_SELECTED": "Video datoteke niso izbrane",
-				"TOOLTIPS": {
-					"HIDE": "Video datoteka je trenutno omogočena. Onemogočite jo",
-					"UNHIDE": "Video datoteka je trenutno onemogočena. Omogočite jo."
-				}
-			},
-			"AUDIO": {
-				"HEADER": "Audio datoteka",
-				"NOT_AVAILABLE": "Audio datoteke niso na voljo",
-				"NO_PREVIEW_AVAILABLE": "Prikazne slike niso na voljo",
-				"NO_TRACK_SELECTED": "Audio datoteke niso izbrane",
-				"TOOLTIPS": {
-					"HIDE": "Audio datoteka je trenutno omogočena. Onemogočite jo",
-					"UNHIDE": "Audio datoteka je trenutno onemogočena. Omogočite jo"
-				}
-			}
-		},
-		"PLAYER": {
-			"PLAY": "Predvajaj",
-			"PAUSE": "Premor",
-			"NEXT_FRAME": "Naslednja sličica",
-			"PREVIOUS_FRAME": "Prejšnja sličica",
-			"NEXT_SEGMENT": "Naslednji segment/skoči na konec",
-			"PREVIOUS_SEGMENT": "Prejšnji segment/skoči na začetek",
-			"MUTE": "Izklop zvoka",
-			"VOLUME": "Glasnost"
 		}
 	},
 	"TABLE_FILTERS": {
