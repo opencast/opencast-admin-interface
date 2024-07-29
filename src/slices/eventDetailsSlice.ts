@@ -860,7 +860,7 @@ export const fetchAccessPolicies = createAppAsyncThunk('eventDetails/fetchAccess
 		return policies;
 	}
 
-	const json = JSON.parse(accessPolicies.episode_access.acl).acl.ace;
+	const json = JSON.parse(accessPolicies.episode_access.acl).acl?.ace;
 	if (json === undefined) {
 		return policies;
 	}
