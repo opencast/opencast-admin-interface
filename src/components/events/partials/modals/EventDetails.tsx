@@ -109,6 +109,7 @@ const EventDetails = ({
 		accessRole: string,
 		name: string,
 		hidden?: boolean,
+		page: EventDetailsPage,
 	}
 
 	type Tabs = [

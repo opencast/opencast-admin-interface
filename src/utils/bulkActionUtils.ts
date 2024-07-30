@@ -16,8 +16,8 @@ export const isScheduleEditable = (event: Event) => {
 
 // Check if multiple events are scheduled and therefore the schedule is editable
 export const isAllScheduleEditable = (events: Event[]) => {
-	for (let i = 0; i < events.length; i++) {
-		if (!isScheduleEditable(events[i])) {
+	for (const event of events) {
+		if (!isScheduleEditable(event)) {
 			return false;
 		}
 	}
@@ -31,11 +31,11 @@ export const isAgentAccess = (event: Event, user: UserInfoState) => {
 
 // Check if user has access rights for capture agent of several events
 export const isAllAgentAccess = (events: Event[], user: UserInfoState) => {
-	for (let i = 0; i < events.length; i++) {
-		if (!events[i].selected || !isScheduleEditable(events[i])) {
+	for (const event of events) {
+		if (!event.selected || !isScheduleEditable(event)) {
 			continue;
 		}
-		if (!isAgentAccess(events[i], user)) {
+		if (!isAgentAccess(event, user)) {
 			return false;
 		}
 	}
@@ -73,8 +73,7 @@ export const checkSchedulingConflicts = async (
 	dispatch: AppDispatch,
 ) => {
 	// Check if each start is before end
-	for (let i = 0; i < formikValues.editedEvents.length; i++) {
-		let event = formikValues.editedEvents[i];
+	for (const event of formikValues.editedEvents) {
 		let startTime = new Date();
 		startTime.setHours(
 			parseInt(event.changedStartTimeHour),
@@ -126,8 +125,8 @@ export const isStartable = (event: Event) => {
 
 // Check if multiple events are in a state that a task on them can be started
 export const isTaskStartable = (events: Event[]) => {
-	for (let i = 0; i < events.length; i++) {
-		if (!isStartable(events[i])) {
+	for (const event of events) {
+		if (!isStartable(event)) {
 			return false;
 		}
 	}

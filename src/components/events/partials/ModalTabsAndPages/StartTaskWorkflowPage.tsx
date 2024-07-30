@@ -40,8 +40,9 @@ const StartTaskWorkflowPage = <T extends RequiredFormProps>({
 
 	// Preselect the first item
 	useEffect(() => {
-		if (workflowDef.length === 1) {
-			setDefaultValues(workflowDef[0].id);
+		const firstWorkflowDef = workflowDef[0];
+		if (firstWorkflowDef) {
+			setDefaultValues(firstWorkflowDef.id);
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [workflowDef]);

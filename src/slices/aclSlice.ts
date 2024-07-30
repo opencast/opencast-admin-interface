@@ -170,19 +170,19 @@ export const checkAcls = (acls: TransformedAcl[]) => async (dispatch: AppDispatc
 	let check = true;
 	let bothRights = false;
 
-	for (let i = 0; acls.length > i; i++) {
+	for (const acl of acls) {
 		// check if a role is chosen
-		if (acls[i].role === "") {
+		if (acl.role === "") {
 			check = false;
 		}
 
 		// if not admin, check if there is at least one policy with read and write rights
-		if ((acls[i].read && acls[i].write) || user.isAdmin) {
+		if ((acl.read && acl.write) || user.isAdmin) {
 			bothRights = true;
 		}
 
 		// check if each policy has read or write right (at least one checkbox should be checked)
-		if (!acls[i].read && !acls[i].write) {
+		if (!acl.read && !acl.write) {
 			check = false;
 		}
 	}

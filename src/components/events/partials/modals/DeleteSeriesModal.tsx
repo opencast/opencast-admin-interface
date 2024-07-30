@@ -10,7 +10,7 @@ import {
 } from "../../../../slices/seriesSlice";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
-import { isSeries } from "../../../../slices/tableSlice";
+import { isSeries, Row } from "../../../../slices/tableSlice";
 
 /**
  * This component manges the delete series bulk action
@@ -46,14 +46,16 @@ const DeleteSeriesModal = ({
 			setDeleteWithSeriesAllowed(response);
 
 			// Check for each selected series if it has events
-			let series = [];
+			let series: (Row & { hasEvents: any })[] = [];
 			for (let i = 0; i < selectedSeries.length; i++) {
 				const selectedSeriesInThisLoop = selectedSeries[i];
-				const events = isSeries(selectedSeriesInThisLoop) ? await hasEvents(selectedSeriesInThisLoop.id.toString()) : false;
-				series.push({
-					...selectedSeriesInThisLoop,
-					hasEvents: events,
-				});
+				if (selectedSeriesInThisLoop) {
+					const events = isSeries(selectedSeriesInThisLoop) ? await hasEvents(selectedSeriesInThisLoop.id.toString()) : false;
+					series.push({
+						...selectedSeriesInThisLoop,
+						hasEvents: events,
+					});
+				}
 			}
 			setSelectedSeries(series);
 		}

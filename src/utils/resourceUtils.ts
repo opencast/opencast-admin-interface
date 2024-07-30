@@ -99,11 +99,11 @@ export const buildGroupBody = (
 	data.append("name", values.name);
 	data.append("description", values.description);
 
-	for (let i = 0; i < values.roles.length; i++) {
-		roles.push(values.roles[i].name);
+	for (const role of values.roles) {
+		roles.push(role.name);
 	}
-	for (let i = 0; i < values.users.length; i++) {
-		users.push(values.users[i].id);
+	for (const user of values.users) {
+		users.push(user);
 	}
 	data.append("roles", roles.join(","));
 	data.append("users", users.join(","));
