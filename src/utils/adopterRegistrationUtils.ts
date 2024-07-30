@@ -29,6 +29,7 @@ export type Registration = {
 	street: string,
 	streetNo: string,
 	email: string,
+	agreedToPolicy: boolean,
 }
 
 // post request for adopter information
@@ -50,6 +51,7 @@ export const postRegistration = async (
 	body.append("street", values.street);
 	body.append("streetNo", values.streetNo);
 	body.append("email", values.email);
+	body.append("agreedToPolicy", values.agreedToPolicy.toString());
 	body.append("registered", "true");
 
 	// save adopter information and return next state
