@@ -108,20 +108,24 @@ const NewEventWizard: React.FC<{
 		updatedPageCompleted[page] = true;
 		setPageCompleted(updatedPageCompleted);
 
-		if (steps[page + 1].hidden) {
-			setPage(page + 2);
-		} else {
-			setPage(page + 1);
+		let newPage = page;
+		do {
+			newPage = newPage + 1;
+		} while(steps[newPage] && steps[newPage]!.hidden);
+		if (steps[newPage]) {
+			setPage(newPage)
 		}
 	};
 
 	const previousPage = (values: typeof initialValues, twoPagesBack?: boolean) => {
 		setSnapshot(values);
-		// if previous page is hidden or not always shown, than go back two pages
-		if (steps[page - 1].hidden || twoPagesBack) {
-			setPage(page - 2);
-		} else {
-			setPage(page - 1);
+
+		let newPage = page;
+		do {
+			newPage = newPage - 1;
+		} while(steps[newPage] && steps[newPage]!.hidden);
+		if (steps[newPage]) {
+			setPage(newPage)
 		}
 	};
 
