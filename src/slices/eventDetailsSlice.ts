@@ -116,7 +116,7 @@ export type Publication = {
 	icon?: string,
 	id: string,
 	label?: string,
-	name: string,	// translation key
+	name: string,  // translation key
 	order: number,
 	url: string,
 	description?: string,
