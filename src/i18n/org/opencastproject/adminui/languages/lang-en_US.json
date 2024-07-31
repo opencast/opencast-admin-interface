@@ -422,6 +422,8 @@
 				"ADDITIONAL_ADRESS_INFO": "Add. adress information",
 				"MAIL": "Email",
 				"CONTACT_ME": "Contact me for updates and secruity issues",
+				"TEST_SYSTEM_HEADLINE": "Is this a test system?",
+				"TEST_SYSTEM": "This is a test system",
 				"WHICH_DATA_TO_SHARE": "Which data do you want to share?",
 				"POLICY_HEADLINE": "Privacy policy and terms of use",
 				"USAGE_STATISTICS": "Usage statistcs",

@@ -31,6 +31,7 @@ const RegistrationModal = ({
 	// initial values for Formik
 	const [initialValues, setInitialValues] = useState<Registration & { agreedToPolicy: boolean, registered: boolean }>({
 		contactMe: false,
+		isTestSystem: false,
 		allowsStatistics: false,
 		allowsErrorReports: false,
 		organisationName: "",
@@ -563,6 +564,26 @@ const RegistrationModal = ({
 															</label>
 														</div>
 													</div>
+												</div>
+											</fieldset>
+											<fieldset>
+												<legend>
+													{t(
+														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.TEST_SYSTEM_HEADLINE"
+													)}
+												</legend>
+												<div className="form-group form-group-checkbox">
+													<Field
+														type="checkbox"
+														name="isTestSystem"
+														id="is_test_system"
+														className="form-control"
+													/>
+													<label htmlFor="is_test_system">
+														{t(
+															"ADOPTER_REGISTRATION.MODAL.FORM_STATE.TEST_SYSTEM"
+														)}
+													</label>
 												</div>
 											</fieldset>
 											<fieldset>
