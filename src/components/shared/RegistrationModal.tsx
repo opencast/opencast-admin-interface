@@ -80,8 +80,8 @@ const RegistrationModal = ({
 	const fetchRegistrationInfos = async () => {
 		let registrationInfo = await fetchAdopterRegistration();
 
-		// set response as initial values for formik
-		setInitialValues(registrationInfo);
+		// merge response into initial values for formik
+		setInitialValues({...initialValues, ...registrationInfo});
 	};
 
 	const fetchStatisticSummary = async () => {
