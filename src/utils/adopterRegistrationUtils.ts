@@ -17,7 +17,7 @@ export const fetchAdopterStatisticsSummary = async () => {
 
 export type Registration = {
 	contactMe: boolean,
- 	isTestSystem: boolean,
+ 	systemType: string,
 	allowsStatistics: boolean,
 	allowsErrorReports: boolean,
 	organisationName: string,
@@ -40,7 +40,7 @@ export const postRegistration = async (
 	// build body
 	let body = new URLSearchParams();
 	body.append("contactMe", values.contactMe.toString());
-	body.append("isTestSystem", values.isTestSystem.toString());
+	body.append("systemType", values.systemType);
 	body.append("allowsStatistics", values.allowsStatistics.toString());
 	body.append("allowsErrorReports", values.allowsErrorReports.toString());
 	body.append("organisationName", values.organisationName);
