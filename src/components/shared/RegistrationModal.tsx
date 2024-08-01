@@ -66,6 +66,7 @@ const RegistrationModal = ({
 	useEffect(() => {
 		fetchRegistrationInfos().then((r) => console.log(r));
 		fetchStatisticSummary();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const onClickContinue = async () => {
