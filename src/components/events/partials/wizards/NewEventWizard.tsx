@@ -111,19 +111,19 @@ const NewEventWizard: React.FC<{
 		let newPage = page;
 		do {
 			newPage = newPage + 1;
-		} while(steps[newPage] && steps[newPage]!.hidden);
+		} while(steps[newPage] && steps[newPage].hidden);
 		if (steps[newPage]) {
 			setPage(newPage)
 		}
 	};
 
-	const previousPage = (values: typeof initialValues, twoPagesBack?: boolean) => {
+	const previousPage = (values: typeof initialValues) => {
 		setSnapshot(values);
 
 		let newPage = page;
 		do {
 			newPage = newPage - 1;
-		} while(steps[newPage] && steps[newPage]!.hidden);
+		} while(steps[newPage] && steps[newPage].hidden);
 		if (steps[newPage]) {
 			setPage(newPage)
 		}
