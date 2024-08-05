@@ -3,10 +3,10 @@
 	"NAV_HOME": "Start",
 	"NAV_ABOUT": "About",
 	"BUILD": {
-		"BUILT_ON": "built on",
-		"DATE_DESC": "Date this system's kernel module was built on.",
-		"COMMIT": "Git commit this version of Opencast was built from.",
-		"VERSION": "Common bundle version of Opencast modules"
+		"BUILT_ON": "compilado el",
+		"DATE_DESC": "Fecha en la que se compiló el módulo del kernel de este sistema.",
+		"COMMIT": "Git commit desde el que se compiló esta version.",
+		"VERSION": "Versión común del paquete de módulos Opencast"
 	},
 	"NO": "No",
 	"SUBMIT": "Submit",
@@ -25,7 +25,7 @@
 	"RESET": "Reset",
 	"SELECT_NO_OPTION_SELECTED": "No option selected",
 	"SELECT_NO_OPTIONS_AVAILABLE": "No options available",
-	"SELECT_NO_MATCHING_RESULTS": "No matching results.",
+	"SELECT_NO_MATCHING_RESULTS": "No se encontraron resultados.",
 	"YES": "Yes",
 	"COPY": "Copy to clipboard",
 	"LTI": {
@@ -101,8 +101,8 @@
 			"AVAILABLE_COLUMNS": "Available columns",
 			"SELECTED_COLUMNS": "Selected columns",
 			"FOOTER_TEXT": "The order and selection will be saved automatically. Press \"{{resetTranslation}}\" to restore the default view.",
-			"ADD_COLUMN": "Add column",
-			"REMOVE_COLUMN": "Remove column"
+			"ADD_COLUMN": "Agregar columna",
+			"REMOVE_COLUMN": "Eliminar columna"
 		}
 	},
 	"CONFIRMATIONS": {
@@ -171,7 +171,7 @@
 		"EVENTS_CREATED": "The event has been created",
 		"EVENTS_UPLOAD_STARTED": "The event is being uploaded… {{ progress }}%",
 		"EVENTS_NOT_CREATED": "The event could not be created",
-		"EVENTS_UPDATED": "The event has been successfully updated",
+		"EVENTS_UPDATED": "El evento ha sido actualizado con éxito",
 		"EVENTS_UPDATED_ALL": "All events have been successfully updated",
 		"EVENTS_NOT_UPDATED": "The event could not be saved",
 		"EVENTS_NOT_UPDATED_ID": "The event {{ id }} could not be saved",
@@ -386,16 +386,16 @@
 			"SKIP": "Not now",
 			"CONTINUE": "Continue",
 			"BACK": "Back",
-			"SUBMIT": "Submit",
-			"CONFIRM": "Confirm",
+			"SUBMIT": "Enviar",
+			"CONFIRM": "Confirmar",
 			"LEGAL_INFO_STATE": {
 				"HEADER": "Terms of Service and Privacy Policy"
 			},
 			"SUMMARY_STATE": {
-				"HEADER": "This is a JSON summary of exactly what would be sent to Opencast's servers",
-				"GENERAL_HEADER": "Adopter Information",
-				"STATS_HEADER": "Statistical Information",
-				"NO_STATS_HEADER": "No statistics data will be shared"
+				"HEADER": "Este es un resumen JSON de lo que se enviaría exactamente a los servidores de Opencast",
+				"GENERAL_HEADER": "Información del Adopter",
+				"STATS_HEADER": "Información estadística",
+				"NO_STATS_HEADER": "No se compartirán datos estadísticos"
 			},
 			"INFORMATION_STATE": {
 				"HEADER": "Thank you for using Opencast!",
@@ -491,8 +491,8 @@
 						"RECORDING_ELEMENTS": "Recording elements",
 						"RECORDING_METADATA": "Recording metadata",
 						"SEGMENTABLE": {
-							"SHORT": "Presentation",
-							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
+							"SHORT": "Presentación",
+							"DETAIL": "El archivo contiene la grabación de una presentación de diapositivas (Keynote, Powerpoint, etc.)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Presenter",
@@ -586,7 +586,7 @@
 				"EVENTS": "Events",
 				"SERIES": "Series",
 				"OVERVIEW": "Overview",
-				"LABEL": "Switch between events and series."
+				"LABEL": "Cambiar entre eventos y series."
 			},
 			"UPLOAD": "Upload",
 			"ADD_SERIES": "Add series",
@@ -617,7 +617,7 @@
 					"ASSETS": "Open asset details",
 					"START": "Filter for this start date",
 					"SERIES": "Filter for this series",
-					"STATUS": "Open event status",
+					"STATUS": "Abrir detalles de evento",
 					"LOCATION": "Filter for this location",
 					"DETAILS": "Open event details",
 					"DELETE": "Delete event",
@@ -628,8 +628,8 @@
 					"PAUSED_WORKFLOW": "View paused workflow",
 					"PRESENTER": "Filter for this presenter"
 				},
-				"SELECT_ALL": "Select all events",
-				"SELECT_EVENT": "Select event \"{{title}}\""
+				"SELECT_ALL": "Seleccionar todos los eventos",
+				"SELECT_EVENT": "Seleccionar evento \"{{title}}\""
 			},
 			"STATUS": {
 				"SCHEDULED": "Scheduled",
@@ -642,7 +642,7 @@
 				"PROCESSED": "Finished",
 				"RECORDING_FAILURE": "Recording failure",
 				"PROCESSING_FAILURE": "Processing failure",
-				"PROCESSING_CANCELLED": "Processing canceled"
+				"PROCESSING_CANCELLED": "Procesamiento cancelado"
 			},
 			"STATE_MAPPING": {
 				"RETRACTING": "Retracting",
@@ -713,8 +713,8 @@
 						"CAPTION": "Upload",
 						"RECORDING_ELEMENTS": "Recording elements",
 						"SEGMENTABLE": {
-							"SHORT": "Presentation",
-							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
+							"SHORT": "Presentación",
+							"DETAIL": "El archivo contiene la grabación de una presentación de diapositivas (Keynote, Powerpoint, etc.)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Presenter",
@@ -871,7 +871,7 @@
 						"DETAILS": "Details"
 					},
 					"ROLES": {
-						"LABEL": "Select or create a role"
+						"LABEL": "Seleccionar o crear un rol"
 					}
 				},
 				"COMMENTS": {
@@ -1262,9 +1262,9 @@
 				"EMAIL": "Email",
 				"ROLES": "Roles",
 				"COLLAPSED": {
-					"UI": "user interface roles",
-					"API": "API roles",
-					"CAPTURE_AGENT": "capture agent roles"
+					"UI": "roles de interfaz de usuario",
+					"API": "Roles API",
+					"CAPTURE_AGENT": "roles del agente de captura"
 				},
 				"TYPE": "Type",
 				"PROVIDER": "Provider",
@@ -1302,12 +1302,12 @@
 					"ADD": "Add role"
 				},
 				"STRENGTH": {
-					"BAD": "Bad password",
-					"VERYWEAK": "Very weak password",
-					"WEAK": "Weak password",
-					"GOOD": "Good password",
-					"STRONG": "Strong password",
-					"VERYSTRONG": "Very strong password"
+					"BAD": "Contraseña Incorrecta",
+					"VERYWEAK": "Contraseña muy débil",
+					"WEAK": "Contraseña débil",
+					"GOOD": "Contraseña Buena",
+					"STRONG": "Contraseña segura",
+					"VERYSTRONG": "Contraseña muy segura"
 				}
 			}
 		},
@@ -1668,7 +1668,7 @@
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Please select a filter…",
 			"NO_OPTIONS": "No filters found",
-			"LABEL": "Filter table rows"
+			"LABEL": "Filtrar filas de tabla"
 		},
 		"FILTER_VALUE_SELECTION": {
 			"PLACEHOLDER": "Please select a value…",
@@ -1689,7 +1689,7 @@
 			"NAME_PLACEHOLDER": "Name…",
 			"DESCRIPTION": "Description",
 			"DESCRIPTION_PLACEHOLDER": "Description…",
-			"ADD": "Add"
+			"ADD": "Agregar"
 		}
 	},
 	"FILTERS": {
@@ -1992,7 +1992,7 @@
 				"NEW_EVENT": "Add event",
 				"NEW_SERIES": "Add series",
 				"CHEAT_SHEET": "Keyboard shortcuts",
-				"CLOSE_MODAL": "Close dialog"
+				"CLOSE_MODAL": "Cerrar"
 			}
 		}
 	},
