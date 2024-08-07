@@ -874,6 +874,9 @@ export const fetchAccessPolicies = createAppAsyncThunk('eventDetails/fetchAccess
 		policies = policyRoles.map((role) => newPolicies[role]);
 	}
 
+	// Ignore episode role ids. They are supposed to be implicit and we don't need them
+	policies = policies.filter(acl => !acl.role.startsWith("ROLE_EPISODE"));
+
 	return policies;
 });
 
