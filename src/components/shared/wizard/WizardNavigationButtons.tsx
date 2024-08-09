@@ -2,6 +2,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { FormikProps } from "formik";
+import { useHotkeys } from "react-hotkeys-hook";
+import { availableHotkeys } from "../../../configs/hotkeysConfig";
 
 const WizardNavigationButtons = <T,>({
 	isFirst,
@@ -28,6 +30,20 @@ const WizardNavigationButtons = <T,>({
 		  };
 
 	const disabled = !(formik.dirty && formik.isValid);
+
+	useHotkeys(
+		availableHotkeys.general.NEXT_TAB.sequence,
+		() => nextPage && nextPage(formik.values),
+		{ description: t(availableHotkeys.general.NEXT_TAB.description) ?? undefined },
+		[nextPage],
+	);
+
+	useHotkeys(
+		availableHotkeys.general.PREVIOUS_TAB.sequence,
+		() => previousPage && previousPage(formik.values),
+		{ description: t(availableHotkeys.general.PREVIOUS_TAB.description) ?? undefined },
+		[previousPage],
+	);
 
 	return (
 		<>

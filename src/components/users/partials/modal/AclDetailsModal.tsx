@@ -33,7 +33,6 @@ const AclDetailsModal = ({
 	};
 
 	return (
-		// todo: add hotkeys
 		<>
 			<div className="modal-animation modal-overlay" />
 			<section
