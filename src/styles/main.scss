@@ -369,6 +369,8 @@ div.table-filter {
   position: inherit;
 
   .filters {
+    font-size: 12px;
+    line-height: normal;
     display: flex;
     gap: 4px;
     border: 0;
@@ -390,18 +392,11 @@ div.table-filter {
       color: white;
     }
 
-    select, input, div {
-      display: inline-block;
-    }
-
-    select, input {
+    input {
+      height: auto;
       border: 1px solid #c9d0d3;
       border-radius: 3px;
       background-color: white;
-    }
-
-    select {
-      height: 24px;
     }
 
     .ng-multi-value {
@@ -411,17 +406,11 @@ div.table-filter {
       margin: 0;
     }
 
-    .MuiInputBase-root {
-      height: 24px;
-    }
-
     .MuiInputBase-input {
-      height: 24px;
       box-sizing: border-box;
     }
 
     .MuiButtonBase-root {
-      height: 24px;
       padding: 0;
     }
 
