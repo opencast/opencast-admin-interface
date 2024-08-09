@@ -106,24 +106,27 @@ export const fetchSeries = createAppAsyncThunk('series/fetchSeries', async (_, {
 });
 
 // fetch series metadata from server
-export const fetchSeriesMetadata = createAppAsyncThunk('series/fetchSeriesMetadata', async () => {
+export const fetchSeriesMetadata = createAppAsyncThunk('series/fetchSeriesMetadata', async (_, { rejectWithValue }) => {
 	const res = await axios.get("/admin-ng/series/new/metadata");
 	const data = await res.data;
 
 	const mainCatalog = "dublincore/series";
-	let metadata: any = {};
+	let metadata: SeriesState["metadata"] | undefined = undefined;
 	const extendedMetadata = [];
 
 	for (const metadataCatalog of data) {
 		if (metadataCatalog.flavor === mainCatalog) {
-// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 			metadata = transformMetadataCollection({ ...metadataCatalog });
 		} else {
 			extendedMetadata.push(
-// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 				transformMetadataCollection({ ...metadataCatalog })
 			);
 		}
+	}
+
+	if (!metadata) {
+		console.error("Main metadata catalog is missing");
+		return rejectWithValue("Main metadata catalog is missing")
 	}
 
 	return { metadata, extendedMetadata }
@@ -158,20 +161,18 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 }, {dispatch}) => {
 	const { values, metadataInfo, extendedMetadata } = params
 
-	let metadataFields, extendedMetadataFields, metadata, access;
-
 	// prepare metadata provided by user
-	metadataFields = prepareSeriesMetadataFieldsForPost(
+	let metadataFields = prepareSeriesMetadataFieldsForPost(
 		metadataInfo.fields,
 		values
 	);
-	extendedMetadataFields = prepareSeriesExtendedMetadataFieldsForPost(
+	let extendedMetadataFields = prepareSeriesExtendedMetadataFieldsForPost(
 		extendedMetadata,
 		values
 	);
 
 	// metadata for post request
-	metadata = [
+	let metadata = [
 		{
 			flavor: metadataInfo.flavor,
 			title: metadataInfo.title,
@@ -183,9 +184,14 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 		metadata.push(entry);
 	}
 
-	access = prepareAccessPolicyRulesForPost(values.acls);
+	let access = prepareAccessPolicyRulesForPost(values.acls);
 
-	let jsonData = {
+	let jsonData: {
+		metadata: typeof metadata,
+		options: {},
+		access: typeof access,
+		theme?: number,
+	} = {
 		metadata: metadata,
 		options: {},
 		access: access,
@@ -194,7 +200,6 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 	if (values.theme !== "") {
 		jsonData = {
 			...jsonData,
-// @ts-expect-error TS(2322): Type '{ theme: number; metadata: { flavor: any; ti... Remove this comment to see the full error message
 			theme: parseInt(values.theme),
 		};
 	}

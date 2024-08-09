@@ -16,10 +16,7 @@ import {
 } from "../../../slices/seriesDetailsSlice";
 import { Event, deleteEvent } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
-import {
-	openModal,
-	setModalPage
-} from "../../../slices/eventDetailsSlice";
+import { openModal } from "../../../slices/eventDetailsSlice";
 
 /**
  * This component renders the action cells of events in the table view
@@ -55,10 +52,6 @@ const EventActionCell = ({
 		setEmbeddingCodeModal(true);
 	};
 
-	const showEventDetailsModal = () => {
-		dispatch(openModal(EventDetailsPage.Metadata, row))
-	};
-
 	const showSeriesDetailsModal = () => {
 		setSeriesDetailsModal(true);
 	};
@@ -80,23 +73,19 @@ const EventActionCell = ({
 	};
 
 	const onClickEventDetails = () => {
-		dispatch(setModalPage(EventDetailsPage.Metadata));
-		showEventDetailsModal();
+		dispatch(openModal(EventDetailsPage.Metadata, row));
 	};
 
 	const onClickComments = () => {
-		dispatch(setModalPage(EventDetailsPage.Comments));
-		showEventDetailsModal();
+		dispatch(openModal(EventDetailsPage.Comments, row));
 	};
 
 	const onClickWorkflow = () => {
-		dispatch(setModalPage(EventDetailsPage.Workflow));
-		showEventDetailsModal();
+		dispatch(openModal(EventDetailsPage.Workflow, row));
 	};
 
 	const onClickAssets = () => {
-		dispatch(setModalPage(EventDetailsPage.Assets));
-		showEventDetailsModal();
+		dispatch(openModal(EventDetailsPage.Assets, row));
 	};
 
 	return (

@@ -71,21 +71,20 @@ const EditMetadataEventsModal = ({
 			await dispatch(postEditMetadata(eventIds))
 			.then(unwrapResult)
 			.then((result) => {
-				// Set fatal error if response contains error
-				if (!!result.fatalError) {
-					setFatalError(result);
-				} else {
-					// Set initial values and save metadata field infos in state
-					let initialValues = getInitialValues(result);
-	// @ts-expect-error TS(2345): Argument of type '{}' is not assignable to paramet... Remove this comment to see the full error message
-					setFetchedValues(initialValues);
-					setMetadataFields({
-						merged: result.merged,
-						mergedMetadata: result.mergedMetadata,
-						notFound: result.notFound,
-						runningWorkflow: result.runningWorkflow,
-					});
-				}
+				// Set initial values and save metadata field infos in state
+				let initialValues = getInitialValues(result);
+// @ts-expect-error TS(2345): Argument of type '{}' is not assignable to paramet... Remove this comment to see the full error message
+				setFetchedValues(initialValues);
+				setMetadataFields({
+					merged: result.merged,
+					mergedMetadata: result.mergedMetadata,
+					notFound: result.notFound,
+					runningWorkflow: result.runningWorkflow,
+				});
+			})
+			// Set fatal error if response contains error
+			.catch((e: Error) => {
+				setFatalError(e.message);
 			});
 			setLoading(false);
 		}

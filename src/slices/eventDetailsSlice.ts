@@ -27,8 +27,8 @@ import { fetchRecordings } from "./recordingSlice";
 import { getRecordings } from "../selectors/recordingSelectors";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
-import { MetadataCatalog } from './eventSlice';
 import { TransformedAcl } from './aclDetailsSlice';
+import { MetadataCatalog } from './eventSlice';
 import { Event } from "./eventSlice";
 import {
 	AssetTabHierarchy,
@@ -109,6 +109,18 @@ export type UploadAssetOption = {
 	flavorSubType: string,
 	accept: string,
 	displayOrder: number,
+}
+
+export type Publication = {
+	enabled: boolean,
+	hide?: string,
+	icon?: string,
+	id: string,
+	label?: string,
+	name: string,  // translation key
+	order: number,
+	url: string,
+	description?: string,
 }
 
 type EventDetailsState = {
@@ -337,15 +349,7 @@ type EventDetailsState = {
 		timestamp: string,  // date
 		title: string,
 	},
-	publications: {
-		enabled: boolean,
-		icon?: string,
-		id: string,
-		name: string,  // translation key
-		order: number,
-		url: string,
-		description?: string,
-	}[],
+	publications: Publication[],
 	statistics: Statistics[],
 	hasStatisticsError: boolean,
 }
@@ -422,7 +426,7 @@ const initialState: EventDetailsState = {
 	metadata: {
 		title: "",
 		flavor: "",
-		fields: []
+		fields: [],
 	},
 	extendedMetadata: [],
 	assets: {
@@ -605,11 +609,9 @@ export const fetchMetadata = createAppAsyncThunk('eventDetails/fetchMetadata', a
 			};
 		}
 		if (catalog.flavor === mainCatalog) {
-// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 			metadata = transformMetadataCollection({ ...transformedCatalog });
 		} else {
 			extendedMetadata.push(
-// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 				transformMetadataCollection({ ...transformedCatalog })
 			);
 		}
@@ -636,10 +638,9 @@ export const fetchAssets = createAppAsyncThunk('eventDetails/fetchAssets', async
 	);
 	const resourceOptionsListResponse = await resourceOptionsListRequest.data;
 
-	let uploadAssetOptions = [];
+	let uploadAssetOptions: UploadAssetOption[] | undefined = [];
 	const optionsData = formatUploadAssetOptions(resourceOptionsListResponse);
 
-// @ts-expect-error TS(2339): Property 'options' does not exist on type '{}'.
 	for (const option of optionsData.options) {
 		if (option.type !== "track") {
 			uploadAssetOptions.push({ ...option });
@@ -647,7 +648,6 @@ export const fetchAssets = createAppAsyncThunk('eventDetails/fetchAssets', async
 	}
 
 	// if no asset options, undefine the option variable
-// @ts-expect-error TS(2322): Type 'any[] | undefined' is not assignable to type... Remove this comment to see the full error message
 	uploadAssetOptions =
 		uploadAssetOptions.length > 0 ? uploadAssetOptions : undefined;
 
@@ -666,12 +666,17 @@ export const fetchAssets = createAppAsyncThunk('eventDetails/fetchAssets', async
 	return { assets, transactionsReadOnly, uploadAssetOptions }
 });
 
-const formatUploadAssetOptions = (optionsData: object) => {
+const formatUploadAssetOptions = (optionsData: { [key: string]: string }) => {
 	const optionPrefixSource = "EVENTS.EVENTS.NEW.SOURCE.UPLOAD";
 	const optionPrefixAsset = "EVENTS.EVENTS.NEW.UPLOAD_ASSET.OPTION";
 	const workflowPrefix = "EVENTS.EVENTS.NEW.UPLOAD_ASSET.WORKFLOWDEFID";
 
-	let optionsResult = {};
+	let optionsResult: {
+		workflow?: string,
+		options: UploadAssetOption[],
+	} = {
+		options: []
+	};
 	let uploadOptions = [];
 
 	for (const [key, value] of Object.entries(optionsData)) {
@@ -681,19 +686,17 @@ const formatUploadAssetOptions = (optionsData: object) => {
 				key.indexOf(optionPrefixSource) >= 0
 			) {
 				// parse upload asset options
-				let options = JSON.parse(value as any);
+				let options: UploadAssetOption = JSON.parse(value);
 				if (!options["title"]) {
 					options["title"] = key;
 				}
 				uploadOptions.push({ ...options });
 			} else if (key.indexOf(workflowPrefix) >= 0) {
 				// parse upload workflow definition id
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 				optionsResult["workflow"] = value;
 			}
 		}
 	}
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 	optionsResult["options"] = uploadOptions;
 
 	return optionsResult;
@@ -878,19 +881,34 @@ export const fetchComments = createAppAsyncThunk('eventDetails/fetchComments', a
 export const fetchEventPublications = createAppAsyncThunk('eventDetails/fetchEventPublications', async (eventId: string) => {
 	let data = await axios.get(`/admin-ng/event/${eventId}/publications.json`);
 
-	let publications = await data.data;
+	let publications: {
+		"start-date": string,
+		"end-date": string,
+		publications: {
+			id: string,
+			name: string,
+			url: string,
+		}[],
+	} = await data.data;
 
 	// get information about possible publication channels
 	data = await axios.get("/admin-ng/resources/PUBLICATION.CHANNELS.json");
 
-	let publicationChannels = await data.data;
+	let publicationChannels: { [key: string]: string } = await data.data;
 
 	let now = new Date();
 
+	let transformedPublications: Publication[] = [];
+
 	// fill publication objects with additional information
-// @ts-expect-error TS(7006): Parameter 'publication' implicitly has an 'any' ty... Remove this comment to see the full error message
 	publications.publications.forEach((publication) => {
-		publication.enabled = !(
+		let transformedPublication: Publication = {
+			...publication,
+			enabled: false,
+			order: 0,
+		};
+
+		transformedPublication.enabled = !(
 			publication.id === "engage-live" &&
 			(now < new Date(publications["start-date"]) ||
 				now > new Date(publications["end-date"]))
@@ -900,24 +918,26 @@ export const fetchEventPublications = createAppAsyncThunk('eventDetails/fetchEve
 			let channel = JSON.parse(publicationChannels[publication.id]);
 
 			if (channel.label) {
-				publication.label = channel.label;
+				transformedPublication.label = channel.label;
 			}
 			if (channel.icon) {
-				publication.icon = channel.icon;
+				transformedPublication.icon = channel.icon;
 			}
 			if (channel.hide) {
-				publication.hide = channel.hide;
+				transformedPublication.hide = channel.hide;
 			}
 			if (channel.description) {
-				publication.description = channel.description;
+				transformedPublication.description = channel.description;
 			}
 			if (channel.order) {
-				publication.order = channel.order;
+				transformedPublication.order = channel.order;
 			}
 		}
+
+		transformedPublications.push(transformedPublication)
 	});
 
-	return publications.publications;
+	return transformedPublications;
 });
 
 export const saveComment = createAppAsyncThunk('eventDetails/saveComment', async (params: {
@@ -1773,7 +1793,7 @@ export const updateWorkflow = createAppAsyncThunk('eventDetails/updateWorkflow',
 export const saveWorkflowConfig = createAppAsyncThunk('eventDetails/saveWorkflowConfig', async (params: {
 	values: {
 		workflowDefinition: string,
-		configuration: { [key: string]: any }
+		configuration: { [key: string]: unknown }
 	},
 	eventId: string
 }, { dispatch }) => {
@@ -1892,7 +1912,7 @@ const eventDetailsSlice = createSlice({
 				state.metadata = {
 					title: "",
 					flavor: "",
-					fields: []
+					fields: [],
 				};
 				state.extendedMetadata = [];
 				state.errorMetadata = action.error;

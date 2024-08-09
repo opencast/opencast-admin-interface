@@ -17,9 +17,9 @@ import { transformToIdValueArray } from "../utils/utils";
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
+import { Ace } from './aclSlice';
 import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
-import { Ace } from './aclSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of a series
@@ -88,22 +88,25 @@ const initialState: SeriesDetailsState = {
 };
 
 // fetch metadata of certain series from server
-export const fetchSeriesDetailsMetadata = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsMetadata', async (id: string) => {
+export const fetchSeriesDetailsMetadata = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsMetadata', async (id: string, { rejectWithValue }) => {
 	const res = await axios.get(`/admin-ng/series/${id}/metadata.json`);
 	const metadataResponse = res.data;
 
 	const mainCatalog = "dublincore/series";
-	let seriesMetadata: any = {};
-	let extendedMetadata: any[] = [];
+	let seriesMetadata: SeriesDetailsState["metadata"] | undefined = undefined;
+	let extendedMetadata: SeriesDetailsState["extendedMetadata"] = [];
 
 	for (const catalog of metadataResponse) {
 		if (catalog.flavor === mainCatalog) {
-// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 			seriesMetadata = transformMetadataCollection({ ...catalog });
 		} else {
-// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 			extendedMetadata.push(transformMetadataCollection({ ...catalog }));
 		}
+	}
+
+	if (!seriesMetadata) {
+		console.error("Main metadata catalog is missing");
+		return rejectWithValue("Main metadata catalog is missing")
 	}
 
 	return { seriesMetadata, extendedMetadata }
@@ -221,7 +224,7 @@ export const updateSeriesMetadata = createAppAsyncThunk('seriesDetails/updateSer
 		contributor: string[],
 		createdBy: string,
 		creator: string[],
-		description: String,
+		description: string,
 		identifier: string,
 		language: string,
 		license: string,
@@ -254,11 +257,7 @@ export const updateSeriesMetadata = createAppAsyncThunk('seriesDetails/updateSer
 export const updateExtendedSeriesMetadata = createAppAsyncThunk('seriesDetails/updateExtendedSeriesMetadata', async (params: {
 	id: string,
 	values: { [key: string]: any },
-	catalog: {
-		flavor: string,
-		title: string,
-		fields: { [key: string]: any }[]
-	}
+	catalog: MetadataCatalog,
 }, {dispatch, getState}) => {
 	const { id, values, catalog } = params;
 

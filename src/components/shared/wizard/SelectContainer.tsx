@@ -191,7 +191,7 @@ const SelectContainer = ({
 						</label>
 						{/*Search*/}
 						{resource.searchable && (
-							<>
+							<div className="search-container">
 								{/* search bar */}
 								<button className="button-like-anchor clear" onClick={() => clearSearchField()} />
 								<input
@@ -204,7 +204,7 @@ const SelectContainer = ({
 									onChange={(e) => handleChangeSearch(e.target.value)}
 									value={searchField}
 								/>
-							</>
+							</div>
 						)}
 						{/*Select with options provided by backend*/}
 						<select
