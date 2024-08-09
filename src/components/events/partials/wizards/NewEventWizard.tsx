@@ -59,16 +59,6 @@ const NewEventWizard: React.FC<{
 	// Caption of steps used by Stepper
 	const steps = [
 		{
-			translation: "EVENTS.EVENTS.NEW.METADATA.CAPTION",
-			name: "metadata",
-			hidden: false,
-		},
-		{
-			translation: "EVENTS.EVENTS.DETAILS.TABS.EXTENDED-METADATA",
-			name: "metadata-extended",
-			hidden: !(!!extendedMetadata && extendedMetadata.length > 0),
-		},
-		{
 			translation: "EVENTS.EVENTS.NEW.SOURCE.CAPTION",
 			name: "source",
 			hidden: false,
@@ -79,6 +69,16 @@ const NewEventWizard: React.FC<{
 			hidden:
 				uploadAssetOptions.filter((asset) => asset.type !== "track").length ===
 				0,
+		},
+		{
+			translation: "EVENTS.EVENTS.NEW.METADATA.CAPTION",
+			name: "metadata",
+			hidden: false,
+		},
+		{
+			translation: "EVENTS.EVENTS.DETAILS.TABS.EXTENDED-METADATA",
+			name: "metadata-extended",
+			hidden: !(!!extendedMetadata && extendedMetadata.length > 0),
 		},
 		{
 			translation: "EVENTS.EVENTS.NEW.PROCESSING.CAPTION",
@@ -159,33 +159,33 @@ const NewEventWizard: React.FC<{
 							/>
 							<div>
 								{page === 0 && (
+									<NewSourcePage
+										nextPage={nextPage}
+										formik={formik}
+									/>
+								)}
+								{page === 1 && (
+									<NewAssetUploadPage
+										previousPage={previousPage}
+										nextPage={nextPage}
+										formik={formik}
+									/>
+								)}
+								{page === 2 && (
 									<NewMetadataPage
+										previousPage={previousPage}
 										nextPage={nextPage}
 										formik={formik}
 										metadataFields={metadataFields}
 										header={steps[page].translation}
 									/>
 								)}
-								{page === 1 && (
+								{page === 3 && (
 									<NewMetadataExtendedPage
 										previousPage={previousPage}
 										nextPage={nextPage}
 										formik={formik}
 										extendedMetadataFields={extendedMetadata}
-									/>
-								)}
-								{page === 2 && (
-									<NewSourcePage
-										previousPage={previousPage}
-										nextPage={nextPage}
-										formik={formik}
-									/>
-								)}
-								{page === 3 && (
-									<NewAssetUploadPage
-										previousPage={previousPage}
-										nextPage={nextPage}
-										formik={formik}
 									/>
 								)}
 								{page === 4 && (
