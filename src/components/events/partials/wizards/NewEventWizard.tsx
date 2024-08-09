@@ -7,7 +7,7 @@ import NewMetadataPage from "../ModalTabsAndPages/NewMetadataPage";
 import NewAccessPage from "../ModalTabsAndPages/NewAccessPage";
 import NewProcessingPage from "../ModalTabsAndPages/NewProcessingPage";
 import NewSourcePage from "../ModalTabsAndPages/NewSourcePage";
-import { NewEventSchema } from "../../../../utils/validate";
+import { NewEventSchema, MetadataSchema } from "../../../../utils/validate";
 import WizardStepperEvent from "../../../shared/wizard/WizardStepperEvent";
 import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
@@ -98,7 +98,12 @@ const NewEventWizard: React.FC<{
 	];
 
 	// Validation schema of current page
-	const currentValidationSchema = NewEventSchema[page];
+	let currentValidationSchema;
+	if (page === 0 || page === 1) {
+		currentValidationSchema = MetadataSchema(metadataFields.fields);
+	} else {
+		currentValidationSchema = NewEventSchema[page];
+	}
 
 	const nextPage = (values: typeof initialValues) => {
 		setSnapshot(values);
