@@ -40,7 +40,7 @@ const PublishCell = ({
 
 	const onlyEngage = row.publications.length === 1
 		&& row.publications[0].enabled
-		&& !row.publications[0].hiding
+		&& !row.publications[0].hide
 		&& row.publications[0].id === 'engage-player';
 
 	return (
