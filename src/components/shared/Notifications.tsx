@@ -23,8 +23,8 @@ const Notifications : React.FC<{
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const notifications = useAppSelector(getNotifications);
-	const globalPosition = useAppSelector(getGlobalPositions);
+const notifications = useAppSelector(state => getNotifications(state))
+const globalPosition = useAppSelector(state => getGlobalPositions(state))
 
 	const closeNotification = (id: number) => {
 		dispatch(setHidden({id: id, isHidden: true}));
