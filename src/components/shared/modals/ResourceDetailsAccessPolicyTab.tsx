@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import RenderMultiField from "../wizard/RenderMultiField";
 import {
+	Acl,
 	Role,
 	fetchAclActions,
 	fetchAclTemplateById,
@@ -22,7 +23,7 @@ import { filterRoles, getAclTemplateText } from "../../../utils/aclUtils";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { removeNotificationWizardForm, addNotification } from "../../../slices/notificationSlice";
 import { useTranslation } from "react-i18next";
-import { Ace, TransformedAcl } from "../../../slices/aclDetailsSlice";
+import { TransformedAcl } from "../../../slices/aclDetailsSlice";
 
 /**
  * This component manages the access policy tab of resource details modals
@@ -46,7 +47,7 @@ const ResourceDetailsAccessPolicyTab = ({
 	policies: TransformedAcl[],
 	fetchHasActiveTransactions?: (id: string) => Promise<any>,
 	fetchAccessPolicies: (id: string) => void,
-	saveNewAccessPolicies: (id: string, policies: { acl: { ace: Ace[] } }) => Promise<any>,
+	saveNewAccessPolicies: (id: string, policies: { acl: Acl }) => Promise<any>,
 	descriptionText: string,
 	buttonText: string,
 	saveButtonText: string,
