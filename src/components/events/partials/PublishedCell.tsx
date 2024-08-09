@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Event } from "../../../slices/eventSlice";
+import { Tooltip } from "../../shared/Tooltip";
 
 // References for detecting a click outside of the container of the popup listing publications of an event
 const containerPublications = React.createRef<HTMLDivElement>();
@@ -37,9 +38,23 @@ const PublishCell = ({
 		};
 	}, []);
 
+	const onlyEngage = row.publications.length === 1
+		&& row.publications[0].enabled
+		&& !row.publications[0].hiding
+		&& row.publications[0].id === 'engage-player';
+
 	return (
 		<div className="popover-wrapper">
-			{row.publications.length ? (
+			{onlyEngage && (
+				<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PLAYER")}>
+					<a href={row.publications[0].url} rel='noreferrer' target="_blank">
+						<button className="button-like-anchor">
+							{t("YES")}
+						</button>
+					</a>
+				</Tooltip>
+			)}
+			{!onlyEngage && row.publications.length > 0 && (
 				<>
 					<button className="button-like-anchor popover-wrapper__trigger">
 						<span onClick={() => setShowPopup(!showPopup)}>{t("YES")}</span>
@@ -57,7 +72,7 @@ const PublishCell = ({
 												href={publication.url}
 												className="popover__list-item"
 												target="_blank"
-                        rel='noreferrer'
+												rel='noreferrer'
 												key={key}
 											>
 												<span>{publication.label ? t(publication.label) : t(publication.name)}</span>
@@ -73,7 +88,7 @@ const PublishCell = ({
 						</div>
 					)}
 				</>
-			) : null}
+			)}
 		</div>
 	);
 };

@@ -26,6 +26,16 @@
         color: $color-gray !important;
     }
 
+    .MuiStepLabel-labelContainer .Mui-active {
+        border-bottom: 1px solid $primary-color-blue;
+        font-weight: 800;
+    }
+
+    .Mui-active svg {
+        color: $primary-color-blue !important;
+        transform: none !important;
+    }
+
     .MuiStepLabel-labelContainer span {
         color: $color-darkgray;
         margin: 3px 10px;

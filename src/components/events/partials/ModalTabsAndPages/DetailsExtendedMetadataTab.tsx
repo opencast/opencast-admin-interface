@@ -14,7 +14,7 @@ import {
 } from "../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
 import { useAppSelector } from "../../../../store";
-import { MetadataCatalog } from "../../../../slices/eventDetailsSlice";
+import { MetadataCatalog } from "../../../../slices/eventSlice";
 
 /**
  * This component renders metadata details of a certain event or series
