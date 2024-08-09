@@ -66,6 +66,7 @@ const RegistrationModal = ({
 	useEffect(() => {
 		fetchRegistrationInfos().then((r) => console.log(r));
 		fetchStatisticSummary();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const onClickContinue = async () => {
@@ -80,8 +81,8 @@ const RegistrationModal = ({
 	const fetchRegistrationInfos = async () => {
 		let registrationInfo = await fetchAdopterRegistration();
 
-		// set response as initial values for formik
-		setInitialValues(registrationInfo);
+		// merge response into initial values for formik
+		setInitialValues({...initialValues, ...registrationInfo});
 	};
 
 	const fetchStatisticSummary = async () => {
