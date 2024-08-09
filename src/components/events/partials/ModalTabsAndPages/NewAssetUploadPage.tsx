@@ -28,11 +28,6 @@ const NewAssetUploadPage = <T extends RequiredFormProps>({
 
 	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
 
-	// Get upload assets that are not of type track
-	const uploadAssets = uploadAssetOptions.filter(
-		(asset) => asset.type !== "track"
-	);
-
 	// if user not chose upload in step before, the skip this step
 	if (formik.values.sourceMode !== "UPLOAD") {
 		nextPage(formik.values);
@@ -57,14 +52,14 @@ const NewAssetUploadPage = <T extends RequiredFormProps>({
 							<div className="obj-container">
 								<table className="main-tbl">
 									<tbody>
-										{uploadAssets.length === 0 ? (
+										{uploadAssetOptions.length === 0 ? (
 											<tr>
 												<td>
 													{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.NO_OPTIONS")}
 												</td>
 											</tr>
 										) : (
-											uploadAssets.map((asset, key) => (
+											uploadAssetOptions.map((asset, key) => (
 												<tr key={key}>
 													<td>
 														{" "}
