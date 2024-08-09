@@ -27,6 +27,10 @@ export const filterBySearch = (filterText: string, type: DropDownType, options: 
 		return options.filter((item) =>
 			t(item[0]).toLowerCase().includes(filterText)
 		);
+	} else if (type === "filter") {
+		return options.filter((item) =>
+			t(item.label).toLowerCase().includes(filterText)
+		);
 	} else {
 		return options.filter((item) =>
 			item.value.toLowerCase().includes(filterText)
@@ -115,6 +119,13 @@ export const formatDropDownOptions = (
 			formattedOptions.push({
 				value: item[0],
 				label: t(item[1]),
+			});
+		}
+	} else if (type === "filter") {
+		for (const item of unformattedOptions) {
+			formattedOptions.push({
+				value: item.value,
+				label: item.label,
 			});
 		}
 	} else {

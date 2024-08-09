@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	dropDownSpacingTheme,
@@ -8,7 +8,7 @@ import {
 	filterBySearch,
 	formatDropDownOptions,
 } from "../../utils/dropDownUtils";
-import Select, { Props } from "react-select";
+import Select, { GroupBase, Props, SelectInstance } from "react-select";
 import CreatableSelect from "react-select/creatable";
 
 /**
@@ -18,7 +18,7 @@ import CreatableSelect from "react-select/creatable";
  *  - Creating typescript types for each "type" is moot atm, as a lot of them (i.e. capture agents) are not properly typed yet
  * I would suggest waiting with typing options until all of its inputs are properly typed
  */
-export type DropDownType = "language" | "isPartOf" | "license" | "captureAgent" | "aclRole" | "workflow" | "aclTemplate" | "newTheme" | "comment" | "theme" | "time";
+export type DropDownType = "language" | "isPartOf" | "license" | "captureAgent" | "aclRole" | "workflow" | "aclTemplate" | "newTheme" | "comment" | "theme" | "time" | "filter";
 
 /**
  * This component provides a bar chart for visualising (statistics) data
@@ -34,8 +34,11 @@ const DropDown = <T,>({
 	tabIndex = 0,
 	autoFocus = false,
 	defaultOpen = false,
+	openMenuOnFocus = false,
 	creatable = false,
 	disabled = false,
+	menuIsOpen = undefined,
+	handleMenuIsOpen = undefined,
 }: {
 	value: T
 	text: string,
@@ -47,16 +50,34 @@ const DropDown = <T,>({
 	tabIndex?: number,
 	autoFocus?: boolean,
 	defaultOpen?: boolean,
+	openMenuOnFocus?: boolean,
 	creatable?: boolean,
 	disabled?: boolean,
+	menuIsOpen?: boolean,
+	handleMenuIsOpen?: (open: boolean) => void,
 }) => {
 	const { t } = useTranslation();
+
+	const selectRef = React.useRef<SelectInstance<any, boolean, GroupBase<any>>>(null);
 
 	const [searchText, setSearch] = useState("");
 
 	const style = dropDownStyle(type);
 
-	const commonProps: Props = {
+	useEffect(() => {
+		// Ensure menu has focus when opened programmatically
+		if (menuIsOpen) {
+			selectRef.current?.focus();
+		}
+	}, [menuIsOpen, selectRef]);
+
+	const openMenu = (open: boolean) => {
+		if (handleMenuIsOpen !== undefined && menuIsOpen !== undefined) {
+			handleMenuIsOpen(open);
+		}
+	}
+
+  let commonProps: Props = {
 		tabIndex: tabIndex,
 		theme: (theme) => (dropDownSpacingTheme(theme)),
 		styles: style,
@@ -74,15 +95,21 @@ const DropDown = <T,>({
 		placeholder: placeholder,
 		onInputChange: (value: string) => setSearch(value),
 		onChange: (element) => handleChange(element as {value: T, label: string}),
+		menuIsOpen: menuIsOpen,
+		onMenuOpen: () => openMenu(true),
+		onMenuClose: () => openMenu(false),
 		isDisabled: disabled,
+		openMenuOnFocus: openMenuOnFocus,
 	};
 
 	return creatable ? (
 		<CreatableSelect
+			ref={selectRef}
 			{...commonProps}
 		/>
 	) : (
 		<Select
+			ref={selectRef}
 			{...commonProps}
 			noOptionsMessage={() => t("SELECT_NO_MATCHING_RESULTS")}
 		/>
