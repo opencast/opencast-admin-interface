@@ -17,7 +17,8 @@ import { transformToIdValueArray } from "../utils/utils";
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
-import { Ace, TransformedAcl, TransformedAcls } from './aclDetailsSlice';
+import { Ace } from './aclSlice';
+import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
 
 /**
@@ -27,13 +28,6 @@ type Feed = {
 	link: string,
 	type: string,
 	version: string,
-}
-
-type Acl = {
-	actions: string[],
-	read: boolean,
-	role: string,
-	write: boolean,
 }
 
 type SeriesDetailsState = {
@@ -56,7 +50,7 @@ type SeriesDetailsState = {
   metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	feeds: Feed[],
-	acl: Acl[],
+	acl: TransformedAcl[],
 	theme: string,
 	themeNames: { id: string, value: string }[],
 	fetchingStatisticsInProgress: boolean,
@@ -153,7 +147,7 @@ export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSe
 		);
 	}
 
-	let seriesAcls: TransformedAcls = [];
+	let seriesAcls: TransformedAcl[] = [];
 	if (!!response.series_access) {
 		const json = JSON.parse(response.series_access.acl).acl.ace;
 		let policies: { [key: string]: TransformedAcl } = {};

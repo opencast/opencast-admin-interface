@@ -14,10 +14,10 @@ import {
 } from "../utils/utils";
 import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
-import { TransformedAcls } from './aclDetailsSlice';
-import { MetadataCatalog } from './eventSlice';
 import { NOTIFICATION_CONTEXT } from '../configs/modalConfig';
+import { TransformedAcl } from './aclDetailsSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { MetadataCatalog } from './eventSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of series
@@ -181,7 +181,7 @@ export const fetchSeriesThemes = createAppAsyncThunk('series/fetchSeriesThemes',
 export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (params: {
 	values: {
 		[key: string]: any;
-		acls: TransformedAcls,
+		acls: TransformedAcl[],
 		// contributor: string[],
 		// creator: string[],
 		// description: string,

@@ -27,7 +27,7 @@ import { fetchRecordings } from "./recordingSlice";
 import { getRecordings } from "../selectors/recordingSelectors";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
-import { Ace, TransformedAcl, TransformedAcls } from './aclDetailsSlice';
+import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
 import { Event } from "./eventSlice";
 import {
@@ -36,6 +36,7 @@ import {
 	WorkflowTabHierarchy
 } from "../components/events/partials/modals/EventDetails";
 import { AppDispatch } from "../store";
+import { Ace } from './aclSlice';
 
 // Contains the navigation logic for the modal
 type EventDetailsModal = {
@@ -842,7 +843,7 @@ export const fetchAccessPolicies = createAppAsyncThunk('eventDetails/fetchAccess
 	);
 	let accessPolicies = await policyData.data;
 
-	let policies: TransformedAcls = [];
+	let policies: TransformedAcl[] = [];
 	if (!!accessPolicies.episode_access) {
 		const json = JSON.parse(accessPolicies.episode_access.acl).acl.ace;
 		let newPolicies: { [key: string]: TransformedAcl } = {};
