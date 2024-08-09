@@ -9,7 +9,7 @@ import { availableHotkeys } from "../../../../configs/hotkeysConfig";
  */
 const UserDetailsModal = ({
 	close,
-	username
+	username,
 }: {
 	close: () => void,
 	username: string,

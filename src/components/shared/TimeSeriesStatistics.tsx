@@ -2,7 +2,8 @@ import React from "react";
 import moment from "moment";
 import { getCurrentLanguageInformation } from "../../utils/utils";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Field, Formik } from "formik";
+import { Formik } from "formik";
+import { Field } from "./Field";
 import BarChart from "./BarChart";
 import {
 	availableCustomStatisticDataResolutions,

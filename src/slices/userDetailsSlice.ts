@@ -12,6 +12,14 @@ export type UserDetailsRole = {
 	type: string,
 }
 
+export type UpdateUser = {
+	email: string,
+	name: string,
+	password: string,
+	roles: UserDetailsRole[],
+	username: string,
+}
+
 export type UserDetailsState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
@@ -22,14 +30,6 @@ export type UserDetailsState = {
 	email: string,
 	manageable: boolean,
 };
-
-export type UpdateUser = {
-	email: string,
-	name: string,
-	password: string,
-	roles: UserDetailsRole[],
-	username: string,
-}
 
 // Initial state of userDetails in redux store
 const initialState: UserDetailsState = {

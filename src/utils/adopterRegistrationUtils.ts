@@ -8,6 +8,13 @@ export const fetchAdopterRegistration = async () => {
 	return await response.data;
 };
 
+// get statistics information about adopter
+export const fetchAdopterStatisticsSummary = async () => {
+	const response = await axios.get("/admin-ng/adopter/summary");
+
+	return await response.data;
+};
+
 export type Registration = {
 	contactMe: boolean,
 	allowsStatistics: boolean,
@@ -22,6 +29,7 @@ export type Registration = {
 	street: string,
 	streetNo: string,
 	email: string,
+	agreedToPolicy: boolean,
 }
 
 // post request for adopter information
@@ -43,6 +51,7 @@ export const postRegistration = async (
 	body.append("street", values.street);
 	body.append("streetNo", values.streetNo);
 	body.append("email", values.email);
+	body.append("agreedToPolicy", values.agreedToPolicy.toString());
 	body.append("registered", "true");
 
 	// save adopter information and return next state

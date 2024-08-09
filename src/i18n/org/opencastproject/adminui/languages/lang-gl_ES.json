@@ -25,6 +25,7 @@
 	"RESET": "Restablecer",
 	"SELECT_NO_OPTION_SELECTED": "Sen opcións seleccionadas",
 	"SELECT_NO_OPTIONS_AVAILABLE": "Sen opcións dispoñibles",
+	"SELECT_NO_MATCHING_RESULTS": "No matching results.",
 	"YES": "Si",
 	"COPY": "Copiar ó portapapeis",
 	"LTI": {
@@ -170,6 +171,7 @@
 		"EVENTS_CREATED": "Evento creado",
 		"EVENTS_UPLOAD_STARTED": "Cargando o evento…",
 		"EVENTS_NOT_CREATED": "Non se puido crear o evento",
+		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "Todos os eventos foron actualizados correctamente",
 		"EVENTS_NOT_UPDATED": "Non se puido gardar o evento",
 		"EVENTS_NOT_UPDATED_ID": "Non se puido gardar o evento {{ id }}",
@@ -384,8 +386,16 @@
 			"SKIP": "Agora non",
 			"CONTINUE": "Continuar",
 			"BACK": "Voltar",
+			"SUBMIT": "Submit",
+			"CONFIRM": "Confirm",
 			"LEGAL_INFO_STATE": {
 				"HEADER": "Termos do servizo e Política de privacidade"
+			},
+			"SUMMARY_STATE": {
+				"HEADER": "This is a JSON summary of exactly what would be sent to Opencast's servers",
+				"GENERAL_HEADER": "Adopter Information",
+				"STATS_HEADER": "Statistical Information",
+				"NO_STATS_HEADER": "No statistics data will be shared"
 			},
 			"INFORMATION_STATE": {
 				"HEADER": "Grazas por usar Opencast!",
@@ -607,7 +617,7 @@
 					"ASSETS": "Abrir o detalles do recurso",
 					"START": "Filtro para esta data de inicio",
 					"SERIES": "Filtro para esta serie",
-					"STATUS": "Filtro para o estado deste evento",
+					"STATUS": "Open event status",
 					"LOCATION": "Filtro para esta ubicación",
 					"DETAILS": "Abrir detalles do evento",
 					"DELETE": "Borrar evento",
@@ -632,7 +642,7 @@
 				"PROCESSED": "Finalizado",
 				"RECORDING_FAILURE": "Fallo na gravación",
 				"PROCESSING_FAILURE": "Fallo no procesamento",
-				"PROCESSING_CANCELED": "Procesamento cancelado"
+				"PROCESSING_CANCELLED": "Processing canceled"
 			},
 			"STATE_MAPPING": {
 				"RETRACTING": "Retirando",
@@ -861,8 +871,7 @@
 						"DETAILS": "Detalles"
 					},
 					"ROLES": {
-						"LABEL": "Seleccione un rol",
-						"EMPTY": "Non hai roles dispoñibles"
+						"LABEL": "Select or create a role"
 					}
 				},
 				"COMMENTS": {
@@ -1291,6 +1300,14 @@
 					"RIGHT": "Roles seleccionados",
 					"REMOVE": "Eliminar rol",
 					"ADD": "Engadir rol"
+				},
+				"STRENGTH": {
+					"BAD": "Bad password",
+					"VERYWEAK": "Very weak password",
+					"WEAK": "Weak password",
+					"GOOD": "Good password",
+					"STRONG": "Strong password",
+					"VERYSTRONG": "Very strong password"
 				}
 			}
 		},
@@ -1645,131 +1662,6 @@
 				"WARNING": "Advertencia",
 				"ERROR": "Erro"
 			}
-		}
-	},
-	"VIDEO_TOOL": {
-		"WARNING_UNSAVED": "Advertencia: algúns dos seus cambios non foron gardados. Se abandona o editor de vídeo, estes cambios perderanse. De verdade queres continuar?",
-		"TIMELINE": "Liña de tempo",
-		"ZOOMLEVEL": "Nivel de zoom",
-		"PREVIEW_MODE": "Modo de vista previa",
-		"PREVIEW_MODE_TOOLTIP": "Reproducir só segmentos seleccionados",
-		"ZOOM": "Zoom",
-		"BUTTONS": {
-			"CLOSE": "Pechar",
-			"SAVE": "Gardar",
-			"PROCESS": "Gardar e continuar",
-			"ADD_COMMENT": "Engadir comentario"
-		},
-		"TABS": {
-			"EDIT": "Editor",
-			"CAPTIONS": "Subtítulos",
-			"ANNOTATIONS": "Anotacións"
-		},
-		"AREAS": {
-			"METADATA": "Metadatos",
-			"THUMBNAIL": "Miniatura",
-			"COMMENTS": "Comentarios",
-			"SEGMENTS": "Segmentos",
-			"TRACKS": "Pistas"
-		},
-		"ACTIONS": {
-			"SPLIT": "Dividir",
-			"SPLIT_TOOLTIP": "Divide o segmento na posición actuar do cursor.",
-			"CUT": "Ocultar/Amosar",
-			"CUT_TOOLTIP": "Oculta ou amosa a parte do vídeo seleccionada.",
-			"REPLAY_SEGMENT": "Reproducir Inicio do Segmento",
-			"REPLAY_SEGMENT_TOOLTIP": "Reproduce o segmento actual dende o seu inicio.",
-			"REPLAY_END_OF_SEGMENT": "Reproducir Final do Segmento",
-			"REPLAY_END_OF_SEGMENT_TOOLTIP": "Reproduce uns segundos ó final do segmento actual.",
-			"REPLAY_SEGMENT_WITH_PREROLL": "Reproducir Transición",
-			"REPLAY_SEGMENT_WITH_PREROLL_TOOLTIP": "Reproduce uns segundos que conteñen o final do segmento anterior e o inicio do segmento seguinte.",
-			"UNDO": "Desfacer",
-			"REDO": "Refacer",
-			"CLEAR_SEGMENTS": "Borrar Todos os Segmentos",
-			"CLEAR_SEGMENTS_TOOLTIP": "Borra todos os segmentos, deixando un segmento grande."
-		},
-		"SEGMENTS": {
-			"REMOVE_SEGMENT": "Eliminar segmento",
-			"SHOW_SEGMENT": "Amosar este Segmento",
-			"HIDE_SEGMENT": "Ocultar este Segmento",
-			"START": "Inicio",
-			"END": "Fin"
-		},
-		"THUMBNAIL": {
-			"DESCRIPTION": "Xenérase automaticamente unha miniatura por defecto, que se emprega para representar visualmente o evento. Se se desexa usar unha miniatura diferente, pode extraerse unha do vídeo na posición actual ou subir unha imaxe.",
-			"ACTIONS": {
-				"EXTRACT": {
-					"FROM_VIDEO": {
-						"LABEL": "Extraer do vídeo",
-						"TOOLTIP": "Extraer a minuatura do vídeo na posición actual"
-					},
-					"FROM_LEFT_VIDEO": {
-						"LABEL": "Extraer do vídeo esquerdo",
-						"TOOLTIP": "Extraer a miniatura do vídeo esquerdo na posición actual"
-					},
-					"FROM_RIGHT_VIDEO": {
-						"LABEL": "Extraer do vídeo dereito",
-						"TOOLTIP": "Extraer a miniatura do vídeo dereito na posición actual"
-					}
-				},
-				"UPLOAD": {
-					"LABEL": "Subir imaxe",
-					"TOOLTIP": "Subir unha imaxe para a miniatura"
-				},
-				"USE_DEFAULT": {
-					"LABEL": "Usar miniatura por defecto",
-					"TOOLTIP": "Usar a miniatura por defecto que se crea automaticamente"
-				}
-			},
-			"PREVIEW": {
-				"NOT_AVAILABLE": "Non hai vista previa dispoñible",
-				"OUTDATED": "A vista previa está obsoleta porque cambiaron os segmentos. Actualizarase unha vez que se garden os cambios."
-			},
-			"CURRENT": {
-				"DEFAULT": "Estase a usar a miniatura por defecto.",
-				"SNAPSHOT": "A miniatura actual foi extraída do vídeo.",
-				"UPLOAD": "Estase a usar unha miniatura subida ó servidor."
-			}
-		},
-		"TRACKS": {
-			"DESCRIPTION": "Pódense desmarcar pistas para que non sigan sendo procesadas. Teña en conta que é necesario (re-)publicar o evento para que os cambios se apliquen.",
-			"NOTIFICATION": {
-				"NO_VIDEO_TRACK_SELECTED": "Debe seleccionarse polo menos unha pista de vídeo",
-				"NO_AUDIO_TRACK_SELECTED": "Debe seleccionarse polo menos unha pista de audio"
-			},
-			"TRACK": {
-				"HEADER": "Pista"
-			},
-			"VIDEO": {
-				"HEADER": "Pista de vídeo",
-				"NOT_AVAILABLE": "Non hai pistas de vídeo dispoñibles",
-				"NO_PREVIEW_AVAILABLE": "Non se atopou unha imaxe de vista previa",
-				"NO_TRACK_SELECTED": "Non se seleccionou unha pista de vídeo",
-				"TOOLTIPS": {
-					"HIDE": "Esta pista de vídeo está activada. Facer clic para desactivar",
-					"UNHIDE": "Esta pista de vídeo está desactivada. Facer clic para activar."
-				}
-			},
-			"AUDIO": {
-				"HEADER": "Pista de audio",
-				"NOT_AVAILABLE": "Non hai pistas de audio dispoñibles",
-				"NO_PREVIEW_AVAILABLE": "Non se atopou unha imaxe de vista previa",
-				"NO_TRACK_SELECTED": "Non se seleccionou unha pista de audio",
-				"TOOLTIPS": {
-					"HIDE": "Esta pista de audio está activada. Facer clic para desactivar",
-					"UNHIDE": "Esta pista de audio está desactivada. Facer clic para activar"
-				}
-			}
-		},
-		"PLAYER": {
-			"PLAY": "Reproducir",
-			"PAUSE": "Pausa",
-			"NEXT_FRAME": "Fotograma seguinte",
-			"PREVIOUS_FRAME": "Fotograma anterior",
-			"NEXT_SEGMENT": "Seguinte segmento / Saltar ó fin",
-			"PREVIOUS_SEGMENT": "Segmento anterior / Saltar ó inicio",
-			"MUTE": "Silenciar",
-			"VOLUME": "Volume"
 		}
 	},
 	"TABLE_FILTERS": {

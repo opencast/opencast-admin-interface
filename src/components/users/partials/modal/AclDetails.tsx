@@ -9,7 +9,7 @@ import { NewAclSchema } from "../../../../utils/validate";
 import ModalNavigation from "../../../shared/modals/ModalNavigation";
 import { checkAcls } from "../../../../slices/aclSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { TransformedAcls, updateAclDetails } from "../../../../slices/aclDetailsSlice";
+import { TransformedAcl, updateAclDetails } from "../../../../slices/aclDetailsSlice";
 
 /**
  * This component manages the pages of the acl details modal
@@ -54,7 +54,7 @@ const AclDetails = ({
 	const handleSubmit = (
 		values: {
 			name: string,
-			acls: TransformedAcls,
+			acls: TransformedAcl[],
 		}
 	) => {
 		dispatch(updateAclDetails({values: values, aclId: aclDetails.id}));

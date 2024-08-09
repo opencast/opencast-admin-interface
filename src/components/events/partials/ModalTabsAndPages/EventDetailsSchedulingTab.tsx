@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import cn from "classnames";
 import _ from "lodash";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Field, Formik } from "formik";
+import { Formik } from "formik";
+import { Field } from "../../../shared/Field";
 import Notifications from "../../../shared/Notifications";
 import {
 	getSchedulingConflicts,

@@ -70,16 +70,20 @@
         float: left;
         vertical-align: top;
 
+        .search-container {
+            width: 100% !important;
+            margin-top: 10px;
+        }
+
         input.search {
             border-radius: $main-border-radius 0 0 $main-border-radius;
             border-right-width: 0;
             float: left;
-            width: 100% !important;
+            margin: 0;
         }
 
         button.clear {
             height: inherit;
-            margin-top: 10px;
             float: right;
             @include btn(white);
             @include fa-icon($fa-var-times, before, block, 0, 0.45em 0.45em 0.55em 0.45em, inherit, 14px);

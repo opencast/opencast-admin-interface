@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import i18n from "../i18n/i18n";
 import languages from "../i18n/languages";
@@ -45,10 +44,7 @@ function logout() {
 /**
  * Component that renders the header and the navigation in the upper right corner.
  */
-const Header = ({
-// @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
-	loadingServicesIntoTable,
-}) => {
+const Header = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	// State for opening (true) and closing (false) the dropdown menus for language, notification, help and user
@@ -82,7 +78,7 @@ const Header = ({
 
 	const redirectToServices = async () => {
 		// Load services into table
-		await loadingServicesIntoTable();
+		await dispatch(loadServicesIntoTable());
 
 		// set the action filter value of services to true
 		await dispatch(setSpecificServiceFilter({ filter: "actions", filterValue: "true" }));
@@ -135,12 +131,13 @@ const Header = ({
 		// Fetching health status information at mount
 		loadHealthStatus().then((r) => console.info(r));
 		// Fetch health status every minute
-		setInterval(() => dispatch(fetchHealthStatus()), 5000);
+		const interval = setInterval(() => dispatch(fetchHealthStatus()), 5000);
 
 		// Event listener for handle a click outside of dropdown menu
 		window.addEventListener("mousedown", handleClickOutside);
 
 		return () => {
+			clearInterval(interval);
 			window.removeEventListener("mousedown", handleClickOutside);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -202,7 +199,7 @@ const Header = ({
 					)}
 
 					{/* System warnings and notifications */}
-					{hasAccess("ROLE_ADMIN", user) && (
+					{user.isAdmin && (
 						<div
 							className="nav-dd info-dd"
 							id="info-dd"
@@ -393,8 +390,7 @@ const MenuHelp = ({
 					</li>
 				)}
 				{/* Show only if restUrl is set */}
-				{!!orgProperties["org.opencastproject.admin.help.restdocs.url"] &&
-					hasAccess("ROLE_ADMIN", user) && (
+				{!!orgProperties["org.opencastproject.admin.help.restdocs.url"] && user.isAdmin && (
 						<li>
 							<a
 								target="_blank" rel="noreferrer"
@@ -412,7 +408,7 @@ const MenuHelp = ({
 					</button>
 				</li>
 				{/* Adoter registration Modal */}
-				{hasAccess("ROLE_ADMIN", user) && (
+				{user.isAdmin && (
 					<li>
 						<button className="button-like-anchor" onClick={() => showAdoptersRegistrationModal()}>
 							<span>{t("HELP.ADOPTER_REGISTRATION")}</span>
@@ -437,15 +433,4 @@ const MenuUser = () => {
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;

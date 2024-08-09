@@ -99,7 +99,7 @@ const isEndBeforeStart = (
 type RequiredFormikValues = {
 	scheduleEndHour: string,
 	scheduleEndMinute: string,
-	captureAgent?: string,	// Ideally this should be required if "checkConflicts" is not undefined
+	captureAgent?: string,  // Ideally this should be required if "checkConflicts" is not undefined
 }
 
 // changes the start in the formik

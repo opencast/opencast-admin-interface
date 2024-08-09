@@ -25,6 +25,7 @@
 	"RESET": "איפוס",
 	"SELECT_NO_OPTION_SELECTED": "לא נבחרה כל אופציה",
 	"SELECT_NO_OPTIONS_AVAILABLE": "אין אפשרויות זמינות",
+	"SELECT_NO_MATCHING_RESULTS": "No matching results.",
 	"YES": "כן",
 	"COPY": "Copy to clipboard",
 	"LTI": {
@@ -170,6 +171,7 @@
 		"EVENTS_CREATED": "הארוע נוצר",
 		"EVENTS_UPLOAD_STARTED": "האירוע מועלה לשרת…",
 		"EVENTS_NOT_CREATED": "לא ניתן היה ליצור את האירוע",
+		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "כל האירועים עודכנו בהצלחה",
 		"EVENTS_NOT_UPDATED": "לא היתה אפשרות לשמור את האירוע",
 		"EVENTS_NOT_UPDATED_ID": "לא היתה אפשרות לשמור את האירוע {{ id }}",
@@ -384,8 +386,16 @@
 			"SKIP": "Not now",
 			"CONTINUE": "Continue",
 			"BACK": "Back",
+			"SUBMIT": "Submit",
+			"CONFIRM": "Confirm",
 			"LEGAL_INFO_STATE": {
 				"HEADER": "Terms of Service and Privacy Policy"
+			},
+			"SUMMARY_STATE": {
+				"HEADER": "This is a JSON summary of exactly what would be sent to Opencast's servers",
+				"GENERAL_HEADER": "Adopter Information",
+				"STATS_HEADER": "Statistical Information",
+				"NO_STATS_HEADER": "No statistics data will be shared"
 			},
 			"INFORMATION_STATE": {
 				"HEADER": "Thank you for using Opencast!",
@@ -607,7 +617,7 @@
 					"ASSETS": "Open asset details",
 					"START": "מסנן עבור תאריך ההתחלה הזה",
 					"SERIES": "מסנן עבור סדרה זו",
-					"STATUS": "מסנן עבור מצב אירוע",
+					"STATUS": "Open event status",
 					"LOCATION": "מסנן עבור מיקום זה",
 					"DETAILS": "הצגת פרטי אירוע",
 					"DELETE": "מחק אירוע",
@@ -632,7 +642,7 @@
 				"PROCESSED": "הסתיים",
 				"RECORDING_FAILURE": "הקלטה נכשלה",
 				"PROCESSING_FAILURE": "עיבוד נכשל",
-				"PROCESSING_CANCELED": "עיבוד בוטל"
+				"PROCESSING_CANCELLED": "Processing canceled"
 			},
 			"STATE_MAPPING": {
 				"RETRACTING": "Retracting",
@@ -861,8 +871,7 @@
 						"DETAILS": "פרטים"
 					},
 					"ROLES": {
-						"LABEL": "בחר תפקיד",
-						"EMPTY": "לא נצאו תפקידים"
+						"LABEL": "Select or create a role"
 					}
 				},
 				"COMMENTS": {
@@ -1291,6 +1300,14 @@
 					"RIGHT": "תפקידים שנבחרו",
 					"REMOVE": "הסר תפקיד",
 					"ADD": "הוסף תפקיד"
+				},
+				"STRENGTH": {
+					"BAD": "Bad password",
+					"VERYWEAK": "Very weak password",
+					"WEAK": "Weak password",
+					"GOOD": "Good password",
+					"STRONG": "Strong password",
+					"VERYSTRONG": "Very strong password"
 				}
 			}
 		},
@@ -1645,131 +1662,6 @@
 				"WARNING": "אזהרה",
 				"ERROR": "שגיאה"
 			}
-		}
-	},
-	"VIDEO_TOOL": {
-		"WARNING_UNSAVED": "אזהרה: חלק את מהשינויים שלך לא נשמרו. אם תצא מעורך הוידאו, שינויים אלה עלולה ללכת לאיבוד. אתה באמת רוצה להמשיך?",
-		"TIMELINE": "ציר הזמן",
-		"ZOOMLEVEL": "רמת גודל התצוגה",
-		"PREVIEW_MODE": "מצב תצוגה מקדימה",
-		"PREVIEW_MODE_TOOLTIP": "לנגן קטעים נבחרים בלבד",
-		"ZOOM": "הגדל/הקטן",
-		"BUTTONS": {
-			"CLOSE": "סגור",
-			"SAVE": "שמור",
-			"PROCESS": "שמור והמשך",
-			"ADD_COMMENT": "הוספת הערה"
-		},
-		"TABS": {
-			"EDIT": "עורך",
-			"CAPTIONS": "כותרות",
-			"ANNOTATIONS": "הערות"
-		},
-		"AREAS": {
-			"METADATA": "מטא-נתונים",
-			"THUMBNAIL": "תמונה ממוזערת",
-			"COMMENTS": "הערות",
-			"SEGMENTS": "מקטעים",
-			"TRACKS": "רצועות"
-		},
-		"ACTIONS": {
-			"SPLIT": "פצל",
-			"SPLIT_TOOLTIP": "Split segment at the current cursor position.",
-			"CUT": "הסתר/הצג",
-			"CUT_TOOLTIP": "Hide or show the selected part of the video.",
-			"REPLAY_SEGMENT": "Play Start of Segment",
-			"REPLAY_SEGMENT_TOOLTIP": "Play the current segment from the beginning.",
-			"REPLAY_END_OF_SEGMENT": "Play End of Segment",
-			"REPLAY_END_OF_SEGMENT_TOOLTIP": "Play a few seconds at the end of the current segment.",
-			"REPLAY_SEGMENT_WITH_PREROLL": "Play Transition",
-			"REPLAY_SEGMENT_WITH_PREROLL_TOOLTIP": "Play a few seconds containing the end of the previous and the beginning of the next segment.",
-			"UNDO": "בטל",
-			"REDO": "בצע שוב",
-			"CLEAR_SEGMENTS": "Clear All Segments",
-			"CLEAR_SEGMENTS_TOOLTIP": "Clear all segments, leaving one big segment."
-		},
-		"SEGMENTS": {
-			"REMOVE_SEGMENT": "הסר מקטע",
-			"SHOW_SEGMENT": "Show this Segment",
-			"HIDE_SEGMENT": "Hide this Segment",
-			"START": "התחל",
-			"END": "סוף"
-		},
-		"THUMBNAIL": {
-			"DESCRIPTION": "תמונת ברירת מחדל ממוזערת המשמשת לתצוגה ויזואלית של אירוע מיוצרת באופן אוטומטי. במקרה ובו תרצו תמונה ממוזערת שונה, אתם צריכים לחלץ תמונה ממוזערת מתוך הוידאו במיקום הנוכחי של הסרטון או להעלות תמונה.",
-			"ACTIONS": {
-				"EXTRACT": {
-					"FROM_VIDEO": {
-						"LABEL": "חלץ מתוך הוידאו",
-						"TOOLTIP": "לחלץ את התמונה הממוזערת מהוידאו במיקום הנוכחי בסרטון"
-					},
-					"FROM_LEFT_VIDEO": {
-						"LABEL": "חלץ מתוך הוידאו השמאלי",
-						"TOOLTIP": "לחלץ את התמונה הממוזערת מהוידאו השמאלי במיקום הנוכחי בסרטון"
-					},
-					"FROM_RIGHT_VIDEO": {
-						"LABEL": "חלץ מתוך הוידאו הימני",
-						"TOOLTIP": "לחלץ את התמונה הממוזערת מהוידאו הימני במיקום הנוכחי בסרטון"
-					}
-				},
-				"UPLOAD": {
-					"LABEL": "העלה תמונה",
-					"TOOLTIP": "העלאת תמונה ממוזערת"
-				},
-				"USE_DEFAULT": {
-					"LABEL": "השתמש בתמונת ברירת המחדל הממוזערת",
-					"TOOLTIP": "השתמש בתמונת ברירת המחדל הממוזערת שנוצרה באופן אוטומטי"
-				}
-			},
-			"PREVIEW": {
-				"NOT_AVAILABLE": "תצוגה מקדימה אינה זמינה",
-				"OUTDATED": "התצוגה המקדימה מיושנת מכיוון שישנם מקטעים ששונו. התצוגה המקדימה תתעדכן מייד לאחר שהשינויים שלך ישמרו."
-			},
-			"CURRENT": {
-				"DEFAULT": "אתם משתמשים כרגע בתמונת ברירת מחדל ממוזערת.",
-				"SNAPSHOT": "תמונה ממוזערת זו חולצה מהוידאו.",
-				"UPLOAD": "אתם משתמשים כרגע בתמונה ממוזערת שהועלתה."
-			}
-		},
-		"TRACKS": {
-			"DESCRIPTION": "אתם יכולים לבטל בחירה של רצועות בשביל שלא יכללו בתהליך העיבוד בהמשך. סימו לב שעליכם לפרסם (מחדש) את האירוע בשביל להכיל את השינויים בפועל.",
-			"NOTIFICATION": {
-				"NO_VIDEO_TRACK_SELECTED": "עליך לאפשר לפחות סרטון וידיאו אחד",
-				"NO_AUDIO_TRACK_SELECTED": "עליך לאפשר לפחות רצועת שמע אחת"
-			},
-			"TRACK": {
-				"HEADER": "רצועה"
-			},
-			"VIDEO": {
-				"HEADER": "סרטון הווידיאו",
-				"NOT_AVAILABLE": "אין רצועות וידאו זמינות",
-				"NO_PREVIEW_AVAILABLE": "לא נמצאה תמונה מקדימה",
-				"NO_TRACK_SELECTED": "לא נבחרה רצועת שמע",
-				"TOOLTIPS": {
-					"HIDE": "רצועת וידאו זו כרגע מאופשרת. לחץ לביטול",
-					"UNHIDE": "רצועת וידאו זו כרגע מבוטלת. לחץ לאיפשור."
-				}
-			},
-			"AUDIO": {
-				"HEADER": "רצועת שמע",
-				"NOT_AVAILABLE": "אין רצועות שמע זמינות",
-				"NO_PREVIEW_AVAILABLE": "לא נמצאה תמונה מקדימה",
-				"NO_TRACK_SELECTED": "לא נבחרה רצועת שמע",
-				"TOOLTIPS": {
-					"HIDE": "רצועת שמע זו כרגע מאופשרת. לחץ לביטול",
-					"UNHIDE": "רצועת שמע זו כרגע מבוטלת. לחץ לאיפשור"
-				}
-			}
-		},
-		"PLAYER": {
-			"PLAY": "הפעל",
-			"PAUSE": "השהה",
-			"NEXT_FRAME": "לפריים הבא",
-			"PREVIOUS_FRAME": "פריים קודם",
-			"NEXT_SEGMENT": "קטע הבא / קפיצה אל הסוף",
-			"PREVIOUS_SEGMENT": "המקטע הקודם / קפיצה להתחלה",
-			"MUTE": "השתק",
-			"VOLUME": "עוצמת שמע"
 		}
 	},
 	"TABLE_FILTERS": {

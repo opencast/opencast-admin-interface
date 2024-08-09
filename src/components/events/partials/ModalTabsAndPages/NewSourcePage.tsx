@@ -7,7 +7,8 @@ import {
 	getTimezoneOffset,
 	translateOverrideFallback,
 } from "../../../../utils/utils";
-import { Field, FieldArray, FormikProps } from "formik";
+import { FieldArray, FormikProps } from "formik";
+import { Field } from "../../../shared/Field";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
