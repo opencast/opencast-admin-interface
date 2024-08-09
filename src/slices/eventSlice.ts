@@ -25,7 +25,7 @@ import { getAssetUploadOptions, getSchedulingEditedEvents } from '../selectors/e
 import { fetchSeriesOptions } from "./seriesSlice";
 import { AppDispatch } from '../store';
 import { enrichPublications, fetchAssetUploadOptions } from '../thunks/assetsThunks';
-import { TransformedAcls } from './aclDetailsSlice';
+import { TransformedAcl } from './aclDetailsSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { Publication } from './eventDetailsSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
@@ -403,7 +403,7 @@ export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata
 
 export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (params: {
 	values: {
-		acls: TransformedAcls,
+		acls: TransformedAcl[],
 		configuration: { [key: string]: unknown },
 		deviceInputs?: string[],
 		processingWorkflow: string,

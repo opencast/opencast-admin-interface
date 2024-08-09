@@ -1,4 +1,3 @@
-import { Ace } from './../slices/aclDetailsSlice';
 import { getFilters, getTextFilter } from "../selectors/tableFilterSelectors";
 import {
 	getPageLimit,
@@ -414,9 +413,7 @@ export const getMetadataCollectionFieldName = (metadataField: { collection?: { [
 export const prepareAccessPolicyRulesForPost = (policies: TransformedAcl[]) => {
 	// access policies for post request
 	let access : {
-		acl : {
-			ace: Ace[]
-		}
+		acl : Acl
 	} = {
 		acl: {
 			ace: [],

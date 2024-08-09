@@ -9,7 +9,7 @@ import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 /**
  * This file contains redux reducer for actions affecting the state of themes
  */
-export type Details = {
+export type ThemeDetailsType = {
 	bumperActive: boolean,
 	bumperFile: string,
 	creationDate: any,
@@ -34,7 +34,7 @@ export type Details = {
 type ThemeState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
-	results: Details[],
+	results: ThemeDetailsType[],
 	columns: TableConfig["columns"],
 	total: number,
 	count: number,
@@ -73,7 +73,7 @@ export const fetchThemes = createAppAsyncThunk('theme/fetchThemes', async (_, { 
 });
 
 // post new theme to backend
-export const postNewTheme = createAppAsyncThunk('theme/postNewTheme', async (values: Details, {dispatch}) => {
+export const postNewTheme = createAppAsyncThunk('theme/postNewTheme', async (values: ThemeDetailsType, {dispatch}) => {
 	// get URL params used for post request
 	let data = buildThemeBody(values);
 
