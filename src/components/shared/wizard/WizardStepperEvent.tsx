@@ -38,7 +38,7 @@ const WizardStepperEvent = ({
 				await setPage(key);
 			}
 
-			let previousPageIndex = key - 1 > 0 ? key - 1 : 0;
+			let previousPageIndex = Math.max(0, key - 1);
 			while (previousPageIndex >= 0) {
 				if (steps[previousPageIndex]!.hidden) {
 					previousPageIndex = previousPageIndex - 1;

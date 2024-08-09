@@ -386,8 +386,16 @@
 			"SKIP": "Not now",
 			"CONTINUE": "Continue",
 			"BACK": "Back",
+			"SUBMIT": "Submit",
+			"CONFIRM": "Confirm",
 			"LEGAL_INFO_STATE": {
 				"HEADER": "Terms of Service and Privacy Policy"
+			},
+			"SUMMARY_STATE": {
+				"HEADER": "This is a JSON summary of exactly what would be sent to Opencast's servers",
+				"GENERAL_HEADER": "Adopter Information",
+				"STATS_HEADER": "Statistical Information",
+				"NO_STATS_HEADER": "No statistics data will be shared"
 			},
 			"INFORMATION_STATE": {
 				"HEADER": "Спасибо за использование Opencast!",
@@ -1654,131 +1662,6 @@
 				"WARNING": "Warning",
 				"ERROR": "Error"
 			}
-		}
-	},
-	"VIDEO_TOOL": {
-		"WARNING_UNSAVED": "Warning: Some of your changes were not saved. If you leave the video editor, these changes will get lost. Do you really want to continue?",
-		"TIMELINE": "Timeline",
-		"ZOOMLEVEL": "Zoom Level",
-		"PREVIEW_MODE": "Preview Mode",
-		"PREVIEW_MODE_TOOLTIP": "Play selected segments only",
-		"ZOOM": "Zoom",
-		"BUTTONS": {
-			"CLOSE": "Close",
-			"SAVE": "Save",
-			"PROCESS": "Save & Continue",
-			"ADD_COMMENT": "Add Comment"
-		},
-		"TABS": {
-			"EDIT": "Editor",
-			"CAPTIONS": "Captions",
-			"ANNOTATIONS": "Annotations"
-		},
-		"AREAS": {
-			"METADATA": "Metadata",
-			"THUMBNAIL": "Thumbnail",
-			"COMMENTS": "Comments",
-			"SEGMENTS": "Segments",
-			"TRACKS": "Tracks"
-		},
-		"ACTIONS": {
-			"SPLIT": "Split",
-			"SPLIT_TOOLTIP": "Split segment at the current cursor position.",
-			"CUT": "Hide/Show",
-			"CUT_TOOLTIP": "Hide or show the selected part of the video.",
-			"REPLAY_SEGMENT": "Play Start of Segment",
-			"REPLAY_SEGMENT_TOOLTIP": "Play the current segment from the beginning.",
-			"REPLAY_END_OF_SEGMENT": "Play End of Segment",
-			"REPLAY_END_OF_SEGMENT_TOOLTIP": "Play a few seconds at the end of the current segment.",
-			"REPLAY_SEGMENT_WITH_PREROLL": "Play Transition",
-			"REPLAY_SEGMENT_WITH_PREROLL_TOOLTIP": "Play a few seconds containing the end of the previous and the beginning of the next segment.",
-			"UNDO": "Undo",
-			"REDO": "Redo",
-			"CLEAR_SEGMENTS": "Clear All Segments",
-			"CLEAR_SEGMENTS_TOOLTIP": "Clear all segments, leaving one big segment."
-		},
-		"SEGMENTS": {
-			"REMOVE_SEGMENT": "Remove Segment",
-			"SHOW_SEGMENT": "Show this Segment",
-			"HIDE_SEGMENT": "Hide this Segment",
-			"START": "Start",
-			"END": "End"
-		},
-		"THUMBNAIL": {
-			"DESCRIPTION": "A default thumbnail used to visually represent the event is generated automatically. In case you want to use a different thumbnail, you can extract a thumbnail from the video at the current playback position or upload an image.",
-			"ACTIONS": {
-				"EXTRACT": {
-					"FROM_VIDEO": {
-						"LABEL": "Extract from video",
-						"TOOLTIP": "Extract the thumbnail from the video at the current playback position"
-					},
-					"FROM_LEFT_VIDEO": {
-						"LABEL": "Extract from left video",
-						"TOOLTIP": "Extract the thumbnail from the left video at the current playback position"
-					},
-					"FROM_RIGHT_VIDEO": {
-						"LABEL": "Extract from right video",
-						"TOOLTIP": "Extract the thumbnail from the right video at the current playback position"
-					}
-				},
-				"UPLOAD": {
-					"LABEL": "Upload image",
-					"TOOLTIP": "Upload a thumbnail image"
-				},
-				"USE_DEFAULT": {
-					"LABEL": "Use default thumbnail",
-					"TOOLTIP": "Use the default thumbnail that is generated automatically"
-				}
-			},
-			"PREVIEW": {
-				"NOT_AVAILABLE": "No preview available",
-				"OUTDATED": "The preview is outdated since segments were changed. It will be updated as soon as you save your changes."
-			},
-			"CURRENT": {
-				"DEFAULT": "You are currently using the default thumbnail.",
-				"SNAPSHOT": "The current thumbnail has been extracted from the video.",
-				"UPLOAD": "You are currently using an uploaded thumbnail."
-			}
-		},
-		"TRACKS": {
-			"DESCRIPTION": "You can unselect tracks to exclude them from further processing. Please note that you need to (re-)publish the event to actually apply the changes.",
-			"NOTIFICATION": {
-				"NO_VIDEO_TRACK_SELECTED": "You must enable at least one video track",
-				"NO_AUDIO_TRACK_SELECTED": "You must enable at least one audio track"
-			},
-			"TRACK": {
-				"HEADER": "Track"
-			},
-			"VIDEO": {
-				"HEADER": "Video track",
-				"NOT_AVAILABLE": "No video tracks available",
-				"NO_PREVIEW_AVAILABLE": "No preview image found",
-				"NO_TRACK_SELECTED": "No video track selected",
-				"TOOLTIPS": {
-					"HIDE": "This video track is currently enabled. Click to disable",
-					"UNHIDE": "This video track is currently disabled. Click to enable."
-				}
-			},
-			"AUDIO": {
-				"HEADER": "Audio track",
-				"NOT_AVAILABLE": "No audio tracks available",
-				"NO_PREVIEW_AVAILABLE": "No preview image found",
-				"NO_TRACK_SELECTED": "No audio track selected",
-				"TOOLTIPS": {
-					"HIDE": "This audio track is currently enabled. Click to disable",
-					"UNHIDE": "This audio track is currently disabled. Click to enable"
-				}
-			}
-		},
-		"PLAYER": {
-			"PLAY": "Play",
-			"PAUSE": "Pause",
-			"NEXT_FRAME": "Next frame",
-			"PREVIOUS_FRAME": "Previous frame",
-			"NEXT_SEGMENT": "Next segment / Jump to end",
-			"PREVIOUS_SEGMENT": "Previous segment / Jump to start",
-			"MUTE": "Mute",
-			"VOLUME": "Volume"
 		}
 	},
 	"TABLE_FILTERS": {
