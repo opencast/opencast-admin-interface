@@ -103,7 +103,21 @@ const EventDetails = ({
 	const isLoadingStatistics = useAppSelector(state => isFetchingStatistics(state));
 	const captureAgents = useAppSelector(state => getRecordings(state));
 
-	const tabs = [
+	type Tab = {
+		tabNameTranslation: string,
+		bodyHeaderTranslation?: string,
+		accessRole: string,
+		name: string,
+		hidden?: boolean,
+		page: EventDetailsPage,
+	}
+
+	type Tabs = [
+		Tab, Tab, Tab, Tab, Tab,
+		Tab, Tab, Tab, Tab,
+	]
+
+	const tabs: Tabs = [
 		{
 			tabNameTranslation: "EVENTS.EVENTS.DETAILS.TABS.METADATA",
 			bodyHeaderTranslation: "EVENTS.EVENTS.DETAILS.METADATA.CAPTION",

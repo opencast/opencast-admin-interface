@@ -345,7 +345,7 @@ export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata
 	metadataFields.mergedMetadata.forEach((field) => {
 		if (field.selected) {
 			let value = values[field.id];
-			metadata[0].fields.push({
+			metadata[0]!.fields.push({
 				...field,
 				value: value,
 			});
@@ -558,34 +558,34 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 
 	// iterate through possible upload asset options and put them in assets
 	// if source mode/type is UPLOAD and a file for a asset is uploaded by user than append file to form data
-	for (let i = 0; uploadAssetOptions.length > i; i++) {
+	for (const uploadAssetOption of uploadAssetOptions) {
 		if (
-			uploadAssetOptions[i].type === "track" &&
+			uploadAssetOption.type === "track" &&
 			values.sourceMode === "UPLOAD"
 		) {
 			let asset = values.uploadAssetsTrack?.find(
-				(asset) => asset.id === uploadAssetOptions[i].id
+				(asset) => asset.id === uploadAssetOption.id
 			);
-			if (!!asset && !!asset.file) {
+			if (!!asset && !!asset.file && asset.file[0]) {
 				if (asset.multiple) {
 					for (let j = 0; asset.file.length > j; j++) {
-						formData.append(asset.id + "." + j, asset.file[j]);
+						formData.append(asset.id + "." + j, asset.file[j]!);
 					}
 				} else {
 					formData.append(asset.id + ".0", asset.file[0]);
 				}
 			}
-			assets.options = assets.options.concat(uploadAssetOptions[i]);
+			assets.options = assets.options.concat(uploadAssetOption);
 		} else {
 			if (
-				!!values[uploadAssetOptions[i].id] &&
+				!!values[uploadAssetOption.id] &&
 				values.sourceMode === "UPLOAD"
 			) {
 				formData.append(
-					uploadAssetOptions[i].id + ".0",
-					values[uploadAssetOptions[i].id] as File
+					uploadAssetOption.id + ".0",
+					String(values[uploadAssetOption.id])
 				);
-				assets.options = assets.options.concat(uploadAssetOptions[i]);
+				assets.options = assets.options.concat(uploadAssetOption);
 			}
 		}
 	}
@@ -753,8 +753,8 @@ export const fetchScheduling = createAppAsyncThunk('events/fetchScheduling', asy
 				changedEndTimeHour: makeTwoDigits(endDate.getHours()),
 				endTimeMinutes: makeTwoDigits(endDate.getMinutes()),
 				changedEndTimeMinutes: makeTwoDigits(endDate.getMinutes()),
-				weekday: weekdays[(startDate.getDay() + 6) % 7].name,
-				changedWeekday: weekdays[(startDate.getDay() + 6) % 7].name,
+				weekday: weekdays[(startDate.getDay() + 6) % 7]!.name,
+				changedWeekday: weekdays[(startDate.getDay() + 6) % 7]!.name,
 			};
 			editedEvents.push(event);
 		}

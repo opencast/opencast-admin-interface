@@ -44,9 +44,9 @@ export const getURLParams = (
 		filters.push("textFilter:" + textFilter);
 	}
 	// transform filters for use as URL param
-	for (let key in filterMap) {
-		if (!!filterMap[key].value) {
-			filters.push(filterMap[key].name + ":" + filterMap[key].value.toString());
+	for (const filter of filterMap) {
+		if (!!filter.value) {
+			filters.push(filter.name + ":" + filter.value.toString());
 		}
 	}
 
@@ -102,11 +102,11 @@ export const buildGroupBody = (
 	data.append("name", values.name);
 	data.append("description", values.description);
 
-	for (let i = 0; i < values.roles.length; i++) {
-		roles.push(values.roles[i].name);
+	for (const role of values.roles) {
+		roles.push(role.name);
 	}
-	for (let i = 0; i < values.users.length; i++) {
-		users.push(values.users[i].id);
+	for (const user of values.users) {
+		users.push(user);
 	}
 	data.append("roles", roles.join(","));
 	data.append("users", users.join(","));
@@ -421,27 +421,27 @@ export const prepareAccessPolicyRulesForPost = (policies: TransformedAcl[]) => {
 	};
 
 	// iterate through all policies provided by user and transform them into form required for request
-	for (let i = 0; policies.length > i; i++) {
-		if (policies[i].read) {
+	for (const policy of policies) {
+		if (policy.read) {
 			access.acl.ace = access.acl.ace.concat({
 				action: "read",
-				allow: policies[i].read,
-				role: policies[i].role,
+				allow: policy.read,
+				role: policy.role,
 			});
 		}
-		if (policies[i].write) {
+		if (policy.write) {
 			access.acl.ace = access.acl.ace.concat({
 				action: "write",
-				allow: policies[i].write,
-				role: policies[i].role,
+				allow: policy.write,
+				role: policy.role,
 			});
 		}
-		if (policies[i].actions.length > 0) {
-			for (let j = 0; policies[i].actions.length > j; j++) {
+		if (policy.actions.length > 0) {
+			for (const action of policy.actions) {
 				access.acl.ace = access.acl.ace.concat({
-					action: policies[i].actions[j],
+					action: action,
 					allow: true,
-					role: policies[i].role,
+					role: policy.role,
 				});
 			}
 		}
@@ -454,33 +454,33 @@ export const prepareAccessPolicyRulesForPost = (policies: TransformedAcl[]) => {
 export const transformAclTemplatesResponse = (acl: Acl) => {
 	let template: TransformedAcl[] = [];
 
-	for (let i = 0; acl.ace.length > i; i++) {
-		if (template.find((rule) => rule.role === acl.ace[i].role)) {
-			for (let j = 0; template.length > j; j++) {
+	for (const ace of acl.ace) {
+		if (template.find((rule) => rule.role === ace.role)) {
+			for (const [j, templateEntry] of template.entries()) {
 				// Only update entry for policy if already added with other action
-				if (template[j].role === acl.ace[i].role) {
-					if (acl.ace[i].action === "read") {
+				if (templateEntry.role === ace.role) {
+					if (ace.action === "read") {
 						template[j] = {
-							...template[j],
-							read: acl.ace[i].allow,
+							...templateEntry,
+							read: ace.allow,
 						};
 						break;
 					}
-					if (acl.ace[i].action === "write") {
+					if (ace.action === "write") {
 						template[j] = {
-							...template[j],
-							write: acl.ace[i].allow,
+							...templateEntry,
+							write: ace.allow,
 						};
 						break;
 					}
 					if (
-						acl.ace[i].action !== "read" &&
-						acl.ace[i].action !== "write" &&
-						acl.ace[i].allow === true
+						ace.action !== "read" &&
+						ace.action !== "write" &&
+						ace.allow === true
 					) {
 						template[j] = {
-							...template[j],
-							actions: template[j].actions.concat(acl.ace[i].action),
+							...templateEntry,
+							actions: templateEntry.actions.concat(ace.action),
 						};
 						break;
 					}
@@ -488,32 +488,32 @@ export const transformAclTemplatesResponse = (acl: Acl) => {
 			}
 		} else {
 			// add policy if role not seen before
-			if (acl.ace[i].action === "read") {
+			if (ace.action === "read") {
 				template = template.concat({
-					role: acl.ace[i].role,
-					read: acl.ace[i].allow,
+					role: ace.role,
+					read: ace.allow,
 					write: false,
 					actions: [],
 				});
 			}
-			if (acl.ace[i].action === "write") {
+			if (ace.action === "write") {
 				template = template.concat({
-					role: acl.ace[i].role,
+					role: ace.role,
 					read: false,
-					write: acl.ace[i].allow,
+					write: ace.allow,
 					actions: [],
 				});
 			}
 			if (
-				acl.ace[i].action !== "read" &&
-				acl.ace[i].action !== "write" &&
-				acl.ace[i].allow === true
+				ace.action !== "read" &&
+				ace.action !== "write" &&
+				ace.allow === true
 			) {
 				template = template.concat({
-					role: acl.ace[i].role,
+					role: ace.role,
 					read: false,
 					write: false,
-					actions: [acl.ace[i].action],
+					actions: [ace.action],
 				});
 			}
 		}
