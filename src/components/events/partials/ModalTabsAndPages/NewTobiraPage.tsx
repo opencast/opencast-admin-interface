@@ -226,6 +226,9 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 											<table className="main-tbl highlight-hover">
 											<thead>
 												<tr>
+													{currentPage.children.some(page => !page.blocks?.length)
+														&& <th className="small"/>
+													}
 													<th>
 														{
 															t(
@@ -247,12 +250,22 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 															) /* Subpages */
 														}
 													</th>
+													{editing && <th />}
 												</tr>
 											</thead>
 											<tbody>
 											{!!currentPage.children &&
 													currentPage.children.map((page, key) => (
 														<tr key={key}>
+															{currentPage.children.some(page => !page.blocks?.length) && <td>
+																{!page.blocks?.length && <input
+																	type="checkbox"
+																	checked={isValid && formik.values.selectedPage?.path
+																		=== currentPage.children[key].path
+																	}
+																	onChange={() => page.blocks?.length || select(page)}
+																/>}
+															</td>}
 															<td>
 																{!!page.new ? (
 																	<input
@@ -373,6 +386,7 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 												{t("EVENTS.SERIES.NEW.TOBIRA.NO_PAGE_SELECTED")}
 											</p>
 										)}
+										<p>{t("EVENTS.SERIES.NEW.TOBIRA.DIRECT_LINK")}</p>
 									</div>
 								</>
 							)}
