@@ -41,29 +41,18 @@ type Theme = {
 	name: string,
 }
 
-export interface TobiraPageChild {
-	title: string | undefined,
-	path: string,
-	segment: string,
-	blocks: {
-		id: string,
-	}[],
-	subpages?: string,  // not returned by endpoint
-	new?: boolean,      // not returned by endpoint
-	children?: TobiraPageChild[],
-}
-
 export interface TobiraPage {
 	title: string | undefined,
 	path: string,
 	segment: string,
 	children: TobiraPage[],
+	ancestors: TobiraPage[]
 
 	subpages?: string,  // not returned by endpoint
 	new?: boolean,      // not returned by endpoint
-	blocks?: {
+	blocks: {
 		id: string,
-	}[],    // not returned by endpoint, only in children. has "id"
+	}[],
 }
 
 type SeriesState = {
@@ -77,12 +66,12 @@ type SeriesState = {
 	errorTobiraPage: SerializedError | null,
 	results: Series[],
 	columns: TableConfig["columns"],
-  showActions: boolean,
+	showActions: boolean,
 	total: number,
 	count: number,
 	offset: number,
 	limit: number,
-  metadata: MetadataCatalog,
+	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	themes: Theme[],
 	deletionAllowed: boolean,
@@ -127,6 +116,8 @@ const initialState: SeriesState = {
 		path: "/",
 		segment: "",
 		children: [],
+		ancestors: [],
+		blocks: [],
 	},
 };
 

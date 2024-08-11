@@ -20,6 +20,10 @@ import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './stati
 import { Ace } from './aclSlice';
 import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
+import { TobiraPage } from './seriesSlice';
+import { TobiraTabHierarchy } from '../components/events/partials/ModalTabsAndPages/DetailsTobiraTab';
+import { TobiraFormProps } from '../components/events/partials/ModalTabsAndPages/NewTobiraPage';
+
 
 /**
  * This file contains redux reducer for actions affecting the state of a series
@@ -29,6 +33,11 @@ export type Feed = {
 	type: string,
 	version: string,
 }
+
+export type TobiraData = {
+	baseURL: string,
+	hostPages: TobiraPage[],
+};
 
 type SeriesDetailsState = {
 	statusMetadata: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
@@ -47,7 +56,7 @@ type SeriesDetailsState = {
 	errorStatisticsValue: SerializedError | null,
 	statusTobiraData: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorTobiraData: SerializedError | null,
-  metadata: MetadataCatalog,
+  	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	feeds: Feed[],
 	acl: TransformedAcl[],
@@ -56,16 +65,8 @@ type SeriesDetailsState = {
 	fetchingStatisticsInProgress: boolean,
 	statistics: Statistics[],
 	hasStatisticsError: boolean,
-	tobiraData: {
-		baseURL: string,
-		hostPages: {
-			title: string,
-			path: string,
-			ancestors: {
-				title: string,
-			}[],
-		}[],
-	},
+	tobiraTab: TobiraTabHierarchy,
+	tobiraData: TobiraData,
 }
 
 // Initial state of series details in redux store
@@ -99,6 +100,7 @@ const initialState: SeriesDetailsState = {
 	fetchingStatisticsInProgress: false,
 	statistics: [],
 	hasStatisticsError: false,
+	tobiraTab: "main",
 	tobiraData: {
 		baseURL: "",
 		hostPages: [],
@@ -451,6 +453,55 @@ export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetch
 	return data;
 });
 
+export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTobiraData', async (
+	params: TobiraFormProps & { seriesId: string },
+	{ dispatch },
+) => {
+	const tobiraParams = new URLSearchParams();
+	
+	const pathComponents = params.breadcrumbs.slice(1).map(crumb => ({
+		name: crumb.title,
+		pathSegment: crumb.segment,
+	}));
+
+	if (params.currentPath && params.selectedPage) {
+		pathComponents.push({
+			// Passing a dummy value here so Tobira won't freak out.
+			name: params.selectedPage.title ?? "dummy",
+			pathSegment: params.selectedPage.segment,
+		});
+		
+		tobiraParams.append("pathComponents", JSON.stringify(pathComponents));
+		tobiraParams.append("targetPath", params.selectedPage.path);
+		tobiraParams.append("currentPath", params.currentPath);
+	}
+
+	try {
+		const response = await axios.post(`/admin-ng/series/${params.seriesId}/tobira/path`, tobiraParams.toString(), {
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+		});
+  
+		console.info(response);
+		dispatch(addNotification({
+			type: 'success',
+			key: 'SERIES_PATH_UPDATED',
+			context: NOTIFICATION_CONTEXT
+		}));
+		
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		dispatch(addNotification({
+			type: 'error',
+			key: 'SERIES_PATH_NOT_UPDATED',
+			context: NOTIFICATION_CONTEXT
+		}));
+		throw error;
+	}}
+);
+
 // thunks for statistics
 export const fetchSeriesStatistics = createAppAsyncThunk('seriesDetails/fetchSeriesStatistics', async (seriesId: string, {getState}) => {
 	// get prior statistics
@@ -523,6 +574,11 @@ const seriesDetailsSlice = createSlice({
 			SeriesDetailsState["statistics"]
 		>) {
 			state.statistics = action.payload;
+		},
+		setTobiraTabHierarchy(state, action: PayloadAction<
+			SeriesDetailsState["tobiraTab"]
+		>) {
+			state.tobiraTab = action.payload;
 		},
 		setDoNothing(state) {
 
@@ -654,6 +710,7 @@ export const {
 	setSeriesDetailsExtendedMetadata,
 	setSeriesStatisticsError,
 	setSeriesStatistics,
+	setTobiraTabHierarchy,
 	setDoNothing,
 } = seriesDetailsSlice.actions;
 

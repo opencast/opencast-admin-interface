@@ -37,6 +37,7 @@ import {
 } from "../components/events/partials/modals/EventDetails";
 import { AppDispatch } from "../store";
 import { Ace } from './aclSlice';
+import { setTobiraTabHierarchy, TobiraData } from './seriesDetailsSlice';
 
 // Contains the navigation logic for the modal
 type EventDetailsModal = {
@@ -376,16 +377,7 @@ type EventDetailsState = {
 	publications: Publication[],
 	statistics: Statistics[],
 	hasStatisticsError: boolean,
-	tobiraData: {
-		baseURL: string,
-		hostPages: {
-			title: string,
-			path: string,
-			ancestors: {
-				title: string,
-			}[],
-		}[],
-	},
+	tobiraData: TobiraData,
 }
 
 // Initial state of event details in redux store
@@ -1528,6 +1520,7 @@ export const openModal = (
 ) => (dispatch: AppDispatch) => {
 	dispatch(setModalEvent(event));
 	dispatch(setModalWorkflowId(workflowId));
+	dispatch(setTobiraTabHierarchy("main"));
 	dispatch(openModalTab(page, workflowTab, assetsTab))
 	dispatch(setShowModal(true));
 };
