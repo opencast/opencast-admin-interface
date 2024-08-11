@@ -51,92 +51,97 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 		});
 	}
 
-	return (
-		<div className="modal-content">
-			<div className="modal-body">
-				{/* Notifications */}
-				<Notifications context="not_corner" />
-				<div className="full-col">
-					<div className="obj list-obj">
-						<header>
-							{t(`EVENTS.${i18nKey}.DETAILS.TABS.TOBIRA`)}
-						</header>
-						{ !error &&
-							<>
+	return <div className="modal-content">
+		<div className="modal-body">
+			{/* Notifications */}
+			<Notifications context="not_corner" />
+			<div className="full-col">
+				<div className="obj list-obj">
+					<header>
+						{t(`EVENTS.${i18nKey}.DETAILS.TABS.TOBIRA`)}
+					</header>
+					{!error && <>
+						<div className="obj-container">
+							<a href={directTobiraLink}>
+								{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.DIRECT_LINK`)}
+							</a>
+							<button
+								className="tobira-copy-direct-link"
+								onClick={() => copyTobiraDirectLink()}
+								aria-label={t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.COPY_DIRECT_LINK`)}
+							>
+								<i
+									aria-hidden="true"
+									className="fa fa-copy"
+									title={t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.COPY_DIRECT_LINK`)}
+								/>
+							</button>
+						</div>
+						<div className="obj-container">
+							<div className="obj tbl-list">
+								<header>
+									{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.PAGES`)}
+								</header>
 								<div className="obj-container">
-									<a href={directTobiraLink}>
-										{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.DIRECT_LINK`)}
-									</a>
-									<button
-										className="tobira-copy-direct-link"
-										onClick={() => copyTobiraDirectLink()}
-										aria-label={t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.COPY_DIRECT_LINK`)}
-									>
-										<i
-											aria-hidden="true"
-											className="fa fa-copy"
-											title={t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.COPY_DIRECT_LINK`)}
-										/>
-									</button>
+									<TobiraTable {...{ tobiraData, i18nKey }} />
 								</div>
-								<div className="obj-container">
-									<div className="obj tbl-list">
-										<header>
-											{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.PAGES`)}
-										</header>
-										<div className="obj-container">
-											<table className="main-tbl">
-												<tbody>
-													{(!tobiraData.hostPages || tobiraData.hostPages.length === 0) &&
-														<tr>
-															<td className="tobira-not-mounted">
-															{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.NOT_MOUNTED`)}
-															</td>
-														</tr>
-													}
-													{tobiraData.hostPages.map(hostPage => (
-														<tr key={hostPage.path}>
-															<td>
-																<a href={tobiraData.baseURL + hostPage.path}>
-																	{hostPage.path !== '/' &&
-																		<div>
-																			<span className="tobira-page-separator">/</span>
-																			{ hostPage.ancestors.map((ancestor, key) => (
-																				<span key={key}>
-																					{ancestor.title}
-																					<span className="tobira-page-separator">/</span>
-																				</span>
-																			))}
-																		</div>
-																	}
-																	<span className="tobira-leaf-page">
-																		{hostPage.path !== '/' &&
-																			<span>
-																				{hostPage.title}
-																			</span>
-																		}
-																		{hostPage.path === '/' &&
-																			<span>
-																				{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.HOMEPAGE`)}
-																			</span>
-																		}
-																	</span>
-																</a>
-															</td>
-														</tr>
-													))}
-												</tbody>
-											</table>
-										</div>
-									</div>
-								</div>
-							</>
-						}
-					</div>
+							</div>
+						</div>
+					</>}
 				</div>
 			</div>
 		</div>
-	);
+	</div>;
+}
+
+type TobiraTableProps = {
+	tobiraData: {
+		baseURL: string,
+		hostPages: {
+			title: string,
+			path: string,
+			ancestors: {
+				title: string,
+			}[],
+		}[],
+	};
+	i18nKey: "SERIES" | "EVENTS";
+}
+
+const TobiraTable: React.FC<TobiraTableProps> = ({ tobiraData, i18nKey }) => {
+	const { t } = useTranslation();
+	return <table className="main-tbl">
+		<tbody>
+			{tobiraData.hostPages.length === 0 && <tr>
+				<td className="tobira-not-mounted">
+					{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.NOT_MOUNTED`)}
+				</td>
+			</tr>}
+			{tobiraData.hostPages.map(hostPage => <tr key={hostPage.path}>
+				<td>
+					<a href={tobiraData.baseURL + hostPage.path}>
+						{hostPage.path !== '/' && <>
+							<span className="tobira-page-separator">/</span>
+							{hostPage.ancestors.map((ancestor, key) => (
+								<span key={key}>
+									{ancestor.title}
+									<span className="tobira-page-separator">/</span>
+								</span>
+							))}
+						</>}
+						<span className="tobira-leaf-page">
+							{hostPage.path !== '/' && <span>
+								{hostPage.title}
+							</span>}
+							{hostPage.path === '/' && <span>
+								{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.HOMEPAGE`)}
+							</span>}
+						</span>
+					</a>
+				</td>
+			</tr>)}
+		</tbody>
+	</table>;
 }
 
 export default DetailsTobiraTab;
