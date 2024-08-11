@@ -12,19 +12,22 @@ import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 /**
  * This component renders the theme page for new series in the new series wizard.
  */
-type RequiredFormProps = {
+export type TobiraFormProps = {
 	breadcrumbs: TobiraPage[],
 	selectedPage?: TobiraPage,
+	currentPath?: string,
 }
 
-const NewTobiraPage = <T extends RequiredFormProps>({
+const NewTobiraPage = <T extends TobiraFormProps>({
 	formik,
 	nextPage,
 	previousPage,
+	editMode,
 }: {
 	formik: FormikProps<T>,
 	nextPage: (values: T) => void,
-	previousPage: (values: T) => void,
+	previousPage:(values: T) => void,
+	editMode?: boolean,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -121,7 +124,7 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 			.concat(page)
 			.map(page => page.segment)
 			.join('/')
-			.replace(/([^\/]+$)/, lastSegment);
+			.replace(/([^/]+$)/, lastSegment);
 	};
 
 	const goto = (page: TobiraPage) => {
@@ -148,6 +151,7 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 			select(undefined);
 			formik.setFieldValue("breadcrumbs", [...formik.values.breadcrumbs, currentPage]);
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currentPage]);
 
 	const addChild = () => {
@@ -155,6 +159,7 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 		const newPage: TobiraPage = {
 			new: true,
 			children: [],
+			ancestors: [],
 			title: "",
 			path: "",
 			subpages: "",
@@ -211,13 +216,13 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 						<header className="no-expand">
 							{t("EVENTS.SERIES.NEW.TOBIRA.CAPTION")}
 						</header>
-						<div className="obj-container padded">
+						{!editMode && <div className="obj-container padded">
 							<ul>
 								<li>
 									<p>{t("EVENTS.SERIES.NEW.TOBIRA.DESCRIPTION")}</p>
 								</li>
 							</ul>
-						</div>
+						</div>}
 						{!error && <>
 							<div className="obj-container padded">
 								<div className="obj">
@@ -341,18 +346,40 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 								<p>{t("EVENTS.SERIES.NEW.TOBIRA.DIRECT_LINK")}</p>
 							</div>
 						</>}
+						{/* Render buttons for saving or resetting updated path */}
+						{editMode && <footer style={{ padding: "0 15px" }}>
+							{formik.values.selectedPage !== undefined && <div className="pull-left">
+								<button
+									type="reset"
+									onClick={() => formik.setFieldValue("selectedPage", undefined)}
+									className="cancel"
+								>{t("CANCEL")}</button>
+							</div>}
+							<div className="pull-right">
+								<button
+									onClick={() => formik.handleSubmit()}
+									disabled={!isValid || formik.values.selectedPage === undefined}
+									className={`save green ${
+										(!isValid || formik.values.selectedPage === undefined)
+											? "disabled"
+											: ""
+										}`
+									}
+								>{t("SAVE")}</button>
+							</div>
+						</footer>}
 					</div>
 				</div>
 			</div>
 		</div>
 
 		{/* Button for navigation to next page and previous page */}
-		<WizardNavigationButtons
+		{!editMode && <WizardNavigationButtons
 			formik={formik}
 			nextPage={nextPage}
 			previousPage={previousPage}
 			additionalValidation={!isValid}
-		/>
+		/>}
 	</>;
 };
 

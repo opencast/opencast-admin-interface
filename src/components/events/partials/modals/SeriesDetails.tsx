@@ -20,6 +20,7 @@ import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsExtendedMeta
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
 	fetchSeriesStatistics,
+	setTobiraTabHierarchy,
 	updateExtendedSeriesMetadata,
 	updateSeriesMetadata,
 } from "../../../../slices/seriesDetailsSlice";
@@ -49,6 +50,7 @@ const SeriesDetails = ({
 
 	useEffect(() => {
 		dispatch(fetchSeriesStatistics(seriesId));
+		dispatch(setTobiraTabHierarchy("main"));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
