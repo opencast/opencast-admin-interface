@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { TobiraPage, fetchSeriesDetailsTobiraNew, setErrorTobiraPage, setTobiraPage } from "../../../../slices/seriesSlice";
 import { getSeriesTobiraPage, getSeriesTobiraPageError } from "../../../../selectors/seriesSeletctor";
 import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
+import { SaveEditFooter } from "../../../shared/SaveEditFooter";
 
 /**
  * This component renders the theme page for new series in the new series wizard.
@@ -347,27 +348,12 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 							</div>
 						</>}
 						{/* Render buttons for saving or resetting updated path */}
-						{editMode && <footer style={{ padding: "0 15px" }}>
-							{formik.values.selectedPage !== undefined && <div className="pull-left">
-								<button
-									type="reset"
-									onClick={() => formik.setFieldValue("selectedPage", undefined)}
-									className="cancel"
-								>{t("CANCEL")}</button>
-							</div>}
-							<div className="pull-right">
-								<button
-									onClick={() => formik.handleSubmit()}
-									disabled={!isValid || formik.values.selectedPage === undefined}
-									className={`save green ${
-										(!isValid || formik.values.selectedPage === undefined)
-											? "disabled"
-											: ""
-										}`
-									}
-								>{t("SAVE")}</button>
-							</div>
-						</footer>}
+						{editMode && <SaveEditFooter
+							active={formik.values.selectedPage !== undefined}
+							reset={() => formik.setFieldValue("selectedPage", undefined)}
+							submit={() => formik.handleSubmit()}
+							{...{ isValid }}
+						/>}
 					</div>
 				</div>
 			</div>
