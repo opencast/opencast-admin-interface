@@ -657,7 +657,7 @@ export const fetchAssets = createAppAsyncThunk('eventDetails/fetchAssets', async
 				type: "warning",
 				key: "ACTIVE_TRANSACTION",
 				duration: -1,
-				parameter: null,
+				parameter: undefined,
 				context: NOTIFICATION_CONTEXT
 			})
 		);
@@ -1148,7 +1148,7 @@ export const saveSchedulingInfo = createAppAsyncThunk('eventDetails/saveScheduli
 				addNotification({
 					type: "error",
 					key: "EVENTS_NOT_UPDATED",
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1178,7 +1178,7 @@ if (endDate < now) {
 			type: "error",
 			key: "CONFLICT_IN_THE_PAST",
 			duration: -1,
-			parameter: null,
+			parameter: undefined,
 			context: NOTIFICATION_CONTEXT
 		})
 	);
@@ -1209,7 +1209,7 @@ if (endDate < now) {
 						type: "error",
 						key: "CONFLICT_DETECTED",
 						duration:-1,
-						parameter: null,
+						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					})
 				);
@@ -1240,7 +1240,7 @@ if (endDate < now) {
 						type: "error",
 						key: "CONFLICT_DETECTED",
 						duration:-1,
-						parameter: null,
+						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					})
 				);
@@ -1348,7 +1348,7 @@ export const performWorkflowAction = createAppAsyncThunk('eventDetails/performWo
 					type: "success",
 					key: "EVENTS_PROCESSING_ACTION_" + action,
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1360,7 +1360,7 @@ export const performWorkflowAction = createAppAsyncThunk('eventDetails/performWo
 					type: "error",
 					key: "EVENTS_PROCESSING_ACTION_NOT_" + action,
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1382,7 +1382,7 @@ export const deleteWorkflow = createAppAsyncThunk('eventDetails/deleteWorkflow',
 					type: "success",
 					key: "EVENTS_PROCESSING_DELETE_WORKFLOW",
 					duration: -1,
-					parameter:null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1402,7 +1402,7 @@ export const deleteWorkflow = createAppAsyncThunk('eventDetails/deleteWorkflow',
 					type: "error",
 					key: "EVENTS_PROCESSING_DELETE_WORKFLOW_FAILED",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1673,7 +1673,7 @@ export const updateAssets = createAppAsyncThunk('eventDetails/updateAssets', asy
 				addNotification({
 					type: "success",
 					key: "EVENTS_UPDATED",
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1684,7 +1684,7 @@ export const updateAssets = createAppAsyncThunk('eventDetails/updateAssets', asy
 				addNotification({
 					type: "error",
 					key: "EVENTS_NOT_UPDATED",
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1713,7 +1713,7 @@ export const saveAccessPolicies = createAppAsyncThunk('eventDetails/saveAccessPo
 					type: "info",
 					key: "SAVED_ACL_RULES",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1726,7 +1726,7 @@ export const saveAccessPolicies = createAppAsyncThunk('eventDetails/saveAccessPo
 					type: "error",
 					key: "ACL_NOT_SAVED",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1821,7 +1821,7 @@ export const saveWorkflowConfig = createAppAsyncThunk('eventDetails/saveWorkflow
 					type: "error",
 					key: "EVENTS_NOT_UPDATED",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);

@@ -180,7 +180,7 @@ const EventDetailsSchedulingTab = ({
 						type: "error",
 						key: "EVENTS_NOT_UPDATED",
 						duration: -1,
-						parameter: null,
+						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					}));
 				}
