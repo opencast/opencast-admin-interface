@@ -109,7 +109,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 		goto(formik.values.breadcrumbs.splice(index)[0]);
 	};
 
-	const select = (page: TobiraPage | undefined) => {
+	const select = (page?: TobiraPage) => {
 		if (!page || !page.new) {
 			stopEditing();
 		}
@@ -161,7 +161,6 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 			new: true,
 			children: [],
 			ancestors: [],
-			title: "",
 			path: "",
 			subpages: "",
 			blocks: [],

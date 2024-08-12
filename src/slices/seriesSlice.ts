@@ -42,7 +42,7 @@ type Theme = {
 }
 
 export interface TobiraPage {
-	title: string | undefined,
+	title?: string,
 	path: string,
 	segment: string,
 	children: TobiraPage[],
