@@ -93,7 +93,7 @@ const NewSeriesWizard: React.FC<{
 			acls: TransformedAcl[];
 			theme: string;
 			breadcrumbs: TobiraPage[];
-			selectedPage: TobiraPage | undefined;
+			selectedPage?: TobiraPage;
 		}
 	) => {
 		setSnapshot(values);
@@ -115,7 +115,7 @@ const NewSeriesWizard: React.FC<{
 			acls: TransformedAcl[];
 			theme: string;
 			breadcrumbs: TobiraPage[];
-			selectedPage: TobiraPage | undefined;
+			selectedPage?: TobiraPage;
 		},
 		twoPagesBack?: boolean
 	) => {
