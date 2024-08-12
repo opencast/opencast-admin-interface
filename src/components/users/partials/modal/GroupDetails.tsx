@@ -28,10 +28,10 @@ const GroupDetails: React.FC<{
 
 	// transform roles for use in SelectContainer
 	let roleNames = [];
-	for (let i = 0; i < groupDetails.roles.length; i++) {
-		if (!groupDetails.roles[i].startsWith("ROLE_GROUP")) {
+	for (const role of groupDetails.roles) {
+		if (!role.startsWith("ROLE_GROUP")) {
 			roleNames.push({
-				name: groupDetails.roles[i],
+				name: role,
 			});
 		}
 	}

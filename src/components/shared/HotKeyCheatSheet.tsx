@@ -55,24 +55,22 @@ const HotKeyCheatSheet: React.FC<{
 						<div className="full-col">
 							<p className="hint">{t("HOTKEYS.CHEAT_SHEET.HINT")}</p>
 							{/* Repeat table for each key */}
-							{Object.keys(availableHotkeys).map((hotkeyGroup, key) => (
+							{Object.entries(availableHotkeys).map(([key, hotkeyGroup]) => (
 								<div className="obj tbl-list" key={key}>
 									<header>
-										{t("HOTKEYS.GROUPS." + hotkeyGroup.toUpperCase())}
+										{t("HOTKEYS.GROUPS." + key.toUpperCase())}
 									</header>
 									<table className="main-tbl">
 										<tbody>
 											{/* Repeat row for each hotkey in group*/}
-											{Object.keys(availableHotkeys[hotkeyGroup]).map(
-												(hotkey, key) => (
-													<tr key={key} style={{ opacity: !(hotkeys && checkHotkeys(hotkeys, availableHotkeys[hotkeyGroup][hotkey].sequence)) ? "50%" : "100%"}}>
+											{Object.entries(hotkeyGroup).map(
+												([key, hotkey]) => (
+													<tr key={key} style={{ opacity: !(hotkeys && checkHotkeys(hotkeys, hotkey.sequence)) ? "50%" : "100%"}}>
 														<td className="hotkey">
 															<p className="combo">
 																<span className="chord">
 																	{/* repeat for each key in hotkey */}
-																	{availableHotkeys[hotkeyGroup][
-																		hotkey
-																	].sequence.map((comboKey, key) => (
+																	{hotkey.sequence.map((comboKey, key) => (
 																		<span key={key}>
 																			<span>
 																				<span className="key">
@@ -84,10 +82,8 @@ const HotKeyCheatSheet: React.FC<{
 																				</span>
 																			</span>
 																			{comboKey ===
-																			availableHotkeys[hotkeyGroup][hotkey]
-																				.sequence[
-																				availableHotkeys[hotkeyGroup][hotkey]
-																					.sequence.length - 1
+																			hotkey.sequence[
+																				hotkey.sequence.length - 1
 																			]
 																				? ""
 																				: " + "}
@@ -98,8 +94,7 @@ const HotKeyCheatSheet: React.FC<{
 														</td>
 														<td>
 															{t(
-																availableHotkeys[hotkeyGroup][hotkey]
-																	.description
+																hotkey.description
 															)}
 														</td>
 													</tr>

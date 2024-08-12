@@ -44,7 +44,7 @@ export const isSummaryReachable = (
 	}[],
 	completed: Record<number, boolean>,
 ) => {
-	if (steps[key].name === "summary") {
+	if (steps[key] && steps[key].name === "summary") {
 		const visibleSteps = steps.filter((step) => !step.hidden);
 
 		return Object.keys(completed).length >= visibleSteps.length - 2;

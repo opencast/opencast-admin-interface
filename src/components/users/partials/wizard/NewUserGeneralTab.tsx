@@ -193,7 +193,7 @@ const PasswordStrengthIndicator = ({
 			<div className="progress pw-strength">
 				<div id="bar" className="progress-bar" style={progressBarStyle}></div>
 			</div>
-			<label id="pw" style={{textAlign: "left"}}>{t(barText)}</label>
+			<label id="pw" style={{textAlign: "left"}}>{barText ? t(barText) : ""}</label>
 		</div>
 	);
 }

@@ -214,23 +214,23 @@ const ResourceDetailsAccessPolicyTab = ({
 		const sortedInitialPolicies = [...policies].sort(sortSchema);
 		for (let i = 0; i < sortedNewPolicies.length; i++) {
 			if (
-				sortedNewPolicies[i].role !== sortedInitialPolicies[i].role ||
-				sortedNewPolicies[i].read !== sortedInitialPolicies[i].read ||
-				sortedNewPolicies[i].write !== sortedInitialPolicies[i].write ||
-				sortedNewPolicies[i].actions.length !==
-					sortedInitialPolicies[i].actions.length
+				sortedNewPolicies[i]!.role !== sortedInitialPolicies[i]!.role ||
+				sortedNewPolicies[i]!.read !== sortedInitialPolicies[i]!.read ||
+				sortedNewPolicies[i]!.write !== sortedInitialPolicies[i]!.write ||
+				sortedNewPolicies[i]!.actions.length !==
+					sortedInitialPolicies[i]!.actions.length
 			) {
 				return true;
 			}
 			if (
-				sortedNewPolicies[i].actions.length > 0 &&
-				sortedNewPolicies[i].actions.length ===
-					sortedInitialPolicies[i].actions.length
+				sortedNewPolicies[i]!.actions.length > 0 &&
+				sortedNewPolicies[i]!.actions.length ===
+					sortedInitialPolicies[i]!.actions.length
 			) {
-				for (let j = 0; j < sortedNewPolicies[i].actions.length; j++) {
+				for (let j = 0; j < sortedNewPolicies[i]!.actions.length; j++) {
 					if (
-						sortedNewPolicies[i].actions[j] !==
-						sortedInitialPolicies[i].actions[j]
+						sortedNewPolicies[i]!.actions[j] !==
+						sortedInitialPolicies[i]!.actions[j]
 					) {
 						return true;
 					}

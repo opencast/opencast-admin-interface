@@ -276,9 +276,9 @@ export const deleteMultipleSeries = createAppAsyncThunk('series/deleteMultipleSe
 {dispatch}) => {
 	let data = [];
 
-	for (let i = 0; i < series.length; i++) {
-		if (series[i].selected) {
-			data.push(series[i].id);
+	for (const serie of series) {
+		if (serie.selected) {
+			data.push(serie.id);
 		}
 	}
 

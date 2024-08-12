@@ -55,10 +55,10 @@ export const makeTwoDigits = (number: number) => {
  * to [{id: id1, value: value1},{id: id2, value: value2}]
  */
 export const transformToIdValueArray = (data: {[key: string | number]: string}) => {
-	return Object.keys(data).map((key) => {
+	return Object.entries(data).map(([key, value]) => {
 		return {
 			id: key,
-			value: data[key],
+			value: value,
 		};
 	});
 };
@@ -79,10 +79,10 @@ export const transformToIdValueArray = (data: {[key: string | number]: string}) 
 ]
  */
 export const transformToObjectArray = (data: {[key: string | number]: any}) => {
-	return Object.keys(data).map((key) => {
+	return Object.entries(data).map(([key, value]) => {
 		return {
 			id: key,
-			...data[key],
+			...value,
 		};
 	});
 };
