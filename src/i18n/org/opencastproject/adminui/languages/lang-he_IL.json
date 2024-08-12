@@ -626,6 +626,7 @@
 					"EDITOR_NEEDS_CUTTING": "פתח עורך וידאו (הערה מציינת כי חיתוך הווידאו התבקש)",
 					"COMMENTS": "הצגת הערות",
 					"PAUSED_WORKFLOW": "הצגת תהליכי עבודה מושהים",
+					"PLAYER": "Open player",
 					"PRESENTER": "מסנן עבור מציג זה"
 				},
 				"SELECT_ALL": "Select all events",

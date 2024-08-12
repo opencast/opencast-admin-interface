@@ -626,6 +626,7 @@
 					"EDITOR_NEEDS_CUTTING": "Video Editörünü aç (videonun kesilmesini isteyen bir yorum var)",
 					"COMMENTS": "Yorumları görüntüle",
 					"PAUSED_WORKFLOW": "Duraklatılmış iş akışını görüntüle",
+					"PLAYER": "Open player",
 					"PRESENTER": "Bu sunucu için filtre"
 				},
 				"SELECT_ALL": "Select all events",
