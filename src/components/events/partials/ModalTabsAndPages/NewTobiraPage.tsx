@@ -211,151 +211,136 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 			<div className="modal-body">
 				{/* Notifications */}
 				<Notifications context="not_corner" />
-				<div className="full-col">
-					<div className="obj">
-						<header className="no-expand">
-							{t("EVENTS.SERIES.NEW.TOBIRA.CAPTION")}
-						</header>
-						{!editMode && <div className="obj-container padded">
-							<ul>
-								<li>
-									<p>{t("EVENTS.SERIES.NEW.TOBIRA.DESCRIPTION")}</p>
-								</li>
-							</ul>
-						</div>}
-						{!error && <>
-							<div className="obj-container padded">
-								<div className="obj">
-									<header>
-										<span>{t("EVENTS.SERIES.NEW.TOBIRA.SELECT_PAGE")}</span>
-									</header>
-									<div className="breadcrumb">
-										{formik.values.breadcrumbs.map((breadcrumb, key) => (
-											<button
-												key={key}
-												className="button-like-anchor breadcrumb-link"
-												onClick={() => back(key)}
-											>
-												{breadcrumb.segment === ''
-													? t('EVENTS.SERIES.NEW.TOBIRA.HOMEPAGE')
-													: breadcrumb.title
-												}
-											</button>
-										))}
-									</div>
-									<table className="main-tbl highlight-hover">
-										<thead>
-											<tr>
-												{currentPage.children.some(page => !page.blocks?.length)
-													&& <th className="small"/>
-												}
-												<th>
-													{t("EVENTS.SERIES.NEW.TOBIRA.PAGE_TITLE") /* Title */}
-												</th>
-												<th>
-													{t("EVENTS.SERIES.NEW.TOBIRA.PATH_SEGMENT") /* Path segment */}
-												</th>
-												<th>
-													{t("EVENTS.SERIES.NEW.TOBIRA.SUBPAGES") /* Subpages */}
-												</th>
-												{editing && <th />}
-											</tr>
-										</thead>
-										<tbody>
-											{currentPage.children.map((page, key) => <tr key={key}>
-												{currentPage.children.some(page => !page.blocks?.length) && <td>
-													{!page.blocks?.length && <input
-														type="checkbox"
-														checked={isValid && formik.values.selectedPage?.path
-															=== currentPage.children[key].path
-														}
-														onChange={() => page.blocks?.length || select(page)}
-													/>}
-												</td>}
-												<td>
-													{!!page.new
-														? <input
-															placeholder={t('EVENTS.SERIES.NEW.TOBIRA.PAGE_TITLE')}
-															value={page.title}
-															onChange={(e) => setPage(key, e, "title")}
-														/>
-														: <button
-															className={'button-like-anchor '
-																+ (!page.blocks?.length && 'tobira-selectable')}
-															onClick={() => page.blocks?.length || select(page)}
-														>{page.title}</button>
-													}
-												</td>
-												<td>
-													<code className="tobira-path">
-														{!!page.new
-															? <input
-																placeholder={t('EVENTS.SERIES.NEW.TOBIRA.PATH_SEGMENT')}
-																value={page.segment}
-																onChange={e => setPage(key, e, "segment")}
-															/>
-															: <span style={{ fontWeight: "inherit" }}>
-																{page.segment}
-															</span>
-														}
-													</code>
-												</td>
-												<td>
-													{((!page.new || isValid) && page.title) && <button
-														className="button-like-anchor details-link"
-														onClick={() => goto(page)}
-													>
-														{t("EVENTS.SERIES.NEW.TOBIRA.SUBPAGES")}
-													</button>}
-												</td>
-												{editing && <td>
-													{page.new && <button
-														onClick={() => select(undefined)}
-														title={t('EVENTS.SERIES.NEW.TOBIRA.CANCEL')}
-														className="button-like-anchor remove"
-													/>}
-												</td>}
-											</tr>)}
-											{!editing && <tr>
-												<td colSpan={4}>
-													<button
-														className={"button-like-anchor"}
-														onClick={() => addChild()}
-													>
-														+ {t('EVENTS.SERIES.NEW.TOBIRA.ADD_SUBPAGE')}
-													</button>
-												</td>
-											</tr>}
-										</tbody>
-									</table>
-								</div>
+				{!editMode && <p className="tab-description">{t("EVENTS.SERIES.NEW.TOBIRA.DESCRIPTION")}</p>}
+				{!error && <>
+					<div className="obj-container padded">
+						<div className="obj">
+							<header>
+								<span>{t("EVENTS.SERIES.NEW.TOBIRA.SELECT_PAGE")}</span>
+							</header>
+							<div className="breadcrumb">
+								{formik.values.breadcrumbs.map((breadcrumb, key) => (
+									<button
+										key={key}
+										className="button-like-anchor breadcrumb-link"
+										onClick={() => back(key)}
+									>
+										{breadcrumb.segment === ''
+											? t('EVENTS.SERIES.NEW.TOBIRA.HOMEPAGE')
+											: breadcrumb.title
+										}
+									</button>
+								))}
 							</div>
-
-							<div className="obj-container padded">
-								<p>
-									{(!!formik.values.selectedPage && isValid)
-										? <>
-											{t("EVENTS.SERIES.NEW.TOBIRA.SELECTED_PAGE")}:
+							<table className="main-tbl highlight-hover">
+								<thead>
+									<tr>
+										{currentPage.children.some(page => !page.blocks?.length)
+											&& <th className="small"/>
+										}
+										<th>
+											{t("EVENTS.SERIES.NEW.TOBIRA.PAGE_TITLE") /* Title */}
+										</th>
+										<th>
+											{t("EVENTS.SERIES.NEW.TOBIRA.PATH_SEGMENT") /* Path segment */}
+										</th>
+										<th>
+											{t("EVENTS.SERIES.NEW.TOBIRA.SUBPAGES") /* Subpages */}
+										</th>
+										{editing && <th />}
+									</tr>
+								</thead>
+								<tbody>
+									{currentPage.children.map((page, key) => <tr key={key}>
+										{currentPage.children.some(page => !page.blocks?.length) && <td>
+											{!page.blocks?.length && <input
+												type="checkbox"
+												checked={isValid && formik.values.selectedPage?.path
+													=== currentPage.children[key].path
+												}
+												onChange={() => page.blocks?.length || select(page)}
+											/>}
+										</td>}
+										<td>
+											{!!page.new
+												? <input
+													placeholder={t('EVENTS.SERIES.NEW.TOBIRA.PAGE_TITLE')}
+													value={page.title}
+													onChange={(e) => setPage(key, e, "title")}
+												/>
+												: <button
+													className={'button-like-anchor '
+														+ (!page.blocks?.length && 'tobira-selectable')}
+													onClick={() => page.blocks?.length || select(page)}
+												>{page.title}</button>
+											}
+										</td>
+										<td>
 											<code className="tobira-path">
-												{formik.values.selectedPage.path}
+												{!!page.new
+													? <input
+														placeholder={t('EVENTS.SERIES.NEW.TOBIRA.PATH_SEGMENT')}
+														value={page.segment}
+														onChange={e => setPage(key, e, "segment")}
+													/>
+													: <span style={{ fontWeight: "inherit" }}>
+														{page.segment}
+													</span>
+												}
 											</code>
-										</>
-										: t("EVENTS.SERIES.NEW.TOBIRA.NO_PAGE_SELECTED")
-									}
-								</p>
-								<p>{t("EVENTS.SERIES.NEW.TOBIRA.DIRECT_LINK")}</p>
-							</div>
-						</>}
-						{/* Render buttons for saving or resetting updated path */}
-						{editMode && <SaveEditFooter
-							active={formik.values.selectedPage !== undefined}
-							reset={() => formik.setFieldValue("selectedPage", undefined)}
-							submit={() => formik.handleSubmit()}
-							{...{ isValid }}
-						/>}
+										</td>
+										<td>
+											{((!page.new || isValid) && page.title) && <button
+												className="button-like-anchor details-link"
+												onClick={() => goto(page)}
+											>
+												{t("EVENTS.SERIES.NEW.TOBIRA.SUBPAGES")}
+											</button>}
+										</td>
+										{editing && <td>
+											{page.new && <button
+												onClick={() => select(undefined)}
+												title={t('EVENTS.SERIES.NEW.TOBIRA.CANCEL')}
+												className="button-like-anchor remove"
+											/>}
+										</td>}
+									</tr>)}
+									{!editing && <tr>
+										<td colSpan={4}>
+											<button
+												className={"button-like-anchor"}
+												onClick={() => addChild()}
+											>
+												+ {t('EVENTS.SERIES.NEW.TOBIRA.ADD_SUBPAGE')}
+											</button>
+										</td>
+									</tr>}
+								</tbody>
+							</table>
+						</div>
 					</div>
-				</div>
+
+					<p style={{ margin: "12px 0", fontSize: 12 }}>
+						{(!!formik.values.selectedPage && isValid)
+							? <>
+								{t("EVENTS.SERIES.NEW.TOBIRA.SELECTED_PAGE")}:
+								<code className="tobira-path">
+									{formik.values.selectedPage.path}
+								</code>
+							</>
+							: t("EVENTS.SERIES.NEW.TOBIRA.NO_PAGE_SELECTED")
+						}
+					</p>
+					<p style={{ fontSize: 12 }}>{t("EVENTS.SERIES.NEW.TOBIRA.DIRECT_LINK")}</p>
+				</>}
 			</div>
+			{/* Render buttons for saving or resetting updated path */}
+			{editMode && <SaveEditFooter
+				active={formik.values.selectedPage !== undefined}
+				reset={() => formik.setFieldValue("selectedPage", undefined)}
+				submit={() => formik.handleSubmit()}
+				{...{ isValid }}
+			/>}
 		</div>
 
 		{/* Button for navigation to next page and previous page */}

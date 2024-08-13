@@ -105,6 +105,7 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 
 		dispatch(setTobiraTabHierarchy(tabType));
 	};
+
 	return <>
 		<div className="modal-content">
 			{tabHierarchy === "edit-path" && <EventDetailsTabHierarchyNavigation
@@ -116,44 +117,37 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 			{tabHierarchy === "main" && <div className="modal-body">
 				{/* Notifications */}
 				<Notifications context="not_corner" />
-				<div className="full-col">
-					<div className="obj list-obj">
-						<header>
-							{t(`EVENTS.${i18nKey}.DETAILS.TABS.TOBIRA`)}
-						</header>
-						{!error && <>
-							<div className="obj-container">
-								<a href={directTobiraLink}>
-									{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.DIRECT_LINK`)}
-								</a>
-								<button
-									className="tobira-copy-direct-link"
-									onClick={() => copyTobiraDirectLink()}
-									aria-label={t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.COPY_DIRECT_LINK`)}
-								>
-									<i
-										aria-hidden="true"
-										className="fa fa-copy"
-										title={t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.COPY_DIRECT_LINK`)}
-									/>
-								</button>
-							</div>
-							{kind === "series" && <div className="obj-container">
-								<p>{t("EVENTS.SERIES.DETAILS.TOBIRA.DESCRIPTION")}</p>
-							</div>}
-							<div className="obj-container">
-								<div className="obj tbl-list">
-									<header>
-										{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.PAGES`)}
-									</header>
-									<div className="obj-container">
-										<TobiraTable {...{ tobiraData, i18nKey, openSubTab }} />
-									</div>
-								</div>
-							</div>
-						</>}
+				{!error && <>
+					<div className="tab-description">
+						<a href={directTobiraLink}>
+							{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.DIRECT_LINK`)}
+						</a>
+						<button
+							className="tobira-copy-direct-link"
+							onClick={() => copyTobiraDirectLink()}
+							aria-label={t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.COPY_DIRECT_LINK`)}
+						>
+							<i
+								aria-hidden="true"
+								className="fa fa-copy"
+								title={t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.COPY_DIRECT_LINK`)}
+							/>
+						</button>
 					</div>
-				</div>
+					{kind === "series" && <p className="tab-description">
+						{t("EVENTS.SERIES.DETAILS.TOBIRA.DESCRIPTION")}
+					</p>}
+					<div className="obj-container">
+						<div className="obj tbl-list">
+							<header>
+								{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.PAGES`)}
+							</header>
+							<div className="obj-container">
+								<TobiraTable {...{ tobiraData, i18nKey, openSubTab }} />
+							</div>
+						</div>
+					</div>
+				</>}
 			</div>}
 		</div>
 		{tabHierarchy === "edit-path" && (
