@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { FieldArray, FormikProps } from "formik";
-import { Field } from "../../../shared/Field";
 import Notifications from "../../../shared/Notifications";
-import RenderField from "../../../shared/wizard/RenderField";
 import { getTimezoneOffset, hasAccess } from "../../../../utils/utils";
 import { hours, minutes, weekdays } from "../../../../configs/modalConfig";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
@@ -84,9 +82,9 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 	 */
 	const reduceGroupEvents = (events: EditedEvents[][] ) => {
 		const reducedEvents: EditedEvents[] = [];
-		for (const [key, value] of Object.entries(events)) {
-			reducedEvents.push(reduceGroupedEvent(value))
-		}
+		Object.entries(events).forEach(([_, value]) => {
+			reducedEvents.push(reduceGroupedEvent(value));
+		});
 		return reducedEvents;
 	}
 
@@ -193,12 +191,12 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																<input
 																	type={"text"}
 																	onChange={(element) => {
-																		for (const [i, value] of formik.values.editedEvents.entries()) {
+																		formik.values.editedEvents.forEach((_, i) => {
 																			formik.setFieldValue(
 																				`editedEvents.${i}.changedTitle`,
 																				element.target.value
-																			)
-																		}
+																			);
+																		});
 																	}}
 																	defaultValue={formik.values.editedEvents.length > 0 ? reduceGroupedEvent(formik.values.editedEvents).title : ""}
 																/>
@@ -230,12 +228,12 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																	required={false}
 																	handleChange={(element) => {
 																		if (element) {
-																			for (const [i, value] of formik.values.editedEvents.entries()) {
+																			formik.values.editedEvents.forEach((_, i) => {
 																				formik.setFieldValue(
 																					`editedEvents.${i}.changedSeries`,
 																					element.value
-																				)
-																			}
+																				);
+																			});
 																		}
 																	}}
 																	placeholder={formik.values.editedEvents.length > 0 ? reduceGroupedEvent(formik.values.editedEvents).series : ""}
@@ -302,7 +300,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					handleChange={(element) => {
 																						if (element) {
 																							for (const [i, value] of formik.values.editedEvents.entries()) {
-																								if (value.weekday == groupedEvent.weekday ) {
+																								if (value.weekday === groupedEvent.weekday ) {
 																									formik.setFieldValue(
 																										`editedEvents.${i}.changedStartTimeHour`,
 																										element.value
@@ -337,7 +335,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					handleChange={(element) => {
 																						if (element) {
 																							for (const [i, value] of formik.values.editedEvents.entries()) {
-																								if (value.weekday == groupedEvent.weekday ) {
+																								if (value.weekday === groupedEvent.weekday ) {
 																									formik.setFieldValue(
 																										`editedEvents.${i}.changedStartTimeMinutes`,
 																										element.value
@@ -380,7 +378,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					handleChange={(element) => {
 																						if (element) {
 																							for (const [i, value] of formik.values.editedEvents.entries()) {
-																								if (value.weekday == groupedEvent.weekday ) {
+																								if (value.weekday === groupedEvent.weekday ) {
 																									formik.setFieldValue(
 																										`editedEvents.${i}.changedEndTimeHour`,
 																										element.value
@@ -415,7 +413,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					handleChange={(element) => {
 																						if (element) {
 																							for (const [i, value] of formik.values.editedEvents.entries()) {
-																								if (value.weekday == groupedEvent.weekday ) {
+																								if (value.weekday === groupedEvent.weekday ) {
 																									formik.setFieldValue(
 																										`editedEvents.${i}.changedEndTimeMinutes`,
 																										element.value
@@ -459,7 +457,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					handleChange={(element) => {
 																						if (element) {
 																							for (const [i, value] of formik.values.editedEvents.entries()) {
-																								if (value.weekday == groupedEvent.weekday ) {
+																								if (value.weekday === groupedEvent.weekday ) {
 																									formik.setFieldValue(
 																										`editedEvents.${i}.changedLocation`,
 																										element.value
@@ -497,7 +495,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																							name={groupedEvent.weekday}
 																							onChange={(element) => {
 																								for (const [i, value] of formik.values.editedEvents.entries()) {
-																									if (value.weekday == groupedEvent.weekday ) {
+																									if (value.weekday === groupedEvent.weekday ) {
 																										formik.setFieldValue(
 																											`editedEvents.${i}.changedWeekday`,
 																											element.target.value
