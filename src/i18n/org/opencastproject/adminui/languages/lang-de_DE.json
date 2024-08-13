@@ -626,7 +626,7 @@
 					"EDITOR_NEEDS_CUTTING": "Video Editor öffnen (ein Kommentar zeigt, dass ein Videoschnitt angefordert wurde)",
 					"COMMENTS": "Kommentare ansehen",
 					"PAUSED_WORKFLOW": "Angehaltenen Workflow anzeigen",
-					"PLAYER": "Open player",
+					"PLAYER": "Im Player öffnen",
 					"PRESENTER": "Nach diesem Vortragenden filtern"
 				},
 				"SELECT_ALL": "Alle Aufzeichnungen auswählen",
