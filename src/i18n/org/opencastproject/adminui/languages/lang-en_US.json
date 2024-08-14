@@ -406,7 +406,7 @@
 				"INFORMATION_PARAGRAPH_2": "We highly appreciate any feedback, as even some of the data that we gather about the Opencast usage will help us to create better software, have better chances for additional funding and attract more companies to provide services around Opencast."
 			},
 			"FORM_STATE": {
-				"ORGANISATION": "Organisation",
+				"ORGANISATION": "Organization",
 				"DEPARTMENT": "Department",
 				"COUNTRY": "Country",
 				"POSTAL_CODE": "Postal code",
@@ -893,7 +893,7 @@
 						"REVIEW": "Review required",
 						"ASYNC": "A/V tracks asynchronous",
 						"AUDIO_ISSUE": "Missing or defective audio track",
-						"CANCELLED": "Cancelled event",
+						"CANCELLED": "Canceled event",
 						"CONFLICTING_METADATA": "Conflicting metadata",
 						"IMPROPER_POINT": "Improper in or out point",
 						"MISSING_AGREEMENT": "Missing agreement",
@@ -2024,7 +2024,7 @@
 		"TOTAL": "Total",
 		"GRANULARITY": "Granularity",
 		"NAVIGATION": {
-			"ORGANIZATION": "Organisation"
+			"ORGANIZATION": "Organization"
 		},
 		"TIME_MODES": {
 			"Year": "Year",
