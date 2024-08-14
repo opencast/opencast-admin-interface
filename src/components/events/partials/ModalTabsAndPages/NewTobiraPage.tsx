@@ -7,7 +7,7 @@ import { OurNotification, addNotification, removeNotificationByKey, removeNotifi
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { TobiraPage, fetchSeriesDetailsTobiraNew, setErrorTobiraPage, setTobiraPage } from "../../../../slices/seriesSlice";
 import { getSeriesTobiraPage, getSeriesTobiraPageError } from "../../../../selectors/seriesSeletctor";
-import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
+import { NOTIFICATION_CONTEXT_TOBIRA } from "../../../../configs/modalConfig";
 import { SaveEditFooter } from "../../../shared/SaveEditFooter";
 import { Tooltip } from "../../../shared/Tooltip";
 
@@ -71,7 +71,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 
 		let valid = true;
 
-		valid = valid && check('info', 'TOBIRA_OVERRIDE_NAME', NOTIFICATION_CONTEXT, () => {
+		valid = valid && check('info', 'TOBIRA_OVERRIDE_NAME', NOTIFICATION_CONTEXT_TOBIRA, () => {
 			return !!formik.values.selectedPage && !!formik.values.selectedPage.title;
 		});
 
@@ -87,9 +87,9 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 		}
 		const newPage = currentPage.children[currentPage.children.length - 1];
 
-		valid = valid && check('warning', 'TOBIRA_NO_PATH_SEGMENT', NOTIFICATION_CONTEXT, () => !newPage.segment);
+		valid = valid && check('warning', 'TOBIRA_NO_PATH_SEGMENT', NOTIFICATION_CONTEXT_TOBIRA, () => !newPage.segment);
 
-		valid = valid && check('warning', 'TOBIRA_PATH_SEGMENT_INVALID', NOTIFICATION_CONTEXT, () => (
+		valid = valid && check('warning', 'TOBIRA_PATH_SEGMENT_INVALID', NOTIFICATION_CONTEXT_TOBIRA, () => (
 			newPage.segment.length <= 1 || [
 				// eslint-disable-next-line no-control-regex
 				/[\u0000-\u001F\u007F-\u009F]/u,
@@ -99,7 +99,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 			].some(regex => regex.test(newPage.segment))
 		));
 
-		valid = valid && check('warning', 'TOBIRA_PATH_SEGMENT_UNIQUE', NOTIFICATION_CONTEXT, () => (
+		valid = valid && check('warning', 'TOBIRA_PATH_SEGMENT_UNIQUE', NOTIFICATION_CONTEXT_TOBIRA, () => (
 			currentPage.children.some(child => child !== newPage && child.segment === newPage.segment)
 		));
 
@@ -211,7 +211,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 		<div className="modal-content">
 			<div className="modal-body">
 				{/* Notifications */}
-				<Notifications context="not_corner" />
+				<Notifications context="tobira" />
 				{!editMode && <p className="tab-description">{t("EVENTS.SERIES.NEW.TOBIRA.DESCRIPTION")}</p>}
 				{!error && <>
 					<div className="obj-container padded">
@@ -271,8 +271,8 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 											{!!page.new
 												? <input
 													placeholder={t('EVENTS.SERIES.NEW.TOBIRA.PAGE_TITLE')}
-													value={page.title}
-													onChange={(e) => setPage(key, e, "title")}
+													value={page.title ?? ""}
+													onChange={e => setPage(key, e, "title")}
 												/>
 												: <button
 													className={"button-like-anchor "
@@ -291,7 +291,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 												{!!page.new
 													? <input
 														placeholder={t('EVENTS.SERIES.NEW.TOBIRA.PATH_SEGMENT')}
-														value={page.segment}
+														value={page.segment ?? ""}
 														onChange={e => setPage(key, e, "segment")}
 													/>
 													: <span style={{ fontWeight: "inherit" }}>

@@ -12,6 +12,9 @@ export const NOTIFICATION_CONTEXT = "modal-form";
 // Context for notifications shown in wizard access page
 export const NOTIFICATION_CONTEXT_ACCESS = "wizard-access";
 
+// Context for notifications shown in tobira tabs.
+export const NOTIFICATION_CONTEXT_TOBIRA = "tobira";
+
 export const initialFormValuesNewEvents: {
 	sourceMode: string,
 	scheduleStartDate: string,

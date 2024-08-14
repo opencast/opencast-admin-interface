@@ -7,6 +7,7 @@ import {
 	getSeriesDetailsMetadata,
 	getSeriesDetailsTheme,
 	getSeriesDetailsThemeNames,
+	getSeriesDetailsTobiraDataError,
 	hasStatistics as seriesHasStatistics,
 } from "../../../../selectors/seriesDetailsSelectors";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
@@ -47,6 +48,7 @@ const SeriesDetails = ({
 	const theme = useAppSelector(state => getSeriesDetailsTheme(state));
 	const themeNames = useAppSelector(state => getSeriesDetailsThemeNames(state));
 	const hasStatistics = useAppSelector(state => seriesHasStatistics(state));
+	const tobiraError = useAppSelector(state => getSeriesDetailsTobiraDataError(state));
 
 	useEffect(() => {
 		dispatch(fetchSeriesStatistics(seriesId));
@@ -88,7 +90,7 @@ const SeriesDetails = ({
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.TOBIRA",
 			accessRole: "ROLE_UI_SERIES_DETAILS_TOBIRA_VIEW",
 			name: "tobira",
-			hidden: false, // TODO: Set to true if there no tobira data
+			hidden: tobiraError?.message?.includes("503"),
 		},
 		{
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.STATISTICS",
