@@ -14,10 +14,10 @@ import {
 } from "../utils/utils";
 import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
-import { NOTIFICATION_CONTEXT } from '../configs/modalConfig';
 import { TransformedAcl } from './aclDetailsSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { MetadataCatalog } from './eventSlice';
+import { handleTobiraError } from './shared/tobiraErrors';
 
 /**
  * This file contains redux reducer for actions affecting the state of series
@@ -352,38 +352,7 @@ export const deleteMultipleSeries = createAppAsyncThunk('series/deleteMultipleSe
 // fetch metadata of certain series from server
 export const fetchSeriesDetailsTobiraNew = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsTobiraNew', async (path: TobiraPage["path"], {dispatch}) => {
 	const res = await axios.get(`/admin-ng/series/new/tobira/page?path=` + path)
-		.then((response) => {
-			return response;
-		})
-		.catch((response) => {
-			console.error(response);
-			const data = response.response;
-
-			if (data.status === 404) {
-				dispatch(addNotification({
-					type: "warning",
-					key: "TOBIRA_PAGE_NOT_FOUND",
-					duration: -1,
-					parameter: undefined,
-					context: NOTIFICATION_CONTEXT
-				}));
-
-				throw Error(response);
-			} else {
-				// Add notification back once we can properly specify which tab of the modal it should be shown on
-				console.info("Could not fetch tobira page information.")
-				console.info(response)
-				// dispatch(addNotification({
-				//  type: "error",
-				//  key: "TOBIRA_SERVER_ERROR",
-				//  duration: -1,
-				//  parameter: null,
-				//  context: NOTIFICATION_CONTEXT
-				// }));
-
-				throw Error(response);
-			}
-		});
+		.catch(response => handleTobiraError(response, dispatch));
 
 	if (!res) {
 		throw Error;

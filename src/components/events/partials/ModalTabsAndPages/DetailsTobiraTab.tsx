@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import Notifications from "../../../shared/Notifications";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { getSeriesDetailsTobiraData, getSeriesDetailsTobiraDataError, getTobiraTabHierarchy } from "../../../../selectors/seriesDetailsSelectors";
-import { addNotification, removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { addNotification } from "../../../../slices/notificationSlice";
 import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 import { getEventDetailsTobiraData, getEventDetailsTobiraDataError } from "../../../../selectors/eventDetailsSelectors";
 import { Formik } from "formik";
@@ -118,7 +118,7 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 			/>}
 			{tabHierarchy === "main" && <div className="modal-body">
 				{/* Notifications */}
-				<Notifications context="not_corner" />
+				<Notifications context="tobira" />
 				{!error && <>
 					<div className="tab-description">
 						<a href={directTobiraLink}>

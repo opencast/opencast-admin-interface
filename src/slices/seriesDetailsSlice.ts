@@ -14,7 +14,7 @@ import {
 	transformMetadataForUpdate,
 } from "../utils/resourceUtils";
 import { transformToIdValueArray } from "../utils/utils";
-import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
+import { NOTIFICATION_CONTEXT, NOTIFICATION_CONTEXT_TOBIRA } from "../configs/modalConfig";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 import { Ace } from './aclSlice';
@@ -23,6 +23,7 @@ import { MetadataCatalog } from './eventSlice';
 import { TobiraPage } from './seriesSlice';
 import { TobiraTabHierarchy } from '../components/events/partials/ModalTabsAndPages/DetailsTobiraTab';
 import { TobiraFormProps } from '../components/events/partials/ModalTabsAndPages/NewTobiraPage';
+import { handleTobiraError } from './shared/tobiraErrors';
 
 
 /**
@@ -412,38 +413,12 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
 });
 
 // fetch Tobira data of certain series from server
-export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsTobira', async (id: string, {dispatch}) => {
+export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsTobira', async (
+	id: string,
+	{ dispatch }
+) => {
 	const res = await axios.get(`/admin-ng/series/${id}/tobira/pages`)
-		.then((response) => {
-			return response;
-		})
-		.catch((response) => {
-			console.error(response);
-			const data = response.response;
-
-			if (data.status === 500) {
-				dispatch(addNotification({
-					type: "error",
-					key: "TOBIRA_SERVER_ERROR",
-					duration: -1,
-					parameter: undefined,
-					context: NOTIFICATION_CONTEXT
-				}));
-
-				throw Error(response);
-			} else if (data.status === 404) {
-				dispatch(addNotification({
-					type: "warning",
-					key: "TOBIRA_NOT_FOUND",
-					duration: -1,
-					parameter: undefined,
-					context: NOTIFICATION_CONTEXT
-				}));
-
-				throw Error(response);
-			}
-			return undefined;
-		});
+		.catch(response => handleTobiraError(response, dispatch));
 
 	if (!res) {
 		throw Error;
@@ -490,7 +465,7 @@ export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTo
 		dispatch(addNotification({
 			type: 'success',
 			key: 'SERIES_PATH_UPDATED',
-			context: NOTIFICATION_CONTEXT
+			context: NOTIFICATION_CONTEXT_TOBIRA
 		}));
 		
 		return response.data;
@@ -499,7 +474,7 @@ export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTo
 		dispatch(addNotification({
 			type: 'error',
 			key: 'SERIES_PATH_NOT_UPDATED',
-			context: NOTIFICATION_CONTEXT
+			context: NOTIFICATION_CONTEXT_TOBIRA
 		}));
 		throw error;
 	}}

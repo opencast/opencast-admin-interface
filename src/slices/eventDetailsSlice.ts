@@ -38,6 +38,7 @@ import {
 import { AppDispatch } from "../store";
 import { Ace } from './aclSlice';
 import { setTobiraTabHierarchy, TobiraData } from './seriesDetailsSlice';
+import { handleTobiraError } from './shared/tobiraErrors';
 
 // Contains the navigation logic for the modal
 type EventDetailsModal = {
@@ -980,33 +981,7 @@ export const fetchEventDetailsTobira = createAppAsyncThunk('eventDetails/fetchEv
 	{ dispatch },
 ) => {
 	const res = await axios.get(`/admin-ng/event/${id}/tobira/pages`)
-		.catch(response => {
-			console.error(response);
-			const data = response.response;
-
-			if (data.status === 500) {
-				dispatch(addNotification({
-					type: "error",
-					key: "TOBIRA_SERVER_ERROR",
-					duration: -1,
-					parameter: null,
-					context: NOTIFICATION_CONTEXT
-				}));
-
-				throw Error(response);
-			} else if (data.status === 404) {
-				dispatch(addNotification({
-					type: "warning",
-					key: "TOBIRA_NOT_FOUND",
-					duration: -1,
-					parameter: null,
-					context: NOTIFICATION_CONTEXT
-				}));
-
-				throw Error(response);
-			}
-			return undefined;
-		});
+		.catch(response => handleTobiraError(response, dispatch));
 
 	if (!res) {
 		throw Error;
@@ -1520,7 +1495,6 @@ export const openModal = (
 ) => (dispatch: AppDispatch) => {
 	dispatch(setModalEvent(event));
 	dispatch(setModalWorkflowId(workflowId));
-	dispatch(setTobiraTabHierarchy("main"));
 	dispatch(openModalTab(page, workflowTab, assetsTab))
 	dispatch(setShowModal(true));
 };
@@ -1531,6 +1505,7 @@ export const openModalTab = (
 	assetsTab: AssetTabHierarchy
 ) => (dispatch: AppDispatch) => {
 	dispatch(setModalPage(page));
+	dispatch(setTobiraTabHierarchy("main"));
 	dispatch(setModalWorkflowTabHierarchy(workflowTab));
 	dispatch(setModalAssetsTabHierarchy(assetsTab));
 };
