@@ -9,6 +9,7 @@ import { TobiraPage, fetchSeriesDetailsTobiraNew, setErrorTobiraPage, setTobiraP
 import { getSeriesTobiraPage, getSeriesTobiraPageError } from "../../../../selectors/seriesSeletctor";
 import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 import { SaveEditFooter } from "../../../shared/SaveEditFooter";
+import { Tooltip } from "../../../shared/Tooltip";
 
 /**
  * This component renders the theme page for new series in the new series wizard.
@@ -235,9 +236,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 							<table className="main-tbl highlight-hover">
 								<thead>
 									<tr>
-										{currentPage.children.some(page => !page.blocks?.length)
-											&& <th className="small"/>
-										}
+										<th className="small"/>
 										<th>
 											{t("EVENTS.SERIES.NEW.TOBIRA.PAGE_TITLE") /* Title */}
 										</th>
@@ -252,15 +251,22 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 								</thead>
 								<tbody>
 									{currentPage.children.map((page, key) => <tr key={key}>
-										{currentPage.children.some(page => !page.blocks?.length) && <td>
-											{!page.blocks?.length && <input
-												type="checkbox"
-												checked={isValid && formik.values.selectedPage?.path
-													=== currentPage.children[key].path
-												}
-												onChange={() => page.blocks?.length || select(page)}
-											/>}
-										</td>}
+										<Tooltip
+											title={t("EVENTS.SERIES.NEW.TOBIRA.MOUNT_DISCLAIMER")}
+											active={!!page.blocks?.length}
+											placement="left"
+										>
+											<td>
+												<input
+													type="checkbox"
+													checked={isValid && formik.values.selectedPage?.path
+														=== currentPage.children[key].path
+													}
+													disabled={!!page.blocks?.length}
+													onChange={() => page.blocks?.length || select(page)}
+												/>
+											</td>
+										</Tooltip>
 										<td>
 											{!!page.new
 												? <input
@@ -269,8 +275,13 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 													onChange={(e) => setPage(key, e, "title")}
 												/>
 												: <button
-													className={'button-like-anchor '
-														+ (!page.blocks?.length && 'tobira-selectable')}
+													className={"button-like-anchor "
+														+ (!page.blocks?.length
+															? "tobira-selectable"
+															: "tobira-button-disabled"
+														)
+													}
+													disabled={!!page.blocks?.length}
 													onClick={() => page.blocks?.length || select(page)}
 												>{page.title}</button>
 											}
