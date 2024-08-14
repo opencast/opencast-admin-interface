@@ -1222,6 +1222,7 @@
 					"PAGES": "Pages in Tobira that contain this series",
 					"SHOW_PAGES": "Show all pages",
 					"EDIT_PATH" : "Edit path",
+					"MOUNT_SERIES": "Mount series",
 					"DESCRIPTION": "You may edit the path of pages containing this series if the page has no other content."
 				},
 				"EVENTS": {

@@ -464,7 +464,7 @@ export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTo
 		pathSegment: crumb.segment,
 	}));
 
-	if (params.currentPath && params.selectedPage) {
+	if (params.selectedPage) {
 		pathComponents.push({
 			// Passing a dummy value here so Tobira won't freak out.
 			name: params.selectedPage.title ?? "dummy",
@@ -473,6 +473,9 @@ export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTo
 		
 		tobiraParams.append("pathComponents", JSON.stringify(pathComponents));
 		tobiraParams.append("targetPath", params.selectedPage.path);
+	}
+	
+	if (params.currentPath) {
 		tobiraParams.append("currentPath", params.currentPath);
 	}
 

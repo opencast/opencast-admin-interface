@@ -101,6 +101,8 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 				breadcrumbs,
 			});
 			await dispatch(fetchSeriesDetailsTobiraNew(currentPage.path));
+		} else {
+			await dispatch(fetchSeriesDetailsTobiraNew("/"));
 		}
 
 		dispatch(setTobiraTabHierarchy(tabType));
@@ -170,7 +172,7 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 type TobiraTableProps = {
 	tobiraData: TobiraData;
 	i18nKey: "SERIES" | "EVENTS";
-	openSubTab: (tabType: TobiraTabHierarchy, currentPage: TobiraPage) => Promise<void>
+	openSubTab: (tabType: TobiraTabHierarchy, currentPage?: TobiraPage) => Promise<void>
 };
 
 const TobiraTable: React.FC<TobiraTableProps> = ({ tobiraData, i18nKey, openSubTab }) => {
@@ -180,6 +182,15 @@ const TobiraTable: React.FC<TobiraTableProps> = ({ tobiraData, i18nKey, openSubT
 			{tobiraData.hostPages.length === 0 && <tr>
 				<td className="tobira-not-mounted">
 					{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.NOT_MOUNTED`)}
+					{i18nKey === "SERIES" && (
+						<button
+							style={{ margin: 5 }}
+							className="button-like-anchor details-link pull-right"
+							onClick={() => openSubTab("edit-path")}
+						>
+							{t("EVENTS.SERIES.DETAILS.TOBIRA.MOUNT_SERIES")}
+						</button>
+					)}
 				</td>
 			</tr>}
 			{tobiraData.hostPages.map(hostPage => <tr key={hostPage.path}>
