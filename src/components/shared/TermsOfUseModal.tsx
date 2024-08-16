@@ -47,7 +47,7 @@ const TermsOfUseModal = () => {
 					})
 					.catch(error => {
 						console.error('Error while fetching data:', error);
-						setTermsContent(t("TERMS.NOCONTENT").toString());
+						setTermsContent(t("TERMS.NOCONTENT"));
 					});
 			});
 	// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -97,10 +97,9 @@ const TermsOfUseModal = () => {
 				<Formik
 					initialValues={{}}
 					enableReinitialize
-					onSubmit={(values) => handleSubmit(values)}
+					onSubmit={handleSubmit}
 				>
-					{(formik) => (
-						<>
+					{(formik) => (<>
 						<div className="modal-content" style={{ display: "block" }}>
 							<div className="modal-body">
 								<div>
@@ -144,8 +143,7 @@ const TermsOfUseModal = () => {
 								</button>
 							</div>
 						</footer>
-						</>
-					)}
+					</>)}
 				</Formik>
 			</section>
 		</>
