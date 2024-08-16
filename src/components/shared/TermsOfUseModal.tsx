@@ -9,33 +9,33 @@ import DOMPurify from "dompurify";
 
 const TermsOfUseModal = () => {
 	const { t } = useTranslation();
-	const initialValues = {};
-	const [termsContent, setTermsContent] = useState<string>("");
+	const [termsContent, setTermsContent] = useState("");
 	const [agreedToTerms, setAgreedToTerms] = useState(true);
 
 	// Check if already accepted terms
 	useEffect(() => {
 		const checkTerms = async () => {
-		  try {
-			const response = await axios.get("/admin-ng/user-settings/settings.json");
-			// @ts-expect-error TS(7006): Parameter 'result' implicitly has an 'any' type.
-			const isAgreed = response.data.results.some(result => result.key === "agreedToTerms" && result.value === "true");
-			setAgreedToTerms(isAgreed);
-		  } catch (error) {
-			console.error("Fehler beim Abrufen der Daten:", error);
-			setAgreedToTerms(false);
-		  }
+			try {
+				const response = await axios.get("/admin-ng/user-settings/settings.json");
+				// @ts-expect-error TS(7006): Parameter 'result' implicitly has an 'any' type.
+				const isAgreed = response.data.results.find(result => result.key === "agreedToTerms").value === "true";
+				setAgreedToTerms(isAgreed);
+			} catch (error) {
+				console.error("Fehler beim Abrufen der Daten:", error);
+				setAgreedToTerms(false);
+			}
 		};
 
 		checkTerms();
 	}, []);
 
+	// Generate URL for terms based on the languae
+	const getURL = (language: string) => {
+		return `/ui/config/admin-ui/terms.${language}.html`;
+	};
+
 	// Fetch terms
 	useEffect(() => {
-		const getURL = (language: string) => {
-			return `ui/config/admin-ui/terms.${language}.html`;
-		};
-
 		axios.get(getURL(i18n.language))
 			.then(response => {
 				setTermsContent(response.data);
@@ -95,7 +95,7 @@ const TermsOfUseModal = () => {
 				</div>
 
 				<Formik
-					initialValues={initialValues}
+					initialValues={{}}
 					enableReinitialize
 					onSubmit={(values) => handleSubmit(values)}
 				>
@@ -140,7 +140,7 @@ const TermsOfUseModal = () => {
 										),
 									})}
 								>
-									Submit
+									{t("SUBMIT")}
 								</button>
 							</div>
 						</footer>
