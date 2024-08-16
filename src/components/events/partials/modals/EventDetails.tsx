@@ -83,14 +83,6 @@ const EventDetails = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const updateMetadataWrapper = (id: any, values: any) => {
-		dispatch(updateMetadata({eventId: id, values}));
-	}
-	const updateExtendedMetadataWrapper = (id: any, values: any, catalog: any) => {
-		dispatch(updateExtendedMetadata({eventId: id, values, catalog}));
-	}
-
 	const page = useAppSelector(state => getModalPage(state));
 	const workflowTabHierarchy = useAppSelector(state => getModalWorkflowTabHierarchy(state));
 	const user = useAppSelector(state => getUserInformation(state));
@@ -233,7 +225,7 @@ const EventDetails = ({
 						metadataFields={metadata}
 						resourceId={eventId}
 						header={tabs[page].bodyHeaderTranslation ?? ""}
-						updateResource={updateMetadataWrapper}
+						updateResource={updateMetadata}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
 					/>
 				)}
@@ -241,7 +233,7 @@ const EventDetails = ({
 					<DetailsExtendedMetadataTab
 						resourceId={eventId}
 						metadata={extendedMetadata}
-						updateResource={updateExtendedMetadataWrapper}
+						updateResource={updateExtendedMetadata}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
 					/>
 				)}

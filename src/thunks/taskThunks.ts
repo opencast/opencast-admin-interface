@@ -1,18 +1,24 @@
 import axios from "axios";
 import { addNotification } from "../slices/notificationSlice";
+import { AppDispatch } from "../store";
+import { Event } from "../slices/eventSlice";
 
-export const postTasks = (values: any) => async (dispatch: any) => {
-	let configuration = {};
+export const postTasks = (
+	values: {
+		events: Event[]
+		configuration: { [key: string] : string }
+		workflow: string
+	}
+) => async (dispatch: AppDispatch) => {
+	let configuration: { [key: string] : string } = {};
 	Object.keys(values.configuration).forEach((config) => {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 		configuration[config] = String(values.configuration[config]);
 	});
 
-	let workflowConfig = {};
+	let workflowConfig: { [key: string] : { [key: string] : string } } = {};
 	for (let i = 0; i < values.events.length; i++) {
 		if (values.events[i].selected) {
 			let eventId = values.events[i].id;
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 			workflowConfig[eventId] = configuration;
 		}
 	}

@@ -13,18 +13,15 @@ import { checkValidityStartTaskEventSelection } from "../../../../utils/bulkActi
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 import { useAppDispatch } from "../../../../store";
-import { connect } from "react-redux";
+import { Event } from "../../../../slices/eventSlice";
 
 /**
  * This component manages the pages of the task start bulk action
  */
 const StartTaskModal = ({
 	close,
-	postTasks,
 }: {
 	close: () => void,
-	// @ts-expect-error
-	postTasks,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -63,11 +60,15 @@ const StartTaskModal = ({
 		},
 	];
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const validateFormik = (values) => {
-		const errors = {};
+	const validateFormik = (values: {
+		events: Event[],
+		workflow: string,
+	}) => {
+		const errors: {
+			events?: string,
+			workflow?: string,
+		} = {};
 		if (!checkValidityStartTaskEventSelection(values)) {
-// @ts-expect-error TS(2339): Property 'events' does not exist on type '{}'.
 			errors.events = "Not on all events task startable!";
 		}
 		if (
@@ -77,14 +78,12 @@ const StartTaskModal = ({
 				values.workflow !== ""
 			)
 		) {
-// @ts-expect-error TS(2339): Property 'worflow' does not exist on type '{}'.
 			errors.workflow = "Workflow not selected!";
 		}
 		return errors;
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (values: typeof initialValues) => {
 		postTasks(values);
 		dispatch(changeAllSelected(false));
 		close();
@@ -155,10 +154,4 @@ const StartTaskModal = ({
 	);
 };
 
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToState = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	postTasks: (values) => dispatch(postTasks(values)),
-});
-
-export default connect(null, mapDispatchToState)(StartTaskModal);
+export default StartTaskModal;

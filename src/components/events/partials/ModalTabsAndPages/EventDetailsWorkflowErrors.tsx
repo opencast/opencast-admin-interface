@@ -55,7 +55,7 @@ const EventDetailsWorkflowErrors = ({
 	const openSubTab = (tabType: WorkflowTabHierarchy, errorId: number | undefined = undefined) => {
 		dispatch(removeNotificationWizardForm());
 		dispatch(setModalWorkflowTabHierarchy(tabType));
-		if (tabType === "workflow-error-details") {
+		if (tabType === "workflow-error-details" && "wiid" in workflow) {
 			dispatch(fetchWorkflowErrorDetails({eventId, workflowId: workflow.wiid, errorId})).then();
 		}
 	};

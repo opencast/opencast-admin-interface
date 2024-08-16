@@ -27,8 +27,8 @@ const ServicesActionCell = ({
 	};
 
 	return (
-		row.status !== "SYSTEMS.SERVICES.STATUS.NORMAL" &&
-		hasAccess("ROLE_UI_SERVICES_STATUS_EDIT", user) && (
+		(row.status !== "SYSTEMS.SERVICES.STATUS.NORMAL" &&
+		hasAccess("ROLE_UI_SERVICES_STATUS_EDIT", user)) ? (
 			<Tooltip title={t("SYSTEMS.SERVICES.TABLE.SANITIZE")}>
 				<button
 					className="button-like-anchor sanitize fa fa-undo"
@@ -36,6 +36,7 @@ const ServicesActionCell = ({
 				/>
 			</Tooltip>
 		)
+		: <></>
 	);
 };
 

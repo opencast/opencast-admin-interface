@@ -1,13 +1,20 @@
 import moment from "moment";
 import "moment/min/locales.min";
 import { getCurrentLanguageInformation } from "./utils";
+import {
+	statisticDateFormatStrings,
+} from "../configs/statisticsConfig";
 
 /**
  * This file contains functions that are needed for thunks for statistics
  */
 
 /* creates callback function for formatting the labels of the xAxis in a statistics diagram */
-const createXAxisTickCallback = (timeMode: any, dataResolution: any, language: any) => {
+const createXAxisTickCallback = (
+	timeMode: "year" | "month",
+	dataResolution: "yearly" | "monthly" | "daily" | "hourly",
+	language: string
+) => {
 	let formatString = "L";
 	if (timeMode === "year") {
 		formatString = "MMMM";
@@ -29,15 +36,17 @@ const createXAxisTickCallback = (timeMode: any, dataResolution: any, language: a
 		}
 	}
 
-// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
-	return (value, index, ticks) => {
+	return (value: moment.MomentInput) => {
 		return moment(value).locale(language).format(formatString);
 	};
 };
 
 /* creates callback function for the displayed label when hovering over a data point in a statistics diagram */
-// @ts-expect-error TS(7006): Parameter 'timeMode' implicitly has an 'any' type.
-const createTooltipCallback = (timeMode, dataResolution, language) => {
+const createTooltipCallback = (
+	timeMode: "year" | "month",
+	dataResolution: "yearly" | "monthly" | "daily",
+	language: string
+) => {
 	let formatString;
 	if (timeMode === "year") {
 		formatString = "MMMM YYYY";
@@ -67,8 +76,7 @@ const createTooltipCallback = (timeMode, dataResolution, language) => {
 		}
 	}
 
-// @ts-expect-error TS(7006): Parameter 'tooltipItem' implicitly has an 'any' ty... Remove this comment to see the full error message
-	return (tooltipItem) => {
+	return (tooltipItem: { label: Date | string; value: string; }) => {
 		const date = tooltipItem.label;
 		const finalDate = moment(date).locale(language).format(formatString);
 		return finalDate + ": " + tooltipItem.value;
@@ -76,11 +84,16 @@ const createTooltipCallback = (timeMode, dataResolution, language) => {
 };
 
 /* creates options for statistics chart */
-// @ts-expect-error TS(7006): Parameter 'timeMode' implicitly has an 'any' type.
-export const createChartOptions = (timeMode, dataResolution) => {
+export const createChartOptions = (
+	timeMode: keyof typeof statisticDateFormatStrings,
+	dataResolution: "yearly" | "monthly" | "daily"
+) => {
 	// Get info about the current language and its date locale
-// @ts-expect-error TS(2532): Object is possibly 'undefined'.
-	const currentLanguage = getCurrentLanguageInformation().dateLocale.code;
+	const currentLanguageInfo = getCurrentLanguageInformation();
+	let currentLanguage = "";
+	if (currentLanguageInfo) {
+		currentLanguage = currentLanguageInfo.dateLocale.code
+	}
 
 	return {
 		responsive: true,
@@ -120,18 +133,12 @@ export const createChartOptions = (timeMode, dataResolution) => {
 
 /* creates the url for downloading a csv file with current statistics */
 export const createDownloadUrl = (
-// @ts-expect-error TS(7006): Parameter 'resourceId' implicitly has an 'any' typ... Remove this comment to see the full error message
-	resourceId,
-// @ts-expect-error TS(7006): Parameter 'resourceType' implicitly has an 'any' t... Remove this comment to see the full error message
-	resourceType,
-// @ts-expect-error TS(7006): Parameter 'providerId' implicitly has an 'any' typ... Remove this comment to see the full error message
-	providerId,
-// @ts-expect-error TS(7006): Parameter 'from' implicitly has an 'any' type.
-	from,
-// @ts-expect-error TS(7006): Parameter 'to' implicitly has an 'any' type.
-	to,
-// @ts-expect-error TS(7006): Parameter 'dataResolution' implicitly has an 'any'... Remove this comment to see the full error message
-	dataResolution
+	resourceId: string,
+	resourceType: string,
+	providerId: string,
+	from: Date | string,
+	to: Date | string,
+	dataResolution: string
 ) => {
 	const csvUrlSearchParams = new URLSearchParams({
 		dataResolution: dataResolution,

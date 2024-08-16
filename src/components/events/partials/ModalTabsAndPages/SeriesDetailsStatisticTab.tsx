@@ -9,10 +9,11 @@ import TimeSeriesStatistics from "../../../shared/TimeSeriesStatistics";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 
 const SeriesDetailsStatisticTab = ({
-// @ts-expect-error TS(7031): Binding element 'seriesId' implicitly has an 'any'... Remove this comment to see the full error message
 	seriesId,
-// @ts-expect-error TS(7031): Binding element 'header' implicitly has an 'any' t... Remove this comment to see the full error message
 	header,
+}: {
+	seriesId: string,
+	header: string,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -26,8 +27,7 @@ const SeriesDetailsStatisticTab = ({
 		}
 
 	/* generates file name for download-link for a statistic */
-// @ts-expect-error TS(7006): Parameter 'statsTitle' implicitly has an 'any' typ... Remove this comment to see the full error message
-	const statisticsCsvFileName = (statsTitle) => {
+	const statisticsCsvFileName = (statsTitle: string) => {
 		const sanitizedStatsTitle = statsTitle
 			.replace(/[^0-9a-z]/gi, "_")
 			.toLowerCase();
@@ -57,7 +57,6 @@ const SeriesDetailsStatisticTab = ({
 									/* visualization of statistic for time series data */
 									<div className="obj-container">
 										<TimeSeriesStatistics
-											t={t}
 											resourceId={seriesId}
 											statTitle={t(stat.title)}
 											providerId={stat.providerId}

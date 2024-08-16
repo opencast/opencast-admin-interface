@@ -8,9 +8,12 @@ import { availableHotkeys } from "../../../../configs/hotkeysConfig";
  * This component renders the embedding code modal
  */
 const EmbeddingCodeModal = ({
-    close,
-    eventId
-}: any) => {
+	close,
+	eventId,
+}: {
+	close: () => void
+	eventId: string
+}) => {
 	const { t } = useTranslation();
 
 	const [textAreaContent, setTextAreaContent] = useState("");
@@ -40,18 +43,22 @@ const EmbeddingCodeModal = ({
 	};
 
 	const copy = () => {
-		let copyText = document.getElementById("social_embed-textarea");
-// @ts-expect-error TS(2531): Object is possibly 'null'.
-		copyText.select();
-		document.execCommand("copy");
+		let copyText = document.getElementById("social_embed-textarea") as HTMLTextAreaElement;
+		if (copyText) {
+			copyText.select();
+			document.execCommand("copy");
 
-		setCopySuccess(true);
+			setCopySuccess(true);
+		}
 	};
 
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const updateTextArea = (e) => {
+	const updateTextArea = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		// chosen frame size
-		let frameSize = e.target ? e.target.textContent : e.toElement.textContent;
+		let frameSize = e.currentTarget.textContent;
+
+		if (!frameSize) {
+			return;
+		}
 
 		// buttons containing possible frame sizes
 		let embedSizeButtons = document.getElementsByClassName("embedSizeButton");

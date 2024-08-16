@@ -25,7 +25,7 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 	const { t } = useTranslation();
 
 	// Changes applied to events
-	const [changes, setChanges] = useState([]);
+	const [changes, setChanges] = useState<{eventId: string, title: string, changes: { type: string, previous: string, next: string }[]}[]>([]);
 
 	const seriesOptions = useAppSelector(state => getSchedulingSeriesOptions(state));
 
@@ -36,12 +36,11 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 	}, []);
 
 	const checkForChanges = () => {
-		let changed = [];
+		let changed: {eventId: string, title: string, changes: { type: string, previous: string, next: string }[]}[] = [];
 
 		// Loop through each event selected for editing and compare original values and changed values
-		for (let i = 0; i < formik.values.editedEvents.length; i++) {
-			let event = formik.values.editedEvents[i];
-			let eventChanges : {eventId: string, title: string, changes: any[]}= {
+		for (const event of formik.values.editedEvents) {
+			let eventChanges : {eventId: string, title: string, changes: { type: string, previous: string, next: string }[]}= {
 				eventId: event.eventId,
 				title: event.title,
 				changes: [],
@@ -128,13 +127,11 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 		}
 
 		// Set changes state
-// @ts-expect-error TS(2345): Argument of type '{ eventId: any; title: any; chan... Remove this comment to see the full error message
 		setChanges(changed);
 	};
 
 	// Compare two values
-// @ts-expect-error TS(7006): Parameter 'oldValue' implicitly has an 'any' type.
-	const isChanged = (oldValue, newValue) => {
+	const isChanged = (oldValue: string, newValue: string) => {
 		return oldValue !== newValue;
 	};
 
@@ -150,7 +147,6 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 									<header>
 										{t(
 											"BULK_ACTIONS.EDIT_EVENTS.SUMMARY.SINGLE_EVENT_CAPTION",
-// @ts-expect-error TS(2339): Property 'title' does not exist on type 'never'.
 											{ title: event.title }
 										)}
 									</header>
@@ -171,7 +167,6 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 											</thead>
 											<tbody>
 												{/* Add table row with old value and new one if something has changed */}
-{/* @ts-expect-error TS(2339): Property 'changes' does not exist on type 'never'. */}
 												{event.changes.map((row, key) => (
 													<tr key={key}>
 														<td>{t(row.type)}</td>

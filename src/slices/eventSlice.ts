@@ -136,8 +136,9 @@ export type EditedEvents = {
 
 export type UploadAssetOption = {
 	accept: string,
-	"displayFallback.DETAIL": string,
-	"displayFallback.SHORT": string,
+	displayFallback?: string,
+	"displayFallback.DETAIL"?: string,
+	"displayFallback.SHORT"?: string,
 	displayOrder: number,
 	flavorSubType: string,
 	flavorType: string,
@@ -147,10 +148,21 @@ export type UploadAssetOption = {
 	title: string,
 	type: string,
 	displayOverride?: string,
+	"displayOverride.SHORT"?: string,
+	"displayOverride.DETAIL"?: string,
 }
 
 export type UploadAssetsTrack = UploadAssetOption & {
 	file?: FileList
+}
+
+export type Conflict = {
+	conflicts: {
+		end: string,
+		start: string,
+		title: string,
+	}[],
+	eventId: string,
 }
 
 type EventState = {
@@ -328,7 +340,7 @@ export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata
 		notFound?: string[],
 		runningWorkflow?: string[],
 	},
-	values: { [key: string]: unknown}
+	values: { [key: string]: unknown }
 }, { dispatch }) => {
 	const { metadataFields, values } = params;
 
@@ -773,7 +785,6 @@ export const fetchScheduling = createAppAsyncThunk('events/fetchScheduling', asy
 // update multiple scheduled events at once
 export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateScheduledEventsBulk', async (
 	values: {
-		changedEvent: number,
 		changedEvents: string[],
 		editedEvents: EditedEvents[],
 		events: Event[],
@@ -1061,14 +1072,7 @@ export const checkForSchedulingConflicts = (events: EditedEvents[]) => async (di
 
 	formData.append("update", JSON.stringify(update));
 
-	let data: {
-		conflicts: {
-			end: string,
-			start: string,
-			title: string,
-		}[],
-		eventId: string,
-	}[] = [];
+	let data: Conflict[] = [];
 
 	axios
 		.post("/admin-ng/event/bulk/conflicts", formData)
