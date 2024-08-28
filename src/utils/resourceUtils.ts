@@ -12,7 +12,7 @@ import { Recording } from "../slices/recordingSlice";
 import { UserInfoState } from "../slices/userInfoSlice";
 import { hasAccess, isJson } from "./utils";
 import { RootState } from "../store";
-import { MetadataCatalog, MetadataField, MetadataFieldSelected } from "../slices/eventSlice";
+import { MetadataCatalog, MetadataField } from "../slices/eventSlice";
 import { initialFormValuesNewGroup } from '../configs/modalConfig';
 import { UpdateUser } from '../slices/userDetailsSlice';
 import { TFunction } from 'i18next';
@@ -149,52 +149,33 @@ export const getInitialMetadataFieldValues = (
 
 // transform collection of metadata into object with name and value
 export const transformMetadataCollection = (metadata: MetadataCatalog) => {
-	for (const [i, field] of metadata.fields.entries()) {
-		if (!!field.collection) {
-			metadata.fields[i].collection = Object.entries(
-				field.collection
-			).map(([key, value]) => {
-				if (isJson(key)) {
-					let collectionParsed = JSON.parse(key);
-					return {
-						name: collectionParsed.label ? collectionParsed.label : key,
-						value: value,
-						...collectionParsed,
-					};
-				} else {
-					return {
-						name: key,
-						value: value,
-					};
-				}
-			});
+	transformMetadataFields(metadata.fields);
+	return metadata;
+};
+
+export const transformMetadataFields = (metadata: MetadataField[]) => {
+	for (const field of metadata) {
+		if (field.collection) {
+			field.collection = Object.entries(field.collection)
+				.map(([key, value]) => {
+					if (isJson(key)) {
+						let collectionParsed = JSON.parse(key);
+						return {
+							name: collectionParsed.label || key,
+							value,
+							...collectionParsed,
+						};
+					} else {
+						return {
+							name: key,
+							value: value,
+						};
+					}
+				});
 		}
 	}
-
 	return metadata;
-}
-
-// Same as above, but different!
-export const transformMetadataCollectionFields = (metadata: MetadataFieldSelected[]) => {
-	for (const [i, field] of metadata.entries()) {
-		if (!!field) {
-			metadata[i].collection = Object.entries(field).map(
-				([key, value]) => {
-					return {
-						name: key,
-						value: value,
-					};
-				}
-			);
-		}
-		metadata[i] = {
-			...metadata[i],
-			selected: false,
-		};
-	}
-
-	return metadata;
-}
+};
 
 // transform metadata catalog for update via post request
 export const transformMetadataForUpdate = (catalog: MetadataCatalog, values: { [key: string]: MetadataCatalog["fields"][0]["value"] }) => {

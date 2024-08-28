@@ -8,7 +8,7 @@ import {
 	prepareExtendedMetadataFieldsForPost,
 	prepareMetadataFieldsForPost,
 	transformMetadataCollection,
-	transformMetadataCollectionFields,
+	transformMetadataFields,
 } from "../utils/resourceUtils";
 import { makeTwoDigits } from "../utils/utils";
 import { sourceMetadata } from "../configs/sourceConfig";
@@ -312,7 +312,8 @@ export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', a
 	let response = await data.data;
 
 	// transform response
-	const metadata = transformMetadataCollectionFields(response.metadata);
+	let metadata = transformMetadataFields(response.metadata)
+		.map(field => ({ ...field, selected: false }));
 	return {
 		mergedMetadata: metadata,
 		notFound: response.notFound,
