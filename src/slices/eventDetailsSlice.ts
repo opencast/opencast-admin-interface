@@ -859,13 +859,15 @@ export const fetchAccessPolicies = createAppAsyncThunk('eventDetails/fetchAccess
 
 	for (let i = 0; i < json.length; i++) {
 		const policy: Ace = json[i];
+		// By default, allow is true
+		policy.allow ??= true;
 		if (!newPolicies[policy.role]) {
 			newPolicies[policy.role] = createPolicy(policy.role);
 			policyRoles.push(policy.role);
 		}
 		if (policy.action === "read" || policy.action === "write") {
 			newPolicies[policy.role][policy.action] = policy.allow;
-		} else if (policy.allow === true) { //|| policy.allow === "true") {
+		} else if (policy.allow) {
 			newPolicies[policy.role].actions.push(policy.action);
 		}
 	}
