@@ -843,7 +843,7 @@ export const fetchAccessPolicies = createAppAsyncThunk('eventDetails/fetchAccess
 	);
 	let accessPolicies = await policyData.data;
 
-  let policies: TransformedAcl[] = [];
+	let policies: TransformedAcl[] = [];
 
 	if (!accessPolicies.episode_access) {
 		return policies;
