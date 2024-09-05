@@ -279,6 +279,11 @@ const getInitialValues = (
 		};
 	}
 
+	// Add all initial form values known upfront listed in newEventsConfig
+	for (const [key, value] of Object.entries(initialFormValuesNewEvents)) {
+		initialValues[key] = value;
+	}
+
 	const defaultDate = new Date();
 
 	// fill times with some default values
