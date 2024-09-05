@@ -225,18 +225,7 @@
 			"NO_EVENTS_UPDATED": "All updates failed.",
 			"SOME_EVENTS_NOT_UPDATED": "Some events could not be updated."
 		},
-		"PROBLEM_ON_START": "A error occurred on start up. Please contact your OpenCast admin",
-		"ADOPTER_PROFILE_NOT_DELETED": "Oops! Couldn't delete profile information. Please try again!",
-		"TOBIRA_OVERRIDE_NAME": "The title of the selected page will be overridden with the title of the series.",
-		"TOBIRA_NO_PATH_SEGMENT": "Page needs a path segment.",
-		"TOBIRA_NOT_MOUNTED": "Series could not be mounted in Tobira.",
-		"TOBIRA_PATH_SEGMENT_INVALID": "Path segment is invalid. A valid path segment is at least 2 characters long, does not contain any whitespace or control characters, none of the characters '<>\"[\\]^`{|}#%\/?]', and doesn't start with any of the characters '-+~@_!$&;:.,=*'()'.",
-		"TOBIRA_PATH_SEGMENT_UNIQUE": "The path segment of a page must be unqiue among all its sibling pages.",
-		"TOBIRA_PAGE_NOT_FOUND": "The page you tried to navigate to does not or no longer exist. Maybe try starting from the beginning.",
-		"TOBIRA_SERVER_ERROR":" Error talking to Tobira. Contact your system administrator and/or try again later.",
-		"TOBIRA_COPIED_DIRECT_LINK": "Copied link to clipboard.",
-		"TOBIRA_FAILED_COPYING_DIRECT_LINK": "Couldn't copy link to clipboard.",
-		"TOBIRA_NOT_FOUND": "Tobira doesn't know about this series (yet). Try again in a few minutes or contact your system administrator."
+		"PROBLEM_ON_START": "A error occurred on start up. Please contact your Opencast admin"
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Actions",
@@ -417,7 +406,7 @@
 				"INFORMATION_PARAGRAPH_2": "We highly appreciate any feedback, as even some of the data that we gather about the Opencast usage will help us to create better software, have better chances for additional funding and attract more companies to provide services around Opencast."
 			},
 			"FORM_STATE": {
-				"ORGANISATION": "Organisation",
+				"ORGANISATION": "Organization",
 				"DEPARTMENT": "Department",
 				"COUNTRY": "Country",
 				"POSTAL_CODE": "Postal code",
@@ -433,9 +422,13 @@
 				"ADDITIONAL_ADRESS_INFO": "Add. adress information",
 				"MAIL": "Email",
 				"CONTACT_ME": "Contact me for updates and secruity issues",
+				"SYSTEM_TYPE_HEADLINE": "For what purpose do you use this system?",
+				"SYSTEM_TYPE": "System Type",
+				"SYSTEM_TYPE_PRODUCTION": "Production System",
+				"SYSTEM_TYPE_TEST": "Test System",
 				"WHICH_DATA_TO_SHARE": "Which data do you want to share?",
 				"POLICY_HEADLINE": "Privacy policy and terms of use",
-				"USAGE_STATISTICS": "Usage statistcs",
+				"USAGE_STATISTICS": "Usage statistics",
 				"ERROR_REPORTS": "Error reports",
 				"READ_TERMS_OF_USE_BEFORE": "I have read and agree to the",
 				"READ_TERMS_OF_USE_LINK": "privacy policy and terms of use",
@@ -690,7 +683,7 @@
 					"ENGAGE": "Engage",
 					"ENGAGE_LIVE": "Engage Live",
 					"EXTERNAL_API": "External API Publication",
-					"YOUTUBE": "Youtube",
+					"YOUTUBE": "YouTube",
 					"OAIPMH": "OAI-PMH",
 					"SELECT_WORKFLOW": "Select workflow",
 					"SELECT_WORKFLOW_EMPTY": "No workflows available"
@@ -904,7 +897,7 @@
 						"REVIEW": "Review required",
 						"ASYNC": "A/V tracks asynchronous",
 						"AUDIO_ISSUE": "Missing or defective audio track",
-						"CANCELLED": "Cancelled event",
+						"CANCELLED": "Canceled event",
 						"CONFLICTING_METADATA": "Conflicting metadata",
 						"IMPROPER_POINT": "Improper in or out point",
 						"MISSING_AGREEMENT": "Missing agreement",
@@ -2057,7 +2050,7 @@
 		"TOTAL": "Total",
 		"GRANULARITY": "Granularity",
 		"NAVIGATION": {
-			"ORGANIZATION": "Organisation"
+			"ORGANIZATION": "Organization"
 		},
 		"TIME_MODES": {
 			"Year": "Year",

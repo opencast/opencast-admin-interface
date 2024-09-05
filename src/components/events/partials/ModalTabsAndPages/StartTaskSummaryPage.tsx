@@ -4,6 +4,8 @@ import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButt
 import { getWorkflowDef } from "../../../../selectors/workflowSelectors";
 import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
+import { Event } from "../../../../slices/eventSlice";
+
 
 /**
  * This component renders the summary page of the start task bulk action
@@ -42,7 +44,6 @@ const StartTaskSummaryPage = <T extends RequiredFormProps>({
 										<p>
 											{t("BULK_ACTIONS.SCHEDULE_TASK.SUMMARY.EVENTS_SUMMARY", {
 												numberOfEvents: formik.values.events.filter(
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
 													(e) => e.selected === true
 												).length,
 											})}

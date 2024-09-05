@@ -5,6 +5,7 @@ import {
 	editFilterValue,
 	resetFilterValues,
 	fetchStats,
+	Stats as StatsType,
 } from "../../slices/tableFilterSlice";
 import { loadEventsIntoTable } from "../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../store";
@@ -21,11 +22,9 @@ const Stats = () => {
 	const stats = useAppSelector(state => getStats(state));
 
 	// Filter with value of clicked status
-// @ts-expect-error TS(7006): Parameter 'stats' implicitly has an 'any' type.
-	const showStatsFilter = async (stats) => {
+	const showStatsFilter = async (stats: StatsType) => {
 		dispatch(resetFilterValues());
 		let filterValue;
-// @ts-expect-error TS(7006): Parameter 'f' implicitly has an 'any' type.
 		await stats.filters.forEach((f) => {
 			let filter = filterMap.find(({ name }) => name === f.name);
 			filterValue = f.value;

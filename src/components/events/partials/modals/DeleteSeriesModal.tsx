@@ -68,8 +68,7 @@ const DeleteSeriesModal = ({
 	};
 
 	// Select or deselect all rows in table
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const onChangeAllSelected = (e) => {
+	const onChangeAllSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selected = e.target.checked;
 		setAllChecked(selected);
 		let changedSelection = selectedSeries.map((series) => {

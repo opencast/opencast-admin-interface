@@ -24,7 +24,7 @@ import { MetadataCatalog } from './eventSlice';
 /**
  * This file contains redux reducer for actions affecting the state of a series
  */
-type Feed = {
+export type Feed = {
 	link: string,
 	type: string,
 	version: string,
@@ -238,19 +238,7 @@ export const fetchSeriesDetailsThemeNames = createAppAsyncThunk('seriesDetails/f
 // update series with new metadata
 export const updateSeriesMetadata = createAppAsyncThunk('seriesDetails/updateSeriesMetadata', async (params: {
 	id: string,
-	values: {
-		contributor: string[],
-		createdBy: string,
-		creator: string[],
-		description: string,
-		identifier: string,
-		language: string,
-		license: string,
-		publisher: string[],
-		rightsHolder: string,
-		subject: string,
-		title: string,
-	}
+	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
 }, {dispatch, getState}) => {
 	const { id, values } = params;
 	let metadataInfos = getSeriesDetailsMetadata(getState());
@@ -274,7 +262,7 @@ export const updateSeriesMetadata = createAppAsyncThunk('seriesDetails/updateSer
 // update series with new metadata
 export const updateExtendedSeriesMetadata = createAppAsyncThunk('seriesDetails/updateExtendedSeriesMetadata', async (params: {
 	id: string,
-	values: { [key: string]: any },
+	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
 	catalog: MetadataCatalog,
 }, {dispatch, getState}) => {
 	const { id, values, catalog } = params;
@@ -312,7 +300,7 @@ export const updateExtendedSeriesMetadata = createAppAsyncThunk('seriesDetails/u
 
 export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSeriesAccess', async (params: {
 	id: string,
-	policies: { [key: string]: TransformedAcl }
+	policies: { acl: { ace: Ace[] } }
 }, {dispatch}) => {
 	const { id, policies } = params;
 

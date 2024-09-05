@@ -15,7 +15,7 @@ import ModalNavigation from "../../../shared/modals/ModalNavigation";
 import { NewThemeSchema } from "../../../../utils/validate";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { updateThemeDetails } from "../../../../slices/themeDetailsSlice";
-import { ThemeDetailsType } from "../../../../slices/themeSlice";
+import { ThemeDetailsInitialValues } from "../../../../slices/themeSlice";
 
 /**
  * This component manages the pages of the theme details
@@ -86,7 +86,7 @@ const ThemeDetails : React.FC<{
 	const currentValidationSchema = NewThemeSchema[page];
 
 	// update theme
-	const handleSubmit = (values: ThemeDetailsType) => {
+	const handleSubmit = (values: ThemeDetailsInitialValues) => {
 		dispatch(updateThemeDetails({id: themeDetails.id, values: values}));
 		close();
 	};

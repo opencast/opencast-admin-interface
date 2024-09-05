@@ -29,8 +29,7 @@ const GroupsActionsCell = ({
 		setDeleteConfirmation(false);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	const deletingGroup = (id) => {
+	const deletingGroup = (id: string) => {
 		dispatch(deleteGroup(id));
 	};
 

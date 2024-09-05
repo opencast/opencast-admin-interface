@@ -53,8 +53,7 @@ const SeriesActionsCell = ({
 		setDeleteConfirmation(true);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	const deletingSeries = (id) => {
+	const deletingSeries = (id: string) => {
 		dispatch(deleteSeries(id));
 	};
 

@@ -18,8 +18,7 @@ const SeriesTitleCell = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-// @ts-expect-error TS(7006): Parameter 'seriesId' implicitly has an 'any' type.
-	const redirectToEvents = async (seriesId) => {
+	const redirectToEvents = async (seriesId: string) => {
 		// redirect to tables
 		await dispatch(loadEventsIntoTable());
 

@@ -9,15 +9,16 @@ import {
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import { deleteTheme } from "../../../slices/themeSlice";
+import { deleteTheme, ThemeDetailsType } from "../../../slices/themeSlice";
 import { Tooltip } from "../../shared/Tooltip";
 
 /**
  * This component renders the action cells of themes in the table view
  */
 const ThemesActionsCell = ({
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
+}: {
+	row: ThemeDetailsType
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -61,7 +62,6 @@ const ThemesActionsCell = ({
 			{displayThemeDetails && (
 				<ThemeDetailsModal
 					handleClose={hideThemeDetails}
-					themeId={row.id}
 					themeName={row.name}
 				/>
 			)}

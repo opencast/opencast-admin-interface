@@ -419,6 +419,10 @@
 				"ADDITIONAL_ADRESS_INFO": "Add. adress information",
 				"MAIL": "Email",
 				"CONTACT_ME": "Contact me for updates and secruity issues",
+				"SYSTEM_TYPE_HEADLINE": "For what purpose do you use this system?",
+				"SYSTEM_TYPE": "System Type",
+				"SYSTEM_TYPE_PRODUCTION": "Production System",
+				"SYSTEM_TYPE_TEST": "Test System",
 				"WHICH_DATA_TO_SHARE": "Which data do you want to share?",
 				"POLICY_HEADLINE": "Privacy policy and terms of use",
 				"USAGE_STATISTICS": "Usage statistcs",
@@ -626,6 +630,7 @@
 					"EDITOR_NEEDS_CUTTING": "פתח עורך וידאו (הערה מציינת כי חיתוך הווידאו התבקש)",
 					"COMMENTS": "הצגת הערות",
 					"PAUSED_WORKFLOW": "הצגת תהליכי עבודה מושהים",
+					"PLAYER": "Open player",
 					"PRESENTER": "מסנן עבור מציג זה"
 				},
 				"SELECT_ALL": "Select all events",
