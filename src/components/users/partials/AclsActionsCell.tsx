@@ -29,8 +29,7 @@ const AclsActionsCell = ({
 		setDeleteConfirmation(false);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	const deletingAcl = (id) => {
+	const deletingAcl = (id: number) => {
 		dispatch(deleteAcl(id));
 	};
 

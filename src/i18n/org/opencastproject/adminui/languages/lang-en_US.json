@@ -225,7 +225,7 @@
 			"NO_EVENTS_UPDATED": "All updates failed.",
 			"SOME_EVENTS_NOT_UPDATED": "Some events could not be updated."
 		},
-		"PROBLEM_ON_START": "A error occurred on start up. Please contact your OpenCast admin"
+		"PROBLEM_ON_START": "A error occurred on start up. Please contact your Opencast admin"
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Actions",
@@ -406,7 +406,7 @@
 				"INFORMATION_PARAGRAPH_2": "We highly appreciate any feedback, as even some of the data that we gather about the Opencast usage will help us to create better software, have better chances for additional funding and attract more companies to provide services around Opencast."
 			},
 			"FORM_STATE": {
-				"ORGANISATION": "Organisation",
+				"ORGANISATION": "Organization",
 				"DEPARTMENT": "Department",
 				"COUNTRY": "Country",
 				"POSTAL_CODE": "Postal code",
@@ -428,7 +428,7 @@
 				"SYSTEM_TYPE_TEST": "Test System",
 				"WHICH_DATA_TO_SHARE": "Which data do you want to share?",
 				"POLICY_HEADLINE": "Privacy policy and terms of use",
-				"USAGE_STATISTICS": "Usage statistcs",
+				"USAGE_STATISTICS": "Usage statistics",
 				"ERROR_REPORTS": "Error reports",
 				"READ_TERMS_OF_USE_BEFORE": "I have read and agree to the",
 				"READ_TERMS_OF_USE_LINK": "privacy policy and terms of use",
@@ -683,7 +683,7 @@
 					"ENGAGE": "Engage",
 					"ENGAGE_LIVE": "Engage Live",
 					"EXTERNAL_API": "External API Publication",
-					"YOUTUBE": "Youtube",
+					"YOUTUBE": "YouTube",
 					"OAIPMH": "OAI-PMH",
 					"SELECT_WORKFLOW": "Select workflow",
 					"SELECT_WORKFLOW_EMPTY": "No workflows available"
@@ -897,7 +897,7 @@
 						"REVIEW": "Review required",
 						"ASYNC": "A/V tracks asynchronous",
 						"AUDIO_ISSUE": "Missing or defective audio track",
-						"CANCELLED": "Cancelled event",
+						"CANCELLED": "Canceled event",
 						"CONFLICTING_METADATA": "Conflicting metadata",
 						"IMPROPER_POINT": "Improper in or out point",
 						"MISSING_AGREEMENT": "Missing agreement",
@@ -2028,7 +2028,7 @@
 		"TOTAL": "Total",
 		"GRANULARITY": "Granularity",
 		"NAVIGATION": {
-			"ORGANIZATION": "Organisation"
+			"ORGANIZATION": "Organization"
 		},
 		"TIME_MODES": {
 			"Year": "Year",

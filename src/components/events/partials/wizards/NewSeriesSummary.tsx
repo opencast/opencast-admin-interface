@@ -47,6 +47,7 @@ const NewSeriesSummary = <T extends RequiredFormProps>({
 						{/*Summary metadata*/}
 						<MetadataSummaryTable
 							metadataFields={metadataSeries.fields}
+							// @ts-expect-error TS(7006):
 							formikValues={formik.values}
 							header={"EVENTS.SERIES.NEW.METADATA.CAPTION"}
 						/>
@@ -55,7 +56,9 @@ const NewSeriesSummary = <T extends RequiredFormProps>({
 						{!metaDataExtendedHidden ? (
 							<MetadataExtendedSummaryTable
 								extendedMetadata={extendedMetadata}
+								// @ts-expect-error TS(7006):
 								formikValues={formik.values}
+								// @ts-expect-error TS(7006):
 								formikInitialValues={formik.initialValues}
 								header={"EVENTS.SERIES.NEW.METADATA_EXTENDED.CAPTION"}
 							/>

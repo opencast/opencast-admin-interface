@@ -39,8 +39,7 @@ const EventActionCell = ({
 		setDeleteConfirmation(false);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	const deletingEvent = (id) => {
+	const deletingEvent = (id: string) => {
 		dispatch(deleteEvent(id));
 	};
 

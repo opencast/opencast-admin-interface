@@ -15,7 +15,7 @@ const ServersStatusCell = ({
 		<div className="circle yellow" />
 	) : !row.online ? (
 		<div className="circle red" />
-	) : null;
+	) : <></>;
 };
 
 export default ServersStatusCell;

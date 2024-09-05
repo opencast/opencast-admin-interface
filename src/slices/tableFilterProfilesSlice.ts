@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { FilterData } from './tableFilterSlice'
 
 /**
  * This file contains redux reducer for actions affecting the state of table filter profiles
@@ -8,17 +9,7 @@ export type FilterProfile = {
 	name: string,
 	description: string,
 	resource: string,
-	filterMap: {
-		label: string,
-		name: string
-		options: {
-			label: string,
-			value: string,
-		}[],
-		// translatable: false,
-		// type: string,
-		// value: string,
-	}[]
+	filterMap: FilterData[]
 }
 
 type TableFilterProfilesState = {

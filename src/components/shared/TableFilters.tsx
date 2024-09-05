@@ -28,6 +28,8 @@ import { AppThunk, useAppDispatch, useAppSelector } from "../../store";
 import { renderValidDate } from "../../utils/dateUtils";
 import { Tooltip } from "./Tooltip";
 import DropDown from "./DropDown";
+import { AsyncThunk } from "@reduxjs/toolkit";
+import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 
 /**
  * This component renders the table filters in the upper right corner of the table
@@ -37,8 +39,7 @@ const TableFilters = ({
 	loadResourceIntoTable,
 	resource,
 }: {
-	// TODO: Figure out proper typings
-	loadResource: any,   // (() => AppThunk ) | AsyncThunkAction<any, unknown, AsyncThunkConfig>
+	loadResource: AsyncThunk<any, void, AsyncThunkConfig>,
 	loadResourceIntoTable: () => AppThunk,
 	resource: string,
 }) => {
@@ -81,8 +82,7 @@ const TableFilters = ({
 	};
 
 	// Remove a certain filter
-// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
-	const removeFilter = async (filter) => {
+	const removeFilter = async (filter: FilterData) => {
 		if (filter.name === "startDate") {
 			// Clear state
 			setStartDate(undefined);
@@ -97,8 +97,7 @@ const TableFilters = ({
 	};
 
 	// Handle changes when an item of the component is changed
-	// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const handleChange = (name, value) => {
+	const handleChange = (name: string, value: string) => {
 		let mustApplyChanges = false;
 		if (name === "textFilter") {
 			dispatch(editTextFilter(value));
@@ -229,9 +228,7 @@ const TableFilters = ({
     [removeFilters]
   );
 
-// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
-	const renderBlueBox = (filter) => {
-// @ts-expect-error TS(7006): Parameter 'opt' implicitly has an 'any' type.
+	const renderBlueBox = (filter: FilterData) => {
 		let valueLabel = filter.options?.find((opt) => opt.value === filter.value)
 			?.label || filter.value;
 		return (

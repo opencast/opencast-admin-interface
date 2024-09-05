@@ -42,7 +42,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { Recording, fetchRecordings } from "../../../../slices/recordingSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { parseISO } from "date-fns";
-import { checkConflicts } from "../../../../slices/eventSlice";
+import { checkConflicts, UploadAssetsTrack } from "../../../../slices/eventSlice";
 
 /**
  * This component renders the source page for new events in the new event wizard.
@@ -61,6 +61,8 @@ interface RequiredFormProps {
 	scheduleDurationMinutes: string
 	// checkConflicts
 	repeatOn: string[],
+	// Upload
+	uploadAssetsTrack?: UploadAssetsTrack[]
 }
 
 const NewSourcePage = <T extends RequiredFormProps>({
@@ -264,16 +266,24 @@ const NewSourcePage = <T extends RequiredFormProps>({
 /*
  * Renders buttons for uploading files and fields for additional metadata
  */
-// @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
-const Upload = ({ formik }) => {
+type RequiredFormPropsUpload = {
+	uploadAssetsTrack?: UploadAssetsTrack[]
+}
+
+const Upload = <T extends RequiredFormPropsUpload>({
+	formik
+}: {
+	formik: FormikProps<T>
+}) => {
 	const { t } = useTranslation();
 
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const handleChange = (e, assetId) => {
-		if (e.target.files.length === 0) {
-			formik.setFieldValue(assetId, null);
-		} else {
-			formik.setFieldValue(assetId, e.target.files);
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>, assetId: string) => {
+		if (e.target.files) {
+			if (e.target.files.length === 0) {
+				formik.setFieldValue(assetId, null);
+			} else {
+				formik.setFieldValue(assetId, e.target.files);
+			}
 		}
 	};
 
@@ -289,8 +299,8 @@ const Upload = ({ formik }) => {
 							<FieldArray name="uploadAssetsTrack">
 								{/*File upload button for each upload asset*/}
 								{({ insert, remove, push }) =>
+									formik.values.uploadAssetsTrack &&
 									formik.values.uploadAssetsTrack.length > 0 &&
-// @ts-expect-error TS(7006): Parameter 'asset' implicitly has an 'any' type.
 									formik.values.uploadAssetsTrack.map((asset, key) => (
 										<tr key={key}>
 											<td>
@@ -399,7 +409,9 @@ const Schedule = <T extends {
 			let inputDevice = inputDevices.find(
 				({ name }) => name === formik.values.location
 			);
-// @ts-expect-error TS(7006): Parameter 'input' implicitly has an 'any' type.
+			if (!inputDevice) {
+				return <></>;
+			}
 			return inputDevice.inputs.map((input, key) => (
 				<label key={key}>
 					<Field
@@ -448,8 +460,6 @@ const Schedule = <T extends {
 											);
 										}
 									}}
-									// @ts-expect-error TS(2322):
-									tabIndex={4}
 								/>
 							</td>
 						</tr>
@@ -472,8 +482,6 @@ const Schedule = <T extends {
 													formik.setFieldValue
 												)
 											}
-											// @ts-expect-error TS(2322):
-											tabIndex={5}
 										/>
 									</td>
 								</tr>
@@ -707,8 +715,9 @@ const Schedule = <T extends {
 										<span style={{ marginLeft: "10px" }}>
 											{new Date(
 												formik.values.scheduleEndDate
-// @ts-expect-error TS(2532): Object is possibly 'undefined'.
-											).toLocaleDateString(currentLanguage.dateLocale.code)}
+											).toLocaleDateString(
+												currentLanguage ? currentLanguage.dateLocale.code : undefined
+											)}
 										</span>
 									)}
 							</td>
