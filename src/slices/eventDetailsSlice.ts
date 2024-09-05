@@ -8,7 +8,7 @@ import {
 	transformMetadataForUpdate,
 } from "../utils/resourceUtils";
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
-import { fetchWorkflowDef } from "./workflowSlice";
+import { fetchWorkflowDef, Workflow as WorkflowDefinitions } from "./workflowSlice";
 import {
 	getMetadata,
 	getExtendedMetadata,
@@ -25,25 +25,27 @@ import {
 import { calculateDuration } from "../utils/dateUtils";
 import { fetchRecordings } from "./recordingSlice";
 import { getRecordings } from "../selectors/recordingSelectors";
-import { Workflow as WorkflowDefinitions} from "./workflowSlice";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
-import { Ace, TransformedAcl, TransformedAcls } from './aclDetailsSlice';
+import { TransformedAcl } from './aclDetailsSlice';
+import { MetadataCatalog } from './eventSlice';
+import { Event } from "./eventSlice";
+import {
+	AssetTabHierarchy,
+	EventDetailsPage,
+	WorkflowTabHierarchy
+} from "../components/events/partials/modals/EventDetails";
+import { AppDispatch } from "../store";
+import { Ace } from './aclSlice';
 
-type MetadataField = {
-	collection?: { [key: string]: unknown }[],	// different for e.g. languages and presenters
-	id: string,
-	label: string,	// translation key
-	readOnly: boolean,
-	required: boolean,
-	type: string,
-	value: string,
-}
-
-export type MetadataCatalog = {
-	title: string, // translation key
-	flavor: string,
-	fields: MetadataField[] | undefined,
+// Contains the navigation logic for the modal
+type EventDetailsModal = {
+	show: boolean,
+	page: EventDetailsPage,
+	event: Event | null,
+	workflowTabHierarchy: WorkflowTabHierarchy,
+	assetsTabHierarchy: AssetTabHierarchy,
+	workflowId: string,
 }
 
 interface Assets {
@@ -70,19 +72,33 @@ type CommentAuthor = {
 	username: string,
 }
 
-// TODO: Further define this after modernizing Workflows
 type Workflow = {
 	scheduling: boolean,
 	entries: {
 		id: string,
-		status: string,	//translation key
-		submitted: string,	//date
+		status: string,  //translation key
+		submitted: string,  //date
 		submitter: string,
 		submitterEmail: string,
 		submitterName: string,
 		title: string
 	}[],
-	workflow: any // TODO: proper typing
+	// TODO: This looks like really bad practice. Rewrite.
+	workflow: { // The type when looking at the list of workflows
+		workflowId: string,
+		description?: string,
+		configuration?: unknown
+	} | { // The type when looking at the details of a particular workflow
+		configuration: { [key: string]: unknown }
+		creator: string
+		description: string
+		executionTime: number
+		status: string // translation string
+		submittedAt: string // date string
+		title: string
+		wdid: string
+		wiid: number
+	}
 }
 
 type Device = {
@@ -101,12 +117,43 @@ type Device = {
 
 export type UploadAssetOption = {
 	id: string,
-	title: string,	// translation key
-	type: string,		// "track", "attachment" etc.
+	title: string,  // translation key
+	type: string,  // "track", "attachment" etc.
 	flavorType: string,
 	flavorSubType: string,
 	accept: string,
 	displayOrder: number,
+}
+
+export type Publication = {
+	enabled: boolean,
+	hide?: string,
+	icon?: string,
+	id: string,
+	label?: string,
+	name: string,  // translation key
+	order: number,
+	url: string,
+	description?: string,
+}
+
+export type Comment = {
+	author: CommentAuthor,
+	creationDate: string,
+	id: number,
+	modificationDate: string,
+	reason: string,  // translation key
+	replies: CommentReply[],
+	resolvedStatus: boolean,
+	text: string,
+}
+
+export type CommentReply = {
+	author: CommentAuthor,
+	creationDate: string,
+	id: number,
+	modificationDate: string,
+	text: string,
 }
 
 type EventDetailsState = {
@@ -114,7 +161,7 @@ type EventDetailsState = {
 	errorMetadata: SerializedError | null,
 	statusAssets: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAssets: SerializedError | null,
-	statusAssetAttachments: 'uninitialized' | 'loading' | 'succeeded' | 'failed',	// These were previously all just statusAssets
+	statusAssetAttachments: 'uninitialized' | 'loading' | 'succeeded' | 'failed',  // These were previously all just statusAssets
 	errorAssetAttachments: SerializedError | null,
 	statusAssetAttachmentDetails: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAssetAttachmentDetails: SerializedError | null,
@@ -169,6 +216,7 @@ type EventDetailsState = {
 	statusStatisticsValue: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorStatisticsValue: SerializedError | null,
 	eventId: string,
+	modal: EventDetailsModal,
 	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	assets: {
@@ -234,22 +282,7 @@ type EventDetailsState = {
 		channel: string,
 	},
 	policies: TransformedAcl[],
-	comments: {
-		author: CommentAuthor,
-		creationDate: string,
-		id: number,
-		modificationDate: string,
-		reason: string,	// translation key
-		replies: {
-			author: CommentAuthor,
-			creationDate: string,
-			id: number,
-			modificationDate: string,
-			text: string,
-		}[],
-		resolvedStatus: boolean,
-		text: string,
-	}[],
+	comments: Comment[],
 	commentReasons: { [key: string]: string },
 	scheduling: {
 		hasProperties: boolean,
@@ -285,18 +318,22 @@ type EventDetailsState = {
 		description?: string,
 	},
 	workflowDefinitions: WorkflowDefinitions[],
-	baseWorkflow: any,	// TODO: proper typing
+	baseWorkflow: {
+		workflowId: string,
+		description?: string,
+		configuration?: unknown
+	},
 	workflowOperations: {
 		entries: {
 			configuration: { [key: string]: string },
 			description: string,
 			id: number,
-			status: string,	// translation key
+			status: string,  // translation key
 			title: string,
 		}[]
 	},
 	workflowOperationDetails: {
-		completed: string,	// date
+		completed: string,  // date
 		description: string,
 		exception_handler_workflow: string,
 		execution_host: string,
@@ -306,8 +343,8 @@ type EventDetailsState = {
 		max_attempts: number,
 		name: string,
 		retry_strategy: string,
-		started: string,	// date
-		state: string,	// translation key
+		started: string,  // date
+		state: string,  // translation key
 		time_in_queue: number,
 	},
 	workflowErrors: {
@@ -315,7 +352,7 @@ type EventDetailsState = {
 			description: string,
 			id: number,
 			severity: string,
-			timestamp: string,	// date
+			timestamp: string,  // date
 			title: string,
 		}[]
 	},
@@ -331,18 +368,10 @@ type EventDetailsState = {
 		service_type: string,
 		severity: string,
 		technical_details: string,
-		timestamp: string,	// date
+		timestamp: string,  // date
 		title: string,
 	},
-	publications: {
-		enabled: boolean,
-		icon?: string,
-		id: string,
-		name: string,	// translation key
-		order: number,
-		url: string,
-		description?: string,
-	}[],
+	publications: Publication[],
 	statistics: Statistics[],
 	hasStatisticsError: boolean,
 }
@@ -408,10 +437,18 @@ const initialState: EventDetailsState = {
 	statusStatisticsValue: 'uninitialized',
 	errorStatisticsValue: null,
 	eventId: "",
+	modal: {
+		show: false,
+		page: EventDetailsPage.Metadata,
+		event: null,
+		workflowTabHierarchy: 'entry',
+		assetsTabHierarchy: 'entry',
+		workflowId: "",
+	},
 	metadata: {
 		title: "",
 		flavor: "",
-		fields: undefined
+		fields: [],
 	},
 	extendedMetadata: [],
 	assets: {
@@ -521,7 +558,9 @@ const initialState: EventDetailsState = {
 		description: "",
 	},
 	workflowDefinitions: [],
-	baseWorkflow: {},
+	baseWorkflow: {
+		workflowId: ""
+	},
 	workflowOperations: {
 		entries: [],
 	},
@@ -566,10 +605,10 @@ export const fetchMetadata = createAppAsyncThunk('eventDetails/fetchMetadata', a
 	const metadataResponse = await metadataRequest.data;
 
 	const mainCatalog = "dublincore/episode";
-	let metadata = {
+	let metadata: MetadataCatalog = {
 		title: "",
 		flavor: "",
-		fields: undefined
+		fields: []
 	};
 	let extendedMetadata = [];
 
@@ -594,11 +633,9 @@ export const fetchMetadata = createAppAsyncThunk('eventDetails/fetchMetadata', a
 			};
 		}
 		if (catalog.flavor === mainCatalog) {
-// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 			metadata = transformMetadataCollection({ ...transformedCatalog });
 		} else {
 			extendedMetadata.push(
-// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 				transformMetadataCollection({ ...transformedCatalog })
 			);
 		}
@@ -625,10 +662,9 @@ export const fetchAssets = createAppAsyncThunk('eventDetails/fetchAssets', async
 	);
 	const resourceOptionsListResponse = await resourceOptionsListRequest.data;
 
-	let uploadAssetOptions = [];
+	let uploadAssetOptions: UploadAssetOption[] | undefined = [];
 	const optionsData = formatUploadAssetOptions(resourceOptionsListResponse);
 
-// @ts-expect-error TS(2339): Property 'options' does not exist on type '{}'.
 	for (const option of optionsData.options) {
 		if (option.type !== "track") {
 			uploadAssetOptions.push({ ...option });
@@ -636,7 +672,6 @@ export const fetchAssets = createAppAsyncThunk('eventDetails/fetchAssets', async
 	}
 
 	// if no asset options, undefine the option variable
-// @ts-expect-error TS(2322): Type 'any[] | undefined' is not assignable to type... Remove this comment to see the full error message
 	uploadAssetOptions =
 		uploadAssetOptions.length > 0 ? uploadAssetOptions : undefined;
 
@@ -655,12 +690,17 @@ export const fetchAssets = createAppAsyncThunk('eventDetails/fetchAssets', async
 	return { assets, transactionsReadOnly, uploadAssetOptions }
 });
 
-const formatUploadAssetOptions = (optionsData: object) => {
+const formatUploadAssetOptions = (optionsData: { [key: string]: string }) => {
 	const optionPrefixSource = "EVENTS.EVENTS.NEW.SOURCE.UPLOAD";
 	const optionPrefixAsset = "EVENTS.EVENTS.NEW.UPLOAD_ASSET.OPTION";
 	const workflowPrefix = "EVENTS.EVENTS.NEW.UPLOAD_ASSET.WORKFLOWDEFID";
 
-	let optionsResult = {};
+	let optionsResult: {
+		workflow?: string,
+		options: UploadAssetOption[],
+	} = {
+		options: []
+	};
 	let uploadOptions = [];
 
 	for (const [key, value] of Object.entries(optionsData)) {
@@ -670,19 +710,17 @@ const formatUploadAssetOptions = (optionsData: object) => {
 				key.indexOf(optionPrefixSource) >= 0
 			) {
 				// parse upload asset options
-				let options = JSON.parse(value as any);
+				let options: UploadAssetOption = JSON.parse(value);
 				if (!options["title"]) {
 					options["title"] = key;
 				}
 				uploadOptions.push({ ...options });
 			} else if (key.indexOf(workflowPrefix) >= 0) {
 				// parse upload workflow definition id
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 				optionsResult["workflow"] = value;
 			}
 		}
 	}
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 	optionsResult["options"] = uploadOptions;
 
 	return optionsResult;
@@ -823,13 +861,13 @@ export const fetchAssetPublicationDetails = createAppAsyncThunk('eventDetails/fe
 	return await publicationDetailsRequest.data;
 });
 
-export const fetchAccessPolicies = createAppAsyncThunk('eventDetails/fetchAccessPolicies', async (eventId: string) => {
+export const fetchAccessPolicies = createAppAsyncThunk('eventDetails/fetchAccessPolicies', async (id: string) => {
 	const policyData = await axios.get(
-		`/admin-ng/event/${eventId}/access.json`
+		`/admin-ng/event/${id}/access.json`
 	);
 	let accessPolicies = await policyData.data;
 
-	let policies: TransformedAcls = [];
+	let policies: TransformedAcl[] = [];
 	if (!!accessPolicies.episode_access) {
 		const json = JSON.parse(accessPolicies.episode_access.acl).acl.ace;
 		let newPolicies: { [key: string]: TransformedAcl } = {};
@@ -867,19 +905,34 @@ export const fetchComments = createAppAsyncThunk('eventDetails/fetchComments', a
 export const fetchEventPublications = createAppAsyncThunk('eventDetails/fetchEventPublications', async (eventId: string) => {
 	let data = await axios.get(`/admin-ng/event/${eventId}/publications.json`);
 
-	let publications = await data.data;
+	let publications: {
+		"start-date": string,
+		"end-date": string,
+		publications: {
+			id: string,
+			name: string,
+			url: string,
+		}[],
+	} = await data.data;
 
 	// get information about possible publication channels
 	data = await axios.get("/admin-ng/resources/PUBLICATION.CHANNELS.json");
 
-	let publicationChannels = await data.data;
+	let publicationChannels: { [key: string]: string } = await data.data;
 
 	let now = new Date();
 
+	let transformedPublications: Publication[] = [];
+
 	// fill publication objects with additional information
-// @ts-expect-error TS(7006): Parameter 'publication' implicitly has an 'any' ty... Remove this comment to see the full error message
 	publications.publications.forEach((publication) => {
-		publication.enabled = !(
+		let transformedPublication: Publication = {
+			...publication,
+			enabled: false,
+			order: 0,
+		};
+
+		transformedPublication.enabled = !(
 			publication.id === "engage-live" &&
 			(now < new Date(publications["start-date"]) ||
 				now > new Date(publications["end-date"]))
@@ -889,24 +942,26 @@ export const fetchEventPublications = createAppAsyncThunk('eventDetails/fetchEve
 			let channel = JSON.parse(publicationChannels[publication.id]);
 
 			if (channel.label) {
-				publication.label = channel.label;
+				transformedPublication.label = channel.label;
 			}
 			if (channel.icon) {
-				publication.icon = channel.icon;
+				transformedPublication.icon = channel.icon;
 			}
 			if (channel.hide) {
-				publication.hide = channel.hide;
+				transformedPublication.hide = channel.hide;
 			}
 			if (channel.description) {
-				publication.description = channel.description;
+				transformedPublication.description = channel.description;
 			}
 			if (channel.order) {
-				publication.order = channel.order;
+				transformedPublication.order = channel.order;
 			}
 		}
+
+		transformedPublications.push(transformedPublication)
 	});
 
-	return publications.publications;
+	return transformedPublications;
 });
 
 export const saveComment = createAppAsyncThunk('eventDetails/saveComment', async (params: {
@@ -933,7 +988,7 @@ export const saveComment = createAppAsyncThunk('eventDetails/saveComment', async
 
 export const saveCommentReply = createAppAsyncThunk('eventDetails/saveCommentReply', async (params: {
 	eventId: string,
-	commentId: string,
+	commentId: number,
 	replyText: string,
 	commentResolved: boolean
 }) => {
@@ -1028,20 +1083,22 @@ export const fetchSchedulingInfo = createAppAsyncThunk('eventDetails/fetchSchedu
 		return source;
 });
 
+export type SchedulingInfo = {
+	captureAgent: string,
+	inputs: string[],
+	scheduleDurationHours: string,
+	scheduleDurationMinutes: string,
+	scheduleEndDate: string,
+	scheduleEndHour: string,
+	scheduleEndMinute: string,
+	scheduleStartDate: string,
+	scheduleStartHour: string,
+	scheduleStartMinute: string,
+}
+
 export const saveSchedulingInfo = createAppAsyncThunk('eventDetails/saveSchedulingInfo', async (params: {
 	eventId: string,
-	values: {
-		captureAgent: string,
-		inputs: string[],
-		scheduleDurationHours: string,
-		scheduleDurationMinutes: string,
-		scheduleEndDate: string,
-		scheduleEndHour: string,
-		scheduleEndMinute: string,
-		scheduleStartDate: string,
-		scheduleStartHour: string,
-		scheduleStartMinute: string,
-	},
+	values: SchedulingInfo,
 	startDate: Date,
 	endDate: Date
 }, { dispatch, getState }) => {
@@ -1393,6 +1450,38 @@ export const fetchWorkflowOperations = createAppAsyncThunk('eventDetails/fetchWo
 	return { entries: workflowOperationsData };
 });
 
+/**
+ * Open event details modal externally
+ *
+ * @param page modal page
+ * @param event event to show
+ * @param workflowTab workflow tab
+ * @param assetsTab assets tab
+ * @param workflowId workflow id required for workflow sub tabs
+ */
+export const openModal = (
+	page: EventDetailsPage,
+	event: Event,
+	workflowTab: WorkflowTabHierarchy = 'entry',
+	assetsTab: AssetTabHierarchy = 'entry',
+	workflowId: string = '',
+) => (dispatch: AppDispatch) => {
+	dispatch(setModalEvent(event));
+	dispatch(setModalWorkflowId(workflowId));
+	dispatch(openModalTab(page, workflowTab, assetsTab))
+	dispatch(setShowModal(true));
+};
+
+export const openModalTab = (
+	page: EventDetailsPage,
+	workflowTab: WorkflowTabHierarchy,
+	assetsTab: AssetTabHierarchy
+) => (dispatch: AppDispatch) => {
+	dispatch(setModalPage(page));
+	dispatch(setModalWorkflowTabHierarchy(workflowTab));
+	dispatch(setModalAssetsTabHierarchy(assetsTab));
+};
+
 export const fetchWorkflowOperationDetails = createAppAsyncThunk('eventDetails/fetchWorkflowOperationDetails', async (params: {
 	eventId: string,
 	workflowId: string,
@@ -1419,7 +1508,7 @@ export const fetchWorkflowErrors = createAppAsyncThunk('eventDetails/fetchWorkfl
 
 export const fetchWorkflowErrorDetails = createAppAsyncThunk('eventDetails/fetchWorkflowErrorDetails', async (params: {
 	eventId: string,
-	workflowId: string,
+	workflowId: number,
 	errorId?: number
 }) => {
 	const { eventId, workflowId, errorId } = params;
@@ -1473,10 +1562,10 @@ export const fetchEventStatisticsValueUpdate = createAppAsyncThunk('eventDetails
 });
 
 export const updateMetadata = createAppAsyncThunk('eventDetails/updateMetadata', async (params: {
-	eventId: string,
-	values: { [key: string]: any }
+	id: string,
+	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
 }, { dispatch, getState }) => {
-	const { eventId, values } = params;
+	const { id, values } = params;
 
 	let metadataInfos = getMetadata(getState());
 
@@ -1485,7 +1574,7 @@ export const updateMetadata = createAppAsyncThunk('eventDetails/updateMetadata',
 		values
 	);
 
-	await axios.put(`/admin-ng/event/${eventId}/metadata`, data, headers);
+	await axios.put(`/admin-ng/event/${id}/metadata`, data, headers);
 
 	// updated metadata in event details redux store
 	let eventMetadata = {
@@ -1497,18 +1586,18 @@ export const updateMetadata = createAppAsyncThunk('eventDetails/updateMetadata',
 });
 
 export const updateExtendedMetadata = createAppAsyncThunk('eventDetails/updateExtendedMetadata', async (params: {
-	eventId: string,
-	values: { [key: string]: any },
+	id: string,
+	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
 	catalog: MetadataCatalog
 }, { dispatch, getState }) => {
-	const { eventId, values, catalog } = params;
+	const { id, values, catalog } = params;
 
 	const { fields, data, headers } = transformMetadataForUpdate(
 		catalog,
 		values
 	);
 
-	await axios.put(`/admin-ng/event/${eventId}/metadata`, data, headers);
+	await axios.put(`/admin-ng/event/${id}/metadata`, data, headers);
 
 	// updated extended metadata in event details redux store
 	let eventMetadata = {
@@ -1542,7 +1631,7 @@ export const fetchHasActiveTransactions = createAppAsyncThunk('eventDetails/fetc
 });
 
 export const updateAssets = createAppAsyncThunk('eventDetails/updateAssets', async (params: {
-	values: { [key: string]: string },
+	values: { [key: string]: File },
 	eventId: string
 }, { dispatch, getState }) => {
 	const { values, eventId } = params;
@@ -1629,22 +1718,21 @@ export const updateAssets = createAppAsyncThunk('eventDetails/updateAssets', asy
 });
 
 export const saveAccessPolicies = createAppAsyncThunk('eventDetails/saveAccessPolicies', async (params: {
-	eventId: string,
+	id: string,
 	policies: { acl: { ace: Ace[] } }
 }, { dispatch }) => {
-	const { eventId, policies } = params;
+	const { id, policies } = params;
 	const headers = getHttpHeaders();
 
 	let data = new URLSearchParams();
 	data.append("acl", JSON.stringify(policies));
-// @ts-expect-error TS(2345): Argument of type 'boolean' is not assignable to pa... Remove this comment to see the full error message
-	data.append("override", true);
+	data.append("override", "true");
 
 	return axios
-		.post(`/admin-ng/event/${eventId}/access`, data.toString(), headers)
+		.post(`/admin-ng/event/${id}/access`, data.toString(), headers)
 		.then((response) => {
 			console.info(response);
-			dispatch(fetchAccessPolicies(eventId))
+			dispatch(fetchAccessPolicies(id))
 			dispatch(
 				addNotification({
 					type: "info",
@@ -1730,7 +1818,7 @@ export const updateWorkflow = createAppAsyncThunk('eventDetails/updateWorkflow',
 export const saveWorkflowConfig = createAppAsyncThunk('eventDetails/saveWorkflowConfig', async (params: {
 	values: {
 		workflowDefinition: string,
-		configuration: { [key: string]: any }
+		configuration: { [key: string]: unknown } | undefined
 	},
 	eventId: string
 }, { dispatch }) => {
@@ -1769,6 +1857,36 @@ const eventDetailsSlice = createSlice({
 	name: 'eventDetails',
 	initialState,
 	reducers: {
+		setShowModal(state, action: PayloadAction<
+			EventDetailsState["modal"]["show"]
+		>) {
+			state.modal.show = action.payload;
+		},
+		setModalPage(state, action: PayloadAction<
+			EventDetailsState["modal"]["page"]
+		>) {
+			state.modal.page = action.payload;
+		},
+		setModalEvent(state, action: PayloadAction<
+			EventDetailsState["modal"]["event"]
+		>) {
+			state.modal.event = action.payload;
+		},
+		setModalWorkflowId(state, action: PayloadAction<
+			EventDetailsState["modal"]["workflowId"]
+		>) {
+			state.modal.workflowId = action.payload;
+		},
+		setModalWorkflowTabHierarchy(state, action: PayloadAction<
+			EventDetailsState["modal"]["workflowTabHierarchy"]
+		>) {
+			state.modal.workflowTabHierarchy = action.payload;
+		},
+		setModalAssetsTabHierarchy(state, action: PayloadAction<
+			EventDetailsState["modal"]["assetsTabHierarchy"]
+		>) {
+			state.modal.assetsTabHierarchy = action.payload;
+		},
 		setEventMetadata(state, action: PayloadAction<
 			EventDetailsState["metadata"]
 		>) {
@@ -1788,7 +1906,9 @@ const eventDetailsSlice = createSlice({
 			workflows: EventDetailsState["workflows"],
 			workflowDefinitions: EventDetailsState["workflowDefinitions"],
 		}>) {
-			state.baseWorkflow = { ...action.payload.workflows.workflow };
+			if ("workflowId" in action.payload.workflows.workflow) {
+				state.baseWorkflow = { ...action.payload.workflows.workflow };
+			}
 			state.workflows = action.payload.workflows;
 			state.workflowDefinitions = action.payload.workflowDefinitions;
 		},
@@ -1819,7 +1939,7 @@ const eventDetailsSlice = createSlice({
 				state.metadata = {
 					title: "",
 					flavor: "",
-					fields: undefined
+					fields: [],
 				};
 				state.extendedMetadata = [];
 				state.errorMetadata = action.error;
@@ -2201,7 +2321,7 @@ const eventDetailsSlice = createSlice({
 			>) => {
 				state.statusWorkflows = 'succeeded';
 				state.workflows = action.payload;
-				if (!!state.workflows.workflow.workflowId) {
+				if ("workflowId" in state.workflows.workflow && !!state.workflows.workflow.workflowId) {
 					state.workflowConfiguration = state.workflows.workflow;
 				} else {
 					state.workflowConfiguration = state.baseWorkflow;
@@ -2406,7 +2526,7 @@ const eventDetailsSlice = createSlice({
 				console.error(action.error);
 			})
 			.addCase(updateWorkflow.fulfilled, (state, action) => {
-				if (!!state.workflows.workflow.workflowId) {
+				if ("workflowId" in state.workflows.workflow && !!state.workflows.workflow.workflowId) {
 					state.workflowConfiguration = state.workflows.workflow;
 				} else {
 					state.workflowConfiguration = state.baseWorkflow;
@@ -2416,6 +2536,12 @@ const eventDetailsSlice = createSlice({
 });
 
 export const {
+	setShowModal,
+	setModalPage,
+	setModalEvent,
+	setModalWorkflowId,
+	setModalWorkflowTabHierarchy,
+	setModalAssetsTabHierarchy,
 	setEventMetadata,
 	setExtendedEventMetadata,
 	setEventWorkflow,

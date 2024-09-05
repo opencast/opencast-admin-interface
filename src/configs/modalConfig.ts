@@ -28,7 +28,7 @@ export const initialFormValuesNewEvents: {
 	aclTemplate: string,
 	acls: TransformedAcl[],
 	uploadAssetsTrack?: UploadAssetsTrack[]
-	[key: string]: unknown,	// Metadata fields that are getting added later
+	[key: string]: unknown,  // Metadata fields that are getting added later
 } = {
 	sourceMode: "UPLOAD",
 	scheduleStartDate: new Date().toISOString(),
@@ -92,7 +92,7 @@ export const WORKFLOW_UPLOAD_ASSETS_NON_TRACK = "publish-uploaded-assets";
 export const initialFormValuesNewSeries: {
 	acls: TransformedAcl[],
 	theme: string,
-	[key: string]: any,	// Metadata fields that are getting added later
+	[key: string]: any,  // Metadata fields that are getting added later
 } = {
 	acls: [],
 	theme: "",
@@ -118,6 +118,15 @@ export const initialFormValuesNewThemes = {
 	watermarkFile: "",
 	watermarkFileName: "",
 	watermarkPosition: "topRight",
+
+	// Don't care about these, but they are required by type
+	creationDate: "",
+	creator: "",
+	default: false,
+	id: 0,
+	licenseSlideBackground: "",
+	licenseSlideDescription: "",
+	titleSlideMetadata: "",
 };
 
 // All fields for new acl form that are fix and not depending on response of backend
@@ -166,7 +175,11 @@ export const initialFormValuesNewUser: {
 
 // All fields for start task form that are fix and not depending on response of backend
 // InitialValues of Formik form (others computed dynamically depending on responses from backend)
-export const initialFormValuesStartTask = {
+export const initialFormValuesStartTask: {
+	events: Event[],
+	workflow: string,
+	configuration: { [key: string]: string },
+} = {
 	events: [],
 	workflow: "",
 	configuration: {},

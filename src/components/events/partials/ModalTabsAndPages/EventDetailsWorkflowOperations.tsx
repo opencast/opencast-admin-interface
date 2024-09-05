@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
-import {
-	getWorkflow,
-	getWorkflowOperations,
-} from "../../../../selectors/eventDetailsSelectors";
+import { getModalWorkflowId, getWorkflowOperations } from "../../../../selectors/eventDetailsSelectors";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
-import { fetchWorkflowOperationDetails, fetchWorkflowOperations } from "../../../../slices/eventDetailsSlice";
+import {
+	fetchWorkflowOperationDetails,
+	fetchWorkflowOperations,
+	setModalWorkflowTabHierarchy
+} from "../../../../slices/eventDetailsSlice";
 import { useTranslation } from "react-i18next";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
 
@@ -16,23 +17,24 @@ import { WorkflowTabHierarchy } from "../modals/EventDetails";
  */
 const EventDetailsWorkflowOperations = ({
 	eventId,
-	setHierarchy,
 }: {
 	eventId: string,
-	setHierarchy: (subTabName: WorkflowTabHierarchy) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const workflow = useAppSelector(state => getWorkflow(state));
+	const workflowId = useAppSelector(state => getModalWorkflowId(state));
 	const operations = useAppSelector(state => getWorkflowOperations(state));
 
   const loadWorkflowOperations = async () => {
 		// Fetching workflow operations from server
-		dispatch(fetchWorkflowOperations({eventId, workflowId: workflow.wiid}));
+		dispatch(fetchWorkflowOperations({eventId, workflowId}));
 	};
 
   useEffect(() => {
+		// Fetch workflow operations initially
+		loadWorkflowOperations().then();
+
 		// Fetch workflow operations every 5 seconds
 		let fetchWorkflowOperationsInterval = setInterval(loadWorkflowOperations, 5000);
 
@@ -41,12 +43,11 @@ const EventDetailsWorkflowOperations = ({
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-// @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
-	const openSubTab = (tabType, operationId: number | undefined = undefined) => {
+	const openSubTab = (tabType: WorkflowTabHierarchy, operationId: number | undefined = undefined) => {
 		dispatch(removeNotificationWizardForm());
-		setHierarchy(tabType);
+		dispatch(setModalWorkflowTabHierarchy(tabType));
 		if (tabType === "workflow-operation-details") {
-			dispatch(fetchWorkflowOperationDetails({eventId, workflowId: workflow.wiid, operationId})).then();
+			dispatch(fetchWorkflowOperationDetails({eventId, workflowId, operationId})).then();
 		}
 	};
 

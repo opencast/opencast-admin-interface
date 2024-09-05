@@ -1,40 +1,39 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import EventDetails from "./EventDetails";
-import { useAppDispatch } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { getModalEvent } from "../../../../selectors/eventDetailsSelectors";
+import { setModalEvent, setShowModal } from "../../../../slices/eventDetailsSlice";
 
 /**
  * This component renders the modal for displaying event details
  */
-const EventDetailsModal = ({
-	handleClose,
-	tabIndex,
-	eventTitle,
-	eventId,
-}: {
-	handleClose: () => void,
-	tabIndex: number,
-	eventTitle: string,
-	eventId: string,
-}) => {
+const EventDetailsModal = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	// tracks, whether the policies are different to the initial value
 	const [policyChanged, setPolicyChanged] = useState(false);
 
+	const event = useAppSelector(state => getModalEvent(state))!;
+
 	const confirmUnsaved = () => {
 		return window.confirm(t("CONFIRMATIONS.WARNINGS.UNSAVED_CHANGES"));
+	};
+
+	const hideModal = () => {
+		dispatch(setModalEvent(null));
+		dispatch(setShowModal(false));
 	};
 
 	const close = () => {
 		if (!policyChanged || confirmUnsaved()) {
 			setPolicyChanged(false);
 			dispatch(removeNotificationWizardForm());
-			handleClose();
+			hideModal();
 		}
 	};
 
@@ -50,7 +49,7 @@ const EventDetailsModal = ({
 			<div className="modal-animation modal-overlay" />
 			<section
 				id="event-details-modal"
-				tabIndex={tabIndex}
+				tabIndex={0}
 				className="modal wizard modal-animation"
 			>
 				<header>
@@ -58,15 +57,14 @@ const EventDetailsModal = ({
 					<h2>
 						{
 							t("EVENTS.EVENTS.DETAILS.HEADER", {
-								resourceId: eventTitle,
+								resourceId: event.title,
 							}) /*Event details - {resourceTitle}*/
 						}
 					</h2>
 				</header>
 
 				<EventDetails
-					tabIndex={tabIndex}
-					eventId={eventId}
+					eventId={event.id}
 					policyChanged={policyChanged}
 					setPolicyChanged={(value) => setPolicyChanged(value)}
 				/>

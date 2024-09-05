@@ -9,7 +9,7 @@ import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 /**
  * This file contains redux reducer for actions affecting the state of themes
  */
-export type Details = {
+export type ThemeDetailsType = {
 	bumperActive: boolean,
 	bumperFile: string,
 	creationDate: any,
@@ -31,10 +31,12 @@ export type Details = {
 	watermarkPosition: string,
 }
 
+export type ThemeDetailsInitialValues = ThemeDetailsType & { titleSlideMode: string }
+
 type ThemeState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
-	results: Details[],
+	results: ThemeDetailsType[],
 	columns: TableConfig["columns"],
 	total: number,
 	count: number,
@@ -73,7 +75,27 @@ export const fetchThemes = createAppAsyncThunk('theme/fetchThemes', async (_, { 
 });
 
 // post new theme to backend
-export const postNewTheme = createAppAsyncThunk('theme/postNewTheme', async (values: Details, {dispatch}) => {
+export const postNewTheme = createAppAsyncThunk('theme/postNewTheme', async (values: ThemeDetailsInitialValues
+	// All params that would be accepted by the endpoint
+	// {
+	// default: boolean,
+	// name: string,
+	// description: string
+	// bumperActive: boolean,
+	// trailerActive: boolean,
+	// titleSlideActive: boolean,
+	// licenseSlideActive: boolean,
+	// watermarkActive: boolean,
+	// bumperFile: string,
+	// trailerFile: string,
+	// watermarkFile: string,
+	// titleSlideBackground: string,
+	// licenseSlideBackground: string,
+	// titleSlideMetadata: string,
+	// licenseSlideDescription: string,
+	// watermarkPosition: string,
+// }
+, {dispatch}) => {
 	// get URL params used for post request
 	let data = buildThemeBody(values);
 

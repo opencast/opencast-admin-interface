@@ -9,7 +9,7 @@ import { availableHotkeys } from "../../../../configs/hotkeysConfig";
  */
 const GroupDetailsModal = ({
 	close,
-	groupName
+	groupName,
 }: {
 	close: () => void,
 	groupName: string,

@@ -9,7 +9,7 @@ import { availableHotkeys } from "../../../../configs/hotkeysConfig";
  */
 const AclDetailsModal = ({
 	close,
-	aclName
+	aclName,
 }: {
 	close: () => void,
 	aclName: string,

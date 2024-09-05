@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
 	getFilters,
@@ -23,23 +22,26 @@ import {
 } from "../../thunks/tableThunks";
 import TableFilterProfiles from "./TableFilterProfiles";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
-import { getResourceType } from "../../selectors/tableSelectors";
 import { useHotkeys } from "react-hotkeys-hook";
 import moment from "moment";
-import { useAppDispatch, useAppSelector } from "../../store";
+import { AppThunk, useAppDispatch, useAppSelector } from "../../store";
 import { renderValidDate } from "../../utils/dateUtils";
 import { Tooltip } from "./Tooltip";
+import DropDown from "./DropDown";
+import { AsyncThunk } from "@reduxjs/toolkit";
+import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 
 /**
  * This component renders the table filters in the upper right corner of the table
  */
 const TableFilters = ({
-// @ts-expect-error TS(7031): Binding element 'loadResource' implicitly has an '... Remove this comment to see the full error message
 	loadResource,
-// @ts-expect-error TS(7031): Binding element 'loadResourceIntoTable' implicitly... Remove this comment to see the full error message
 	loadResourceIntoTable,
-// @ts-expect-error TS(7031): Binding element 'resource' implicitly has an 'any'... Remove this comment to see the full error message
 	resource,
+}: {
+	loadResource: AsyncThunk<any, void, AsyncThunkConfig>,
+	loadResourceIntoTable: () => AppThunk,
+	resource: string,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -53,10 +55,13 @@ const TableFilters = ({
 	const [showFilterSelector, setFilterSelector] = useState(false);
 	const [showFilterSettings, setFilterSettings] = useState(false);
 	const [itemValue, setItemValue] = React.useState("");
+	const [openSecondFilterMenu, setOpenSecondFilterMenu] = useState(false);
 
 	// Variables containing selected start date and end date for date filter
 	const [startDate, setStartDate] = useState<Date | undefined>(undefined);
 	const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+
+	let filter = filterMap.find(({ name }) => name === selectedFilter);
 
 	// Remove all selected filters, no filter should be "active" anymore
 	const removeFilters = async () => {
@@ -72,13 +77,12 @@ const TableFilters = ({
 		dispatch(resetFilterValues())
 
 		// Reload resources when filters are removed
-		await loadResource();
-		loadResourceIntoTable();
+		await dispatch(loadResource);
+		dispatch(loadResourceIntoTable());
 	};
 
 	// Remove a certain filter
-// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
-	const removeFilter = async (filter) => {
+	const removeFilter = async (filter: FilterData) => {
 		if (filter.name === "startDate") {
 			// Clear state
 			setStartDate(undefined);
@@ -88,41 +92,39 @@ const TableFilters = ({
 		dispatch(editFilterValue({filterName: filter.name, value: ""}));
 
 		// Reload resources when filter is removed
-		await loadResource();
-		loadResourceIntoTable();
+		await dispatch(loadResource());
+		dispatch(loadResourceIntoTable());
 	};
 
 	// Handle changes when an item of the component is changed
-	// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const handleChange = (e) => {
-		let targetName = e.target.name;
-		let targetValue = e.target.value;
-
+	const handleChange = (name: string, value: string) => {
 		let mustApplyChanges = false;
-		if (targetName === "textFilter") {
-			dispatch(editTextFilter(targetValue));
+		if (name === "textFilter") {
+			dispatch(editTextFilter(value));
 			mustApplyChanges = true;
 		}
 
-		if (targetName === "selectedFilter") {
-			dispatch(editSelectedFilter(targetValue));
+		if (name === "selectedFilter") {
+			dispatch(editSelectedFilter(value));
+			setOpenSecondFilterMenu(true);
 		}
 
 		// If the change is in secondFilter (filter is picked) then the selected value is saved in filterMap
 		// and the filter selections are cleared
-		if (targetName === "secondFilter") {
+		if (name === "secondFilter") {
 			let filter = filterMap.find(({ name }) => name === selectedFilter);
 			if (!!filter) {
-				dispatch(editFilterValue({filterName: filter.name, value: targetValue}));
+				dispatch(editFilterValue({filterName: filter.name, value: value}));
 				setFilterSelector(false);
 				dispatch(removeSelectedFilter());
 				dispatch(removeSecondFilter());
+				setOpenSecondFilterMenu(false);
 				mustApplyChanges = true;
 			}
 		}
 
 		if (mustApplyChanges) {
-			setItemValue(e.target.value);
+			setItemValue(value);
 		}
 	};
 
@@ -131,11 +133,10 @@ const TableFilters = ({
 	// This helps increase performance by reducing the number of calls to load resources.
 	const applyFilterChangesDebounced = async () => {
 		// No matter what, we go to page one.
-		dispatch(goToPage(0)).then(async () => {
-			// Reload of resource
-			await loadResource();
-			loadResourceIntoTable();
-		});
+		dispatch(goToPage(0))
+		// Reload of resource
+		await dispatch(loadResource());
+		dispatch(loadResourceIntoTable());
 	};
 
 	useEffect(() => {
@@ -198,10 +199,9 @@ const TableFilters = ({
 				setFilterSelector(false);
 				dispatch(removeSelectedFilter());
 				// Reload of resource after going to very first page.
-				dispatch(goToPage(0)).then(async () => {
-					await loadResource();
-					loadResourceIntoTable();
-				});
+				dispatch(goToPage(0))
+				await dispatch(loadResource());
+				dispatch(loadResourceIntoTable());
 			}
 		}
 
@@ -228,9 +228,7 @@ const TableFilters = ({
     [removeFilters]
   );
 
-// @ts-expect-error TS(7006): Parameter 'filter' implicitly has an 'any' type.
-	const renderBlueBox = (filter) => {
-// @ts-expect-error TS(7006): Parameter 'opt' implicitly has an 'any' type.
+	const renderBlueBox = (filter: FilterData) => {
 		let valueLabel = filter.options?.find((opt) => opt.value === filter.value)
 			?.label || filter.value;
 		return (
@@ -243,18 +241,24 @@ const TableFilters = ({
 		);
 	};
 
+	const getSelectedFilterText = () => {
+		return filter?.label ? t(filter.label) : selectedFilter;
+	}
+
 	return (
 		<>
 			<div className="filters-container">
 				{/* Text filter - Search Query */}
-				<input
-					type="text"
-					className="search expand"
-					placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
-					onChange={(e) => handleChange(e)}
-					name="textFilter"
-					value={textFilter}
-				/>
+        <div className="search-container">
+          <input
+            type="text"
+            className="search expand"
+            placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
+            onChange={(e) => handleChange("textFilter", e.target.value)}
+            name="textFilter"
+            value={textFilter}
+          />
+        </div>
 
 				{/* Selection of filters and management of filter profiles*/}
 				{/*show only if filters.filters contains filters*/}
@@ -269,48 +273,40 @@ const TableFilters = ({
 
 							{/*show if icon is clicked*/}
 							{showFilterSelector && (
-								<div>
-									{/*Check if filters in filtersMap and show corresponding selection*/}
-									{!filterMap || false ? (
-										// Show if no filters in filtersList
-										<select
-											defaultValue={t(
-												"TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS"
-											)}
-											className="main-filter"
-											aria-label={t("TABLE_FILTERS.FILTER_SELECTION.LABEL")}
-										>
-											<option disabled>
-												{t("TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS")}
-											</option>
-										</select>
-									) : (
-										// Show all filtersMap as selectable options
-										<select
-// @ts-expect-error TS(2322): Type '{ children: any[]; disable_search_threshold:... Remove this comment to see the full error message
-											disable_search_threshold="10"
-											onChange={(e) => handleChange(e)}
-											value={selectedFilter}
-											name="selectedFilter"
-											className="main-filter"
-											aria-label={t("TABLE_FILTERS.FILTER_SELECTION.LABEL")}
-										>
-											<option value="" disabled>
-												{t("TABLE_FILTERS.FILTER_SELECTION.PLACEHOLDER")}
-											</option>
-											{filterMap
-												.filter(
+								/*Show all filtersMap as selectable options*/
+								<DropDown
+									value={selectedFilter}
+									text={getSelectedFilterText()}
+									options={
+										!!filterMap && filterMap.length > 0
+											? filterMap.filter(
 													(filter) => filter.name !== "presentersBibliographic"
 												)
 												.sort((a, b) => t(a.label).localeCompare(t(b.label))) // Sort alphabetically
-												.map((filter, key) => (
-													<option key={key} value={filter.name}>
-														{t(filter.label).substr(0, 40)}
-													</option>
-												))}
-										</select>
-									)}
-								</div>
+												.map(filter => {
+													return {
+														value: filter.name,
+														label: t(filter.label).substr(0, 40),
+													};
+												})
+											: []
+									}
+									type={"filter"}
+									required={true}
+									handleChange={(element) => handleChange("selectedFilter", element!.value)}
+									placeholder={
+										!!filterMap && filterMap.length > 0
+											? t(
+												"TABLE_FILTERS.FILTER_SELECTION.PLACEHOLDER"
+												)
+											: t(
+												"TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS"
+												)
+									}
+									defaultOpen
+									autoFocus
+									openMenuOnFocus
+								/>
 							)}
 
 							{/*Show selection of secondary filter if a main filter is chosen*/}
@@ -318,14 +314,15 @@ const TableFilters = ({
 								<div>
 									{/*Show the secondary filter depending on the type of main filter chosen (select or period)*/}
 									<FilterSwitch
-										filterMap={filterMap}
-										selectedFilter={selectedFilter}
+										filter={filter}
 										secondFilter={secondFilter}
 										startDate={startDate}
 										endDate={endDate}
 										handleDate={handleDatepickerChange}
 										handleDateConfirm={handleDatepickerConfirm}
 										handleChange={handleChange}
+										openSecondFilterMenu={openSecondFilterMenu}
+										setOpenSecondFilterMenu={setOpenSecondFilterMenu}
 									/>
 								</div>
 							)}
@@ -334,27 +331,23 @@ const TableFilters = ({
 							{filterMap.map((filter, key) => {
 								return filter.value && (
 									<span className="ng-multi-value" key={key}>
-										<span>
-											{
-												// Use different representation of name and value depending on type of filter
-												filter.type === "period" ? (
-													<span>
-														<span>
-															{t(filter.label).substr(0, 40)}:
-															{t("dateFormats.date.short", {
-																date: renderValidDate(filter.value.split("/")[0]),
-															})}
-															-
-															{t("dateFormats.date.short", {
-																date: renderValidDate(filter.value.split("/")[1]),
-															})}
-														</span>
-													</span>
-												) : (
-													renderBlueBox(filter)
-												)
-											}
-										</span>
+										{
+											// Use different representation of name and value depending on type of filter
+											filter.type === "period" ? (
+												<span>
+													{t(filter.label).substr(0, 40)}:
+													{t("dateFormats.date.short", {
+														date: renderValidDate(filter.value.split("/")[0]),
+													})}
+													-
+													{t("dateFormats.date.short", {
+														date: renderValidDate(filter.value.split("/")[1]),
+													})}
+												</span>
+											) : (
+												renderBlueBox(filter)
+											)
+										}
 										{/* Remove icon in blue area around filter */}
 										<Tooltip title={t("TABLE_FILTERS.REMOVE")}>
 											<button
@@ -403,30 +396,31 @@ const TableFilters = ({
  * In case of select, a second selection is shown. In case of period, datepicker are shown.
  */
 const FilterSwitch = ({
-	filterMap,
-	selectedFilter,
+	filter,
 	handleChange,
 	startDate,
 	endDate,
 	handleDate,
 	handleDateConfirm,
 	secondFilter,
+	openSecondFilterMenu,
+	setOpenSecondFilterMenu,
 } : {
-	filterMap: FilterData[],
-	selectedFilter: string,
-	handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void,
+	filter: FilterData | undefined,
+	handleChange: (name: string, value: string) => void,
 	startDate: Date | undefined,
 	endDate: Date | undefined,
 	handleDate: (date: Date | null, isStart?: boolean) => void,
 	handleDateConfirm: (date: Date | undefined | null, isStart?: boolean) => void,
 	secondFilter: string,
+	openSecondFilterMenu: boolean,
+	setOpenSecondFilterMenu: (open: boolean) => void,
 }) => {
 	const { t } = useTranslation();
 
 	const startDateRef = useRef<HTMLInputElement>(null);
 	const endDateRef = useRef<HTMLInputElement>(null);
 
-	let filter = filterMap.find(({ name }) => name === selectedFilter);
 	if (!filter) {
 		return null;
 	}
@@ -436,65 +430,45 @@ const FilterSwitch = ({
 		case "select":
 			return (
 				<div>
-					{/*Show only if selected main filter has translatable options*/}
-					{filter.translatable ? (
-						// Show if the selected main filter has no further options
-						!filter.options || false ? (
-							<select
-								defaultValue={t("TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS")}
-								className="second-filter"
-							>
-								<option disabled>
-									{t("TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS")}
-								</option>
-							</select>
-						) : (
-							// Show further options for a secondary filter
-							<select
-								className="second-filter"
-								onChange={(e) => handleChange(e)}
-								value={secondFilter}
-								name="secondFilter"
-							>
-								<option value="" disabled>
-									{t("TABLE_FILTERS.FILTER_VALUE_SELECTION.PLACEHOLDER")}
-								</option>
-								{filter.options.map((option, key) => (
-									<option key={key} value={option.value}>
-										{t(option.label).substr(0, 40)}
-									</option>
-								))}
-							</select>
-						)
-					) : // Show only if the selected main filter has options that are not translatable (else case from above)
-					!filter.options || false ? (
-						// Show if the selected main filter has no further options
-						<select
-							defaultValue={t("TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS")}
-							className="second-filter"
-						>
-							<option disabled>
-								{t("TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS")}
-							</option>
-						</select>
-					) : (
-						// Show further options for a secondary filter
-						<select
-							className="second-filter"
-							onChange={(e) => handleChange(e)}
-							value={secondFilter}
-							name="secondFilter"
-						>
-							<option value="" disabled>
-								{t("TABLE_FILTERS.FILTER_VALUE_SELECTION.PLACEHOLDER")}
-							</option>
-							{filter.options.map((option, key) => (
-								<option key={key} value={option.value}>
-									{option.label.substr(0, 40)}
-								</option>
-							))}
-						</select>
-					)}
+					{/* Show further options for a secondary filter */}
+					<DropDown
+						value={secondFilter}
+						text={secondFilter}
+						options={
+							!!filter.options && filter.options.length > 0
+								? filter.options.map((option) => {
+									if (!filter.translatable) {
+										return {
+											...option,
+											label: option.label.substr(0, 40),
+										}
+									} else {
+										return {
+											...option,
+											label: t(option.label).substr(0, 40),
+										}
+									}
+								})
+								: []
+						}
+						type={"filter"}
+						required={true}
+						handleChange={(element) => handleChange("secondFilter", element!.value)}
+						placeholder={
+							!!filter.options && filter.options.length > 0
+								? t(
+									"TABLE_FILTERS.FILTER_VALUE_SELECTION.PLACEHOLDER"
+									)
+								: t(
+									"TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS"
+									)
+						}
+						autoFocus
+						defaultOpen
+						openMenuOnFocus
+						menuIsOpen={openSecondFilterMenu}
+						handleMenuIsOpen={setOpenSecondFilterMenu}
+					/>
 				</div>
 			);
 		case "period":
@@ -554,16 +528,4 @@ const FilterSwitch = ({
 	}
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	resourceType: getResourceType(state),
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TableFilters);
+export default TableFilters;

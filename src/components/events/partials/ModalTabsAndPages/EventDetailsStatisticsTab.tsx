@@ -30,8 +30,7 @@ const EventDetailsStatisticsTab = ({
 	}
 
 	/* generates file name for download-link for a statistic */
-// @ts-expect-error TS(7006): Parameter 'statsTitle' implicitly has an 'any' typ... Remove this comment to see the full error message
-	const statisticsCsvFileName = (statsTitle) => {
+	const statisticsCsvFileName = (statsTitle: string) => {
 		const sanitizedStatsTitle = statsTitle
 			.replace(/[^0-9a-z]/gi, "_")
 			.toLowerCase();
@@ -61,7 +60,6 @@ const EventDetailsStatisticsTab = ({
 									/* visualization of statistic for time series data */
 									<div className="obj-container">
 										<TimeSeriesStatistics
-											t={t}
 											resourceId={eventId}
 											statTitle={t(stat.title)}
 											providerId={stat.providerId}

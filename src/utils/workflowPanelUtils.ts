@@ -1,8 +1,8 @@
-import { Workflow } from "../slices/workflowSlice";
+import { Workflow, FieldSetField } from "../slices/workflowSlice";
 
 // fill values with default configuration of chosen workflow
 export const setDefaultConfig = (workflowDefinitions: Workflow[], workflowId: string) => {
-	let defaultConfiguration = {};
+	let defaultConfiguration: { [key: string]: unknown } = {};
 
 	// find configuration panel information about chosen workflow
 	let configPanel = workflowDefinitions.find(
@@ -26,9 +26,12 @@ export const setDefaultConfig = (workflowDefinitions: Workflow[], workflowId: st
 };
 
 // fills default configuration with values
-const fillDefaultConfig = (fieldset: { [key: string]: any }, defaultConfiguration: { [key: string]: any }) => {
+const fillDefaultConfig = (
+	fieldset: FieldSetField[],
+	defaultConfiguration: { [key: string]: unknown }
+) => {
 	// iteration through each input field
-	fieldset.forEach((field: any) => {
+	fieldset.forEach((field) => {
 
     // set only the checked input of radio button as default value
     if (field.type === "radio" && field.checked) {

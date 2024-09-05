@@ -14,13 +14,14 @@ import {
 } from "../utils/utils";
 import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
-import { TransformedAcls } from './aclDetailsSlice';
+import { TransformedAcl } from './aclDetailsSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { MetadataCatalog } from './eventSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of series
  */
-type Series = {
+export type Series = {
 	contributors: string[],
 	createdBy?: string,
 	creation_date?: string,
@@ -31,21 +32,6 @@ type Series = {
 	organizers: string[],
 	rightsHolder?: string,
 	title: string,
-}
-
-type MetadataCatalog = {
-	title: string,
-	flavor: string,
-	fields: {
-		collection?: {}[],	// different for e.g. languages and presenters
-		id: string,
-		label: string,
-		readOnly: boolean,
-		required: boolean,
-		translatable?: boolean,
-		type: string,
-		value: string | string[],
-	}[]
 }
 
 type Theme = {
@@ -120,24 +106,27 @@ export const fetchSeries = createAppAsyncThunk('series/fetchSeries', async (_, {
 });
 
 // fetch series metadata from server
-export const fetchSeriesMetadata = createAppAsyncThunk('series/fetchSeriesMetadata', async () => {
+export const fetchSeriesMetadata = createAppAsyncThunk('series/fetchSeriesMetadata', async (_, { rejectWithValue }) => {
 	const res = await axios.get("/admin-ng/series/new/metadata");
 	const data = await res.data;
 
 	const mainCatalog = "dublincore/series";
-	let metadata: any = {};
+	let metadata: SeriesState["metadata"] | undefined = undefined;
 	const extendedMetadata = [];
 
 	for (const metadataCatalog of data) {
 		if (metadataCatalog.flavor === mainCatalog) {
-// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 			metadata = transformMetadataCollection({ ...metadataCatalog });
 		} else {
 			extendedMetadata.push(
-// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 				transformMetadataCollection({ ...metadataCatalog })
 			);
 		}
+	}
+
+	if (!metadata) {
+		console.error("Main metadata catalog is missing");
+		return rejectWithValue("Main metadata catalog is missing")
 	}
 
 	return { metadata, extendedMetadata }
@@ -155,7 +144,7 @@ export const fetchSeriesThemes = createAppAsyncThunk('series/fetchSeriesThemes',
 export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (params: {
 	values: {
 		[key: string]: any;
-		acls: TransformedAcls,
+		acls: TransformedAcl[],
 		// contributor: string[],
 		// creator: string[],
 		// description: string,
@@ -172,20 +161,18 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 }, {dispatch}) => {
 	const { values, metadataInfo, extendedMetadata } = params
 
-	let metadataFields, extendedMetadataFields, metadata, access;
-
 	// prepare metadata provided by user
-	metadataFields = prepareSeriesMetadataFieldsForPost(
+	let metadataFields = prepareSeriesMetadataFieldsForPost(
 		metadataInfo.fields,
 		values
 	);
-	extendedMetadataFields = prepareSeriesExtendedMetadataFieldsForPost(
+	let extendedMetadataFields = prepareSeriesExtendedMetadataFieldsForPost(
 		extendedMetadata,
 		values
 	);
 
 	// metadata for post request
-	metadata = [
+	let metadata = [
 		{
 			flavor: metadataInfo.flavor,
 			title: metadataInfo.title,
@@ -197,9 +184,14 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 		metadata.push(entry);
 	}
 
-	access = prepareAccessPolicyRulesForPost(values.acls);
+	let access = prepareAccessPolicyRulesForPost(values.acls);
 
-	let jsonData = {
+	let jsonData: {
+		metadata: typeof metadata,
+		options: {},
+		access: typeof access,
+		theme?: number,
+	} = {
 		metadata: metadata,
 		options: {},
 		access: access,
@@ -208,7 +200,6 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 	if (values.theme !== "") {
 		jsonData = {
 			...jsonData,
-// @ts-expect-error TS(2322): Type '{ theme: number; metadata: { flavor: any; ti... Remove this comment to see the full error message
 			theme: parseInt(values.theme),
 		};
 	}

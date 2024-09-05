@@ -2,11 +2,11 @@ import React from "react";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import Notifications from "../../../shared/Notifications";
 import { style_button_spacing } from "../../../../utils/eventDetailsUtils";
-import { Formik } from "formik";
+import { Formik, FormikProps } from "formik";
 import { getAssetUploadOptions } from "../../../../selectors/eventSelectors";
 import { translateOverrideFallback } from "../../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { updateAssets } from "../../../../slices/eventDetailsSlice";
+import { setModalAssetsTabHierarchy, updateAssets } from "../../../../slices/eventDetailsSlice";
 import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
 
@@ -15,15 +15,15 @@ import { useTranslation } from "react-i18next";
  */
 const EventDetailsAssetsAddAsset = ({
 	eventId,
-	setHierarchy,
 }: {
 	eventId: string,
-	setHierarchy: (subTabName: AssetTabHierarchy) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
+
+	const initialValues: { [key: string]: File } = {};
 
 	// Get upload assets that are not of type track
 	const uploadAssets = uploadAssetOptions.filter(
@@ -31,20 +31,22 @@ const EventDetailsAssetsAddAsset = ({
 	);
 
 	const openSubTab = (subTabName: AssetTabHierarchy) => {
-		setHierarchy(subTabName);
+		dispatch(setModalAssetsTabHierarchy(subTabName));
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	function saveAssets(values) {
+	function saveAssets(values: { [key: string]: File }) {
 		dispatch(updateAssets({values, eventId}));
 	}
 
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const handleChange = (e, formik, assetId) => {
-		if (e.target.files.length === 0) {
-			formik.setFieldValue(assetId, null);
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>, formik: FormikProps<{ [key: string]: File }>, assetId: string) => {
+		if (e.target.files) {
+			if (e.target.files.length === 0) {
+				formik.setFieldValue(assetId, null);
+			} else {
+				formik.setFieldValue(assetId, e.target.files[0]);
+			}
 		} else {
-			formik.setFieldValue(assetId, e.target.files[0]);
+			console.warn("File event did not contain any files")
 		}
 	};
 
@@ -70,7 +72,7 @@ const EventDetailsAssetsAddAsset = ({
 						</header>
 						<div className="obj-container">
 							<Formik
-								initialValues={{ newAssets: {} }}
+								initialValues={initialValues}
 								onSubmit={(values) => saveAssets(values)}
 							>
 								{(formik) => (
@@ -103,10 +105,8 @@ const EventDetailsAssetsAddAsset = ({
 																		type="file"
 																		tabIndex={0}
 																	/>
-{/* @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
 																	{formik.values[asset.id] && (
 																		<span className="ui-helper">
-{/* @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
 																			{formik.values[asset.id].name.substr(
 																				0,
 																				50
@@ -121,9 +121,10 @@ const EventDetailsAssetsAddAsset = ({
 																	className="button-like-anchor remove"
 																	onClick={() => {
 																		formik.setFieldValue(asset.id, null);
-// @ts-expect-error TS(2531): Object is possibly 'null'.
-																		document.getElementById(asset.id).value =
-																			"";
+																		const element = document.getElementById(asset.id) as HTMLInputElement;
+																		if (element) {
+																			element.value = "";
+																		}
 																	}}
 																/>
 															</td>

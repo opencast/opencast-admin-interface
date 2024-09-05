@@ -39,12 +39,15 @@ const NewAssetUploadPage = <T extends RequiredFormProps>({
 		return null;
 	}
 
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const handleChange = (e, assetId) => {
-		if (e.target.files.length === 0) {
-			formik.setFieldValue(assetId, null);
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>, assetId: string) => {
+		if (e.target.files) {
+			if (e.target.files.length === 0) {
+				formik.setFieldValue(assetId, null);
+			} else {
+				formik.setFieldValue(assetId, e.target.files[0]);
+			}
 		} else {
-			formik.setFieldValue(assetId, e.target.files[0]);
+			console.warn("File event did not contain any files")
 		}
 	};
 

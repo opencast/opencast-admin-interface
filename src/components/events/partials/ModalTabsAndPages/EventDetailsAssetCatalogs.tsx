@@ -5,7 +5,7 @@ import {
 	isFetchingAssetCatalogs,
 } from "../../../../selectors/eventDetailsSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { fetchAssetCatalogDetails } from "../../../../slices/eventDetailsSlice";
+import { fetchAssetCatalogDetails, setModalAssetsTabHierarchy } from "../../../../slices/eventDetailsSlice";
 import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
 
@@ -14,10 +14,8 @@ import { useTranslation } from "react-i18next";
  */
 const EventDetailsAssetCatalogs = ({
 	eventId,
-	setHierarchy,
 }: {
 	eventId: string,
-	setHierarchy: (subTabName: AssetTabHierarchy) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -29,7 +27,7 @@ const EventDetailsAssetCatalogs = ({
 		if (subTabName === "catalog-details") {
 			dispatch(fetchAssetCatalogDetails({eventId, catalogId})).then();
 		}
-		setHierarchy(subTabName);
+		dispatch(setModalAssetsTabHierarchy(subTabName));
 	};
 
 	return (

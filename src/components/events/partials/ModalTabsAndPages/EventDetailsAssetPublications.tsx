@@ -5,7 +5,7 @@ import {
 	isFetchingAssetPublications,
 } from "../../../../selectors/eventDetailsSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { fetchAssetPublicationDetails } from "../../../../slices/eventDetailsSlice";
+import { fetchAssetPublicationDetails, setModalAssetsTabHierarchy } from "../../../../slices/eventDetailsSlice";
 import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
 
@@ -14,10 +14,8 @@ import { useTranslation } from "react-i18next";
  */
 const EventDetailsAssetPublications = ({
 	eventId,
-	setHierarchy,
 }: {
 	eventId: string,
-	setHierarchy: (subTabName: AssetTabHierarchy) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -29,7 +27,7 @@ const EventDetailsAssetPublications = ({
 		if (subTabName === "publication-details") {
 			dispatch(fetchAssetPublicationDetails({eventId, publicationId})).then();
 		}
-		setHierarchy(subTabName);
+		dispatch(setModalAssetsTabHierarchy(subTabName));
 	};
 
 	return (

@@ -3,26 +3,17 @@ import axios from 'axios';
 import { prepareAccessPolicyRulesForPost } from '../utils/resourceUtils';
 import { addNotification } from './notificationSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { Acl } from './aclSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of details of an ACL
  */
-export type Ace = {
-	allow: boolean,
-	role: string,
-	action: string
-}
-
-type IncomingAcls = {
-	ace: Ace[]
-}
-
 export type TransformedAcl = {
-  actions: string[], role: string, read: boolean, write: boolean
+	actions: string[],
+	role: string,
+	read: boolean,
+	write: boolean
 }
-
-
-export type TransformedAcls = TransformedAcl[]
 
 type AclDetailsState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
@@ -30,7 +21,7 @@ type AclDetailsState = {
   organizationId: string,
 	id: number,
 	name: string,
-	acl: TransformedAcls,
+	acl: TransformedAcl[],
 }
 
 // initial redux state
@@ -49,8 +40,8 @@ export const fetchAclDetails = createAppAsyncThunk('aclDetails/fetchAclDetails',
 
 	let aclDetails = res.data;
 
-	let acl: IncomingAcls = aclDetails.acl;
-	let transformedAcls: TransformedAcls = [];
+	let acl: Acl = aclDetails.acl;
+	let transformedAcls: TransformedAcl[] = [];
 
 	// transform policies for further use
   // TODO: Investigate why we do this and write down the reason here
@@ -132,7 +123,7 @@ export const fetchAclDetails = createAppAsyncThunk('aclDetails/fetchAclDetails',
 export const updateAclDetails = createAppAsyncThunk('aclDetails/updateAclDetails', async (params: {
 	values: {
 		name: string,
-		acls: TransformedAcls,
+		acls: TransformedAcl[],
 	},
 	aclId: number,
 }, {dispatch}) => {

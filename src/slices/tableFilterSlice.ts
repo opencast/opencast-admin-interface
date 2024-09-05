@@ -1,8 +1,8 @@
 import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { relativeDateSpanToFilterValue } from '../utils/dateUtils';
+import { setOffset } from '../slices/tableSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { setOffset } from '../actions/tableActions';
 import { fetchEvents } from './eventSlice';
 import { fetchServices } from './serviceSlice';
 import { FilterProfile } from './tableFilterProfilesSlice';
@@ -15,13 +15,25 @@ import { FilterProfile } from './tableFilterProfilesSlice';
 export type FilterData = {
 	label: string,
 	name: string,
-	options: {
+	options?: {
 		label: string,
 		value: string,
 	}[],
 	translatable: boolean,
 	type: string,
 	value: string,
+}
+
+export type Stats = {
+	count: number,
+	description: string,
+	filters: {
+		filter: string,
+		name: string,
+		value: string,
+	}[],
+	name: string,
+	order: number,
 }
 
 type TableFilterState = {
@@ -35,17 +47,7 @@ type TableFilterState = {
 	textFilter: string,
 	selectedFilter: string,
 	secondFilter: string,
-	stats: {
-		count: number,
-		description: string,
-		filters: {
-			filter: string,
-			name: string,
-			value: string,
-		}[],
-		name: string,
-		order: number,
-	}[],
+	stats: Stats[],
 }
 
 // Initial state of table filters in redux store
@@ -64,7 +66,7 @@ const initialState: TableFilterState = {
 };
 
 // Fetch table filters from opencast instance and transform them for further use
-export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', async (resource: any, { getState }) => {
+export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', async (resource: TableFilterState["currentResource"], { getState }) => {
 	const data = await axios.get(
 		`/admin-ng/resources/${resource}/filters.json`
 	);
@@ -72,7 +74,6 @@ export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', asy
 
 	const filters = transformResponse(resourceData);
 	const filtersList = Object.keys(filters.filters).map((key) => {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 		let filter = filters.filters[key];
 		filter.name = key;
 		return filter;
@@ -82,7 +83,9 @@ export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', asy
 		filtersList.push({
 			label: "FILTERS.EVENTS.PRESENTERS_BIBLIOGRAPHIC.LABEL",
 			name: "presentersBibliographic",
-			translatable: false
+			translatable: false,
+			type: "events",
+			value: "",
 		});
 	}
 
@@ -145,7 +148,7 @@ export const fetchStats = createAppAsyncThunk('tableFilters/fetchStats', async (
 	return stats;
 });
 
-export const setSpecificEventFilter = createAppAsyncThunk('tableFilters/setSpecificEventFilter', async (params: { filter: any, filterValue: any }, { dispatch, getState }) => {
+export const setSpecificEventFilter = createAppAsyncThunk('tableFilters/setSpecificEventFilter', async (params: { filter: string, filterValue: string }, { dispatch, getState }) => {
 	const { filter, filterValue } = params;
 	await dispatch(fetchFilters("events"));
 
@@ -167,7 +170,7 @@ export const setSpecificEventFilter = createAppAsyncThunk('tableFilters/setSpeci
 	dispatch(fetchEvents());
 });
 
-export const setSpecificServiceFilter = createAppAsyncThunk('tableFilters/setSpecificServiceFilter', async (params: { filter: any, filterValue: any }, { dispatch, getState }) => {
+export const setSpecificServiceFilter = createAppAsyncThunk('tableFilters/setSpecificServiceFilter', async (params: { filter: string, filterValue: string }, { dispatch, getState }) => {
 	const { filter, filterValue } = params;
 	await dispatch(fetchFilters("services"));
 
@@ -188,22 +191,47 @@ export const setSpecificServiceFilter = createAppAsyncThunk('tableFilters/setSpe
 });
 
 // Transform received filter.json to a structure that can be used for filtering
-// @ts-expect-error TS(7006): Parameter 'data' implicitly has an 'any' type.
-function transformResponse(data) {
-	let filters = {};
-	try {
-		filters = data;
+function transformResponse(data: {
+	[key: string]: {
+		value: string,
+		label: string,
+		options?: { [key: string]: string },
+		name: string
+		translatable: boolean,
+		type: string,
+	}
+}) {
+	type ParsedFilters = {
+		[key: string]: {
+			value: string
+			label: string
+			options?: { value: string, label: string }[]
+			name: string
+			translatable: boolean,
+			type: string,
+		}
+	}
 
-		for (let key in filters) {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+	let filters = Object.keys(data).reduce((acc, key) => {
+		let newOptions: {
+			label: string,
+			value: string,
+		}[] = []
+		acc[key] = {
+			...data[key],
+			options: newOptions
+		};
+		return acc;
+	}, {} as ParsedFilters);
+
+	try {
+		for (let key in data) {
 			filters[key].value = "";
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-			if (!filters[key].options) {
+			if (!data[key].options) {
 				continue;
 			}
-			let filterArr = [];
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-			let options = filters[key].options;
+			let filterArr: { value: string, label: string }[] = [];
+			let options = data[key].options;
 			for (let subKey in options) {
 				filterArr.push({ value: subKey, label: options[subKey] });
 			}
@@ -216,11 +244,9 @@ function transformResponse(data) {
 				}
 				return 0;
 			});
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 			filters[key].options = filterArr;
 		}
-	} catch (e) {
-// @ts-expect-error TS(2571): Object is of type 'unknown'.
+	} catch (e: any) {
 		console.error(e.message);
 	}
 
@@ -228,8 +254,7 @@ function transformResponse(data) {
 }
 
 // compare function for sort stats array by order property
-// @ts-expect-error TS(7006): Parameter 'a' implicitly has an 'any' type.
-const compareOrder = (a, b) => {
+const compareOrder = (a: { order: number }, b: { order: number }) => {
 	if (a.order < b.order) {
 		return -1;
 	}

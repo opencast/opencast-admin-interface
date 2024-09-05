@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
 import {
 	getAssets,
+	getModalAssetsTabHierarchy,
 	getUploadAssetOptions,
 	isFetchingAssets,
 	isTransactionReadOnly,
@@ -17,6 +18,7 @@ import {
 	fetchAssetMedia,
 	fetchAssetPublications,
 	fetchAssets,
+	setModalAssetsTabHierarchy,
 } from "../../../../slices/eventDetailsSlice";
 import { useTranslation } from "react-i18next";
 import { AssetTabHierarchy } from "../modals/EventDetails";
@@ -35,16 +37,13 @@ import EventDetailsAssetPublicationDetails from "./EventDetailsAssetPublicationD
  */
 const EventDetailsAssetsTab = ({
 	eventId,
-	assetsTabHierarchy,
-	setAssetsTabHierarchy,
 }: {
 	eventId: string,
-	assetsTabHierarchy: AssetTabHierarchy,
-	setAssetsTabHierarchy: (subTabName: AssetTabHierarchy) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
+	const assetsTabHierarchy = useAppSelector(state => getModalAssetsTabHierarchy(state));
 	const user = useAppSelector(state => getUserInformation(state));
 	const assets = useAppSelector(state => getAssets(state));
 	const uploadAssetOptions = useAppSelector(state => getUploadAssetOptions(state));
@@ -114,7 +113,7 @@ const EventDetailsAssetsTab = ({
 		} else if (subTabName === "asset-publications") {
 			dispatch(fetchAssetPublications(eventId)).then();
 		}
-		setAssetsTabHierarchy(subTabName);
+		dispatch(setModalAssetsTabHierarchy(subTabName));
 	};
 
 	return (
@@ -298,52 +297,39 @@ const EventDetailsAssetsTab = ({
 			(assetsTabHierarchy === "add-asset" && (
 				<EventDetailsAssetsAddAsset
 					eventId={eventId}
-					setHierarchy={setAssetsTabHierarchy}
 				/>
 			)) ||
 			(assetsTabHierarchy === "asset-attachments" && (
 				<EventDetailsAssetAttachments
 					eventId={eventId}
-					setHierarchy={setAssetsTabHierarchy}
 				/>
 			)) ||
 			(assetsTabHierarchy === "attachment-details" && (
-				<EventDetailsAssetAttachmentDetails
-					setHierarchy={setAssetsTabHierarchy}
-				/>
+				<EventDetailsAssetAttachmentDetails />
 			)) ||
 			(assetsTabHierarchy === "asset-catalogs" && (
 				<EventDetailsAssetCatalogs
 					eventId={eventId}
-					setHierarchy={setAssetsTabHierarchy}
 				/>
 			)) ||
 			(assetsTabHierarchy === "catalog-details" && (
-				<EventDetailsAssetCatalogDetails
-					setHierarchy={setAssetsTabHierarchy}
-				/>
+				<EventDetailsAssetCatalogDetails />
 			)) ||
 			(assetsTabHierarchy === "asset-media" && (
 				<EventDetailsAssetMedia
 					eventId={eventId}
-					setHierarchy={setAssetsTabHierarchy}
 				/>
 			)) ||
 			(assetsTabHierarchy === "media-details" && (
-				<EventDetailsAssetMediaDetails
-					setHierarchy={setAssetsTabHierarchy}
-				/>
+				<EventDetailsAssetMediaDetails />
 			)) ||
 			(assetsTabHierarchy === "asset-publications" && (
 				<EventDetailsAssetPublications
 					eventId={eventId}
-					setHierarchy={setAssetsTabHierarchy}
 				/>
 			)) ||
 			(assetsTabHierarchy === "publication-details" && (
-				<EventDetailsAssetPublicationDetails
-					setHierarchy={setAssetsTabHierarchy}
-				/>
+				<EventDetailsAssetPublicationDetails />
 			)))}
 		</>
 	);

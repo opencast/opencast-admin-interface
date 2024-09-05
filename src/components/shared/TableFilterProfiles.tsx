@@ -11,27 +11,30 @@ import {
 	goToPage,
 } from "../../thunks/tableThunks";
 import { getFilters } from "../../selectors/tableFilterSelectors";
-import { loadFilterProfile } from "../../slices/tableFilterSlice";
-import { useAppDispatch, useAppSelector } from "../../store";
+import { FilterData, loadFilterProfile } from "../../slices/tableFilterSlice";
+import { AppThunk, useAppDispatch, useAppSelector } from "../../store";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { Tooltip } from "./Tooltip";
+import { AsyncThunk } from "@reduxjs/toolkit";
+import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 
 /**
  * This component renders the table filter profiles in the upper right corner when clicked on settings icon of the
  * table filters.
  */
 const TableFiltersProfiles = ({
-// @ts-expect-error TS(7031): Binding element 'showFilterSettings' implicitly ha... Remove this comment to see the full error message
 	showFilterSettings,
-// @ts-expect-error TS(7031): Binding element 'setFilterSettings' implicitly has... Remove this comment to see the full error message
 	setFilterSettings,
-// @ts-expect-error TS(7031): Binding element 'loadResource' implicitly has an '... Remove this comment to see the full error message
 	loadResource,
-// @ts-expect-error TS(7031): Binding element 'loadResourceIntoTable' implicitly... Remove this comment to see the full error message
 	loadResourceIntoTable,
-// @ts-expect-error TS(7031): Binding element 'resource' implicitly has an 'any'... Remove this comment to see the full error message
 	resource,
+}: {
+	showFilterSettings: boolean,
+	setFilterSettings: (_: boolean) => void,
+	loadResource: AsyncThunk<any, void, AsyncThunkConfig>,
+	loadResourceIntoTable: () => AppThunk,
+	resource: string,
 }) => {
 	const dispatch = useAppDispatch();
 
@@ -75,8 +78,7 @@ const TableFiltersProfiles = ({
 		resetStateValues();
 	};
 
-// @ts-expect-error TS(7006): Parameter 'profile' implicitly has an 'any' type.
-	const editFilterProfile = (profile) => {
+	const editFilterProfile = (profile: FilterProfile) => {
 		setSettingsMode(false);
 		setCurrentlyEditing(profile);
 		setProfileName(profile.name);
@@ -108,8 +110,7 @@ const TableFiltersProfiles = ({
 		setValidName(false);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const handleChange = (e) => {
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const itemName = e.target.name;
 		const itemValue = e.target.value;
 
@@ -129,16 +130,14 @@ const TableFiltersProfiles = ({
 		}
 	};
 
-// @ts-expect-error TS(7006): Parameter 'filterMap' implicitly has an 'any' type... Remove this comment to see the full error message
-	const chooseFilterProfile = (filterMap) => {
+	const chooseFilterProfile = (filterMap: FilterData[]) => {
 		dispatch(loadFilterProfile(filterMap));
 
 		// No matter what, we go to page one.
-		dispatch(goToPage(0)).then(async () => {
-			// Reload resources when filters are removed
-			await loadResource();
-			loadResourceIntoTable();
-		});
+		dispatch(goToPage(0))
+		// Reload resources when filters are removed
+		dispatch(loadResource());
+		dispatch(loadResourceIntoTable());
 	};
 
 	return (

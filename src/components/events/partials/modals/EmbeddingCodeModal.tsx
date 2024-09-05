@@ -8,9 +8,12 @@ import { availableHotkeys } from "../../../../configs/hotkeysConfig";
  * This component renders the embedding code modal
  */
 const EmbeddingCodeModal = ({
-    close,
-    eventId
-}: any) => {
+	close,
+	eventId,
+}: {
+	close: () => void
+	eventId: string
+}) => {
 	const { t } = useTranslation();
 
 	const [textAreaContent, setTextAreaContent] = useState("");
@@ -40,18 +43,22 @@ const EmbeddingCodeModal = ({
 	};
 
 	const copy = () => {
-		let copyText = document.getElementById("social_embed-textarea");
-// @ts-expect-error TS(2531): Object is possibly 'null'.
-		copyText.select();
-		document.execCommand("copy");
+		let copyText = document.getElementById("social_embed-textarea") as HTMLTextAreaElement;
+		if (copyText) {
+			copyText.select();
+			document.execCommand("copy");
 
-		setCopySuccess(true);
+			setCopySuccess(true);
+		}
 	};
 
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const updateTextArea = (e) => {
+	const updateTextArea = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		// chosen frame size
-		let frameSize = e.target ? e.target.textContent : e.toElement.textContent;
+		let frameSize = e.currentTarget.textContent;
+
+		if (!frameSize) {
+			return;
+		}
 
 		// buttons containing possible frame sizes
 		let embedSizeButtons = document.getElementsByClassName("embedSizeButton");
@@ -72,14 +79,10 @@ const EmbeddingCodeModal = ({
 		// build whole url
 		let url = sourceURL + "/play/" + eventId;
 		// code displayed in text area containing the iFrame to copy
-		let iFrameString =
-			'<iframe allowfullscreen src="' +
-			url +
-			'" style="border:0px #FFFFFF none;" name="Player" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px" width="' +
-			size[0] +
-			'" height="' +
-			size[1] +
-			'"></iframe>';
+		let iFrameString = `<iframe allowfullscreen src="${url}"
+			style="border: 0; margin 0;" name="Player" scrolling="no"
+			width="${size[0]}" height="${size[1]}"></iframe>`
+			.replace(/\s\s+/g, ' ');
 
 		// set state with new inputs
 		setTextAreaContent(iFrameString);
@@ -147,7 +150,7 @@ const EmbeddingCodeModal = ({
 					<textarea
 						id="social_embed-textarea"
 						className="social_embed-textarea embedded-code-textarea"
-						rows={4}
+						rows={2}
 						value={textAreaContent}
 						cols={1}
 					/>

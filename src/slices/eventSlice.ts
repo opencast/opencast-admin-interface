@@ -8,6 +8,7 @@ import {
 	prepareExtendedMetadataFieldsForPost,
 	prepareMetadataFieldsForPost,
 	transformMetadataCollection,
+	transformMetadataFields,
 } from "../utils/resourceUtils";
 import { makeTwoDigits } from "../utils/utils";
 import { sourceMetadata } from "../configs/sourceConfig";
@@ -24,9 +25,10 @@ import { getAssetUploadOptions, getSchedulingEditedEvents } from '../selectors/e
 import { fetchSeriesOptions } from "./seriesSlice";
 import { AppDispatch } from '../store';
 import { fetchAssetUploadOptions } from '../thunks/assetsThunks';
-import { TransformedAcls } from './aclDetailsSlice';
+import { TransformedAcl } from './aclDetailsSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { FormikErrors } from 'formik';
 
 /**
  * This file contains redux reducer for actions affecting the state of events
@@ -92,7 +94,7 @@ export type Event = {
 
 export type MetadataField = {
 	differentValues?: boolean,
-	collection?: { [key: string]: unknown }[],	// different for e.g. languages and presenters
+	collection?: { [key: string]: unknown }[],  // different for e.g. languages and presenters
 	id: string,
 	label: string,
 	readOnly: boolean,
@@ -134,8 +136,9 @@ export type EditedEvents = {
 
 export type UploadAssetOption = {
 	accept: string,
-	"displayFallback.DETAIL": string,
-	"displayFallback.SHORT": string,
+	displayFallback?: string,
+	"displayFallback.DETAIL"?: string,
+	"displayFallback.SHORT"?: string,
 	displayOrder: number,
 	flavorSubType: string,
 	flavorType: string,
@@ -145,10 +148,21 @@ export type UploadAssetOption = {
 	title: string,
 	type: string,
 	displayOverride?: string,
+	"displayOverride.SHORT"?: string,
+	"displayOverride.DETAIL"?: string,
 }
 
 export type UploadAssetsTrack = UploadAssetOption & {
 	file?: FileList
+}
+
+export type Conflict = {
+	conflicts: {
+		end: string,
+		start: string,
+		title: string,
+	}[],
+	eventId: string,
 }
 
 type EventState = {
@@ -161,7 +175,7 @@ type EventState = {
 	statusAssetUploadOptions: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAssetUploadOptions: SerializedError | null,
 	results: Event[],
-	columns: TableConfig["columns"],			 // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],  // TODO: proper typing, derive from `initialColumns`
 	total: number,
 	count: number,
 	offset: number,
@@ -171,7 +185,7 @@ type EventState = {
 	extendedMetadata: MetadataCatalog[],
 	isFetchingAssetUploadOptions: boolean,
 	uploadAssetOptions: UploadAssetOption[],
-	uploadAssetWorkflow: string | undefined,		// TODO: proper typing
+	uploadAssetWorkflow: string | undefined,  // TODO: proper typing
 	schedulingInfo: {
 		editedEvents: EditedEvents[],
 		seriesOptions: {
@@ -222,10 +236,9 @@ const initialState: EventState = {
 // fetch events from server
 export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, { getState }) => {
 	const state = getState();
-	let params: { limit: any, offset: number, getComments?: boolean }= getURLParams(state);
+	let params: ReturnType<typeof getURLParams> & { getComments?: boolean } = getURLParams(state);
 
 	// Only if the notes column is enabled, fetch comment information for events
-	// @ts-expect-error TS(7006):
 	if (state.table.columns.find(column => column.label === "EVENTS.EVENTS.TABLE.ADMINUI_NOTES" && !column.deactivated)) {
 		params = {
 			...params,
@@ -268,24 +281,27 @@ export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, {
 });
 
 // fetch event metadata from server
-export const fetchEventMetadata = createAppAsyncThunk('events/fetchEventMetadata', async () => {
+export const fetchEventMetadata = createAppAsyncThunk('events/fetchEventMetadata', async (_, { rejectWithValue }) => {
 	let data = await axios.get("/admin-ng/event/new/metadata");
 	const response = await data.data;
 
 	const mainCatalog = "dublincore/episode";
-	let metadata: any = {};
+	let metadata: EventState["metadata"] | undefined = undefined;
 	const extendedMetadata = [];
 
 	for (const metadataCatalog of response) {
 		if (metadataCatalog.flavor === mainCatalog) {
-// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 			metadata = transformMetadataCollection({ ...metadataCatalog });
 		} else {
 			extendedMetadata.push(
-// @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
 				transformMetadataCollection({ ...metadataCatalog })
 			);
 		}
+	}
+
+	if (!metadata) {
+		console.error("Main metadata catalog is missing");
+		return rejectWithValue("Main metadata catalog is missing")
 	}
 
 	return { metadata, extendedMetadata }
@@ -296,37 +312,26 @@ export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', a
 	let formData = new URLSearchParams();
 	formData.append("eventIds", JSON.stringify(ids));
 
-	try {
-		let data = await axios.post(
-			"/admin-ng/event/events/metadata.json",
-			formData,
-			{
-				headers: {
-					"Content-Type": "application/x-www-form-urlencoded",
-				},
-			}
-		);
-		let response = await data.data;
-
-		// transform response
-		const metadata = transformMetadataCollection(response.metadata, true);
-		return {
-			mergedMetadata: metadata,
-			notFound: response.notFound,
-			merged: response.merged,
-			runningWorkflow: response.runningWorkflow,
-		};
-	} catch (e) {
-		// return error
-		if (e instanceof Error) {
-			return {
-				fatalError: e.message,
-			};
+	let data = await axios.post(
+		"/admin-ng/event/events/metadata.json",
+		formData,
+		{
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+			},
 		}
-		return {
-			fatalError: "",
-		};
-	}
+	);
+	let response = await data.data;
+
+	// transform response
+	let metadata = transformMetadataFields(response.metadata)
+		.map(field => ({ ...field, selected: false }));
+	return {
+		mergedMetadata: metadata,
+		notFound: response.notFound,
+		merged: response.merged,
+		runningWorkflow: response.runningWorkflow,
+	};
 });
 
 export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata', async (params: {
@@ -336,7 +341,7 @@ export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata
 		notFound?: string[],
 		runningWorkflow?: string[],
 	},
-	values: { [key: string]: any}
+	values: { [key: string]: unknown }
 }, { dispatch }) => {
 	const { metadataFields, values } = params;
 
@@ -417,8 +422,8 @@ export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata
 
 export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (params: {
 	values: {
-		acls: TransformedAcls,
-		configuration: { [key: string]: any },
+		acls: TransformedAcl[],
+		configuration: { [key: string]: unknown },
 		deviceInputs?: string[],
 		processingWorkflow: string,
 		repeatOn: string[],
@@ -444,11 +449,21 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	const uploadAssetOptions = getAssetUploadOptions(state);
 
 	let formData = new FormData();
-	let metadataFields, extendedMetadataFields, metadata, source, access;
+	let source: {
+		type: string,
+		metadata?: {
+			start: Date,
+			device: unknown,
+			inputs: string,
+			end: Date,
+			duration: string,
+			rrule?: string,
+		}
+	} | undefined = undefined;
 
 	// prepare metadata provided by user
-	metadataFields = prepareMetadataFieldsForPost(metadataInfo.fields, values);
-	extendedMetadataFields = prepareExtendedMetadataFieldsForPost(
+	let metadataFields = prepareMetadataFieldsForPost(metadataInfo.fields, values);
+	let extendedMetadataFields = prepareExtendedMetadataFieldsForPost(
 		extendedMetadata,
 		values
 	);
@@ -460,19 +475,19 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 			type: values.sourceMode,
 		};
 		if (sourceMetadata.UPLOAD) {
-			for (let i = 0; sourceMetadata.UPLOAD.metadata.length > i; i++) {
+			for (const metadata of sourceMetadata.UPLOAD.metadata) {
 				metadataFields = metadataFields.concat({
-					id: sourceMetadata.UPLOAD.metadata[i].id,
-					value: values[sourceMetadata.UPLOAD.metadata[i].id],
-					type: sourceMetadata.UPLOAD.metadata[i].type,
-					tabindex: sourceMetadata.UPLOAD.metadata[i].tabindex,
+					id: metadata.id,
+					value: values[metadata.id],
+					type: metadata.type,
+					tabindex: metadata.tabindex,
 				});
 			}
 		}
 	}
 
 	// metadata for post request
-	metadata = [
+	let metadata = [
 		{
 			flavor: metadataInfo.flavor,
 			title: metadataInfo.title,
@@ -538,11 +553,9 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 				";BYMINUTE=" +
 				startDate.getUTCMinutes();
 
-			source.metadata = {
-				...source.metadata,
-// @ts-expect-error TS(2322): Type '{ rrule: string; start: Date; device: any; i... Remove this comment to see the full error message
-				rrule: rRule,
-			};
+			if (source.metadata) {
+				source.metadata.rrule = rRule;
+			}
 		}
 	}
 
@@ -591,7 +604,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	}
 
 	// prepare access rules provided by user
-	access = prepareAccessPolicyRulesForPost(values.acls);
+	let access = prepareAccessPolicyRulesForPost(values.acls);
 
 	// prepare configurations for post
 	let configurationPrepared: { [key: string]: string } = {};
@@ -677,9 +690,9 @@ export const deleteEvent = createAppAsyncThunk('events/deleteEvent', async (id: 
 export const deleteMultipleEvent = createAppAsyncThunk('events/deleteMultipleEvent', async (events: Event[], { dispatch }) => {
 	let data = [];
 
-	for (let i = 0; i < events.length; i++) {
-		if (events[i].selected) {
-			data.push(events[i].id);
+	for (const event of events) {
+		if (event.selected) {
+			data.push(event.id);
 		}
 	}
 
@@ -700,7 +713,7 @@ export const deleteMultipleEvent = createAppAsyncThunk('events/deleteMultipleEve
 export const fetchScheduling = createAppAsyncThunk('events/fetchScheduling', async (params: {
 	events: Event[],
 	fetchNewScheduling: boolean,
-	setFormikValue: any
+	setFormikValue: (field: string, value: EditedEvents[]) => Promise<void | FormikErrors<any>>
 }, { getState }) => {
 	const { events, fetchNewScheduling, setFormikValue } = params;
 
@@ -710,15 +723,13 @@ export const fetchScheduling = createAppAsyncThunk('events/fetchScheduling', asy
 	if (fetchNewScheduling) {
 		let formData = new FormData();
 
-		for (let i = 0; i < events.length; i++) {
-			if (events[i].selected) {
-				formData.append("eventIds", events[i].id);
+		for (const event of events) {
+			if (event.selected) {
+				formData.append("eventIds", event.id);
 			}
 		}
 
-// @ts-expect-error TS(2345): Argument of type 'boolean' is not assignable to pa... Remove this comment to see the full error message
-		formData.append("ignoreNonScheduled", true);
-
+		formData.append("ignoreNonScheduled", JSON.stringify(true));
 
 		const response = await axios.post(
 			"/admin-ng/event/scheduling.json",
@@ -728,23 +739,23 @@ export const fetchScheduling = createAppAsyncThunk('events/fetchScheduling', asy
 		let data = await response.data;
 
 		// transform data for further use
-		for (let i = 0; i < data.length; i++) {
-			let startDate = new Date(data[i].start);
-			let endDate = new Date(data[i].end);
+		for (const d of data) {
+			let startDate = new Date(d.start);
+			let endDate = new Date(d.end);
 			let event = {
-				eventId: data[i].eventId,
-				title: data[i].agentConfiguration["event.title"],
-				changedTitle: data[i].agentConfiguration["event.title"],
-				series: !!data[i].agentConfiguration["event.series"]
-					? data[i].agentConfiguration["event.series"]
+				eventId: d.eventId,
+				title: d.agentConfiguration["event.title"],
+				changedTitle: d.agentConfiguration["event.title"],
+				series: !!d.agentConfiguration["event.series"]
+					? d.agentConfiguration["event.series"]
 					: "",
-				changedSeries: !!data[i].agentConfiguration["event.series"]
-					? data[i].agentConfiguration["event.series"]
+				changedSeries: !!d.agentConfiguration["event.series"]
+					? d.agentConfiguration["event.series"]
 					: "",
-				location: data[i].agentConfiguration["event.location"],
-				changedLocation: data[i].agentConfiguration["event.location"],
-				deviceInputs: data[i].agentConfiguration["capture.device.names"],
-				changedDeviceInputs: data[i].agentConfiguration[
+				location: d.agentConfiguration["event.location"],
+				changedLocation: d.agentConfiguration["event.location"],
+				deviceInputs: d.agentConfiguration["capture.device.names"],
+				changedDeviceInputs: d.agentConfiguration[
 					"capture.device.names"
 				].split(","),
 				startTimeHour: makeTwoDigits(startDate.getHours()),
@@ -775,7 +786,6 @@ export const fetchScheduling = createAppAsyncThunk('events/fetchScheduling', asy
 // update multiple scheduled events at once
 export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateScheduledEventsBulk', async (
 	values: {
-		changedEvent: number,
 		changedEvents: string[],
 		editedEvents: EditedEvents[],
 		events: Event[],
@@ -785,12 +795,12 @@ export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateSched
 	let update = [];
 	let timezone = moment.tz.guess();
 
-	for (let i = 0; i < values.changedEvents.length; i++) {
+	for (const changedEvent of values.changedEvents) {
 		let eventChanges = values.editedEvents.find(
-			(event) => event.eventId === values.changedEvents[i]
+			(event) => event.eventId === changedEvent
 		);
 		let originalEvent = values.events.find(
-			(event) => event.id === values.changedEvents[i]
+			(event) => event.id === changedEvent
 		);
 
 		if (!eventChanges || !originalEvent) {
@@ -799,7 +809,7 @@ export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateSched
 					type: "error",
 					key: "EVENTS_NOT_UPDATED_ID",
 					duration: 10,
-					parameter: values.changedEvents[i]
+					parameter: changedEvent
 				})
 			);
 			return;
@@ -1042,35 +1052,34 @@ export const checkForSchedulingConflicts = (events: EditedEvents[]) => async (di
 	const formData = new FormData();
 	let update = [];
 	let timezone = moment.tz.guess();
-	for (let i = 0; i < events.length; i++) {
+	for (const event of events) {
 		update.push({
-			events: [events[i].eventId],
+			events: [event.eventId],
 			scheduling: {
 				timezone: timezone,
 				start: {
-					hour: parseInt(events[i].changedStartTimeHour),
-					minute: parseInt(events[i].changedStartTimeMinutes),
+					hour: parseInt(event.changedStartTimeHour),
+					minute: parseInt(event.changedStartTimeMinutes),
 				},
 				end: {
-					hour: parseInt(events[i].changedEndTimeHour),
-					minutes: parseInt(events[i].changedEndTimeMinutes),
+					hour: parseInt(event.changedEndTimeHour),
+					minutes: parseInt(event.changedEndTimeMinutes),
 				},
-				weekday: events[i].changedWeekday,
-				agentId: events[i].changedLocation,
+				weekday: event.changedWeekday,
+				agentId: event.changedLocation,
 			},
 		});
 	}
 
 	formData.append("update", JSON.stringify(update));
 
-// @ts-expect-error TS(7034): Variable 'response' implicitly has type 'any[]' in... Remove this comment to see the full error message
-	let response = [];
+	let data: Conflict[] = [];
 
 	axios
 		.post("/admin-ng/event/bulk/conflicts", formData)
 		.then((res) => console.info(res))
 		.catch((res) => {
-			if (res.status === 409) {
+			if (res.response.status === 409) {
 				dispatch(
 					addNotification({
 						type: "error",
@@ -1080,13 +1089,12 @@ export const checkForSchedulingConflicts = (events: EditedEvents[]) => async (di
 						context: NOTIFICATION_CONTEXT
 					})
 				);
-				response = res.data;
+				data = res.response.data;
 			}
 			console.error(res);
 		});
 
-// @ts-expect-error TS(7005): Variable 'response' implicitly has an 'any[]' type... Remove this comment to see the full error message
-	return response;
+	return data;
 };
 
 const eventSlice = createSlice({
