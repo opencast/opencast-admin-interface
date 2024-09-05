@@ -582,7 +582,7 @@ export const buildThemeBody = (values: {
 };
 
 // creates an empty policy with the role from the argument
-export const createPolicy = (role: string) => {
+export const createPolicy = (role: string): TransformedAcl => {
 	return {
 		role: role,
 		read: false,
