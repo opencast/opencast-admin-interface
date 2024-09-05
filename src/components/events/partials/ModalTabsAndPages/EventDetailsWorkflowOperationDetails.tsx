@@ -10,6 +10,7 @@ import { removeNotificationWizardForm } from "../../../../slices/notificationSli
 import { renderValidDate } from "../../../../utils/dateUtils";
 import { useTranslation } from "react-i18next";
 import { setModalWorkflowTabHierarchy } from "../../../../slices/eventDetailsSlice";
+import { WorkflowTabHierarchy } from "../modals/EventDetails";
 
 /**
  * This component manages the workflow operation details for the workflows tab of the event details modal
@@ -21,8 +22,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 	const operationDetails = useAppSelector(state => getWorkflowOperationDetails(state));
 	const isFetching = useAppSelector(state => isFetchingWorkflowOperationDetails(state));
 
-// @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
-	const openSubTab = (tabType) => {
+	const openSubTab = (tabType: WorkflowTabHierarchy) => {
 		dispatch(removeNotificationWizardForm());
 		dispatch(setModalWorkflowTabHierarchy(tabType));
 	};

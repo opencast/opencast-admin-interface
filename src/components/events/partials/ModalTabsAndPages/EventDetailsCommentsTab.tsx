@@ -16,6 +16,8 @@ import {
 	saveCommentReply as saveNewCommentReply,
 	deleteComment as deleteOneComment,
 	deleteCommentReply,
+	Comment,
+	CommentReply,
 } from "../../../../slices/eventDetailsSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
 import { useTranslation } from "react-i18next";
@@ -44,8 +46,8 @@ const EventDetailsCommentsTab = ({
 	}, []);
 
 	const [replyToComment, setReplyToComment] = useState(false);
-	const [replyCommentId, setReplyCommentId] = useState(null);
-	const [originalComment, setOriginalComment] = useState(null);
+	const [replyCommentId, setReplyCommentId] = useState<number | undefined>(undefined);
+	const [originalComment, setOriginalComment] = useState<Comment | undefined>(undefined);
 	const [commentReplyText, setCommentReplyText] = useState("");
 	const [commentReplyIsResolved, setCommentReplyIsResolved] = useState(false);
 
@@ -54,8 +56,7 @@ const EventDetailsCommentsTab = ({
 
 	const user = useAppSelector(state => getUserInformation(state));
 
-// @ts-expect-error TS(7006): Parameter 'commentText' implicitly has an 'any' ty... Remove this comment to see the full error message
-	const saveComment = (commentText, commentReason) => {
+	const saveComment = (commentText: string, commentReason: string) => {
 		dispatch(saveNewComment({eventId, commentText, commentReason})).then((successful) => {
 			if (successful) {
 				dispatch(fetchComments(eventId));
@@ -65,8 +66,7 @@ const EventDetailsCommentsTab = ({
 		});
 	};
 
-// @ts-expect-error TS(7006): Parameter 'comment' implicitly has an 'any' type.
-	const replyTo = (comment, key) => {
+	const replyTo = (comment: Comment, key: number) => {
 		setReplyToComment(true);
 		setReplyCommentId(key);
 		setOriginalComment(comment);
@@ -74,14 +74,13 @@ const EventDetailsCommentsTab = ({
 
 	const exitReplyMode = () => {
 		setReplyToComment(false);
-		setReplyCommentId(null);
-		setOriginalComment(null);
+		setReplyCommentId(undefined);
+		setOriginalComment(undefined);
 		setCommentReplyText("");
 		setCommentReplyIsResolved(false);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'originalComment' implicitly has an 'any... Remove this comment to see the full error message
-	const saveReply = (originalComment, reply, isResolved) => {
+	const saveReply = (originalComment: Comment, reply: string, isResolved: boolean) => {
 		dispatch(saveNewCommentReply({eventId, commentId: originalComment.id, replyText: reply, commentResolved: isResolved})).then(
 			(success) => {
 				if (success) {
@@ -92,8 +91,7 @@ const EventDetailsCommentsTab = ({
 		);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'comment' implicitly has an 'any' type.
-	const deleteComment = (comment) => {
+	const deleteComment = (comment: Comment) => {
 		dispatch(deleteOneComment({eventId, commentId: comment.id})).then((success) => {
 			if (success) {
 				dispatch(fetchComments(eventId));
@@ -101,8 +99,7 @@ const EventDetailsCommentsTab = ({
 		});
 	};
 
-// @ts-expect-error TS(7006): Parameter 'comment' implicitly has an 'any' type.
-	const deleteReply = (comment, reply) => {
+	const deleteReply = (comment: Comment, reply: CommentReply) => {
 		dispatch(deleteCommentReply({eventId, commentId: comment.id, replyId: reply.id})).then((success) => {
 			if (success) {
 				dispatch(fetchComments(eventId));
@@ -211,8 +208,7 @@ const EventDetailsCommentsTab = ({
 														) && (
 															<button
 																onClick={() =>
-// @ts-expect-error TS(2554): Expected 2 arguments, but got 3.
-																	deleteReply(comment, reply, replyKey)
+																	deleteReply(comment, reply)
 																}
 																className="button-like-anchor delete"
 															>
@@ -305,8 +301,7 @@ const EventDetailsCommentsTab = ({
 										placeholder={
 											t("EVENTS.EVENTS.DETAILS.COMMENTS.REPLY_TO") +
 											"@" +
-// @ts-expect-error TS(2531): Object is possibly 'null'.
-											originalComment.author.name
+											originalComment?.author.name
 										}
 									></textarea>
 
@@ -361,13 +356,15 @@ const EventDetailsCommentsTab = ({
 												? "disabled"
 												: "false"
 										}`}
-										onClick={() =>
-											saveReply(
-												originalComment,
-												commentReplyText,
-												commentReplyIsResolved
-											)
-										}
+										onClick={() => {
+											if (originalComment) {
+												saveReply(
+													originalComment,
+													commentReplyText,
+													commentReplyIsResolved
+												)
+											}
+										}}
 									>
 										{t("EVENTS.EVENTS.DETAILS.COMMENTS.REPLY") /* Reply */}
 									</button>

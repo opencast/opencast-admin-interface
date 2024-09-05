@@ -559,26 +559,39 @@ export const hasDeviceAccess = (user: UserInfoState, deviceId: Recording["id"]) 
 };
 
 // build body for post/put request in theme context
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-export const buildThemeBody = (values) => {
+export const buildThemeBody = (values: {
+	name: string,
+	description: string,
+	bumperActive: boolean,
+	bumperFile: string,
+	trailerActive: boolean,
+	trailerFile: string,
+	titleSlideActive: boolean,
+	titleSlideMode: string,
+	titleSlideBackground: string,
+	licenseSlideActive: boolean,
+	watermarkActive: boolean,
+	watermarkFile: string,
+	watermarkPosition: string,
+}) => {
 	// fill form data depending on user inputs
 	let data = new URLSearchParams();
 	data.append("name", values.name);
 	data.append("description", values.description);
-	data.append("bumperActive", values.bumperActive);
+	data.append("bumperActive", values.bumperActive.toString());
 	if (values.bumperActive) {
 		data.append("bumperFile", values.bumperFile);
 	}
-	data.append("trailerActive", values.trailerActive);
+	data.append("trailerActive", values.trailerActive.toString());
 	if (values.trailerActive) {
 		data.append("trailerFile", values.trailerFile);
 	}
-	data.append("titleSlideActive", values.titleSlideActive);
+	data.append("titleSlideActive", values.titleSlideActive.toString());
 	if (values.titleSlideActive && values.titleSlideMode === "upload") {
 		data.append("titleSlideBackground", values.titleSlideBackground);
 	}
-	data.append("licenseSlideActive", values.licenseSlideActive);
-	data.append("watermarkActive", values.watermarkActive);
+	data.append("licenseSlideActive", values.licenseSlideActive.toString());
+	data.append("watermarkActive", values.watermarkActive.toString());
 	if (values.watermarkActive) {
 		data.append("watermarkFile", values.watermarkFile);
 		data.append("watermarkPosition", values.watermarkPosition);
@@ -588,8 +601,7 @@ export const buildThemeBody = (values) => {
 };
 
 // creates an empty policy with the role from the argument
-// @ts-expect-error TS(7006): Parameter 'role' implicitly has an 'any' type.
-export const createPolicy = (role) => {
+export const createPolicy = (role: string) => {
 	return {
 		role: role,
 		read: false,

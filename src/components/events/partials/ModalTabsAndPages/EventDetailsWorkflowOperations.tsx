@@ -10,6 +10,7 @@ import {
 	setModalWorkflowTabHierarchy
 } from "../../../../slices/eventDetailsSlice";
 import { useTranslation } from "react-i18next";
+import { WorkflowTabHierarchy } from "../modals/EventDetails";
 
 /**
  * This component manages the workflow operations for the workflows tab of the event details modal
@@ -42,8 +43,7 @@ const EventDetailsWorkflowOperations = ({
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-// @ts-expect-error TS(7006): Parameter 'tabType' implicitly has an 'any' type.
-	const openSubTab = (tabType, operationId: number | undefined = undefined) => {
+	const openSubTab = (tabType: WorkflowTabHierarchy, operationId: number | undefined = undefined) => {
 		dispatch(removeNotificationWizardForm());
 		dispatch(setModalWorkflowTabHierarchy(tabType));
 		if (tabType === "workflow-operation-details") {

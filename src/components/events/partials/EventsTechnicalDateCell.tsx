@@ -37,8 +37,7 @@ const EventsTechnicalDateCell = ({
 		<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.START")}>
 			<button
 				className="button-like-anchor crosslink"
-// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
-				onClick={() => addFilter()}
+				onClick={() => addFilter(row.date)}
 			>
 				{t("dateFormats.date.short", { date: renderValidDate(row.technical_start) })}
 			</button>

@@ -1,27 +1,36 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { getMetadataCollectionFieldName } from "../../../../../utils/resourceUtils";
+import { MetadataField } from "../../../../../slices/eventSlice";
 
 /**
  * This component renders the metadata table containing access rules provided by user before in wizard summary pages
  */
 const MetadataSummaryTable = ({
-    metadataFields,
-    formikValues,
-    header
-}: any) => {
+	metadataFields,
+	formikValues,
+	header
+}: {
+	metadataFields: MetadataField[],
+	formikValues: { [key: string]: string | string[] },
+	header: string,
+}) => {
 	const { t } = useTranslation();
 
 	// metadata that user has provided
-// @ts-expect-error TS(7034): Variable 'metadata' implicitly has type 'any[]' in... Remove this comment to see the full error message
-	let metadata = [];
+	let metadata: {
+		name: string,
+		label: string,
+		value: unknown,
+	}[] = [];
 	for (let i = 0; metadataFields.length > i; i++) {
 		let fieldValue = formikValues[metadataFields[i].id];
 		if (!!fieldValue && fieldValue.length > 0) {
+			const collection = metadataFields[i].collection;
 			if (
 				metadataFields[i].type === "text" &&
-				!!metadataFields[i].collection &&
-				metadataFields[i].collection.length > 0
+				!!collection &&
+				collection.length > 0
 			) {
 				fieldValue = getMetadataCollectionFieldName(
 					metadataFields[i],
@@ -32,7 +41,6 @@ const MetadataSummaryTable = ({
 				)
 			}
 
-// @ts-expect-error TS(7005): Variable 'metadata' implicitly has an 'any[]' type... Remove this comment to see the full error message
 			metadata = metadata.concat({
 				name: metadataFields[i].id,
 				label: metadataFields[i].label,

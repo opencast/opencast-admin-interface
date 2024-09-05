@@ -17,8 +17,8 @@ import { removeNotificationWizardForm } from "../../../../slices/notificationSli
 import {
 	Event,
 	EditedEvents,
-	checkForSchedulingConflicts,
 	fetchScheduling,
+	Conflict,
 } from "../../../../slices/eventSlice";
 import { Recording } from "../../../../slices/recordingSlice";
 import lodash, { groupBy } from "lodash";
@@ -44,18 +44,13 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 	previousPage: (values: T) => void,
 	setPageCompleted: (rec: Record<number, boolean>) => void,
 	inputDevices: Recording[],
-	conflictState: { conflicts: any, setConflicts: any },
+	conflictState: { conflicts: Conflict[], setConflicts: (conflicts: Conflict[]) => void },
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const loading = useAppSelector(state => isLoadingScheduling(state));
 	const seriesOptions = useAppSelector(state => getSchedulingSeriesOptions(state));
-
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const checkForSchedulingConflictsWrapper = async(events: any) => {
-		return dispatch(checkForSchedulingConflicts(events));
-	}
 
 	const user = useAppSelector(state => getUserInformation(state));
 
@@ -140,9 +135,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 										<th>{t("EVENTS.EVENTS.TABLE.START")}</th>
 										<th>{t("EVENTS.EVENTS.TABLE.END")}</th>
 									</tr>
-{/* @ts-expect-error TS(7006): Parameter 'conflict' implicitly has an 'any' type. */}
 									{conflicts.map((conflict) =>
-// @ts-expect-error TS(7006): Parameter 'c' implicitly has an 'any' type.
 										conflict.conflicts.map((c, key) => (
 											<tr key={key}>
 												<td>{conflict.eventId}</td>
@@ -543,7 +536,6 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 							await checkSchedulingConflicts(
 								formik.values,
 								setConflicts,
-								checkForSchedulingConflictsWrapper,
 								dispatch
 							)
 						) {
