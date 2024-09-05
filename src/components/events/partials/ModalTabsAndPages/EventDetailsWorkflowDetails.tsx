@@ -44,6 +44,11 @@ const EventDetailsWorkflowDetails = ({
 		dispatch(setModalWorkflowTabHierarchy(tabType));
 	};
 
+	// Type narrowing. If type is wrong this component breaks.
+	if (!("wiid" in workflowData)) {
+		return <></>;
+	}
+
 	return (
 		<div className="modal-content">
 			{/* Hierarchy navigation */}

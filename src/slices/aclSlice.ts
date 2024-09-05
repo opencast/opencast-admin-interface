@@ -144,7 +144,7 @@ export const postNewAcl = (values: typeof initialFormValuesNewAcl) => async (dis
 		});
 };
 // delete acl with provided id
-export const deleteAcl = (id: string) => async (dispatch: AppDispatch) => {
+export const deleteAcl = (id: number) => async (dispatch: AppDispatch) => {
 	axios
 		.delete(`/admin-ng/acl/${id}`)
 		.then((res) => {

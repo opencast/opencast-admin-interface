@@ -39,11 +39,18 @@ const columns = [{
  * This file contains methods/thunks used to manage the table in the main view and its state changes
  */
 
-type Page = {
+export type Page = {
 	active: boolean,
 	label: string,
 	number: number,
 };
+
+export type Pagination = {
+	limit: number,
+	offset: number,
+	totalItems: number,
+	directAccessibleNo: number,
+}
 
 export function isRowSelectable(row: Row) {
 	if ("id" in row === true) {
@@ -75,12 +82,7 @@ type TableState = {
 	reverse: string,
 	rows: Row[],
 	maxLabel: string,
-	pagination: {
-		limit: number,
-		offset: number,
-		totalItems: number,
-		directAccessibleNo: number,
-	},
+	pagination: Pagination,
 }
 
 // initial redux state

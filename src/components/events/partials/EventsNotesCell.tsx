@@ -36,14 +36,14 @@ const EventsNotesCell = ({
 		});
 	 }
 
-	const updateComment = (event: React.ChangeEvent<HTMLTextAreaElement>, commentId: any) => {
+	const updateComment = (event: React.ChangeEvent<HTMLTextAreaElement>, commentId: number) => {
 		if (!event.target.value || !row.id || !commentId) {
 			return;
 		}
 		dispatch(updateNewComment({eventId: row.id, commentId, commentText: event.target.value, commentReason: notesCommentReason}))
 	}
 
-	const deleteComment = (event: React.FocusEvent<HTMLTextAreaElement>, commentId: any) => {
+	const deleteComment = (event: React.FocusEvent<HTMLTextAreaElement>, commentId: number) => {
 		if (!row.id || !commentId) {
 			return;
 		}

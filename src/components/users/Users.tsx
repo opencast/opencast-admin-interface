@@ -41,11 +41,6 @@ const Users: React.FC = () => {
   const user = useAppSelector(state => getUserInformation(state));
   const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchUsersWrapper = async () => {
-		await dispatch(fetchUsers())
-	}
-
 	const loadUsers = async () => {
 		// Fetching users from server
 		await dispatch(fetchUsers());
@@ -169,7 +164,7 @@ const Users: React.FC = () => {
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={fetchUsersWrapper}
+						loadResource={fetchUsers}
 						loadResourceIntoTable={loadUsersIntoTable}
 						resource={"users"}
 					/>

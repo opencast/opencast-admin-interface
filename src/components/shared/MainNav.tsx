@@ -39,10 +39,11 @@ import { Tooltip } from "./Tooltip";
  * This component renders the main navigation that opens when the burger button is clicked
  */
 const MainNav = ({
-// @ts-expect-error TS(7031): Binding element 'isOpen' implicitly has an 'any' t... Remove this comment to see the full error message
 	isOpen,
-// @ts-expect-error TS(7031): Binding element 'toggleMenu' implicitly has an 'an... Remove this comment to see the full error message
 	toggleMenu,
+}: {
+	isOpen: boolean,
+	toggleMenu: () => void,
 }) => {
 	const { t } = useTranslation();
         const dispatch = useAppDispatch();
