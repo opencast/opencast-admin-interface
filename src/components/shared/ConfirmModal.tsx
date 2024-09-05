@@ -3,21 +3,26 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { useTranslation } from "react-i18next";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 
-const ConfirmModal = ({
-// @ts-expect-error TS(7031): Binding element 'close' implicitly has an 'any' ty... Remove this comment to see the full error message
+const ConfirmModal = <T,>({
 	close,
-// @ts-expect-error TS(7031): Binding element 'resourceType' implicitly has an '... Remove this comment to see the full error message
 	resourceType,
-// @ts-expect-error TS(7031): Binding element 'resourceName' implicitly has an '... Remove this comment to see the full error message
 	resourceName,
-// @ts-expect-error TS(7031): Binding element 'resourceId' implicitly has an 'an... Remove this comment to see the full error message
 	resourceId,
-// @ts-expect-error TS(7031): Binding element 'deleteMethod' implicitly has an '... Remove this comment to see the full error message
 	deleteMethod,
 	deleteAllowed = true,
 	showCautionMessage = false,
 	deleteNotAllowedMessage = "",
 	deleteWithCautionMessage = "",
+}: {
+	close: () => void,
+	resourceType: "EVENT" | "SERIES" | "LOCATION" | "USER" | "GROUP" | "ACL" | "THEME",
+	resourceName: string,
+	resourceId: T,
+	deleteMethod: (id: T) => void,
+	deleteAllowed?: boolean,
+	showCautionMessage?: boolean,
+	deleteNotAllowedMessage?: string,
+	deleteWithCautionMessage?: string,
 }) => {
 	const { t } = useTranslation();
 

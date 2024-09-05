@@ -4,7 +4,7 @@ import ConfirmModal from "../../shared/ConfirmModal";
 import UserDetailsModal from "./modal/UserDetailsModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
-import { deleteUser } from "../../../slices/userSlice";
+import { UserResult, deleteUser } from "../../../slices/userSlice";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchUserDetails } from "../../../slices/userDetailsSlice";
 import { Tooltip } from "../../shared/Tooltip";
@@ -13,8 +13,10 @@ import { Tooltip } from "../../shared/Tooltip";
  * This component renders the action cells of users in the table view
  */
 const UsersActionCell = ({
-    row,
-}: any) => {
+	row,
+}: {
+	row: UserResult
+}) => {
 	const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
@@ -27,8 +29,7 @@ const UsersActionCell = ({
 		setDeleteConfirmation(false);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	const deletingUser = (id) => {
+	const deletingUser = (id: string) => {
 		dispatch(deleteUser(id));
 	};
 

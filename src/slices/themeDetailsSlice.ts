@@ -3,32 +3,11 @@ import axios from 'axios';
 import { buildThemeBody } from '../utils/resourceUtils';
 import { addNotification } from './notificationSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { ThemeDetailsInitialValues, ThemeDetailsType } from './themeSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of a theme
  */
-type Details = {
-	bumperActive: boolean,
-	bumperFile: string,
-	creationDate: any,
-	creator: string,
-	default: boolean,
-	description: string,
-	id: number,
-	licenseSlideActive: boolean,
-	licenseSlideBackground: string,
-	licenseSlideDescription: string,
-	name: string,
-	titleSlideActive: boolean,
-	titleSlideBackground: string,
-	titleSlideMetadata: string,
-	trailerActive: boolean,
-	trailerFile: string,
-	watermarkActive: boolean,
-	watermarkFile: string,
-	watermarkPosition: string,
-}
-
 export type Usage = {
 	series: {id: string, title: string}[]
 }
@@ -38,7 +17,7 @@ type ThemeDetailsState = {
 	error: SerializedError | null,
 	statusUsage: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorUsage: SerializedError | null,
-	details: Details,
+	details: ThemeDetailsType,
 	usage: Usage,
 };
 
@@ -90,7 +69,7 @@ export const fetchUsage = createAppAsyncThunk('themeDetails/fetchUsage', async (
 // update a certain theme
 export const updateThemeDetails = createAppAsyncThunk('themeDetails/updateThemeDetails', async (params: {
 	id: number,
-	values: Details
+	values: ThemeDetailsInitialValues
 }, {dispatch}) => {
 	const { values, id } = params
 	let data = buildThemeBody(values);

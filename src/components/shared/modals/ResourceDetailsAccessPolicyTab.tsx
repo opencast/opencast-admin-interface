@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import RenderMultiField from "../wizard/RenderMultiField";
 import {
+	Acl,
 	Role,
 	fetchAclActions,
 	fetchAclDefaults,
@@ -9,7 +10,8 @@ import {
 	fetchRolesWithTarget,
 } from "../../../slices/aclSlice";
 import Notifications from "../Notifications";
-import { Formik, Field, FieldArray, FormikErrors } from "formik";
+import { Formik, FieldArray, FormikErrors } from "formik";
+import { Field } from "../Field";
 import { NOTIFICATION_CONTEXT } from "../../../configs/modalConfig";
 import {
 	createPolicy,
@@ -22,7 +24,9 @@ import { filterRoles, getAclTemplateText } from "../../../utils/aclUtils";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { removeNotificationWizardForm, addNotification } from "../../../slices/notificationSlice";
 import { useTranslation } from "react-i18next";
-import { Ace, TransformedAcl } from "../../../slices/aclDetailsSlice";
+import { TransformedAcl } from "../../../slices/aclDetailsSlice";
+import { AsyncThunk, unwrapResult } from "@reduxjs/toolkit";
+import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 
 /**
  * This component manages the access policy tab of resource details modals
@@ -44,9 +48,9 @@ const ResourceDetailsAccessPolicyTab = ({
 	resourceId: string,
 	header: string,
 	policies: TransformedAcl[],
-	fetchHasActiveTransactions?: (id: string) => Promise<any>,
-	fetchAccessPolicies: (id: string) => void,
-	saveNewAccessPolicies: (id: string, policies: { acl: { ace: Ace[] } }) => Promise<any>,
+	fetchHasActiveTransactions?: AsyncThunk<any, string, AsyncThunkConfig>
+	fetchAccessPolicies: AsyncThunk<TransformedAcl[], string, AsyncThunkConfig>,
+	saveNewAccessPolicies:  AsyncThunk<boolean, { id: string, policies: { acl: Acl } }, AsyncThunkConfig>
 	descriptionText: string,
 	buttonText: string,
 	saveButtonText: string,
@@ -92,12 +96,10 @@ const ResourceDetailsAccessPolicyTab = ({
 			setHasActions(responseActions.length > 0);
 			const responseDefaults = await fetchAclDefaults();
 			await setAclDefaults(responseDefaults);
-			await fetchAccessPolicies(resourceId);
+			await dispatch(fetchAccessPolicies(resourceId));
 			fetchRolesWithTarget("ACL").then((roles) => setRoles(roles));
 			if (fetchHasActiveTransactions) {
-				const fetchTransactionResult = await fetchHasActiveTransactions(
-					resourceId
-				);
+				const fetchTransactionResult = await dispatch(fetchHasActiveTransactions(resourceId)).then(unwrapResult)
 				fetchTransactionResult.active !== undefined
 					? setTransactions({ read_only: fetchTransactionResult.active })
 					: setTransactions({ read_only: true });
@@ -157,11 +159,11 @@ const ResourceDetailsAccessPolicyTab = ({
 		}
 
 		if (allRulesValid && roleWithFullRightsExists) {
-			saveNewAccessPolicies(resourceId, access).then((success) => {
+			dispatch(saveNewAccessPolicies({id: resourceId, policies: access})).then((success) => {
 				// fetch new policies from the backend, if save successful
 				if (success) {
 					setPolicyChanged(false);
-					fetchAccessPolicies(resourceId);
+					dispatch(fetchAccessPolicies(resourceId));
 				}
 			});
 		}
@@ -182,13 +184,13 @@ const ResourceDetailsAccessPolicyTab = ({
 
 	/* checks validity of the policies
 	 * each policy needs a role and at least one of: read-rights, write-rights, additional action
-	 * there needs to be at least one role, which has both read and write rights */
+	 * if not admin, there needs to be at least one role, which has both read and write rights */
 	const validatePolicies = (values: { policies: TransformedAcl[] }) => {
 		let roleWithFullRightsExists = false;
 		let allRulesValid = true;
 
 		values.policies.forEach((policy) => {
-			if (policy.read && policy.write) {
+			if ((policy.read && policy.write) || user.isAdmin) {
 				roleWithFullRightsExists = true;
 			}
 
@@ -475,6 +477,7 @@ const ResourceDetailsAccessPolicyTab = ({
 																										}
 																										type={"aclRole"}
 																										required={true}
+																										creatable={true}
 																										handleChange={(element) => {
 																											if (element) {
 																												replace(index, {
@@ -484,13 +487,7 @@ const ResourceDetailsAccessPolicyTab = ({
 																											}
 																										}}
 																										placeholder={
-																											roles.length > 0
-																												? t(
-																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.LABEL"
-																												  )
-																												: t(
-																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.EMPTY"
-																												  )
+																											t("EVENTS.EVENTS.DETAILS.ACCESS.ROLES.LABEL")
 																										}
 																										disabled={
 																											!hasAccess(

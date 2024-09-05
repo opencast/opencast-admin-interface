@@ -8,9 +8,12 @@ import { availableHotkeys } from "../../../../configs/hotkeysConfig";
  * This component renders the modal for displaying group details
  */
 const GroupDetailsModal = ({
-    close,
-    groupName
-}: any) => {
+	close,
+	groupName,
+}: {
+	close: () => void,
+	groupName: string,
+}) => {
 	const { t } = useTranslation();
 
 	useHotkeys(

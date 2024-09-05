@@ -5,20 +5,16 @@ import {
 	editFilterValue,
 	resetFilterValues,
 	fetchStats,
+	Stats as StatsType,
 } from "../../slices/tableFilterSlice";
-import { connect } from "react-redux";
 import { loadEventsIntoTable } from "../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchEvents } from "../../slices/eventSlice";
-import { Tooltip } from "./Tooltip";
 
 /**
  * This component renders the status bar of the event view and filters depending on these
  */
-const Stats = ({
-// @ts-expect-error TS(7031): Binding element 'loadEventsIntoTable' implicitly h... Remove this comment to see the full error message
-	loadEventsIntoTable,
-}) => {
+const Stats = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
@@ -26,11 +22,9 @@ const Stats = ({
 	const stats = useAppSelector(state => getStats(state));
 
 	// Filter with value of clicked status
-// @ts-expect-error TS(7006): Parameter 'stats' implicitly has an 'any' type.
-	const showStatsFilter = async (stats) => {
+	const showStatsFilter = async (stats: StatsType) => {
 		dispatch(resetFilterValues());
 		let filterValue;
-// @ts-expect-error TS(7006): Parameter 'f' implicitly has an 'any' type.
 		await stats.filters.forEach((f) => {
 			let filter = filterMap.find(({ name }) => name === f.name);
 			filterValue = f.value;
@@ -39,7 +33,7 @@ const Stats = ({
 			}
 		});
 		await dispatch(fetchEvents());
-		loadEventsIntoTable();
+		dispatch(loadEventsIntoTable());
 	};
 
 	const loadStats = async () => {
@@ -59,25 +53,20 @@ const Stats = ({
 				{/* Show one counter for each status */}
 				{stats.map((st, key) => (
 					<div className="col" key={key}>
-						<Tooltip title={t(st.description)}>
-							<button
-								className="stat"
-								onClick={() => showStatsFilter(st)}
-							>
-								<h1>{st.count}</h1>
-								{/* Show the description of the status, if defined,
-                        	    else show name of filter and its value*/}
-								{!!st.description ? (
-									<span>{t(st.description)}</span>
-								) : (
-									st.filters.map((filter, key) => (
-										<span key={key}>
-											{t(filter.filter)}: {t(filter.value)}
-										</span>
-									))
-								)}
-							</button>
-						</Tooltip>
+						<button className="stat" onClick={() => showStatsFilter(st)}>
+							<h1>{st.count}</h1>
+							{/* Show the description of the status, if defined,
+								else show name of filter and its value*/}
+							{!!st.description ? (
+								<span>{t(st.description)}</span>
+							) : (
+								st.filters.map((filter, key) => (
+									<span key={key}>
+										{t(filter.filter)}: {t(filter.value)}
+									</span>
+								))
+							)}
+						</button>
 					</div>
 				))}
 			</div>
@@ -85,15 +74,4 @@ const Stats = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	loadEventsIntoTable: () => dispatch(loadEventsIntoTable()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Stats);
+export default Stats;

@@ -20,7 +20,10 @@ const NewAclWizard = ({
 }) => {
 	const dispatch = useAppDispatch();
 
-	const initialValues = initialFormValuesNewAcl;
+	const initialValues = {
+		...initialFormValuesNewAcl,
+		aclTemplate: "",
+	}
 
 	const {
 		snapshot,
@@ -49,8 +52,7 @@ const NewAclWizard = ({
 
 	const currentValidationSchema = NewAclSchema[page];
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (values: typeof initialFormValuesNewAcl) => {
 		const response = dispatch(postNewAcl(values));
 		console.info(response);
 		close();
@@ -93,11 +95,8 @@ const NewAclWizard = ({
 								)}
 								{page === 1 && (
 									<AclAccessPage
-									// @ts-expect-error: Type-checking gets confused by redux-connect in the child
 										formik={formik}
-										// @ts-expect-error: Type-checking gets confused by redux-connect in the child
 										nextPage={nextPage}
-										// @ts-expect-error: Type-checking gets confused by redux-connect in the child
 										previousPage={previousPage}
 									/>
 								)}

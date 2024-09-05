@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Formik, Field } from "formik";
+import { Formik } from "formik";
+import { Field } from "../../../shared/Field";
 import { useTranslation } from "react-i18next";
 import { getSelectedRows } from "../../../../selectors/tableSelectors";
-import { connect } from "react-redux";
 import {
 	hasAccess,
 } from "../../../../utils/utils";
@@ -19,18 +19,20 @@ import {
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { isEvent } from "../../../../slices/tableSlice";
 
 /**
  * This component manges the edit metadata bulk action
  */
 const EditMetadataEventsModal = ({
-// @ts-expect-error TS(7031): Binding element 'close' implicitly has an 'any' ty... Remove this comment to see the full error message
 	close,
-// @ts-expect-error TS(7031): Binding element 'selectedRows' implicitly has an '... Remove this comment to see the full error message
-	selectedRows,
+}: {
+	close: () => void
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
+
+	const selectedRows = useAppSelector(state => getSelectedRows(state));
 
 	const [selectedEvents] = useState(selectedRows);
 	const [metadataFields, setMetadataFields] = useState<{
@@ -43,8 +45,8 @@ const EditMetadataEventsModal = ({
 		mergedMetadata: []
 	});
 	const [loading, setLoading] = useState(true);
-	const [fatalError, setFatalError] = useState({});
-	const [fetchedValues, setFetchedValues] = useState(null);
+	const [fatalError, setFatalError] = useState<string | undefined>(undefined);
+	const [fetchedValues, setFetchedValues] = useState<{ [key: string]: string | string[] }>({});
 
 	const user = useAppSelector(state => getUserInformation(state));
 
@@ -59,32 +61,27 @@ const EditMetadataEventsModal = ({
 		async function fetchData() {
 			setLoading(true);
 
-// @ts-expect-error TS(7034): Variable 'eventIds' implicitly has type 'any[]' in... Remove this comment to see the full error message
-			let eventIds = [];
-// @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
-			selectedEvents.forEach((event) => eventIds.push(event.id));
+			let eventIds: string[] = [];
+			selectedEvents.forEach((event) => isEvent(event) &&  eventIds.push(event.id));
 
 			// Get merged metadata from backend
-// @ts-expect-error TS(7005): Variable 'eventIds' implicitly has an 'any[]' type... Remove this comment to see the full error message
 			// const responseMetadataFields = await dispatch(postEditMetadata(eventIds))
 			await dispatch(postEditMetadata(eventIds))
 			.then(unwrapResult)
 			.then((result) => {
-				// Set fatal error if response contains error
-				if (!!result.fatalError) {
-					setFatalError(result);
-				} else {
-					// Set initial values and save metadata field infos in state
-					let initialValues = getInitialValues(result);
-	// @ts-expect-error TS(2345): Argument of type '{}' is not assignable to paramet... Remove this comment to see the full error message
-					setFetchedValues(initialValues);
-					setMetadataFields({
-						merged: result.merged,
-						mergedMetadata: result.mergedMetadata,
-						notFound: result.notFound,
-						runningWorkflow: result.runningWorkflow,
-					});
-				}
+				// Set initial values and save metadata field infos in state
+				let initialValues = getInitialValues(result.mergedMetadata);
+				setFetchedValues(initialValues);
+				setMetadataFields({
+					merged: result.merged,
+					mergedMetadata: result.mergedMetadata,
+					notFound: result.notFound,
+					runningWorkflow: result.runningWorkflow,
+				});
+			})
+			// Set fatal error if response contains error
+			.catch((e: Error) => {
+				setFatalError(e.message);
 			});
 			setLoading(false);
 		}
@@ -92,15 +89,13 @@ const EditMetadataEventsModal = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (values: { [key: string]: unknown }) => {
 		const response = dispatch(updateBulkMetadata({metadataFields, values}));
 		console.info(response);
 		close();
 	};
 
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const onChangeSelected = (e, fieldId) => {
+	const onChangeSelected = (e: React.ChangeEvent<HTMLInputElement>, fieldId: string) => {
 		let selected = e.target.checked;
 		let fields = metadataFields;
 		fields.mergedMetadata = metadataFields.mergedMetadata.map((field) => {
@@ -118,13 +113,11 @@ const EditMetadataEventsModal = ({
 	};
 
 	// Check if value of metadata field is changed
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
-	const isTouchedOrSelected = (field, formikValues) => {
+	const isTouchedOrSelected = (field: MetadataFieldSelected, formikValues: { [key: string]: string | string[] }) => {
 		if (field.selected) {
 			return true;
 		}
 
-// @ts-expect-error TS(2531): Object is possibly 'null'.
 		if (fetchedValues[field.id] !== formikValues[field.id]) {
 			let fields = metadataFields;
 			fields.mergedMetadata = metadataFields.mergedMetadata.map((f) => {
@@ -166,16 +159,14 @@ const EditMetadataEventsModal = ({
 				)}
 
 				{/* Fatal error view */}
-{/* @ts-expect-error TS(2339): Property 'fatalError' does not exist on type '{}'. */}
-				{!!fatalError.fatalError && (
+				{!!fatalError && (
 					<div className="modal-content">
 						<div className="modal-body">
 							<div className="row">
 								<div className="alert sticky error">
 									<p>
 										{t("BULK_ACTIONS.EDIT_EVENTS_METADATA.FATAL_ERROR", {
-// @ts-expect-error TS(2339): Property 'fatalError' does not exist on type '{}'.
-											fatalError: fatalError.fatalError,
+											fatalError: fatalError,
 										})}
 									</p>
 								</div>
@@ -186,10 +177,8 @@ const EditMetadataEventsModal = ({
 
 				{/* todo: Request Errors View and Update Errors View (not quite sure what this is used for) */}
 
-{/* @ts-expect-error TS(2339): Property 'fatalError' does not exist on type '{}'. */}
-				{!loading && fatalError.fatalError === undefined && (
+				{!loading && fatalError === undefined && (
 					<Formik
-// @ts-expect-error TS(2322): Type 'null' is not assignable to type 'FormikValue... Remove this comment to see the full error message
 						initialValues={fetchedValues}
 						onSubmit={(values) => handleSubmit(values)}
 					>
@@ -338,29 +327,14 @@ const EditMetadataEventsModal = ({
 	);
 };
 
-// @ts-expect-error TS(7006): Parameter 'metadataFields' implicitly has an 'any'... Remove this comment to see the full error message
-const getInitialValues = (metadataFields) => {
+const getInitialValues = (metadataFields: MetadataFieldSelected[]) => {
 	// Transform metadata fields provided by backend (saved in redux)
-	let initialValues = {};
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
-	metadataFields.mergedMetadata.forEach((field) => {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+	let initialValues: { [key: string]: string | string[] } = {};
+	metadataFields.forEach((field) => {
 		initialValues[field.id] = field.value;
 	});
 
 	return initialValues;
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-	selectedRows: getSelectedRows(state),
-});
-
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-});
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(EditMetadataEventsModal);
+export default EditMetadataEventsModal;

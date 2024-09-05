@@ -5,8 +5,11 @@ import { getURLParams, prepareAccessPolicyRulesForPost, transformAclTemplatesRes
 import { transformToIdValueArray } from '../utils/utils';
 import { NOTIFICATION_CONTEXT_ACCESS } from '../configs/modalConfig';
 import { addNotification, removeNotificationWizardAccess } from './notificationSlice';
+import { getUserInformation } from "../selectors/userInfoSelectors";
 import { AppDispatch } from '../store';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { initialFormValuesNewAcl } from "../configs/modalConfig";
+import { TransformedAcl } from './aclDetailsSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of acls
@@ -28,7 +31,7 @@ export type Role = {
 	type: string,
 }
 
-type AclResult = {
+export type AclResult = {
 	acl: Acl,
 	id: number,
 	name: string,
@@ -127,8 +130,7 @@ export const fetchRolesWithTarget = async (target: string) => {
 };
 
 // post new acl to backend
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-export const postNewAcl = (values) => async (dispatch: AppDispatch) => {
+export const postNewAcl = (values: typeof initialFormValuesNewAcl) => async (dispatch: AppDispatch) => {
 	let acls = prepareAccessPolicyRulesForPost(values.acls);
 
 	let data = new URLSearchParams();
@@ -151,8 +153,7 @@ export const postNewAcl = (values) => async (dispatch: AppDispatch) => {
 		});
 };
 // delete acl with provided id
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-export const deleteAcl = (id) => async (dispatch: AppDispatch) => {
+export const deleteAcl = (id: number) => async (dispatch: AppDispatch) => {
 	axios
 		.delete(`/admin-ng/acl/${id}`)
 		.then((res) => {
@@ -168,10 +169,12 @@ export const deleteAcl = (id) => async (dispatch: AppDispatch) => {
 };
 
 // @ts-expect-error TS(7006):
-export const checkAcls = (acls) => async (dispatch: AppDispatch) => {
+export const checkAcls = (acls: TransformedAcl[]) => async (dispatch: AppDispatch, getState) => {
 	// Remove old notifications of context event-access
 	// Helps to prevent multiple notifications for same problem
 	dispatch(removeNotificationWizardAccess());
+
+	let user = getUserInformation(getState());
 
 	let check = true;
 	let bothRights = false;
@@ -182,8 +185,8 @@ export const checkAcls = (acls) => async (dispatch: AppDispatch) => {
 			check = false;
 		}
 
-		// check if there is at least one policy with read and write rights
-		if (acls[i].read && acls[i].write) {
+		// if not admin, check if there is at least one policy with read and write rights
+		if ((acls[i].read && acls[i].write) || user.isAdmin) {
 			bothRights = true;
 		}
 
@@ -225,10 +228,10 @@ const aclsSlice = createSlice({
 	name: 'acls',
 	initialState,
 	reducers: {
-		setAclColumns(state, action: PayloadAction<{
-			updatedColumns: AclsState["columns"],
-		}>) {
-			state.columns = action.payload.updatedColumns;
+		setAclColumns(state, action: PayloadAction<
+			AclsState["columns"]
+		>) {
+			state.columns = action.payload;
 		},
 	},
 	// These are used for thunks

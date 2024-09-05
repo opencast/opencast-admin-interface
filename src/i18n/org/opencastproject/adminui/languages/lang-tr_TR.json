@@ -25,6 +25,7 @@
 	"RESET": "Sıfırla",
 	"SELECT_NO_OPTION_SELECTED": "Seçili seçenek yok",
 	"SELECT_NO_OPTIONS_AVAILABLE": "Mevcut Seçenek yok",
+	"SELECT_NO_MATCHING_RESULTS": "No matching results.",
 	"YES": "Evet",
 	"COPY": "Copy to clipboard",
 	"LTI": {
@@ -136,6 +137,7 @@
 		}
 	},
 	"MEDIAMODULE": "Ortam Modülü",
+	"STUDIO": "Studio",
 	"SYSTEM_NOTIFICATIONS": "Sistem uyarıları ve bildirimleri",
 	"LANGUAGE": "Dil seç",
 	"HELP": {
@@ -169,6 +171,7 @@
 		"EVENTS_CREATED": "Etkinlik oluşturuldu",
 		"EVENTS_UPLOAD_STARTED": "Etkinlik yüklenmekte…",
 		"EVENTS_NOT_CREATED": "Etkinlik oluşturulamadı",
+		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "Tüm etkinlikler başarıyla güncellendi",
 		"EVENTS_NOT_UPDATED": "Etkinlik kaydedilemedi",
 		"EVENTS_NOT_UPDATED_ID": "{{ id }} etkinliği kaydedilemedi",
@@ -383,8 +386,16 @@
 			"SKIP": "Not now",
 			"CONTINUE": "Continue",
 			"BACK": "Back",
+			"SUBMIT": "Submit",
+			"CONFIRM": "Confirm",
 			"LEGAL_INFO_STATE": {
 				"HEADER": "Terms of Service and Privacy Policy"
+			},
+			"SUMMARY_STATE": {
+				"HEADER": "This is a JSON summary of exactly what would be sent to Opencast's servers",
+				"GENERAL_HEADER": "Adopter Information",
+				"STATS_HEADER": "Statistical Information",
+				"NO_STATS_HEADER": "No statistics data will be shared"
 			},
 			"INFORMATION_STATE": {
 				"HEADER": "Thank you for using Opencast!",
@@ -408,6 +419,10 @@
 				"ADDITIONAL_ADRESS_INFO": "Add. adress information",
 				"MAIL": "Email",
 				"CONTACT_ME": "Contact me for updates and secruity issues",
+				"SYSTEM_TYPE_HEADLINE": "For what purpose do you use this system?",
+				"SYSTEM_TYPE": "System Type",
+				"SYSTEM_TYPE_PRODUCTION": "Production System",
+				"SYSTEM_TYPE_TEST": "Test System",
 				"WHICH_DATA_TO_SHARE": "Which data do you want to share?",
 				"POLICY_HEADLINE": "Privacy policy and terms of use",
 				"USAGE_STATISTICS": "Usage statistcs",
@@ -480,8 +495,8 @@
 						"RECORDING_ELEMENTS": "Ögeler kaydediliyor",
 						"RECORDING_METADATA": "Metaveri kaydediliyor",
 						"SEGMENTABLE": {
-							"SHORT": "Slaytlar",
-							"DETAIL": "Dosya bir slayt sunumunun kaydını içeriyor (Keynote, Powerpoint vb.)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Hediye Eden",
@@ -606,7 +621,7 @@
 					"ASSETS": "Detayları görüntüle",
 					"START": "Bu başlangıç tarihi için filtre",
 					"SERIES": "Bu dizi için filtre",
-					"STATUS": "Bu etkinlik durumu için filtre",
+					"STATUS": "Open event status",
 					"LOCATION": "Yere göre filtrele",
 					"DETAILS": "Etkinlik detaylarını görüntüle",
 					"DELETE": "Etkinliği sil",
@@ -615,6 +630,7 @@
 					"EDITOR_NEEDS_CUTTING": "Video Editörünü aç (videonun kesilmesini isteyen bir yorum var)",
 					"COMMENTS": "Yorumları görüntüle",
 					"PAUSED_WORKFLOW": "Duraklatılmış iş akışını görüntüle",
+					"PLAYER": "Open player",
 					"PRESENTER": "Bu sunucu için filtre"
 				},
 				"SELECT_ALL": "Select all events",
@@ -631,7 +647,7 @@
 				"PROCESSED": "Tamamlandı",
 				"RECORDING_FAILURE": "Kayıt hatası",
 				"PROCESSING_FAILURE": "İşlem hatası",
-				"PROCESSING_CANCELED": "İşlem iptal edildi"
+				"PROCESSING_CANCELLED": "Processing canceled"
 			},
 			"STATE_MAPPING": {
 				"RETRACTING": "Geri çekilmekte",
@@ -702,8 +718,8 @@
 						"CAPTION": "Karşıya Yükle",
 						"RECORDING_ELEMENTS": "Öğeler kaydediliyor",
 						"SEGMENTABLE": {
-							"SHORT": "Slaytlar",
-							"DETAIL": "Bu dosya bir slayt sunum kaydını içerir (Keynote, Powerpoint, vs.)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Sunan",
@@ -860,8 +876,7 @@
 						"DETAILS": "Ayrıntılar"
 					},
 					"ROLES": {
-						"LABEL": "Bir rol seç",
-						"EMPTY": "Rol bulunamadı"
+						"LABEL": "Select or create a role"
 					}
 				},
 				"COMMENTS": {
@@ -1290,6 +1305,14 @@
 					"RIGHT": "Seçilen roller",
 					"REMOVE": "Rolü sil",
 					"ADD": "Rol ekle"
+				},
+				"STRENGTH": {
+					"BAD": "Bad password",
+					"VERYWEAK": "Very weak password",
+					"WEAK": "Weak password",
+					"GOOD": "Good password",
+					"STRONG": "Strong password",
+					"VERYSTRONG": "Very strong password"
 				}
 			}
 		},
@@ -1644,131 +1667,6 @@
 				"WARNING": "Uyarı",
 				"ERROR": "Hata"
 			}
-		}
-	},
-	"VIDEO_TOOL": {
-		"WARNING_UNSAVED": "Uyarı: Bazı değişiklikler kaydedilmedi. Video editörü bırakırsanız, bu değişiklikler kaybolur. Gerçekten devam etmek istiyor musunuz?",
-		"TIMELINE": "Zaman tüneli",
-		"ZOOMLEVEL": "Yakınlaştırma Düzeyi",
-		"PREVIEW_MODE": "Önizleme modu",
-		"PREVIEW_MODE_TOOLTIP": "Yalnızca seçili segmentleri oynat",
-		"ZOOM": "Yakınlaştır",
-		"BUTTONS": {
-			"CLOSE": "Kapat",
-			"SAVE": "Kaydet",
-			"PROCESS": "Kaydet & Devam et",
-			"ADD_COMMENT": "Yorum Ekle"
-		},
-		"TABS": {
-			"EDIT": "Düzenleyici",
-			"CAPTIONS": "Altyazılar",
-			"ANNOTATIONS": "Ek açıklamalar"
-		},
-		"AREAS": {
-			"METADATA": "Metaveri",
-			"THUMBNAIL": "Küçük resim",
-			"COMMENTS": "Yorumlar",
-			"SEGMENTS": "Segmentler",
-			"TRACKS": "Parçalar"
-		},
-		"ACTIONS": {
-			"SPLIT": "Ayır",
-			"SPLIT_TOOLTIP": "Şu andaki imleç konumunda bölütü böl.",
-			"CUT": "Gizle/Göster",
-			"CUT_TOOLTIP": "Videonun seçilen bölümünü gizleyin veya gösterin.",
-			"REPLAY_SEGMENT": "Bölümün başlangıcını oynat",
-			"REPLAY_SEGMENT_TOOLTIP": "Mevcut bölümü en baştan oynat.",
-			"REPLAY_END_OF_SEGMENT": "Bölümün Sonunu Oynat",
-			"REPLAY_END_OF_SEGMENT_TOOLTIP": "Play a few seconds at the end of the current segment.",
-			"REPLAY_SEGMENT_WITH_PREROLL": "Geçişi Oynat",
-			"REPLAY_SEGMENT_WITH_PREROLL_TOOLTIP": "Play a few seconds containing the end of the previous and the beginning of the next segment.",
-			"UNDO": "Geri Al",
-			"REDO": "İleri Al",
-			"CLEAR_SEGMENTS": "Bölümlerin Tümünü Temizle",
-			"CLEAR_SEGMENTS_TOOLTIP": "Tüm bölümleri temizleyip yerine tek bir büyük bölüm bırak."
-		},
-		"SEGMENTS": {
-			"REMOVE_SEGMENT": "Bölümü Sil",
-			"SHOW_SEGMENT": "Bu Bölütü Göster",
-			"HIDE_SEGMENT": "Bu Bölütü Gizle",
-			"START": "Başla",
-			"END": "Son"
-		},
-		"THUMBNAIL": {
-			"DESCRIPTION": "A default thumbnail used to visually represent the event is generated automatically. In case you want to use a different thumbnail, you can extract a thumbnail from the video at the current playback position or upload an image.",
-			"ACTIONS": {
-				"EXTRACT": {
-					"FROM_VIDEO": {
-						"LABEL": "Videodan çıkarıp al",
-						"TOOLTIP": "Extract the thumbnail from the video at the current playback position"
-					},
-					"FROM_LEFT_VIDEO": {
-						"LABEL": "Sol taraftaki videodan çıkarıp al",
-						"TOOLTIP": "Extract the thumbnail from the left video at the current playback position"
-					},
-					"FROM_RIGHT_VIDEO": {
-						"LABEL": "Sağ taraftaki videodan çıkarıp al",
-						"TOOLTIP": "Küçük resmi, sağdaki videodan mevcut oynatma yerinden çıkarıp al"
-					}
-				},
-				"UPLOAD": {
-					"LABEL": "Resim yükle",
-					"TOOLTIP": "Bir küçük resim yükle"
-				},
-				"USE_DEFAULT": {
-					"LABEL": "Varsayılan küçük resim kullan",
-					"TOOLTIP": "Otomatik olarak oluşturulan varsayılan küçük resmi kullanın"
-				}
-			},
-			"PREVIEW": {
-				"NOT_AVAILABLE": "Önizleme Mevcut Değil",
-				"OUTDATED": "The preview is outdated since segments were changed. It will be updated as soon as you save your changes."
-			},
-			"CURRENT": {
-				"DEFAULT": "Şu anda varsayılan küçük resmi kullanıyorsunuz.",
-				"SNAPSHOT": "Şu anda kullanılan küçük resim videodan alınmıştır.",
-				"UPLOAD": "Şu anda yüklenmiş bir küçük resmi kullanıyorsunuz."
-			}
-		},
-		"TRACKS": {
-			"DESCRIPTION": "You can unselect tracks to exclude them from further processing. Please note that you need to (re-)publish the event to actually apply the changes.",
-			"NOTIFICATION": {
-				"NO_VIDEO_TRACK_SELECTED": "En az bir video kanalı etkinleştirmeniz gerekir",
-				"NO_AUDIO_TRACK_SELECTED": "En az bir ses parçası etkinleştirmeniz gerekir"
-			},
-			"TRACK": {
-				"HEADER": "Parça"
-			},
-			"VIDEO": {
-				"HEADER": "Video kaydı",
-				"NOT_AVAILABLE": "Hiçbir Video kaydı bulunmuyor",
-				"NO_PREVIEW_AVAILABLE": "Önizleme görseli bulunamadı",
-				"NO_TRACK_SELECTED": "Hiçbir video kaydı seçilmedi",
-				"TOOLTIPS": {
-					"HIDE": "Bu video kaydı şu anda etkin. Devre dışı bırakmak için tıklayın",
-					"UNHIDE": "Bu video kaydı şu anda devre dışı. Etkinleştirmek için tıklayın."
-				}
-			},
-			"AUDIO": {
-				"HEADER": "Ses parçası",
-				"NOT_AVAILABLE": "Hiçbir ses kaydı bulunmuyor",
-				"NO_PREVIEW_AVAILABLE": "Önizleme görseli bulunamadı",
-				"NO_TRACK_SELECTED": "Hiçbir ses kaydı seçilmedi",
-				"TOOLTIPS": {
-					"HIDE": "Bu ses kaydı şu anda etkin. Devre dışı bırakmak için tıklayın",
-					"UNHIDE": "Bu ses kaydı şu anda devre dışı. Etkinleştirmek için tıklayın"
-				}
-			}
-		},
-		"PLAYER": {
-			"PLAY": "Oynat",
-			"PAUSE": "Duraklat",
-			"NEXT_FRAME": "Sonraki kare",
-			"PREVIOUS_FRAME": "Önceki kare",
-			"NEXT_SEGMENT": "Sonraki bölüm / Sonuna atla",
-			"PREVIOUS_SEGMENT": "Önceki bölüm / Başına atla",
-			"MUTE": "Sustur",
-			"VOLUME": "Ses"
 		}
 	},
 	"TABLE_FILTERS": {

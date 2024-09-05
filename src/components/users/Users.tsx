@@ -15,7 +15,7 @@ import {
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
 import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
-import { setOffset } from "../../actions/tableActions";
+import { setOffset } from "../../slices/tableSlice";
 import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
@@ -40,11 +40,6 @@ const Users: React.FC = () => {
   const users = useAppSelector(state => getTotalUsers(state));
   const user = useAppSelector(state => getUserInformation(state));
   const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
-
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchUsersWrapper = async () => {
-		await dispatch(fetchUsers())
-	}
 
 	const loadUsers = async () => {
 		// Fetching users from server
@@ -110,22 +105,13 @@ const Users: React.FC = () => {
 		<>
 			<Header />
 			<NavBar>
-				{/* Add user button */}
-				<div className="btn-group">
-					{hasAccess("ROLE_UI_USERS_CREATE", user) && (
-						<button className="add" onClick={() => showNewUserModal()}>
-							<i className="fa fa-plus" />
-							<span>{t("USERS.ACTIONS.ADD_USER")}</span>
-						</button>
-					)}
-				</div>
-
 				{/* Display modal for new acl if add acl button is clicked */}
-				<NewResourceModal
-					showModal={displayNewUserModal}
-					handleClose={hideNewUserModal}
-					resource="user"
-				/>
+				{ displayNewUserModal &&
+					<NewResourceModal
+						handleClose={hideNewUserModal}
+						resource="user"
+					/>
+				}
 
 				{/* Include Burger-button menu*/}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
@@ -159,6 +145,16 @@ const Users: React.FC = () => {
 						</Link>
 					)}
 				</nav>
+				
+				{/* Add user button */}
+				<div className="btn-group">
+					{hasAccess("ROLE_UI_USERS_CREATE", user) && (
+						<button className="add" onClick={() => showNewUserModal()}>
+							<i className="fa fa-plus" />
+							<span>{t("USERS.ACTIONS.ADD_USER")}</span>
+						</button>
+					)}
+				</div>
 			</NavBar>
 
 			<MainView open={displayNavigation}>
@@ -168,7 +164,7 @@ const Users: React.FC = () => {
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={fetchUsersWrapper}
+						loadResource={fetchUsers}
 						loadResourceIntoTable={loadUsersIntoTable}
 						resource={"users"}
 					/>

@@ -10,7 +10,8 @@ import {
 	fetchAclTemplates,
 	fetchRolesWithTarget,
 } from "../../../../slices/aclSlice";
-import { Field, FieldArray } from "formik";
+import { FieldArray, FormikProps } from "formik";
+import { Field } from "../../../shared/Field";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
@@ -19,21 +20,30 @@ import { filterRoles, getAclTemplateText } from "../../../../utils/aclUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchSeriesDetailsAcls } from "../../../../slices/seriesDetailsSlice";
 import { getSeriesDetailsAcl } from "../../../../selectors/seriesDetailsSelectors";
+import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 
 /**
  * This component renders the access page for new events and series in the wizards.
  */
-const NewAccessPage = ({
-// @ts-expect-error TS(7031): Binding element 'previousPage' implicitly has an '... Remove this comment to see the full error message
-	previousPage,
-// @ts-expect-error TS(7031): Binding element 'nextPage' implicitly has an 'any'... Remove this comment to see the full error message
-	nextPage,
-// @ts-expect-error TS(7031): Binding element 'formik' implicitly has an 'any' t... Remove this comment to see the full error message
+interface RequiredFormProps {
+	isPartOf: string,
+	acls: TransformedAcl[],
+	aclTemplate: string,
+	// theme: string,
+}
+
+const NewAccessPage = <T extends RequiredFormProps>({
 	formik,
-// @ts-expect-error TS(7031): Binding element 'editAccessRole' implicitly has an... Remove this comment to see the full error message
+	nextPage,
+	previousPage,
 	editAccessRole,
-	// @ts-expect-error TS(7031): Binding element 'checkAcls' implicitly has an 'any... Remove this comment to see the full error messag
-	initEventAclWithSeriesAcl //boolean
+	initEventAclWithSeriesAcl
+}: {
+	formik: FormikProps<T>,
+	nextPage: (values: T) => void,
+	previousPage: (values: T, twoPagesBack?: boolean) => void,
+	editAccessRole: string,
+	initEventAclWithSeriesAcl: boolean
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -66,10 +76,9 @@ const NewAccessPage = ({
 	// If we have to use series ACL, fetch it
 	useEffect(() => {
 		if (initEventAclWithSeriesAcl && formik.values.isPartOf) {
-			dispatch(fetchSeriesDetailsAcls(formik.values.isPartOf))
+			dispatch(fetchSeriesDetailsAcls(formik.values.isPartOf));
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [formik.values, initEventAclWithSeriesAcl]);
+	}, [formik.values.isPartOf, initEventAclWithSeriesAcl, dispatch]);
 
 	// If we have to use series ACL, overwrite existing rules
 	useEffect(() => {
@@ -79,8 +88,7 @@ const NewAccessPage = ({
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [initEventAclWithSeriesAcl, seriesAcl]);
 
-// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
-	const handleTemplateChange = async (value) => {
+	const handleTemplateChange = async (value: string) => {
 		// fetch information about chosen template from backend
 		let template = await fetchAclTemplateById(value);
 
@@ -220,7 +228,6 @@ const NewAccessPage = ({
 																		{roles.length > 0 ? (
 																			formik.values.acls.length > 0 &&
 																			formik.values.acls.map(
-// @ts-expect-error TS(7006): Parameter 'policy' implicitly has an 'any' type.
 																				(policy, index) => (
 																					<tr key={index}>
 																						{/* dropdown for acl (/policy) role */}

@@ -3,18 +3,12 @@ import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButt
 import { useTranslation } from "react-i18next";
 import Notifications from "../../../shared/Notifications";
 import { FormikProps } from "formik";
+import { initialFormValuesNewGroup } from "../../../../configs/modalConfig";
 
 /**
  * This component renders the summary page for new groups in the new group wizard.
  */
-interface RequiredFormProps {
-	name: string,
-	description: string,
-	roles: string[],
-	users: string[],
-}
-
-const NewGroupSummaryPage = <T extends RequiredFormProps>({
+const NewGroupSummaryPage = <T extends typeof initialFormValuesNewGroup>({
 	formik,
 	previousPage,
 }: {
@@ -24,11 +18,10 @@ const NewGroupSummaryPage = <T extends RequiredFormProps>({
 	const { t } = useTranslation();
 
 	// get values of objects in field that should be shown
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
-	const getValues = (field) => {
+	const getValues = (fields: { name: string }[]) => {
 		let names = [];
-		for (let i = 0; i < field.length; i++) {
-			names.push(field[i].name);
+		for (const field of fields) {
+			names.push(field.name);
 		}
 		return names;
 	};

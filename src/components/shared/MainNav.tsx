@@ -1,7 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import { connect } from "react-redux";
 import {
 	loadAclsIntoTable,
 	loadEventsIntoTable,
@@ -16,7 +15,7 @@ import {
 } from "../../thunks/tableThunks";
 import { fetchThemes } from "../../slices/themeSlice";
 import { fetchFilters, fetchStats } from "../../slices/tableFilterSlice";
-import { setOffset } from "../../actions/tableActions";
+import { setOffset } from "../../slices/tableSlice";
 import {
 	getOrgProperties,
 	getUserInformation
@@ -40,32 +39,11 @@ import { Tooltip } from "./Tooltip";
  * This component renders the main navigation that opens when the burger button is clicked
  */
 const MainNav = ({
-// @ts-expect-error TS(7031): Binding element 'isOpen' implicitly has an 'any' t... Remove this comment to see the full error message
 	isOpen,
-// @ts-expect-error TS(7031): Binding element 'toggleMenu' implicitly has an 'an... Remove this comment to see the full error message
 	toggleMenu,
-// @ts-expect-error TS(7031): Binding element 'loadingEventsIntoTable' implicitl... Remove this comment to see the full error message
-	loadingEventsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingSeriesIntoTable' implicitl... Remove this comment to see the full error message
-	loadingSeriesIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingRecordingsIntoTable' impli... Remove this comment to see the full error message
-	loadingRecordingsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingJobsIntoTable' implicitly ... Remove this comment to see the full error message
-	loadingJobsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingServersIntoTable' implicit... Remove this comment to see the full error message
-	loadingServersIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingServicesIntoTable' implici... Remove this comment to see the full error message
-	loadingServicesIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingUsersIntoTable' implicitly... Remove this comment to see the full error message
-	loadingUsersIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingGroupsIntoTable' implicitl... Remove this comment to see the full error message
-	loadingGroupsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingAclsIntoTable' implicitly ... Remove this comment to see the full error message
-	loadingAclsIntoTable,
-// @ts-expect-error TS(7031): Binding element 'loadingThemesIntoTable' implicitl... Remove this comment to see the full error message
-	loadingThemesIntoTable,
-// @ts-expect-error TS(7031): Binding element 'resetOffset' implicitly has an 'a... Remove this comment to see the full error message
-	resetOffset,
+}: {
+	isOpen: boolean,
+	toggleMenu: () => void,
 }) => {
 	const { t } = useTranslation();
         const dispatch = useAppDispatch();
@@ -81,7 +59,7 @@ const MainNav = ({
 		dispatch(fetchFilters("events"));
 
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching stats from server
 		dispatch(fetchStats());
@@ -90,124 +68,124 @@ const MainNav = ({
 		dispatch(fetchEvents());
 
 		// Load events into table
-		loadingEventsIntoTable();
+		dispatch(loadEventsIntoTable());
 	};
 
 	const loadSeries = () => {
 		dispatch(fetchFilters("series"));
 
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching series from server
 		dispatch(fetchSeries());
 
 		// Load series into table
-		loadingSeriesIntoTable();
+		dispatch(loadSeriesIntoTable());
 	};
 
 	const loadRecordings = () => {
 		dispatch(fetchFilters("recordings"));
 
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching recordings from server
 		dispatch(fetchRecordings(undefined));
 
 		// Load recordings into table
-		loadingRecordingsIntoTable();
+		dispatch(loadRecordingsIntoTable());
 	};
 
 	const loadJobs = () => {
 		dispatch(fetchFilters("jobs"));
 
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching jobs from server
 		dispatch(fetchJobs());
 
 		// Load jobs into table
-		loadingJobsIntoTable();
+		dispatch(loadJobsIntoTable());
 	};
 
 	const loadServers = () => {
 		dispatch(fetchFilters("servers"));
 
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching servers from server
 		dispatch(fetchServers());
 
 		// Load servers into table
-		loadingServersIntoTable();
+		dispatch(loadServersIntoTable());
 	};
 
 	const loadServices = () => {
 		dispatch(fetchFilters("services"));
 
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching services from server
 		dispatch(fetchServices());
 
 		// Load services into table
-		loadingServicesIntoTable();
+		dispatch(loadServicesIntoTable());
 	};
 
 	const loadUsers = () => {
 		dispatch(fetchFilters("users"));
 
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching users from server
 		dispatch(fetchUsers());
 
 		// Load users into table
-		loadingUsersIntoTable();
+		dispatch(loadUsersIntoTable());
 	};
 
 	const loadGroups = () => {
 		dispatch(fetchFilters("groups"));
 
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching groups from server
 		dispatch(fetchGroups());
 
 		// Load groups into table
-		loadingGroupsIntoTable();
+		dispatch(loadGroupsIntoTable());
 	};
 
 	const loadAcls = () => {
 		dispatch(fetchFilters("acls"));
 
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching acls from server
-        dispatch(fetchAcls());
+		dispatch(fetchAcls());
 
 		// Load acls into table
-		loadingAclsIntoTable();
+		dispatch(loadAclsIntoTable());
 	};
 
 	const loadThemes = () => {
 		dispatch(fetchFilters("themes"));
 
 		// Reset the current page to first page
-		resetOffset();
+		dispatch(setOffset(0));
 
 		// Fetching themes from server
 		dispatch(fetchThemes());
 
 		// Load themes into table
-		loadingThemesIntoTable();
+		dispatch(loadThemesIntoTable());
 	};
 
 	useHotkeys(
@@ -234,11 +212,11 @@ const MainNav = ({
 	return (
 		<>
 			<div className="menu-top" >
-				<Tooltip title={t("HOTKEYS.DESCRIPTIONS.GENERAL.MAIN_MENU")}>
-					<button className="button-like-anchor" onClick={() => toggleMenu()}>
+				<button className="button-like-anchor" onClick={() => toggleMenu()}>
+					<Tooltip title={t("HOTKEYS.DESCRIPTIONS.GENERAL.MAIN_MENU")} placement={"right"}>
 						<i className="fa fa-bars" />
-					</button>
-				</Tooltip>
+					</Tooltip>
+				</button>
 				{isOpen && (
 					<nav id="roll-up-menu">
 						<div id="nav-container">
@@ -342,26 +320,4 @@ const MainNav = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	loadingEventsIntoTable: () => dispatch(loadEventsIntoTable()),
-	loadingSeriesIntoTable: () => dispatch(loadSeriesIntoTable()),
-	loadingRecordingsIntoTable: () => dispatch(loadRecordingsIntoTable()),
-	loadingJobsIntoTable: () => dispatch(loadJobsIntoTable()),
-	loadingServersIntoTable: () => dispatch(loadServersIntoTable()),
-	loadingServicesIntoTable: () => dispatch(loadServicesIntoTable()),
-	loadingUsersIntoTable: () => dispatch(loadUsersIntoTable()),
-	loadingGroupsIntoTable: () => dispatch(loadGroupsIntoTable()),
-	loadingAclsIntoTable: () => dispatch(loadAclsIntoTable()),
-	loadingThemesIntoTable: () => dispatch(loadThemesIntoTable()),
-	resetOffset: () => dispatch(setOffset(0)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(MainNav);
+export default MainNav;

@@ -1,7 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { Field, FormikProps } from "formik";
+import { FormikProps } from "formik";
+import { Field } from "../../../shared/Field";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import FileUpload from "../../../shared/wizard/FileUpload";
 import Notifications from "../../../shared/Notifications";
@@ -30,8 +31,7 @@ const WatermarkPage = <T extends RequiredFormProps>({
 }) => {
 	const { t } = useTranslation();
 
-// @ts-expect-error TS(7006): Parameter 'position' implicitly has an 'any' type.
-	const handleButtonClick = (position) => {
+	const handleButtonClick = (position: "topLeft" | "topRight" | "bottomLeft" | "bottomRight") => {
 		formik.setFieldValue("watermarkPosition", position);
 	};
 

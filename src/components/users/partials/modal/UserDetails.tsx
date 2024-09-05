@@ -9,7 +9,7 @@ import EditUserGeneralTab from "../wizard/EditUserGeneralTab";
 import UserEffectiveRolesTab from "../wizard/UserEffectiveRolesTab";
 import ModalNavigation from "../../../shared/modals/ModalNavigation";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { updateUserDetails } from "../../../../slices/userDetailsSlice";
+import { UpdateUser, updateUserDetails } from "../../../../slices/userDetailsSlice";
 
 /**
  * This component manages the pages of the user details
@@ -29,6 +29,7 @@ const UserDetails: React.FC<{
 	const initialValues = {
 		...userDetails,
 		password: "",
+		passwordConfirmation: "",
 	};
 
 	// information about tabs
@@ -50,13 +51,11 @@ const UserDetails: React.FC<{
 		},
 	];
 
-// @ts-expect-error TS(7006): Parameter 'tabNr' implicitly has an 'any' type.
-	const openTab = (tabNr) => {
+	const openTab = (tabNr: number) => {
 		setPage(tabNr);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (values: UpdateUser) => {
 		dispatch(updateUserDetails({values: values, username: userDetails.username}));
 		close();
 	};

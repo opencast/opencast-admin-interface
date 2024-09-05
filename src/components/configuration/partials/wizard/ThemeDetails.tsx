@@ -15,7 +15,7 @@ import ModalNavigation from "../../../shared/modals/ModalNavigation";
 import { NewThemeSchema } from "../../../../utils/validate";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { updateThemeDetails } from "../../../../slices/themeDetailsSlice";
-import { Details } from "../../../../slices/themeSlice";
+import { ThemeDetailsInitialValues } from "../../../../slices/themeSlice";
 
 /**
  * This component manages the pages of the theme details
@@ -48,31 +48,37 @@ const ThemeDetails : React.FC<{
 			name: "generalForm",
 			tabTranslation: "CONFIGURATION.THEMES.DETAILS.GENERAL.CAPTION",
 			translation: "CONFIGURATION.THEMES.DETAILS.GENERAL.CAPTION",
+			accessRole: "ROLE_UI_THEMES_EDIT",
 		},
 		{
 			name: "bumperForm",
 			tabTranslation: "CONFIGURATION.THEMES.DETAILS.BUMPER.CAPTION",
 			translation: "CONFIGURATION.THEMES.DETAILS.BUMPER.CAPTION",
+			accessRole: "ROLE_UI_THEMES_EDIT",
 		},
 		{
 			name: "trailerForm",
 			tabTranslation: "CONFIGURATION.THEMES.DETAILS.TRAILER.CAPTION",
 			translation: "CONFIGURATION.THEMES.DETAILS.TRAILER.CAPTION",
+			accessRole: "ROLE_UI_THEMES_EDIT",
 		},
 		{
 			name: "titleSlideForm",
 			tabTranslation: "CONFIGURATION.THEMES.DETAILS.TITLE.CAPTION",
 			translation: "CONFIGURATION.THEMES.DETAILS.TITLE.CAPTION",
+			accessRole: "ROLE_UI_THEMES_EDIT",
 		},
 		{
 			name: "watermarkForm",
 			tabTranslation: "CONFIGURATION.THEMES.DETAILS.WATERMARK.CAPTION",
 			translation: "CONFIGURATION.THEMES.DETAILS.WATERMARK.CAPTION",
+			accessRole: "ROLE_UI_THEMES_EDIT",
 		},
 		{
 			name: "usage",
 			tabTranslation: "CONFIGURATION.THEMES.DETAILS.USAGE.CAPTION",
 			translation: "CONFIGURATION.THEMES.DETAILS.USAGE.CAPTION",
+			accessRole: "ROLE_UI_THEMES_EDIT",
 		},
 	];
 
@@ -80,7 +86,7 @@ const ThemeDetails : React.FC<{
 	const currentValidationSchema = NewThemeSchema[page];
 
 	// update theme
-	const handleSubmit = (values: Details) => {
+	const handleSubmit = (values: ThemeDetailsInitialValues) => {
 		dispatch(updateThemeDetails({id: themeDetails.id, values: values}));
 		close();
 	};

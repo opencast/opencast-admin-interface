@@ -23,7 +23,7 @@ const About: React.FC = () => {
 
 	useEffect(() => {
 		const getURL = (language: string) => {
-			return `ui/config/admin-ui/${location.pathname.split("/").pop()}.${language}.html`;
+			return `/ui/config/admin-ui/${location.pathname.split("/").pop()}.${language}.html`;
 		};
 
 		axios.get(getURL(i18n.language))

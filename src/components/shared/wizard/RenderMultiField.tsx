@@ -249,7 +249,7 @@ const ShowValue = ({
   setEditMode: (e: boolean) => void
 	form: FieldProps["form"]
 	field: FieldProps["field"]
-	showCheck: any,
+	showCheck: boolean,
 }) => {
 	return (
 		<div onClick={() => setEditMode(true)} className="show-edit">

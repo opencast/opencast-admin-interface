@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
 import {
+	getModalWorkflowId,
 	getWorkflow,
 	isFetchingWorkflowDetails,
 } from "../../../../selectors/eventDetailsSelectors";
 import { formatDuration } from "../../../../utils/eventDetailsUtils";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
-import { hasAccess } from "../../../../utils/utils";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
-	fetchWorkflowErrors,
-	fetchWorkflowOperations,
+	fetchWorkflowDetails,
+	setModalWorkflowTabHierarchy,
 } from "../../../../slices/eventDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
@@ -23,27 +23,31 @@ import { useTranslation } from "react-i18next";
  */
 const EventDetailsWorkflowDetails = ({
 	eventId,
-	setHierarchy,
 }: {
 	eventId: string,
-	setHierarchy: (subTabName: WorkflowTabHierarchy) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const user = useAppSelector(state => getUserInformation(state));
+	const workflowId = useAppSelector(state => getModalWorkflowId(state));
 	const workflowData = useAppSelector(state => getWorkflow(state));
 	const isFetching = useAppSelector(state => isFetchingWorkflowDetails(state));
 
+	useEffect(() => {
+		dispatch(fetchWorkflowDetails({eventId, workflowId}));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	const openSubTab = (tabType: WorkflowTabHierarchy) => {
 		dispatch(removeNotificationWizardForm());
-		setHierarchy(tabType);
-		if (tabType === "workflow-operations") {
-			dispatch(fetchWorkflowOperations({eventId, workflowId: workflowData.wiid})).then();
-		} else if (tabType === "errors-and-warnings") {
-			dispatch(fetchWorkflowErrors({eventId, workflowId: workflowData.wiid})).then();
-		}
+		dispatch(setModalWorkflowTabHierarchy(tabType));
 	};
+
+	// Type narrowing. If type is wrong this component breaks.
+	if (!("wiid" in workflowData)) {
+		return <></>;
+	}
 
 	return (
 		<div className="modal-content">
@@ -146,7 +150,7 @@ const EventDetailsWorkflowDetails = ({
 													<td>{formatDuration(workflowData.executionTime)}</td>
 												</tr>
 											)}
-											{hasAccess("ROLE_ADMIN", user) && (
+											{user.isAdmin && (
 												<>
 													<tr>
 														<td>
@@ -172,7 +176,7 @@ const EventDetailsWorkflowDetails = ({
 							</div>
 
 							{/* 'Workflow configuration' table */}
-							{hasAccess("ROLE_ADMIN", user) && (
+							{user.isAdmin && (
 								<div className="obj tbl-details">
 									<header>
 										{
@@ -278,7 +282,7 @@ const EventDetailsWorkflowDetails = ({
 							</div>
 
 							{/* 'Workflow configuration' table */}
-							{hasAccess("ROLE_ADMIN", user) && (
+							{user.isAdmin && (
 								<div className="obj tbl-details">
 									<header>
 										{

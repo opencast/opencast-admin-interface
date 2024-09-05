@@ -25,6 +25,7 @@
 	"RESET": "Reset",
 	"SELECT_NO_OPTION_SELECTED": "No option selected",
 	"SELECT_NO_OPTIONS_AVAILABLE": "No options available",
+	"SELECT_NO_MATCHING_RESULTS": "No matching results.",
 	"YES": "Sì",
 	"COPY": "Copy to clipboard",
 	"LTI": {
@@ -136,6 +137,7 @@
 		}
 	},
 	"MEDIAMODULE": "Modulo Media",
+	"STUDIO": "Studio",
 	"SYSTEM_NOTIFICATIONS": "Avvisi di sistema e notifiche",
 	"LANGUAGE": "Seleziona lingua",
 	"HELP": {
@@ -169,6 +171,7 @@
 		"EVENTS_CREATED": "L'evento è stato creato",
 		"EVENTS_UPLOAD_STARTED": "L'evento è in fase di aggiornamento…",
 		"EVENTS_NOT_CREATED": "L'evento non può essere creato",
+		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "Tutti gli eventi sono stati aggiornati con successo",
 		"EVENTS_NOT_UPDATED": "L'evento non può essere salvato",
 		"EVENTS_NOT_UPDATED_ID": "L'evento {{ id }} non può essere salvato",
@@ -383,8 +386,16 @@
 			"SKIP": "Not now",
 			"CONTINUE": "Continue",
 			"BACK": "Back",
+			"SUBMIT": "Submit",
+			"CONFIRM": "Confirm",
 			"LEGAL_INFO_STATE": {
 				"HEADER": "Terms of Service and Privacy Policy"
+			},
+			"SUMMARY_STATE": {
+				"HEADER": "This is a JSON summary of exactly what would be sent to Opencast's servers",
+				"GENERAL_HEADER": "Adopter Information",
+				"STATS_HEADER": "Statistical Information",
+				"NO_STATS_HEADER": "No statistics data will be shared"
 			},
 			"INFORMATION_STATE": {
 				"HEADER": "Thank you for using Opencast!",
@@ -408,6 +419,10 @@
 				"ADDITIONAL_ADRESS_INFO": "Add. adress information",
 				"MAIL": "Email",
 				"CONTACT_ME": "Contact me for updates and secruity issues",
+				"SYSTEM_TYPE_HEADLINE": "For what purpose do you use this system?",
+				"SYSTEM_TYPE": "System Type",
+				"SYSTEM_TYPE_PRODUCTION": "Production System",
+				"SYSTEM_TYPE_TEST": "Test System",
 				"WHICH_DATA_TO_SHARE": "Which data do you want to share?",
 				"POLICY_HEADLINE": "Privacy policy and terms of use",
 				"USAGE_STATISTICS": "Usage statistcs",
@@ -480,8 +495,8 @@
 						"RECORDING_ELEMENTS": "Registrazione elementi",
 						"RECORDING_METADATA": "Registrazione metadati",
 						"SEGMENTABLE": {
-							"SHORT": "Diapositive",
-							"DETAIL": "Il file contiene una registrazione di una presentazione con diapositive (Keynote, Powerpoint, ecc)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Conduttore",
@@ -606,7 +621,7 @@
 					"ASSETS": "Open asset details",
 					"START": "Filtro per questa data di inizio",
 					"SERIES": "Filtra per questa serie",
-					"STATUS": "Filtra per questo stato dell'evento",
+					"STATUS": "Open event status",
 					"LOCATION": "Filtra per questa posizione",
 					"DETAILS": "Apri dettagli evento",
 					"DELETE": "Elimina evento",
@@ -615,6 +630,7 @@
 					"EDITOR_NEEDS_CUTTING": "Apri video Editor (un commento indica che è stato richiesto tagliare il video)",
 					"COMMENTS": "Visualizza commenti",
 					"PAUSED_WORKFLOW": "Mostra flusso di lavoro in pausa",
+					"PLAYER": "Open player",
 					"PRESENTER": "Filtra per questo presentatore"
 				},
 				"SELECT_ALL": "Select all events",
@@ -631,7 +647,7 @@
 				"PROCESSED": "Completato",
 				"RECORDING_FAILURE": "Registrazione fallita",
 				"PROCESSING_FAILURE": "Elaborazione fallita",
-				"PROCESSING_CANCELED": "Elaborazione annullata"
+				"PROCESSING_CANCELLED": "Processing canceled"
 			},
 			"STATE_MAPPING": {
 				"RETRACTING": "Retracting",
@@ -702,8 +718,8 @@
 						"CAPTION": "Carica",
 						"RECORDING_ELEMENTS": "Registrazione elementi",
 						"SEGMENTABLE": {
-							"SHORT": "Diapositive",
-							"DETAIL": "Il file contiene una registrazione di una presentazione con diapositive (Keynote, Powerpoint, ecc)."
+							"SHORT": "Presentation",
+							"DETAIL": "The file contains a recording of a what is shown to an audience (Keynote, Powerpoint, etc)."
 						},
 						"NON_SEGMENTABLE": {
 							"SHORT": "Conduttore",
@@ -860,8 +876,7 @@
 						"DETAILS": "Dettagli"
 					},
 					"ROLES": {
-						"LABEL": "Seleziona un ruolo",
-						"EMPTY": "Nessun ruolo trovato"
+						"LABEL": "Select or create a role"
 					}
 				},
 				"COMMENTS": {
@@ -1290,6 +1305,14 @@
 					"RIGHT": "Seleziona ruoli",
 					"REMOVE": "Cancella ruolo",
 					"ADD": "Aggiungi ruolo"
+				},
+				"STRENGTH": {
+					"BAD": "Bad password",
+					"VERYWEAK": "Very weak password",
+					"WEAK": "Weak password",
+					"GOOD": "Good password",
+					"STRONG": "Strong password",
+					"VERYSTRONG": "Very strong password"
 				}
 			}
 		},
@@ -1644,131 +1667,6 @@
 				"WARNING": "Attenzione",
 				"ERROR": "Errore"
 			}
-		}
-	},
-	"VIDEO_TOOL": {
-		"WARNING_UNSAVED": "Attenzione: alcune delle modifiche non sono state salvate. Se lasci l'editor video, queste modifiche andranno perse. Vuoi davvero continuare?",
-		"TIMELINE": "Timeline",
-		"ZOOMLEVEL": "Livello di zoom",
-		"PREVIEW_MODE": "Modalità anteprima",
-		"PREVIEW_MODE_TOOLTIP": "Riproduci solo i segmenti selezionati",
-		"ZOOM": "Zoom",
-		"BUTTONS": {
-			"CLOSE": "Chiudi",
-			"SAVE": "Salva",
-			"PROCESS": "Salva e continua",
-			"ADD_COMMENT": "Aggiungi commento"
-		},
-		"TABS": {
-			"EDIT": "Editor",
-			"CAPTIONS": "Sottotitoli",
-			"ANNOTATIONS": "Annotazioni"
-		},
-		"AREAS": {
-			"METADATA": "Metadati",
-			"THUMBNAIL": "Miniatura",
-			"COMMENTS": "Commenti",
-			"SEGMENTS": "Segmenti",
-			"TRACKS": "Tracce"
-		},
-		"ACTIONS": {
-			"SPLIT": "Dividi",
-			"SPLIT_TOOLTIP": "Split segment at the current cursor position.",
-			"CUT": "Hide/Show",
-			"CUT_TOOLTIP": "Hide or show the selected part of the video.",
-			"REPLAY_SEGMENT": "Play Start of Segment",
-			"REPLAY_SEGMENT_TOOLTIP": "Play the current segment from the beginning.",
-			"REPLAY_END_OF_SEGMENT": "Play End of Segment",
-			"REPLAY_END_OF_SEGMENT_TOOLTIP": "Play a few seconds at the end of the current segment.",
-			"REPLAY_SEGMENT_WITH_PREROLL": "Play Transition",
-			"REPLAY_SEGMENT_WITH_PREROLL_TOOLTIP": "Play a few seconds containing the end of the previous and the beginning of the next segment.",
-			"UNDO": "Annulla",
-			"REDO": "Ripristina",
-			"CLEAR_SEGMENTS": "Clear All Segments",
-			"CLEAR_SEGMENTS_TOOLTIP": "Clear all segments, leaving one big segment."
-		},
-		"SEGMENTS": {
-			"REMOVE_SEGMENT": "Cancella segmento",
-			"SHOW_SEGMENT": "Show this Segment",
-			"HIDE_SEGMENT": "Hide this Segment",
-			"START": "Avvio",
-			"END": "Fine"
-		},
-		"THUMBNAIL": {
-			"DESCRIPTION": "Una miniatura predefinita utilizzata per rappresentare visivamente l'evento è generata automaticamente. Se vuoi utilizzare una miniatura diversa, è possibile estrarre una miniatura dal video nella posizione di riproduzione corrente o caricare un'immagine.",
-			"ACTIONS": {
-				"EXTRACT": {
-					"FROM_VIDEO": {
-						"LABEL": "Estrai dal video",
-						"TOOLTIP": "Estrai le miniature dal video alla posizione di riproduzione attuale"
-					},
-					"FROM_LEFT_VIDEO": {
-						"LABEL": "Estrai dal video sinistro",
-						"TOOLTIP": "Estrai le miniature dal video sinistro alla posizione di riproduzione attuale"
-					},
-					"FROM_RIGHT_VIDEO": {
-						"LABEL": "Estrai dal video destro",
-						"TOOLTIP": "Estrai le miniature dal video destro alla posizione di riproduzione attuale"
-					}
-				},
-				"UPLOAD": {
-					"LABEL": "Carica immagine",
-					"TOOLTIP": "Carica un'immagine thumbnail"
-				},
-				"USE_DEFAULT": {
-					"LABEL": "Usa miniatura predefinita",
-					"TOOLTIP": "Usa la thumbnail predefinita generata automaticamente"
-				}
-			},
-			"PREVIEW": {
-				"NOT_AVAILABLE": "Anteprima non disponibile",
-				"OUTDATED": "L'anteprima è obsoleta dal momento che i segmenti sono stati modificati. Sarà aggiornata non appena si salvano le modifiche."
-			},
-			"CURRENT": {
-				"DEFAULT": "Stai attualmente utilizzando la thumbnail predefinita.",
-				"SNAPSHOT": "La miniatura corrente è stata estratta dal video.",
-				"UPLOAD": "Stai attualmente utilizzando una thumbnail caricata."
-			}
-		},
-		"TRACKS": {
-			"DESCRIPTION": "Puoi deselezionare le tracce per escluderle dall'ulteriore elaborazione. Si prega di notare che è necessario (ri-)pubblicare l'evento per applicare effettivamente le modifiche.",
-			"NOTIFICATION": {
-				"NO_VIDEO_TRACK_SELECTED": "Devi selezionare almeno una traccia video",
-				"NO_AUDIO_TRACK_SELECTED": "Devi selezionare almeno una traccia audio"
-			},
-			"TRACK": {
-				"HEADER": "Traccia"
-			},
-			"VIDEO": {
-				"HEADER": "Traccia video",
-				"NOT_AVAILABLE": "Nessuna traccia video disponibile",
-				"NO_PREVIEW_AVAILABLE": "Nessuna immagine di anteprima trovata",
-				"NO_TRACK_SELECTED": "Nessuna traccia video selezionata",
-				"TOOLTIPS": {
-					"HIDE": "Questa traccia video è attualmente abilitata. Clicca per disabilitare",
-					"UNHIDE": "Questa traccia audio è attualmente disabilitata. Clicca per abilitare."
-				}
-			},
-			"AUDIO": {
-				"HEADER": "Traccia audio",
-				"NOT_AVAILABLE": "Nessuna traccia audio disponibile",
-				"NO_PREVIEW_AVAILABLE": "Nessuna immagine di anteprima trovata",
-				"NO_TRACK_SELECTED": "Nessuna traccia audio selezionata",
-				"TOOLTIPS": {
-					"HIDE": "Questa traccia audio è attualmente abilitata. Clicca per disabilitare",
-					"UNHIDE": "Questa traccia audio è attualmente disabilitata. Clicca per abilitare"
-				}
-			}
-		},
-		"PLAYER": {
-			"PLAY": "Riproduci",
-			"PAUSE": "Pausa",
-			"NEXT_FRAME": "Fotogramma successivo",
-			"PREVIOUS_FRAME": "Fotogramma precedente",
-			"NEXT_SEGMENT": "Segmento successivo / Salta per terminare",
-			"PREVIOUS_SEGMENT": "Segmento precedente / salta per avviare",
-			"MUTE": "Muto",
-			"VOLUME": "Volume"
 		}
 	},
 	"TABLE_FILTERS": {

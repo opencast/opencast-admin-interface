@@ -5,17 +5,27 @@ import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 /**
  * This file contains redux reducer for actions affecting the state of workflows
  */
+export type FieldSetField = {
+	name: string
+	value: unknown,
+	type: string,
+	checked: boolean,
+	fieldset?: FieldSetField[]
+	defaultValue?: unknown
+	[key: string]: unknown
+}
+
 type ConfigurationPanelField = {
 	// We could potentially specify 'fieldset' more, but I cannot find a definition
 	// for which key value pairs are allowed
-	fieldset?: { [key: string]: any }	// Values can be anything
+	fieldset?: FieldSetField[]  // Values can be anything
 	legend?: string,
 	description?: string,
 }
 
 export type Workflow = {
-	configuration_panel: string,	//XML
-	configuration_panel_json: string | ConfigurationPanelField[],	// 'string' will always be the empty string
+	configuration_panel: string,  //XML
+	configuration_panel_json: string | ConfigurationPanelField[],  // 'string' will always be the empty string
 	description: string,
 	displayOrder: number,
 	id: string,

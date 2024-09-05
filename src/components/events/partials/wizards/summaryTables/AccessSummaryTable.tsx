@@ -1,13 +1,17 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { TransformedAcl } from "../../../../../slices/aclDetailsSlice";
 
 /**
  * This component renders the access table containing access rules provided by user before in wizard summary pages
  */
 const AccessSummaryTable = ({
-    policies,
-    header
-}: any) => {
+	policies,
+	header
+}: {
+	policies: TransformedAcl[]
+	header: string
+}) => {
 	const { t } = useTranslation();
 
 	return (
@@ -32,7 +36,6 @@ const AccessSummaryTable = ({
 				</thead>
 				<tbody>
 					{/*Insert row for each policy user has provided*/}
-{/* @ts-expect-error TS(7006): Parameter 'policy' implicitly has an 'any' type. */}
 					{policies.map((policy, key) => (
 						<tr key={key}>
 							<td>{policy.role}</td>
@@ -44,7 +47,6 @@ const AccessSummaryTable = ({
 							</td>
 							<td className="fit">
 								{/*repeat for each additional action*/}
-{/* @ts-expect-error TS(7006): Parameter 'action' implicitly has an 'any' type. */}
 								{policy.actions.map((action, key) => (
 									<div key={key}>{action}</div>
 								))}
