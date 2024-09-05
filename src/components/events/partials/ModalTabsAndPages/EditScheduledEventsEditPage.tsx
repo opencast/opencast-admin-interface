@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { FieldArray, FormikProps } from "formik";
-import { Field } from "../../../shared/Field";
 import Notifications from "../../../shared/Notifications";
-import RenderField from "../../../shared/wizard/RenderField";
 import { getTimezoneOffset, hasAccess } from "../../../../utils/utils";
 import { hours, minutes, weekdays } from "../../../../configs/modalConfig";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
@@ -23,6 +21,7 @@ import {
 	Conflict,
 } from "../../../../slices/eventSlice";
 import { Recording } from "../../../../slices/recordingSlice";
+import lodash, { groupBy } from "lodash";
 
 /**
  * This component renders the edit page for scheduled events of the corresponding bulk action
@@ -72,6 +71,45 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formik.values.events]);
 
+	/**
+	 * For a given matrix of events, return an array of events where the events
+	 * have been grouped by their value
+	 */
+	const reduceGroupEvents = (events: EditedEvents[][] ) => {
+		const reducedEvents: EditedEvents[] = [];
+		Object.entries(events).forEach(([_, value]) => {
+			reducedEvents.push(reduceGroupedEvent(value));
+		});
+		return reducedEvents;
+	}
+
+	/**
+	 * For a given array of events, returns an event where each property of the event is empty,
+	 * except if the value of the property was the exact same for all events in the array,
+	 * in which case the property is that value
+	 */
+	const reduceGroupedEvent = (groupedEvents: EditedEvents[]) => {
+		const result = groupedEvents.reduce((prev, curr) => {
+			for (const [key, value] of Object.entries(curr)) {
+				// TODO: This relies on the fact that the EditedEvent type only contains 'string' and 'string[]'. Improve on that.
+				if (typeof value === "string") {
+					// @ts-expect-error TS(7006):
+					prev[key as keyof EditedEvents] = prev[key as keyof EditedEvents] === curr[key as keyof EditedEvents] ? curr[key as keyof EditedEvents] : ""
+				} else {
+					// @ts-expect-error TS(7006):
+					prev[key as keyof EditedEvents] = prev[key as keyof EditedEvents] === curr[key as keyof EditedEvents] ? curr[key as keyof EditedEvents] : []
+				}
+			}
+			return prev;
+		}, lodash.cloneDeep(groupedEvents[0]));
+		return result;
+	}
+
+	const findSeriesName = (seriesOptions: { name: string, value: string }[], editedEvents: EditedEvents[]) => {
+		const series = seriesOptions.find((e) => e.value === reduceGroupedEvent(editedEvents).changedSeries)
+		return series ? series.name : ""
+	}
+
 	return (
 		<>
 			<div className="modal-content active">
@@ -120,76 +158,100 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 							<FieldArray name="editedEvents">
 								{({ insert, remove, push }) => (
 									<>
+									{hasAccess(
+										"ROLE_UI_EVENTS_DETAILS_METADATA_EDIT",
+										user
+									) && (
+										<div className="obj tbl-details">
+											<header>{t("BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.TABLE.FIELDS")}</header>
+											<div className="obj-container">
+												<table className="main-tbl">
+													<tbody>
+														<tr>
+															<td>
+																<span>
+																	{t(
+																		"EVENTS.EVENTS.DETAILS.METADATA.TITLE"
+																	)}
+																</span>
+															</td>
+															<td className="editable ng-isolated-scope">
+															{/*
+																* Per event there are 14 input fields, so with 'key * 14', the right
+																* event is reached. After the '+' comes the number of the input field.
+																* This is the first input field for this event.
+																*/}
+																<input
+																	type={"text"}
+																	onChange={(element) => {
+																		formik.values.editedEvents.forEach((_, i) => {
+																			formik.setFieldValue(
+																				`editedEvents.${i}.changedTitle`,
+																				element.target.value
+																			);
+																		});
+																	}}
+																	defaultValue={formik.values.editedEvents.length > 0 ? reduceGroupedEvent(formik.values.editedEvents).title : ""}
+																/>
+															</td>
+														</tr>
+														<tr>
+															<td>
+																<span>
+																	{t(
+																		"EVENTS.EVENTS.DETAILS.METADATA.SERIES"
+																	)}
+																</span>
+															</td>
+															<td className="editable ng-isolated-scope">
+																{/*
+																	* Per event there are 14 input fields, so with 'key * 14', the right
+																	* event is reached. After the '+' comes the number of the input field.
+																	* This is the second input field for this event.
+																	*/}
+																<DropDown
+																	value={
+																		formik.values.editedEvents.length > 0 ? reduceGroupedEvent(formik.values.editedEvents).changedSeries : ""
+																	}
+																	text={
+																		formik.values.editedEvents.length > 0 ? findSeriesName(seriesOptions, formik.values.editedEvents) : ""
+																	}
+																	options={seriesOptions}
+																	type={"isPartOf"}
+																	required={false}
+																	handleChange={(element) => {
+																		if (element) {
+																			formik.values.editedEvents.forEach((_, i) => {
+																				formik.setFieldValue(
+																					`editedEvents.${i}.changedSeries`,
+																					element.value
+																				);
+																			});
+																		}
+																	}}
+																	placeholder={formik.values.editedEvents.length > 0 ? reduceGroupedEvent(formik.values.editedEvents).series : ""}
+																	tabIndex={2 * 14 + 2}
+																/>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									)}
 										{
-											/*todo: in old UI this was grouped by weekday, which is also stated in the description in the div above
-                                        now there isn't any grouping and there is one div per event -> find out, if that is okay and adapt again if necessary */
-											formik.values.editedEvents.map((event, key) => (
+											reduceGroupEvents(Object.values(groupBy(formik.values.editedEvents, i => i.weekday))).map((groupedEvent, key) => (
 												<div className="obj tbl-details">
-													<header>{event.title}</header>
+													<header>{t("EVENTS.EVENTS.NEW.WEEKDAYSLONG." + groupedEvent.weekday)
+														+ " ("
+														+ t("BULK_ACTIONS.EDIT_EVENTS.EDIT.EVENTS")
+														+ " "
+														+ formik.values.editedEvents.reduce((acc, cur) => cur.weekday === groupedEvent.weekday  ? ++acc : acc, 0)
+														+ ")"}
+													</header>
 													<div className="obj-container">
 														<table className="main-tbl">
 															<tbody>
-																{/* Repeat for all metadata rows*/}
-																{hasAccess(
-																	"ROLE_UI_EVENTS_DETAILS_METADATA_EDIT",
-																	user
-																) && (
-																	<>
-																		<tr>
-																			<td>
-																				<span>
-																					{t(
-																						"EVENTS.EVENTS.DETAILS.METADATA.TITLE"
-																					)}
-																				</span>
-																			</td>
-																			<td className="editable ng-isolated-scope">
-																				{/*
-																				 * Per event there are 14 input fields, so with 'key * 14', the right
-																				 * event is reached. After the '+' comes the number of the input field.
-																				 * This is the first input field for this event.
-																				 */}
-																				<Field
-																					tabIndex={key * 14 + 1}
-																					name={`editedEvents.${key}.changedTitle`}
-																					metadataField={{
-																						type: "text",
-																					}}
-																					component={RenderField}
-																				/>
-																			</td>
-																		</tr>
-																		<tr>
-																			<td>
-																				<span>
-																					{t(
-																						"EVENTS.EVENTS.DETAILS.METADATA.SERIES"
-																					)}
-																				</span>
-																			</td>
-																			<td className="editable ng-isolated-scope">
-																				{/*
-																				 * Per event there are 14 input fields, so with 'key * 14', the right
-																				 * event is reached. After the '+' comes the number of the input field.
-																				 * This is the second input field for this event.
-																				 */}
-																				<Field
-																					tabIndex={key * 14 + 2}
-																					name={`editedEvents.${key}.changedSeries`}
-																					metadataField={{
-																						type: "text",
-																						collection: seriesOptions,
-																						id: "isPartOf",
-																						required:
-																							formik.values.editedEvents[key]
-																								.series !== "",
-																					}}
-																					component={RenderField}
-																				/>
-																			</td>
-																		</tr>
-																	</>
-																)}
 																{hasAccess(
 																	"ROLE_UI_EVENTS_DETAILS_SCHEDULING_EDIT",
 																	user
@@ -218,11 +280,11 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																				 */}
 																				<DropDown
 																					value={
-																						formik.values.editedEvents[key]
+																						groupedEvent
 																							.changedStartTimeHour
 																					}
 																					text={
-																						formik.values.editedEvents[key]
+																						groupedEvent
 																							.changedStartTimeHour
 																					}
 																					options={hours}
@@ -230,10 +292,14 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					required={true}
 																					handleChange={(element) => {
 																						if (element) {
-																							formik.setFieldValue(
-																								`editedEvents.${key}.changedStartTimeHour`,
-																								element.value
-																							)
+																							for (const [i, value] of formik.values.editedEvents.entries()) {
+																								if (value.weekday === groupedEvent.weekday ) {
+																									formik.setFieldValue(
+																										`editedEvents.${i}.changedStartTimeHour`,
+																										element.value
+																									)
+																								}
+																							}
 																						}
 																					}}
 																					placeholder={t(
@@ -245,15 +311,15 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																				 *
 																				 * Per event there are 14 input fields, so with 'key * 14', the right
 																				 * event is reached. After the '+' comes the number of the input field.
-																				 * This is the fourth input field for this event.
+																				 * This is the third input field for this event.
 																				 */}
 																				<DropDown
 																					value={
-																						formik.values.editedEvents[key]
+																						groupedEvent
 																							.changedStartTimeMinutes
 																					}
 																					text={
-																						formik.values.editedEvents[key]
+																						groupedEvent
 																							.changedStartTimeMinutes
 																					}
 																					options={minutes}
@@ -261,10 +327,14 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					required={true}
 																					handleChange={(element) => {
 																						if (element) {
-																							formik.setFieldValue(
-																								`editedEvents.${key}.changedStartTimeMinutes`,
-																								element.value
-																							)
+																							for (const [i, value] of formik.values.editedEvents.entries()) {
+																								if (value.weekday === groupedEvent.weekday ) {
+																									formik.setFieldValue(
+																										`editedEvents.${i}.changedStartTimeMinutes`,
+																										element.value
+																									)
+																								}
+																							}
 																						}
 																					}}
 																					placeholder={t(
@@ -284,15 +354,15 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																				 *
 																				 * Per event there are 14 input fields, so with 'key * 14', the right
 																				 * event is reached. After the '+' comes the number of the input field.
-																				 * This is the fifth input field for this event.
+																				 * This is the third input field for this event.
 																				 */}
 																				<DropDown
 																					value={
-																						formik.values.editedEvents[key]
+																						groupedEvent
 																							.changedEndTimeHour
 																					}
 																					text={
-																						formik.values.editedEvents[key]
+																						groupedEvent
 																							.changedEndTimeHour
 																					}
 																					options={hours}
@@ -300,10 +370,14 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					required={true}
 																					handleChange={(element) => {
 																						if (element) {
-																							formik.setFieldValue(
-																								`editedEvents.${key}.changedEndTimeHour`,
-																								element.value
-																							)
+																							for (const [i, value] of formik.values.editedEvents.entries()) {
+																								if (value.weekday === groupedEvent.weekday ) {
+																									formik.setFieldValue(
+																										`editedEvents.${i}.changedEndTimeHour`,
+																										element.value
+																									)
+																								}
+																							}
 																						}
 																					}}
 																					placeholder={t(
@@ -315,15 +389,15 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																				 *
 																				 * Per event there are 14 input fields, so with 'key * 14', the right
 																				 * event is reached. After the '+' comes the number of the input field.
-																				 * This is the sixth input field for this event.
+																				 * This is the third input field for this event.
 																				 */}
 																				<DropDown
 																					value={
-																						formik.values.editedEvents[key]
+																						groupedEvent
 																							.changedEndTimeMinutes
 																					}
 																					text={
-																						formik.values.editedEvents[key]
+																						groupedEvent
 																							.changedEndTimeMinutes
 																					}
 																					options={minutes}
@@ -331,10 +405,14 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					required={true}
 																					handleChange={(element) => {
 																						if (element) {
-																							formik.setFieldValue(
-																								`editedEvents.${key}.changedEndTimeMinutes`,
-																								element.value
-																							)
+																							for (const [i, value] of formik.values.editedEvents.entries()) {
+																								if (value.weekday === groupedEvent.weekday ) {
+																									formik.setFieldValue(
+																										`editedEvents.${i}.changedEndTimeMinutes`,
+																										element.value
+																									)
+																								}
+																							}
 																						}
 																					}}
 																					placeholder={t(
@@ -348,7 +426,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																		 *
 																		 * Per event there are 14 input fields, so with 'key * 14', the right
 																		 * event is reached. After the '+' comes the number of the input field.
-																		 * This is the seventh input field for this event.
+																		 * This is the third input field for this event.
 																		 */}
 																		<tr>
 																			<td>
@@ -359,11 +437,11 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																			<td className="editable ng-isolated-scope">
 																				<DropDown
 																					value={
-																						formik.values.editedEvents[key]
+																						groupedEvent
 																							.changedLocation
 																					}
 																					text={
-																						formik.values.editedEvents[key]
+																						groupedEvent
 																							.changedLocation
 																					}
 																					options={inputDevices}
@@ -371,14 +449,18 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					required={true}
 																					handleChange={(element) => {
 																						if (element) {
-																							formik.setFieldValue(
-																								`editedEvents.${key}.changedLocation`,
-																								element.value
-																							);
-																							formik.setFieldValue(
-																								`editedEvents.${key}.changedDeviceInputs`,
-																								[]
-																							);
+																							for (const [i, value] of formik.values.editedEvents.entries()) {
+																								if (value.weekday === groupedEvent.weekday ) {
+																									formik.setFieldValue(
+																										`editedEvents.${i}.changedLocation`,
+																										element.value
+																									)
+																									formik.setFieldValue(
+																										`editedEvents.${i}.changedDeviceInputs`,
+																										element.value
+																									)
+																								}
+																							}
 																						}
 																					}}
 																					placeholder={`-- ${t(
@@ -389,9 +471,6 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																		</tr>
 																		{/* Radio buttons for weekdays
 																		 *
-																		 * Per event there are 14 input fields, so with 'key * 14', the right
-																		 * event is reached. After the '+' comes the number of the input field.
-																		 * These radio buttons are input fields 8 to 14 for this event.
 																		 */}
 																		<tr>
 																			<td>
@@ -400,17 +479,30 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																				)}
 																			</td>
 																			<td className="weekdays">
+																				<fieldset>
 																				{weekdays.map((day, index) => (
 																					<label key={index}>
-																						<Field
+																						<input
 																							tabIndex={key * 14 + 8 + index}
 																							type="radio"
-																							name={`editedEvents.${key}.changedWeekday`}
+																							name={groupedEvent.weekday}
+																							onChange={(element) => {
+																								for (const [i, value] of formik.values.editedEvents.entries()) {
+																									if (value.weekday === groupedEvent.weekday ) {
+																										formik.setFieldValue(
+																											`editedEvents.${i}.changedWeekday`,
+																											element.target.value
+																										)
+																									}
+																								}
+																							}}
+																							defaultChecked={groupedEvent.weekday === day.name}
 																							value={day.name}
 																						/>
 																						{t(day.label)}
 																					</label>
 																				))}
+																				</fieldset>
 																			</td>
 																		</tr>
 																	</>
