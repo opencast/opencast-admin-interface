@@ -31,6 +31,8 @@ export type ThemeDetailsType = {
 	watermarkPosition: string,
 }
 
+export type ThemeDetailsInitialValues = ThemeDetailsType & { titleSlideMode: string }
+
 type ThemeState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
@@ -73,7 +75,27 @@ export const fetchThemes = createAppAsyncThunk('theme/fetchThemes', async (_, { 
 });
 
 // post new theme to backend
-export const postNewTheme = createAppAsyncThunk('theme/postNewTheme', async (values: ThemeDetailsType, {dispatch}) => {
+export const postNewTheme = createAppAsyncThunk('theme/postNewTheme', async (values: ThemeDetailsInitialValues
+	// All params that would be accepted by the endpoint
+	// {
+	// default: boolean,
+	// name: string,
+	// description: string
+	// bumperActive: boolean,
+	// trailerActive: boolean,
+	// titleSlideActive: boolean,
+	// licenseSlideActive: boolean,
+	// watermarkActive: boolean,
+	// bumperFile: string,
+	// trailerFile: string,
+	// watermarkFile: string,
+	// titleSlideBackground: string,
+	// licenseSlideBackground: string,
+	// titleSlideMetadata: string,
+	// licenseSlideDescription: string,
+	// watermarkPosition: string,
+// }
+, {dispatch}) => {
 	// get URL params used for post request
 	let data = buildThemeBody(values);
 

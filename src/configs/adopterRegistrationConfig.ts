@@ -154,6 +154,17 @@ export const states = {
 	},
 };
 
+export const systemTypes = [
+	{
+		value: "production",
+		name: "ADOPTER_REGISTRATION.MODAL.FORM_STATE.SYSTEM_TYPE_PRODUCTION",
+	},
+	{
+		value: "test",
+		name: "ADOPTER_REGISTRATION.MODAL.FORM_STATE.SYSTEM_TYPE_TEST",
+	},
+];
+
 // countries that an adopter can choose as country of origin
 export const countries = [
 	{

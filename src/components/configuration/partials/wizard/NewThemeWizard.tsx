@@ -10,7 +10,7 @@ import { initialFormValuesNewThemes } from "../../../../configs/modalConfig";
 import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { NewThemeSchema } from "../../../../utils/validate";
 import { useAppDispatch } from "../../../../store";
-import { postNewTheme } from "../../../../slices/themeSlice";
+import { postNewTheme, ThemeDetailsInitialValues } from "../../../../slices/themeSlice";
 
 /**
  * This component manages the pages of the new theme wizard and the submission of values
@@ -64,7 +64,7 @@ const NewThemeWizard: React.FC<{
 	// Validation schema of current page
 	const currentValidationSchema = NewThemeSchema[page];
 
-	const handleSubmit = (values: any) => {
+	const handleSubmit = (values: ThemeDetailsInitialValues) => {
 		dispatch(postNewTheme(values));
 		close();
 	};

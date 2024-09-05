@@ -28,12 +28,13 @@ import {
  * This component manages the tabs of the series details modal
  */
 const SeriesDetails = ({
-// @ts-expect-error TS(7031): Binding element 'seriesId' implicitly has an 'any'... Remove this comment to see the full error message
 	seriesId,
-// @ts-expect-error TS(7031): Binding element 'policyChanged' implicitly has an ... Remove this comment to see the full error message
 	policyChanged,
-// @ts-expect-error TS(7031): Binding element 'setPolicyChanged' implicitly has ... Remove this comment to see the full error message
 	setPolicyChanged,
+}: {
+	seriesId: string
+	policyChanged: boolean
+	setPolicyChanged: (policyChanged: boolean) => void
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -44,14 +45,6 @@ const SeriesDetails = ({
 	const theme = useAppSelector(state => getSeriesDetailsTheme(state));
 	const themeNames = useAppSelector(state => getSeriesDetailsThemeNames(state));
 	const hasStatistics = useAppSelector(state => seriesHasStatistics(state));
-
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const updateSeriesMetadataWrapper = (id: any, values: any) => {
-		dispatch(updateSeriesMetadata({id, values}));
-	}
-	const updateExtendedSeriesMetadataWrapper = (id: any, values: any, catalog: any) => {
-		dispatch(updateExtendedSeriesMetadata({id, values, catalog}));
-	}
 
 	useEffect(() => {
 		dispatch(fetchSeriesStatistics(seriesId));
@@ -96,8 +89,7 @@ const SeriesDetails = ({
 		},
 	];
 
-// @ts-expect-error TS(7006): Parameter 'tabNr' implicitly has an 'any' type.
-	const openTab = (tabNr) => {
+	const openTab = (tabNr: number) => {
 		setPage(tabNr);
 	};
 
@@ -144,7 +136,7 @@ const SeriesDetails = ({
 						metadataFields={metadataFields}
 						resourceId={seriesId}
 						header={tabs[page].tabNameTranslation}
-						updateResource={updateSeriesMetadataWrapper}
+						updateResource={updateSeriesMetadata}
 						editAccessRole="ROLE_UI_SERIES_DETAILS_METADATA_EDIT"
 					/>
 				)}
@@ -152,7 +144,7 @@ const SeriesDetails = ({
 					<DetailsExtendedMetadataTab
 						resourceId={seriesId}
 						metadata={extendedMetadata}
-						updateResource={updateExtendedSeriesMetadataWrapper}
+						updateResource={updateExtendedSeriesMetadata}
 						editAccessRole="ROLE_UI_SERIES_DETAILS_METADATA_EDIT"
 					/>
 				)}

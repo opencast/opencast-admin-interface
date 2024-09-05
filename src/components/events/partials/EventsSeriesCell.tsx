@@ -22,28 +22,31 @@ const EventsSeriesCell = ({
 	const filterMap = useAppSelector(state => getFilters(state));
 
 	// Filter with value of current cell
-// @ts-expect-error TS(7006): Parameter 'series' implicitly has an 'any' type.
-	const addFilter = async (series) => {
+	const addFilter = async (seriesId: string) => {
 		let filter = filterMap.find(({ name }) => name === "series");
 		if (!!filter) {
-			await dispatch(editFilterValue({filterName: filter.name, value: series.id}));
+			await dispatch(editFilterValue({filterName: filter.name, value: seriesId}));
 			await dispatch(fetchEvents());
 			dispatch(loadEventsIntoTable());
 		}
 	};
 
 	return (
-		!!row.series && (
+		!!row.series ? (
 			// Link template for series of event
 			<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.SERIES")}>
 				<button
 					className="button-like-anchor crosslink"
-					onClick={() => addFilter(row.series)}
+					onClick={() => row.series
+						? addFilter(row.series.id)
+						: console.error("Tried to sort by a series, but the series did not exist.")
+					}
 				>
 					{row.series.title}
 				</button>
 			</Tooltip>
 		)
+		: <></>
 	);
 };
 

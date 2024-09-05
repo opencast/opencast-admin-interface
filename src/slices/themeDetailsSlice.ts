@@ -3,7 +3,7 @@ import axios from 'axios';
 import { buildThemeBody } from '../utils/resourceUtils';
 import { addNotification } from './notificationSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { ThemeDetailsType } from './themeSlice';
+import { ThemeDetailsInitialValues, ThemeDetailsType } from './themeSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of a theme
@@ -69,7 +69,7 @@ export const fetchUsage = createAppAsyncThunk('themeDetails/fetchUsage', async (
 // update a certain theme
 export const updateThemeDetails = createAppAsyncThunk('themeDetails/updateThemeDetails', async (params: {
 	id: number,
-	values: ThemeDetailsType
+	values: ThemeDetailsInitialValues
 }, {dispatch}) => {
 	const { values, id } = params
 	let data = buildThemeBody(values);

@@ -8,10 +8,14 @@ import { availableHotkeys } from "../../../../configs/hotkeysConfig";
  * This component renders the modal for displaying series details
  */
 const SeriesDetailsModal = ({
-    handleClose,
-    seriesTitle,
-    seriesId
-}: any) => {
+	handleClose,
+	seriesTitle,
+	seriesId
+}: {
+	handleClose: () => void
+	seriesTitle: string
+	seriesId: string
+}) => {
 	const { t } = useTranslation();
 
 	// tracks, whether the policies are different to the initial value
@@ -50,7 +54,6 @@ const SeriesDetailsModal = ({
 				<SeriesDetails
 					seriesId={seriesId}
 					policyChanged={policyChanged}
-// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
 					setPolicyChanged={(value) => setPolicyChanged(value)}
 				/>
 			</section>

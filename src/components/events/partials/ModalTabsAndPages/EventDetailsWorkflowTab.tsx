@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Formik } from "formik";
+import { Formik, FormikErrors } from "formik";
 import {
 	deletingWorkflow as getDeletingWorkflow,
 	getBaseWorkflow,
@@ -96,12 +96,11 @@ const EventDetailsWorkflowTab = ({
 		return true;
 	};
 
-// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
-	const changeWorkflow = (value, changeFormikValue) => {
+	const changeWorkflow = (value: string, changeFormikValue: (field: string, value: unknown) => Promise<void | FormikErrors<any>>) => {
 		let currentConfiguration = {};
 
 		if (value === baseWorkflow.workflowId) {
-			currentConfiguration = parseBooleanInObject(baseWorkflow.configuration);
+			currentConfiguration = parseBooleanInObject(baseWorkflow.configuration as { [key: string]: any });
 		} else {
 			currentConfiguration = setDefaultConfig(workflowDefinitions, value);
 		}
@@ -121,15 +120,17 @@ const EventDetailsWorkflowTab = ({
 		}
 
 		return {
-			workflowDefinition: !!workflow.workflowId
+			workflowDefinition: "workflowId" in workflow && !!workflow.workflowId
 				? workflow.workflowId
 				: baseWorkflow.workflowId,
 			configuration: initialConfig,
 		};
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (values: {
+		workflowDefinition: string,
+		configuration: { [key: string]: unknown } | undefined
+	}) => {
 		dispatch(saveWorkflowConfig({values, eventId}));
 	};
 
