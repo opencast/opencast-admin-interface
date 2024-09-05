@@ -27,7 +27,7 @@ import { fetchRecordings } from "./recordingSlice";
 import { getRecordings } from "../selectors/recordingSelectors";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
-import { Ace, TransformedAcl, TransformedAcls } from './aclDetailsSlice';
+import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
 import { Event } from "./eventSlice";
 import {
@@ -36,6 +36,7 @@ import {
 	WorkflowTabHierarchy
 } from "../components/events/partials/modals/EventDetails";
 import { AppDispatch } from "../store";
+import { Ace } from './aclSlice';
 
 // Contains the navigation logic for the modal
 type EventDetailsModal = {
@@ -71,7 +72,6 @@ type CommentAuthor = {
 	username: string,
 }
 
-// TODO: Further define this after modernizing Workflows
 type Workflow = {
 	scheduling: boolean,
 	entries: {
@@ -83,7 +83,22 @@ type Workflow = {
 		submitterName: string,
 		title: string
 	}[],
-	workflow: any // TODO: proper typing
+	// TODO: This looks like really bad practice. Rewrite.
+	workflow: { // The type when looking at the list of workflows
+		workflowId: string,
+		description?: string,
+		configuration?: unknown
+	} | { // The type when looking at the details of a particular workflow
+		configuration: { [key: string]: unknown }
+		creator: string
+		description: string
+		executionTime: number
+		status: string // translation string
+		submittedAt: string // date string
+		title: string
+		wdid: string
+		wiid: number
+	}
 }
 
 type Device = {
@@ -120,6 +135,25 @@ export type Publication = {
 	order: number,
 	url: string,
 	description?: string,
+}
+
+export type Comment = {
+	author: CommentAuthor,
+	creationDate: string,
+	id: number,
+	modificationDate: string,
+	reason: string,  // translation key
+	replies: CommentReply[],
+	resolvedStatus: boolean,
+	text: string,
+}
+
+export type CommentReply = {
+	author: CommentAuthor,
+	creationDate: string,
+	id: number,
+	modificationDate: string,
+	text: string,
 }
 
 type EventDetailsState = {
@@ -249,22 +283,7 @@ type EventDetailsState = {
 		channel: string,
 	},
 	policies: TransformedAcl[],
-	comments: {
-		author: CommentAuthor,
-		creationDate: string,
-		id: number,
-		modificationDate: string,
-		reason: string,  // translation key
-		replies: {
-			author: CommentAuthor,
-			creationDate: string,
-			id: number,
-			modificationDate: string,
-			text: string,
-		}[],
-		resolvedStatus: boolean,
-		text: string,
-	}[],
+	comments: Comment[],
 	commentReasons: { [key: string]: string },
 	scheduling: {
 		hasProperties: boolean,
@@ -300,7 +319,11 @@ type EventDetailsState = {
 		description?: string,
 	},
 	workflowDefinitions: WorkflowDefinitions[],
-	baseWorkflow: any,  // TODO: proper typing
+	baseWorkflow: {
+		workflowId: string,
+		description?: string,
+		configuration?: unknown
+	},
 	workflowOperations: {
 		entries: {
 			configuration: { [key: string]: string },
@@ -537,7 +560,9 @@ const initialState: EventDetailsState = {
 		description: "",
 	},
 	workflowDefinitions: [],
-	baseWorkflow: {},
+	baseWorkflow: {
+		workflowId: ""
+	},
 	workflowOperations: {
 		entries: [],
 	},
@@ -843,13 +868,13 @@ export const fetchAssetPublicationDetails = createAppAsyncThunk('eventDetails/fe
 	return await publicationDetailsRequest.data;
 });
 
-export const fetchAccessPolicies = createAppAsyncThunk('eventDetails/fetchAccessPolicies', async (eventId: string) => {
+export const fetchAccessPolicies = createAppAsyncThunk('eventDetails/fetchAccessPolicies', async (id: string) => {
 	const policyData = await axios.get(
-		`/admin-ng/event/${eventId}/access.json`
+		`/admin-ng/event/${id}/access.json`
 	);
 	let accessPolicies = await policyData.data;
 
-	let policies: TransformedAcls = [];
+	let policies: TransformedAcl[] = [];
 	if (!!accessPolicies.episode_access) {
 		const json = JSON.parse(accessPolicies.episode_access.acl).acl.ace;
 		let newPolicies: { [key: string]: TransformedAcl } = {};
@@ -970,7 +995,7 @@ export const saveComment = createAppAsyncThunk('eventDetails/saveComment', async
 
 export const saveCommentReply = createAppAsyncThunk('eventDetails/saveCommentReply', async (params: {
 	eventId: string,
-	commentId: string,
+	commentId: number,
 	replyText: string,
 	commentResolved: boolean
 }) => {
@@ -1065,20 +1090,22 @@ export const fetchSchedulingInfo = createAppAsyncThunk('eventDetails/fetchSchedu
 		return source;
 });
 
+export type SchedulingInfo = {
+	captureAgent: string,
+	inputs: string[],
+	scheduleDurationHours: string,
+	scheduleDurationMinutes: string,
+	scheduleEndDate: string,
+	scheduleEndHour: string,
+	scheduleEndMinute: string,
+	scheduleStartDate: string,
+	scheduleStartHour: string,
+	scheduleStartMinute: string,
+}
+
 export const saveSchedulingInfo = createAppAsyncThunk('eventDetails/saveSchedulingInfo', async (params: {
 	eventId: string,
-	values: {
-		captureAgent: string,
-		inputs: string[],
-		scheduleDurationHours: string,
-		scheduleDurationMinutes: string,
-		scheduleEndDate: string,
-		scheduleEndHour: string,
-		scheduleEndMinute: string,
-		scheduleStartDate: string,
-		scheduleStartHour: string,
-		scheduleStartMinute: string,
-	},
+	values: SchedulingInfo,
 	startDate: Date,
 	endDate: Date
 }, { dispatch, getState }) => {
@@ -1488,7 +1515,7 @@ export const fetchWorkflowErrors = createAppAsyncThunk('eventDetails/fetchWorkfl
 
 export const fetchWorkflowErrorDetails = createAppAsyncThunk('eventDetails/fetchWorkflowErrorDetails', async (params: {
 	eventId: string,
-	workflowId: string,
+	workflowId: number,
 	errorId?: number
 }) => {
 	const { eventId, workflowId, errorId } = params;
@@ -1542,10 +1569,10 @@ export const fetchEventStatisticsValueUpdate = createAppAsyncThunk('eventDetails
 });
 
 export const updateMetadata = createAppAsyncThunk('eventDetails/updateMetadata', async (params: {
-	eventId: string,
-	values: { [key: string]: any }
+	id: string,
+	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
 }, { dispatch, getState }) => {
-	const { eventId, values } = params;
+	const { id, values } = params;
 
 	let metadataInfos = getMetadata(getState());
 
@@ -1554,7 +1581,7 @@ export const updateMetadata = createAppAsyncThunk('eventDetails/updateMetadata',
 		values
 	);
 
-	await axios.put(`/admin-ng/event/${eventId}/metadata`, data, headers);
+	await axios.put(`/admin-ng/event/${id}/metadata`, data, headers);
 
 	// updated metadata in event details redux store
 	let eventMetadata = {
@@ -1566,18 +1593,18 @@ export const updateMetadata = createAppAsyncThunk('eventDetails/updateMetadata',
 });
 
 export const updateExtendedMetadata = createAppAsyncThunk('eventDetails/updateExtendedMetadata', async (params: {
-	eventId: string,
-	values: { [key: string]: any },
+	id: string,
+	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
 	catalog: MetadataCatalog
 }, { dispatch, getState }) => {
-	const { eventId, values, catalog } = params;
+	const { id, values, catalog } = params;
 
 	const { fields, data, headers } = transformMetadataForUpdate(
 		catalog,
 		values
 	);
 
-	await axios.put(`/admin-ng/event/${eventId}/metadata`, data, headers);
+	await axios.put(`/admin-ng/event/${id}/metadata`, data, headers);
 
 	// updated extended metadata in event details redux store
 	let eventMetadata = {
@@ -1611,7 +1638,7 @@ export const fetchHasActiveTransactions = createAppAsyncThunk('eventDetails/fetc
 });
 
 export const updateAssets = createAppAsyncThunk('eventDetails/updateAssets', async (params: {
-	values: { [key: string]: string },
+	values: { [key: string]: File },
 	eventId: string
 }, { dispatch, getState }) => {
 	const { values, eventId } = params;
@@ -1698,22 +1725,21 @@ export const updateAssets = createAppAsyncThunk('eventDetails/updateAssets', asy
 });
 
 export const saveAccessPolicies = createAppAsyncThunk('eventDetails/saveAccessPolicies', async (params: {
-	eventId: string,
+	id: string,
 	policies: { acl: { ace: Ace[] } }
 }, { dispatch }) => {
-	const { eventId, policies } = params;
+	const { id, policies } = params;
 	const headers = getHttpHeaders();
 
 	let data = new URLSearchParams();
 	data.append("acl", JSON.stringify(policies));
-// @ts-expect-error TS(2345): Argument of type 'boolean' is not assignable to pa... Remove this comment to see the full error message
-	data.append("override", true);
+	data.append("override", "true");
 
 	return axios
-		.post(`/admin-ng/event/${eventId}/access`, data.toString(), headers)
+		.post(`/admin-ng/event/${id}/access`, data.toString(), headers)
 		.then((response) => {
 			console.info(response);
-			dispatch(fetchAccessPolicies(eventId))
+			dispatch(fetchAccessPolicies(id))
 			dispatch(
 				addNotification({
 					type: "info",
@@ -1799,7 +1825,7 @@ export const updateWorkflow = createAppAsyncThunk('eventDetails/updateWorkflow',
 export const saveWorkflowConfig = createAppAsyncThunk('eventDetails/saveWorkflowConfig', async (params: {
 	values: {
 		workflowDefinition: string,
-		configuration: { [key: string]: unknown }
+		configuration: { [key: string]: unknown } | undefined
 	},
 	eventId: string
 }, { dispatch }) => {
@@ -1887,7 +1913,9 @@ const eventDetailsSlice = createSlice({
 			workflows: EventDetailsState["workflows"],
 			workflowDefinitions: EventDetailsState["workflowDefinitions"],
 		}>) {
-			state.baseWorkflow = { ...action.payload.workflows.workflow };
+			if ("workflowId" in action.payload.workflows.workflow) {
+				state.baseWorkflow = { ...action.payload.workflows.workflow };
+			}
 			state.workflows = action.payload.workflows;
 			state.workflowDefinitions = action.payload.workflowDefinitions;
 		},
@@ -2302,7 +2330,7 @@ const eventDetailsSlice = createSlice({
 			>) => {
 				state.statusWorkflows = 'succeeded';
 				state.workflows = action.payload;
-				if (!!state.workflows.workflow.workflowId) {
+				if ("workflowId" in state.workflows.workflow && !!state.workflows.workflow.workflowId) {
 					state.workflowConfiguration = state.workflows.workflow;
 				} else {
 					state.workflowConfiguration = state.baseWorkflow;
@@ -2507,7 +2535,7 @@ const eventDetailsSlice = createSlice({
 				console.error(action.error);
 			})
 			.addCase(updateWorkflow.fulfilled, (state, action) => {
-				if (!!state.workflows.workflow.workflowId) {
+				if ("workflowId" in state.workflows.workflow && !!state.workflows.workflow.workflowId) {
 					state.workflowConfiguration = state.workflows.workflow;
 				} else {
 					state.workflowConfiguration = state.baseWorkflow;

@@ -17,23 +17,17 @@ import { transformToIdValueArray } from "../utils/utils";
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
-import { Ace, TransformedAcl, TransformedAcls } from './aclDetailsSlice';
+import { Ace } from './aclSlice';
+import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of a series
  */
-type Feed = {
+export type Feed = {
 	link: string,
 	type: string,
 	version: string,
-}
-
-type Acl = {
-	actions: string[],
-	read: boolean,
-	role: string,
-	write: boolean,
 }
 
 type SeriesDetailsState = {
@@ -54,7 +48,7 @@ type SeriesDetailsState = {
   	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	feeds: Feed[],
-	acl: Acl[],
+	acl: TransformedAcl[],
 	theme: string,
 	themeNames: { id: string, value: string }[],
 	fetchingStatisticsInProgress: boolean,
@@ -135,7 +129,7 @@ export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSe
 		);
 	}
 
-	let seriesAcls: TransformedAcls = [];
+	let seriesAcls: TransformedAcl[] = [];
 	if (!!response.series_access) {
 		const json = JSON.parse(response.series_access.acl).acl.ace;
 		let policies: { [key: string]: TransformedAcl } = {};
@@ -226,19 +220,7 @@ export const fetchSeriesDetailsThemeNames = createAppAsyncThunk('seriesDetails/f
 // update series with new metadata
 export const updateSeriesMetadata = createAppAsyncThunk('seriesDetails/updateSeriesMetadata', async (params: {
 	id: string,
-	values: {
-		contributor: string[],
-		createdBy: string,
-		creator: string[],
-		description: string,
-		identifier: string,
-		language: string,
-		license: string,
-		publisher: string[],
-		rightsHolder: string,
-		subject: string,
-		title: string,
-	}
+	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
 }, {dispatch, getState}) => {
 	const { id, values } = params;
 	let metadataInfos = getSeriesDetailsMetadata(getState());
@@ -262,7 +244,7 @@ export const updateSeriesMetadata = createAppAsyncThunk('seriesDetails/updateSer
 // update series with new metadata
 export const updateExtendedSeriesMetadata = createAppAsyncThunk('seriesDetails/updateExtendedSeriesMetadata', async (params: {
 	id: string,
-	values: { [key: string]: any },
+	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
 	catalog: MetadataCatalog,
 }, {dispatch, getState}) => {
 	const { id, values, catalog } = params;
@@ -300,7 +282,7 @@ export const updateExtendedSeriesMetadata = createAppAsyncThunk('seriesDetails/u
 
 export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSeriesAccess', async (params: {
 	id: string,
-	policies: { [key: string]: TransformedAcl }
+	policies: { acl: { ace: Ace[] } }
 }, {dispatch}) => {
 	const { id, policies } = params;
 

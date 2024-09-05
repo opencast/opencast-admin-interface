@@ -8,7 +8,7 @@ import {
 	prepareExtendedMetadataFieldsForPost,
 	prepareMetadataFieldsForPost,
 	transformMetadataCollection,
-	transformMetadataCollectionFields,
+	transformMetadataFields,
 } from "../utils/resourceUtils";
 import { makeTwoDigits } from "../utils/utils";
 import { sourceMetadata } from "../configs/sourceConfig";
@@ -25,7 +25,7 @@ import { getAssetUploadOptions, getSchedulingEditedEvents, getSourceUploadOption
 import { fetchSeriesOptions } from "./seriesSlice";
 import { AppDispatch } from '../store';
 import { fetchAssetUploadOptions } from '../thunks/assetsThunks';
-import { TransformedAcls } from './aclDetailsSlice';
+import { TransformedAcl } from './aclDetailsSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { FormikErrors } from 'formik';
@@ -136,8 +136,9 @@ export type EditedEvents = {
 
 export type UploadOption = {
 	accept: string,
-	"displayFallback.DETAIL": string,
-	"displayFallback.SHORT": string,
+	displayFallback?: string,
+	"displayFallback.DETAIL"?: string,
+	"displayFallback.SHORT"?: string,
 	displayOrder: number,
 	flavorSubType: string,
 	flavorType: string,
@@ -147,10 +148,21 @@ export type UploadOption = {
 	title: string,
 	type: string,
 	displayOverride?: string,
+	"displayOverride.SHORT"?: string,
+	"displayOverride.DETAIL"?: string,
 }
 
 export type UploadAssetsTrack = UploadOption & {
 	file?: FileList
+}
+
+export type Conflict = {
+	conflicts: {
+		end: string,
+		start: string,
+		title: string,
+	}[],
+	eventId: string,
 }
 
 type EventState = {
@@ -314,7 +326,8 @@ export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', a
 	let response = await data.data;
 
 	// transform response
-	const metadata = transformMetadataCollectionFields(response.metadata);
+	let metadata = transformMetadataFields(response.metadata)
+		.map(field => ({ ...field, selected: false }));
 	return {
 		mergedMetadata: metadata,
 		notFound: response.notFound,
@@ -330,7 +343,7 @@ export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata
 		notFound?: string[],
 		runningWorkflow?: string[],
 	},
-	values: { [key: string]: unknown}
+	values: { [key: string]: unknown }
 }, { dispatch }) => {
 	const { metadataFields, values } = params;
 
@@ -411,7 +424,7 @@ export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata
 
 export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (params: {
 	values: {
-		acls: TransformedAcls,
+		acls: TransformedAcl[],
 		configuration: { [key: string]: unknown },
 		deviceInputs?: string[],
 		processingWorkflow: string,
@@ -774,7 +787,6 @@ export const fetchScheduling = createAppAsyncThunk('events/fetchScheduling', asy
 // update multiple scheduled events at once
 export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateScheduledEventsBulk', async (
 	values: {
-		changedEvent: number,
 		changedEvents: string[],
 		editedEvents: EditedEvents[],
 		events: Event[],
@@ -1062,14 +1074,7 @@ export const checkForSchedulingConflicts = (events: EditedEvents[]) => async (di
 
 	formData.append("update", JSON.stringify(update));
 
-	let data: {
-		conflicts: {
-			end: string,
-			start: string,
-			title: string,
-		}[],
-		eventId: string,
-	}[] = [];
+	let data: Conflict[] = [];
 
 	axios
 		.post("/admin-ng/event/bulk/conflicts", formData)

@@ -6,10 +6,12 @@ import ThemeDetails from "./ThemeDetails";
  * This component renders the modal for displaying theme details
  */
 const ThemeDetailsModal = ({
-    handleClose,
-    themeId,
-    themeName
-}: any) => {
+	handleClose,
+	themeName
+}: {
+	handleClose: () => void,
+	themeName: string
+}) => {
 	const { t } = useTranslation();
 
 	const close = () => {

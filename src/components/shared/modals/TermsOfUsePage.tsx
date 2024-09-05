@@ -13,8 +13,7 @@ const TermsOfUsePage = () => {
 			<h1
 				style={{
 					fontSize: "x-large",
-// @ts-expect-error TS(2322): Type '{ fontSize: string; marginButton: string; }'... Remove this comment to see the full error message
-					marginButton: "15px",
+					marginBottom: "15px",
 				}}
 			>
 				{t("ADOPTER_REGISTRATION.MODAL.LEGAL_INFO_STATE.HEADER")}
