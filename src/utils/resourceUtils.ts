@@ -12,7 +12,7 @@ import { Recording } from "../slices/recordingSlice";
 import { UserInfoState } from "../slices/userInfoSlice";
 import { hasAccess, isJson } from "./utils";
 import { RootState } from "../store";
-import { MetadataCatalog, MetadataField, MetadataFieldSelected } from "../slices/eventSlice";
+import { MetadataCatalog, MetadataField } from "../slices/eventSlice";
 import { initialFormValuesNewGroup } from '../configs/modalConfig';
 import { UpdateUser } from '../slices/userDetailsSlice';
 import { TFunction } from 'i18next';
@@ -149,52 +149,33 @@ export const getInitialMetadataFieldValues = (
 
 // transform collection of metadata into object with name and value
 export const transformMetadataCollection = (metadata: MetadataCatalog) => {
-	for (const [i, field] of metadata.fields.entries()) {
-		if (!!field.collection) {
-			metadata.fields[i].collection = Object.entries(
-				field.collection
-			).map(([key, value]) => {
-				if (isJson(key)) {
-					let collectionParsed = JSON.parse(key);
-					return {
-						name: collectionParsed.label ? collectionParsed.label : key,
-						value: value,
-						...collectionParsed,
-					};
-				} else {
-					return {
-						name: key,
-						value: value,
-					};
-				}
-			});
+	transformMetadataFields(metadata.fields);
+	return metadata;
+};
+
+export const transformMetadataFields = (metadata: MetadataField[]) => {
+	for (const field of metadata) {
+		if (field.collection) {
+			field.collection = Object.entries(field.collection)
+				.map(([key, value]) => {
+					if (isJson(key)) {
+						let collectionParsed = JSON.parse(key);
+						return {
+							name: collectionParsed.label || key,
+							value,
+							...collectionParsed,
+						};
+					} else {
+						return {
+							name: key,
+							value: value,
+						};
+					}
+				});
 		}
 	}
-
 	return metadata;
-}
-
-// Same as above, but different!
-export const transformMetadataCollectionFields = (metadata: MetadataFieldSelected[]) => {
-	for (const [i, field] of metadata.entries()) {
-		if (!!field) {
-			metadata[i].collection = Object.entries(field).map(
-				([key, value]) => {
-					return {
-						name: key,
-						value: value,
-					};
-				}
-			);
-		}
-		metadata[i] = {
-			...metadata[i],
-			selected: false,
-		};
-	}
-
-	return metadata;
-}
+};
 
 // transform metadata catalog for update via post request
 export const transformMetadataForUpdate = (catalog: MetadataCatalog, values: { [key: string]: MetadataCatalog["fields"][0]["value"] }) => {
@@ -559,26 +540,39 @@ export const hasDeviceAccess = (user: UserInfoState, deviceId: Recording["id"]) 
 };
 
 // build body for post/put request in theme context
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-export const buildThemeBody = (values) => {
+export const buildThemeBody = (values: {
+	name: string,
+	description: string,
+	bumperActive: boolean,
+	bumperFile: string,
+	trailerActive: boolean,
+	trailerFile: string,
+	titleSlideActive: boolean,
+	titleSlideMode: string,
+	titleSlideBackground: string,
+	licenseSlideActive: boolean,
+	watermarkActive: boolean,
+	watermarkFile: string,
+	watermarkPosition: string,
+}) => {
 	// fill form data depending on user inputs
 	let data = new URLSearchParams();
 	data.append("name", values.name);
 	data.append("description", values.description);
-	data.append("bumperActive", values.bumperActive);
+	data.append("bumperActive", values.bumperActive.toString());
 	if (values.bumperActive) {
 		data.append("bumperFile", values.bumperFile);
 	}
-	data.append("trailerActive", values.trailerActive);
+	data.append("trailerActive", values.trailerActive.toString());
 	if (values.trailerActive) {
 		data.append("trailerFile", values.trailerFile);
 	}
-	data.append("titleSlideActive", values.titleSlideActive);
+	data.append("titleSlideActive", values.titleSlideActive.toString());
 	if (values.titleSlideActive && values.titleSlideMode === "upload") {
 		data.append("titleSlideBackground", values.titleSlideBackground);
 	}
-	data.append("licenseSlideActive", values.licenseSlideActive);
-	data.append("watermarkActive", values.watermarkActive);
+	data.append("licenseSlideActive", values.licenseSlideActive.toString());
+	data.append("watermarkActive", values.watermarkActive.toString());
 	if (values.watermarkActive) {
 		data.append("watermarkFile", values.watermarkFile);
 		data.append("watermarkPosition", values.watermarkPosition);
@@ -588,8 +582,7 @@ export const buildThemeBody = (values) => {
 };
 
 // creates an empty policy with the role from the argument
-// @ts-expect-error TS(7006): Parameter 'role' implicitly has an 'any' type.
-export const createPolicy = (role) => {
+export const createPolicy = (role: string): TransformedAcl => {
 	return {
 		role: role,
 		read: false,

@@ -11,6 +11,7 @@ import { DragDropContext, Droppable, OnDragEndResponder, Draggable as Draggablee
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useAppDispatch, useAppSelector } from "../../store";
+import { TableColumn } from "../../configs/tableConfigs/aclsTableConfig";
 
 /**
  * This component renders the modal for editing which columns are shown in the table
@@ -57,8 +58,7 @@ const EditTableViewModal = ({
 	};
 
 	// set deactivated property of column to true (deactivate = true) or false (deactivate = false) and move to corresponding list
-// @ts-expect-error TS(7006): Parameter 'column' implicitly has an 'any' type.
-	const changeColumn = (column, deactivate) => {
+	const changeColumn = (column: TableColumn, deactivate: boolean) => {
 		if (deactivate) {
 			setActiveColumns(activeCols.filter((col) => col !== column));
 			column = { ...column, deactivated: deactivate };
@@ -86,14 +86,14 @@ const EditTableViewModal = ({
 
 	// change column order based on where column was dragged and dropped
 	const onDragEnd: OnDragEndResponder = (result) => {
-    // dropped outside the list
-    if (!result.destination) {
-      return;
-    }
+		// dropped outside the list
+		const destination = result.destination
+		if (destination === null) {
+			return;
+		}
 
-		// @ts-expect-error TS(7006): Parameter 'columns' implicitly has an 'any' type.
-		setActiveColumns((columns) => arrayMoveImmutable(columns, result.source.index, result.destination.index));
-  }
+		setActiveColumns((columns) => arrayMoveImmutable(columns, result.source.index, destination.index));
+	}
 
 	return (
 		<>

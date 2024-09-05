@@ -197,8 +197,11 @@ const NewEventWizard: React.FC<{
 								)}
 								{page === 5 && (
 									<NewAccessPage
+									// @ts-expect-error TS(7006):
 										previousPage={previousPage}
+										// @ts-expect-error TS(7006):
 										nextPage={nextPage}
+										// @ts-expect-error TS(7006):
 										formik={formik}
 										editAccessRole="ROLE_UI_SERIES_DETAILS_ACL_EDIT"
 										initEventAclWithSeriesAcl={initEventAclWithSeriesAcl}
@@ -274,6 +277,11 @@ const getInitialValues = (
 				initialValues[option.id] = null;
 			}
 		};
+	}
+
+	// Add all initial form values known upfront listed in newEventsConfig
+	for (const [key, value] of Object.entries(initialFormValuesNewEvents)) {
+		initialValues[key] = value;
 	}
 
 	const defaultDate = new Date();

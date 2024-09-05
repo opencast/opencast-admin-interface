@@ -24,7 +24,7 @@ import { MetadataCatalog } from './eventSlice';
 /**
  * This file contains redux reducer for actions affecting the state of a series
  */
-type Feed = {
+export type Feed = {
 	link: string,
 	type: string,
 	version: string,
@@ -45,7 +45,9 @@ type SeriesDetailsState = {
 	errorStatistics: SerializedError | null,
 	statusStatisticsValue: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorStatisticsValue: SerializedError | null,
-  	metadata: MetadataCatalog,
+	statusTobiraData: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	errorTobiraData: SerializedError | null,
+  metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	feeds: Feed[],
 	acl: TransformedAcl[],
@@ -54,6 +56,16 @@ type SeriesDetailsState = {
 	fetchingStatisticsInProgress: boolean,
 	statistics: Statistics[],
 	hasStatisticsError: boolean,
+	tobiraData: {
+		baseURL: string,
+		hostPages: {
+			title: string,
+			path: string,
+			ancestors: {
+				title: string,
+			}[],
+		}[],
+	},
 }
 
 // Initial state of series details in redux store
@@ -72,6 +84,8 @@ const initialState: SeriesDetailsState = {
 	errorStatistics: null,
 	statusStatisticsValue: 'uninitialized',
 	errorStatisticsValue: null,
+	statusTobiraData: 'uninitialized',
+	errorTobiraData: null,
 	metadata: {
 		title: "",
 		flavor: "",
@@ -85,6 +99,10 @@ const initialState: SeriesDetailsState = {
 	fetchingStatisticsInProgress: false,
 	statistics: [],
 	hasStatisticsError: false,
+	tobiraData: {
+		baseURL: "",
+		hostPages: [],
+	},
 };
 
 // fetch metadata of certain series from server
@@ -220,19 +238,7 @@ export const fetchSeriesDetailsThemeNames = createAppAsyncThunk('seriesDetails/f
 // update series with new metadata
 export const updateSeriesMetadata = createAppAsyncThunk('seriesDetails/updateSeriesMetadata', async (params: {
 	id: string,
-	values: {
-		contributor: string[],
-		createdBy: string,
-		creator: string[],
-		description: string,
-		identifier: string,
-		language: string,
-		license: string,
-		publisher: string[],
-		rightsHolder: string,
-		subject: string,
-		title: string,
-	}
+	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
 }, {dispatch, getState}) => {
 	const { id, values } = params;
 	let metadataInfos = getSeriesDetailsMetadata(getState());
@@ -256,7 +262,7 @@ export const updateSeriesMetadata = createAppAsyncThunk('seriesDetails/updateSer
 // update series with new metadata
 export const updateExtendedSeriesMetadata = createAppAsyncThunk('seriesDetails/updateExtendedSeriesMetadata', async (params: {
 	id: string,
-	values: { [key: string]: any },
+	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
 	catalog: MetadataCatalog,
 }, {dispatch, getState}) => {
 	const { id, values, catalog } = params;
@@ -294,7 +300,7 @@ export const updateExtendedSeriesMetadata = createAppAsyncThunk('seriesDetails/u
 
 export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSeriesAccess', async (params: {
 	id: string,
-	policies: { [key: string]: TransformedAcl }
+	policies: { acl: { ace: Ace[] } }
 }, {dispatch}) => {
 	const { id, policies } = params;
 
@@ -401,6 +407,48 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
                 console.error(response);
             });
     }
+});
+
+// fetch metadata of certain series from server
+export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsTobira', async (id: string, {dispatch}) => {
+	const res = await axios.get(`/admin-ng/series/${id}/tobira/pages`)
+		.then((response) => {
+			return response;
+		})
+		.catch((response) => {
+			console.error(response);
+			const data = response.response;
+
+			if (data.status === 500) {
+				dispatch(addNotification({
+					type: "error",
+					key: "TOBIRA_SERVER_ERROR",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				}));
+
+				throw Error(response);
+			} else if (data.status === 404) {
+				dispatch(addNotification({
+					type: "warning",
+					key: "TOBIRA_NOT_FOUND",
+					duration: -1,
+					parameter: null,
+					context: NOTIFICATION_CONTEXT
+				}));
+
+				throw Error(response);
+			}
+			return undefined;
+		});
+
+	if (!res) {
+		throw Error;
+	}
+
+	const data = res.data;
+	return data;
 });
 
 // thunks for statistics
@@ -554,6 +602,19 @@ const seriesDetailsSlice = createSlice({
 			.addCase(fetchSeriesDetailsThemeNames.rejected, (state, action) => {
 				state.statusThemeNames = 'failed';
 				state.errorThemeNames = action.error;
+			})
+			.addCase(fetchSeriesDetailsTobira.pending, (state) => {
+				state.statusTobiraData = 'loading';
+			})
+			.addCase(fetchSeriesDetailsTobira.fulfilled, (state, action: PayloadAction<
+				SeriesDetailsState["tobiraData"]
+			>) => {
+				state.statusTobiraData = 'succeeded';
+				state.tobiraData = action.payload;
+			})
+			.addCase(fetchSeriesDetailsTobira.rejected, (state, action) => {
+				state.statusTobiraData = 'failed';
+				state.errorTobiraData = action.error;
 			})
 			.addCase(fetchSeriesStatistics.pending, (state) => {
 				state.statusStatistics = 'loading';

@@ -12,6 +12,7 @@ import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButt
 import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
+import { TobiraPage } from "../../../../slices/seriesSlice";
 
 /**
  * This component renders the summary page for new series in the new series wizard.
@@ -19,6 +20,7 @@ import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 interface RequiredFormProps {
 	theme: string,
 	acls: TransformedAcl[],
+	selectedPage: TobiraPage | undefined,
 }
 
 const NewSeriesSummary = <T extends RequiredFormProps>({
@@ -47,6 +49,7 @@ const NewSeriesSummary = <T extends RequiredFormProps>({
 						{/*Summary metadata*/}
 						<MetadataSummaryTable
 							metadataFields={metadataSeries.fields}
+							// @ts-expect-error TS(7006):
 							formikValues={formik.values}
 							header={"EVENTS.SERIES.NEW.METADATA.CAPTION"}
 						/>
@@ -55,7 +58,9 @@ const NewSeriesSummary = <T extends RequiredFormProps>({
 						{!metaDataExtendedHidden ? (
 							<MetadataExtendedSummaryTable
 								extendedMetadata={extendedMetadata}
+								// @ts-expect-error TS(7006):
 								formikValues={formik.values}
+								// @ts-expect-error TS(7006):
 								formikInitialValues={formik.initialValues}
 								header={"EVENTS.SERIES.NEW.METADATA_EXTENDED.CAPTION"}
 							/>
@@ -78,6 +83,23 @@ const NewSeriesSummary = <T extends RequiredFormProps>({
 										<tr>
 											<td>{t("EVENTS.SERIES.NEW.THEME.CAPTION")}</td>
 											<td>{theme?.name}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						)}
+
+						{/*Summary Tobira*/}
+						{!!formik.values.selectedPage && (
+							<div className="obj tbl-list">
+								<header className="no-expand">
+									{t("EVENTS.SERIES.NEW.TOBIRA.CAPTION")}
+								</header>
+								<table className="main-tbl">
+									<tbody>
+										<tr>
+											<td>{t("EVENTS.SERIES.NEW.TOBIRA.PATH_SEGMENT")}</td>
+											<td>{formik.values.selectedPage?.path}</td>
 										</tr>
 									</tbody>
 								</table>

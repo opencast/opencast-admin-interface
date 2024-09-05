@@ -3,6 +3,7 @@ import { Formik } from "formik";
 import NewThemePage from "../ModalTabsAndPages/NewThemePage";
 import NewSeriesSummary from "./NewSeriesSummary";
 import {
+	getSeriesTobiraPageStatus,
 	getSeriesExtendedMetadata,
 	getSeriesMetadata,
 } from "../../../../selectors/seriesSeletctor";
@@ -14,9 +15,10 @@ import { initialFormValuesNewSeries } from "../../../../configs/modalConfig";
 import { NewSeriesSchema } from "../../../../utils/validate";
 import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { postNewSeries } from "../../../../slices/seriesSlice";
-import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
+import { TobiraPage, postNewSeries } from "../../../../slices/seriesSlice";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
+import NewTobiraPage from "../ModalTabsAndPages/NewTobiraPage";
+import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 
@@ -32,6 +34,7 @@ const NewSeriesWizard: React.FC<{
 
 	const metadataFields = useAppSelector(state => getSeriesMetadata(state));
 	const extendedMetadata = useAppSelector(state => getSeriesExtendedMetadata(state));
+	const statusTobiraPage = useAppSelector(state => getSeriesTobiraPageStatus(state));
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
 
@@ -66,6 +69,11 @@ const NewSeriesWizard: React.FC<{
 			hidden: !themesEnabled,
 		},
 		{
+			translation: "EVENTS.SERIES.NEW.TOBIRA.CAPTION",
+			name: "tobira",
+			hidden: statusTobiraPage !== "succeeded",  // TODO: Figure out condition for this to be true
+		},
+		{
 			translation: "EVENTS.SERIES.NEW.SUMMARY.CAPTION",
 			name: "summary",
 			hidden: false,
@@ -77,9 +85,10 @@ const NewSeriesWizard: React.FC<{
 
 	const nextPage = (
 		values: {
-			[key: string]: any;
 			acls: TransformedAcl[];
 			theme: string;
+			breadcrumbs: TobiraPage[];
+			selectedPage: TobiraPage | undefined;
 		}
 	) => {
 		setSnapshot(values);
@@ -98,9 +107,10 @@ const NewSeriesWizard: React.FC<{
 
 	const previousPage = (
 		values: {
-			[key: string]: any;
 			acls: TransformedAcl[];
 			theme: string;
+			breadcrumbs: TobiraPage[];
+			selectedPage: TobiraPage | undefined;
 		},
 		twoPagesBack?: boolean
 	) => {
@@ -173,8 +183,11 @@ const NewSeriesWizard: React.FC<{
 								)}
 								{page === 2 && (
 									<NewAccessPage
+									// @ts-expect-error TS(7006):
 										nextPage={nextPage}
+										// @ts-expect-error TS(7006):
 										previousPage={previousPage}
+										// @ts-expect-error TS(7006):
 										formik={formik}
 										editAccessRole="ROLE_UI_SERIES_DETAILS_ACL_EDIT"
 										initEventAclWithSeriesAcl={false}
@@ -188,6 +201,13 @@ const NewSeriesWizard: React.FC<{
 									/>
 								)}
 								{page === 4 && (
+									<NewTobiraPage
+										formik={formik}
+										nextPage={nextPage}
+										previousPage={previousPage}
+									/>
+								)}
+								{page === 5 && (
 									<NewSeriesSummary
 										previousPage={previousPage}
 										formik={formik}
@@ -206,14 +226,17 @@ const NewSeriesWizard: React.FC<{
 const getInitialValues = (
 	metadataFields: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
-	user: UserInfoState
+	user: UserInfoState,
 ) => {
 	let initialValues = initialFormValuesNewSeries;
+
 	// Transform metadata fields provided by backend (saved in redux)
-	initialValues = {...initialValues, ...getInitialMetadataFieldValues(
+	let metadataInitialValues = getInitialMetadataFieldValues(
 		metadataFields,
 		extendedMetadata
-	)};
+	);
+
+	initialValues = { ...initialValues, ...metadataInitialValues };
 
 	initialValues["acls"] = [
 		{

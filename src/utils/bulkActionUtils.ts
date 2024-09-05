@@ -2,7 +2,7 @@
 import { hasDeviceAccess } from "./resourceUtils";
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
 import { addNotification } from "../slices/notificationSlice";
-import { EditedEvents, Event } from "../slices/eventSlice";
+import { checkForSchedulingConflicts, EditedEvents, Event, Conflict } from "../slices/eventSlice";
 import { UserInfoState } from "../slices/userInfoSlice";
 import { AppDispatch } from "../store";
 
@@ -68,8 +68,7 @@ export const checkSchedulingConflicts = async (
 	formikValues: {
 		editedEvents: EditedEvents[]
 	},
-	setConflicts: (conflicts: any) => void,
-	checkConflicts: (editedEvents: EditedEvents[]) => Promise<any[]>,
+	setConflicts: (conflicts: Conflict[]) => void,
 	dispatch: AppDispatch,
 ) => {
 	// Check if each start is before end
@@ -103,7 +102,7 @@ export const checkSchedulingConflicts = async (
 	}
 
 	// Use backend for check for conflicts with other events
-	const response = await checkConflicts(formikValues.editedEvents);
+	const response = await dispatch(checkForSchedulingConflicts(formikValues.editedEvents));
 
 	if (response.length > 0) {
 		setConflicts(response);

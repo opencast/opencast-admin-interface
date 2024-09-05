@@ -18,11 +18,10 @@ const NewGroupSummaryPage = <T extends typeof initialFormValuesNewGroup>({
 	const { t } = useTranslation();
 
 	// get values of objects in field that should be shown
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
-	const getValues = (field) => {
+	const getValues = (fields: { name: string }[]) => {
 		let names = [];
-		for (let i = 0; i < field.length; i++) {
-			names.push(field[i].name);
+		for (const field of fields) {
+			names.push(field.name);
 		}
 		return names;
 	};
