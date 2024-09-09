@@ -223,17 +223,7 @@
 			"NO_EVENTS_UPDATED": "Alle Aktualisierungen schlugen fehl.",
 			"SOME_EVENTS_NOT_UPDATED": "Einige Videos konnten nicht aktualisiert werden."
 		},
-		"PROBLEM_ON_START": "Beim Laden ist ein Fehler aufgetreten. Bitte den OpenCast-Admin kontaktieren",
-		"TOBIRA_OVERRIDE_NAME": "Der Titel der ausgewählten Seite wird mit dem Titel der Serie überschrieben.",
-		"TOBIRA_NO_PATH_SEGMENT": "Seite benötigt ein Pfadsegment.",
-		"TOBIRA_NOT_MOUNTED": "Serie konnte nicht in Tobira eingehängt werden.",
-		"TOBIRA_PATH_SEGMENT_INVALID": "Pfadsegment ist ungültig. Ein gültiges Pfadsegment ist mindestens zwei Zeichen lang, enthält keine Leerzeichen, Kontrollzeichen, keins der Zeichen '<>\"[\\]^`{|}#%\/?]' und fängt mit keinem der Zeichen '-+~@_!$&;:.,=*'()' an.",
-		"TOBIRA_PATH_SEGMENT_UNIQUE": "Das gleiche Pfadsegment darf nicht mehrmals für Seiten mit der gleichen Überseite verwendet werden.",
-		"TOBIRA_PAGE_NOT_FOUND": "Die angefragte Seite existiert nicht (mehr). Versuchen Sie wieder vom Anfang zu beginnen.",
-		"TOBIRA_SERVER_ERROR":" Fehler bei der Kommunikation mit Tobira. Kontaktieren Sie Ihren Systemadministrator oder versuchen Sie es später erneut.",
-		"TOBIRA_COPIED_DIRECT_LINK": "Link wurde erfolgreich in die Zwischenablage kopiert.",
-		"TOBIRA_FAILED_COPYING_DIRECT_LINK": "Link konnte nicht in die Zwischenablage kopiert werden.",
-		"TOBIRA_NOT_FOUND": "Diese Serie ist Tobira (noch) nicht bekannt. Versuchen Sie es in ein paar Minuten noch einmal oder kontaktieren Sie ihren Systemadministrator."
+		"PROBLEM_ON_START": "A error occurred on start up. Please contact your Opencast admin"
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Aktionen",
@@ -413,7 +403,7 @@
 				"INFORMATION_PARAGRAPH_2": "Wir freuen uns über jede Rückmeldung, da selbst ein Teil der Daten, die wir über die Opencast-Nutzung sammeln dürfen, helfen werden, bessere Software zu erstellen, die Chancen für zusätzliche Finanzierungen zu verbessern und mehr Unternehmen zu gewinnen, Dienstleistungen rund um Opencast anzubieten."
 			},
 			"FORM_STATE": {
-				"ORGANISATION": "Organisation",
+				"ORGANISATION": "Organization",
 				"DEPARTMENT": "Abteilung",
 				"COUNTRY": "Land",
 				"POSTAL_CODE": "Postleitzahl",
@@ -435,7 +425,7 @@
 				"SYSTEM_TYPE_TEST": "Test System",
 				"WHICH_DATA_TO_SHARE": "Welche Daten möchtest du teilen?",
 				"POLICY_HEADLINE": "Datenschutzerklärung und Nutzungsbedingungen",
-				"USAGE_STATISTICS": "Nutzungsstatistik",
+				"USAGE_STATISTICS": "Usage statistics",
 				"ERROR_REPORTS": "Fehlerberichte",
 				"READ_TERMS_OF_USE_BEFORE": "Ich las und akzeptiere die",
 				"READ_TERMS_OF_USE_LINK": "Datenschutzerklärung und Nutzungsbedingungen",
@@ -904,7 +894,7 @@
 						"REVIEW": "Überprüfung erforderlich",
 						"ASYNC": "A/V Spuren asynchron",
 						"AUDIO_ISSUE": "Fehlende oder beschädigte Audiospur",
-						"CANCELLED": "Cancelled event",
+						"CANCELLED": "Canceled event",
 						"CONFLICTING_METADATA": "Widersprüchliche Metadaten",
 						"IMPROPER_POINT": "Unpassender Start- oder Endzeitpunkt",
 						"MISSING_AGREEMENT": "Fehlende Vereinbarung",
@@ -1122,17 +1112,17 @@
 				},
 				"TOBIRA": {
 					"CAPTION": "Tobira",
-					"DESCRIPTION": "Hier können Sie auswählen, ob die Serie im Tobira Videoportal eingehängt werden soll. Sie können nur eine Seite auswählen, die außerdem leer sein muss (mit fetter Schrift markiert). Sie können auch neue Seiten erstellen. Diese werden jedoch nur gespeichert, wenn sie Teil des Pfades zur ausgewählten Seite sind.",
-					"SELECT_PAGE": "Wählen Sie eine Zielseite aus",
-					"PAGE_TITLE": "Unterseitentitel",
-					"PATH_SEGMENT": "Pfadsegment",
-					"SUBPAGES": "Unterseiten",
-					"ADD_SUBPAGE": "Unterseite hinzufügen",
-					"CANCEL": "Abbrechen",
-					"HOMEPAGE": "Startseite",
-					"SELECTED_PAGE": "Serie wird im folgenden Pfad eingehängt",
-					"NO_PAGE_SELECTED": "Keine Seite ausgewählt. Serie wird nicht eingehängt werden.",
-					"PATH": "Pfad"
+					"DESCRIPTION": "Here you can select where you want the series to show up in the Tobira video portal. You can only select one location here, and it needs to be empty (marked in bold). You can create new pages here, but note that they are only persisted if they are on the path to the selected page.",
+					"SELECT_PAGE": "Select a target page",
+					"PAGE_TITLE": "Subpage title",
+					"PATH_SEGMENT": "Path segment",
+					"SUBPAGES": "Subpages",
+					"ADD_SUBPAGE": "Add subpage",
+					"CANCEL": "Cancel",
+					"HOMEPAGE": "Homepage",
+					"SELECTED_PAGE": "Series will be mounted under the following path",
+					"NO_PAGE_SELECTED": "No page selected. Series will not be mounted in Tobira.",
+					"PATH": "Path"
 				},
 				"SUMMARY": {
 					"CAPTION": "Zusammenfassung"
@@ -1211,11 +1201,11 @@
 					"REPLACE_SERIES_THEME": "Theme der Serie aktualisieren"
 				},
 				"TOBIRA": {
-					"HOMEPAGE": "(Startseite)",
-					"DIRECT_LINK": "Direktlink zur Serie",
-					"COPY_DIRECT_LINK": "In die Zwischenablage kopieren",
-					"NOT_MOUNTED": "Diese Serie ist zurzeit nicht in der Seitenstruktur enthalten und kann nur über den obenstehenden Direktlink aufgerufen werden.",
-					"PAGES": "Seiten, die diese Serie enthalten"
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to series",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This series is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this series"
 				},
 				"EVENTS": {
 					"TITLE": "Titel",
@@ -2057,7 +2047,7 @@
 		"TOTAL": "Summe",
 		"GRANULARITY": "Granularität",
 		"NAVIGATION": {
-			"ORGANIZATION": "Organisation"
+			"ORGANIZATION": "Organization"
 		},
 		"TIME_MODES": {
 			"Year": "Jahr",
