@@ -4,7 +4,6 @@ import cn from "classnames";
 import Notifications from "../../../shared/Notifications";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
-	getCurrentLanguageInformation,
 	getTimezoneOffset,
 	translateOverrideFallback,
 } from "../../../../utils/utils";
@@ -13,13 +12,12 @@ import { Field } from "../../../shared/Field";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getRecordings } from "../../../../selectors/recordingSelectors";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
-import { hours, minutes, weekdays } from "../../../../configs/modalConfig";
+import { weekdays } from "../../../../configs/modalConfig";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import {
 	filterDevicesForAccess,
 	hasAnyDeviceAccess,
 } from "../../../../utils/resourceUtils";
-import DropDown from "../../../shared/DropDown";
 import {
 	changeDurationHour,
 	changeDurationHourMultiple,
@@ -36,13 +34,17 @@ import {
 	changeStartHourMultiple,
 	changeStartMinute,
 	changeStartMinuteMultiple,
-	renderValidDate,
 } from "../../../../utils/dateUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { Recording, fetchRecordings } from "../../../../slices/recordingSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { parseISO } from "date-fns";
 import { checkConflicts, UploadAssetsTrack } from "../../../../slices/eventSlice";
+import SchedulingTime from "../wizards/scheduling/SchedulingTime";
+import SchedulingEndDateDisplay from "../wizards/scheduling/SchedulingEndDateDisplay";
+import SchedulingLocation from "../wizards/scheduling/SchedulingLocation";
+import SchedulingInputs from "../wizards/scheduling/SchedulingInputs";
+import SchedulingConflicts from "../wizards/scheduling/SchedulingConflicts";
 
 /**
  * This component renders the source page for new events in the new event wizard.
@@ -109,30 +111,11 @@ const NewSourcePage = <T extends RequiredFormProps>({
 						{/*Show notifications with context events-form*/}
 						<Notifications context="not_corner" />
 
-            {
-              /*list of scheduling conflicts*/
-              conflicts.length > 0 && (
-                <table className="main-tbl scheduling-conflict">
-                  <tbody>
-                    {conflicts.map((conflict, key) => (
-                      <tr key={key}>
-                        <td>{conflict.title}</td>
-                        <td>
-                          {t("dateFormats.dateTime.medium", {
-                            dateTime: renderValidDate(conflict.start),
-                          })}
-                        </td>
-                        <td>
-                          {t("dateFormats.dateTime.medium", {
-                            dateTime: renderValidDate(conflict.end),
-                          })}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )
-            }
+						{
+							<SchedulingConflicts
+								conflicts={conflicts}
+							/>
+						}
 
 						<div className="obj list-obj">
 							<header className="no-expand">
@@ -402,8 +385,6 @@ const Schedule = <T extends {
 }) => {
 	const { t } = useTranslation();
 
-	const currentLanguage = getCurrentLanguageInformation();
-
 	const renderInputDeviceOptions = () => {
 		if (!!formik.values.location) {
 			let inputDevice = inputDevices.find(
@@ -412,17 +393,11 @@ const Schedule = <T extends {
 			if (!inputDevice) {
 				return <></>;
 			}
-			return inputDevice.inputs.map((input, key) => (
-				<label key={key}>
-					<Field
-						type="checkbox"
-						name="deviceInputs"
-						value={input.id}
-						tabIndex={12}
-					/>
-					{t(input.value)}
-				</label>
-			));
+			return (
+				<SchedulingInputs
+					inputs={inputDevice.inputs}
+				/>
+			)
 		}
 	};
 
@@ -508,247 +483,143 @@ const Schedule = <T extends {
 								</tr>
 							</>
 						)}
-						<tr>
-							<td>
-								{t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.START_TIME")}{" "}
-								<i className="required">*</i>
-							</td>
-							<td className="editable ng-isolated-scope">
-								{/* drop-down for hour
-								 *
-								 * This is the 13th input field.
-								 */}
-								<DropDown
-									value={formik.values.scheduleStartHour}
-									text={formik.values.scheduleStartHour.toString()}
-									options={hours}
-									type={"time"}
-									required={true}
-									handleChange={(element) => {
-										if (element) {
-											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-												changeStartHourMultiple(
-													element.value,
-													formik.values,
-													formik.setFieldValue
-												).then();
-											} else {
-												changeStartHour(
-													element.value,
-													formik.values,
-													formik.setFieldValue
-												).then();
-											}
-										}
-									}}
-									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
-								/>
+						{/* start time */}
+						<SchedulingTime
+							hour={formik.values.scheduleStartHour}
+							minute={formik.values.scheduleStartMinute}
+							disabled={false}
+							title={"EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.START_TIME"}
+							hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
+							minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+							callbackHour={(value: string) => {
+								if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+									changeStartHourMultiple(
+										value,
+										formik.values,
+										formik.setFieldValue
+									);
+								} else {
+									changeStartHour(
+										value,
+										formik.values,
+										formik.setFieldValue
+									);
+								}
+							}}
+							callbackMinute={(value: string) => {
+								if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+									changeStartMinuteMultiple(
+										value,
+										formik.values,
+										formik.setFieldValue
+									);
+								} else {
+									changeStartMinute(
+										value,
+										formik.values,
+										formik.setFieldValue
+									);
+								}
+							}}
+						/>
+						{/* duration */}
+						<SchedulingTime
+							hour={formik.values.scheduleDurationHours}
+							minute={formik.values.scheduleDurationMinutes}
+							disabled={false}
+							title={"EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.DURATION"}
+							hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
+							minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+							callbackHour={(value: string) => {
+								if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+									changeDurationHourMultiple(
+										value,
+										formik.values,
+										formik.setFieldValue
+									);
+								} else {
+									changeDurationHour(
+										value,
+										formik.values,
+										formik.setFieldValue
+									);
+								}
+							}}
+							callbackMinute={(value: string) => {
+								if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+									changeDurationMinuteMultiple(
+										value,
+										formik.values,
+										formik.setFieldValue
+									);
+								} else {
+									changeDurationMinute(
+										value,
+										formik.values,
+										formik.setFieldValue
+									);
+								}
+							}}
+						/>
+						{/* end time */}
+						<SchedulingTime
+							hour={formik.values.scheduleEndHour}
+							minute={formik.values.scheduleEndMinute}
+							disabled={false}
+							title={"EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.END_TIME"}
+							hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
+							minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+							callbackHour={(value: string) => {
+								if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+									changeEndHourMultiple(
+										value,
+										formik.values,
+										formik.setFieldValue
+									);
+								} else {
+									changeEndHour(
+										value,
+										formik.values,
+										formik.setFieldValue
+									);
+								}
+							}}
+							callbackMinute={(value: string) => {
+								if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
+									changeEndMinuteMultiple(
+										value,
+										formik.values,
+										formik.setFieldValue
+									);
+								} else {
+									changeEndMinute(
+										value,
+										formik.values,
+										formik.setFieldValue
+									);
+								}
+							}}
+						/>
 
-								{/* drop-down for minute
-								 *
-								 * This is the 14th input field.
-								 */}
-								<DropDown
-									value={formik.values.scheduleStartMinute}
-									text={formik.values.scheduleStartMinute.toString()}
-									options={minutes}
-									type={"time"}
-									required={true}
-									handleChange={(element) => {
-										if (element) {
-											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-												changeStartMinuteMultiple(
-													element.value,
-													formik.values,
-													formik.setFieldValue
-												).then();
-											} else {
-												changeStartMinute(
-													element.value,
-													formik.values,
-													formik.setFieldValue
-												).then();
-											}
-										}
-									}}
-									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
-								/>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								{t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.DURATION")}{" "}
-								<i className="required">*</i>
-							</td>
-							<td className="editable ng-isolated-scope">
-								{/* drop-down for hour
-								 *
-								 * This is the 15th input field.
-								 */}
-								<DropDown
-									value={formik.values.scheduleDurationHours}
-									text={formik.values.scheduleDurationHours.toString()}
-									options={hours}
-									type={"time"}
-									required={true}
-									handleChange={(element) => {
-										if (element) {
-											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-												changeDurationHourMultiple(
-													element.value,
-													formik.values,
-													formik.setFieldValue
-												).then();
-											} else {
-												changeDurationHour(
-													element.value,
-													formik.values,
-													formik.setFieldValue
-												).then();
-											}
-										}
-									}}
-									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
-								/>
+						{/* display end date if on different day to start date, only if this is current source mode */}
+						{formik.values.sourceMode === "SCHEDULE_SINGLE" &&
+							formik.values.scheduleEndDate.toString() !==
+								formik.values.scheduleStartDate.toString() && (
+									<SchedulingEndDateDisplay
+										scheduleEndDate={formik.values.scheduleEndDate}
+									/>
+							)}
 
-								{/* drop-down for minute
-								 *
-								 * This is the 16th input field.
-								 */}
-								<DropDown
-									value={formik.values.scheduleDurationMinutes}
-									text={formik.values.scheduleDurationMinutes.toString()}
-									options={minutes}
-									type={"time"}
-									required={true}
-									handleChange={(element) => {
-										if (element) {
-											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-												changeDurationMinuteMultiple(
-													element.value,
-													formik.values,
-													formik.setFieldValue
-												).then();
-											} else {
-												changeDurationMinute(
-													element.value,
-													formik.values,
-													formik.setFieldValue
-												).then();
-											}
-										}
-									}}
-									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
-								/>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								{t("EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.END_TIME")}{" "}
-								<i className="required">*</i>
-							</td>
-							<td className="editable ng-isolated-scope">
-								{/* drop-down for hour
-								 *
-								 * This is the 17th input field.
-								 */}
-								<DropDown
-									value={formik.values.scheduleEndHour}
-									text={formik.values.scheduleEndHour.toString()}
-									options={hours}
-									type={"time"}
-									required={true}
-									handleChange={(element) => {
-										if (element) {
-											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-												changeEndHourMultiple(
-													element.value,
-													formik.values,
-													formik.setFieldValue
-												).then();
-											} else {
-												changeEndHour(
-													element.value,
-													formik.values,
-													formik.setFieldValue
-												).then();
-											}
-										}
-									}}
-									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
-								/>
-
-								{/* drop-down for minute
-								 *
-								 * This is the 18th input field.
-								 */}
-								<DropDown
-									value={formik.values.scheduleEndMinute}
-									text={formik.values.scheduleEndMinute.toString()}
-									options={minutes}
-									type={"time"}
-									required={true}
-									handleChange={(element) => {
-										if (element) {
-											if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-												changeEndMinuteMultiple(
-													element.value,
-													formik.values,
-													formik.setFieldValue
-												).then();
-											} else {
-												changeEndMinute(
-													element.value,
-													formik.values,
-													formik.setFieldValue
-												).then();
-											}
-										}
-									}}
-									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
-								/>
-
-								{/* display end date if on different day to start date, only if this is current source mode */}
-								{formik.values.sourceMode === "SCHEDULE_SINGLE" &&
-									formik.values.scheduleEndDate.toString() !==
-										formik.values.scheduleStartDate.toString() && (
-										<span style={{ marginLeft: "10px" }}>
-											{new Date(
-												formik.values.scheduleEndDate
-											).toLocaleDateString(
-												currentLanguage ? currentLanguage.dateLocale.code : undefined
-											)}
-										</span>
-									)}
-							</td>
-						</tr>
-						<tr>
-							<td>
-								{t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.LOCATION")}{" "}
-								<i className="required">*</i>
-							</td>
-							{/* one options for each capture agents that has input options
-							 *
-							 * This is the 19th input field.
-							 */}
-							<td className="editable ng-isolated-scope">
-								<DropDown
-									value={formik.values.location}
-									text={formik.values.location}
-									options={inputDevices}
-									type={"captureAgent"}
-									required={true}
-									handleChange={(element) => {
-										if (element) {
-											formik.setFieldValue("location", element.value)
-										}
-									}}
-									placeholder={t(
-										"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.LOCATION"
-									)}
-								/>
-							</td>
-						</tr>
+						<SchedulingLocation
+								location={formik.values.location}
+								inputDevices={inputDevices}
+								disabled={false}
+								title={"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.LOCATION"}
+								placeholder={"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.LOCATION"}
+								callback={(value: string) => {
+									formik.setFieldValue("location", value)
+								}}
+							/>
 						<tr>
 							<td>{t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.INPUTS")}</td>
 							<td>
