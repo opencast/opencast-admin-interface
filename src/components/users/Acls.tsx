@@ -22,7 +22,6 @@ import MainView from "../MainView";
 import Footer from "../Footer";
 import { hasAccess } from "../../utils/utils";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchAcls } from "../../slices/aclSlice";
 import { fetchUsers } from "../../slices/userSlice";
@@ -39,7 +38,6 @@ const Acls: React.FC = () => {
 	const dispatch = useAppDispatch();
 	const acls = useAppSelector(state => getTotalAcls(state));
 	const user = useAppSelector(state => getUserInformation(state));
-	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	const loadAcls = async () => {
 		// Fetching acls from server
@@ -72,9 +70,7 @@ const Acls: React.FC = () => {
 	};
 
 	useEffect(() => {
-		if ("acls" !== currentFilterType) {
-			dispatch(fetchFilters("acls"));
-		}
+		dispatch(fetchFilters("acls"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));

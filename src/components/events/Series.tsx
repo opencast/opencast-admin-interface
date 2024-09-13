@@ -23,7 +23,6 @@ import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchEvents } from "../../slices/eventSlice";
@@ -50,7 +49,6 @@ const Series = () => {
 	const [displayDeleteSeriesModal, setDeleteSeriesModal] = useState(false);
 
   const user = useAppSelector(state => getUserInformation(state));
-	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	let location = useLocation();
 
@@ -80,9 +78,7 @@ const Series = () => {
 	};
 
 	useEffect(() => {
-		if ("series" !== currentFilterType) {
-			dispatch(fetchFilters("series"))
-		}
+		dispatch(fetchFilters("series"))
 
 		// Reset text filer
 		dispatch(editTextFilter(""));
