@@ -11,7 +11,7 @@ import NewMetadataExtendedPage from "../ModalTabsAndPages/NewMetadataExtendedPag
 import NewAccessPage from "../ModalTabsAndPages/NewAccessPage";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
 import { initialFormValuesNewSeries } from "../../../../configs/modalConfig";
-import { NewSeriesSchema } from "../../../../utils/validate";
+import { MetadataSchema, NewSeriesSchema } from "../../../../utils/validate";
 import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { postNewSeries } from "../../../../slices/seriesSlice";
@@ -73,7 +73,12 @@ const NewSeriesWizard: React.FC<{
 	];
 
 	// Validation schema of current page
-	const currentValidationSchema = NewSeriesSchema[page];
+	let currentValidationSchema;
+	if (page === 0 || page === 1) {
+		currentValidationSchema = MetadataSchema(metadataFields.fields);
+	} else {
+		currentValidationSchema = NewSeriesSchema[page];
+	}
 
 	const nextPage = (
 		values: {
