@@ -232,11 +232,9 @@ const TableFilters = ({
 		let valueLabel = filter.options?.find((opt) => opt.value === filter.value)
 			?.label || filter.value;
 		return (
-			<span>
-				{t(filter.label).substr(0, 40)}:
-				{filter.translatable
-					? t(valueLabel).substr(0, 40)
-					: valueLabel.substr(0, 40)}
+			<span className="table-filter-blue-box">
+				{t(filter.label)}:
+				{filter.translatable? t(valueLabel) : valueLabel}
 			</span>
 		);
 	};
@@ -334,8 +332,8 @@ const TableFilters = ({
 										{
 											// Use different representation of name and value depending on type of filter
 											filter.type === "period" ? (
-												<span>
-													{t(filter.label).substr(0, 40)}:
+												<span className="table-filter-blue-box">
+													{t(filter.label)}:
 													{t("dateFormats.date.short", {
 														date: renderValidDate(filter.value.split("/")[0]),
 													})}
