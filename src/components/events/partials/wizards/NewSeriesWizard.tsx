@@ -7,7 +7,7 @@ import {
 	getSeriesExtendedMetadata,
 	getSeriesMetadata,
 } from "../../../../selectors/seriesSeletctor";
-import NewMetadataPage from "../ModalTabsAndPages/NewMetadataPage";
+import NewSeriesMetadataPage from "../ModalTabsAndPages/NewSeriesMetadataPage";
 import NewMetadataExtendedPage from "../ModalTabsAndPages/NewMetadataExtendedPage";
 import NewAccessPage from "../ModalTabsAndPages/NewAccessPage";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
@@ -166,7 +166,7 @@ const NewSeriesWizard: React.FC<{
 							/>
 							<div>
 								{page === 0 && (
-									<NewMetadataPage
+									<NewSeriesMetadataPage
 										nextPage={nextPage}
 										formik={formik}
 										metadataFields={metadataFields}

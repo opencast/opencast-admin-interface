@@ -1,29 +1,21 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { FormikProps } from "formik";
-import { Field } from "../../../shared/Field";
+import { Field, FormikProps } from "formik";
 import RenderField from "../../../shared/wizard/RenderField";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
-import { sourceMetadata } from "../../../../configs/sourceConfig";
-
-interface RequiredFormProps {
-	sourceMode: string,
-}
 
 /**
  * This component renders the metadata page for new events and series in the wizards.
  */
-const NewMetadataPage = <T extends RequiredFormProps>({
+const NewSeriesMetadataPage = <T,>({
 	formik,
-	previousPage,
 	nextPage,
 	metadataFields,
 	header
 }: {
 	formik: FormikProps<T>,
-	previousPage: (values: T, twoPagesBack?: boolean) => void | undefined,
 	nextPage: (values: T) => void,
 	metadataFields: MetadataCatalog,
 	header: string
@@ -71,23 +63,6 @@ const NewMetadataPage = <T extends RequiredFormProps>({
 													</td>
 												</tr>
 											))}
-											{formik.values.sourceMode === "UPLOAD"
-												&& sourceMetadata.UPLOAD
-												&& sourceMetadata.UPLOAD.metadata.map((field, key) => (
-												<tr key={key}>
-													<td>
-														<span>{t(field.label)}</span>
-														{field.required && <i className="required">*</i>}
-													</td>
-													<td className="editable">
-														<Field
-															name={field.id}
-															metadataField={field}
-															component={RenderField}
-														/>
-													</td>
-												</tr>
-											))}
 									</tbody>
 								</table>
 							</div>
@@ -97,9 +72,9 @@ const NewMetadataPage = <T extends RequiredFormProps>({
 			</div>
 
 			{/* Button for navigation to next page */}
-			<WizardNavigationButtons formik={formik} previousPage={previousPage} nextPage={nextPage} />
+			<WizardNavigationButtons isFirst formik={formik} nextPage={nextPage} />
 		</>
 	);
 };
 
-export default NewMetadataPage;
+export default NewSeriesMetadataPage;
