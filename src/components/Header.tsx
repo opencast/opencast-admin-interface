@@ -286,8 +286,8 @@ const Header = ({
 				<RegistrationModal close={hideRegistrationModal} />
 			)}
 
-			{/* Terms of use */}
-			{displayTerms && <TermsOfUseModal />}
+			{/* Terms of use for all non-admin users */}
+			{displayTerms && !user.roles.includes("ROLE_ADMIN") && <TermsOfUseModal />}
 
 			{/* Hotkey Cheat Sheet */}
 			{displayHotKeyCheatSheet && (

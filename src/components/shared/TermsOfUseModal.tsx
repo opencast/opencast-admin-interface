@@ -6,6 +6,10 @@ import axios from "axios";
 import i18n from "../../i18n/i18n";
 import DOMPurify from "dompurify";
 
+// Generate URL for terms based on the languae
+const getURL = (language: string) => {
+	return `/ui/config/admin-ui/terms.${language}.html`;
+};
 
 const TermsOfUseModal = () => {
 	const { t } = useTranslation();
@@ -28,11 +32,6 @@ const TermsOfUseModal = () => {
 
 		checkTerms();
 	}, []);
-
-	// Generate URL for terms based on the languae
-	const getURL = (language: string) => {
-		return `/ui/config/admin-ui/terms.${language}.html`;
-	};
 
 	// Fetch terms
 	useEffect(() => {
