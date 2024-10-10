@@ -15,6 +15,7 @@ import Acls from "./components/users/Acls";
 import About from "./components/About";
 import { useAppDispatch } from "./store";
 import { fetchOcVersion, fetchUserInfo } from "./slices/userInfoSlice";
+import LifeCyclePolicies from "./components/events/LifeCyclePolicies";
 
 function App() {
 	const dispatch = useAppDispatch();
@@ -40,6 +41,8 @@ function App() {
 				<Route path={"/events/events"} element={<Events />} />
 
 				<Route path={"/events/series"} element={<Series />} />
+
+				<Route path={"/events/lifeCyclePolicies"} element={<LifeCyclePolicies />} />
 
 				<Route path={"/recordings/recordings"} element={<Recordings />} />
 

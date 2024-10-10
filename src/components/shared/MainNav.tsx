@@ -6,6 +6,7 @@ import {
 	loadEventsIntoTable,
 	loadGroupsIntoTable,
 	loadJobsIntoTable,
+	loadLifeCyclePoliciesIntoTable,
 	loadRecordingsIntoTable,
 	loadSeriesIntoTable,
 	loadServersIntoTable,
@@ -34,6 +35,7 @@ import { fetchSeries } from "../../slices/seriesSlice";
 import { fetchJobs } from "../../slices/jobSlice";
 import { fetchEvents } from "../../slices/eventSlice";
 import { Tooltip } from "./Tooltip";
+import { fetchLifeCyclePolicies } from "../../slices/lifeCycleSlice";
 
 /**
  * This component renders the main navigation that opens when the burger button is clicked
@@ -82,6 +84,19 @@ const MainNav = ({
 
 		// Load series into table
 		dispatch(loadSeriesIntoTable());
+	};
+
+	const loadLifeCyclePolicies = () => {
+		dispatch(fetchFilters("lifeCylePolicies"));
+
+		// Reset the current page to first page
+		dispatch(setOffset(0));
+
+		// Fetching lifeCycle policies from server
+		dispatch(fetchLifeCyclePolicies());
+
+		// Load lifeCycle policies into table
+		dispatch(loadLifeCyclePoliciesIntoTable());
 	};
 
 	const loadRecordings = () => {
@@ -228,9 +243,15 @@ const MainNav = ({
 											<i className="events" />
 										</Tooltip>
 									</Link>
-								) : (
-									hasAccess("ROLE_UI_SERIES_VIEW", user) && (
+								) : hasAccess("ROLE_UI_SERIES_VIEW", user) ? (
 										<Link to="/events/series" onClick={() => loadSeries()}>
+											<Tooltip title={t("NAV.EVENTS.TITLE")} placement={"right"}>
+												<i className="events" />
+											</Tooltip>
+										</Link>
+								) : (
+									hasAccess("ROLE_UI_LIFECYCLEPOLICIES_VIEW", user) && (
+										<Link to="/events/lifeCyclePolicies" onClick={() => loadLifeCyclePolicies()}>
 											<Tooltip title={t("NAV.EVENTS.TITLE")} placement={"right"}>
 												<i className="events" />
 											</Tooltip>

@@ -1222,6 +1222,48 @@
 			}
 		}
 	},
+	"LIFECYCLE": {
+		"NAVIGATION": {
+			"POLICIES": "LifeCycle Policies"
+		},
+		"POLICIES": {
+			"TABLE": {
+				"ACTION": "Actions",
+				"CAPTION": "LifeCycle Policies",
+				"ISACTIVE": "Active",
+				"TIMING": "Timing",
+				"TITLE": "Title",
+				"TOOLTIP": {
+					"DETAILS": "LifeCycle Policy Details"
+				}
+			},
+			"DETAILS": {
+				"HEADER": "LifeCycle Policy Details",
+				"GENERAL": {
+					"ACTION": "Action",
+					"ACTIONDATE": "Action Date",
+					"ACTIONPARAMETERS": "Action Parameters",
+					"CAPTION": "LifeCycle Policy Details",
+					"CRONTRIGGER": "Cron Trigger",
+					"ID": "Identifier",
+					"ISACTIVE": "Active",
+					"ISCREATEDFROMCONFIG": "Created from Config",
+					"TARGETTYPE": "Target Type",
+					"TARGETFILTERS": "Target Filters",
+					"TIMING": "Timing",
+					"TITLE": "Title"
+				},
+				"ACCESS": {
+					"LABEL": "Select a template",
+					"DESCRIPTION": "At least one role with Read and Write permissions is required."
+				},
+				"TAB": {
+					"GENERAL": "General",
+					"ACCESSPOLICIES": "Access Policies"
+				}
+			}
+		}
+	},
 	"RECORDINGS": {
 		"NAVIGATION": {
 			"LOCATIONS": "Locations"
