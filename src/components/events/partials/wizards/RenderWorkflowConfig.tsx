@@ -179,7 +179,7 @@ const RenderField = <T extends RequiredFormProps>({
 	return (
 		<li>
 			{renderField()}
-			<label htmlFor={uuid}>{field.label}</label>
+			<label htmlFor={uuid}>{field.label as string}</label>
 			{/* if input has an additional fieldset or further configuration inputs
 						then render again by input type*/}
 			{!!field.fieldset && !!formik.values.configuration && !!formik.values.configuration[field.name] && (
