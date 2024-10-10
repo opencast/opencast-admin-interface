@@ -3,9 +3,9 @@ import { Formik } from "formik";
 import NewThemePage from "../ModalTabsAndPages/NewThemePage";
 import NewSeriesSummary from "./NewSeriesSummary";
 import {
-	getSeriesTobiraPageStatus,
 	getSeriesExtendedMetadata,
 	getSeriesMetadata,
+	getSeriesTobiraPageError,
 } from "../../../../selectors/seriesSeletctor";
 import NewMetadataPage from "../ModalTabsAndPages/NewMetadataPage";
 import NewMetadataExtendedPage from "../ModalTabsAndPages/NewMetadataExtendedPage";
@@ -34,7 +34,7 @@ const NewSeriesWizard: React.FC<{
 
 	const metadataFields = useAppSelector(state => getSeriesMetadata(state));
 	const extendedMetadata = useAppSelector(state => getSeriesExtendedMetadata(state));
-	const statusTobiraPage = useAppSelector(state => getSeriesTobiraPageStatus(state));
+	const tobiraError = useAppSelector(state => getSeriesTobiraPageError(state));
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
 
@@ -71,7 +71,7 @@ const NewSeriesWizard: React.FC<{
 		{
 			translation: "EVENTS.SERIES.NEW.TOBIRA.CAPTION",
 			name: "tobira",
-			hidden: statusTobiraPage !== "succeeded",  // TODO: Figure out condition for this to be true
+			hidden: !!tobiraError?.message?.includes("503"),
 		},
 		{
 			translation: "EVENTS.SERIES.NEW.SUMMARY.CAPTION",
@@ -93,7 +93,7 @@ const NewSeriesWizard: React.FC<{
 			acls: TransformedAcl[];
 			theme: string;
 			breadcrumbs: TobiraPage[];
-			selectedPage: TobiraPage | undefined;
+			selectedPage?: TobiraPage;
 		}
 	) => {
 		setSnapshot(values);
@@ -115,7 +115,7 @@ const NewSeriesWizard: React.FC<{
 			acls: TransformedAcl[];
 			theme: string;
 			breadcrumbs: TobiraPage[];
-			selectedPage: TobiraPage | undefined;
+			selectedPage?: TobiraPage;
 		},
 		twoPagesBack?: boolean
 	) => {

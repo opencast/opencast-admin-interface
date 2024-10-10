@@ -183,7 +183,7 @@ const notificationSlice = createSlice({
 		},
 		removeNotificationWizardForm(state) {
 			state.notifications = state.notifications.filter(
-				(notification) => notification.context !== NOTIFICATION_CONTEXT
+				(notification) => notification.context === NOTIFICATION_CONTEXT
 			)
 		},
 		removeNotificationWizardAccess(state) {
