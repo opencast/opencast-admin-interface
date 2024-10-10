@@ -4,6 +4,7 @@ EXPOSE 3000
 COPY . /admin-interface
 WORKDIR /admin-interface
 
+RUN apk add git
 RUN npm ci
 
 ENV CI true
