@@ -115,7 +115,7 @@ type Device = {
 	// url: string,
 }
 
-export type UploadAssetOption = {
+export type UploadOption = {
 	id: string,
 	title: string,  // translation key
 	type: string,  // "track", "attachment" etc.
@@ -226,7 +226,8 @@ type EventDetailsState = {
 		publications: number,
 	},
 	transactionsReadOnly: boolean,
-	uploadAssetOptions: UploadAssetOption[] | undefined,
+	uploadSourceOptions: UploadOption[] | undefined,
+	uploadAssetOptions: UploadOption[] | undefined,
 	assetAttachments: Array< Assets & {
 		type: string,
 	}>,
@@ -458,6 +459,7 @@ const initialState: EventDetailsState = {
 		publications: 0,
 	},
 	transactionsReadOnly: false,
+	uploadSourceOptions: [],
 	uploadAssetOptions: [],
 	assetAttachments: [],
 	assetAttachmentDetails: {
@@ -662,18 +664,7 @@ export const fetchAssets = createAppAsyncThunk('eventDetails/fetchAssets', async
 	);
 	const resourceOptionsListResponse = await resourceOptionsListRequest.data;
 
-	let uploadAssetOptions: UploadAssetOption[] | undefined = [];
 	const optionsData = formatUploadAssetOptions(resourceOptionsListResponse);
-
-	for (const option of optionsData.options) {
-		if (option.type !== "track") {
-			uploadAssetOptions.push({ ...option });
-		}
-	}
-
-	// if no asset options, undefine the option variable
-	uploadAssetOptions =
-		uploadAssetOptions.length > 0 ? uploadAssetOptions : undefined;
 
 	if (transactionsReadOnly) {
 		dispatch(
@@ -687,7 +678,12 @@ export const fetchAssets = createAppAsyncThunk('eventDetails/fetchAssets', async
 		);
 	}
 
-	return { assets, transactionsReadOnly, uploadAssetOptions }
+	return {
+		assets,
+		transactionsReadOnly,
+		uploadAssetOptions: optionsData.assetOptions,
+		uploadSourceOptions: optionsData.sourceOptions
+	}
 });
 
 const formatUploadAssetOptions = (optionsData: { [key: string]: string }) => {
@@ -696,12 +692,17 @@ const formatUploadAssetOptions = (optionsData: { [key: string]: string }) => {
 	const workflowPrefix = "EVENTS.EVENTS.NEW.UPLOAD_ASSET.WORKFLOWDEFID";
 
 	let optionsResult: {
+		assetOptions: UploadOption[],
+		sourceOptions: UploadOption[],
 		workflow?: string,
-		options: UploadAssetOption[],
 	} = {
-		options: []
+		assetOptions: [],
+		sourceOptions: [],
+		workflow: "",
 	};
-	let uploadOptions = [];
+
+	let uploadAssets: UploadOption[] = [];
+	let uploadSource: UploadOption[] = [];
 
 	for (const [key, value] of Object.entries(optionsData)) {
 		if (key.charAt(0) !== "$") {
@@ -710,18 +711,24 @@ const formatUploadAssetOptions = (optionsData: { [key: string]: string }) => {
 				key.indexOf(optionPrefixSource) >= 0
 			) {
 				// parse upload asset options
-				let options: UploadAssetOption = JSON.parse(value);
+				let options: UploadOption = JSON.parse(value);
 				if (!options["title"]) {
 					options["title"] = key;
 				}
-				uploadOptions.push({ ...options });
+				if (key.indexOf(optionPrefixAsset) >= 0 ) {
+					uploadAssets.push({ ...options });
+				}
+				if (key.indexOf(optionPrefixSource) >= 0 ) {
+					uploadSource.push({ ...options });
+				}
 			} else if (key.indexOf(workflowPrefix) >= 0) {
 				// parse upload workflow definition id
-				optionsResult["workflow"] = value;
+				optionsResult.workflow = value;
 			}
 		}
 	}
-	optionsResult["options"] = uploadOptions;
+	optionsResult.assetOptions = uploadAssets;
+	optionsResult.sourceOptions = uploadSource;
 
 	return optionsResult;
 };
@@ -1643,7 +1650,7 @@ export const updateAssets = createAppAsyncThunk('eventDetails/updateAssets', asy
 	let formData = new FormData();
 
 	let assets: {
-		options: UploadAssetOption[],
+		options: UploadOption[],
 	} = {
 		options: [],
 	};
@@ -1953,12 +1960,14 @@ const eventDetailsSlice = createSlice({
 				assets: EventDetailsState["assets"],
 				transactionsReadOnly: EventDetailsState["transactionsReadOnly"],
 				uploadAssetOptions: EventDetailsState["uploadAssetOptions"],
+				uploadSourceOptions: EventDetailsState["uploadSourceOptions"],
 			}>) => {
 				state.statusAssets = 'succeeded';
 				const eventDetails = action.payload;
 				state.assets = eventDetails.assets;
 				state.transactionsReadOnly = eventDetails.transactionsReadOnly;
 				state.uploadAssetOptions = eventDetails.uploadAssetOptions;
+				state.uploadSourceOptions = eventDetails.uploadSourceOptions;
 			})
 			.addCase(fetchAssets.rejected, (state, action) => {
 				state.statusAssets = 'failed';
