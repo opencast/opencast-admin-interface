@@ -38,7 +38,6 @@ const SeriesDetailsAccessTab = ({
 			resourceId={seriesId}
 			header={header}
 			buttonText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.LABEL"}
-			saveButtonText={"SAVE"}
 			descriptionText={t("EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION")}
 			policies={policies}
 			fetchAccessPolicies={fetchSeriesDetailsAcls}
