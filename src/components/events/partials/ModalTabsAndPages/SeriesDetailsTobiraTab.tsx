@@ -27,7 +27,7 @@ const SeriesDetailsTobiraTab = ({
 				type: "info",
 				key: "TOBIRA_COPIED_DIRECT_LINK",
 				duration: 3000,
-				parameter: null,
+				parameter: undefined,
 				context: NOTIFICATION_CONTEXT
 			}));
 		}, function () {
@@ -35,7 +35,7 @@ const SeriesDetailsTobiraTab = ({
 				type: "error",
 				key: "TOBIRA_FAILED_COPYING_DIRECT_LINK",
 				duration: 3000,
-				parameter: null,
+				parameter: undefined,
 				context: NOTIFICATION_CONTEXT
 			}));
 		});

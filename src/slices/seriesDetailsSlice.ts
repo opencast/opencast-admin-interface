@@ -141,7 +141,7 @@ export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSe
 				type: "warning",
 				key: "SERIES_ACL_LOCKED",
 				duration: -1,
-				parameter: null,
+				parameter: undefined,
 				context: NOTIFICATION_CONTEXT
 			})
 		);
@@ -322,7 +322,7 @@ export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSerie
 					type: "info",
 					key: "SAVED_ACL_RULES",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -335,7 +335,7 @@ export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSerie
 					type: "error",
 					key: "ACL_NOT_SAVED",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -362,7 +362,7 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
                         type: "warning",
                         key:"SERIES_THEME_REPROCESS_EXISTING_EVENTS",
                         duration: 10,
-                        parameter: null,
+                        parameter: undefined,
                         context: NOTIFICATION_CONTEXT
                     })
                 );
@@ -377,7 +377,7 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
                 type: "error",
                 key: "SERIES_NOT_SAVED",
                 duration: 10,
-                parameter: null,
+                parameter: undefined,
                 context: NOTIFICATION_CONTEXT
             })
         );
@@ -398,7 +398,7 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
                         type: "warning",
                         key:"SERIES_THEME_REPROCESS_EXISTING_EVENTS",
                         duration: 10,
-                        parameter: null,
+                        parameter: undefined,
                         context: NOTIFICATION_CONTEXT
                     })
                 );
@@ -424,7 +424,7 @@ export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetch
 					type: "error",
 					key: "TOBIRA_SERVER_ERROR",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				}));
 
@@ -434,7 +434,7 @@ export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetch
 					type: "warning",
 					key: "TOBIRA_NOT_FOUND",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				}));
 
