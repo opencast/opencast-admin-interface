@@ -49,8 +49,20 @@ export const addNotification = createAppAsyncThunk('notifications/addNotificatio
 	parameter?: OurNotification["parameter"],
 	context?: OurNotification["context"],
 	id?: OurNotification["id"]
+	noDuplicates?: boolean,   // Do not add this notification if one with the same key already exists (in the same context)
 }, {dispatch, getState}) => {
-	let { type, key, duration, parameter, context, id } = params
+	let { type, key, duration, parameter, context, id, noDuplicates } = params
+
+	if (noDuplicates) {
+		const state = getState();
+		for (const notif of state.notifications.notifications) {
+			if (notif.key === key && notif.context === context) {
+				console.log("Did not add notification with key " + key + " because a notification with that key already exists.")
+				return;
+			}
+		}
+	}
+
 	if (!duration) {
 		// fall back to defaults
 		switch (type) {
@@ -160,6 +172,15 @@ const notificationSlice = createSlice({
 				(notification) => notification.id !== idToRemove
 			)
 		},
+		removeNotificationByKey(state, action: PayloadAction<{
+			key: OurNotification["key"],
+			context: OurNotification["context"],
+		}>) {
+			const { key, context } = action.payload;
+			state.notifications = state.notifications.filter(
+				(notification) => notification.key !== key || notification.context !== context
+			)
+		},
 		removeNotificationWizardForm(state) {
 			state.notifications = state.notifications.filter(
 				(notification) => notification.context !== NOTIFICATION_CONTEXT
@@ -191,6 +212,7 @@ const notificationSlice = createSlice({
 export const {
 	createNotification,
 	removeNotification,
+	removeNotificationByKey,
 	removeNotificationWizardForm,
 	removeNotificationWizardAccess,
 	setHidden,
