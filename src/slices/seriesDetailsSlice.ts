@@ -424,7 +424,7 @@ export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetch
 					type: "error",
 					key: "TOBIRA_SERVER_ERROR",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				}));
 
@@ -434,7 +434,7 @@ export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetch
 					type: "warning",
 					key: "TOBIRA_NOT_FOUND",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				}));
 

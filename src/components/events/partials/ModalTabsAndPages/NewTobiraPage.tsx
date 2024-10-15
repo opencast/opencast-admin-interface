@@ -49,7 +49,7 @@ const NewTobiraPage = <T extends RequiredFormProps>({
 					type: type,
 					key: key,
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: context,
 					noDuplicates: true,
 				}));

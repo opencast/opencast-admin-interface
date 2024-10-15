@@ -373,7 +373,7 @@ export const fetchSeriesDetailsTobiraNew = createAppAsyncThunk('seriesDetails/fe
 					type: "warning",
 					key: "TOBIRA_PAGE_NOT_FOUND",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				}));
 
