@@ -5,7 +5,7 @@ import viteTsconfigPaths from "vite-tsconfig-paths";
 import preserveDirectives from "rollup-preserve-directives";
 import child from "child_process";
 
-const commitHash = child.execSync("git rev-parse HEAD").toString().trim();
+const commitHash = child.execSync("giat rev-parse HEAD || cat commit || :").toString().trim();
 
 export default defineConfig({
     base: process.env.PUBLIC_URL || "",
