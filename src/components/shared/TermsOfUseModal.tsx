@@ -25,7 +25,7 @@ const TermsOfUseModal = () => {
 				const isAgreed = response.data.results.find(result => result.key === "agreedToTerms").value === "true";
 				setAgreedToTerms(isAgreed);
 			} catch (error) {
-				console.error("Fehler beim Abrufen der Daten:", error);
+				console.error("Error while retrieving data: ", error);
 				setAgreedToTerms(false);
 			}
 		};
