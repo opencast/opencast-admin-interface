@@ -23,7 +23,7 @@ jobs:
           message: >
             Hi @${{ github.event.pull_request.user.login }}
 
-            Thank you for contributing to the Opencast Editor.
+            Thank you for contributing to the Opencast Admin UI.
 
             We noticed that you have not yet filed an [Individual Contributor License Agreement](https://www.apereo.org/licensing/agreements/icla).
             Doing that (once) helps us to ensure that Opencast stays free for all.
