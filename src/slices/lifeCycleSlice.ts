@@ -2,30 +2,35 @@ import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import { TableConfig } from "../configs/tableConfigs/aclsTableConfig";
 import { lifeCyclePolicyTableConfig } from "../configs/tableConfigs/lifeCyclePoliciesTableConfig";
 import axios from 'axios';
-import { getURLParams } from '../utils/resourceUtils';
+import { getURLParams, prepareAccessPolicyRulesForPost } from '../utils/resourceUtils';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { TransformedAcl } from './aclDetailsSlice';
+import { addNotification } from './notificationSlice';
 
-type LifeCyclePolicyTiming = "SPECIFIC_DATE" | "REPEATING" | "ALWAYS";
-type LifeCyclePolicyAction = "START_WORKFLOW"
-type LifeCyclePolicyTargetType = "EVENT"
+// type LifeCyclePolicyTiming = "SPECIFIC_DATE" | "REPEATING" | "ALWAYS";
+// type LifeCyclePolicyAction = "START_WORKFLOW"
+// type LifeCyclePolicyTargetType = "EVENT"
+export type TargetFilter = {
+	value: string | string[],
+	type: TargetFiltersType,
+	must: boolean
+}
+export const ALL_TARGET_FILTER_TYPES = ['SEARCH', 'WILDCARD', 'GREATER_THAN', 'LESS_THAN'] as const;
+type TargetFilterTypesTuple = typeof ALL_TARGET_FILTER_TYPES;
+type TargetFiltersType = TargetFilterTypesTuple[number];
 
 export type LifeCyclePolicy = {
 	actionParameters: { [key: string]: unknown }, // JSON. Variable, depends on action
-	timing: LifeCyclePolicyTiming,
-	action: LifeCyclePolicyAction,
-	targetType: LifeCyclePolicyTargetType,
+	timing: string,
+	action: string,
+	targetType: string,
 	id: string,
 	title: string,
 	isActive: boolean,
 	isCreatedFromConfig: boolean,
 	actionDate: string, // Date
 	cronTrigger: string,
-	targetFilters: { [key: string]: {
-		value: string,
-		type: "SEARCH" | "WILDCARD" | "GREATER_THAN" | "LESS_THAN",
-		must: boolean
-	}},
+	targetFilters: { [key: string]: TargetFilter },
 	accessControlEntries: TransformedAcl[]
 }
 
@@ -63,6 +68,72 @@ export const fetchLifeCyclePolicies = createAppAsyncThunk('lifeCycle/fetchLifeCy
 	let params = getURLParams(state);
 	const res = await axios.get("/api/lifecyclemanagement/policies", { params: params });
 	return res.data;
+});
+
+export const postNewLifeCyclePolicy = createAppAsyncThunk('lifeCycle/postNewLifeCyclePolicy', async (
+	policy: {
+		actionParameters: { [key: string]: unknown },
+		timing: string,
+		action: string,
+		targetType: string,
+		title: string,
+		isActive: boolean,
+		actionDate: string,
+		cronTrigger: string,
+		targetFilters: { [key: string]: TargetFilter },
+		accessControlEntries: TransformedAcl[]
+	},
+	{ dispatch }
+) => {
+	let data = new URLSearchParams();
+
+	// Format filter collections
+	// for (const filterName in policy.targetFilters) {
+	//   // policy.targetFilters[filterName]
+	//   if (hasOwnProperty(TARGET_FILTER_KEYS_EVENTS, filterName)
+	//     && TARGET_FILTER_KEYS_EVENTS[filterName].collection) {
+	//       policy.targetFilters[filterName].value = policy.targetFilters[filterName].value.toString()
+	//   }
+	// }
+
+	// Stringify
+	Object.entries(policy).forEach(([key, value]) => {
+		let stringified = value
+		if (stringified instanceof Date) {
+			stringified = stringified.toJSON()
+		}
+		else if (stringified === Object(stringified)) {
+			stringified = JSON.stringify(stringified)
+		}
+		// @ts-ignore
+		data.append(key, stringified);
+	})
+
+	data.delete("accessControlEntries");
+	data.append("accessControlEntries", JSON.stringify(prepareAccessPolicyRulesForPost(policy.accessControlEntries).acl.ace))
+
+	axios.post(`/api/lifecyclemanagement/policies`, data)
+		.then((res) => {
+			console.info(res);
+			dispatch(addNotification({type: "success", key: "LIFECYCLE_POLICY_ADDED"}));
+		})
+		.catch((res) => {
+			console.error(res);
+			dispatch(addNotification({type: "error", key: "LIFECYCLE_POLICY_NOT_SAVED"}));
+		});
+});
+
+export const deleteLifeCyclePolicy = createAppAsyncThunk('lifeCycle/fetchLifeCyclePolicies', async (id: string, { dispatch }) => {
+	axios
+		.delete(`/api/lifecyclemanagement/policies/${id}`)
+		.then((res) => {
+			console.info(res);
+			dispatch(addNotification({type: "success", key: "LIFECYCLE_POLICY_DELETED"}));
+		})
+		.catch((res) => {
+			console.error(res);
+			dispatch(addNotification({type: "error", key: "LIFECYCLE_POLICY_NOT_DELETED"}));
+		});
 });
 
 const lifeCycleSlice = createSlice({

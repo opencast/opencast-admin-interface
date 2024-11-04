@@ -8,6 +8,7 @@ import NewGroupWizard from "../users/partials/wizard/NewGroupWizard";
 import NewUserWizard from "../users/partials/wizard/NewUserWizard";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
+import NewLifeCyclePolicyWizard from "../events/partials/wizards/NewLifeCyclePolicyWizard";
 
 /**
  * This component renders the modal for adding new resources
@@ -17,7 +18,7 @@ const NewResourceModal = ({
 	resource
 }: {
 	handleClose: () => void,
-	resource: "events" | "series" | "user" | "group" | "acl" | "themes"
+	resource: "events" | "series" | "user" | "group" | "acl" | "themes" | "lifecyclepolicy"
 }) => {
 	const { t } = useTranslation();
 
@@ -56,6 +57,9 @@ const NewResourceModal = ({
 					{resource === "user" && (
 						<h2>{t("USERS.USERS.DETAILS.NEWCAPTION")}</h2>
 					)}
+					{resource === "lifecyclepolicy" && (
+						<h2>{t("LIFECYCLE.POLICIES.NEW.CAPTION")}</h2>
+					)}
 				</header>
 				{resource === "events" && (
 					//New Event Wizard
@@ -80,6 +84,10 @@ const NewResourceModal = ({
 				{resource === "user" && (
 					// New User Wizard
 					<NewUserWizard close={close} />
+				)}
+				{resource === "lifecyclepolicy" && (
+					// New LifeCyclePolicy Wizard
+					<NewLifeCyclePolicyWizard close={close} />
 				)}
 			</section>
 		</>

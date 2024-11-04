@@ -10,6 +10,8 @@ import { parseISO } from "date-fns";
 import { FieldProps } from "formik";
 import { MetadataField } from "../../../slices/eventSlice";
 import { renderValidDate } from "../../../utils/dateUtils";
+import Cron from "react-js-cron";
+import 'react-js-cron/dist/styles.css'
 
 const childRef = React.createRef<HTMLDivElement>();
 /**
@@ -23,7 +25,7 @@ const RenderField = ({
 	isFirstField = false,
 }: {
 	field: FieldProps["field"]
-	metadataField: MetadataField
+	metadataField: { type: string, collection: { [key: string]: unknown }[], required: boolean, id: string }, //MetadataField
 	form: FieldProps["form"]
 	showCheck?: boolean,
 	isFirstField?: boolean,
@@ -129,6 +131,17 @@ const RenderField = ({
 					handleKeyDown={handleKeyDown}
 				/>
 			)}
+			{metadataField.type === "cron" && (
+				<EditableCronValue
+					field={field}
+					form={form}
+					text={field.value}
+					editMode={editMode}
+					setEditMode={setEditMode}
+					showCheck={showCheck}
+					handleKeyDown={handleKeyDown}
+				/>
+			)}
 		</>
 	);
 };
@@ -229,7 +242,7 @@ const EditableSingleSelect = ({
 	showCheck,
 }: {
 	field: FieldProps["field"]
-	metadataField: MetadataField
+	metadataField: { type: string, collection: { [key: string]: unknown }[], required: boolean, id: string }, //MetadataField
 	text: string
 	editMode: boolean | undefined
 	setEditMode: (e: boolean) => void
@@ -426,5 +439,56 @@ const EditableSingleValueTime = ({
 		</div>
 	);
 };
+
+const EditableCronValue = ({
+	field,
+	form: { initialValues, setFieldValue },
+	text,
+	editMode,
+	setEditMode,
+	showCheck,
+	handleKeyDown,
+} : {
+	field: FieldProps["field"]
+	form: FieldProps["form"]
+	text: string
+	editMode: boolean | undefined
+	setEditMode: (e: boolean) => void
+	showCheck?: boolean,
+	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
+}) => {
+
+	return editMode ? (
+		// TODO: Figure out a way to set EditMode to false again
+		// As of now, selecting a value in one of the dropdowns will cause EditMode
+		// to be set to false, without the selected value actually being set.
+		<div
+			// onBlur={() => setEditMode(false)}
+			onKeyDown={(e) => handleKeyDown(e, "cron")}
+			// ref={childRef}
+		>
+			<Cron
+				className={"my-project-cron"}
+				value={field.value}
+				setValue={(value: string) => setFieldValue(field.name, value)}
+			/>
+		</div>
+	) : (
+		<div onClick={() => setEditMode(true)} className="show-edit">
+			<span className="editable preserve-newlines">{text || ""}</span>
+			<div>
+				<i className="edit fa fa-pencil-square" />
+				{showCheck && (
+					<i
+						className={cn("saved fa fa-check", {
+							active: initialValues[field.name] !== field.value,
+						})}
+					/>
+				)}
+			</div>
+		</div>
+	)
+};
+
 
 export default RenderField;

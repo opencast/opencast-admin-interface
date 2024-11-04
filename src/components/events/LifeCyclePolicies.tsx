@@ -24,6 +24,8 @@ import { lifeCyclePoliciesTemplateMap } from "../../configs/tableConfigs/lifeCyc
 import { fetchEvents } from "../../slices/eventSlice";
 import { setOffset } from "../../slices/tableSlice";
 import { fetchSeries } from "../../slices/seriesSlice";
+import NewResourceModal from "../shared/NewResourceModal";
+import { fetchLifeCyclePolicyActions, fetchLifeCyclePolicyTargetTypes, fetchLifeCyclePolicyTimings } from "../../slices/lifeCycleDetailsSlice";
 
 /**
  * This component renders the table view of policies
@@ -32,6 +34,7 @@ const LifeCyclePolicies = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
+	const [displayNewPolicyModal, setNewPolicyModal] = useState(false);
 
 	const user = useAppSelector(state => getUserInformation(state));
 	const policiesTotal = useAppSelector(state => getTotalLifeCyclePolicies(state));
@@ -77,6 +80,11 @@ const LifeCyclePolicies = () => {
 
 		// Load policies on mount
 		loadLifeCyclePolicies().then((r) => console.info(r));
+
+		// Fetch policies repeatedly
+		let fetchInterval = setInterval(loadLifeCyclePolicies, 5000);
+
+		return () => clearInterval(fetchInterval);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -84,10 +92,32 @@ const LifeCyclePolicies = () => {
 		setNavigation(!displayNavigation);
 	};
 
+	const showNewPolicyModal = async () => {
+		await dispatch(fetchLifeCyclePolicyActions());
+		await dispatch(fetchLifeCyclePolicyTargetTypes());
+		await dispatch(fetchLifeCyclePolicyTimings());
+
+		setNewPolicyModal(true);
+	};
+
+	const hideNewPolicyModal = () => {
+		setNewPolicyModal(false);
+	};
+
 	return (
 		<>
 			<Header />
 			<NavBar>
+				{
+					/* Display modal for new event if add event button is clicked */
+					displayNewPolicyModal && (
+						<NewResourceModal
+							handleClose={hideNewPolicyModal}
+							resource={"lifecyclepolicy"}
+						/>
+					)
+				}
+
 				{/* Include Burger-button menu*/}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
 
@@ -120,6 +150,15 @@ const LifeCyclePolicies = () => {
 						</Link>
 					)}
 				</nav>
+
+				<div className="btn-group">
+					{hasAccess("ROLE_UI_EVENTS_CREATE", user) && (
+						<button className="add" onClick={() => showNewPolicyModal()}>
+							<i className="fa fa-plus" />
+							<span>{t("LIFECYCLE.POLICIES.TABLE.ADD_POLICY")}</span>
+						</button>
+					)}
+				</div>
 			</NavBar>
 
 			<MainView open={displayNavigation}>

@@ -1,7 +1,18 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { LifeCyclePolicy } from "../../../../slices/lifeCycleSlice";
-import { renderValidDate } from "../../../../utils/dateUtils";
+import { LifeCyclePolicy, TargetFilter } from "../../../../slices/lifeCycleSlice";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { Formik, FormikProps } from "formik";
+import Notifications from "../../../shared/Notifications";
+import cn from "classnames";
+import { ConfigurationPanelField } from "../../../../slices/workflowSlice";
+import { updateLifeCyclePolicy } from "../../../../slices/lifeCycleDetailsSlice";
+import LifeCyclePolicyGeneralFields from "../wizards/LifeCyclePolicyGeneralFields";
+import { hasAccess } from "../../../../utils/utils";
+import { getUserInformation } from "../../../../selectors/userInfoSelectors";
+import { LifeCyclePolicySchema } from "../../../../utils/validate";
+import _ from "lodash";
+import { parseTargetFiltersForSubmit } from "../../../../utils/lifeCycleUtils";
 
 /**
  * This component renders details about a recording/capture agent
@@ -12,108 +23,162 @@ const LifeCyclePolicyGeneralTab = ({
 	policy: LifeCyclePolicy
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
+
+	const user = useAppSelector(state => getUserInformation(state));
+
+	const handleSubmit = (values: LifeCyclePolicy & {workflowParameters: ConfigurationPanelField[], targetFiltersArray: (TargetFilter & { filter: string })[]}) => {
+
+		// Parse filters
+		const targetFilters: typeof values["targetFilters"] = parseTargetFiltersForSubmit(values.targetFiltersArray)
+
+		// TODO: Improve workflowParameters rendering
+		// Parse action parameters
+		// const workflowParameters: { [key: string]: unknown} = {};
+		// for (const field of values.workflowParameters) {
+		//   if (field.fieldset && field.fieldset.length > 0) {
+		//     workflowParameters[field.fieldset[0].name] = field.fieldset[0].value
+		//   }
+		// }
+		// const newActionParameters = {
+		//   ...values.actionParameters,
+		//   workflowParameters
+		// }
+
+		const newValues = {
+			...values,
+			targetFilters: targetFilters,
+			// actionParameters: newActionParameters,
+		}
+		// values.actionParameters["workflowParameters"] = JSON.stringify(workflowParameters);
+
+		if (values.action === "START_WORKFLOW") {
+			values.actionParameters["workflowParameters"] = JSON.parse(values.actionParameters["workflowParameters"] as string)
+		}
+
+		dispatch(updateLifeCyclePolicy(newValues));
+	};
+
+	// set current values of metadata fields as initial values
+	const getInitialValues = (policy: LifeCyclePolicy) => {
+		let initialValues: LifeCyclePolicy & {workflowParameters: ConfigurationPanelField[], targetFiltersArray: (TargetFilter & { filter: string })[]} = {
+			workflowParameters: [],
+			targetFiltersArray: [],
+			...policy
+		}
+
+		// Access policies are handled in a different tab
+		// Remove them here, else they will delete the ACL due to their formatting
+		// TODO: Find a typesafe (or straight up better) way to do this
+		// @ts-ignore
+		delete initialValues.accessControlEntries
+
+		// Transform filters into something more editable
+		const targetFiltersArray: (TargetFilter & { filter: string })[] = []
+		for (const key in policy.targetFilters) {
+			targetFiltersArray.push({
+				filter: key,
+				...policy.targetFilters[key]
+			})
+		}
+
+		// TODO: Improve workflowParameters rendering
+		// Parse action parameters
+		// const configPanelFields: ConfigurationPanelField[] = []
+		// const workflowParameters = JSON.parse(policy.actionParameters["workflowParameters"] as string)
+		// Object.entries(workflowParameters).forEach(([key, value]) => {
+		//   configPanelFields.push({
+		//     fieldset: [{
+		//       name: key,
+		//       value: value,
+		//       defaultValue: value,
+		//       type: "text",
+		//       checked: false,
+		//       label: key,
+		//     }]
+		//   });
+		// });
+
+		initialValues.targetFiltersArray = targetFiltersArray;
+		// initialValues.workflowParameters = configPanelFields;
+
+		return initialValues;
+	};
+
+	const checkValidity = (formik: FormikProps<any>) => {
+		if (formik.dirty && formik.isValid && hasAccess("ROLE_UI_LIFECYCLEPOLICY_DETAILS_GENERAL_EDIT", user)) {
+			// check if user provided values differ from initial ones
+			return !_.isEqual(formik.values, formik.initialValues);
+		} else {
+			return false;
+		}
+	};
 
 	return (
-		<div className="modal-content">
-			<div className="modal-body">
-				<div className="full-col">
-					<div className="obj tbl-details">
-						<header>
-							<span>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.CAPTION")}</span>
-						</header>
-						<div className="obj-container">
-							{/* Render table containing general information */}
-							<table className="main-tbl">
-								<tbody>
-									<tr>
-										<td>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.TITLE")}</td>
-										<td>{policy.title}</td>
-									</tr>
-									<tr>
-										<td>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.ISACTIVE")}</td>
-										<td>{
-											<input
-												type="checkbox"
-												checked={policy.isActive}
-												readOnly={true}
-											/>
-										}</td>
-									</tr>
-									<tr>
-										<td>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.ISCREATEDFROMCONFIG")}</td>
-										<td>{
-											<input
-												type="checkbox"
-												checked={policy.isCreatedFromConfig}
-												readOnly={true}
-											/>
-										}</td>
-									</tr>
-									<tr>
-										<td>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.TARGETTYPE")}</td>
-										<td>{t(policy.targetType)}</td>
-									</tr>
-									<tr>
-										<td>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.TARGETFILTERS")}</td>
-										<td>
-											<table className="main-tbl">
-											<tbody>
-											{Object.entries(policy.targetFilters).map(([key, value], index) => {
-													return(
-														<tr>
-															<td>{key}</td>
-															<td>{value.value + ", " + value.type + ", " + value.must}</td>
-														</tr>
-													)
-												})}
-											</tbody>
-											</table>
-										</td>
-									</tr>
-									<tr>
-										<td>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.TIMING")}</td>
-										<td>{t(policy.timing)}</td>
-									</tr>
-									<tr>
-										<td>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.ACTIONDATE")}</td>
-										<td>{t("dateFormats.dateTime.full", { dateTime: renderValidDate(policy.actionDate) })}</td>
-									</tr>
-									<tr>
-										<td>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.CRONTRIGGER")}</td>
-										<td>{policy.cronTrigger}</td>
-									</tr>
-									<tr>
-										<td>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.ACTION")}</td>
-										<td>{t(policy.action)}</td>
-									</tr>
-									<tr>
-										<td>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.ACTIONPARAMETERS")}</td>
-										<td>
-										<table className="main-tbl">
-										<tbody>
-												{Object.entries(policy.actionParameters).map(([key, value], index) => {
-													return(
-														<tr>
-															<td>{key}</td>
-															<td>{value}</td>
-														</tr>
-													)
-												})}
-											</tbody>
-											</table>
-										</td>
-									</tr>
-									<tr>
-										<td>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.ID")}</td>
-										<td>{policy.id}</td>
-									</tr>
-								</tbody>
-							</table>
+		// initialize form
+		<Formik
+			enableReinitialize
+			initialValues={getInitialValues(policy)}
+			validationSchema={LifeCyclePolicySchema[0]}
+			onSubmit={(values) => handleSubmit(values)}
+		>
+			{(formik) => (
+				<>
+					<div className="modal-content">
+						<div className="modal-body">
+							<Notifications context="not-corner" />
+							<div className="full-col">
+								{/* <div className="obj tbl-list">
+									<header className="no-expand">{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.CAPTION")}</header> */}
+
+									{/* Render fields */}
+									<LifeCyclePolicyGeneralFields
+										formik={formik}
+										isNew={false}
+									/>
+
+									<div className="obj list-obj">
+										<header className="no-expand">
+											{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.NOTE.TITLE")}
+										</header>
+										<div className="obj-container">
+											<span>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.NOTE.MESSAGE")}</span>
+										</div>
+									</div>
+
+									{formik.dirty && (
+										<>
+											{/* Render buttons for updating metadata */}
+											<footer>
+												<button
+													type="submit"
+													onClick={() => formik.handleSubmit()}
+													disabled={!checkValidity(formik)}
+													className={cn("submit", {
+														active: checkValidity(formik),
+														inactive: !checkValidity(formik),
+													})}
+												>
+													{t("SAVE")}
+												</button>
+												<button
+													className="cancel"
+													onClick={() => formik.resetForm()}
+												>
+													{t("CANCEL")}
+												</button>
+											</footer>
+
+											<div className="btm-spacer" />
+										</>
+									)}
+								{/* </div> */}
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-		</div>
+				</>
+			)}
+		</Formik>
 	);
 };
 

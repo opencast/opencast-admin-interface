@@ -19,6 +19,8 @@ export function dropDownStyle(type: DropDownType): StylesConfig {
 			? 360
 			: type === "aclTemplate" || type === "comment" || type === "filter"
 			? 200
+			: type === "policyAction"
+			? 150
 			: 250;
 
 	return {
