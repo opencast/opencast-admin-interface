@@ -223,7 +223,7 @@
 			"NO_EVENTS_UPDATED": "Όλες οι ενημερώσεις απέτυχαν.",
 			"SOME_EVENTS_NOT_UPDATED": "Δεν ήταν δυνατή η ενημέρωση ορισμένων εκδηλώσεων."
 		},
-		"PROBLEM_ON_START": "Παρουσιάστηκε σφάλμα κατά την εκκίνηση. Επικοινωνήστε με τον διαχειριστή του Opencast"
+		"PROBLEM_ON_START": "A error occurred on start up. Please contact your Opencast admin"
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Ενέργειες",
@@ -403,7 +403,7 @@
 				"INFORMATION_PARAGRAPH_2": "\nΕκτιμούμε ιδιαίτερα τα σχόλια, καθώς ακόμη και μερικά από τα δεδομένα που συλλέγουμε σχετικά με τη χρήση του Opencast θα μας βοηθήσουν να δημιουργήσουμε καλύτερο λογισμικό, να έχουμε καλύτερες πιθανότητες για πρόσθετη χρηματοδότηση και να προσελκύσουμε περισσότερες εταιρείες για να παρέχουν υπηρεσίες γύρω από το Opencast."
 			},
 			"FORM_STATE": {
-				"ORGANISATION": "Οργανισμός",
+				"ORGANISATION": "Organization",
 				"DEPARTMENT": "Τμήμα",
 				"COUNTRY": "Χώρα",
 				"POSTAL_CODE": "Ταχυδρομικός Κώδικας",
@@ -425,7 +425,7 @@
 				"SYSTEM_TYPE_TEST": "Test System",
 				"WHICH_DATA_TO_SHARE": "Ποια δεδομένα θέλετε να μοιραστείτε;",
 				"POLICY_HEADLINE": "Πολιτική Απορρήτου και όροι χρήσης",
-				"USAGE_STATISTICS": "Στατιστικά χρήσης",
+				"USAGE_STATISTICS": "Usage statistics",
 				"ERROR_REPORTS": "Αναφορές σφαλμάτων",
 				"READ_TERMS_OF_USE_BEFORE": "Έχω διαβάσει και αποδέχομαι τους ",
 				"READ_TERMS_OF_USE_LINK": "την πολιτική απορρήτου και τους όρους χρήσης",
@@ -894,7 +894,7 @@
 						"REVIEW": "Απαιτείται προεπισκόπηση",
 						"ASYNC": "Ασύγχρονα κομμάτια εικόνας/ήχου",
 						"AUDIO_ISSUE": "Χαμένο ή ελλατωματικό κομμάτι ήχου",
-						"CANCELLED": "Cancelled event",
+						"CANCELLED": "Canceled event",
 						"CONFLICTING_METADATA": "Αντικρουόμενα μετα-δεδομένα",
 						"IMPROPER_POINT": "Λανθασμένο σημείο εισαγωγής ή εξαγωγής",
 						"MISSING_AGREEMENT": "Ελλειπής συμφνία",
@@ -1110,6 +1110,20 @@
 					"LABEL": "Χωρίς θέμα",
 					"EMPTY": "Κανένα θέμα δεν βρέθηκε"
 				},
+				"TOBIRA": {
+					"CAPTION": "Tobira",
+					"DESCRIPTION": "Here you can select where you want the series to show up in the Tobira video portal. You can only select one location here, and it needs to be empty (marked in bold). You can create new pages here, but note that they are only persisted if they are on the path to the selected page.",
+					"SELECT_PAGE": "Select a target page",
+					"PAGE_TITLE": "Subpage title",
+					"PATH_SEGMENT": "Path segment",
+					"SUBPAGES": "Subpages",
+					"ADD_SUBPAGE": "Add subpage",
+					"CANCEL": "Cancel",
+					"HOMEPAGE": "Homepage",
+					"SELECTED_PAGE": "Series will be mounted under the following path",
+					"NO_PAGE_SELECTED": "No page selected. Series will not be mounted in Tobira.",
+					"PATH": "Path"
+				},
 				"SUMMARY": {
 					"CAPTION": "Περίληψη"
 				}
@@ -1138,6 +1152,7 @@
 					"EVENTS": "Εκδηλώσεις",
 					"PERMISSIONS": "Πολιτική πρόσβασης",
 					"THEME": "Θέμα",
+					"TOBIRA": "Tobira",
 					"STATISTICS": "Στατιστικά"
 				},
 				"ACCESS": {
@@ -1184,6 +1199,13 @@
 					"DESCRIPTION": "Περιγραφή",
 					"REPLACE_SERIES_METADATA": "Ενημέρωση μεταδεδομένων σειράς",
 					"REPLACE_SERIES_THEME": "Ενημέρωση θέματος σειράς"
+				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to series",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This series is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this series"
 				},
 				"EVENTS": {
 					"TITLE": "Τίτλος",
@@ -2025,7 +2047,7 @@
 		"TOTAL": "Σύνολο",
 		"GRANULARITY": "Διακριτότητα",
 		"NAVIGATION": {
-			"ORGANIZATION": "Οργανισμός"
+			"ORGANIZATION": "Organization"
 		},
 		"TIME_MODES": {
 			"Year": "Έτος",

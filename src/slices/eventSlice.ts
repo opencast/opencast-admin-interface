@@ -810,7 +810,7 @@ export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateSched
 					type: "error",
 					key: "EVENTS_NOT_UPDATED_ID",
 					duration: 10,
-					parameter: changedEvent
+					parameter: { id: changedEvent }
 				})
 			);
 			return;
@@ -921,7 +921,7 @@ export const checkConflicts = (values: {
 					type: "error",
 					key: "CONFLICT_ALREADY_ENDED",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -939,7 +939,7 @@ export const checkConflicts = (values: {
 					type: "error",
 					key: "CONFLICT_END_BEFORE_START",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -970,7 +970,7 @@ export const checkConflicts = (values: {
 					type: "error",
 					key: "CONFLICT_DETECTED",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1086,7 +1086,7 @@ export const checkForSchedulingConflicts = (events: EditedEvents[]) => async (di
 						type: "error",
 						key: "CONFLICT_BULK_DETECTED",
 						duration: -1,
-						parameter: null,
+						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					})
 				);

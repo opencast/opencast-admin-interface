@@ -96,7 +96,7 @@ jobs:
           git push origin gh-pages
 
       - name: add comment with deployment location
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
           comment_tag: static-test-deployment
           message: >

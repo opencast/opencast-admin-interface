@@ -1113,6 +1113,20 @@
 					"LABEL": "Please select a theme",
 					"EMPTY": "No theme found"
 				},
+				"TOBIRA": {
+					"CAPTION": "Tobira",
+					"DESCRIPTION": "Here you can select where you want the series to show up in the Tobira video portal. You can only select one location here, and it needs to be empty (marked in bold). You can create new pages here, but note that they are only persisted if they are on the path to the selected page.",
+					"SELECT_PAGE": "Select a target page",
+					"PAGE_TITLE": "Subpage title",
+					"PATH_SEGMENT": "Path segment",
+					"SUBPAGES": "Subpages",
+					"ADD_SUBPAGE": "Add subpage",
+					"CANCEL": "Cancel",
+					"HOMEPAGE": "Homepage",
+					"SELECTED_PAGE": "Series will be mounted under the following path",
+					"NO_PAGE_SELECTED": "No page selected. Series will not be mounted in Tobira.",
+					"PATH": "Path"
+				},
 				"SUMMARY": {
 					"CAPTION": "Summary"
 				}
@@ -1141,6 +1155,7 @@
 					"EVENTS": "Events",
 					"PERMISSIONS": "Access policy",
 					"THEME": "Theme",
+					"TOBIRA": "Tobira",
 					"STATISTICS": "Statistics"
 				},
 				"ACCESS": {
@@ -1187,6 +1202,13 @@
 					"DESCRIPTION": "Description",
 					"REPLACE_SERIES_METADATA": "Update series metadata",
 					"REPLACE_SERIES_THEME": "Update series theme"
+				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to series",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This series is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this series"
 				},
 				"EVENTS": {
 					"TITLE": "Title",

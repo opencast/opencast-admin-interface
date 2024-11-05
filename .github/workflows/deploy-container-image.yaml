@@ -45,7 +45,7 @@ jobs:
 
       - name: Add comment
         if: github.event_name == 'pull_request_target'
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
           comment_tag: container-image
           message: |

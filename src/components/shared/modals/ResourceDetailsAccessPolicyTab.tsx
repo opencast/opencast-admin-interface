@@ -106,7 +106,7 @@ const ResourceDetailsAccessPolicyTab = ({
 						type: "warning",
 						key: "ACTIVE_TRANSACTION",
 						duration: -1,
-						parameter: null,
+						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					}));
 				}
@@ -138,7 +138,7 @@ const ResourceDetailsAccessPolicyTab = ({
 				type: "warning",
 				key: "INVALID_ACL_RULES",
 				duration: -1,
-				parameter: null,
+				parameter: undefined,
 				context: NOTIFICATION_CONTEXT
 			}));
 		}
@@ -148,7 +148,7 @@ const ResourceDetailsAccessPolicyTab = ({
 				type: "warning",
 				key: "MISSING_ACL_RULES",
 				duration: -1,
-				parameter: null,
+				parameter: undefined,
 				context: NOTIFICATION_CONTEXT
 			}));
 		}

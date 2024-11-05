@@ -223,7 +223,7 @@
 			"NO_EVENTS_UPDATED": "All updates failed.",
 			"SOME_EVENTS_NOT_UPDATED": "Some events could not be updated."
 		},
-		"PROBLEM_ON_START": "A error occurred on start up. Please contact your OpenCast admin"
+		"PROBLEM_ON_START": "A error occurred on start up. Please contact your Opencast admin"
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Działania",
@@ -403,7 +403,7 @@
 				"INFORMATION_PARAGRAPH_2": "Bardzo doceniamy każdą opinię, ponieważ nawet niektóre dane, które gromadzimy na temat korzystania z Opencast pomogą nam stworzyć lepsze oprogramowanie, większe szanse na dodatkowe finansowanie i przyciągnięcie większej liczby przedsiębiorstw do świadczenia usług w okolicach Opencast."
 			},
 			"FORM_STATE": {
-				"ORGANISATION": "Organisation",
+				"ORGANISATION": "Organization",
 				"DEPARTMENT": "Department",
 				"COUNTRY": "Country",
 				"POSTAL_CODE": "Kod pocztowy",
@@ -425,7 +425,7 @@
 				"SYSTEM_TYPE_TEST": "Test System",
 				"WHICH_DATA_TO_SHARE": "Które dane chcesz udostępnić?",
 				"POLICY_HEADLINE": "Polityka prywatności i warunki użytkowania",
-				"USAGE_STATISTICS": "Statystyki użytkowania",
+				"USAGE_STATISTICS": "Usage statistics",
 				"ERROR_REPORTS": "Error reports",
 				"READ_TERMS_OF_USE_BEFORE": "I have read and agree to the",
 				"READ_TERMS_OF_USE_LINK": "privacy policy and terms of use",
@@ -894,7 +894,7 @@
 						"REVIEW": "Wymaga przeglądu",
 						"ASYNC": "Ścieżki A/V asynchroniczne",
 						"AUDIO_ISSUE": "Brakująca lub uszkodzona ścieżka dżwiękowa",
-						"CANCELLED": "Cancelled event",
+						"CANCELLED": "Canceled event",
 						"CONFLICTING_METADATA": "Konflikt w metadanych",
 						"IMPROPER_POINT": "Niewłaściwy punkt rozpoczęcia lub zakończenia",
 						"MISSING_AGREEMENT": "Brak umowy",
@@ -1110,6 +1110,20 @@
 					"LABEL": "Brak motywu",
 					"EMPTY": "Nie znaleciono motywu"
 				},
+				"TOBIRA": {
+					"CAPTION": "Tobira",
+					"DESCRIPTION": "Here you can select where you want the series to show up in the Tobira video portal. You can only select one location here, and it needs to be empty (marked in bold). You can create new pages here, but note that they are only persisted if they are on the path to the selected page.",
+					"SELECT_PAGE": "Select a target page",
+					"PAGE_TITLE": "Subpage title",
+					"PATH_SEGMENT": "Path segment",
+					"SUBPAGES": "Subpages",
+					"ADD_SUBPAGE": "Add subpage",
+					"CANCEL": "Cancel",
+					"HOMEPAGE": "Homepage",
+					"SELECTED_PAGE": "Series will be mounted under the following path",
+					"NO_PAGE_SELECTED": "No page selected. Series will not be mounted in Tobira.",
+					"PATH": "Path"
+				},
 				"SUMMARY": {
 					"CAPTION": "Podsumowanie"
 				}
@@ -1138,6 +1152,7 @@
 					"EVENTS": "Wydarzenia",
 					"PERMISSIONS": "Zasady dostępu",
 					"THEME": "Motyw",
+					"TOBIRA": "Tobira",
 					"STATISTICS": "Statistics"
 				},
 				"ACCESS": {
@@ -1184,6 +1199,13 @@
 					"DESCRIPTION": "Opis",
 					"REPLACE_SERIES_METADATA": "Update series metadata",
 					"REPLACE_SERIES_THEME": "Update series theme"
+				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to series",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This series is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this series"
 				},
 				"EVENTS": {
 					"TITLE": "Tytuł",
@@ -2025,7 +2047,7 @@
 		"TOTAL": "Total",
 		"GRANULARITY": "Granularity",
 		"NAVIGATION": {
-			"ORGANIZATION": "Organisation"
+			"ORGANIZATION": "Organization"
 		},
 		"TIME_MODES": {
 			"Year": "Year",
