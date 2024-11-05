@@ -21,6 +21,7 @@ export type FilterData = {
 	}[],
 	translatable: boolean,
 	type: string,
+	resource: string, // Not from the backend. We set this to keep track of which table this filter belongs to
 	value: string,
 }
 
@@ -76,6 +77,7 @@ export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', asy
 	const filtersList = Object.keys(filters.filters).map((key) => {
 		let filter = filters.filters[key];
 		filter.name = key;
+		filter.resource = resource;
 		return filter;
 	});
 
@@ -84,10 +86,24 @@ export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', asy
 			label: "FILTERS.EVENTS.PRESENTERS_BIBLIOGRAPHIC.LABEL",
 			name: "presentersBibliographic",
 			translatable: false,
-			type: "events",
+			type: "select",
+			resource: "events",
 			value: "",
 		});
 	}
+
+	// Do all this purely to keep set filter values saved if the tab gets switched
+	let oldData = getState().tableFilters.data
+
+	for (const oldFilter of oldData) {
+		var foundIndex = filtersList.findIndex(x => x.name === oldFilter.name && x.resource === oldFilter.resource);
+		if (foundIndex >= 0) {
+			filtersList[foundIndex].value = oldFilter.value;
+		}
+	}
+
+	oldData = oldData.filter(filter => filter.resource !== resource)
+	filtersList.push(...oldData)
 
 	return { filtersList, resource };
 });
@@ -199,6 +215,7 @@ function transformResponse(data: {
 		name: string
 		translatable: boolean,
 		type: string,
+		resource: string,
 	}
 }) {
 	type ParsedFilters = {
@@ -209,6 +226,7 @@ function transformResponse(data: {
 			name: string
 			translatable: boolean,
 			type: string,
+			resource: string,
 		}
 	}
 
