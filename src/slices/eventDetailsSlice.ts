@@ -1314,7 +1314,7 @@ export const fetchWorkflows = createAppAsyncThunk('eventDetails/fetchWorkflows',
 			workflow: {
 				workflowId: workflowsData.workflowId,
 				description: undefined,
-				configuration: undefined
+				configuration: workflowsData.configuration,
 			},
 			scheduling: true,
 			entries: [],
