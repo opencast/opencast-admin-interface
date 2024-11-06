@@ -112,7 +112,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 
 	const select = (page?: TobiraPage) => {
 		if (!page || !page.new) {
-			stopEditing();
+			setEditing(false);
 		}
 		if (!page || formik.values.selectedPage === page) {
 			formik.setFieldValue("selectedPage", undefined);
@@ -169,16 +169,6 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 		};
 		dispatch(setTobiraPage({ ...currentPage, children: [...currentPage.children, newPage]}));
 		select(newPage);
-	};
-
-	const stopEditing = () => {
-		if (editing) {
-			dispatch(setTobiraPage({
-				...currentPage,
-				children: currentPage.children.filter((_, idx) => idx !== currentPage.children.length - 1)
-			}));
-		}
-		setEditing(false);
 	};
 
 	const setPage = (
