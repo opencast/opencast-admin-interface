@@ -740,6 +740,14 @@ const Schedule = <T extends {
 									required={true}
 									handleChange={(element) => {
 										if (element) {
+											// Set inputs depending on location
+											let inputDevice = inputDevices.find(
+												({ name }) => name === element.value
+											);
+											if (inputDevice) {
+												formik.setFieldValue("deviceInputs", inputDevice.inputs.map(input => input.id))
+											}
+											// Set location
 											formik.setFieldValue("location", element.value)
 										}
 									}}
