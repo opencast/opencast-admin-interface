@@ -132,6 +132,11 @@ export const NewEventSchema = [
 				value === "SCHEDULE_SINGLE" || value === "SCHEDULE_MULTIPLE",
 			then: () => Yup.string().required("Required"),
 		}),
+		deviceInputs: Yup.mixed().when(["sourceMode", "locationHasInputs"], {
+			is: (sourceMode: string, locationHasInputs: boolean) =>
+				(sourceMode === "SCHEDULE_SINGLE" || sourceMode === "SCHEDULE_MULTIPLE") && locationHasInputs,
+			then: () => Yup.array().min(1).required("Required"),
+		}),
 	}),
 	Yup.object().shape({
 		processingWorkflow: Yup.string().required("Required"),
