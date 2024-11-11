@@ -1830,7 +1830,8 @@ export const saveWorkflowConfig = createAppAsyncThunk('eventDetails/saveWorkflow
 
 	let header = getHttpHeaders();
 	let data = new URLSearchParams();
-	data.append("configuration", JSON.stringify(jsonData));
+	// Scheduler service in Opencast expects values to be strings, so we convert them here
+	data.append("configuration", JSON.stringify(jsonData, (k, v) => v && typeof v === 'object' ? v : '' + v));
 
 	axios
 		.put(`/admin-ng/event/${eventId}/workflows`, data, header)
