@@ -420,7 +420,7 @@ const Schedule = <T extends {
 						value={input.id}
 						tabIndex={12}
 					/>
-					{t(input.value)}
+					{t(input.value, input.id)}
 				</label>
 			));
 		}
