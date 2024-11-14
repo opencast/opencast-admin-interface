@@ -45,7 +45,6 @@ import EventDetailsModal from "./partials/modals/EventDetailsModal";
 import { showModal as showEventModal } from "../../selectors/eventDetailsSelectors";
 import { showModal as showSeriesModal } from "../../selectors/seriesDetailsSelectors";
 import SeriesDetailsModal from "./partials/modals/SeriesDetailsModal";
-import { setShowModal as setShowSeriesModal } from "../../slices/seriesDetailsSlice";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef<HTMLDivElement>();
@@ -317,9 +316,7 @@ const Events = () => {
 					<EventDetailsModal />
 				}
 				{displaySeriesDetailsModal &&
-					<SeriesDetailsModal handleClose={() => {
-						dispatch(setShowSeriesModal(false));
-					}} />
+					<SeriesDetailsModal />
 				}
 
 				{/*Include table component*/}

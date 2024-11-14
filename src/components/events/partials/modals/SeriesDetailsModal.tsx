@@ -3,18 +3,16 @@ import { useTranslation } from "react-i18next";
 import SeriesDetails from "./SeriesDetails";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
-import { useAppSelector } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 import { getModalSeries } from "../../../../selectors/seriesDetailsSelectors";
+import { setShowModal } from "../../../../slices/seriesDetailsSlice";
 
 /**
  * This component renders the modal for displaying series details
  */
-const SeriesDetailsModal = ({
-	handleClose,
-}: {
-	handleClose: () => void
-}) => {
+const SeriesDetailsModal = () => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	// tracks, whether the policies are different to the initial value
 	const [policyChanged, setPolicyChanged] = useState(false);
@@ -28,7 +26,7 @@ const SeriesDetailsModal = ({
 	const close = () => {
 		if (!policyChanged || confirmUnsaved()) {
 			setPolicyChanged(false);
-			handleClose();
+			dispatch(setShowModal(false));
 		}
 	};
 

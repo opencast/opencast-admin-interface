@@ -62,12 +62,10 @@ export type AssetTabHierarchy = "entry" | "add-asset" | "asset-attachments" | "a
  */
 const EventDetails = ({
 	eventId,
-	close,
 	policyChanged,
 	setPolicyChanged,
 }: {
 	eventId: string,
-	close?: () => void,
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,
 }) => {

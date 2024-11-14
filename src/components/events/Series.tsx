@@ -36,7 +36,6 @@ import {
 import { fetchSeriesDetailsTobiraNew } from "../../slices/seriesSlice";
 import { showModal } from "../../selectors/seriesDetailsSelectors";
 import SeriesDetailsModal from "./partials/modals/SeriesDetailsModal";
-import { setShowModal } from "../../slices/seriesDetailsSlice";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef<HTMLDivElement>();
@@ -240,9 +239,7 @@ const Series = () => {
 				</div>
 
 				{displaySeriesDetailsModal &&
-					<SeriesDetailsModal handleClose={() => {
-						dispatch(setShowModal(false));
-					}} />
+					<SeriesDetailsModal />
 				}
 
 				<Table templateMap={seriesTemplateMap} />
