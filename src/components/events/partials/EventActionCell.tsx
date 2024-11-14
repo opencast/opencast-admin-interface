@@ -55,7 +55,7 @@ const EventActionCell = ({
 
 	const onClickSeriesDetails = async () => {
 		if (!!row.series) {
-			await dispatch(openSeriesModal(row.series.id));
+			await dispatch(openSeriesModal(row.series));
 			showSeriesDetailsModal();
 		}
 	};
@@ -81,8 +81,6 @@ const EventActionCell = ({
 			{!!row.series && displaySeriesDetailsModal && (
 				<SeriesDetailsModal
 					handleClose={hideSeriesDetailsModal}
-					seriesId={row.series.id}
-					seriesTitle={row.series.title}
 				/>
 			)}
 

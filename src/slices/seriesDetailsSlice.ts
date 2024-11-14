@@ -21,6 +21,7 @@ import { Ace } from './aclSlice';
 import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
 import { AppDispatch } from '../store';
+import { PartialSeries } from './seriesSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of a series
@@ -35,6 +36,7 @@ export type Feed = {
 // Contains the navigation logic for the modal
 type SeriesDetailsModal = {
 	page: number,
+	series: PartialSeries | null,
 }
 
 type SeriesDetailsState = {
@@ -113,16 +115,19 @@ const initialState: SeriesDetailsState = {
 	},
 	modal: {
 		page: 0,
+		series: null,
 	},
 };
 
-export const openModal = (id: string) => async (dispatch: AppDispatch) => {
+export const openModal = (series: PartialSeries) => async (dispatch: AppDispatch) => {
+	const { id } = series;
 	await dispatch(fetchSeriesDetailsMetadata(id));
 	await dispatch(fetchSeriesDetailsAcls(id));
 	await dispatch(fetchSeriesDetailsFeeds(id));
 	await dispatch(fetchSeriesDetailsTheme(id));
 	await dispatch(fetchSeriesDetailsThemeNames());
 	await dispatch(fetchSeriesDetailsTobira(id));
+	dispatch(setModalSeries(series));
 	dispatch(setModalPage(0));
 };
 
@@ -525,6 +530,11 @@ const seriesDetailsSlice = createSlice({
 		>) {
 			state.modal.page = action.payload;
 		},
+		setModalSeries(state, action: PayloadAction<
+			SeriesDetailsState["modal"]["series"]
+		>) {
+			state.modal.series = action.payload;
+		},
 		setSeriesDetailsTheme(state, action: PayloadAction<
 			SeriesDetailsState["theme"]
 		>) {
@@ -673,6 +683,7 @@ const seriesDetailsSlice = createSlice({
 
 export const {
 	setModalPage,
+	setModalSeries,
 	setSeriesDetailsTheme,
 	setSeriesDetailsMetadata,
 	setSeriesDetailsExtendedMetadata,

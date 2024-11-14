@@ -55,7 +55,7 @@ const SeriesActionsCell = ({
 	};
 
 	const showSeriesDetailsModal = async () => {
-		await dispatch(openModal(row.id));
+		await dispatch(openModal(row));
 		setSeriesDetailsModal(true);
 	};
 
@@ -74,8 +74,6 @@ const SeriesActionsCell = ({
 			{displaySeriesDetailsModal && (
 				<SeriesDetailsModal
 					handleClose={hideSeriesDetailsModal}
-					seriesId={row.id}
-					seriesTitle={row.title}
 				/>
 			)}
 
