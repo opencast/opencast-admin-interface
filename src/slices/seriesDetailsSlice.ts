@@ -116,7 +116,13 @@ const initialState: SeriesDetailsState = {
 	},
 };
 
-export const openModal = () => (dispatch: AppDispatch) => {
+export const openModal = (id: string) => async (dispatch: AppDispatch) => {
+	await dispatch(fetchSeriesDetailsMetadata(id));
+	await dispatch(fetchSeriesDetailsAcls(id));
+	await dispatch(fetchSeriesDetailsFeeds(id));
+	await dispatch(fetchSeriesDetailsTheme(id));
+	await dispatch(fetchSeriesDetailsThemeNames());
+	await dispatch(fetchSeriesDetailsTobira(id));
 	dispatch(setModalPage(0));
 };
 

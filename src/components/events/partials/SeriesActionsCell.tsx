@@ -2,15 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
 import SeriesDetailsModal from "./modals/SeriesDetailsModal";
-import {
-	fetchSeriesDetailsThemeNames,
-	fetchSeriesDetailsAcls,
-	fetchSeriesDetailsFeeds,
-	fetchSeriesDetailsMetadata,
-	fetchSeriesDetailsTheme,
-	fetchSeriesDetailsTobira,
-	openModal,
-} from "../../../slices/seriesDetailsSlice";
+import { openModal } from "../../../slices/seriesDetailsSlice";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import {
@@ -63,15 +55,7 @@ const SeriesActionsCell = ({
 	};
 
 	const showSeriesDetailsModal = async () => {
-		await dispatch(fetchSeriesDetailsMetadata(row.id));
-		await dispatch(fetchSeriesDetailsAcls(row.id));
-		await dispatch(fetchSeriesDetailsFeeds(row.id));
-		await dispatch(fetchSeriesDetailsTheme(row.id));
-		await dispatch(fetchSeriesDetailsThemeNames());
-		await dispatch(fetchSeriesDetailsTobira(row.id));
-
-		dispatch(openModal());
-
+		await dispatch(openModal(row.id));
 		setSeriesDetailsModal(true);
 	};
 

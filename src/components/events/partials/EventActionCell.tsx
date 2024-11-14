@@ -7,14 +7,7 @@ import { hasAccess } from "../../../utils/utils";
 import SeriesDetailsModal from "./modals/SeriesDetailsModal";
 import { EventDetailsPage } from "./modals/EventDetails";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import {
-	openModal as openSeriesModal,
-	fetchSeriesDetailsAcls,
-	fetchSeriesDetailsFeeds,
-	fetchSeriesDetailsMetadata,
-	fetchSeriesDetailsTheme,
-	fetchSeriesDetailsThemeNames,
-} from "../../../slices/seriesDetailsSlice";
+import { openModal as openSeriesModal } from "../../../slices/seriesDetailsSlice";
 import { Event, deleteEvent } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
 import { openModal as openEventModal } from "../../../slices/eventDetailsSlice";
@@ -62,14 +55,7 @@ const EventActionCell = ({
 
 	const onClickSeriesDetails = async () => {
 		if (!!row.series) {
-			await dispatch(fetchSeriesDetailsMetadata(row.series.id));
-			await dispatch(fetchSeriesDetailsAcls(row.series.id));
-			await dispatch(fetchSeriesDetailsFeeds(row.series.id));
-			await dispatch(fetchSeriesDetailsTheme(row.series.id));
-			await dispatch(fetchSeriesDetailsThemeNames());
-
-			dispatch(openSeriesModal());
-
+			await dispatch(openSeriesModal(row.series.id));
 			showSeriesDetailsModal();
 		}
 	};
