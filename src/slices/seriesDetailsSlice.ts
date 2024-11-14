@@ -47,7 +47,7 @@ type SeriesDetailsState = {
 	errorStatisticsValue: SerializedError | null,
 	statusTobiraData: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorTobiraData: SerializedError | null,
-  metadata: MetadataCatalog,
+	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	feeds: Feed[],
 	acl: TransformedAcl[],
@@ -524,9 +524,6 @@ const seriesDetailsSlice = createSlice({
 		>) {
 			state.statistics = action.payload;
 		},
-		setDoNothing(state) {
-
-		}
 	},
 	// These are used for thunks
 	extraReducers: builder => {
@@ -654,7 +651,6 @@ export const {
 	setSeriesDetailsExtendedMetadata,
 	setSeriesStatisticsError,
 	setSeriesStatistics,
-	setDoNothing,
 } = seriesDetailsSlice.actions;
 
 // Export the slice reducer as the default export
