@@ -30,6 +30,12 @@ export type Feed = {
 	version: string,
 }
 
+// Contains the navigation logic for the modal
+type SeriesDetailsModal = {
+	page: number,
+}
+
+
 type SeriesDetailsState = {
 	statusMetadata: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorMetadata: SerializedError | null,
@@ -66,6 +72,7 @@ type SeriesDetailsState = {
 			}[],
 		}[],
 	},
+	modal: SeriesDetailsModal,
 }
 
 // Initial state of series details in redux store
@@ -102,6 +109,9 @@ const initialState: SeriesDetailsState = {
 	tobiraData: {
 		baseURL: "",
 		hostPages: [],
+	},
+	modal: {
+		page: 0,
 	},
 };
 
@@ -499,6 +509,11 @@ const seriesDetailsSlice = createSlice({
 	name: 'seriesDetails',
 	initialState,
 	reducers: {
+		setModalPage(state, action: PayloadAction<
+			SeriesDetailsState["modal"]["page"]
+		>) {
+			state.modal.page = action.payload;
+		},
 		setSeriesDetailsTheme(state, action: PayloadAction<
 			SeriesDetailsState["theme"]
 		>) {
@@ -646,6 +661,7 @@ const seriesDetailsSlice = createSlice({
 });
 
 export const {
+	setModalPage,
 	setSeriesDetailsTheme,
 	setSeriesDetailsMetadata,
 	setSeriesDetailsExtendedMetadata,

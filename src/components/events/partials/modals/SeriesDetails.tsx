@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import {
+	getModalPage,
 	getSeriesDetailsExtendedMetadata,
 	getSeriesDetailsFeeds,
 	getSeriesDetailsMetadata,
@@ -19,6 +20,7 @@ import DetailsMetadataTab from "../ModalTabsAndPages/DetailsMetadataTab";
 import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsExtendedMetadataTab";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
+	setModalPage,
 	fetchSeriesStatistics,
 	updateExtendedSeriesMetadata,
 	updateSeriesMetadata,
@@ -52,7 +54,7 @@ const SeriesDetails = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const [page, setPage] = useState(0);
+	const page = useAppSelector(state => getModalPage(state));
 
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
@@ -97,7 +99,7 @@ const SeriesDetails = ({
 	];
 
 	const openTab = (tabNr: number) => {
-		setPage(tabNr);
+		dispatch(setModalPage(tabNr));
 	};
 
 	return (
