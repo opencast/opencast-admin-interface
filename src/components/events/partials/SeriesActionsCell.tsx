@@ -9,6 +9,7 @@ import {
 	fetchSeriesDetailsMetadata,
 	fetchSeriesDetailsTheme,
 	fetchSeriesDetailsTobira,
+	openModal,
 } from "../../../slices/seriesDetailsSlice";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
@@ -68,6 +69,8 @@ const SeriesActionsCell = ({
 		await dispatch(fetchSeriesDetailsTheme(row.id));
 		await dispatch(fetchSeriesDetailsThemeNames());
 		await dispatch(fetchSeriesDetailsTobira(row.id));
+
+		dispatch(openModal());
 
 		setSeriesDetailsModal(true);
 	};

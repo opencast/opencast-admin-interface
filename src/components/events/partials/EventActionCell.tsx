@@ -8,6 +8,7 @@ import SeriesDetailsModal from "./modals/SeriesDetailsModal";
 import { EventDetailsPage } from "./modals/EventDetails";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import {
+	openModal as openSeriesModal,
 	fetchSeriesDetailsAcls,
 	fetchSeriesDetailsFeeds,
 	fetchSeriesDetailsMetadata,
@@ -16,7 +17,7 @@ import {
 } from "../../../slices/seriesDetailsSlice";
 import { Event, deleteEvent } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
-import { openModal } from "../../../slices/eventDetailsSlice";
+import { openModal as openEventModal } from "../../../slices/eventDetailsSlice";
 
 /**
  * This component renders the action cells of events in the table view
@@ -67,24 +68,26 @@ const EventActionCell = ({
 			await dispatch(fetchSeriesDetailsTheme(row.series.id));
 			await dispatch(fetchSeriesDetailsThemeNames());
 
+			dispatch(openSeriesModal());
+
 			showSeriesDetailsModal();
 		}
 	};
 
 	const onClickEventDetails = () => {
-		dispatch(openModal(EventDetailsPage.Metadata, row));
+		dispatch(openEventModal(EventDetailsPage.Metadata, row));
 	};
 
 	const onClickComments = () => {
-		dispatch(openModal(EventDetailsPage.Comments, row));
+		dispatch(openEventModal(EventDetailsPage.Comments, row));
 	};
 
 	const onClickWorkflow = () => {
-		dispatch(openModal(EventDetailsPage.Workflow, row));
+		dispatch(openEventModal(EventDetailsPage.Workflow, row));
 	};
 
 	const onClickAssets = () => {
-		dispatch(openModal(EventDetailsPage.Assets, row));
+		dispatch(openEventModal(EventDetailsPage.Assets, row));
 	};
 
 	return (

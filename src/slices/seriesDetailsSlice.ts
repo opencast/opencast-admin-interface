@@ -20,6 +20,7 @@ import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './stati
 import { Ace } from './aclSlice';
 import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
+import { AppDispatch } from '../store';
 
 /**
  * This file contains redux reducer for actions affecting the state of a series
@@ -30,11 +31,11 @@ export type Feed = {
 	version: string,
 }
 
+
 // Contains the navigation logic for the modal
 type SeriesDetailsModal = {
 	page: number,
 }
-
 
 type SeriesDetailsState = {
 	statusMetadata: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
@@ -113,6 +114,10 @@ const initialState: SeriesDetailsState = {
 	modal: {
 		page: 0,
 	},
+};
+
+export const openModal = () => (dispatch: AppDispatch) => {
+	dispatch(setModalPage(0));
 };
 
 // fetch metadata of certain series from server
