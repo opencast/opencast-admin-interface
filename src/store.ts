@@ -48,6 +48,7 @@ const groupsPersistConfig = { key: "groups", storage, whitelist: ["columns"] }
 const aclsPersistConfig = { key: "acls", storage, whitelist: ["columns"] }
 const themesPersistConfig = { key: "themes", storage, whitelist: ["columns"] }
 const eventDetailsPersistConfig = { key: "eventDetails", storage: urlStorage, whitelist: ["modal"]}
+const seriesDetailsPersistConfig = { key: "seriesDetails", storage: urlStorage, whitelist: ["modal"]}
 
 // form reducer and all other reducers used in this app
 const reducers = combineReducers({
@@ -69,7 +70,7 @@ const reducers = combineReducers({
 	workflows,
 	eventDetails: persistReducer(eventDetailsPersistConfig, eventDetails),
 	themeDetails,
-	seriesDetails,
+	seriesDetails: persistReducer(seriesDetailsPersistConfig, seriesDetails),
 	recordingDetails,
 	userDetails,
 	groupDetails,
