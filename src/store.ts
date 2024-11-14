@@ -1,5 +1,6 @@
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import urlStorage from "./utils/urlStorage";
 import { UnknownAction, combineReducers } from "redux";
 import tableFilters from "./slices/tableFilterSlice";
 import tableFilterProfiles from "./slices/tableFilterProfilesSlice";
@@ -46,6 +47,7 @@ const usersPersistConfig = { key: "users", storage, whitelist: ["columns"] }
 const groupsPersistConfig = { key: "groups", storage, whitelist: ["columns"] }
 const aclsPersistConfig = { key: "acls", storage, whitelist: ["columns"] }
 const themesPersistConfig = { key: "themes", storage, whitelist: ["columns"] }
+const eventDetailsPersistConfig = { key: "eventDetails", storage: urlStorage, whitelist: ["modal"]}
 
 // form reducer and all other reducers used in this app
 const reducers = combineReducers({
@@ -65,7 +67,7 @@ const reducers = combineReducers({
 	health,
 	notifications,
 	workflows,
-	eventDetails,
+	eventDetails: persistReducer(eventDetailsPersistConfig, eventDetails),
 	themeDetails,
 	seriesDetails,
 	recordingDetails,

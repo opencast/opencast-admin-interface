@@ -10,7 +10,7 @@ const storage = {
 	}),
 	removeItem: async (key: string) => updateParams(params => {
 		params.delete(key);
-	})
+	}),
 } satisfies WebStorage;
 export default storage;
 
