@@ -35,6 +35,7 @@ export type Feed = {
 
 // Contains the navigation logic for the modal
 type SeriesDetailsModal = {
+	show: boolean,
 	page: number,
 	series: PartialSeries | null,
 }
@@ -114,6 +115,7 @@ const initialState: SeriesDetailsState = {
 		hostPages: [],
 	},
 	modal: {
+		show: false,
 		page: 0,
 		series: null,
 	},
@@ -129,6 +131,7 @@ export const openModal = (series: PartialSeries) => async (dispatch: AppDispatch
 	await dispatch(fetchSeriesDetailsTobira(id));
 	dispatch(setModalSeries(series));
 	dispatch(setModalPage(0));
+	dispatch(setShowModal(true));
 };
 
 // fetch metadata of certain series from server
@@ -525,6 +528,11 @@ const seriesDetailsSlice = createSlice({
 	name: 'seriesDetails',
 	initialState,
 	reducers: {
+		setShowModal(state, action: PayloadAction<
+			SeriesDetailsState["modal"]["show"]
+		>) {
+			state.modal.show = action.payload;
+		},
 		setModalPage(state, action: PayloadAction<
 			SeriesDetailsState["modal"]["page"]
 		>) {
@@ -682,6 +690,7 @@ const seriesDetailsSlice = createSlice({
 });
 
 export const {
+	setShowModal,
 	setModalPage,
 	setModalSeries,
 	setSeriesDetailsTheme,

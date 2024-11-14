@@ -42,7 +42,10 @@ import {
 } from "../../slices/eventSlice";
 import { fetchSeries } from "../../slices/seriesSlice";
 import EventDetailsModal from "./partials/modals/EventDetailsModal";
-import { showModal } from "../../selectors/eventDetailsSelectors";
+import { showModal as showEventModal } from "../../selectors/eventDetailsSelectors";
+import { showModal as showSeriesModal } from "../../selectors/seriesDetailsSelectors";
+import SeriesDetailsModal from "./partials/modals/SeriesDetailsModal";
+import { setShowModal as setShowSeriesModal } from "../../slices/seriesDetailsSlice";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef<HTMLDivElement>();
@@ -55,7 +58,8 @@ const Events = () => {
 	const dispatch = useAppDispatch();
 
 	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
-	const displayEventDetailsModal = useAppSelector(state => showModal(state));
+	const displayEventDetailsModal = useAppSelector(state => showEventModal(state));
+	const displaySeriesDetailsModal = useAppSelector(state => showSeriesModal(state));
 
 	const [displayActionMenu, setActionMenu] = useState(false);
 	const [displayNavigation, setNavigation] = useState(false);
@@ -308,9 +312,14 @@ const Events = () => {
 					<h4>{t("TABLE_SUMMARY", { numberOfRows: events })}</h4>
 				</div>
 
-				{/*Include table modal*/}
+				{/*Include table modals*/}
 				{displayEventDetailsModal &&
 					<EventDetailsModal />
+				}
+				{displaySeriesDetailsModal &&
+					<SeriesDetailsModal handleClose={() => {
+						dispatch(setShowSeriesModal(false));
+					}} />
 				}
 
 				{/*Include table component*/}

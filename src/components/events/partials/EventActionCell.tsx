@@ -4,7 +4,6 @@ import ConfirmModal from "../../shared/ConfirmModal";
 import EmbeddingCodeModal from "./modals/EmbeddingCodeModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
-import SeriesDetailsModal from "./modals/SeriesDetailsModal";
 import { EventDetailsPage } from "./modals/EventDetails";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { openModal as openSeriesModal } from "../../../slices/seriesDetailsSlice";
@@ -24,7 +23,6 @@ const EventActionCell = ({
 	const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
-	const [displaySeriesDetailsModal, setSeriesDetailsModal] = useState(false);
 	const [displayEmbeddingCodeModal, setEmbeddingCodeModal] = useState(false);
 
 	const user = useAppSelector(state => getUserInformation(state));
@@ -45,18 +43,9 @@ const EventActionCell = ({
 		setEmbeddingCodeModal(true);
 	};
 
-	const showSeriesDetailsModal = () => {
-		setSeriesDetailsModal(true);
-	};
-
-	const hideSeriesDetailsModal = () => {
-		setSeriesDetailsModal(false);
-	};
-
 	const onClickSeriesDetails = async () => {
 		if (!!row.series) {
 			await dispatch(openSeriesModal(row.series));
-			showSeriesDetailsModal();
 		}
 	};
 
@@ -78,12 +67,6 @@ const EventActionCell = ({
 
 	return (
 		<>
-			{!!row.series && displaySeriesDetailsModal && (
-				<SeriesDetailsModal
-					handleClose={hideSeriesDetailsModal}
-				/>
-			)}
-
 			{/* Open event details */}
 			{hasAccess("ROLE_UI_EVENTS_DETAILS_VIEW", user) && (
 				<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.DETAILS")}>

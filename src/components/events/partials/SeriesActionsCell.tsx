@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import SeriesDetailsModal from "./modals/SeriesDetailsModal";
 import { openModal } from "../../../slices/seriesDetailsSlice";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
@@ -30,7 +29,6 @@ const SeriesActionsCell = ({
 	const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
-	const [displaySeriesDetailsModal, setSeriesDetailsModal] = useState(false);
 
 	const user = useAppSelector(state => getUserInformation(state));
 	const hasEvents = useAppSelector(state => getSeriesHasEvents(state));
@@ -50,31 +48,16 @@ const SeriesActionsCell = ({
 		dispatch(deleteSeries(id));
 	};
 
-	const hideSeriesDetailsModal = () => {
-		setSeriesDetailsModal(false);
-	};
-
-	const showSeriesDetailsModal = async () => {
-		await dispatch(openModal(row));
-		setSeriesDetailsModal(true);
-	};
-
 	return (
 		<>
 			{/* series details */}
 			{hasAccess("ROLE_UI_SERIES_DETAILS_VIEW", user) && (
 				<Tooltip title={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}>
 					<button
-						onClick={() => showSeriesDetailsModal()}
+						onClick={() => dispatch(openModal(row))}
 						className="button-like-anchor more-series"
 					/>
 				</Tooltip>
-			)}
-
-			{displaySeriesDetailsModal && (
-				<SeriesDetailsModal
-					handleClose={hideSeriesDetailsModal}
-				/>
 			)}
 
 			{/* delete series */}

@@ -34,6 +34,9 @@ import {
 	showActionsSeries,
 } from "../../slices/seriesSlice";
 import { fetchSeriesDetailsTobiraNew } from "../../slices/seriesSlice";
+import { showModal } from "../../selectors/seriesDetailsSelectors";
+import SeriesDetailsModal from "./partials/modals/SeriesDetailsModal";
+import { setShowModal } from "../../slices/seriesDetailsSlice";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef<HTMLDivElement>();
@@ -51,6 +54,7 @@ const Series = () => {
 
   const user = useAppSelector(state => getUserInformation(state));
 	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
+	const displaySeriesDetailsModal = useAppSelector(state => showModal(state));
 
 	let location = useLocation();
 
@@ -234,6 +238,13 @@ const Series = () => {
 					{/* Include table view */}
 					<h4>{t("TABLE_SUMMARY", { numberOfRows: series })}</h4>
 				</div>
+
+				{displaySeriesDetailsModal &&
+					<SeriesDetailsModal handleClose={() => {
+						dispatch(setShowModal(false));
+					}} />
+				}
+
 				<Table templateMap={seriesTemplateMap} />
 			</MainView>
 			<Footer />

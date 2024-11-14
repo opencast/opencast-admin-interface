@@ -5,6 +5,7 @@ import { RootState } from "../store";
  */
 
 /* Selectors for the modal */
+export const showModal = (state: RootState) => state.seriesDetails.modal.show;
 export const getModalPage = (state: RootState) => state.seriesDetails.modal.page;
 export const getModalSeries = (state: RootState) => state.seriesDetails.modal.series;
 
