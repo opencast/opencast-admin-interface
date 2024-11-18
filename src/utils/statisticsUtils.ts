@@ -1,20 +1,19 @@
 import moment from "moment";
 import "moment/min/locales.min";
 import { getCurrentLanguageInformation } from "./utils";
-import {
-	statisticDateFormatStrings,
-} from "../configs/statisticsConfig";
+import { DataResolution, TimeMode } from "../slices/statisticsSlice";
+import type { ChartOptions, TooltipItem } from 'chart.js';
 
 /**
  * This file contains functions that are needed for thunks for statistics
  */
 
 /* creates callback function for formatting the labels of the xAxis in a statistics diagram */
-const createXAxisTickCallback = (
-	timeMode: "year" | "month",
-	dataResolution: "yearly" | "monthly" | "daily" | "hourly",
-	language: string
-) => {
+function createXAxisTickCallback (
+	timeMode: TimeMode,
+	dataResolution: DataResolution,
+	language: string,
+) {
 	let formatString = "L";
 	if (timeMode === "year") {
 		formatString = "MMMM";
@@ -36,15 +35,17 @@ const createXAxisTickCallback = (
 		}
 	}
 
-	return (value: moment.MomentInput) => {
-		return moment(value).locale(language).format(formatString);
+	return function (tickValue: number | string) {
+		// Typescript does not like "this", but the chart.js documentation insists we should do it this way
+		// @ts-ignore
+		return moment(this.getLabelForValue(tickValue)).locale(language).format(formatString);
 	};
 };
 
 /* creates callback function for the displayed label when hovering over a data point in a statistics diagram */
 const createTooltipCallback = (
-	timeMode: "year" | "month",
-	dataResolution: "yearly" | "monthly" | "daily",
+	timeMode: TimeMode,
+	dataResolution: DataResolution,
 	language: string
 ) => {
 	let formatString;
@@ -76,18 +77,18 @@ const createTooltipCallback = (
 		}
 	}
 
-	return (tooltipItem: { label: Date | string; value: string; }) => {
+	return (tooltipItem: TooltipItem<"bar">) => {
 		const date = tooltipItem.label;
 		const finalDate = moment(date).locale(language).format(formatString);
-		return finalDate + ": " + tooltipItem.value;
+		return finalDate + ": " + tooltipItem.formattedValue;
 	};
 };
 
 /* creates options for statistics chart */
 export const createChartOptions = (
-	timeMode: keyof typeof statisticDateFormatStrings,
-	dataResolution: "yearly" | "monthly" | "daily"
-) => {
+	timeMode: TimeMode,
+	dataResolution: DataResolution
+): ChartOptions<'bar'> => {
 	// Get info about the current language and its date locale
 	const currentLanguageInfo = getCurrentLanguageInformation();
 	let currentLanguage = "";
@@ -97,8 +98,15 @@ export const createChartOptions = (
 
 	return {
 		responsive: true,
-		legend: {
-			display: false,
+		plugins: {
+			legend: {
+				display: false,
+			},
+			tooltip: {
+				callbacks: {
+					label: createTooltipCallback(timeMode, dataResolution, currentLanguage),
+				},
+			},
 		},
 		layout: {
 			padding: {
@@ -108,26 +116,22 @@ export const createChartOptions = (
 			},
 		},
 		scales: {
-			xAxes: [
+			x:
 				{
 					ticks: {
 						callback: createXAxisTickCallback(
 							timeMode,
 							dataResolution,
-							currentLanguage
+							currentLanguage,
 						),
 					},
 				},
-			],
+
 			y: {
 				suggestedMin: 0,
 			},
 		},
-		tooltips: {
-			callbacks: {
-				label: createTooltipCallback(timeMode, dataResolution, currentLanguage),
-			},
-		},
+
 	};
 };
 

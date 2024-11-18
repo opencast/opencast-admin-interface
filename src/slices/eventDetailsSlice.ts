@@ -26,7 +26,7 @@ import { calculateDuration } from "../utils/dateUtils";
 import { fetchRecordings } from "./recordingSlice";
 import { getRecordings } from "../selectors/recordingSelectors";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
+import { DataResolution, Statistics, TimeMode, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
 import { Event } from "./eventSlice";
@@ -1535,21 +1535,21 @@ export const fetchEventStatistics = createAppAsyncThunk('eventDetails/fetchEvent
 
 // TODO: Fix this after the modernization of statisticsThunks happened
 export const fetchEventStatisticsValueUpdate = createAppAsyncThunk('eventDetails/fetchEventStatisticsValueUpdate', async (params: {
-	eventId: string,
+	id: string,
 	providerId: string,
-	from: string,
-	to: string,
-	dataResolution: string[],
-	timeMode: any
+	from: string | Date,
+	to: string | Date,
+	dataResolution: DataResolution,
+	timeMode: TimeMode
 }, { getState }) => {
-	const { eventId, providerId, from, to, dataResolution, timeMode } = params;
+	const { id, providerId, from, to, dataResolution, timeMode } = params;
 	// get prior statistics
 	const state = getState();
 	const statistics = getStatistics(state);
 
 	return await (
 		fetchStatisticsValueUpdate(
-			eventId,
+			id,
 			"episode",
 			providerId,
 			from,
@@ -2499,7 +2499,7 @@ const eventDetailsSlice = createSlice({
 			})
 			//fetchEventStatisticsValueUpdate
 			.addCase(fetchEventStatisticsValueUpdate.pending, (state) => {
-				state.statusStatistics = 'loading';
+				state.statusStatisticsValue = 'loading';
 			})
 			.addCase(fetchEventStatisticsValueUpdate.fulfilled, (state, action: PayloadAction<
 				any

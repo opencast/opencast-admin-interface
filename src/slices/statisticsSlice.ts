@@ -2,7 +2,6 @@ import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import moment from "moment";
 import {
-	createChartOptions,
 	createDownloadUrl,
 } from "../utils/statisticsUtils";
 import { getHttpHeaders } from "../utils/resourceUtils";
@@ -12,7 +11,9 @@ import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 /**
  * This file contains redux reducer for actions affecting the state of statistics
  */
-// TODO: proper typing
+export type TimeMode = "year" | "month" | "custom"
+export type DataResolution = "daily" | "monthly" | "yearly" | "weekly" | "hourly"
+
 export type Statistics = {
 	title: string
 	description: string,
@@ -20,13 +21,12 @@ export type Statistics = {
 	providerType: string,
 	from: string,
 	to: string,
-	dataResolution: string[],
-	timeMode: any,
-	options: any,
-	csvUrl: any,
-	values: any,
-	labels: any,
-	totalValue: any,
+	dataResolution: DataResolution,
+	timeMode: TimeMode,
+	csvUrl: string, // URL
+	values: number[],
+	labels: string[],
+	totalValue: number,
 }
 
 type StatisticsState = {
@@ -50,7 +50,7 @@ const initialState: StatisticsState = {
 
 /* thunks for fetching statistics data */
 
-export const fetchStatisticsPageStatistics = createAppAsyncThunk('statistics/fetchStatisticsPageStatistics', async (organizationId: any, { getState }) => {
+export const fetchStatisticsPageStatistics = createAppAsyncThunk('statistics/fetchStatisticsPageStatistics', async (organizationId: string, { getState }) => {
 	// get prior statistics
 	const state = getState();
 	const statistics = getStatistics(state);
@@ -58,159 +58,159 @@ export const fetchStatisticsPageStatistics = createAppAsyncThunk('statistics/fet
 	return await fetchStatistics(organizationId, "organization", statistics)
 });
 
-export const fetchStatisticsPageStatisticsValueUpdate = createAppAsyncThunk('statistics/fetchStatisticsPageStatisticsValueUpdate', async (params: {organizationId: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any}, { getState }) => {
-	const { organizationId, providerId, from, to, dataResolution, timeMode } = params;
+export const fetchStatisticsPageStatisticsValueUpdate = createAppAsyncThunk('statistics/fetchStatisticsPageStatisticsValueUpdate', async (
+	params: {
+		id: string,
+		providerId: string,
+		from: string | Date,
+		to: string | Date,
+		dataResolution: DataResolution,
+		timeMode: TimeMode
+	}, { getState }) => {
+	const { id, providerId, from, to, dataResolution, timeMode } = params;
 
 	// get prior statistics
 	const state = getState();
 	const statistics = getStatistics(state);
 
-	return await fetchStatisticsValueUpdate(organizationId, "organization", providerId, from, to, dataResolution, timeMode, statistics)
+	return await fetchStatisticsValueUpdate(id, "organization", providerId, from, to, dataResolution, timeMode, statistics)
 });
 
-export const fetchStatistics = async (resourceId: any, resourceType: any, statistics: any) => {
+export const fetchStatistics = async (resourceId: string, resourceType: string, statistics: Statistics[]) => {
 	let hasError = false;
 
 	// create url params
 	let params = new URLSearchParams();
 	params.append("resourceType", resourceType);
 
+	let newStatistics: Statistics[] = [];
+	const statisticsValueRequest = [];
+
 	// get the available statistics providers from API
-	axios
-		.get("/admin-ng/statistics/providers.json", { params })
-		.then((response) => {
-			// default values to use, when statistics are viewed the first time
-			const originalDataResolution = "monthly";
-			const originalTimeMode = "year";
-			const originalFrom = moment().startOf(originalTimeMode);
-			const originalTo = moment().endOf(originalTimeMode);
+	try {
+		const response = await axios.get("/admin-ng/statistics/providers.json", { params })
+		// default values to use, when statistics are viewed the first time
+		const originalDataResolution = "monthly";
+		const originalTimeMode = "year";
+		const originalFrom = moment().startOf(originalTimeMode);
+		const originalTo = moment().endOf(originalTimeMode);
 
-// @ts-expect-error TS(7034): Variable 'newStatistics' implicitly has type 'any[... Remove this comment to see the full error message
-			let newStatistics = [];
-			const statisticsValueRequest = [];
-
-			// iterate over statistics providers
-			for (let i = 0; i < response.data.length; i++) {
-				// currently, only time series data can be displayed, for other types, add data directly, then continue
-				if (response.data[i].providerType !== "timeSeries") {
-					newStatistics.push({
-						...response.data[i],
-					});
-				} else {
-					// case: provider is of type time series
-					let from;
-					let to;
-					let timeMode;
-					let dataResolution;
-
-					/* if old values for this statistic exist, use old
-					from (date), to (date), timeMode and dataResolution values, otherwise use defaults */
-					if (statistics.length > i) {
-						from = statistics[i].from;
-						to = statistics[i].to;
-						timeMode = statistics[i].timeMode;
-						dataResolution = statistics[i].dataResolution;
-					} else {
-						from = originalFrom.format("YYYY-MM-DD");
-						to = originalTo.format("YYYY-MM-DD");
-						timeMode = originalTimeMode;
-						dataResolution = originalDataResolution;
-					}
-
-					// create chart options and download url
-					const options = createChartOptions(timeMode, dataResolution);
-					const csvUrl = createDownloadUrl(
-						resourceId,
-						resourceType,
-						response.data[i].providerId,
-						from,
-						to,
-						dataResolution
-					);
-
-					// add provider to statistics list and add statistic settings
-					newStatistics.push({
-						...response.data[i],
-						from: from,
-						to: to,
-						timeMode: timeMode,
-						dataResolution: dataResolution,
-						options: options,
-						csvUrl: csvUrl,
-					});
-
-					// add settings for this statistic of this resource to value request
-					statisticsValueRequest.push({
-						dataResolution: dataResolution,
-						from: moment(from),
-						to: moment(to).endOf("day"),
-						resourceId: resourceId,
-						providerId: response.data[i].providerId,
-					});
-				}
-			}
-
-			// prepare header and data for statistics values request
-			const requestHeaders = getHttpHeaders();
-			const requestData = new URLSearchParams({
-				data: JSON.stringify(statisticsValueRequest),
-			});
-
-			// request statistics values from API
-			axios
-				.post("/admin-ng/statistics/data.json", requestData, requestHeaders)
-				.then((dataResponse) => {
-					// iterate over value responses
-					for (const statisticsValue of dataResponse.data) {
-						// get the statistic the response is meant for
-// @ts-expect-error TS(7005): Variable 'newStatistics' implicitly has an 'any[]'... Remove this comment to see the full error message
-						const stat = newStatistics.find(
-							(element) => element.providerId === statisticsValue.providerId
-						);
-
-						// add values to statistic
-						const statistic = {
-							...stat,
-							values: statisticsValue.values,
-							labels: statisticsValue.labels,
-							totalValue: statisticsValue.total,
-						};
-
-						// put updated statistic into statistics list
-// @ts-expect-error TS(7005): Variable 'newStatistics' implicitly has an 'any[]'... Remove this comment to see the full error message
-						newStatistics = newStatistics.map((oldStat) =>
-							oldStat === stat ? statistic : oldStat
-						);
-
-						// put statistics list into redux store
-						statistics = newStatistics;
-						hasError = false;
-					}
-// @ts-expect-error TS(7005): Variable 'newStatistics' implicitly has an 'any[]'... Remove this comment to see the full error message
-					statistics = newStatistics;
-					hasError = false;
-				})
-				.catch((response) => {
-					// put unfinished statistics list into redux store but set flag that an error occurred
-// @ts-expect-error TS(7005): Variable 'newStatistics' implicitly has an 'any[]'... Remove this comment to see the full error message
-					statistics = newStatistics;
-					hasError = true;
-					console.error(response);
+		// iterate over statistics providers
+		for (let i = 0; i < response.data.length; i++) {
+			// currently, only time series data can be displayed, for other types, add data directly, then continue
+			if (response.data[i].providerType !== "timeSeries") {
+				newStatistics.push({
+					...response.data[i],
 				});
-		})
+			} else {
+				// case: provider is of type time series
+				let from;
+				let to;
+				let timeMode;
+				let dataResolution;
+
+				/* if old values for this statistic exist, use old
+				from (date), to (date), timeMode and dataResolution values, otherwise use defaults */
+				if (statistics.length > i) {
+					from = statistics[i].from;
+					to = statistics[i].to;
+					timeMode = statistics[i].timeMode;
+					dataResolution = statistics[i].dataResolution;
+				} else {
+					from = originalFrom.format("YYYY-MM-DD");
+					to = originalTo.format("YYYY-MM-DD");
+					timeMode = originalTimeMode;
+					dataResolution = originalDataResolution;
+				}
+
+				// create chart options and download url
+				const csvUrl = createDownloadUrl(
+					resourceId,
+					resourceType,
+					response.data[i].providerId,
+					from,
+					to,
+					dataResolution
+				);
+
+				// add provider to statistics list and add statistic settings
+				newStatistics.push({
+					...response.data[i],
+					from: from,
+					to: to,
+					timeMode: timeMode,
+					dataResolution: dataResolution,
+					csvUrl: csvUrl,
+				});
+
+				// add settings for this statistic of this resource to value request
+				statisticsValueRequest.push({
+					dataResolution: dataResolution,
+					from: moment(from),
+					to: moment(to).endOf("day"),
+					resourceId: resourceId,
+					providerId: response.data[i].providerId,
+				});
+			}
+		}
+
+		// prepare header and data for statistics values request
+		const requestHeaders = getHttpHeaders();
+		const requestData = new URLSearchParams({
+			data: JSON.stringify(statisticsValueRequest),
+		});
+
+		// request statistics values from API
+		const dataResponse = await axios.post("/admin-ng/statistics/data.json", requestData, requestHeaders)
+			// iterate over value responses
+			for (const statisticsValue of dataResponse.data) {
+				// get the statistic the response is meant for
+				const stat = newStatistics.find(
+					(element) => element.providerId === statisticsValue.providerId
+				);
+
+				if (!stat) {
+					continue;
+				}
+
+				// add values to statistic
+				const statistic = {
+					...stat,
+					values: statisticsValue.values,
+					labels: statisticsValue.labels,
+					totalValue: statisticsValue.total,
+				};
+
+				// put updated statistic into statistics list
+				newStatistics = newStatistics.map((oldStat) =>
+					oldStat === stat ? statistic : oldStat
+				);
+
+				// put statistics list into redux store
+				statistics = newStatistics;
+				hasError = false;
+			}
+			statistics = newStatistics;
+			hasError = false;
+		} catch(leError) {
+			// put unfinished statistics list into redux store but set flag that an error occurred
+			statistics = newStatistics;
+			hasError = true;
+			console.error(leError);
+		}
 
 		return { statistics, hasError };
 };
 
 export const fetchStatisticsValueUpdate = async (
-	resourceId: any,
-	resourceType: any,
-	providerId: any,
-	from: any,
-	to: any,
-	dataResolution: any,
-	timeMode: any,
-	statistics: any,
+	resourceId: string,
+	resourceType: string,
+	providerId: string,
+	from: string | Date,
+	to: string | Date,
+	dataResolution: DataResolution,
+	timeMode: TimeMode,
+	statistics: Statistics[],
 ) =>  {
 	// settings for this statistic of this resource for value request
 	const statisticsValueRequest = [
@@ -240,12 +240,11 @@ export const fetchStatisticsValueUpdate = async (
 
 				// get the statistic the response is meant for out of the statistics list
 				const stat = statistics.find(
-// @ts-expect-error TS(7006): Parameter 'element' implicitly has an 'any' type.
 					(element) => element.providerId === providerId
 				);
 
 				// get statistic options and download url for new statistic settings
-				const options = createChartOptions(timeMode, dataResolution);
+				// const options = createChartOptions(timeMode, dataResolution);
 				const csvUrl = createDownloadUrl(
 					resourceId,
 					resourceType,
@@ -262,7 +261,7 @@ export const fetchStatisticsValueUpdate = async (
 					to: to,
 					dataResolution: dataResolution,
 					timeMode: timeMode,
-					options: options,
+					// options: options,
 					csvUrl: csvUrl,
 					values: newStatisticData.values,
 					labels: newStatisticData.labels,
@@ -270,7 +269,6 @@ export const fetchStatisticsValueUpdate = async (
 				};
 
 				// put updated statistic into statistics list
-// @ts-expect-error TS(7006): Parameter 'oldStat' implicitly has an 'any' type.
 				newStatistics = statistics.map((oldStat) =>
 					oldStat === stat ? statistic : oldStat
 				);

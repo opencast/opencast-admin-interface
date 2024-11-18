@@ -25,6 +25,7 @@ import {
 	fetchStatisticsPageStatistics,
 	fetchStatisticsPageStatisticsValueUpdate,
 } from "../../slices/statisticsSlice";
+import { createChartOptions } from "../../utils/statisticsUtils";
 
 const Statistics: React.FC = () => {
 	const { t } = useTranslation();
@@ -39,18 +40,15 @@ const Statistics: React.FC = () => {
 	const hasError = useAppSelector(state => hasStatisticsError(state));
 	const isLoadingStatistics = useAppSelector(state => isFetchingStatistics(state));
 
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchStatisticsPageStatisticsValueUpdateWrapper = (organizationId: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any) => {
-		dispatch(fetchStatisticsPageStatisticsValueUpdate({organizationId, providerId, from, to, dataResolution, timeMode}))
-	}
-
+	// fetch user information for organization id, then fetch statistics
 	useEffect(() => {
-		// fetch user information for organization id, then fetch statistics
-		dispatch(fetchUserInfo()).then(() => {
-			dispatch(fetchStatisticsPageStatistics(organizationId)).then();
-		})
+		dispatch(fetchUserInfo())
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+	useEffect(() => {
+			dispatch(fetchStatisticsPageStatistics(organizationId)).then();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [organizationId]);
 
 	const toggleNavigation = () => {
 		setNavigation(!displayNavigation);
@@ -71,7 +69,7 @@ const Statistics: React.FC = () => {
 	};
 
 	return (
-                <span>
+		<span>
 			<Header />
 			<NavBar>
 				{/* Include Burger-button menu */}
@@ -128,13 +126,13 @@ const Statistics: React.FC = () => {
 												timeMode={stat.timeMode}
 												dataResolution={stat.dataResolution}
 												statDescription={stat.description}
-												onChange={fetchStatisticsPageStatisticsValueUpdateWrapper}
+												onChange={fetchStatisticsPageStatisticsValueUpdate}
 												exportUrl={stat.csvUrl}
 												exportFileName={statisticsCsvFileName}
 												totalValue={stat.totalValue}
 												sourceData={stat.values}
 												chartLabels={stat.labels}
-												chartOptions={stat.options}
+												chartOptions={createChartOptions(stat.timeMode, stat.dataResolution)}
 											/>
 										</div>
 									) : (

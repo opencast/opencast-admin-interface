@@ -14,7 +14,11 @@ import {
 import { localizedMoment } from "../../utils/dateUtils";
 import { parseISO } from "date-fns";
 import { useTranslation } from "react-i18next";
-import type { ChartDataset, ChartOptions } from 'chart.js';
+import type { ChartOptions } from 'chart.js';
+import { AsyncThunk } from "@reduxjs/toolkit";
+import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
+import { useAppDispatch } from "../../store";
+import { DataResolution, TimeMode } from "../../slices/statisticsSlice";
 
 
 /**
@@ -42,18 +46,19 @@ const TimeSeriesStatistics = ({
 	providerId: string,
 	fromDate: string,
 	toDate: string,
-	timeMode: any, // startOf | "custom" ???
-	dataResolution: string[],
+	timeMode: TimeMode,
+	dataResolution: DataResolution,
 	statDescription: string,
-	onChange: (id: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any) => void,
+	onChange: AsyncThunk<undefined, { id: string, providerId: string, from: string | Date, to: string | Date, dataResolution: DataResolution, timeMode: TimeMode, }, AsyncThunkConfig>,
 	exportUrl: string,
 	exportFileName: (statsTitle: string) => string,
-	totalValue: string,
-	sourceData: ChartDataset<'bar'>,
+	totalValue: number,
+	sourceData: number[],
 	chartLabels: string[],
 	chartOptions: ChartOptions<'bar'>,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	// Style for radio buttons
 	const radioButtonStyle = {
@@ -80,30 +85,30 @@ const TimeSeriesStatistics = ({
 	// change formik values and get new statistic values from API
 	const change = (
 		setFormikValue: (field: string, value: any) => Promise<void | FormikErrors<any>>,
-		timeMode: string,
-		from: Date | string,
-		to: Date | string,
-		dataResolution: unknown
+		timeMode: TimeMode,
+		from: string | Date,
+		to: string | Date,
+		dataResolution: DataResolution
 	) => {
 		if (timeMode === "year" || timeMode === "month") {
 			from = moment(from).clone().startOf(timeMode).format("YYYY-MM-DD");
 			to = moment(from).clone().endOf(timeMode).format("YYYY-MM-DD");
 			setFormikValue("fromDat0e", from);
 			setFormikValue("toDate", to);
-			setFormikValue("dataResolution", fixedDataResolutions[timeMode]);
-			dataResolution = fixedDataResolutions[timeMode];
+			setFormikValue("dataResolution", fixedDataResolutions(timeMode));
+			dataResolution = fixedStatisticDataResolutions(timeMode);
 		}
 
-		onChange(resourceId, providerId, from, to, dataResolution, timeMode);
+		dispatch(onChange({id: resourceId, providerId, from, to, dataResolution, timeMode}));
 	};
 
 	// change time mode in formik and get new values from API
 	const changeTimeMode = async (
-		newTimeMode: string,
+		newTimeMode: TimeMode,
 		setFormikValue: (field: string, value: any) => Promise<void | FormikErrors<any>>,
-		from: Date | string,
-		to: Date | string,
-		dataResolution: unknown
+		from: string,
+		to: string,
+		dataResolution: DataResolution
 	) => {
 		setFormikValue("timeMode", newTimeMode);
 		change(setFormikValue, newTimeMode, from, to, dataResolution);
@@ -113,9 +118,9 @@ const TimeSeriesStatistics = ({
 	const changeFrom = async (
 		newFrom: Date,
 		setFormikValue: (field: string, value: any) => Promise<void | FormikErrors<any>>,
-		timeMode: string,
-		to: Date | string,
-		dataResolution: unknown,
+		timeMode: TimeMode,
+		to: string,
+		dataResolution: DataResolution,
 	) => {
 		setFormikValue("fromDate", newFrom);
 		change(setFormikValue, timeMode, newFrom, to, dataResolution);
@@ -125,9 +130,9 @@ const TimeSeriesStatistics = ({
 	const changeTo = async (
 		newTo: Date,
 		setFormikValue: (field: string, value: any) => Promise<void | FormikErrors<any>>,
-		timeMode: string,
-		from: Date | string,
-		dataResolution: unknown
+		timeMode: TimeMode,
+		from: string,
+		dataResolution: DataResolution
 	) => {
 		setFormikValue("toDate", newTo);
 		change(setFormikValue, timeMode, from, newTo, dataResolution);
@@ -135,11 +140,11 @@ const TimeSeriesStatistics = ({
 
 	// change custom time granularity in formik and get new values from API
 	const changeGranularity = async (
-		granularity: unknown,
+		granularity: DataResolution,
 		setFormikValue: (field: string, value: any) => Promise<void | FormikErrors<any>>,
-		timeMode: string,
-		from: Date | string,
-		to: Date | string,
+		timeMode: TimeMode,
+		from: string,
+		to: string,
 	) => {
 		setFormikValue("dataResolution", granularity);
 		change(setFormikValue, timeMode, from, to, granularity);
@@ -159,12 +164,12 @@ const TimeSeriesStatistics = ({
 	const selectPrevious = (
 		setFormikValue: (field: string, value: any) => Promise<void | FormikErrors<any>>,
 		from: string,
-		timeMode: keyof typeof formatStrings,
-		dataResolution: unknown,
+		timeMode: TimeMode,
+		dataResolution: DataResolution,
 	) => {
 		const newFrom = moment(from)
-			// @ts-expect-error TS(2769): No overload matches this call.
-			.subtract(1, timeMode + "s")
+			// According to the moment.js docs, string is supported as a second argument here
+			.subtract(1, timeMode + "s" as moment.unitOfTime.DurationConstructor)
 			.format("YYYY-MM-DD");
 		const to = newFrom;
 		change(setFormikValue, timeMode, newFrom, to, dataResolution);
@@ -174,12 +179,12 @@ const TimeSeriesStatistics = ({
 	const selectNext = (
 		setFormikValue: (field: string, value: any) => Promise<void | FormikErrors<any>>,
 		from: string,
-		timeMode: keyof typeof formatStrings,
-		dataResolution: unknown,
+		timeMode: TimeMode,
+		dataResolution: DataResolution,
 	) => {
 		const newFrom = moment(from)
-			// @ts-expect-error TS(2769): No overload matches this call.
-			.add(1, timeMode + "s")
+			// According to the moment.js docs, string is supported as a second argument here
+			.add(1, timeMode + "s" as moment.unitOfTime.DurationConstructor)
 			.format("YYYY-MM-DD");
 		const to = newFrom;
 		change(setFormikValue, timeMode, newFrom, to, dataResolution);
@@ -192,7 +197,11 @@ const TimeSeriesStatistics = ({
 			initialValues={{
 				timeMode: timeMode,
 				dataResolution: dataResolution,
+				// Typescript complains that the method "startOf" cannot take "custom" as a parameter, but in practice
+				// this does not seem to be a problem
+				//@ts-ignore
 				fromDate: moment(fromDate).startOf(timeMode).format("YYYY-MM-DD"),
+				//@ts-ignore
 				toDate: moment(toDate).endOf(timeMode).format("YYYY-MM-DD"),
 			}}
 			onSubmit={(values) => {}}
@@ -207,6 +216,12 @@ const TimeSeriesStatistics = ({
 							href={exportUrl}
 							download={exportFileName(statTitle)}
 						/>
+					</div>
+
+					{/* statistics total value */}
+					<div className="total">
+						<span>{t("STATISTICS.TOTAL") /* Total */}</span>
+						<span>{": " + totalValue}</span>
 					</div>
 
 					{/* radio buttons for selecting the mode of choosing the timeframe of statistic */}
@@ -241,12 +256,6 @@ const TimeSeriesStatistics = ({
 								{t("STATISTICS.TIME_MODES." + mode.translation)}
 							</label>
 						))}
-					</div>
-
-					{/* statistics total value */}
-					<div className="total">
-						<span>{t("STATISTICS.TOTAL") /* Total */}</span>
-						<span>{": " + totalValue}</span>
 					</div>
 
 					{/* timeframe selection */}
