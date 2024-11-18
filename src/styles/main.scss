@@ -130,6 +130,9 @@ a {
 
 .modal {
   top: 30px;
+  position: fixed;
+  max-height: 90vh;
+  overflow: scroll;
   input[readonly] {
     border: none;
   }
