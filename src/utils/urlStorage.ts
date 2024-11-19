@@ -27,7 +27,7 @@ const updateParams = (fn: (params: URLSearchParams) => void) => {
             window.location.pathname
         }?${
             params.toString()
-        }#${
+        }${
             window.location.hash
         }`);
 	});
