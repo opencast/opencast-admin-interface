@@ -24,12 +24,16 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 	formik,
 	nextPage,
 	previousPage,
-	editMode,
+	mode,
 }: {
 	formik: FormikProps<T>,
 	nextPage: (values: T) => void,
 	previousPage:(values: T) => void,
 	editMode?: boolean,
+	mode: {
+		edit?: boolean,
+		mount?: boolean,
+	},
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -202,7 +206,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 			<div className="modal-body">
 				{/* Notifications */}
 				<Notifications context="tobira" />
-				{!editMode && <p className="tab-description">{t("EVENTS.SERIES.NEW.TOBIRA.DESCRIPTION")}</p>}
+				<p className="tab-description">{t("EVENTS.SERIES.NEW.TOBIRA.DESCRIPTION")}</p>
 				{!error && <>
 					<div className="obj-container padded">
 						<div className="obj">
@@ -226,7 +230,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 							<table className="main-tbl highlight-hover">
 								<thead>
 									<tr>
-										<th className="small"/>
+										{currentPage.children.length > 0 && <th className="small"/>}
 										<th>
 											{t("EVENTS.SERIES.NEW.TOBIRA.PAGE_TITLE") /* Title */}
 										</th>
@@ -337,14 +341,17 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 									{formik.values.selectedPage.path}
 								</code>
 							</>
-							: t("EVENTS.SERIES.NEW.TOBIRA.NO_PAGE_SELECTED")
+							: (mode.edit && !mode.mount
+								? t("EVENTS.SERIES.NEW.TOBIRA.NO_PAGE_SELECTED_EDIT")
+								: t("EVENTS.SERIES.NEW.TOBIRA.NO_PAGE_SELECTED")
+							)
 						}
 					</p>
-					<p style={{ fontSize: 12 }}>{t("EVENTS.SERIES.NEW.TOBIRA.DIRECT_LINK")}</p>
+					{!mode.edit && <p style={{ fontSize: 12 }}>{t("EVENTS.SERIES.NEW.TOBIRA.DIRECT_LINK")}</p>}
 				</>}
 			</div>
 			{/* Render buttons for saving or resetting updated path */}
-			{editMode && <SaveEditFooter
+			{mode.edit && <SaveEditFooter
 				active={formik.values.selectedPage !== undefined}
 				reset={() => formik.setFieldValue("selectedPage", undefined)}
 				submit={() => formik.handleSubmit()}
@@ -353,7 +360,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 		</div>
 
 		{/* Button for navigation to next page and previous page */}
-		{!editMode && <WizardNavigationButtons
+		{!mode.edit && <WizardNavigationButtons
 			formik={formik}
 			nextPage={nextPage}
 			previousPage={previousPage}

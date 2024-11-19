@@ -159,7 +159,10 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 				onSubmit={values => handleSubmit(values)}
 			>
 				{formik => <NewTobiraPage
-					editMode
+					mode={{
+						edit: true,
+						mount: tobiraData.hostPages.length === 0,
+					}}
 					formik={formik}
 					nextPage={() => {}}
 					previousPage={() => {}}

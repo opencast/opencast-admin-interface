@@ -1146,6 +1146,7 @@
 					"HOMEPAGE": "Homepage",
 					"SELECTED_PAGE": "Series will be mounted under the following path",
 					"NO_PAGE_SELECTED": "No page selected. Series will not be mounted in Tobira.",
+					"NO_PAGE_SELECTED_EDIT": "No page selected. Series path will not be changed.",
 					"PATH": "Path",
 					"DIRECT_LINK": "A direct link will be available.",
 					"MOUNT_DISCLAIMER": "Series can only be mounted in empty pages"
