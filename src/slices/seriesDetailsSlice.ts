@@ -63,7 +63,6 @@ type SeriesDetailsState = {
 	acl: TransformedAcl[],
 	theme: string,
 	themeNames: { id: string, value: string }[],
-	fetchingStatisticsInProgress: boolean,
 	statistics: Statistics[],
 	hasStatisticsError: boolean,
 	tobiraData: {
@@ -107,7 +106,6 @@ const initialState: SeriesDetailsState = {
 	acl: [],
 	theme: "",
 	themeNames: [],
-	fetchingStatisticsInProgress: false,
 	statistics: [],
 	hasStatisticsError: false,
 	tobiraData: {

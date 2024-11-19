@@ -29,4 +29,4 @@ export const getStatistics = (state: RootState) => state.seriesDetails.statistic
 export const hasStatisticsError = (state: RootState) =>
 	state.seriesDetails.hasStatisticsError;
 export const isFetchingStatistics = (state: RootState) =>
-	state.seriesDetails.fetchingStatisticsInProgress;
+	state.seriesDetails.statusStatistics === 'loading';
