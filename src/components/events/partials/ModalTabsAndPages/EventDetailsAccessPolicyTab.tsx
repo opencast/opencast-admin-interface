@@ -32,7 +32,6 @@ const EventDetailsAccessPolicyTab = ({
 			resourceId={eventId}
 			header={header}
 			buttonText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.LABEL"}
-			saveButtonText={"SAVE"}
 			policies={policies}
 			fetchAccessPolicies={fetchAccessPolicies}
 			fetchHasActiveTransactions={fetchHasActiveTransactions}

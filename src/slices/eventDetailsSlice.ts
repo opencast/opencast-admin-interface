@@ -37,6 +37,8 @@ import {
 } from "../components/events/partials/modals/EventDetails";
 import { AppDispatch } from "../store";
 import { Ace } from './aclSlice';
+import { setTobiraTabHierarchy, TobiraData } from './seriesDetailsSlice';
+import { handleTobiraError } from './shared/tobiraErrors';
 
 // Contains the navigation logic for the modal
 type EventDetailsModal = {
@@ -215,6 +217,8 @@ type EventDetailsState = {
 	errorStatistics: SerializedError | null,
 	statusStatisticsValue: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorStatisticsValue: SerializedError | null,
+	statusTobiraData: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	errorTobiraData: SerializedError | null,
 	eventId: string,
 	modal: EventDetailsModal,
 	metadata: MetadataCatalog,
@@ -374,6 +378,7 @@ type EventDetailsState = {
 	publications: Publication[],
 	statistics: Statistics[],
 	hasStatisticsError: boolean,
+	tobiraData: TobiraData,
 }
 
 // Initial state of event details in redux store
@@ -436,6 +441,8 @@ const initialState: EventDetailsState = {
 	errorStatistics: null,
 	statusStatisticsValue: 'uninitialized',
 	errorStatisticsValue: null,
+	statusTobiraData: 'uninitialized',
+	errorTobiraData: null,
 	eventId: "",
 	modal: {
 		show: false,
@@ -597,6 +604,10 @@ const initialState: EventDetailsState = {
 	publications: [],
 	statistics: [],
 	hasStatisticsError: false,
+	tobiraData: {
+		baseURL: "",
+		hostPages: [],
+	},
 };
 
 
@@ -973,6 +984,22 @@ export const fetchEventPublications = createAppAsyncThunk('eventDetails/fetchEve
 	});
 
 	return transformedPublications;
+});
+
+// fetch Tobira data of certain series from server
+export const fetchEventDetailsTobira = createAppAsyncThunk('eventDetails/fetchEventDetailsTobira', async (
+	id: string,
+	{ dispatch },
+) => {
+	const res = await axios.get(`/admin-ng/event/${id}/tobira/pages`)
+		.catch(response => handleTobiraError(response, dispatch));
+
+	if (!res) {
+		throw Error;
+	}
+
+	const data = res.data;
+	return data;
 });
 
 export const saveComment = createAppAsyncThunk('eventDetails/saveComment', async (params: {
@@ -1489,6 +1516,7 @@ export const openModalTab = (
 	assetsTab: AssetTabHierarchy
 ) => (dispatch: AppDispatch) => {
 	dispatch(setModalPage(page));
+	dispatch(setTobiraTabHierarchy("main"));
 	dispatch(setModalWorkflowTabHierarchy(workflowTab));
 	dispatch(setModalAssetsTabHierarchy(assetsTab));
 };
@@ -2542,6 +2570,20 @@ const eventDetailsSlice = createSlice({
 				} else {
 					state.workflowConfiguration = state.baseWorkflow;
 				}
+			})
+			// fetch Tobira data
+			.addCase(fetchEventDetailsTobira.pending, (state) => {
+				state.statusTobiraData = 'loading';
+			})
+			.addCase(fetchEventDetailsTobira.fulfilled, (state, action: PayloadAction<
+				EventDetailsState['tobiraData']
+			>) => {
+				state.statusTobiraData = 'succeeded';
+				state.tobiraData = action.payload;
+			})
+			.addCase(fetchEventDetailsTobira.rejected, (state, action) => {
+				state.statusTobiraData = 'failed';
+				state.errorTobiraData = action.error;
 			})
 	}
 });

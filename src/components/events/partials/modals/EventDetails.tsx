@@ -25,6 +25,7 @@ import {
 	isFetchingStatistics,
 	getModalWorkflowTabHierarchy,
 	getModalPage,
+	getEventDetailsTobiraDataError,
 } from "../../../../selectors/eventDetailsSelectors";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import EventDetailsStatisticsTab from "../ModalTabsAndPages/EventDetailsStatisticsTab";
@@ -39,8 +40,10 @@ import {
 	fetchSchedulingInfo,
 	fetchEventStatistics,
 	openModalTab,
+	fetchEventDetailsTobira,
 } from "../../../../slices/eventDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
 
 export enum EventDetailsPage {
 	Metadata,
@@ -51,6 +54,7 @@ export enum EventDetailsPage {
 	Workflow,
 	AccessPolicy,
 	Comments,
+	Tobira,
 	Statistics,
 }
 
@@ -94,6 +98,7 @@ const EventDetails = ({
 	const hasStatistics = useAppSelector(state => getHasStatistics(state));
 	const isLoadingStatistics = useAppSelector(state => isFetchingStatistics(state));
 	const captureAgents = useAppSelector(state => getRecordings(state));
+	const tobiraError = useAppSelector(state => getEventDetailsTobiraDataError(state));
 
 	const tabs = [
 		{
@@ -154,6 +159,14 @@ const EventDetails = ({
 			page: EventDetailsPage.Comments,
 		},
 		{
+			tabNameTranslation: "EVENTS.EVENTS.DETAILS.TABS.TOBIRA",
+			bodyHeaderTranslation: "EVENTS.EVENTS.DETAILS.TABS.TOBIRA",
+			accessRole: "ROLE_UI_EVENTS_DETAILS_COMMENTS_VIEW",
+			name: "tobira",
+			page: EventDetailsPage.Tobira,
+			hidden: tobiraError?.message?.includes("503"),
+		},
+		{
 			tabNameTranslation: "EVENTS.EVENTS.DETAILS.TABS.STATISTICS",
 			bodyHeaderTranslation: "EVENTS.EVENTS.DETAILS.STATISTICS.CAPTION",
 			accessRole: "ROLE_UI_EVENTS_DETAILS_STATISTICS_VIEW",
@@ -165,58 +178,24 @@ const EventDetails = ({
 
 	const openTab = (tabNr: EventDetailsPage) => {
 		dispatch(removeNotificationWizardForm());
+		if (tabNr === EventDetailsPage.Tobira) {
+			dispatch(fetchEventDetailsTobira(eventId));
+		}
 		dispatch(openModalTab(tabNr, "entry", "entry"))
 	};
 
 	return (
 		<>
 			<nav className="modal-nav" id="modal-nav">
-				{hasAccess(tabs[0].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === tabs[0].page })} onClick={() => openTab(tabs[0].page)}>
-						{t(tabs[0].tabNameTranslation)}
+				{tabs.map((tab, index) => !tab.hidden && hasAccess(tab.accessRole, user) && (
+					<button
+						key={tab.name}
+						className={"button-like-anchor " + cn({ active: page === index })}
+						onClick={() => openTab(index)}
+					>
+						{t(tab.tabNameTranslation)}
 					</button>
-				)}
-				{!tabs[1].hidden && hasAccess(tabs[1].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === tabs[1].page })} onClick={() => openTab(tabs[1].page)}>
-						{t(tabs[1].tabNameTranslation)}
-					</button>
-				)}
-				{hasAccess(tabs[2].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === tabs[2].page })} onClick={() => openTab(tabs[2].page)}>
-						{t(tabs[2].tabNameTranslation)}
-					</button>
-				)}
-				{hasAccess(tabs[3].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === tabs[3].page })} onClick={() => openTab(tabs[3].page)}>
-						{t(tabs[3].tabNameTranslation)}
-					</button>
-				)}
-				{!tabs[4].hidden && hasAccess(tabs[4].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === tabs[4].page })} onClick={() => openTab(tabs[4].page)}>
-						{t(tabs[4].tabNameTranslation)}
-					</button>
-				)}
-				{hasAccess(tabs[5].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === tabs[5].page })} onClick={() => openTab(tabs[5].page)}>
-						{t(tabs[5].tabNameTranslation)}
-					</button>
-				)}
-				{hasAccess(tabs[6].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === tabs[6].page })} onClick={() => openTab(tabs[6].page)}>
-						{t(tabs[6].tabNameTranslation)}
-					</button>
-				)}
-				{hasAccess(tabs[7].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === tabs[7].page })} onClick={() => openTab(tabs[7].page)}>
-						{t(tabs[7].tabNameTranslation)}
-					</button>
-				)}
-
-				{!tabs[8].hidden && hasAccess(tabs[8].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === tabs[8].page })} onClick={() => openTab(tabs[8].page)}>
-						{t(tabs[8].tabNameTranslation)}
-					</button>
-				)}
+				))}
 			</nav>
 			{/* Initialize overall modal */}
 			<div>
@@ -286,6 +265,13 @@ const EventDetails = ({
 						eventId={eventId}
 						header={tabs[page].bodyHeaderTranslation ?? ""}
 					/>
+				)}
+				{page === EventDetailsPage.Tobira && (<>
+					<DetailsTobiraTab
+						kind="event"
+						id={eventId}
+					/>
+				</>
 				)}
 				{page === EventDetailsPage.Statistics && !isLoadingStatistics && (
 					<EventDetailsStatisticsTab
