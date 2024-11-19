@@ -300,7 +300,15 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 										</td>
 										{editing && <td>
 											{page.new && <button
-												onClick={() => select(undefined)}
+												onClick={() => {
+													dispatch(setTobiraPage({
+														...currentPage,
+														children: currentPage.children.filter((_, idx) => (
+															idx !== currentPage.children.length - 1
+														))
+													}));
+													select(undefined);
+												}}
 												title={t('EVENTS.SERIES.NEW.TOBIRA.CANCEL')}
 												className="button-like-anchor remove"
 											/>}
