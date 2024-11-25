@@ -121,12 +121,6 @@ const initialState: SeriesDetailsState = {
 
 export const openModal = (series: PartialSeries) => async (dispatch: AppDispatch) => {
 	const { id } = series;
-	await dispatch(fetchSeriesDetailsMetadata(id));
-	await dispatch(fetchSeriesDetailsAcls(id));
-	await dispatch(fetchSeriesDetailsFeeds(id));
-	await dispatch(fetchSeriesDetailsTheme(id));
-	await dispatch(fetchSeriesDetailsThemeNames());
-	await dispatch(fetchSeriesDetailsTobira(id));
 	dispatch(setModalSeries(series));
 	dispatch(setModalPage(0));
 	dispatch(setShowModal(true));

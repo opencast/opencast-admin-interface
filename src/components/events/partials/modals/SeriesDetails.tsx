@@ -8,6 +8,11 @@ import {
 	getSeriesDetailsMetadata,
 	getSeriesDetailsTheme,
 	getSeriesDetailsThemeNames,
+	isFetchingFeeds,
+	isFetchingMetadata,
+	isFetchingStatistics,
+	isFetchingThemes,
+	isFetchingTobiraData,
 	hasStatistics as seriesHasStatistics,
 } from "../../../../selectors/seriesDetailsSelectors";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
@@ -24,6 +29,11 @@ import {
 	fetchSeriesStatistics,
 	updateExtendedSeriesMetadata,
 	updateSeriesMetadata,
+	fetchSeriesDetailsMetadata,
+	fetchSeriesDetailsTheme,
+	fetchSeriesDetailsThemeNames,
+	fetchSeriesDetailsFeeds,
+	fetchSeriesDetailsTobira,
 } from "../../../../slices/seriesDetailsSlice";
 import SeriesDetailsTobiraTab from "../ModalTabsAndPages/SeriesDetailsTobiraTab";
 
@@ -42,15 +52,25 @@ const SeriesDetails = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const extendedMetadata = useAppSelector(state => getSeriesDetailsExtendedMetadata(state));
-	const feeds = useAppSelector(state => getSeriesDetailsFeeds(state));
 	const metadataFields = useAppSelector(state => getSeriesDetailsMetadata(state));
+	const extendedMetadata = useAppSelector(state => getSeriesDetailsExtendedMetadata(state));
+	const isLoadingMetadata = useAppSelector(state => isFetchingMetadata(state));
+	const feeds = useAppSelector(state => getSeriesDetailsFeeds(state));
+	const isLoadingFeeds = useAppSelector(state => isFetchingFeeds(state));
 	const theme = useAppSelector(state => getSeriesDetailsTheme(state));
 	const themeNames = useAppSelector(state => getSeriesDetailsThemeNames(state));
+	const isLoadingThemes = useAppSelector(state => isFetchingThemes(state));
 	const hasStatistics = useAppSelector(state => seriesHasStatistics(state));
+	const isLoadingStatistics = useAppSelector(state => isFetchingStatistics(state));
+	const isLoadingTobiraData = useAppSelector(state => isFetchingTobiraData(state));
 
 	useEffect(() => {
+		dispatch(fetchSeriesDetailsMetadata(seriesId));
 		dispatch(fetchSeriesStatistics(seriesId));
+		dispatch(fetchSeriesDetailsTheme(seriesId));
+		dispatch(fetchSeriesDetailsFeeds(seriesId));
+		dispatch(fetchSeriesDetailsTobira(seriesId));
+		dispatch(fetchSeriesDetailsThemeNames());
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -145,7 +165,7 @@ const SeriesDetails = ({
 
 			{/* render modal content depending on current page */}
 			<div>
-				{page === 0 && (
+				{page === 0 && !isLoadingMetadata && (
 					<DetailsMetadataTab
 						metadataFields={metadataFields}
 						resourceId={seriesId}
@@ -154,7 +174,7 @@ const SeriesDetails = ({
 						editAccessRole="ROLE_UI_SERIES_DETAILS_METADATA_EDIT"
 					/>
 				)}
-				{page === 1 && (
+				{page === 1 && !isLoadingMetadata && (
 					<DetailsExtendedMetadataTab
 						resourceId={seriesId}
 						metadata={extendedMetadata}
@@ -170,25 +190,27 @@ const SeriesDetails = ({
 						setPolicyChanged={setPolicyChanged}
 					/>
 				)}
-				{page === 3 && (
+				{page === 3 && !isLoadingThemes && (
 					<SeriesDetailsThemeTab
 						theme={theme}
 						themeNames={themeNames}
 						seriesId={seriesId}
 					/>
 				)}
-				{page === 4 && (
+				{page === 4 && !isLoadingTobiraData && (
 					<SeriesDetailsTobiraTab
 						seriesId={seriesId}
 					/>
 				)}
-				{page === 5 && (
+				{page === 5 && !isLoadingStatistics && (
 					<SeriesDetailsStatisticTab
 						seriesId={seriesId}
 						header={tabs[page].tabNameTranslation}
 					/>
 				)}
-				{page === 6 && <SeriesDetailsFeedsTab feeds={feeds} />}
+				{page === 6 && !isLoadingFeeds && (
+					<SeriesDetailsFeedsTab feeds={feeds} />
+				)}
 			</div>
 		</>
 	);
