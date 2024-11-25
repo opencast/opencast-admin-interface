@@ -113,8 +113,6 @@ const EventDetailsWorkflowTab = ({
 	const setInitialValues = () => {
 		let initialConfig = undefined;
 
-		// TODO: Scheduled events are missing configuration for their workflow
-		// Figure out why the config is missing
 		if (baseWorkflow.configuration) {
 			initialConfig = parseBooleanInObject(baseWorkflow.configuration);
 		}

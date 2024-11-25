@@ -168,6 +168,8 @@
 		"GROUP_NOT_DELETED": "Non se puido borrar o grupo",
 		"SERIES_ADDED": "Serie creada",
 		"SERIES_NOT_SAVED": "Non se puido gardar a serie",
+		"SERIES_PATH_UPDATED": "The series path has been updated",
+		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
 		"EVENTS_CREATED": "Evento creado",
 		"EVENTS_UPLOAD_STARTED": "Cargando o evento…",
 		"EVENTS_NOT_CREATED": "Non se puido crear o evento",
@@ -194,7 +196,7 @@
 		"CONFLICT_ALREADY_ENDED": "Erro de programación: O evento xa rematou.",
 		"CONFLICT_END_BEFORE_START": "Erro de programación: O final ten que ser máis tarde que o comezo.",
 		"CONFLICT_IN_THE_PAST": "Non se puido actualizar a programación: non se pode programar un evento no pasado.",
-		"INVALID_ACL_RULES": "As regras deben conter un nome de rol válido e permiso(s) de lectura e/ou escritura.",
+		"INVALID_ACL_RULES": "As regras deben conter un nome de rol válido e permiso(s) de lectura e\/ou escritura.",
 		"MISSING_ACL_RULES": "Requírese, como mínimo, un rol con permisos de Lectura e Escritura!",
 		"SAVED_ACL_RULES": "Regras de acceso gardadas.",
 		"SERIES_THEME_REPROCESS_EXISTING_EVENTS": "Os eventos que contén esta serie terán que ser reprocesados",
@@ -223,7 +225,18 @@
 			"NO_EVENTS_UPDATED": "Fallaron tódalas actualizacións.",
 			"SOME_EVENTS_NOT_UPDATED": "Non se puideron crear algúns eventos."
 		},
-		"PROBLEM_ON_START": "A error occurred on start up. Please contact your Opencast admin"
+		"PROBLEM_ON_START": "An error occurred on start up. Please contact your Opencast admin",
+		"TOBIRA_OVERRIDE_NAME": "The title of the selected page will be overridden with the title of the series.",
+		"TOBIRA_NO_PATH_SEGMENT": "Page needs a path segment.",
+		"TOBIRA_NOT_MOUNTED": "Series could not be mounted in Tobira.",
+		"TOBIRA_PATH_SEGMENT_INVALID": "Path segment is invalid. A valid path segment is at least 2 characters long, does not contain any whitespace or control characters, none of the characters '<>\"[\\]^`{|}#%\/?]', and doesn't start with any of the characters '-+~@_!$&;:.,=*'()'.",
+		"TOBIRA_PATH_SEGMENT_UNIQUE": "The path segment of a page must be unique among all its sibling pages.",
+		"TOBIRA_PAGE_NOT_FOUND": "The page you tried to navigate to does not or no longer exist. Maybe try starting from the beginning.",
+		"TOBIRA_SERVER_ERROR": " Error talking to Tobira. Contact your system administrator and\/or try again later.",
+		"TOBIRA_COPIED_DIRECT_LINK": "Copied link to clipboard.",
+		"TOBIRA_FAILED_COPYING_DIRECT_LINK": "Couldn't copy link to clipboard.",
+		"TOBIRA_NOT_FOUND": "Tobira doesn't know about this series or event (yet). Try again in a few minutes or contact your system administrator.",
+		"TOBIRA_NOT_CONFIGURED": "Tobira is not configured (correctly)."
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Accións",
@@ -267,7 +280,7 @@
 			"CONFLICT_CHECK_RUNNING": "Verificación de conflitos en curso…",
 			"GENERAL": {
 				"CAPTION": "Xeral",
-				"CANNOTSTART": "O/Os evento( s) destacado(s) non poden ser procesados, admítense soamente os eventos programados.",
+				"CANNOTSTART": "O\/Os evento( s) destacado(s) non poden ser procesados, admítense soamente os eventos programados.",
 				"NOCHANGES": "¡Non se detectaron cambios nos eventos!",
 				"CONFLICT_FIRST_EVENT": "Evento modificado",
 				"CONFLICT_SECOND_EVENT": "Evento en conflicto",
@@ -306,7 +319,7 @@
 				}
 			},
 			"EDIT": {
-				"DESCRIPTION": "Modificar e/ou seleccionar os metadatos que se queiran actualizar. Non se poden seleccionar os campos que non cambien o valor dun ou máis eventos, ou os que conteñan valores non válidos (por exemplo, os campos obrigatorios non poden estar baleiros). Os campos resaltados conteñen distintos valores para os eventos seleccionados.",
+				"DESCRIPTION": "Modificar e\/ou seleccionar os metadatos que se queiran actualizar. Non se poden seleccionar os campos que non cambien o valor dun ou máis eventos, ou os que conteñan valores non válidos (por exemplo, os campos obrigatorios non poden estar baleiros). Os campos resaltados conteñen distintos valores para os eventos seleccionados.",
 				"TABLE": {
 					"CAPTION": "Metadatos dos eventos seleccionados",
 					"FIELDS": "Metadatos",
@@ -669,7 +682,8 @@
 					"WORKFLOWS": "Fluxos de Traballo",
 					"ACCESS": "Política de acceso",
 					"COMMENTS": "Comentarios",
-					"STATISTICS": "Estatísticas"
+					"STATISTICS": "Estatísticas",
+					"TOBIRA": "Tobira"
 				},
 				"PUBLICATIONS": {
 					"CAPTION": "Publicacións",
@@ -892,7 +906,7 @@
 					"REASONS": {
 						"CUTTING": "Pendente de cortar",
 						"REVIEW": "Pendente de revisar",
-						"ASYNC": "Pistas de A/V asíncronas",
+						"ASYNC": "Pistas de A\/V asíncronas",
 						"AUDIO_ISSUE": "Pista de audio non dispoñible ou defectuosa",
 						"CANCELLED": "Canceled event",
 						"CONFLICTING_METADATA": "Conflito de metadatos",
@@ -942,6 +956,13 @@
 					"LOCKED": {
 						"RUNNING": "Non está permitida a edición de metadatos mentres se executan operacións nun evento"
 					}
+				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to event",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This event is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this event"
 				},
 				"SCHEDULING": {
 					"CAPTION": "Estado de aprobación",
@@ -1122,7 +1143,9 @@
 					"HOMEPAGE": "Homepage",
 					"SELECTED_PAGE": "Series will be mounted under the following path",
 					"NO_PAGE_SELECTED": "No page selected. Series will not be mounted in Tobira.",
-					"PATH": "Path"
+					"PATH": "Path",
+					"DIRECT_LINK": "A direct link will be available.",
+					"MOUNT_DISCLAIMER": "Series can only be mounted in empty pages"
 				},
 				"SUMMARY": {
 					"CAPTION": "Resumo"
@@ -1205,7 +1228,11 @@
 					"DIRECT_LINK": "Direct link to series",
 					"COPY_DIRECT_LINK": "Copy to clipboard",
 					"NOT_MOUNTED": "This series is currently not included the page structure, and can only be reached using the direct link above.",
-					"PAGES": "Pages in Tobira that contain this series"
+					"PAGES": "Pages in Tobira that contain this series",
+					"SHOW_PAGES": "Show all pages",
+					"EDIT_PATH": "Edit path",
+					"MOUNT_SERIES": "Mount series",
+					"DESCRIPTION": "You may edit the path of pages containing this series if the page has no other content."
 				},
 				"EVENTS": {
 					"TITLE": "Título",
@@ -2067,7 +2094,7 @@
 			"PUBLISHEDHOURS": "Horas de Vídeo Publicadas"
 		},
 		"DESCRIPTION": {
-			"RANDOM": "Esta gráfica amosa datos aleatorios como exemplo. Para que deixe de mostrarse, elimine da carpeta etc/providers o ficheiro JSON coa definición correspondente a este provedor",
+			"RANDOM": "Esta gráfica amosa datos aleatorios como exemplo. Para que deixe de mostrarse, elimine da carpeta etc\/providers o ficheiro JSON coa definición correspondente a este provedor",
 			"VIEWS_SUM": "Aquí amósase o número total de visualizacións por unidade de tempo.",
 			"VIEWS_AVG": "Aquí amósase o número total de visualizacións diarias por unidade de tempo.",
 			"PUBLISHEDHOURS": "This displays the published hours of video"
@@ -2075,12 +2102,12 @@
 	},
 	"dateFormats": {
 		"dateTime": {
-			"short": "{{dateTime, M/D/YY h:mm a}}",
+			"short": "{{dateTime, M\/D\/YY h:mm a}}",
 			"medium": "{{dateTime, MMM D, YYYY h:mm:ss a}}",
 			"full": "{{dateTime, dddd, MMMM D, YYYY h:mm:ss a z}}"
 		},
 		"date": {
-			"short": "{{date, M/D/YY}}",
+			"short": "{{date, M\/D\/YY}}",
 			"medium": "{{date, MMM D, YYYY}}",
 			"full": "{{date, dddd, MMMM D, YYYY}}"
 		},

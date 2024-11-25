@@ -14,14 +14,17 @@ import {
 	transformMetadataForUpdate,
 } from "../utils/resourceUtils";
 import { transformToIdValueArray } from "../utils/utils";
-import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
+import { NOTIFICATION_CONTEXT, NOTIFICATION_CONTEXT_TOBIRA } from "../configs/modalConfig";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 import { Ace } from './aclSlice';
 import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
 import { AppDispatch } from '../store';
-import { PartialSeries } from './seriesSlice';
+import { PartialSeries, TobiraPage } from './seriesSlice';
+import { TobiraTabHierarchy } from '../components/events/partials/ModalTabsAndPages/DetailsTobiraTab';
+import { TobiraFormProps } from '../components/events/partials/ModalTabsAndPages/NewTobiraPage';
+import { handleTobiraError } from './shared/tobiraErrors';
 
 /**
  * This file contains redux reducer for actions affecting the state of a series
@@ -32,13 +35,18 @@ export type Feed = {
 	version: string,
 }
 
-
 // Contains the navigation logic for the modal
 type SeriesDetailsModal = {
 	show: boolean,
 	page: number,
+	tobiraTab: TobiraTabHierarchy,
 	series: PartialSeries | null,
 }
+
+export type TobiraData = {
+	baseURL: string,
+	hostPages: TobiraPage[],
+};
 
 type SeriesDetailsState = {
 	statusMetadata: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
@@ -65,16 +73,7 @@ type SeriesDetailsState = {
 	themeNames: { id: string, value: string }[],
 	statistics: Statistics[],
 	hasStatisticsError: boolean,
-	tobiraData: {
-		baseURL: string,
-		hostPages: {
-			title: string,
-			path: string,
-			ancestors: {
-				title: string,
-			}[],
-		}[],
-	},
+	tobiraData: TobiraData,
 	modal: SeriesDetailsModal,
 }
 
@@ -115,6 +114,7 @@ const initialState: SeriesDetailsState = {
 	modal: {
 		show: false,
 		page: 0,
+		tobiraTab: "main",
 		series: null,
 	},
 };
@@ -123,6 +123,7 @@ export const openModal = (series: PartialSeries) => async (dispatch: AppDispatch
 	const { id } = series;
 	dispatch(setModalSeries(series));
 	dispatch(setModalPage(0));
+	dispatch(setTobiraTabHierarchy("main"));
 	dispatch(setShowModal(true));
 };
 
@@ -430,39 +431,13 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
     }
 });
 
-// fetch metadata of certain series from server
-export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsTobira', async (id: string, {dispatch}) => {
+// fetch Tobira data of certain series from server
+export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsTobira', async (
+	id: string,
+	{ dispatch }
+) => {
 	const res = await axios.get(`/admin-ng/series/${id}/tobira/pages`)
-		.then((response) => {
-			return response;
-		})
-		.catch((response) => {
-			console.error(response);
-			const data = response.response;
-
-			if (data.status === 500) {
-				dispatch(addNotification({
-					type: "error",
-					key: "TOBIRA_SERVER_ERROR",
-					duration: -1,
-					parameter: undefined,
-					context: NOTIFICATION_CONTEXT
-				}));
-
-				throw Error(response);
-			} else if (data.status === 404) {
-				dispatch(addNotification({
-					type: "warning",
-					key: "TOBIRA_NOT_FOUND",
-					duration: -1,
-					parameter: undefined,
-					context: NOTIFICATION_CONTEXT
-				}));
-
-				throw Error(response);
-			}
-			return undefined;
-		});
+		.catch(response => handleTobiraError(response, dispatch));
 
 	if (!res) {
 		throw Error;
@@ -471,6 +446,58 @@ export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetch
 	const data = res.data;
 	return data;
 });
+
+export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTobiraData', async (
+	params: TobiraFormProps & { seriesId: string },
+	{ dispatch },
+) => {
+	const tobiraParams = new URLSearchParams();
+	
+	const pathComponents = params.breadcrumbs.slice(1).map(crumb => ({
+		name: crumb.title,
+		pathSegment: crumb.segment,
+	}));
+
+	if (params.selectedPage) {
+		pathComponents.push({
+			// Passing a dummy value here so Tobira won't freak out.
+			name: params.selectedPage.title ?? "dummy",
+			pathSegment: params.selectedPage.segment,
+		});
+		
+		tobiraParams.append("pathComponents", JSON.stringify(pathComponents));
+		tobiraParams.append("targetPath", params.selectedPage.path);
+	}
+	
+	if (params.currentPath) {
+		tobiraParams.append("currentPath", params.currentPath);
+	}
+
+	try {
+		const response = await axios.post(`/admin-ng/series/${params.seriesId}/tobira/path`, tobiraParams.toString(), {
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+		});
+  
+		console.info(response);
+		dispatch(addNotification({
+			type: 'success',
+			key: 'SERIES_PATH_UPDATED',
+			context: NOTIFICATION_CONTEXT_TOBIRA
+		}));
+		
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		dispatch(addNotification({
+			type: 'error',
+			key: 'SERIES_PATH_NOT_UPDATED',
+			context: NOTIFICATION_CONTEXT_TOBIRA
+		}));
+		throw error;
+	}}
+);
 
 // thunks for statistics
 export const fetchSeriesStatistics = createAppAsyncThunk('seriesDetails/fetchSeriesStatistics', async (seriesId: string, {getState}) => {
@@ -529,6 +556,11 @@ const seriesDetailsSlice = createSlice({
 			SeriesDetailsState["modal"]["page"]
 		>) {
 			state.modal.page = action.payload;
+		},
+		setTobiraTabHierarchy(state, action: PayloadAction<
+			SeriesDetailsState["modal"]["tobiraTab"]
+		>) {
+			state.modal.tobiraTab = action.payload;
 		},
 		setModalSeries(state, action: PayloadAction<
 			SeriesDetailsState["modal"]["series"]
@@ -690,6 +722,7 @@ export const {
 	setSeriesDetailsExtendedMetadata,
 	setSeriesStatisticsError,
 	setSeriesStatistics,
+	setTobiraTabHierarchy,
 } = seriesDetailsSlice.actions;
 
 // Export the slice reducer as the default export

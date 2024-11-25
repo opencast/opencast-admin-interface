@@ -20,7 +20,7 @@ import { TobiraPage } from "../../../../slices/seriesSlice";
 interface RequiredFormProps {
 	theme: string,
 	acls: TransformedAcl[],
-	selectedPage: TobiraPage | undefined,
+	selectedPage?: TobiraPage,
 }
 
 const NewSeriesSummary = <T extends RequiredFormProps>({

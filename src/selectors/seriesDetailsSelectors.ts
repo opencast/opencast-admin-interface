@@ -8,6 +8,8 @@ import { RootState } from "../store";
 export const showModal = (state: RootState) => state.seriesDetails.modal.show;
 export const getModalPage = (state: RootState) => state.seriesDetails.modal.page;
 export const getModalSeries = (state: RootState) => state.seriesDetails.modal.series;
+export const getTobiraTabHierarchy = (state: RootState) =>
+	state.seriesDetails.modal.tobiraTab;
 
 export const getSeriesDetailsMetadata = (state: RootState) => state.seriesDetails.metadata;
 export const getSeriesDetailsExtendedMetadata = (state: RootState) => state.seriesDetails.extendedMetadata;
@@ -25,7 +27,7 @@ export const isFetchingThemes = (state: RootState) =>
 	state.seriesDetails.statusTheme === 'loading';
 
 export const getSeriesDetailsTobiraData = (state: RootState) =>
-	state.seriesDetails.tobiraData
+	state.seriesDetails.tobiraData;
 export const getSeriesDetailsTobiraDataError = (state: RootState) =>
 	state.seriesDetails.errorTobiraData
 export const isFetchingTobiraData = (state: RootState) =>
