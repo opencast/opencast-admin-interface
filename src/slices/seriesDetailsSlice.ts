@@ -120,7 +120,6 @@ const initialState: SeriesDetailsState = {
 };
 
 export const openModal = (series: PartialSeries) => async (dispatch: AppDispatch) => {
-	const { id } = series;
 	dispatch(setModalSeries(series));
 	dispatch(setModalPage(0));
 	dispatch(setTobiraTabHierarchy("main"));
