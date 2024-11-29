@@ -1,9 +1,10 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import DatePicker from "react-datepicker";
 import cn from "classnames";
 import { useClickOutsideField } from "../../../hooks/wizardHooks";
 import { getMetadataCollectionFieldName } from "../../../utils/resourceUtils";
+import { getCurrentLanguageInformation } from "../../../utils/utils";
 import DropDown, { DropDownType } from "../DropDown";
 import RenderDate from "../RenderDate";
 import { parseISO } from "date-fns";
@@ -179,24 +180,20 @@ const EditableDateValue = ({
 	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
 }) => editMode ? (
 	<div>
-		<DateTimePicker
-			name={field.name}
-			value={typeof field.value === "string" ? parseISO(field.value) : field.value}
+		<DatePicker
+			showIcon
+			selected={typeof field.value === "string" ? parseISO(field.value) : field.value}
 			onChange={(value) => setFieldValue(field.name, value)}
-			onClose={() => setEditMode(false)}
-			slotProps={{
-				textField: {
-					fullWidth: true,
-					onKeyDown: (event) => {
-						if (event.key === "Enter") {
-							handleKeyDown(event, "date")
-						}
-					},
-					onBlur: (event) => {
-						setEditMode(false)
-					}
-				}
-			}}
+			onClickOutside={() => setEditMode(false)}
+			onBlur={() => setEditMode(false)}
+			showTimeInput
+			dateFormat="Pp"
+			startOpen
+			popperPlacement="bottom"
+			popperClassName="datepicker-custom"
+			className="datepicker-custom-input"
+			wrapperClassName="datepicker-custom-wrapper"
+			locale={getCurrentLanguageInformation()?.dateLocale}
 		/>
 	</div>
 ) : (
@@ -388,24 +385,21 @@ const EditableSingleValueTime = ({
 
 	return editMode ? (
 		<div>
-			<DateTimePicker
-				name={field.name}
-				value={parseISO(field.value)}
+			<DatePicker
+				showIcon
+				selected={typeof field.value === "string" ? parseISO(field.value) : field.value}
 				onChange={(value) => setFieldValue(field.name, value)}
-				onClose={() => setEditMode(false)}
-				slotProps={{
-					textField: {
-						fullWidth: true,
-						onKeyDown: (event) => {
-							if (event.key === "Enter") {
-								handleKeyDown(event, "date")
-							}
-						},
-						onBlur: () => {
-							setEditMode(false)
-						}
-					}
-				}}
+				onClickOutside={() => setEditMode(false)}
+				onBlur={() => setEditMode(false)}
+				showTimeSelect
+      			showTimeSelectOnly
+				dateFormat="p"
+				startOpen
+				popperPlacement="bottom"
+				popperClassName="datepicker-custom"
+				className="datepicker-custom-input"
+				wrapperClassName="datepicker-custom-wrapper"
+				locale={getCurrentLanguageInformation()?.dateLocale}
 			/>
 		</div>
 	) : (
