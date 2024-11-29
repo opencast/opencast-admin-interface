@@ -50,7 +50,7 @@ jobs:
         if: github.event_name == 'pull_request_target'
         uses: thollander/actions-comment-pull-request@v3
         with:
-          comment_tag: container-image
+          comment-tag: container-image
           message: |
             Use `docker` or `podman` to test this pull request locally.
 
