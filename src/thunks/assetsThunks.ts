@@ -44,11 +44,13 @@ export const fetchAssetUploadOptions = createAppAsyncThunk('assets/fetchAssetUpl
 								showAs: isSourceOption ? "source" : "uploadAsset",
 							};
 
-							if (isAssetOption) {
-								newAssetUploadOptions.push(option);
+							if ((option.showForNewEvents !== undefined && (isAssetOption && option.showForNewEvents))
+								|| (option.showForNewEvents === undefined && (isAssetOption))) {
+									newAssetUploadOptions.push(option);
 							}
-							if (isSourceOption) {
-								newSourceUploadOptions.push(option);
+							if ((option.showForNewEvents !== undefined && (isSourceOption && option.showForNewEvents))
+								|| (option.showForNewEvents === undefined && (isSourceOption))) {
+									newSourceUploadOptions.push(option);
 							}
 						} else if (optionKey.indexOf(workflowPrefix) >= 0) {
 							// if the line is the upload asset workflow id, set the asset upload workflow

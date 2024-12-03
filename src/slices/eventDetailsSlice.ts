@@ -28,7 +28,7 @@ import { getRecordings } from "../selectors/recordingSelectors";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 import { TransformedAcl } from './aclDetailsSlice';
-import { MetadataCatalog } from './eventSlice';
+import { MetadataCatalog, UploadOption } from './eventSlice';
 import { Event } from "./eventSlice";
 import {
 	AssetTabHierarchy,
@@ -113,16 +113,6 @@ type Device = {
 	// type: string,
 	// updated: string,
 	// url: string,
-}
-
-export type UploadOption = {
-	id: string,
-	title: string,  // translation key
-	type: string,  // "track", "attachment" etc.
-	flavorType: string,
-	flavorSubType: string,
-	accept: string,
-	displayOrder: number,
 }
 
 export type Publication = {
@@ -715,11 +705,13 @@ const formatUploadAssetOptions = (optionsData: { [key: string]: string }) => {
 				if (!options["title"]) {
 					options["title"] = key;
 				}
-				if (key.indexOf(optionPrefixAsset) >= 0 ) {
-					uploadAssets.push({ ...options });
+				if ((options["showForExistingEvents"] !== undefined && (key.indexOf(optionPrefixAsset) >= 0 && options["showForExistingEvents"]))
+					|| (options["showForExistingEvents"] === undefined && (key.indexOf(optionPrefixAsset) >= 0))) {
+						uploadAssets.push({ ...options });
 				}
-				if (key.indexOf(optionPrefixSource) >= 0 ) {
-					uploadSource.push({ ...options });
+				if ((options["showForExistingEvents"] !== undefined && (key.indexOf(optionPrefixSource) >= 0 && options["showForExistingEvents"]))
+					|| (options["showForExistingEvents"] === undefined && (key.indexOf(optionPrefixSource) >= 0))) {
+						uploadSource.push({ ...options });
 				}
 			} else if (key.indexOf(workflowPrefix) >= 0) {
 				// parse upload workflow definition id

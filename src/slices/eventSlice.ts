@@ -150,6 +150,8 @@ export type UploadOption = {
 	displayOverride?: string,
 	"displayOverride.SHORT"?: string,
 	"displayOverride.DETAIL"?: string,
+	showForNewEvents?: boolean,
+	showForExistingEvents?: boolean,
 }
 
 export type UploadAssetsTrack = UploadOption & {

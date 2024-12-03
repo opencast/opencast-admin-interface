@@ -13,6 +13,7 @@ import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
 import { initialFormValuesNewEvents } from "../../../../configs/modalConfig";
 import {
+	getAssetUploadOptions,
 	getEventMetadata,
 	getExtendedEventMetadata,
 	getSourceUploadOptions,
@@ -33,6 +34,7 @@ const NewEventWizard: React.FC<{
 	const dispatch = useAppDispatch();
 
 	const uploadSourceOptions = useAppSelector(state => getSourceUploadOptions(state));
+	const assetUploadOptions = useAppSelector(state => getAssetUploadOptions(state));
 	const metadataFields = useAppSelector(state => getEventMetadata(state));
 	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
 	const user = useAppSelector(state => getUserInformation(state));
@@ -76,7 +78,7 @@ const NewEventWizard: React.FC<{
 		{
 			translation: "EVENTS.EVENTS.NEW.UPLOAD_ASSET.CAPTION",
 			name: "upload-asset",
-			hidden: uploadSourceOptions.length === 0,
+			hidden: assetUploadOptions.length === 0,
 		},
 		{
 			translation: "EVENTS.EVENTS.NEW.PROCESSING.CAPTION",

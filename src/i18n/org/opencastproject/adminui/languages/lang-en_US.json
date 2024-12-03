@@ -556,7 +556,8 @@
 						"CAPTIONS_WEBVTT": "Captions WebVTT",
 						"PREVIEW_IMAGE": "Preview image",
 						"SMIL": "Smil catalog",
-						"TRACK_PARTS": "Track parts"
+						"TRACK_PARTS": "Track parts",
+						"SUBTITLES": "Subtitles"
 					}
 				},
 				"ACCESS": {

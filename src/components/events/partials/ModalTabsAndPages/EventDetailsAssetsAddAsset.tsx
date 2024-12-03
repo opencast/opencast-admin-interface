@@ -3,12 +3,12 @@ import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNaviga
 import Notifications from "../../../shared/Notifications";
 import { style_button_spacing } from "../../../../utils/eventDetailsUtils";
 import { Formik, FormikProps } from "formik";
-import { getAssetUploadOptions } from "../../../../selectors/eventSelectors";
 import { translateOverrideFallback } from "../../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { setModalAssetsTabHierarchy, updateAssets } from "../../../../slices/eventDetailsSlice";
 import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import { getUploadAssetOptions } from "../../../../selectors/eventDetailsSelectors";
 
 /**
  * This component manages the add asset sub-tab for assets tab of event details modal
@@ -21,7 +21,7 @@ const EventDetailsAssetsAddAsset = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
+	const uploadAssetOptions = useAppSelector(state => getUploadAssetOptions(state));
 
 	const initialValues: { [key: string]: File } = {};
 
