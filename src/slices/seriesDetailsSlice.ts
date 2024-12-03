@@ -20,11 +20,11 @@ import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './stati
 import { Ace } from './aclSlice';
 import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
-import { TobiraPage } from './seriesSlice';
+import { AppDispatch } from '../store';
+import { PartialSeries, TobiraPage } from './seriesSlice';
 import { TobiraTabHierarchy } from '../components/events/partials/ModalTabsAndPages/DetailsTobiraTab';
 import { TobiraFormProps } from '../components/events/partials/ModalTabsAndPages/NewTobiraPage';
 import { handleTobiraError } from './shared/tobiraErrors';
-
 
 /**
  * This file contains redux reducer for actions affecting the state of a series
@@ -33,6 +33,14 @@ export type Feed = {
 	link: string,
 	type: string,
 	version: string,
+}
+
+// Contains the navigation logic for the modal
+type SeriesDetailsModal = {
+	show: boolean,
+	page: number,
+	tobiraTab: TobiraTabHierarchy,
+	series: PartialSeries | null,
 }
 
 export type TobiraData = {
@@ -57,17 +65,16 @@ type SeriesDetailsState = {
 	errorStatisticsValue: SerializedError | null,
 	statusTobiraData: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorTobiraData: SerializedError | null,
-  	metadata: MetadataCatalog,
+	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	feeds: Feed[],
 	acl: TransformedAcl[],
 	theme: string,
 	themeNames: { id: string, value: string }[],
-	fetchingStatisticsInProgress: boolean,
 	statistics: Statistics[],
 	hasStatisticsError: boolean,
-	tobiraTab: TobiraTabHierarchy,
 	tobiraData: TobiraData,
+	modal: SeriesDetailsModal,
 }
 
 // Initial state of series details in redux store
@@ -98,14 +105,25 @@ const initialState: SeriesDetailsState = {
 	acl: [],
 	theme: "",
 	themeNames: [],
-	fetchingStatisticsInProgress: false,
 	statistics: [],
 	hasStatisticsError: false,
-	tobiraTab: "main",
 	tobiraData: {
 		baseURL: "",
 		hostPages: [],
 	},
+	modal: {
+		show: false,
+		page: 0,
+		tobiraTab: "main",
+		series: null,
+	},
+};
+
+export const openModal = (series: PartialSeries) => async (dispatch: AppDispatch) => {
+	dispatch(setModalSeries(series));
+	dispatch(setModalPage(0));
+	dispatch(setTobiraTabHierarchy("main"));
+	dispatch(setShowModal(true));
 };
 
 // fetch metadata of certain series from server
@@ -528,6 +546,26 @@ const seriesDetailsSlice = createSlice({
 	name: 'seriesDetails',
 	initialState,
 	reducers: {
+		setShowModal(state, action: PayloadAction<
+			SeriesDetailsState["modal"]["show"]
+		>) {
+			state.modal.show = action.payload;
+		},
+		setModalPage(state, action: PayloadAction<
+			SeriesDetailsState["modal"]["page"]
+		>) {
+			state.modal.page = action.payload;
+		},
+		setTobiraTabHierarchy(state, action: PayloadAction<
+			SeriesDetailsState["modal"]["tobiraTab"]
+		>) {
+			state.modal.tobiraTab = action.payload;
+		},
+		setModalSeries(state, action: PayloadAction<
+			SeriesDetailsState["modal"]["series"]
+		>) {
+			state.modal.series = action.payload;
+		},
 		setSeriesDetailsTheme(state, action: PayloadAction<
 			SeriesDetailsState["theme"]
 		>) {
@@ -553,14 +591,6 @@ const seriesDetailsSlice = createSlice({
 		>) {
 			state.statistics = action.payload;
 		},
-		setTobiraTabHierarchy(state, action: PayloadAction<
-			SeriesDetailsState["tobiraTab"]
-		>) {
-			state.tobiraTab = action.payload;
-		},
-		setDoNothing(state) {
-
-		}
 	},
 	// These are used for thunks
 	extraReducers: builder => {
@@ -683,13 +713,15 @@ const seriesDetailsSlice = createSlice({
 });
 
 export const {
+	setShowModal,
+	setModalPage,
+	setModalSeries,
 	setSeriesDetailsTheme,
 	setSeriesDetailsMetadata,
 	setSeriesDetailsExtendedMetadata,
 	setSeriesStatisticsError,
 	setSeriesStatistics,
 	setTobiraTabHierarchy,
-	setDoNothing,
 } = seriesDetailsSlice.actions;
 
 // Export the slice reducer as the default export

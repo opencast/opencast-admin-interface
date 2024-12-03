@@ -35,6 +35,8 @@ export type Series = {
 	title: string,
 }
 
+export type PartialSeries = Pick<Series, "id" | "title">;
+
 type Theme = {
 	description: string,
 	id: string,
