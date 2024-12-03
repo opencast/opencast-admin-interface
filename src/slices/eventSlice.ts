@@ -21,7 +21,7 @@ import {
 	removeNotification,
 	addNotification,
 } from "./notificationSlice";
-import { getAssetUploadOptions, getSchedulingEditedEvents } from '../selectors/eventSelectors';
+import { getAssetUploadOptions, getSchedulingEditedEvents, getSourceUploadOptions } from '../selectors/eventSelectors';
 import { fetchSeriesOptions } from "./seriesSlice";
 import { AppDispatch } from '../store';
 import { fetchAssetUploadOptions } from '../thunks/assetsThunks';
@@ -134,7 +134,7 @@ export type EditedEvents = {
 	weekday: string,
 }
 
-export type UploadAssetOption = {
+export type UploadOption = {
 	accept: string,
 	displayFallback?: string,
 	"displayFallback.DETAIL"?: string,
@@ -150,9 +150,11 @@ export type UploadAssetOption = {
 	displayOverride?: string,
 	"displayOverride.SHORT"?: string,
 	"displayOverride.DETAIL"?: string,
+	showForNewEvents?: boolean,
+	showForExistingEvents?: boolean,
 }
 
-export type UploadAssetsTrack = UploadAssetOption & {
+export type UploadAssetsTrack = UploadOption & {
 	file?: FileList
 }
 
@@ -184,8 +186,9 @@ type EventState = {
 	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	isFetchingAssetUploadOptions: boolean,
-	uploadAssetOptions: UploadAssetOption[],
-	uploadAssetWorkflow: string | undefined,  // TODO: proper typing
+	uploadAssetOptions: UploadOption[],
+	uploadSourceOptions: UploadOption[],
+	uploadAssetWorkflow: string | undefined,    // TODO: proper typing
 	schedulingInfo: {
 		editedEvents: EditedEvents[],
 		seriesOptions: {
@@ -226,6 +229,7 @@ const initialState: EventState = {
 	extendedMetadata: [],
 	isFetchingAssetUploadOptions: false,
 	uploadAssetOptions: [],
+	uploadSourceOptions: [],
 	uploadAssetWorkflow: "",
 	schedulingInfo: {
 		editedEvents: [],
@@ -447,6 +451,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	// get asset upload options from redux store
 	const state = getState();
 	const uploadAssetOptions = getAssetUploadOptions(state);
+	const uploadSourceOptions = getSourceUploadOptions(state);
 
 	let formData = new FormData();
 	let source: {
@@ -563,7 +568,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	// need to provide all possible upload asset options independent of source mode/type
 	let assets: {
 		workflow: string,
-		options: UploadAssetOption[],
+		options: UploadOption[],
 	}= {
 		workflow: WORKFLOW_UPLOAD_ASSETS_NON_TRACK,
 		options: [],
@@ -571,13 +576,10 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 
 	// iterate through possible upload asset options and put them in assets
 	// if source mode/type is UPLOAD and a file for a asset is uploaded by user than append file to form data
-	for (let i = 0; uploadAssetOptions.length > i; i++) {
-		if (
-			uploadAssetOptions[i].type === "track" &&
-			values.sourceMode === "UPLOAD"
-		) {
+	for (let i = 0; uploadSourceOptions.length > i; i++) {
+		if (values.sourceMode === "UPLOAD") {
 			let asset = values.uploadAssetsTrack?.find(
-				(asset) => asset.id === uploadAssetOptions[i].id
+				(asset) => asset.id === uploadSourceOptions[i].id
 			);
 			if (!!asset && !!asset.file) {
 				if (asset.multiple) {
@@ -588,18 +590,19 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 					formData.append(asset.id + ".0", asset.file[0]);
 				}
 			}
+			assets.options = assets.options.concat(uploadSourceOptions[i]);
+		}
+	}
+	for (let i = 0; uploadAssetOptions.length > i; i++) {
+		if (
+			!!values[uploadAssetOptions[i].id] &&
+			values.sourceMode === "UPLOAD"
+		) {
+			formData.append(
+				uploadAssetOptions[i].id + ".0",
+				values[uploadAssetOptions[i].id] as File
+			);
 			assets.options = assets.options.concat(uploadAssetOptions[i]);
-		} else {
-			if (
-				!!values[uploadAssetOptions[i].id] &&
-				values.sourceMode === "UPLOAD"
-			) {
-				formData.append(
-					uploadAssetOptions[i].id + ".0",
-					values[uploadAssetOptions[i].id] as File
-				);
-				assets.options = assets.options.concat(uploadAssetOptions[i]);
-			}
 		}
 	}
 
@@ -1178,12 +1181,14 @@ const eventSlice = createSlice({
 			.addCase(fetchAssetUploadOptions.fulfilled, (state, action: PayloadAction<{
 				workflow: EventState["uploadAssetWorkflow"],
 				newAssetUploadOptions: EventState["uploadAssetOptions"],
+				newSourceUploadOptions: EventState["uploadSourceOptions"],
 			} | undefined>) => {
 				state.statusAssetUploadOptions = 'succeeded';
 				const assetUpload = action.payload;
 				if (assetUpload) {
 					state.uploadAssetWorkflow = assetUpload.workflow;
 					state.uploadAssetOptions = assetUpload.newAssetUploadOptions;
+					state.uploadSourceOptions = assetUpload.newSourceUploadOptions;
 				}
 			})
 			.addCase(fetchAssetUploadOptions.rejected, (state, action) => {
