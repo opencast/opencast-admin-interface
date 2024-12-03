@@ -429,11 +429,14 @@ export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetch
 });
 
 export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTobiraData', async (
-	params: TobiraFormProps & { seriesId: string },
+	params: TobiraFormProps & {
+		seriesId: string,
+		remove?: boolean,
+	},
 	{ dispatch },
 ) => {
 	const tobiraParams = new URLSearchParams();
-	
+	const operation = params.remove ? "REMOVED" : "UPDATED";
 	const pathComponents = params.breadcrumbs.slice(1).map(crumb => ({
 		name: crumb.title,
 		pathSegment: crumb.segment,
@@ -445,11 +448,11 @@ export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTo
 			name: params.selectedPage.title ?? "dummy",
 			pathSegment: params.selectedPage.segment,
 		});
-		
+
 		tobiraParams.append("pathComponents", JSON.stringify(pathComponents));
 		tobiraParams.append("targetPath", params.selectedPage.path);
 	}
-	
+
 	if (params.currentPath) {
 		tobiraParams.append("currentPath", params.currentPath);
 	}
@@ -460,21 +463,21 @@ export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTo
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 		});
-  
+
 		console.info(response);
 		dispatch(addNotification({
 			type: 'success',
-			key: 'SERIES_PATH_UPDATED',
-			context: NOTIFICATION_CONTEXT_TOBIRA
+			key: `SERIES_PATH_${operation}`,
+			context: NOTIFICATION_CONTEXT_TOBIRA,
 		}));
-		
+
 		return response.data;
 	} catch (error) {
 		console.error(error);
 		dispatch(addNotification({
 			type: 'error',
-			key: 'SERIES_PATH_NOT_UPDATED',
-			context: NOTIFICATION_CONTEXT_TOBIRA
+			key: `SERIES_PATH_NOT_${operation}`,
+			context: NOTIFICATION_CONTEXT_TOBIRA,
 		}));
 		throw error;
 	}}

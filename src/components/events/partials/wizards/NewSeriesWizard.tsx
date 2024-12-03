@@ -207,6 +207,7 @@ const NewSeriesWizard: React.FC<{
 								)}
 								{page === 4 && (
 									<NewTobiraPage
+										mode={{ mount: true }}
 										formik={formik}
 										nextPage={nextPage}
 										previousPage={previousPage}
