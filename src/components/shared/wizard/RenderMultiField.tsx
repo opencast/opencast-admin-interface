@@ -28,7 +28,7 @@ const RenderMultiField = ({
 	// Temporary storage for value user currently types in
 	const [inputValue, setInputValue] = useState("");
 
-	let fieldValue = [...field.value];
+	let fieldValue = field.value ? [...field.value] : [];
 
 	// Handle change of value user currently types in
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

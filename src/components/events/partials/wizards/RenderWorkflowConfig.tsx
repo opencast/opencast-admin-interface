@@ -6,7 +6,7 @@ import {
 	getWorkflowDefById,
 } from "../../../../selectors/workflowSelectors";
 import { useAppSelector } from "../../../../store";
-import { FieldSetField } from "../../../../slices/workflowSlice";
+import { ConfigurationPanelField, FieldSetField } from "../../../../slices/workflowSlice";
 
 /**
  * This component renders the configuration panel for the selected workflow in the processing step of the new event
@@ -32,10 +32,28 @@ const RenderWorkflowConfig = <T extends RequiredFormProps>({
 	const configPanel = !!workflowDef && workflowDef.configuration_panel_json
 		? workflowDef.configuration_panel_json
 		: [];
-	const description = !!workflowDef && workflowDef.description
+	const description = !!workflowDef && workflowDef.description && !displayDescription
 		? workflowDef.description
 		: "";
 
+	return (
+		<WorkflowConfig
+			formik={formik}
+			configPanel={configPanel}
+			description={description}
+		/>
+	);
+};
+
+export const WorkflowConfig = <T extends RequiredFormProps>({
+	formik,
+	configPanel,
+	description
+}: {
+	formik: FormikProps<T>
+	configPanel: string | ConfigurationPanelField[]
+	description: string
+}) => {
 	const descriptionBoxStyle = {
 		margin: "15px 0 0 0",
 		position: "relative" as const,
@@ -55,7 +73,7 @@ const RenderWorkflowConfig = <T extends RequiredFormProps>({
 
 	return (
 		<>
-			{displayDescription && description.length > 0 && (
+			{description.length > 0 && (
 				<div className="collapsible-box" style={descriptionBoxStyle}>
 					<div style={descriptionTextStyle}>{description.trim()}</div>
 				</div>
