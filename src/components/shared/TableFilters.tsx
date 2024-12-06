@@ -426,8 +426,7 @@ const FilterSwitch = ({
 				<div>
 					<DatePicker
 						startOpen
-						showIcon
-						icon="fa fa-calendar"
+						autoFocus
 						selected={startDate}
 						onChange={(dates) => handleDate(dates)}
 						startDate={startDate}

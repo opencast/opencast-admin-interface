@@ -181,15 +181,13 @@ const EditableDateValue = ({
 }) => editMode ? (
 	<div>
 		<DatePicker
-			showIcon
+			autoFocus
 			selected={typeof field.value === "string" ? parseISO(field.value) : field.value}
 			onChange={(value) => setFieldValue(field.name, value)}
 			onClickOutside={() => setEditMode(false)}
-			onBlur={() => setEditMode(false)}
 			showTimeInput
 			dateFormat="Pp"
-			startOpen
-			popperPlacement="bottom"
+			popperPlacement="bottom-start"
 			popperClassName="datepicker-custom"
 			className="datepicker-custom-input"
 			wrapperClassName="datepicker-custom-wrapper"
@@ -386,16 +384,14 @@ const EditableSingleValueTime = ({
 	return editMode ? (
 		<div>
 			<DatePicker
-				showIcon
+				autoFocus
 				selected={typeof field.value === "string" ? parseISO(field.value) : field.value}
 				onChange={(value) => setFieldValue(field.name, value)}
 				onClickOutside={() => setEditMode(false)}
-				onBlur={() => setEditMode(false)}
 				showTimeSelect
       			showTimeSelectOnly
 				dateFormat="p"
-				startOpen
-				popperPlacement="bottom"
+				popperPlacement="bottom-start"
 				popperClassName="datepicker-custom"
 				className="datepicker-custom-input"
 				wrapperClassName="datepicker-custom-wrapper"
