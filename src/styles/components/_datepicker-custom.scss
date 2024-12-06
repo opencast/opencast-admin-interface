@@ -20,36 +20,14 @@
  */
 
 
-@import "simple-box";
-@import "helper-classes";
-@import "cal";
-@import "ui";
-@import "dropdowns";
-@import "menu-dropdown";
-@import "form";
-@import "multi-select";
-@import "steps";
-@import "breadcrumbs";
-@import "header";
-@import "menu";
-@import "footer";
-@import "tables";
-@import "date-picker";
-@import "datepicker-custom";
-@import "alerts";
-@import "inputs";
-@import "stats";
-@import "popover";
-@import "collapsible-box";
-@import "about";
-@import "tooltips";
+ .datepicker-custom {
+    z-index: 10000 !important;
 
-// Integrated From Extensions
-@import "labels";
-@import "progress-bar";
-@import "toggle-buttons";
-@import "statistics-graph";
+    &-wrapper {
+      width: 100%;
+    }
 
-// Large Components
-@import "modals/modals-config";
-@import "data-filter/data-filter-config";
+    &-input {
+      height: 25px !important;
+    }
+ }

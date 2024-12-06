@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import Notifications from "../../../shared/Notifications";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import DatePicker from "react-datepicker";
 import {
 	getCurrentLanguageInformation,
 	getTimezoneOffset,
@@ -444,7 +444,7 @@ const Schedule = <T extends {
 							<td>
 								<DatePicker
 									name="scheduleStartDate"
-									value={typeof formik.values.scheduleStartDate === "string" ? parseISO(formik.values.scheduleStartDate): formik.values.scheduleStartDate}
+									selected={typeof formik.values.scheduleStartDate === "string" ? parseISO(formik.values.scheduleStartDate): formik.values.scheduleStartDate}
 									onChange={(value) => {
 										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
 											value && changeStartDateMultiple(
@@ -460,6 +460,14 @@ const Schedule = <T extends {
 											);
 										}
 									}}
+									showYearDropdown
+									showMonthDropdown
+									yearDropdownItemNumber={2}
+									dateFormat="P"
+									popperClassName="datepicker-custom"
+									className="datepicker-custom-input"
+									portalId="root"
+									locale={currentLanguage?.dateLocale}
 								/>
 							</td>
 						</tr>
@@ -474,7 +482,7 @@ const Schedule = <T extends {
 									<td>
 										<DatePicker
 											name="scheduleEndDate"
-											value={typeof formik.values.scheduleEndDate === "string" ? parseISO(formik.values.scheduleEndDate) : formik.values.scheduleEndDate}
+											selected={typeof formik.values.scheduleEndDate === "string" ? parseISO(formik.values.scheduleEndDate) : formik.values.scheduleEndDate}
 											onChange={(value) =>
 												value && changeEndDateMultiple(
 													value,
@@ -482,6 +490,14 @@ const Schedule = <T extends {
 													formik.setFieldValue
 												)
 											}
+											showYearDropdown
+											showMonthDropdown
+											yearDropdownItemNumber={2}
+											dateFormat="P"
+											popperClassName="datepicker-custom"
+											className="datepicker-custom-input"
+											portalId="root"
+											locale={currentLanguage?.dateLocale}
 										/>
 									</td>
 								</tr>
