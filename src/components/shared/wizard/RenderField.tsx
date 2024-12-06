@@ -186,6 +186,9 @@ const EditableDateValue = ({
 			onChange={(value) => setFieldValue(field.name, value)}
 			onClickOutside={() => setEditMode(false)}
 			showTimeInput
+			showYearDropdown
+			showMonthDropdown
+			yearDropdownItemNumber={2}
 			dateFormat="Pp"
 			popperPlacement="bottom-start"
 			popperClassName="datepicker-custom"

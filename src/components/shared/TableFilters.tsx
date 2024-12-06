@@ -432,6 +432,9 @@ const FilterSwitch = ({
 						startDate={startDate}
 						endDate={endDate}
 						selectsRange
+						showYearDropdown
+						showMonthDropdown
+						yearDropdownItemNumber={2}
 						swapRange
 						allowSameDay
 						dateFormat="P"

@@ -296,6 +296,9 @@ const EventDetailsSchedulingTab = ({
 																			checkConflictsWrapper
 																		)
 																	}
+																	showYearDropdown
+																	showMonthDropdown
+																	yearDropdownItemNumber={2}
 																	dateFormat="P"
 																	popperClassName="datepicker-custom"
 																	className="datepicker-custom-input"

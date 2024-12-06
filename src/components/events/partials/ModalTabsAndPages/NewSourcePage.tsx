@@ -460,6 +460,9 @@ const Schedule = <T extends {
 											);
 										}
 									}}
+									showYearDropdown
+									showMonthDropdown
+									yearDropdownItemNumber={2}
 									dateFormat="P"
 									popperClassName="datepicker-custom"
 									className="datepicker-custom-input"
@@ -487,6 +490,9 @@ const Schedule = <T extends {
 													formik.setFieldValue
 												)
 											}
+											showYearDropdown
+											showMonthDropdown
+											yearDropdownItemNumber={2}
 											dateFormat="P"
 											popperClassName="datepicker-custom"
 											className="datepicker-custom-input"
