@@ -9,7 +9,7 @@ import { Formik } from "formik";
 import { useState } from "react";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import NewTobiraPage, { TobiraFormProps } from "./NewTobiraPage";
-import { fetchSeriesDetailsTobira, setTobiraTabHierarchy, TobiraData, updateSeriesTobiraPath } from "../../../../slices/seriesDetailsSlice";
+import { fetchSeriesDetailsTobira, removeSeriesTobiraPath, setTobiraTabHierarchy, TobiraData, updateSeriesTobiraPath } from "../../../../slices/seriesDetailsSlice";
 import { fetchSeriesDetailsTobiraNew, TobiraPage } from "../../../../slices/seriesSlice";
 import ConfirmModal from "../../../shared/ConfirmModal";
 import { Tooltip } from "../../../shared/Tooltip";
@@ -95,11 +95,9 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 	};
 
 	const handleDelete = async (hostPage: TobiraPage) => {
-		await dispatch(updateSeriesTobiraPath({
+		await dispatch(removeSeriesTobiraPath({
 			seriesId: id,
 			currentPath: hostPage.path,
-			breadcrumbs: [],
-			remove: true,
 		})).then(() => dispatch(fetchSeriesDetailsTobira(id)))
 	}
 

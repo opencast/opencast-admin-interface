@@ -429,14 +429,10 @@ export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetch
 });
 
 export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTobiraData', async (
-	params: TobiraFormProps & {
-		seriesId: string,
-		remove?: boolean,
-	},
+	params: TobiraFormProps & { seriesId: string },
 	{ dispatch },
 ) => {
 	const tobiraParams = new URLSearchParams();
-	const operation = params.remove ? "REMOVED" : "UPDATED";
 	const pathComponents = params.breadcrumbs.slice(1).map(crumb => ({
 		name: crumb.title,
 		pathSegment: crumb.segment,
@@ -467,7 +463,7 @@ export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTo
 		console.info(response);
 		dispatch(addNotification({
 			type: 'success',
-			key: `SERIES_PATH_${operation}`,
+			key: 'SERIES_PATH_UPDATED',
 			context: NOTIFICATION_CONTEXT_TOBIRA,
 		}));
 
@@ -476,7 +472,37 @@ export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTo
 		console.error(error);
 		dispatch(addNotification({
 			type: 'error',
-			key: `SERIES_PATH_NOT_${operation}`,
+			key: 'SERIES_PATH_NOT_UPDATED',
+			context: NOTIFICATION_CONTEXT_TOBIRA,
+		}));
+		throw error;
+	}}
+);
+
+export const removeSeriesTobiraPath = createAppAsyncThunk('series/removeSeriesTobiraData', async (
+	params: Required<Pick<TobiraFormProps, 'currentPath'>> & { seriesId: string },
+	{ dispatch },
+) => {
+	const path = encodeURIComponent(params.currentPath);
+
+	try {
+		const response = await axios.delete(
+			`/admin-ng/series/${params.seriesId}/tobira/${path}`,
+		);
+
+		console.info(response);
+		dispatch(addNotification({
+			type: 'success',
+			key: 'SERIES_PATH_REMOVED',
+			context: NOTIFICATION_CONTEXT_TOBIRA,
+		}));
+
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		dispatch(addNotification({
+			type: 'error',
+			key: 'SERIES_PATH_NOT_REMOVED',
 			context: NOTIFICATION_CONTEXT_TOBIRA,
 		}));
 		throw error;
