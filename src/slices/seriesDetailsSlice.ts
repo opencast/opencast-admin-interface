@@ -672,6 +672,7 @@ const seriesDetailsSlice = createSlice({
 			.addCase(fetchSeriesDetailsTobira.fulfilled, (state, action: PayloadAction<
 				SeriesDetailsState["tobiraData"]
 			>) => {
+				state.errorTobiraData = null;
 				state.statusTobiraData = 'succeeded';
 				state.tobiraData = action.payload;
 			})
