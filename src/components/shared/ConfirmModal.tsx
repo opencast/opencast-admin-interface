@@ -15,7 +15,7 @@ const ConfirmModal = <T,>({
 	deleteWithCautionMessage = "",
 }: {
 	close: () => void,
-	resourceType: "EVENT" | "SERIES" | "LOCATION" | "USER" | "GROUP" | "ACL" | "THEME" | "LIFECYCLE_POLICY",
+	resourceType: "EVENT" | "SERIES" | "LOCATION" | "USER" | "GROUP" | "ACL" | "THEME" | "TOBIRA_PATH" | "LIFECYCLE_POLICY",
 	resourceName: string,
 	resourceId: T,
 	deleteMethod: (id: T) => void,
@@ -68,7 +68,7 @@ const ConfirmModal = <T,>({
 
 						<div>
 							<p>
-								<span>
+								<span style={{ padding: "0px 4px"}}>
 									{t("CONFIRMATIONS.METADATA.NOTICE." + resourceType)}
 								</span>
 							</p>

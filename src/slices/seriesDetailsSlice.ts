@@ -433,7 +433,6 @@ export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTo
 	{ dispatch },
 ) => {
 	const tobiraParams = new URLSearchParams();
-	
 	const pathComponents = params.breadcrumbs.slice(1).map(crumb => ({
 		name: crumb.title,
 		pathSegment: crumb.segment,
@@ -445,11 +444,11 @@ export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTo
 			name: params.selectedPage.title ?? "dummy",
 			pathSegment: params.selectedPage.segment,
 		});
-		
+
 		tobiraParams.append("pathComponents", JSON.stringify(pathComponents));
 		tobiraParams.append("targetPath", params.selectedPage.path);
 	}
-	
+
 	if (params.currentPath) {
 		tobiraParams.append("currentPath", params.currentPath);
 	}
@@ -460,21 +459,51 @@ export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTo
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 		});
-  
+
 		console.info(response);
 		dispatch(addNotification({
 			type: 'success',
 			key: 'SERIES_PATH_UPDATED',
-			context: NOTIFICATION_CONTEXT_TOBIRA
+			context: NOTIFICATION_CONTEXT_TOBIRA,
 		}));
-		
+
 		return response.data;
 	} catch (error) {
 		console.error(error);
 		dispatch(addNotification({
 			type: 'error',
 			key: 'SERIES_PATH_NOT_UPDATED',
-			context: NOTIFICATION_CONTEXT_TOBIRA
+			context: NOTIFICATION_CONTEXT_TOBIRA,
+		}));
+		throw error;
+	}}
+);
+
+export const removeSeriesTobiraPath = createAppAsyncThunk('series/removeSeriesTobiraData', async (
+	params: Required<Pick<TobiraFormProps, 'currentPath'>> & { seriesId: string },
+	{ dispatch },
+) => {
+	const path = encodeURIComponent(params.currentPath);
+
+	try {
+		const response = await axios.delete(
+			`/admin-ng/series/${params.seriesId}/tobira/${path}`,
+		);
+
+		console.info(response);
+		dispatch(addNotification({
+			type: 'success',
+			key: 'SERIES_PATH_REMOVED',
+			context: NOTIFICATION_CONTEXT_TOBIRA,
+		}));
+
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		dispatch(addNotification({
+			type: 'error',
+			key: 'SERIES_PATH_NOT_REMOVED',
+			context: NOTIFICATION_CONTEXT_TOBIRA,
 		}));
 		throw error;
 	}}
@@ -643,6 +672,7 @@ const seriesDetailsSlice = createSlice({
 			.addCase(fetchSeriesDetailsTobira.fulfilled, (state, action: PayloadAction<
 				SeriesDetailsState["tobiraData"]
 			>) => {
+				state.errorTobiraData = null;
 				state.statusTobiraData = 'succeeded';
 				state.tobiraData = action.payload;
 			})
