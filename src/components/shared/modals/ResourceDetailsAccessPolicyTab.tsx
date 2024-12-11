@@ -26,6 +26,8 @@ import { useTranslation } from "react-i18next";
 import { TransformedAcl } from "../../../slices/aclDetailsSlice";
 import { AsyncThunk, unwrapResult } from "@reduxjs/toolkit";
 import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
+import { SaveEditFooter } from "../SaveEditFooter";
+
 
 /**
  * This component manages the access policy tab of resource details modals
@@ -39,7 +41,6 @@ const ResourceDetailsAccessPolicyTab = ({
 	saveNewAccessPolicies,
 	descriptionText,
 	buttonText,
-	saveButtonText,
 	editAccessRole,
 	policyChanged,
 	setPolicyChanged,
@@ -52,7 +53,6 @@ const ResourceDetailsAccessPolicyTab = ({
 	saveNewAccessPolicies:  AsyncThunk<boolean, { id: string, policies: { acl: Acl } }, AsyncThunkConfig>
 	descriptionText: string,
 	buttonText: string,
-	saveButtonText: string,
 	editAccessRole: string,
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,
@@ -106,7 +106,7 @@ const ResourceDetailsAccessPolicyTab = ({
 						type: "warning",
 						key: "ACTIVE_TRANSACTION",
 						duration: -1,
-						parameter: null,
+						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					}));
 				}
@@ -138,7 +138,7 @@ const ResourceDetailsAccessPolicyTab = ({
 				type: "warning",
 				key: "INVALID_ACL_RULES",
 				duration: -1,
-				parameter: null,
+				parameter: undefined,
 				context: NOTIFICATION_CONTEXT
 			}));
 		}
@@ -148,7 +148,7 @@ const ResourceDetailsAccessPolicyTab = ({
 				type: "warning",
 				key: "MISSING_ACL_RULES",
 				duration: -1,
-				parameter: null,
+				parameter: undefined,
 				context: NOTIFICATION_CONTEXT
 			}));
 		}
@@ -597,33 +597,12 @@ const ResourceDetailsAccessPolicyTab = ({
 											</div>
 
 											{/* Save and cancel buttons */}
-											{!transactions.read_only && (
-												<footer style={{ padding: "0 15px" }}>
-													{policyChanged &&
-														formik.dirty && (
-														<div className="pull-left">
-															<button
-																type="reset"
-																onClick={() => resetPolicies(formik.resetForm)}
-																className="cancel"
-															>
-																{t("CANCEL") /* Cancel */}
-															</button>
-														</div>
-													)}
-													<div className="pull-right">
-														<button
-															onClick={() => saveAccess(formik.values)}
-															disabled={!formik.isValid || !(policyChanged && formik.dirty)}
-															className={`save green  ${
-																!formik.isValid || !(policyChanged && formik.dirty) ? "disabled" : ""
-															}`}
-														>
-															{t(saveButtonText) /* Save */}
-														</button>
-													</div>
-												</footer>
-												)}
+											{!transactions.read_only && <SaveEditFooter
+												active={policyChanged && formik.dirty}
+												reset={() => resetPolicies(formik.resetForm)}
+												submit={() => saveAccess(formik.values)}
+												isValid={formik.isValid}
+											/>}
 										</div>
 									)}
 								</Formik>

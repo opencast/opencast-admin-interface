@@ -3,16 +3,16 @@ import { Formik } from "formik";
 import NewThemePage from "../ModalTabsAndPages/NewThemePage";
 import NewSeriesSummary from "./NewSeriesSummary";
 import {
-	getSeriesTobiraPageStatus,
 	getSeriesExtendedMetadata,
 	getSeriesMetadata,
+	getSeriesTobiraPageError,
 } from "../../../../selectors/seriesSeletctor";
 import NewMetadataPage from "../ModalTabsAndPages/NewMetadataPage";
 import NewMetadataExtendedPage from "../ModalTabsAndPages/NewMetadataExtendedPage";
 import NewAccessPage from "../ModalTabsAndPages/NewAccessPage";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
 import { initialFormValuesNewSeries } from "../../../../configs/modalConfig";
-import { NewSeriesSchema } from "../../../../utils/validate";
+import { MetadataSchema, NewSeriesSchema } from "../../../../utils/validate";
 import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { TobiraPage, postNewSeries } from "../../../../slices/seriesSlice";
@@ -34,11 +34,11 @@ const NewSeriesWizard: React.FC<{
 
 	const metadataFields = useAppSelector(state => getSeriesMetadata(state));
 	const extendedMetadata = useAppSelector(state => getSeriesExtendedMetadata(state));
-	const statusTobiraPage = useAppSelector(state => getSeriesTobiraPageStatus(state));
+	const tobiraError = useAppSelector(state => getSeriesTobiraPageError(state));
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
 
-	const themesEnabled = (orgProperties['admin.themes.enabled'] || 'true').toLowerCase() === 'true';
+	const themesEnabled = (orgProperties['admin.themes.enabled'] || 'false').toLowerCase() === 'true';
 
 	const initialValues = getInitialValues(metadataFields, extendedMetadata, user);
 
@@ -71,7 +71,7 @@ const NewSeriesWizard: React.FC<{
 		{
 			translation: "EVENTS.SERIES.NEW.TOBIRA.CAPTION",
 			name: "tobira",
-			hidden: statusTobiraPage !== "succeeded",  // TODO: Figure out condition for this to be true
+			hidden: !!tobiraError?.message?.includes("503"),
 		},
 		{
 			translation: "EVENTS.SERIES.NEW.SUMMARY.CAPTION",
@@ -81,14 +81,19 @@ const NewSeriesWizard: React.FC<{
 	];
 
 	// Validation schema of current page
-	const currentValidationSchema = NewSeriesSchema[page];
+	let currentValidationSchema;
+	if (page === 0 || page === 1) {
+		currentValidationSchema = MetadataSchema(metadataFields.fields);
+	} else {
+		currentValidationSchema = NewSeriesSchema[page];
+	}
 
 	const nextPage = (
 		values: {
 			acls: TransformedAcl[];
 			theme: string;
 			breadcrumbs: TobiraPage[];
-			selectedPage: TobiraPage | undefined;
+			selectedPage?: TobiraPage;
 		}
 	) => {
 		setSnapshot(values);
@@ -110,7 +115,7 @@ const NewSeriesWizard: React.FC<{
 			acls: TransformedAcl[];
 			theme: string;
 			breadcrumbs: TobiraPage[];
-			selectedPage: TobiraPage | undefined;
+			selectedPage?: TobiraPage;
 		},
 		twoPagesBack?: boolean
 	) => {
@@ -202,6 +207,7 @@ const NewSeriesWizard: React.FC<{
 								)}
 								{page === 4 && (
 									<NewTobiraPage
+										mode={{ mount: true }}
 										formik={formik}
 										nextPage={nextPage}
 										previousPage={previousPage}

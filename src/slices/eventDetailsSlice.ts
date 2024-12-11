@@ -37,6 +37,8 @@ import {
 } from "../components/events/partials/modals/EventDetails";
 import { AppDispatch } from "../store";
 import { Ace } from './aclSlice';
+import { setTobiraTabHierarchy, TobiraData } from './seriesDetailsSlice';
+import { handleTobiraError } from './shared/tobiraErrors';
 
 // Contains the navigation logic for the modal
 type EventDetailsModal = {
@@ -215,6 +217,8 @@ type EventDetailsState = {
 	errorStatistics: SerializedError | null,
 	statusStatisticsValue: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorStatisticsValue: SerializedError | null,
+	statusTobiraData: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	errorTobiraData: SerializedError | null,
 	eventId: string,
 	modal: EventDetailsModal,
 	metadata: MetadataCatalog,
@@ -374,6 +378,7 @@ type EventDetailsState = {
 	publications: Publication[],
 	statistics: Statistics[],
 	hasStatisticsError: boolean,
+	tobiraData: TobiraData,
 }
 
 // Initial state of event details in redux store
@@ -436,6 +441,8 @@ const initialState: EventDetailsState = {
 	errorStatistics: null,
 	statusStatisticsValue: 'uninitialized',
 	errorStatisticsValue: null,
+	statusTobiraData: 'uninitialized',
+	errorTobiraData: null,
 	eventId: "",
 	modal: {
 		show: false,
@@ -597,6 +604,10 @@ const initialState: EventDetailsState = {
 	publications: [],
 	statistics: [],
 	hasStatisticsError: false,
+	tobiraData: {
+		baseURL: "",
+		hostPages: [],
+	},
 };
 
 
@@ -681,7 +692,7 @@ export const fetchAssets = createAppAsyncThunk('eventDetails/fetchAssets', async
 				type: "warning",
 				key: "ACTIVE_TRANSACTION",
 				duration: -1,
-				parameter: null,
+				parameter: undefined,
 				context: NOTIFICATION_CONTEXT
 			})
 		);
@@ -868,24 +879,35 @@ export const fetchAccessPolicies = createAppAsyncThunk('eventDetails/fetchAccess
 	let accessPolicies = await policyData.data;
 
 	let policies: TransformedAcl[] = [];
-	if (!!accessPolicies.episode_access) {
-		const json = JSON.parse(accessPolicies.episode_access.acl).acl.ace;
-		let newPolicies: { [key: string]: TransformedAcl } = {};
-		let policyRoles: string[] = [];
-		for (let i = 0; i < json.length; i++) {
-			const policy: Ace = json[i];
-			if (!newPolicies[policy.role]) {
-				newPolicies[policy.role] = createPolicy(policy.role);
-				policyRoles.push(policy.role);
-			}
-			if (policy.action === "read" || policy.action === "write") {
-				newPolicies[policy.role][policy.action] = policy.allow;
-			} else if (policy.allow === true) { //|| policy.allow === "true") {
-				newPolicies[policy.role].actions.push(policy.action);
-			}
-		}
-		policies = policyRoles.map((role) => newPolicies[role]);
+
+	if (!accessPolicies.episode_access) {
+		return policies;
 	}
+
+	const json = JSON.parse(accessPolicies.episode_access.acl).acl?.ace;
+	if (json === undefined) {
+		return policies;
+	}
+
+	let newPolicies: { [key: string]: TransformedAcl } = {};
+	let policyRoles: string[] = [];
+
+	for (let i = 0; i < json.length; i++) {
+		const policy: Ace = json[i];
+		// By default, allow is true
+		policy.allow ??= true;
+		if (!newPolicies[policy.role]) {
+			newPolicies[policy.role] = createPolicy(policy.role);
+			policyRoles.push(policy.role);
+		}
+		if (policy.action === "read" || policy.action === "write") {
+			newPolicies[policy.role][policy.action] = policy.allow;
+		} else if (policy.allow) {
+			newPolicies[policy.role].actions.push(policy.action);
+		}
+	}
+
+	policies = policyRoles.map((role) => newPolicies[role]);
 
 	return policies;
 });
@@ -962,6 +984,22 @@ export const fetchEventPublications = createAppAsyncThunk('eventDetails/fetchEve
 	});
 
 	return transformedPublications;
+});
+
+// fetch Tobira data of certain series from server
+export const fetchEventDetailsTobira = createAppAsyncThunk('eventDetails/fetchEventDetailsTobira', async (
+	id: string,
+	{ dispatch },
+) => {
+	const res = await axios.get(`/admin-ng/event/${id}/tobira/pages`)
+		.catch(response => handleTobiraError(response, dispatch));
+
+	if (!res) {
+		throw Error;
+	}
+
+	const data = res.data;
+	return data;
 });
 
 export const saveComment = createAppAsyncThunk('eventDetails/saveComment', async (params: {
@@ -1174,7 +1212,7 @@ export const saveSchedulingInfo = createAppAsyncThunk('eventDetails/saveScheduli
 				addNotification({
 					type: "error",
 					key: "EVENTS_NOT_UPDATED",
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1204,7 +1242,7 @@ if (endDate < now) {
 			type: "error",
 			key: "CONFLICT_IN_THE_PAST",
 			duration: -1,
-			parameter: null,
+			parameter: undefined,
 			context: NOTIFICATION_CONTEXT
 		})
 	);
@@ -1235,7 +1273,7 @@ if (endDate < now) {
 						type: "error",
 						key: "CONFLICT_DETECTED",
 						duration:-1,
-						parameter: null,
+						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					})
 				);
@@ -1266,7 +1304,7 @@ if (endDate < now) {
 						type: "error",
 						key: "CONFLICT_DETECTED",
 						duration:-1,
-						parameter: null,
+						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					})
 				);
@@ -1314,7 +1352,7 @@ export const fetchWorkflows = createAppAsyncThunk('eventDetails/fetchWorkflows',
 			workflow: {
 				workflowId: workflowsData.workflowId,
 				description: undefined,
-				configuration: undefined
+				configuration: workflowsData.configuration,
 			},
 			scheduling: true,
 			entries: [],
@@ -1374,7 +1412,7 @@ export const performWorkflowAction = createAppAsyncThunk('eventDetails/performWo
 					type: "success",
 					key: "EVENTS_PROCESSING_ACTION_" + action,
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1386,7 +1424,7 @@ export const performWorkflowAction = createAppAsyncThunk('eventDetails/performWo
 					type: "error",
 					key: "EVENTS_PROCESSING_ACTION_NOT_" + action,
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1408,7 +1446,7 @@ export const deleteWorkflow = createAppAsyncThunk('eventDetails/deleteWorkflow',
 					type: "success",
 					key: "EVENTS_PROCESSING_DELETE_WORKFLOW",
 					duration: -1,
-					parameter:null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1428,7 +1466,7 @@ export const deleteWorkflow = createAppAsyncThunk('eventDetails/deleteWorkflow',
 					type: "error",
 					key: "EVENTS_PROCESSING_DELETE_WORKFLOW_FAILED",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1478,6 +1516,7 @@ export const openModalTab = (
 	assetsTab: AssetTabHierarchy
 ) => (dispatch: AppDispatch) => {
 	dispatch(setModalPage(page));
+	dispatch(setTobiraTabHierarchy("main"));
 	dispatch(setModalWorkflowTabHierarchy(workflowTab));
 	dispatch(setModalAssetsTabHierarchy(assetsTab));
 };
@@ -1699,7 +1738,7 @@ export const updateAssets = createAppAsyncThunk('eventDetails/updateAssets', asy
 				addNotification({
 					type: "success",
 					key: "EVENTS_UPDATED",
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1710,7 +1749,7 @@ export const updateAssets = createAppAsyncThunk('eventDetails/updateAssets', asy
 				addNotification({
 					type: "error",
 					key: "EVENTS_NOT_UPDATED",
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1738,7 +1777,7 @@ export const saveAccessPolicies = createAppAsyncThunk('eventDetails/saveAccessPo
 					type: "info",
 					key: "SAVED_ACL_RULES",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1751,7 +1790,7 @@ export const saveAccessPolicies = createAppAsyncThunk('eventDetails/saveAccessPo
 					type: "error",
 					key: "ACL_NOT_SAVED",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1830,7 +1869,8 @@ export const saveWorkflowConfig = createAppAsyncThunk('eventDetails/saveWorkflow
 
 	let header = getHttpHeaders();
 	let data = new URLSearchParams();
-	data.append("configuration", JSON.stringify(jsonData));
+	// Scheduler service in Opencast expects values to be strings, so we convert them here
+	data.append("configuration", JSON.stringify(jsonData, (k, v) => v && typeof v === 'object' ? v : '' + v));
 
 	axios
 		.put(`/admin-ng/event/${eventId}/workflows`, data, header)
@@ -1846,7 +1886,7 @@ export const saveWorkflowConfig = createAppAsyncThunk('eventDetails/saveWorkflow
 					type: "error",
 					key: "EVENTS_NOT_UPDATED",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -2531,6 +2571,20 @@ const eventDetailsSlice = createSlice({
 				} else {
 					state.workflowConfiguration = state.baseWorkflow;
 				}
+			})
+			// fetch Tobira data
+			.addCase(fetchEventDetailsTobira.pending, (state) => {
+				state.statusTobiraData = 'loading';
+			})
+			.addCase(fetchEventDetailsTobira.fulfilled, (state, action: PayloadAction<
+				EventDetailsState['tobiraData']
+			>) => {
+				state.statusTobiraData = 'succeeded';
+				state.tobiraData = action.payload;
+			})
+			.addCase(fetchEventDetailsTobira.rejected, (state, action) => {
+				state.statusTobiraData = 'failed';
+				state.errorTobiraData = action.error;
 			})
 	}
 });

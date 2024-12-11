@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import SeriesDetails from "./SeriesDetails";
 import DetailsModal from "../../../shared/modals/DetailsModal";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { useAppDispatch } from "../../../../store";
 
 /**
  * This component renders the modal for displaying series details
@@ -16,6 +18,7 @@ const SeriesDetailsModal = ({
 	seriesId: string
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	// tracks, whether the policies are different to the initial value
 	const [policyChanged, setPolicyChanged] = useState(false);
@@ -27,6 +30,7 @@ const SeriesDetailsModal = ({
 	const close = () => {
 		if (!policyChanged || confirmUnsaved()) {
 			setPolicyChanged(false);
+			dispatch(removeNotificationWizardForm());
 			handleClose();
 		}
 	};

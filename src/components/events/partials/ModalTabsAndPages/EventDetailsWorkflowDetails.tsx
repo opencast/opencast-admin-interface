@@ -193,7 +193,7 @@ const EventDetailsWorkflowDetails = ({
 													([confKey, confValue], key) => (
 														<tr key={key}>
 															<td>{confKey}</td>
-															<td>{confValue}</td>
+															<td>{confValue as string}</td>
 														</tr>
 													)
 												)}
