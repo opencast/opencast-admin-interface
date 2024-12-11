@@ -90,7 +90,7 @@ const NewSeriesWizard: React.FC<{
 
 	const nextPage = (
 		values: {
-			acls: TransformedAcl[];
+			policies: TransformedAcl[];
 			theme: string;
 			breadcrumbs: TobiraPage[];
 			selectedPage?: TobiraPage;
@@ -112,7 +112,7 @@ const NewSeriesWizard: React.FC<{
 
 	const previousPage = (
 		values: {
-			acls: TransformedAcl[];
+			policies: TransformedAcl[];
 			theme: string;
 			breadcrumbs: TobiraPage[];
 			selectedPage?: TobiraPage;
@@ -132,7 +132,7 @@ const NewSeriesWizard: React.FC<{
 		values:
 			{
 				[key: string]: any;
-				acls: TransformedAcl[];
+				policies: TransformedAcl[];
 				theme: string;
 			}
 	) => {
@@ -243,7 +243,7 @@ const getInitialValues = (
 
 	initialValues = { ...initialValues, ...metadataInitialValues };
 
-	initialValues["acls"] = [
+	initialValues["policies"] = [
 		{
 			role: user.userRole,
 			read: true,

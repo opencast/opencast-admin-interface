@@ -9,7 +9,6 @@ import {
 } from "../selectors/seriesDetailsSelectors";
 import { addNotification } from "./notificationSlice";
 import {
-	createPolicy,
 	transformMetadataCollection,
 	transformMetadataForUpdate,
 } from "../utils/resourceUtils";
@@ -150,26 +149,7 @@ export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSe
 		);
 	}
 
-	let seriesAcls: TransformedAcl[] = [];
-	if (!!response.series_access) {
-		const json = JSON.parse(response.series_access.acl).acl.ace;
-		let policies: { [key: string]: TransformedAcl } = {};
-		let policyRoles: string[] = [];
-		json.forEach((policy: Ace) => {
-			if (!policies[policy.role]) {
-				policies[policy.role] = createPolicy(policy.role);
-				policyRoles.push(policy.role);
-			}
-			if (policy.action === "read" || policy.action === "write") {
-				policies[policy.role][policy.action] = policy.allow;
-			} else if (policy.allow === true) { //|| policy.allow === "true") {
-				policies[policy.role].actions.push(policy.action);
-			}
-		});
-		seriesAcls = policyRoles.map((role) => policies[role]);
-	}
-
-	return seriesAcls;
+	return response.series_access.acl;
 });
 
 // fetch feeds of certain series from server

@@ -4,34 +4,37 @@ import {
 	Acl,
 	Role,
 	fetchAclActions,
-	fetchAclTemplateById,
 	fetchAclTemplates,
 	fetchRolesWithTarget,
 } from "../../../slices/aclSlice";
 import Notifications from "../Notifications";
-import { Formik, FieldArray, FormikErrors } from "formik";
+import { Formik, FieldArray, FormikErrors, FormikProps } from "formik";
 import { Field } from "../Field";
 import { NOTIFICATION_CONTEXT } from "../../../configs/modalConfig";
 import {
-	createPolicy,
 	prepareAccessPolicyRulesForPost,
 } from "../../../utils/resourceUtils";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import DropDown from "../DropDown";
-import { filterRoles, getAclTemplateText } from "../../../utils/aclUtils";
+import { filterRoles, getAclTemplateText, handleTemplateChange, policiesFiltered, rolesFilteredbyPolicies } from "../../../utils/aclUtils";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { removeNotificationWizardForm, addNotification } from "../../../slices/notificationSlice";
 import { useTranslation } from "react-i18next";
 import { TransformedAcl } from "../../../slices/aclDetailsSlice";
 import { AsyncThunk, unwrapResult } from "@reduxjs/toolkit";
-import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 import { SaveEditFooter } from "../SaveEditFooter";
+import { UserInfoState } from "../../../slices/userInfoSlice";
 
 
 /**
  * This component manages the access policy tab of resource details modals
  */
+type AclTemplate = {
+	id: string,
+	value: string
+}
+
 const ResourceDetailsAccessPolicyTab = ({
 	resourceId,
 	header,
@@ -41,6 +44,12 @@ const ResourceDetailsAccessPolicyTab = ({
 	saveNewAccessPolicies,
 	descriptionText,
 	buttonText,
+	policyTableHeaderText,
+	policyTableRoleText,
+	policyTableNewText,
+	userPolicyTableHeaderText,
+	userPolicyTableRoleText,
+	userPolicyTableNewText,
 	editAccessRole,
 	policyChanged,
 	setPolicyChanged,
@@ -48,21 +57,26 @@ const ResourceDetailsAccessPolicyTab = ({
 	resourceId: string,
 	header: string,
 	policies: TransformedAcl[],
-	fetchHasActiveTransactions?: AsyncThunk<any, string, AsyncThunkConfig>
-	fetchAccessPolicies: AsyncThunk<TransformedAcl[], string, AsyncThunkConfig>,
-	saveNewAccessPolicies:  AsyncThunk<boolean, { id: string, policies: { acl: Acl } }, AsyncThunkConfig>
+	fetchHasActiveTransactions?: AsyncThunk<any, string, {}>
+	fetchAccessPolicies: AsyncThunk<TransformedAcl[], string, {}>,
+	saveNewAccessPolicies:  AsyncThunk<boolean, { id: string, policies: { acl: Acl } }, {}>
 	descriptionText: string,
 	buttonText: string,
+	policyTableHeaderText: string,
+	policyTableRoleText: string,
+	policyTableNewText: string,
+	userPolicyTableHeaderText: string,
+	userPolicyTableRoleText: string,
+	userPolicyTableNewText: string,
 	editAccessRole: string,
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
-	const baseAclId = "";
 
 	// list of policy templates
-	const [aclTemplates, setAclTemplates] = useState<{ id: string, value: string }[]>([]);
+	const [aclTemplates, setAclTemplates] = useState<AclTemplate[]>([]);
 
 	// list of possible additional actions
 	const [aclActions, setAclActions] = useState<{ id: string, value: string }[]>([]);
@@ -240,23 +254,6 @@ const ResourceDetailsAccessPolicyTab = ({
 		return false;
 	};
 
-	/* fetches the policies for the chosen template and sets the policies in the formik form to those policies */
-	const handleTemplateChange = async (templateId: string, setFormikFieldValue: (field: string, value: any) => Promise<any>) => {
-		// fetch information about chosen template from backend
-		let template = await fetchAclTemplateById(templateId);
-
-		// always add current user to acl since template could lock the user out
-		template = template.concat({
-			role: user.userRole,
-			read: true,
-			write: true,
-			actions: [],
-		});
-
-		setFormikFieldValue("policies", template);
-		setFormikFieldValue("template", templateId);
-	};
-
 	return (
 		<div className="modal-content">
 			<div className="modal-body">
@@ -270,7 +267,7 @@ const ResourceDetailsAccessPolicyTab = ({
 								<Formik
 									initialValues={{
 										policies: policies.length > 0 ? [...policies] : [],
-										template: "",
+										aclTemplate: "",
 									}}
 									enableReinitialize
 									validate={(values) => validateFormik(values)}
@@ -283,318 +280,75 @@ const ResourceDetailsAccessPolicyTab = ({
 											<header>{t(header) /* Access Policy */}</header>
 
 											{/* policy templates */}
-											{hasAccess(editAccessRole, user) && (
-												<div className="obj-container">
-													<div className="obj tbl-list">
-														<table className="main-tbl">
-															<thead>
-																<tr>
-																	<th>
-																		{
-																			t(
-																				"EVENTS.EVENTS.DETAILS.ACCESS.TEMPLATES.TITLE"
-																			) /* Templates */
-																		}
-																	</th>
-																</tr>
-															</thead>
+											<TemplateSelector
+												formik={formik}
+												editAccessRole={editAccessRole}
+												titleText={"EVENTS.EVENTS.DETAILS.ACCESS.TEMPLATES.TITLE"}
+												descriptionText={descriptionText}
+												buttonText={buttonText}
+												emptyText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.EMPTY"}
+												transactions={transactions}
+												aclTemplates={aclTemplates}
+												defaultUser={user}
+											/>
 
-															<tbody>
-																<tr>
-																	<td className="editable">
-																		<p>
-																			{
-																				descriptionText /* Description text for policies*/
-																			}
-																		</p>
-																		{!transactions.read_only ? (
-																			/* dropdown for selecting a policy template */
-																			<DropDown
-																				value={formik.values.template}
-																				text={getAclTemplateText(
-																					aclTemplates,
-																					formik.values.template
-																				)}
-																				options={
-																					!!aclTemplates ? aclTemplates : []
-																				}
-																				type={"aclTemplate"}
-																				required={true}
-																				handleChange={(element) => {
-																						if (element) {
-																						handleTemplateChange(
-																							element.value,
-																							formik.setFieldValue
-																						)
-																					}
-																				}}
-																				placeholder={
-																					!!aclTemplates &&
-																					aclTemplates.length > 0
-																						? t(buttonText)
-																						: t(
-																								"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.EMPTY"
-																						  )
-																				}
-																			/>
-																		) : (
-																			baseAclId
-																		)}
-																	</td>
-																</tr>
-															</tbody>
-														</table>
-													</div>
-												</div>
-											)}
+											{roles.length > 0 && !roles[0].isSanitize &&
+												<>
+													<AccessPolicyTable
+														isUserTable={true}
+														policiesFiltered={policiesFiltered(formik.values.policies, true)}
+														rolesFilteredbyPolicies={rolesFilteredbyPolicies(roles, formik.values.policies, true)}
+														header={userPolicyTableHeaderText}
+														firstColumnHeader={userPolicyTableRoleText}
+														createLabel={userPolicyTableNewText}
+														formik={formik}
+														hasActions={hasActions}
+														transactions={transactions}
+														aclActions={aclActions}
+														roles={roles}
+														editAccessRole={editAccessRole}
+													/>
 
-											{/* list of policy details and interface for changing them */}
-											<div className="obj-container">
-												<div className="obj tbl-list">
-													<header>
-														{
-															t(
-																"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.DETAILS"
-															) /*Details*/
-														}
-													</header>
+													<AccessPolicyTable
+														isUserTable={false}
+														policiesFiltered={policiesFiltered(formik.values.policies, false)}
+														rolesFilteredbyPolicies={rolesFilteredbyPolicies(roles, formik.values.policies, false)}
+														header={policyTableHeaderText}
+														firstColumnHeader={policyTableRoleText}
+														createLabel={policyTableNewText}
+														formik={formik}
+														hasActions={hasActions}
+														transactions={transactions}
+														aclActions={aclActions}
+														roles={roles}
+														editAccessRole={editAccessRole}
+													/>
+												</>
+											}
 
+											{roles.length > 0 && roles[0].isSanitize &&
+												<>
+													<AccessPolicyTable
+														isUserTable={false}
+														policiesFiltered={formik.values.policies}
+														rolesFilteredbyPolicies={filterRoles(roles, formik.values.policies)}
+														header={policyTableHeaderText}
+														firstColumnHeader={policyTableRoleText}
+														createLabel={policyTableNewText}
+														formik={formik}
+														hasActions={hasActions}
+														transactions={transactions}
+														aclActions={aclActions}
+														roles={roles}
+														editAccessRole={editAccessRole}
+													/>
 													<div className="obj-container">
-														<table className="main-tbl">
-															{/* column headers */}
-															<thead>
-																<tr>
-																	<th>
-																		{
-																			t(
-																				"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.ROLE"
-																			) /* <!-- Role --> */
-																		}
-																	</th>
-																	<th className="fit">
-																		{
-																			t(
-																				"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.READ"
-																			) /* <!-- Read --> */
-																		}
-																	</th>
-																	<th className="fit">
-																		{
-																			t(
-																				"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.WRITE"
-																			) /* <!-- Write --> */
-																		}
-																	</th>
-																	{hasActions && (
-																		<th className="fit">
-																			{
-																				t(
-																					"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.ADDITIONAL_ACTIONS"
-																				) /* <!-- Additional Actions --> */
-																			}
-																		</th>
-																	)}
-																	{hasAccess(editAccessRole, user) && (
-																		<th className="fit">
-																			{
-																				t(
-																					"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.ACTION"
-																				) /* <!-- Action --> */
-																			}
-																		</th>
-																	)}
-																</tr>
-															</thead>
-
-															<tbody>
-																{/* list of policies */}
-																<FieldArray name="policies">
-																	{({ replace, remove, push }) => (
-																		<>
-																			{formik.values.policies.length > 0 &&
-																				formik.values.policies.map(
-																					(policy, index) => (
-																						<tr key={index}>
-																							{/* dropdown for policy.role */}
-																							<td className="editable">
-																								{!transactions.read_only ? (
-																									<DropDown
-																										value={policy.role}
-																										text={policy.role}
-																										options={
-																											roles.length > 0
-																												? filterRoles(
-																														roles,
-																														formik.values
-																															.policies
-																												  )
-																												: []
-																										}
-																										type={"aclRole"}
-																										required={true}
-																										creatable={true}
-																										handleChange={(element) => {
-																											if (element) {
-																												replace(index, {
-																													...policy,
-																													role: element.value,
-																												})
-																											}
-																										}}
-																										placeholder={
-																											t("EVENTS.EVENTS.DETAILS.ACCESS.ROLES.LABEL")
-																										}
-																										disabled={
-																											!hasAccess(
-																												editAccessRole,
-																												user
-																											)
-																										}
-																									/>
-																								) : (
-																									<p>{policy.role}</p>
-																								)}
-																							</td>
-
-																							{/* Checkboxes for policy.read and policy.write */}
-																							<td className="fit text-center">
-																								<Field
-																									type="checkbox"
-																									name={`policies.${index}.read`}
-																									disabled={
-																										transactions.read_only ||
-																										!hasAccess(
-																											editAccessRole,
-																											user
-																										)
-																									}
-																									className={`${
-																										transactions.read_only
-																											? "disabled"
-																											: "false"
-																									}`}
-																									onChange={(read: React.ChangeEvent<HTMLInputElement>) =>
-																										replace(index, {
-																											...policy,
-																											read: read.target.checked,
-																										})
-																									}
-																								/>
-																							</td>
-																							<td className="fit text-center">
-																								<Field
-																									type="checkbox"
-																									name={`policies.${index}.write`}
-																									disabled={
-																										transactions.read_only ||
-																										!hasAccess(
-																											editAccessRole,
-																											user
-																										)
-																									}
-																									className={`${
-																										transactions.read_only
-																											? "disabled"
-																											: "false"
-																									}`}
-																									onChange={(write: React.ChangeEvent<HTMLInputElement>) =>
-																										replace(index, {
-																											...policy,
-																											write:
-																												write.target.checked,
-																										})
-																									}
-																								/>
-																							</td>
-
-																							{/* Multi value field for policy.actions (additional actions) */}
-																							{hasActions && (
-																								<td className="fit editable">
-																									{!transactions.read_only &&
-																										hasAccess(
-																											editAccessRole,
-																											user
-																										) && (
-																											<div>
-																												<Field
-																													fieldInfo={{
-																														id: `policies.${index}.actions`,
-																														type: "mixed_text",
-																														collection: aclActions,
-																													}}
-																													onlyCollectionValues
-																													name={`policies.${index}.actions`}
-																													component={
-																														RenderMultiField
-																													}
-																												/>
-																											</div>
-																										)}
-																									{(transactions.read_only ||
-																										!hasAccess(
-																											editAccessRole,
-																											user
-																										)) &&
-																										policy.actions.map(
-																											(
-																												customAction,
-																												actionKey
-																											) => (
-																												<div key={actionKey}>
-																													{customAction}
-																												</div>
-																											)
-																										)}
-																								</td>
-																							)}
-
-																							{/* Remove policy */}
-																							{hasAccess(
-																								editAccessRole,
-																								user
-																							) && (
-																								<td>
-																									{!transactions.read_only && (
-																										<button
-																											onClick={() =>
-																												remove(index)
-																											}
-																											className="button-like-anchor remove"
-																										/>
-																									)}
-																								</td>
-																							)}
-																						</tr>
-																					)
-																				)}
-
-																			{/* create additional policy */}
-																			{!transactions.read_only &&
-																				hasAccess(editAccessRole, user) && (
-																					<tr>
-																						<td colSpan={5}>
-																							<button
-																								onClick={() =>
-																									push(createPolicy(""))
-																								}
-                                                className="button-like-anchor"
-																							>
-																								+{" "}
-																								{t(
-																									"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW"
-																								)}
-																							</button>
-																						</td>
-																					</tr>
-																				)}
-																		</>
-																	)}
-																</FieldArray>
-															</tbody>
-														</table>
+														<span>
+															{t("EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.SANITIZATION_NOTE")}
+														</span>
 													</div>
-												</div>
-											</div>
+												</>
+											}
 
 											{/* Save and cancel buttons */}
 											{!transactions.read_only && <SaveEditFooter
@@ -618,3 +372,401 @@ const ResourceDetailsAccessPolicyTab = ({
 };
 
 export default ResourceDetailsAccessPolicyTab;
+
+type AccessPolicyTabFormikProps = {
+	policies: TransformedAcl[]
+}
+
+export const AccessPolicyTable = <T extends AccessPolicyTabFormikProps>({
+	isUserTable,
+	policiesFiltered,
+	rolesFilteredbyPolicies,
+	header,
+	firstColumnHeader,
+	createLabel,
+	formik,
+	hasActions,
+	transactions,
+	aclActions,
+	roles,
+	editAccessRole,
+}: {
+	isUserTable: boolean
+	policiesFiltered: TransformedAcl[]
+	rolesFilteredbyPolicies: Role[]
+	header: string
+	firstColumnHeader: string
+	createLabel: string,
+	formik: FormikProps<T>,
+	hasActions: boolean
+	transactions: { read_only: boolean }
+	aclActions: { id: string, value: string }[]
+	roles: Role[]
+	editAccessRole: string
+}) => {
+	const { t } = useTranslation();
+
+	const user = useAppSelector(state => getUserInformation(state));
+
+	const createPolicyLabel = (policy: TransformedAcl) => {
+		console.log(policy.user)
+		if (policy.user) {
+			if (policy.user.email !== undefined && policy.user.email !== "") {
+				return policy.user.name + " <" + policy.user.email + ">"
+			}
+			return policy.user.name
+		} else {
+			return policy.role
+		}
+	}
+
+	const createPolicy = (role: string, withUser: boolean): TransformedAcl => {
+		let user = withUser ? {username: "", name: "", email: ""} : undefined
+
+		return {
+			role: role,
+			read: false,
+			write: false,
+			actions: [],
+			user: user,
+		};
+	};
+
+	return (
+		<>
+			{/* list of policy details and interface for changing them */}
+			<div className="obj-container">
+				<div className="obj tbl-list">
+					<header>
+						{t(header)}
+					</header>
+
+					<div className="obj-container">
+						<table className="main-tbl">
+							{/* column headers */}
+							<thead>
+								<tr>
+									<th>
+										{
+											t(
+												firstColumnHeader
+											) /* <!-- Role --> */
+										}
+									</th>
+									<th className="fit">
+										{
+											t(
+												"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.READ"
+											) /* <!-- Read --> */
+										}
+									</th>
+									<th className="fit">
+										{
+											t(
+												"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.WRITE"
+											) /* <!-- Write --> */
+										}
+									</th>
+									{hasActions && (
+										<th className="fit">
+											{
+												t(
+													"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.ADDITIONAL_ACTIONS"
+												) /* <!-- Additional Actions --> */
+											}
+										</th>
+									)}
+									{hasAccess(editAccessRole, user) && (
+										<th className="fit">
+											{
+												t(
+													"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.ACTION"
+												) /* <!-- Action --> */
+											}
+										</th>
+									)}
+								</tr>
+							</thead>
+
+							<tbody>
+								{/* list of policies */}
+								<FieldArray name={"policies"}>
+									{({ replace, remove, push }) => (
+										<>
+											{formik.values.policies.length > 0 &&
+												policiesFiltered.map(
+													(policy, index) => (
+														<tr key={index}>
+															{/* dropdown for policy.role */}
+															<td className="editable">
+																{!transactions.read_only ? (
+																	<DropDown
+																		value={policy.role}
+																		text={createPolicyLabel(policy)}
+																		options={
+																			roles.length > 0
+																				? rolesFilteredbyPolicies
+																				: []
+																		}
+																		type={"aclRole"}
+																		required={true}
+																		creatable={true}
+																		handleChange={(element) => {
+																			if (element) {
+																				const matchingRole = roles.find(role => role.name === element.value)
+																				replace(formik.values.policies.findIndex(p => p === policy), {
+																					...policy,
+																					role: element.value,
+																					user: matchingRole ? matchingRole.user : undefined
+																				})
+																			}
+																		}}
+																		placeholder={
+																			t("EVENTS.EVENTS.DETAILS.ACCESS.ROLES.LABEL")
+																		}
+																		disabled={
+																			!hasAccess(
+																				editAccessRole,
+																				user
+																			)
+																		}
+																	/>
+																) : (
+																	<p>{policy.role}</p>
+																)}
+															</td>
+
+															{/* Checkboxes for policy.read and policy.write */}
+															<td className="fit text-center">
+																<Field
+																	type="checkbox"
+																	name={`policies.${formik.values.policies.findIndex(p => p === policy)}.read`}
+																	disabled={
+																		transactions.read_only ||
+																		!hasAccess(
+																			editAccessRole,
+																			user
+																		)
+																	}
+																	className={`${
+																		transactions.read_only
+																			? "disabled"
+																			: "false"
+																	}`}
+																	onChange={(read: React.ChangeEvent<HTMLInputElement>) =>
+																		replace(formik.values.policies.findIndex(p => p === policy), {
+																			...policy,
+																			read: read.target.checked,
+																		})
+																	}
+																/>
+															</td>
+															<td className="fit text-center">
+																<Field
+																	type="checkbox"
+																	name={`policies.${formik.values.policies.findIndex(p => p === policy)}.write`}
+																	disabled={
+																		transactions.read_only ||
+																		!hasAccess(
+																			editAccessRole,
+																			user
+																		)
+																	}
+																	className={`${
+																		transactions.read_only
+																			? "disabled"
+																			: "false"
+																	}`}
+																	onChange={(write: React.ChangeEvent<HTMLInputElement>) =>
+																		replace(formik.values.policies.findIndex(p => p === policy), {
+																			...policy,
+																			write:
+																				write.target.checked,
+																		})
+																	}
+																/>
+															</td>
+
+															{/* Multi value field for policy.actions (additional actions) */}
+															{hasActions && (
+																<td className="fit editable">
+																	{!transactions.read_only &&
+																		hasAccess(
+																			editAccessRole,
+																			user
+																		) && (
+																			<div>
+																				<Field
+																					fieldInfo={{
+																						id: `policies.${formik.values.policies.findIndex(p => p === policy)}.actions`,
+																						type: "mixed_text",
+																						collection: aclActions,
+																					}}
+																					onlyCollectionValues
+																					name={`policies.${formik.values.policies.findIndex(p => p === policy)}.actions`}
+																					component={
+																						RenderMultiField
+																					}
+																				/>
+																			</div>
+																		)}
+																	{(transactions.read_only ||
+																		!hasAccess(
+																			editAccessRole,
+																			user
+																		)) &&
+																		policy.actions.map(
+																			(
+																				customAction,
+																				actionKey
+																			) => (
+																				<div key={actionKey}>
+																					{customAction}
+																				</div>
+																			)
+																		)}
+																</td>
+															)}
+
+															{/* Remove policy */}
+															{hasAccess(
+																editAccessRole,
+																user
+															) && (
+																<td>
+																	{!transactions.read_only && (
+																		<button
+																			onClick={() =>
+																				remove(formik.values.policies.findIndex(p => p === policy))
+																			}
+																			className="button-like-anchor remove"
+																		/>
+																	)}
+																</td>
+															)}
+														</tr>
+													)
+												)}
+
+											{/* create additional policy */}
+											{!transactions.read_only &&
+												hasAccess(editAccessRole, user) && (
+													<tr>
+														<td colSpan={5}>
+															<button
+																onClick={() =>
+																	push(createPolicy("", isUserTable))
+																}
+																className="button-like-anchor"
+															>
+																+{" "}
+																{t(createLabel)}
+															</button>
+														</td>
+													</tr>
+												)}
+										</>
+									)}
+								</FieldArray>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</>
+	);
+};
+
+type TemplateSelectorProps = {
+	aclTemplate: string
+	policies: TransformedAcl[]
+}
+
+export const TemplateSelector = <T extends TemplateSelectorProps>({
+	formik,
+	editAccessRole,
+	titleText,
+	descriptionText,
+	buttonText,
+	emptyText,
+	transactions,
+	aclTemplates,
+	defaultUser,
+}: {
+	formik: FormikProps<T>
+	editAccessRole: string
+	titleText: string
+	descriptionText: string
+	buttonText: string
+	emptyText: string
+	transactions: { read_only: boolean }
+	aclTemplates: AclTemplate[]
+	defaultUser?: UserInfoState
+}) => {
+	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
+
+	const user = useAppSelector(state => getUserInformation(state));
+
+	if (!hasAccess(editAccessRole, user)) {
+		return <></>;
+	}
+
+	return (
+		<div className="obj-container">
+			<p>
+				{t(descriptionText) /* Description text for policies*/}
+			</p>
+			<div className="obj tbl-list">
+				<table className="main-tbl">
+					<thead>
+						<tr>
+							<th>
+								{t(titleText)}
+							</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr>
+							<td className="editable">
+								{!transactions.read_only && aclTemplates.length > 0 && (
+									/* dropdown for selecting a policy template */
+									<DropDown
+										value={formik.values.aclTemplate}
+										text={getAclTemplateText(
+											aclTemplates,
+											formik.values.aclTemplate
+										)}
+										options={aclTemplates}
+										type={"aclTemplate"}
+										required={true}
+										handleChange={(element) => {
+											if (element) {
+												handleTemplateChange(
+													element.value,
+													formik,
+													dispatch,
+													defaultUser
+												)
+											}
+										}}
+										placeholder={t(buttonText)}
+									/>
+								)}
+								{!(aclTemplates.length > 0) &&
+									//Show if no option is available
+									<td>
+										<div className="obj-container padded">
+											{t(emptyText)}
+										</div>
+									</td>
+								}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	)
+}

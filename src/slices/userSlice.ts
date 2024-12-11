@@ -68,6 +68,12 @@ export const fetchUsers = createAppAsyncThunk('users/fetchUsers', async (_, { ge
 	return res.data;
 });
 
+// For a each role in a list of roles, get user information if available
+export const fetchUsersForTemplate = async (roles: string[]) => {
+	const res = await axios.get("/admin-ng/users/usersforroles.json", { params: { roles: JSON.stringify(roles) } });
+	return res.data as { [key: string]: UserResult };
+};
+
 // new user to backend
 export const postNewUser = createAppAsyncThunk('users/postNewUser', async (values: NewUser, {dispatch}) => {
 	// get URL params used for post request

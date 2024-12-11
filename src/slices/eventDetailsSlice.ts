@@ -2,7 +2,6 @@ import { PayloadAction, SerializedError, createSlice, unwrapResult } from '@redu
 import axios from 'axios';
 import { addNotification, removeNotificationWizardForm } from "./notificationSlice";
 import {
-	createPolicy,
 	getHttpHeaders,
 	transformMetadataCollection,
 	transformMetadataForUpdate,
@@ -880,34 +879,11 @@ export const fetchAccessPolicies = createAppAsyncThunk('eventDetails/fetchAccess
 
 	let policies: TransformedAcl[] = [];
 
-	if (!accessPolicies.episode_access) {
+	if (accessPolicies === undefined || !accessPolicies.episode_access) {
 		return policies;
 	}
 
-	const json = JSON.parse(accessPolicies.episode_access.acl).acl?.ace;
-	if (json === undefined) {
-		return policies;
-	}
-
-	let newPolicies: { [key: string]: TransformedAcl } = {};
-	let policyRoles: string[] = [];
-
-	for (let i = 0; i < json.length; i++) {
-		const policy: Ace = json[i];
-		// By default, allow is true
-		policy.allow ??= true;
-		if (!newPolicies[policy.role]) {
-			newPolicies[policy.role] = createPolicy(policy.role);
-			policyRoles.push(policy.role);
-		}
-		if (policy.action === "read" || policy.action === "write") {
-			newPolicies[policy.role][policy.action] = policy.allow;
-		} else if (policy.allow) {
-			newPolicies[policy.role].actions.push(policy.action);
-		}
-	}
-
-	policies = policyRoles.map((role) => newPolicies[role]);
+	policies = accessPolicies.episode_access.acl
 
 	return policies;
 });

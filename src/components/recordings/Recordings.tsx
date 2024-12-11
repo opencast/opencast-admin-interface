@@ -20,7 +20,6 @@ import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchRecordings } from "../../slices/recordingSlice";
 import { AsyncThunk } from "@reduxjs/toolkit";
-import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 
 /**
  * This component renders the table view of recordings
@@ -86,7 +85,7 @@ const Recordings = () => {
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={fetchRecordings as AsyncThunk<any, void, AsyncThunkConfig>}
+						loadResource={fetchRecordings as AsyncThunk<any, void, {}>}
 						loadResourceIntoTable={loadRecordingsIntoTable}
 						resource={"recordings"}
 					/>

@@ -19,7 +19,7 @@ import { TobiraPage } from "../../../../slices/seriesSlice";
  */
 interface RequiredFormProps {
 	theme: string,
-	acls: TransformedAcl[],
+	policies: TransformedAcl[],
 	selectedPage?: TobiraPage,
 }
 
@@ -68,7 +68,7 @@ const NewSeriesSummary = <T extends RequiredFormProps>({
 
 						{/*Summary access configuration*/}
 						<AccessSummaryTable
-							policies={formik.values.acls}
+							policies={formik.values.policies}
 							header={"EVENTS.SERIES.NEW.ACCESS.CAPTION"}
 						/>
 
