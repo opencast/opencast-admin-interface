@@ -16,7 +16,6 @@ import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils"
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
 import { AsyncThunk } from "@reduxjs/toolkit";
-import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 
 /**
  * This component renders metadata details of a certain event or series
@@ -34,7 +33,7 @@ const DetailsExtendedMetadataTab = ({
 		id: string;
 		values: { [key: string]: any; };
 		catalog: MetadataCatalog;
-	}, AsyncThunkConfig> //(id: string, values: { [key: string]: any }, catalog: MetadataCatalog) => void,
+	}, any> //(id: string, values: { [key: string]: any }, catalog: MetadataCatalog) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();

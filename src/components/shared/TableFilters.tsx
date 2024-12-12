@@ -29,7 +29,6 @@ import { renderValidDate } from "../../utils/dateUtils";
 import { Tooltip } from "./Tooltip";
 import DropDown from "./DropDown";
 import { AsyncThunk } from "@reduxjs/toolkit";
-import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 
 /**
  * This component renders the table filters in the upper right corner of the table
@@ -39,7 +38,7 @@ const TableFilters = ({
 	loadResourceIntoTable,
 	resource,
 }: {
-	loadResource: AsyncThunk<any, void, AsyncThunkConfig>,
+	loadResource: AsyncThunk<any, void, any>,
 	loadResourceIntoTable: () => AppThunk,
 	resource: string,
 }) => {

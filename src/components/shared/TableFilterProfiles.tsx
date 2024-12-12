@@ -17,7 +17,6 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { Tooltip } from "./Tooltip";
 import { AsyncThunk } from "@reduxjs/toolkit";
-import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 
 /**
  * This component renders the table filter profiles in the upper right corner when clicked on settings icon of the
@@ -32,7 +31,7 @@ const TableFiltersProfiles = ({
 }: {
 	showFilterSettings: boolean,
 	setFilterSettings: (_: boolean) => void,
-	loadResource: AsyncThunk<any, void, AsyncThunkConfig>,
+	loadResource: AsyncThunk<any, void, any>,
 	loadResourceIntoTable: () => AppThunk,
 	resource: string,
 }) => {
