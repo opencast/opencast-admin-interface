@@ -77,9 +77,9 @@ type TableState = {
 	resource: string,
 	pages: Page[],
 	columns: TableConfig["columns"],
-	sortBy: string,
+	sortBy: { [key: string]: string },  // Key is resource, value is actual sorting parameter
 	predicate: string,
-	reverse: string,
+	reverse: { [key: string]: string },  // Key is resource, value is actual sorting parameter
 	rows: Row[],
 	maxLabel: string,
 	pagination: Pagination,
@@ -93,9 +93,31 @@ const initialState: TableState = {
 	resource: "",
 	pages: [],
 	columns: [],
-	sortBy: "date",
+	sortBy: {
+		events: "date",
+		series: "createdDateTime",
+		recordings: "status",
+		jobs: "id",
+		servers: "online",
+		services: "status",
+		users: "name",
+		groups: "name",
+		acls: "name",
+		themes: "name",
+	},
 	predicate: "",
-	reverse: "DESC",
+	reverse: {
+		events: "DESC",
+		series: "DESC",
+		recordings: "ASC",
+		jobs: "ASC",
+		servers: "ASC",
+		services: "ASC",
+		users: "ASC",
+		groups: "ASC",
+		acls: "ASC",
+		theme: "ASC",
+	},
 	rows: [],
 	maxLabel: "",
 	pagination: {
@@ -116,8 +138,8 @@ const tableSlice = createSlice({
 			resource: TableState["resource"],
 			pages: TableState["pages"],
 			rows: TableState["rows"],
-			sortBy: TableState["sortBy"],
-			reverse: TableState["reverse"],
+			sortBy: TableState["sortBy"][0],
+			reverse: TableState["reverse"][0],
 			totalItems: TableState["pagination"]["totalItems"],
 		}>) {
 			state.multiSelect = action.payload.multiSelect;
@@ -125,8 +147,8 @@ const tableSlice = createSlice({
 			state.resource = action.payload.resource;
 			state.pages = action.payload.pages;
 			state.rows = action.payload.rows;
-			state.sortBy = action.payload.sortBy;
-			state.reverse = action.payload.reverse;
+			state.sortBy[action.payload.resource] = action.payload.sortBy;
+			state.reverse[action.payload.resource] = action.payload.reverse;
 			state.pagination = {
 				...state.pagination,
 				totalItems: action.payload.totalItems,
@@ -168,14 +190,14 @@ const tableSlice = createSlice({
 			})
 		},
 		reverseTable(state, action: PayloadAction<
-			TableState["reverse"]
+			TableState["reverse"][0]
 		>) {
-			state.reverse = action.payload;
+			state.reverse[state.resource] = action.payload;
 		},
 		setSortBy(state, action: PayloadAction<
-			TableState["sortBy"]
+			TableState["sortBy"][0]
 		>) {
-			state.sortBy = action.payload;
+			state.sortBy[state.resource] = action.payload;
 		},
 		createPage(state, action: PayloadAction<
 			Page
