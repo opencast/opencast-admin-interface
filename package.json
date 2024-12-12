@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.9.1",
     "@redux-devtools/extension": "^3.3.0",
     "@types/lodash": "^4.17.13",
