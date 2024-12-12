@@ -266,12 +266,11 @@ const EventDetails = ({
 						header={tabs[page].bodyHeaderTranslation ?? ""}
 					/>
 				)}
-				{page === EventDetailsPage.Tobira && (<>
+				{page === EventDetailsPage.Tobira && (
 					<DetailsTobiraTab
 						kind="event"
 						id={eventId}
 					/>
-				</>
 				)}
 				{page === EventDetailsPage.Statistics && !isLoadingStatistics && (
 					<EventDetailsStatisticsTab
