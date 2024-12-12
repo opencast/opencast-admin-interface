@@ -139,8 +139,8 @@ export const loadSeriesIntoTable = (): AppThunk => (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "title",
-			reverse: "ASC",
+			sortBy: "createdDateTime",
+			reverse: "DESC",
 			multiSelect: multiSelect,
 		};
 	}
