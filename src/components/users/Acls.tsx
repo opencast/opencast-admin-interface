@@ -31,7 +31,7 @@ import { fetchGroups } from "../../slices/groupSlice";
 /**
  * This component renders the table view of acls
  */
-const Acls: React.FC = () => {
+const Acls = () => {
 	const { t } = useTranslation();
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayNewAclModal, setNewAclModal] = useState(false);

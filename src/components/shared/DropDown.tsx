@@ -8,8 +8,10 @@ import {
 	filterBySearch,
 	formatDropDownOptions,
 } from "../../utils/dropDownUtils";
-import Select, { GroupBase, Props, SelectInstance } from "react-select";
+import Select, { createFilter, GroupBase, MenuListProps, Props, SelectInstance } from "react-select";
 import CreatableSelect from "react-select/creatable";
+import { FixedSizeList, ListChildComponentProps } from "react-window";
+
 
 /**
  * TODO: Ideally, we would remove "type", and just type the "options" array properly.
@@ -102,6 +104,12 @@ const DropDown = <T,>({
 		openMenuOnFocus: openMenuOnFocus,
 	};
 
+	if (type === "aclRole") {
+		// @ts-ignore Typing problem in library
+		commonProps.components = { MenuList }
+		commonProps.filterOption = createFilter({ ignoreAccents: false }) // To improve performance on filtering
+	}
+
 	return creatable ? (
 		<CreatableSelect
 			ref={selectRef}
@@ -117,3 +125,33 @@ const DropDown = <T,>({
 };
 
 export default DropDown;
+
+type OptionType = {
+	label: string
+	value: string
+}
+
+/**
+ * Use react-window to improve performance for Dropdowns with many options
+ */
+const MenuList = (props: MenuListProps<OptionType, false, GroupBase<OptionType>>) => {
+	// TODO: make itemHeight dynamic
+	const itemHeight = 35
+	const { options, children, maxHeight, getValue } = props
+	const [value] = getValue()
+	const initialOffset = options.indexOf(value) * itemHeight
+
+	return Array.isArray(children) ? (
+		<div style={{ paddingTop: 4 }}>
+			<FixedSizeList
+				height={maxHeight}
+				itemCount={children.length}
+				itemSize={itemHeight}
+				initialScrollOffset={initialOffset}
+				width="100%"
+			>
+				{({ index, style }: ListChildComponentProps) => <div style={{ ...style }}>{children[index]}</div>}
+			</FixedSizeList>
+		</div>
+	) : null
+}
