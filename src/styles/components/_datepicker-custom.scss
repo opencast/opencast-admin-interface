@@ -18,7 +18,7 @@
  * the License.
  *
  */
-
+ @use "sass:color";
 
  .datepicker-custom {
     z-index: 10000 !important;
@@ -30,4 +30,32 @@
     &-input {
       height: 25px !important;
     }
- }
+  }
+
+ .react-datepicker__navigation--years {
+    &::before {
+      border-color: #ccc;
+      border-style: solid;
+      border-width: 3px 3px 0 0;
+      content: '';
+      display: block;
+      height: 9px;
+      left: 11px;
+      position: absolute;
+      width: 9px;
+    }
+
+    &-upcoming::before {
+      top: 17px;
+      transform: rotate(315deg);
+    }
+
+    &-previous::before {
+      top: 6px;
+      transform: rotate(135deg);
+    }
+
+    &:hover::before {
+      border-color: color.adjust(#ccc, $lightness: -15%);
+    }
+  }
