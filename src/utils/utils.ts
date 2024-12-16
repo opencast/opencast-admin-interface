@@ -2,7 +2,7 @@ import languages from "../i18n/languages";
 import i18n from "../i18n/i18n";
 import { TFunction } from "i18next";
 import { UserInfoState } from "../slices/userInfoSlice";
-import { UploadAssetOption } from "../slices/eventSlice";
+import { UploadOption } from "../slices/eventSlice";
 
 /**
  * This File contains methods that are needed in more than one places
@@ -144,7 +144,7 @@ export const isJson = (text: string) => {
  * t is the hook returned by i18next.useTranslation
  * suffix further specifies the asset value if necessary, e.g. "SHORT" for "displayOverride.SHORT"
  */
-export const translateOverrideFallback = (asset: UploadAssetOption, t: TFunction, suffix?: "SHORT" | "DETAIL") => {
+export const translateOverrideFallback = (asset: UploadOption, t: TFunction, suffix?: "SHORT" | "DETAIL") => {
 	let result = undefined;
 	const sub = !!suffix ? `.${suffix}` as const : "" as const;
 	const translatable = asset["title"] + sub;
