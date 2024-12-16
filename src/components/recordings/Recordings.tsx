@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import MainNav from "../shared/MainNav";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import cn from "classnames";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
@@ -14,8 +11,6 @@ import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
 import Footer from "../Footer";
-import { getUserInformation } from "../../selectors/userInfoSelectors";
-import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchRecordings } from "../../slices/recordingSlice";
@@ -30,7 +25,6 @@ const Recordings = () => {
 	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 
-	const user = useAppSelector(state => getUserInformation(state));
 	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 	const recordings = useAppSelector(state => getTotalRecordings(state));
 
@@ -51,33 +45,25 @@ const Recordings = () => {
 		dispatch(editTextFilter(""));
 
 		// Load recordings on mount
-		loadRecordings().then((r) => console.info(r));
+		loadRecordings();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	const toggleNavigation = () => {
-		setNavigation(!displayNavigation);
-	};
 
 	return (
 		<>
 			<Header />
-			<NavBar>
-				{/* Include Burger-button menu*/}
-				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
-
-				<nav>
-					{hasAccess("ROLE_UI_LOCATIONS_VIEW", user) && (
-						<Link
-							to="/recordings/recordings"
-							className={cn({ active: true })}
-							onClick={() => loadRecordings()}
-						>
-							{t("RECORDINGS.NAVIGATION.LOCATIONS")}
-						</Link>
-					)}
-				</nav>
-			</NavBar>
+			<NavBar
+				displayNavigation={displayNavigation}
+				setNavigation={setNavigation}
+				links={[
+					{
+						path: "/recordings/recordings",
+						accessRole: "ROLE_UI_LOCATIONS_VIEW",
+						loadFn: loadRecordings,
+						text: "RECORDINGS.NAVIGATION.LOCATIONS"
+					}
+				]}
+			/>
 
 			<MainView open={displayNavigation}>
 				{/* Include notifications component */}
