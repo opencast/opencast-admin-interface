@@ -4,7 +4,7 @@ import cn from "classnames";
 import { FieldArray, FormikProps } from "formik";
 import Notifications from "../../../shared/Notifications";
 import { getTimezoneOffset, hasAccess } from "../../../../utils/utils";
-import { hours, minutes, weekdays } from "../../../../configs/modalConfig";
+import { weekdays } from "../../../../configs/modalConfig";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import {
 	getSchedulingSeriesOptions,
@@ -22,6 +22,8 @@ import {
 } from "../../../../slices/eventSlice";
 import { Recording } from "../../../../slices/recordingSlice";
 import lodash, { groupBy } from "lodash";
+import SchedulingTime from "../wizards/scheduling/SchedulingTime";
+import SchedulingLocation from "../wizards/scheduling/SchedulingLocation";
 
 /**
  * This component renders the edit page for scheduled events of the corresponding bulk action
@@ -265,210 +267,87 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																			</td>
 																			<td>{"UTC" + getTimezoneOffset()}</td>
 																		</tr>
-																		<tr>
-																			<td>
-																				{t(
-																					"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_TIME"
-																				)}
-																			</td>
-																			<td className="editable ng-isolated-scope">
-																				{/* drop-down for hour
-																				 *
-																				 * Per event there are 14 input fields, so with 'key * 14', the right
-																				 * event is reached. After the '+' comes the number of the input field.
-																				 * This is the third input field for this event.
-																				 */}
-																				<DropDown
-																					value={
-																						groupedEvent
-																							.changedStartTimeHour
+																		<SchedulingTime
+																			hour={groupedEvent.changedStartTimeHour}
+																			minute={groupedEvent.changedStartTimeMinutes}
+																			disabled={false}
+																			title={"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_TIME"}
+																			hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
+																			minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+																			callbackHour={(value: string) => {
+																				for (const [i, entry] of formik.values.editedEvents.entries()) {
+																					if (entry.weekday === groupedEvent.weekday ) {
+																						formik.setFieldValue(
+																							`editedEvents.${i}.changedStartTimeHour`,
+																							value
+																						)
 																					}
-																					text={
-																						groupedEvent
-																							.changedStartTimeHour
+																				}
+																			}}
+																			callbackMinute={(value: string) => {
+																				for (const [i, entry] of formik.values.editedEvents.entries()) {
+																					if (entry.weekday === groupedEvent.weekday ) {
+																						formik.setFieldValue(
+																							`editedEvents.${i}.changedStartTimeMinutes`,
+																							value
+																						)
 																					}
-																					options={hours}
-																					type={"time"}
-																					required={true}
-																					handleChange={(element) => {
-																						if (element) {
-																							for (const [i, value] of formik.values.editedEvents.entries()) {
-																								if (value.weekday === groupedEvent.weekday ) {
-																									formik.setFieldValue(
-																										`editedEvents.${i}.changedStartTimeHour`,
-																										element.value
-																									)
-																								}
-																							}
-																						}
-																					}}
-																					placeholder={t(
-																						"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
-																					)}
-																				/>
+																				}
+																			}}
+																		/>
+																		<SchedulingTime
+																			hour={groupedEvent.changedEndTimeHour}
+																			minute={groupedEvent.changedEndTimeMinutes}
+																			disabled={false}
+																			title={"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.END_TIME"}
+																			hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
+																			minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+																			callbackHour={(value: string) => {
+																				for (const [i, entry] of formik.values.editedEvents.entries()) {
+																					if (entry.weekday === groupedEvent.weekday ) {
+																						formik.setFieldValue(
+																							`editedEvents.${i}.changedEndTimeHour`,
+																							value
+																						)
+																					}
+																				}
+																			}}
+																			callbackMinute={(value: string) => {
+																				for (const [i, entry] of formik.values.editedEvents.entries()) {
+																					if (entry.weekday === groupedEvent.weekday ) {
+																						formik.setFieldValue(
+																							`editedEvents.${i}.changedEndTimeMinutes`,
+																							value
+																						)
+																					}
+																				}
+																			}}
+																		/>
 
-																				{/* drop-down for minute
-																				 *
-																				 * Per event there are 14 input fields, so with 'key * 14', the right
-																				 * event is reached. After the '+' comes the number of the input field.
-																				 * This is the third input field for this event.
-																				 */}
-																				<DropDown
-																					value={
-																						groupedEvent
-																							.changedStartTimeMinutes
-																					}
-																					text={
-																						groupedEvent
-																							.changedStartTimeMinutes
-																					}
-																					options={minutes}
-																					type={"time"}
-																					required={true}
-																					handleChange={(element) => {
-																						if (element) {
-																							for (const [i, value] of formik.values.editedEvents.entries()) {
-																								if (value.weekday === groupedEvent.weekday ) {
-																									formik.setFieldValue(
-																										`editedEvents.${i}.changedStartTimeMinutes`,
-																										element.value
-																									)
-																								}
-																							}
-																						}
-																					}}
-																					placeholder={t(
-																						"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
-																					)}
-																				/>
-																			</td>
-																		</tr>
-																		<tr>
-																			<td>
-																				{t(
-																					"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.END_TIME"
-																				)}
-																			</td>
-																			<td className="editable ng-isolated-scope">
-																				{/* drop-down for hour
-																				 *
-																				 * Per event there are 14 input fields, so with 'key * 14', the right
-																				 * event is reached. After the '+' comes the number of the input field.
-																				 * This is the third input field for this event.
-																				 */}
-																				<DropDown
-																					value={
-																						groupedEvent
-																							.changedEndTimeHour
-																					}
-																					text={
-																						groupedEvent
-																							.changedEndTimeHour
-																					}
-																					options={hours}
-																					type={"time"}
-																					required={true}
-																					handleChange={(element) => {
-																						if (element) {
-																							for (const [i, value] of formik.values.editedEvents.entries()) {
-																								if (value.weekday === groupedEvent.weekday ) {
-																									formik.setFieldValue(
-																										`editedEvents.${i}.changedEndTimeHour`,
-																										element.value
-																									)
-																								}
-																							}
-																						}
-																					}}
-																					placeholder={t(
-																						"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
-																					)}
-																				/>
-
-																				{/* drop-down for minute
-																				 *
-																				 * Per event there are 14 input fields, so with 'key * 14', the right
-																				 * event is reached. After the '+' comes the number of the input field.
-																				 * This is the third input field for this event.
-																				 */}
-																				<DropDown
-																					value={
-																						groupedEvent
-																							.changedEndTimeMinutes
-																					}
-																					text={
-																						groupedEvent
-																							.changedEndTimeMinutes
-																					}
-																					options={minutes}
-																					type={"time"}
-																					required={true}
-																					handleChange={(element) => {
-																						if (element) {
-																							for (const [i, value] of formik.values.editedEvents.entries()) {
-																								if (value.weekday === groupedEvent.weekday ) {
-																									formik.setFieldValue(
-																										`editedEvents.${i}.changedEndTimeMinutes`,
-																										element.value
-																									)
-																								}
-																							}
-																						}
-																					}}
-																					placeholder={t(
-																						"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
-																					)}
-																				/>
-																			</td>
-																		</tr>
-
-																		{/* Dropdown for location/input device
-																		 *
-																		 * Per event there are 14 input fields, so with 'key * 14', the right
-																		 * event is reached. After the '+' comes the number of the input field.
-																		 * This is the third input field for this event.
-																		 */}
-																		<tr>
-																			<td>
-																				{t(
-																					"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"
-																				)}
-																			</td>
-																			<td className="editable ng-isolated-scope">
-																				<DropDown
-																					value={
-																						groupedEvent
-																							.changedLocation
-																					}
-																					text={
-																						groupedEvent
-																							.changedLocation
-																					}
-																					options={inputDevices}
-																					type={"captureAgent"}
-																					required={true}
-																					handleChange={(element) => {
-																						if (element) {
-																							for (const [i, value] of formik.values.editedEvents.entries()) {
-																								if (value.weekday === groupedEvent.weekday ) {
-																									formik.setFieldValue(
-																										`editedEvents.${i}.changedLocation`,
-																										element.value
-																									)
-																									formik.setFieldValue(
-																										`editedEvents.${i}.changedDeviceInputs`,
-																										element.value
-																									)
-																								}
-																							}
-																						}
-																					}}
-																					placeholder={`-- ${t(
+																		{/* Dropdown for location/input device */}
+																		<SchedulingLocation
+																			location={groupedEvent.changedLocation}
+																			inputDevices={inputDevices}
+																			disabled={false}
+																			title={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"}
+																			placeholder={`-- ${t(
 																						"SELECT_NO_OPTION_SELECTED"
 																					)} --`}
-																				/>
-																			</td>
-																		</tr>
+																			callback={(value: string) => {
+																				for (const [i, entry] of formik.values.editedEvents.entries()) {
+																					if (entry.weekday === groupedEvent.weekday ) {
+																						formik.setFieldValue(
+																							`editedEvents.${i}.changedLocation`,
+																							value
+																						)
+																						formik.setFieldValue(
+																							`editedEvents.${i}.changedDeviceInputs`,
+																							value
+																						)
+																					}
+																				}
+																			}}
+																		/>
 																		{/* Radio buttons for weekdays
 																		 *
 																		 */}
