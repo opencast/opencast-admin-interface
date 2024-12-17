@@ -225,3 +225,30 @@ export const EditGroupSchema = Yup.object().shape({
 export const AdopterRegistrationSchema = Yup.object().shape({
 	email: Yup.string().email(),
 });
+
+// Validation Schema used in lifecycle policy modal
+export const LifeCyclePolicySchema = [
+	Yup.object().shape({
+		title: Yup.string().required("Required"),
+		isActive: Yup.bool().required("Required"),
+		targetType: Yup.string().required("Required"),
+		timing: Yup.string().required("Required"),
+		action: Yup.string().required("Required"),
+		actionParameters: Yup.object().shape({
+			// Property only required if it actually exists on the object
+			workflowId: Yup.string().required("Required"),
+			// workflowId: Yup.string().when("workflowId", {
+			//  is: (exists: any) => !!exists,
+			//  then: Yup.string().required("Required"),
+			// }),
+		}),
+		actionDate: Yup.date().when("timing", {
+			is: (timing: string) => timing === "SPECIFIC_DATE",
+			then: () => Yup.date().required("Required"),
+		}),
+		cronTrigger: Yup.string().when("timing", {
+			is: (timing: string) => timing === "REPEATING",
+			then: () => Yup.string().required("Required"),
+		}),
+	}),
+];

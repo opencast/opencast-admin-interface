@@ -165,3 +165,13 @@ export const translateOverrideFallback = (asset: UploadAssetOption, t: TFunction
 
 	return result;
 }
+
+/**
+ * (Hopefully) Typesafe way of checking if an object has a specific property
+ */
+export function hasOwnProperty<O extends object, K extends PropertyKey>(
+	obj: O,
+	key: K,
+): obj is O & Record<K, unknown> {
+	return Object.prototype.hasOwnProperty.call(obj, key);
+}
