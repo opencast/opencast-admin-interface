@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import ConfirmModal from "../../shared/ConfirmModal";
 import EmbeddingCodeModal from "./modals/EmbeddingCodeModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
@@ -17,6 +16,8 @@ import {
 import { Event, deleteEvent } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
 import { openModal } from "../../../slices/eventDetailsSlice";
+import { ActionCellDelete } from "../../shared/ActionCellDelete";
+import { IconButton } from "../../shared/IconButton";
 
 /**
  * This component renders the action cells of events in the table view
@@ -29,15 +30,10 @@ const EventActionCell = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displaySeriesDetailsModal, setSeriesDetailsModal] = useState(false);
 	const [displayEmbeddingCodeModal, setEmbeddingCodeModal] = useState(false);
 
 	const user = useAppSelector(state => getUserInformation(state));
-
-	const hideDeleteConfirmation = () => {
-		setDeleteConfirmation(false);
-	};
 
 	const deletingEvent = (id: string) => {
 		dispatch(deleteEvent(id));
@@ -98,46 +94,33 @@ const EventActionCell = ({
 			)}
 
 			{/* Open event details */}
-			{hasAccess("ROLE_UI_EVENTS_DETAILS_VIEW", user) && (
-				<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.DETAILS")}>
-					<button
-						onClick={() => onClickEventDetails()}
-						className="button-like-anchor more"
-					/>
-				</Tooltip>
-			)}
+			<IconButton
+				callback={onClickEventDetails}
+				iconClassname={"more"}
+				editAccessRole={"ROLE_UI_EVENTS_DETAILS_VIEW"}
+				tooltipText={"EVENTS.EVENTS.TABLE.TOOLTIP.DETAILS"}
+			/>
 
 			{/* If event belongs to a series then the corresponding series details can be opened */}
-			{!!row.series && hasAccess("ROLE_UI_SERIES_DETAILS_VIEW", user) && (
-				<Tooltip title={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}>
-					<button
-						onClick={() => onClickSeriesDetails()}
-						className="button-like-anchor more-series"
-					/>
-				</Tooltip>
+			{!!row.series && (
+				<IconButton
+					callback={onClickSeriesDetails}
+					iconClassname={"more-series"}
+					editAccessRole={"ROLE_UI_SERIES_DETAILS_VIEW"}
+					tooltipText={"EVENTS.SERIES.TABLE.TOOLTIP.DETAILS"}
+				/>
 			)}
 
 			{/* Delete an event */}
 			{/*TODO: needs to be checked if event is published */}
-			{hasAccess("ROLE_UI_EVENTS_DELETE", user) && (
-				<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.DELETE")}>
-					<button
-						onClick={() => setDeleteConfirmation(true)}
-						className="button-like-anchor remove"
-					/>
-				</Tooltip>
-			)}
-
-			{/* Confirmation for deleting an event*/}
-			{displayDeleteConfirmation && (
-				<ConfirmModal
-					close={hideDeleteConfirmation}
-					resourceName={row.title}
-					resourceType="EVENT"
-					resourceId={row.id}
-					deleteMethod={deletingEvent}
-				/>
-			)}
+			<ActionCellDelete
+				editAccessRole={"ROLE_UI_EVENTS_DELETE"}
+				tooltipText={"EVENTS.EVENTS.TABLE.TOOLTIP.DELETE"}
+				resourceId={row.id}
+				resourceName={row.title}
+				resourceType={"EVENT"}
+				deleteMethod={deletingEvent}
+			/>
 
 			{/* If the event has an preview then the editor can be opened and status if it needs to be cut is shown */}
 			{!!row.has_preview && hasAccess("ROLE_UI_EVENTS_EDITOR_VIEW", user) && (
@@ -160,54 +143,48 @@ const EventActionCell = ({
 
 			{/* If the event has comments and no open comments then the comment tab of event details can be opened directly */}
 			{row.has_comments && !row.has_open_comments && (
-				<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.COMMENTS")}>
-					<button
-						onClick={() => onClickComments()}
-						className="button-like-anchor comments"
-					/>
-				</Tooltip>
+				<IconButton
+					callback={() => onClickComments()}
+					iconClassname={"comments"}
+					tooltipText={"EVENTS.EVENTS.TABLE.TOOLTIP.COMMENTS"}
+				/>
 			)}
 
 			{/* If the event has comments and open comments then the comment tab of event details can be opened directly */}
 			{row.has_comments && row.has_open_comments && (
-				<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.COMMENTS")}>
-					<button
-						onClick={() => onClickComments()}
-						className="button-like-anchor comments-open"
-					/>
-				</Tooltip>
+				<IconButton
+					callback={() => onClickComments()}
+					iconClassname={"comments-open"}
+					tooltipText={"EVENTS.EVENTS.TABLE.TOOLTIP.COMMENTS"}
+				/>
 			)}
 
 			{/*If the event is in in a paused workflow state then a warning icon is shown and workflow tab of event
-                details can be opened directly */}
+				details can be opened directly */}
 			{row.workflow_state === "PAUSED" &&
-				hasAccess("ROLE_UI_EVENTS_DETAILS_WORKFLOWS_EDIT", user) && (
-					<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PAUSED_WORKFLOW")}>
-						<button
-							onClick={() => onClickWorkflow()}
-							className="button-like-anchor fa fa-warning"
-						/>
-					</Tooltip>
-				)}
+				<IconButton
+					callback={() => onClickWorkflow()}
+					iconClassname={"fa fa-warning"}
+					editAccessRole={"ROLE_UI_EVENTS_DETAILS_WORKFLOWS_EDIT"}
+					tooltipText={"EVENTS.EVENTS.TABLE.TOOLTIP.PAUSED_WORKFLOW"}
+				/>
+			}
 
 			{/* Open assets tab of event details directly*/}
-			{hasAccess("ROLE_UI_EVENTS_DETAILS_ASSETS_VIEW", user) && (
-				<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.ASSETS")}>
-					<button
-						onClick={() => onClickAssets()}
-						className="button-like-anchor fa fa-folder-open"
-					/>
-				</Tooltip>
-			)}
+			<IconButton
+				callback={() => onClickAssets()}
+				iconClassname={"fa fa-folder-open"}
+				editAccessRole={"ROLE_UI_EVENTS_DETAILS_ASSETS_VIEW"}
+				tooltipText={"EVENTS.EVENTS.TABLE.TOOLTIP.ASSETS"}
+			/>
+
 			{/* Open dialog for embedded code*/}
-			{hasAccess("ROLE_UI_EVENTS_EMBEDDING_CODE_VIEW", user) && (
-				<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.EMBEDDING_CODE")}>
-					<button
-						onClick={() => showEmbeddingCodeModal()}
-						className="button-like-anchor fa fa-link"
-					/>
-				</Tooltip>
-			)}
+			<IconButton
+				callback={() => showEmbeddingCodeModal()}
+				iconClassname={"fa fa-link"}
+				editAccessRole={"ROLE_UI_EVENTS_EMBEDDING_CODE_VIEW"}
+				tooltipText={"EVENTS.EVENTS.TABLE.TOOLTIP.EMBEDDING_CODE"}
+			/>
 
 			{displayEmbeddingCodeModal && (
 				<EmbeddingCodeModal close={hideEmbeddingCodeModal} eventId={row.id} />

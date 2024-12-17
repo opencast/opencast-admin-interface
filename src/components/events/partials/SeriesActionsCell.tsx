@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
 import SeriesDetailsModal from "./modals/SeriesDetailsModal";
 import {
@@ -10,8 +9,6 @@ import {
 	fetchSeriesDetailsTheme,
 	fetchSeriesDetailsTobira,
 } from "../../../slices/seriesDetailsSlice";
-import { getUserInformation } from "../../../selectors/userInfoSelectors";
-import { hasAccess } from "../../../utils/utils";
 import {
 	getSeriesHasEvents,
 	isSeriesDeleteAllowed,
@@ -22,8 +19,7 @@ import {
 	checkForEventsDeleteSeriesModal,
 	deleteSeries,
 } from "../../../slices/seriesSlice";
-
-import { Tooltip } from "../../shared/Tooltip";
+import { IconButton } from "../../shared/IconButton";
 
 /**
  * This component renders the action cells of series in the table view
@@ -33,13 +29,11 @@ const SeriesActionsCell = ({
 }: {
 	row: Series
 }) => {
-	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displaySeriesDetailsModal, setSeriesDetailsModal] = useState(false);
 
-	const user = useAppSelector(state => getUserInformation(state));
 	const hasEvents = useAppSelector(state => getSeriesHasEvents(state));
 	const deleteAllowed = useAppSelector(state => isSeriesDeleteAllowed(state));
 
@@ -75,15 +69,12 @@ const SeriesActionsCell = ({
 	return (
 		<>
 			{/* series details */}
-			{hasAccess("ROLE_UI_SERIES_DETAILS_VIEW", user) && (
-				<Tooltip title={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}>
-					<button
-						onClick={() => showSeriesDetailsModal()}
-						className="button-like-anchor more-series"
-					/>
-				</Tooltip>
-			)}
-
+			<IconButton
+				callback={() => showSeriesDetailsModal()}
+				iconClassname={"more-series"}
+				editAccessRole={"ROLE_UI_SERIES_DETAILS_VIEW"}
+				tooltipText={"EVENTS.SERIES.TABLE.TOOLTIP.DETAILS"}
+			/>
 			{displaySeriesDetailsModal && (
 				<SeriesDetailsModal
 					handleClose={hideSeriesDetailsModal}
@@ -93,16 +84,12 @@ const SeriesActionsCell = ({
 			)}
 
 			{/* delete series */}
-			{hasAccess("ROLE_UI_SERIES_DELETE", user) && (
-				<Tooltip title={t("EVENTS.SERIES.TABLE.TOOLTIP.DELETE")}>
-					<button
-						onClick={() => showDeleteConfirmation()}
-						className="button-like-anchor remove"
-
-					/>
-				</Tooltip>
-			)}
-
+			<IconButton
+				callback={() => showDeleteConfirmation()}
+				iconClassname={"remove"}
+				editAccessRole={"ROLE_UI_SERIES_DELETE"}
+				tooltipText={"EVENTS.SERIES.TABLE.TOOLTIP.DELETE"}
+			/>
 			{displayDeleteConfirmation && (
 				<ConfirmModal
 					close={hideDeleteConfirmation}

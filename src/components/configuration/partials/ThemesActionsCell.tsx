@@ -1,16 +1,13 @@
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import ConfirmModal from "../../shared/ConfirmModal";
 import ThemeDetailsModal from "./wizard/ThemeDetailsModal";
 import {
 	fetchThemeDetails,
 	fetchUsage,
 } from "../../../slices/themeDetailsSlice";
-import { getUserInformation } from "../../../selectors/userInfoSelectors";
-import { hasAccess } from "../../../utils/utils";
-import { useAppDispatch, useAppSelector } from "../../../store";
+import { useAppDispatch } from "../../../store";
 import { deleteTheme, ThemeDetailsType } from "../../../slices/themeSlice";
-import { Tooltip } from "../../shared/Tooltip";
+import { ActionCellDelete } from "../../shared/ActionCellDelete";
+import { IconButton } from "../../shared/IconButton";
 
 /**
  * This component renders the action cells of themes in the table view
@@ -20,17 +17,9 @@ const ThemesActionsCell = ({
 }: {
 	row: ThemeDetailsType
 }) => {
-	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayThemeDetails, setThemeDetails] = useState(false);
-
-	const user = useAppSelector(state => getUserInformation(state));
-
-	const hideDeleteConfirmation = () => {
-		setDeleteConfirmation(false);
-	};
 
 	const hideThemeDetails = () => {
 		setThemeDetails(false);
@@ -50,15 +39,12 @@ const ThemesActionsCell = ({
 	return (
 		<>
 			{/* edit themes */}
-			{hasAccess("ROLE_UI_THEMES_EDIT", user) && (
-				<Tooltip title={t("CONFIGURATION.THEMES.TABLE.TOOLTIP.DETAILS")}>
-					<button
-						onClick={() => showThemeDetails()}
-						className="button-like-anchor more"
-					/>
-				</Tooltip>
-			)}
-
+			<IconButton
+				callback={() => showThemeDetails()}
+				iconClassname={"more"}
+				editAccessRole={"ROLE_UI_THEMES_EDIT"}
+				tooltipText={"CONFIGURATION.THEMES.TABLE.TOOLTIP.DETAILS"}
+			/>
 			{displayThemeDetails && (
 				<ThemeDetailsModal
 					handleClose={hideThemeDetails}
@@ -67,24 +53,14 @@ const ThemesActionsCell = ({
 			)}
 
 			{/* delete themes */}
-			{hasAccess("ROLE_UI_THEMES_DELETE", user) && (
-				<Tooltip title={t("CONFIGURATION.THEMES.TABLE.TOOLTIP.DELETE")}>
-					<button
-						onClick={() => setDeleteConfirmation(true)}
-						className="button-like-anchor remove ng-scope ng-isolate-scope"
-					/>
-				</Tooltip>
-			)}
-
-			{displayDeleteConfirmation && (
-				<ConfirmModal
-					close={hideDeleteConfirmation}
-					resourceName={row.name}
-					resourceId={row.id}
-					deleteMethod={deletingTheme}
-					resourceType="THEME"
-				/>
-			)}
+			<ActionCellDelete
+				editAccessRole={"ROLE_UI_THEMES_DELETE"}
+				tooltipText={"CONFIGURATION.THEMES.TABLE.TOOLTIP.DELETE"}
+				resourceId={row.id}
+				resourceName={row.name}
+				resourceType={"THEME"}
+				deleteMethod={deletingTheme}
+			/>
 		</>
 	);
 };
