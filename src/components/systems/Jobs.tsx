@@ -21,7 +21,6 @@ import MainView from "../MainView";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchJobs } from "../../slices/jobSlice";
 import { fetchServers } from "../../slices/serverSlice";
@@ -35,7 +34,6 @@ const Jobs = () => {
 	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 
-	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 	const user = useAppSelector(state => getUserInformation(state));
 	const jobs = useAppSelector(state => getTotalJobs(state));
 
@@ -70,9 +68,7 @@ const Jobs = () => {
 	};
 
 	useEffect(() => {
-		if ("jobs" !== currentFilterType) {
-			dispatch(fetchFilters("jobs"));
-		}
+		dispatch(fetchFilters("jobs"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));
