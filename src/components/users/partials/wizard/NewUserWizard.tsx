@@ -10,6 +10,7 @@ import { NewUserSchema } from "../../../../utils/validate";
 import { NewUser, postNewUser } from "../../../../slices/userSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { Tooltip } from "../../../shared/Tooltip";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
  * This component renders the new user wizard
@@ -82,21 +83,13 @@ const NewUserWizard = ({
 							{tab === 1 && <UserRolesTab formik={formik} />}
 
 							{/* Navigation buttons and validation */}
-							<footer>
-								<button
-									className={cn("submit", {
-										active: formik.dirty && formik.isValid,
-										inactive: !(formik.dirty && formik.isValid),
-									})}
-									disabled={!(formik.dirty && formik.isValid)}
-									onClick={() => formik.handleSubmit()}
-								>
-									{t("SUBMIT")}
-								</button>
-								<button className="cancel" onClick={() => close()}>
-									{t("CANCEL")}
-								</button>
-							</footer>
+							<WizardNavigationButtons
+								isLast
+								formik={formik}
+								nextPage={() => formik.handleSubmit()}
+								previousPage={() => close()}
+								cancelTranslationString={"CANCEL"}
+							/>
 						</>
 					);
 				}}
