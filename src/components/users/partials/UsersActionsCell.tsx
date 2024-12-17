@@ -1,14 +1,11 @@
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import ConfirmModal from "../../shared/ConfirmModal";
-import { getUserInformation } from "../../../selectors/userInfoSelectors";
-import { hasAccess } from "../../../utils/utils";
 import { UserResult, deleteUser } from "../../../slices/userSlice";
-import { useAppDispatch, useAppSelector } from "../../../store";
+import { useAppDispatch } from "../../../store";
 import { fetchUserDetails } from "../../../slices/userDetailsSlice";
-import { Tooltip } from "../../shared/Tooltip";
 import DetailsModal from "../../shared/modals/DetailsModal";
 import UserDetails from "./modal/UserDetails";
+import { ActionCellDelete } from "../../shared/ActionCellDelete";
+import { IconButton } from "../../shared/IconButton";
 
 /**
  * This component renders the action cells of users in the table view
@@ -18,17 +15,9 @@ const UsersActionCell = ({
 }: {
 	row: UserResult
 }) => {
-	const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
-	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
 	const [displayUserDetails, setUserDetails] = useState(false);
-
-	const user = useAppSelector(state => getUserInformation(state));
-
-	const hideDeleteConfirmation = () => {
-		setDeleteConfirmation(false);
-	};
 
 	const deletingUser = (id: string) => {
 		dispatch(deleteUser(id));
@@ -47,15 +36,12 @@ const UsersActionCell = ({
 	return (
 		<>
 			{/* edit/show user details */}
-			{hasAccess("ROLE_UI_USERS_EDIT", user) && (
-				<Tooltip title={t("USERS.USERS.TABLE.TOOLTIP.DETAILS")}>
-					<button
-						onClick={() => showUserDetails()}
-						className="button-like-anchor more"
-					/>
-				</Tooltip>
-			)}
-
+			<IconButton
+				callback={() => showUserDetails()}
+				iconClassname={"more"}
+				editAccessRole={"ROLE_UI_USERS_EDIT"}
+				tooltipText={"USERS.USERS.TABLE.TOOLTIP.DETAILS"}
+			/>
 			{displayUserDetails && (
 				<DetailsModal
 					handleClose={hideUserDetails}
@@ -66,26 +52,15 @@ const UsersActionCell = ({
 				</DetailsModal>
 			)}
 
-			{(row.manageable || (row.provider !== "opencast" && row.provider !== "system"))
-				&& hasAccess("ROLE_UI_USERS_DELETE", user) && <>
-					<Tooltip title={t("USERS.USERS.TABLE.TOOLTIP.DETAILS")}>
-						<button
-							onClick={() => setDeleteConfirmation(true)}
-							className="button-like-anchor remove"
-						/>
-					</Tooltip>
-
-					{/* Confirmation for deleting a user */}
-					{displayDeleteConfirmation && (
-						<ConfirmModal
-							close={hideDeleteConfirmation}
-							resourceName={row.name}
-							resourceId={row.username}
-							resourceType="USER"
-							deleteMethod={deletingUser}
-						/>
-					)}
-				</>
+			{(row.manageable || (row.provider !== "opencast" && row.provider !== "system")) &&
+				<ActionCellDelete
+					editAccessRole={"ROLE_UI_USERS_DELETE"}
+					tooltipText={"USERS.USERS.TABLE.TOOLTIP.DETAILS"}
+					resourceId={row.username}
+					resourceName={row.name}
+					resourceType={"USER"}
+					deleteMethod={deletingUser}
+				/>
 			}
 		</>
 	);

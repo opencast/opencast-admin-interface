@@ -1,12 +1,11 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { getFilters } from "../../../selectors/tableFilterSelectors";
 import { editFilterValue } from "../../../slices/tableFilterSlice";
 import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
-import { Tooltip } from "../../shared/Tooltip";
 import { Event } from "../../../slices/eventSlice";
+import { IconButton } from "../../shared/IconButton";
 
 /**
  * This component renders the presenters cells of events in the table view
@@ -16,7 +15,6 @@ const EventsPresentersCell = ({
 }: {
 	row: Event
 }) => {
-	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const filterMap = useAppSelector(state => getFilters(state));
@@ -37,14 +35,14 @@ const EventsPresentersCell = ({
 		// Link template for presenter of event
 		// Repeat for each presenter
 		row.presenters.map((presenter, key) => (
-			<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PRESENTER")} key={key}>
-				<button
-					className="button-like-anchor metadata-entry"
-					onClick={() => addFilter(presenter)}
-				>
-					{presenter}
-				</button>
-			</Tooltip>
+			<IconButton
+				key={key}
+				callback={() => addFilter(presenter)}
+				iconClassname={"metadata-entry"}
+				tooltipText={"EVENTS.EVENTS.TABLE.TOOLTIP.PRESENTER"}
+			>
+				{presenter}
+			</IconButton>
 		))
 	);
 };

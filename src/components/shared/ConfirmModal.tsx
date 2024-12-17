@@ -3,6 +3,8 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { useTranslation } from "react-i18next";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 
+export type ResourceType = "EVENT" | "SERIES" | "LOCATION" | "USER" | "GROUP" | "ACL" | "THEME" | "TOBIRA_PATH";
+
 const ConfirmModal = <T,>({
 	close,
 	resourceType,
@@ -15,7 +17,7 @@ const ConfirmModal = <T,>({
 	deleteWithCautionMessage = "",
 }: {
 	close: () => void,
-	resourceType: "EVENT" | "SERIES" | "LOCATION" | "USER" | "GROUP" | "ACL" | "THEME" | "TOBIRA_PATH",
+	resourceType: ResourceType,
 	resourceName: string,
 	resourceId: T,
 	deleteMethod: (id: T) => void,
