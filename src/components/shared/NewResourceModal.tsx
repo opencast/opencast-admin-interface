@@ -12,12 +12,14 @@ import { availableHotkeys } from "../../configs/hotkeysConfig";
 /**
  * This component renders the modal for adding new resources
  */
+export type NewResource = "events" | "series" | "user" | "group" | "acl" | "themes";
+
 const NewResourceModal = ({
 	handleClose,
 	resource
 }: {
 	handleClose: () => void,
-	resource: "events" | "series" | "user" | "group" | "acl" | "themes"
+	resource: NewResource
 }) => {
 	const { t } = useTranslation();
 
