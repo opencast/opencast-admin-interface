@@ -145,7 +145,7 @@ const Users: React.FC = () => {
 						</Link>
 					)}
 				</nav>
-				
+
 				{/* Add user button */}
 				<div className="btn-group">
 					{hasAccess("ROLE_UI_USERS_CREATE", user) && (
@@ -159,7 +159,7 @@ const Users: React.FC = () => {
 
 			<MainView open={displayNavigation}>
 				{/* Include notifications component */}
-				<Notifications />
+				<Notifications context={"other"}/>
 
 				<div className="controls-container">
 					{/* Include filters component */}

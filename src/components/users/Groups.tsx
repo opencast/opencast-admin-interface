@@ -145,7 +145,7 @@ const Groups = () => {
 						</Link>
 					)}
 				</nav>
-				
+
 				{/* Add group button */}
 				<div className="btn-group">
 					{hasAccess("ROLE_UI_GROUPS_CREATE", user) && (
@@ -159,7 +159,7 @@ const Groups = () => {
 
 			<MainView open={displayNavigation}>
 				{/* Include notifications component */}
-				<Notifications />
+				<Notifications context={"other"}/>
 
 				<div className="controls-container">
 					{/* Include filters component */}

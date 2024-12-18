@@ -686,18 +686,6 @@ export const fetchAssets = createAppAsyncThunk('eventDetails/fetchAssets', async
 	uploadAssetOptions =
 		uploadAssetOptions.length > 0 ? uploadAssetOptions : undefined;
 
-	if (transactionsReadOnly) {
-		dispatch(
-			addNotification({
-				type: "warning",
-				key: "ACTIVE_TRANSACTION",
-				duration: -1,
-				parameter: undefined,
-				context: NOTIFICATION_CONTEXT
-			})
-		);
-	}
-
 	return { assets, transactionsReadOnly, uploadAssetOptions }
 });
 

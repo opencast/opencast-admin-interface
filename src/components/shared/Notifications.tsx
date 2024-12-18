@@ -13,10 +13,16 @@ import {
 import { useAppDispatch, useAppSelector } from "../../store";
 import { OurNotification, setHidden } from "../../slices/notificationSlice";
 
+type Context = "not_corner" | "tobira" | "above_table" | "other"
+
 /**
  * This component renders notifications about occurred errors, warnings and info
  */
-const Notifications : React.FC<{ context?: string }> = ({ context }) => {
+const Notifications = ({
+	context,
+}: {
+	context: Context,
+}) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 

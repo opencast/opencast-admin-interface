@@ -41,9 +41,12 @@ import {
 	fetchEventStatistics,
 	openModalTab,
 	fetchEventDetailsTobira,
+	fetchHasActiveTransactions,
 } from "../../../../slices/eventDetailsSlice";
-import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { addNotification, removeNotificationByKey, removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
+import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 export enum EventDetailsPage {
 	Metadata,
@@ -84,6 +87,32 @@ const EventDetails = ({
 		dispatch(fetchSchedulingInfo(eventId)).then();
 		dispatch(fetchEventStatistics(eventId)).then();
 		dispatch(fetchAssetUploadOptions()).then();
+
+		dispatch(fetchHasActiveTransactions(eventId)).then((fetchTransactionResult) => {
+			const result = unwrapResult(fetchTransactionResult)
+			if (result.active !== undefined && result.active) {
+				dispatch(
+					addNotification({
+						type: "warning",
+						key: "ACTIVE_TRANSACTION",
+						duration: -1,
+						parameter: undefined,
+						context: NOTIFICATION_CONTEXT,
+						noDuplicates: true
+					})
+				)
+			}
+			if (result.active !== undefined && !result.active) {
+				dispatch(
+					removeNotificationByKey({
+						key: "ACTIVE_TRANSACTION",
+						context: NOTIFICATION_CONTEXT
+					})
+				)
+			}
+		});
+
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
