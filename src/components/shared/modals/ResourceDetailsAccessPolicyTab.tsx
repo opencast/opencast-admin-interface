@@ -408,18 +408,6 @@ export const AccessPolicyTable = <T extends AccessPolicyTabFormikProps>({
 
 	const user = useAppSelector(state => getUserInformation(state));
 
-	const createPolicyLabel = (policy: TransformedAcl) => {
-		console.log(policy.user)
-		if (policy.user) {
-			if (policy.user.email !== undefined && policy.user.email !== "") {
-				return policy.user.name + " <" + policy.user.email + ">"
-			}
-			return policy.user.name
-		} else {
-			return policy.role
-		}
-	}
-
 	const createPolicy = (role: string, withUser: boolean): TransformedAcl => {
 		let user = withUser ? {username: "", name: "", email: ""} : undefined
 
@@ -769,4 +757,21 @@ export const TemplateSelector = <T extends TemplateSelectorProps>({
 			</div>
 		</div>
 	)
+}
+
+export const createPolicyLabel = (policy: TransformedAcl) => {
+	if (policy.user) {
+		if (policy.user.email !== undefined && policy.user.email !== "") {
+			return policy.user.name + " <" + policy.user.email + ">"
+		}
+		if (policy.user.name) {
+			return policy.user.name
+		}
+		if (policy.user.username) {
+			return policy.user.username
+		}
+		return policy.role
+	} else {
+		return policy.role
+	}
 }

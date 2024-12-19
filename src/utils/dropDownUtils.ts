@@ -1,6 +1,7 @@
 import { TFunction } from "i18next";
 import { DropDownType } from './../components/shared/DropDown';
 import { isJson } from "./utils";
+import { createPolicyLabel } from "../components/shared/modals/ResourceDetailsAccessPolicyTab";
 /*
  * this file contains functions, which are needed for the searchable drop-down selections
  */
@@ -85,11 +86,18 @@ export const formatDropDownOptions = (
 				label: item.name,
 			});
 		}
-	} else if (type === "captureAgent" || type === "aclRole") {
+	} else if (type === "captureAgent") {
 		for (const item of unformattedOptions) {
 			formattedOptions.push({
 				value: item.name,
 				label: item.name,
+			});
+		}
+	} else if (type === "aclRole") {
+		for (const item of unformattedOptions) {
+			formattedOptions.push({
+				value: item.name,
+				label: createPolicyLabel(item) ? createPolicyLabel(item) : item.name,
 			});
 		}
 	} else if (type === "workflow") {
