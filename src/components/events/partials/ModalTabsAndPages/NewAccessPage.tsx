@@ -17,6 +17,7 @@ import { getSeriesDetailsAcl } from "../../../../selectors/seriesDetailsSelector
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 import { AccessPolicyTable, TemplateSelector } from "../../../shared/modals/ResourceDetailsAccessPolicyTab";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
+import { hasAccess } from "../../../../utils/utils";
 
 /**
  * This component renders the access page for new events and series in the wizards.
@@ -33,12 +34,16 @@ const NewAccessPage = <T extends RequiredFormProps>({
 	nextPage,
 	previousPage,
 	editAccessRole,
+	viewUsersAccessRole,
+	viewNonUsersAccessRole,
 	initEventAclWithSeriesAcl
 }: {
 	formik: FormikProps<T>,
 	nextPage: (values: T) => void,
 	previousPage: (values: T, twoPagesBack?: boolean) => void,
 	editAccessRole: string,
+	viewUsersAccessRole: string,
+	viewNonUsersAccessRole: string,
 	initEventAclWithSeriesAcl: boolean
 }) => {
 	const { t } = useTranslation();
@@ -114,35 +119,39 @@ const NewAccessPage = <T extends RequiredFormProps>({
 
 										{roles.length > 0 && !roles[0].isSanitize &&
 											<>
-												<AccessPolicyTable
-													isUserTable={true}
-													policiesFiltered={policiesFiltered(formik.values.policies, true)}
-													rolesFilteredbyPolicies={rolesFilteredbyPolicies(roles, formik.values.policies, true)}
-													header={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.USERS"}
-													firstColumnHeader={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.USER"}
-													createLabel={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW_USER"}
-													formik={formik}
-													hasActions={aclActions.length > 0 }
-													transactions={{read_only: false}}
-													aclActions={aclActions}
-													roles={roles}
-													editAccessRole={editAccessRole}
-												/>
+												{hasAccess(viewUsersAccessRole, user) &&
+													<AccessPolicyTable
+														isUserTable={true}
+														policiesFiltered={policiesFiltered(formik.values.policies, true)}
+														rolesFilteredbyPolicies={rolesFilteredbyPolicies(roles, formik.values.policies, true)}
+														header={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.USERS"}
+														firstColumnHeader={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.USER"}
+														createLabel={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW_USER"}
+														formik={formik}
+														hasActions={aclActions.length > 0 }
+														transactions={{read_only: false}}
+														aclActions={aclActions}
+														roles={roles}
+														editAccessRole={editAccessRole}
+													/>
+												}
 
-												<AccessPolicyTable
-													isUserTable={false}
-													policiesFiltered={policiesFiltered(formik.values.policies, false)}
-													rolesFilteredbyPolicies={rolesFilteredbyPolicies(roles, formik.values.policies, false)}
-													header={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.DETAILS"}
-													firstColumnHeader={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.ROLE"}
-													createLabel={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW"}
-													formik={formik}
-													hasActions={aclActions.length > 0 }
-													transactions={{read_only: false}}
-													aclActions={aclActions}
-													roles={roles}
-													editAccessRole={editAccessRole}
-												/>
+												{hasAccess(viewNonUsersAccessRole, user) &&
+													<AccessPolicyTable
+														isUserTable={false}
+														policiesFiltered={policiesFiltered(formik.values.policies, false)}
+														rolesFilteredbyPolicies={rolesFilteredbyPolicies(roles, formik.values.policies, false)}
+														header={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.DETAILS"}
+														firstColumnHeader={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.ROLE"}
+														createLabel={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW"}
+														formik={formik}
+														hasActions={aclActions.length > 0 }
+														transactions={{read_only: false}}
+														aclActions={aclActions}
+														roles={roles}
+														editAccessRole={editAccessRole}
+													/>
+												}
 											</>
 										}
 

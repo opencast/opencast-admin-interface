@@ -51,6 +51,8 @@ const ResourceDetailsAccessPolicyTab = ({
 	userPolicyTableRoleText,
 	userPolicyTableNewText,
 	editAccessRole,
+	viewUsersAccessRole,
+	viewNonUsersAccessRole,
 	policyChanged,
 	setPolicyChanged,
 }: {
@@ -69,6 +71,8 @@ const ResourceDetailsAccessPolicyTab = ({
 	userPolicyTableRoleText: string,
 	userPolicyTableNewText: string,
 	editAccessRole: string,
+	viewUsersAccessRole: string,
+	viewNonUsersAccessRole: string,
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,
 }) => {
@@ -294,21 +298,24 @@ const ResourceDetailsAccessPolicyTab = ({
 
 											{roles.length > 0 && !roles[0].isSanitize &&
 												<>
-													<AccessPolicyTable
-														isUserTable={true}
-														policiesFiltered={policiesFiltered(formik.values.policies, true)}
-														rolesFilteredbyPolicies={rolesFilteredbyPolicies(roles, formik.values.policies, true)}
-														header={userPolicyTableHeaderText}
-														firstColumnHeader={userPolicyTableRoleText}
-														createLabel={userPolicyTableNewText}
-														formik={formik}
-														hasActions={hasActions}
-														transactions={transactions}
-														aclActions={aclActions}
-														roles={roles}
-														editAccessRole={editAccessRole}
-													/>
+													{hasAccess(viewUsersAccessRole, user) &&
+														<AccessPolicyTable
+															isUserTable={true}
+															policiesFiltered={policiesFiltered(formik.values.policies, true)}
+															rolesFilteredbyPolicies={rolesFilteredbyPolicies(roles, formik.values.policies, true)}
+															header={userPolicyTableHeaderText}
+															firstColumnHeader={userPolicyTableRoleText}
+															createLabel={userPolicyTableNewText}
+															formik={formik}
+															hasActions={hasActions}
+															transactions={transactions}
+															aclActions={aclActions}
+															roles={roles}
+															editAccessRole={editAccessRole}
+														/>
+													}
 
+												{hasAccess(viewNonUsersAccessRole, user) &&
 													<AccessPolicyTable
 														isUserTable={false}
 														policiesFiltered={policiesFiltered(formik.values.policies, false)}
@@ -323,6 +330,7 @@ const ResourceDetailsAccessPolicyTab = ({
 														roles={roles}
 														editAccessRole={editAccessRole}
 													/>
+												}
 												</>
 											}
 
