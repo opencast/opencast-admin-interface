@@ -42,7 +42,15 @@ const SeriesDetailsAccessTab = ({
 			policies={policies}
 			fetchAccessPolicies={fetchSeriesDetailsAcls}
 			saveNewAccessPolicies={updateSeriesAccess}
+			policyTableHeaderText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.DETAILS"}
+			policyTableRoleText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.ROLE"}
+			policyTableNewText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.NEW"}
+			userPolicyTableHeaderText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.USERS"}
+			userPolicyTableRoleText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.USER"}
+			userPolicyTableNewText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.NEW_USER"}
 			editAccessRole={"ROLE_UI_SERIES_DETAILS_ACL_EDIT"}
+			viewUsersAccessRole={"ROLE_UI_SERIES_DETAILS_ACL_USER_ROLES_VIEW"}
+			viewNonUsersAccessRole={"ROLE_UI_SERIES_DETAILS_ACL_NONUSER_ROLES_VIEW"}
 			policyChanged={policyChanged}
 			setPolicyChanged={setPolicyChanged}
 		/>

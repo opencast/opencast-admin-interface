@@ -37,7 +37,15 @@ const EventDetailsAccessPolicyTab = ({
 			fetchHasActiveTransactions={fetchHasActiveTransactions}
 			saveNewAccessPolicies={saveAccessPolicies}
 			descriptionText={t("EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION")}
+			policyTableHeaderText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.DETAILS"}
+			policyTableRoleText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.ROLE"}
+			policyTableNewText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW"}
+			userPolicyTableHeaderText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.USERS"}
+			userPolicyTableRoleText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.USER"}
+			userPolicyTableNewText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW_USER"}
 			editAccessRole={"ROLE_UI_EVENTS_DETAILS_ACL_EDIT"}
+			viewUsersAccessRole={"ROLE_UI_EVENTS_DETAILS_ACL_USER_ROLES_VIEW"}
+			viewNonUsersAccessRole={"ROLE_UI_EVENTS_DETAILS_ACL_NONUSER_ROLES_VIEW"}
 			policyChanged={policyChanged}
 			setPolicyChanged={setPolicyChanged}
 		/>
