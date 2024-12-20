@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { NOTIFICATION_CONTEXT } from "../../../configs/modalConfig";
 import { useAppDispatch } from "../../../store";
@@ -43,6 +43,17 @@ const FileUpload = <T extends RequiredFormProps>({
 	// reference used for activating file input when button is clicked
 	const hiddenFileInput = useRef<HTMLInputElement>(null);
 
+	// Trigger formik validation
+	// Setting formik fields in a promise callback does not trigger formik
+	// validation (or at the very least, does not trigger it with the new
+	// values). Therefore, this useEffect gets manually triggered, causing an
+	// additional rerender which then triggers formik validation.
+	useEffect(() => {
+		formik.validateForm()
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.fileId, formik.values.fileName, loaded]);
+
+
 	const handleDelete = () => {
 		setFile(undefined);
 		setLoaded(0);
@@ -68,7 +79,9 @@ const FileUpload = <T extends RequiredFormProps>({
 				if (res.status === 201) {
 					// set information about file later needed for POST request and summary
 					formik.setFieldValue(fileId, res.data);
-					formik.setFieldValue(fileName, file.name);
+					formik.setFieldValue(fileName, file.name)
+					// Purely for triggering useEffect. The state change does not matter.
+					setLoaded(1337)
 				}
 			})
 			.catch((res) => {
@@ -90,6 +103,8 @@ const FileUpload = <T extends RequiredFormProps>({
 		if (e.target.files) {
 			setFile(e.target.files[0]);
 			upload(e.target.files[0]);
+			// formik.setFieldValue(fileId, e.target.files[0]);
+			// formik.setFieldValue(fileName, e.target.files[0].name);
 		}
 	};
 
