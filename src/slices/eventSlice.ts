@@ -994,7 +994,7 @@ export const checkForConflicts = async (
 				device: device,
 				duration: duration.toString(),
 				end: endDate,
-				rrule: `FREQ=WEEKLY;BYDAY=${repeatOn.join()};BYHOUR=${startDate.getHours()};BYMINUTE=${startDate.getMinutes()}`,
+				rrule: `FREQ=WEEKLY;BYDAY=${repeatOn.join()};BYHOUR=${startDate.getUTCHours()};BYMINUTE=${startDate.getUTCMinutes()}`,
 			}
 		: {
 				start: startDate,
