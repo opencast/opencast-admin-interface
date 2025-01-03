@@ -46,8 +46,7 @@ const NewMetadataPage = <T,>({
 													</td>
 													<td className="editable ng-isolated-scope">
 														{/* Render single value or multi value input */}
-														{field.type === "mixed_text" &&
-														field.collection?.length !== 0 ? (
+														{field.type === "mixed_text" ? (
 															<Field
 																name={field.id}
 																fieldInfo={field}

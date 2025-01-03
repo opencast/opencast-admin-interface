@@ -57,8 +57,7 @@ const NewMetadataExtendedPage = <T,>({
 																	)
 																) : (
 																	<td className="editable ng-isolated-scope">
-																		{field.type === "mixed_text" &&
-																		field.collection?.length !== 0 ? (
+																		{field.type === "mixed_text" ? (
 																			<Field
 																				name={catalog.flavor + "_" + field.id}
 																				fieldInfo={field}

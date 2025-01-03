@@ -265,9 +265,7 @@ const EditMetadataEventsModal = ({
 																			</td>
 																			<td className="editable ng-isolated-scope">
 																				{/* Render single value or multi value input */}
-																				{metadata.type === "mixed_text" &&
-																				!!metadata.collection &&
-																				metadata.collection.length !== 0 ? (
+																				{metadata.type === "mixed_text" ? (
 																					<Field
 																						name={metadata.id}
 																						fieldInfo={metadata}
