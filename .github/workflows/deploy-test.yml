@@ -48,7 +48,7 @@ jobs:
           ssh-keyscan github.com >> ~/.ssh/known_hosts
 
       - name: wait for previous workflows to finish
-        uses: softprops/turnstyle@v1
+        uses: softprops/turnstyle@v2
         with:
           same-branch-only: false
         env:
@@ -96,9 +96,9 @@ jobs:
           git push origin gh-pages
 
       - name: add comment with deployment location
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
-          comment_tag: static-test-deployment
+          comment-tag: static-test-deployment
           message: >
             This pull request is deployed at
             [test.admin-interface.opencast.org/${{ steps.build-path.outputs.build }}

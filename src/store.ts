@@ -1,10 +1,10 @@
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { combineReducers } from "redux";
+import { UnknownAction, combineReducers } from "redux";
 import tableFilters from "./slices/tableFilterSlice";
 import tableFilterProfiles from "./slices/tableFilterProfilesSlice";
 import events from "./slices/eventSlice";
-import table from "./reducers/tableReducers";
+import table from "./slices/tableSlice";
 import series from "./slices/seriesSlice";
 import recordings from "./slices/recordingSlice";
 import jobs from "./slices/jobSlice";
@@ -26,7 +26,7 @@ import aclDetails from "./slices/aclDetailsSlice";
 import themeDetails from "./slices/themeDetailsSlice";
 import userInfo from "./slices/userInfoSlice";
 import statistics from "./slices/statisticsSlice";
-import { configureStore } from "@reduxjs/toolkit";
+import { ThunkAction, configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 
@@ -35,6 +35,7 @@ import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
  */
 
 // Configuration for persisting states in store
+const tableFilterProfilesPersistConfig = { key: "tableFilterProfiles", storage, whitelist: ["profiles"] }
 const eventsPersistConfig = { key: "events", storage, whitelist: ["columns"] }
 const seriesPersistConfig = { key: "series", storage, whitelist: ["columns"] }
 const tablePersistConfig = { key: "table", storage, whitelist: ["pagination"] }
@@ -50,7 +51,7 @@ const themesPersistConfig = { key: "themes", storage, whitelist: ["columns"] }
 // form reducer and all other reducers used in this app
 const reducers = combineReducers({
 	tableFilters,
-	tableFilterProfiles,
+	tableFilterProfiles: persistReducer(tableFilterProfilesPersistConfig, tableFilterProfiles),
 	events: persistReducer(eventsPersistConfig, events),
 	series: persistReducer(seriesPersistConfig, series),
 	table: persistReducer(tablePersistConfig, table),
@@ -103,5 +104,12 @@ export type AppDispatch = typeof store.dispatch;
 // Use instead of plain `useDispatch` and `useSelector`
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  UnknownAction
+>
 
 export default store;

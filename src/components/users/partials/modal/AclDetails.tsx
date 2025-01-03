@@ -9,7 +9,7 @@ import { NewAclSchema } from "../../../../utils/validate";
 import ModalNavigation from "../../../shared/modals/ModalNavigation";
 import { checkAcls } from "../../../../slices/aclSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { updateAclDetails } from "../../../../slices/aclDetailsSlice";
+import { TransformedAcl, updateAclDetails } from "../../../../slices/aclDetailsSlice";
 
 /**
  * This component manages the pages of the acl details modal
@@ -47,13 +47,16 @@ const AclDetails = ({
 		},
 	];
 
-// @ts-expect-error TS(7006): Parameter 'tabNr' implicitly has an 'any' type.
-	const openTab = (tabNr) => {
+	const openTab = (tabNr: number) => {
 		setPage(tabNr);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (
+		values: {
+			name: string,
+			acls: TransformedAcl[],
+		}
+	) => {
 		dispatch(updateAclDetails({values: values, aclId: aclDetails.id}));
 		close();
 	};

@@ -2,20 +2,19 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { getFilters } from "../../../selectors/tableFilterSelectors";
 import { editFilterValue } from "../../../slices/tableFilterSlice";
-import { connect } from "react-redux";
 import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import { Event } from "../../../slices/eventSlice";
 
 /**
  * This component renders the series cells of events in the table view
  */
 const EventsSeriesCell = ({
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
-// @ts-expect-error TS(7031): Binding element 'loadEventsIntoTable' implicitly h... Remove this comment to see the full error message
-	loadEventsIntoTable,
+}: {
+	row: Event
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -23,41 +22,32 @@ const EventsSeriesCell = ({
 	const filterMap = useAppSelector(state => getFilters(state));
 
 	// Filter with value of current cell
-// @ts-expect-error TS(7006): Parameter 'series' implicitly has an 'any' type.
-	const addFilter = async (series) => {
+	const addFilter = async (seriesId: string) => {
 		let filter = filterMap.find(({ name }) => name === "series");
 		if (!!filter) {
-			await dispatch(editFilterValue({filterName: filter.name, value: series.id}));
+			await dispatch(editFilterValue({filterName: filter.name, value: seriesId}));
 			await dispatch(fetchEvents());
-			loadEventsIntoTable();
+			dispatch(loadEventsIntoTable());
 		}
 	};
 
 	return (
-		!!row.series && (
+		!!row.series ? (
 			// Link template for series of event
 			<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.SERIES")}>
 				<button
 					className="button-like-anchor crosslink"
-					onClick={() => addFilter(row.series)}
+					onClick={() => row.series
+						? addFilter(row.series.id)
+						: console.error("Tried to sort by a series, but the series did not exist.")
+					}
 				>
 					{row.series.title}
 				</button>
 			</Tooltip>
 		)
+		: <></>
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	loadEventsIntoTable: () => dispatch(loadEventsIntoTable()),
-});
-
-// @ts-expect-error TS(2345): Argument of type '({ row, filterMap, editFilterVal... Remove this comment to see the full error message
-export default connect(mapStateToProps, mapDispatchToProps)(EventsSeriesCell);
+export default EventsSeriesCell;

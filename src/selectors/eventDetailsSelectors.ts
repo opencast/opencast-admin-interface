@@ -1,5 +1,15 @@
 import { RootState } from "../store";
 
+/* selectors for modal */
+export const showModal = (state: RootState) => state.eventDetails.modal.show;
+export const getModalPage = (state: RootState) => state.eventDetails.modal.page;
+export const getModalEvent = (state: RootState) => state.eventDetails.modal.event;
+export const getModalWorkflowId = (state: RootState) => state.eventDetails.modal.workflowId;
+export const getModalWorkflowTabHierarchy = (state: RootState) =>
+	state.eventDetails.modal.workflowTabHierarchy;
+export const getModalAssetsTabHierarchy = (state: RootState) =>
+	state.eventDetails.modal.assetsTabHierarchy;
+
 /* selectors for metadata */
 export const getMetadata = (state: RootState) => state.eventDetails.metadata;
 export const getExtendedMetadata = (state: RootState) => state.eventDetails.extendedMetadata;
@@ -103,6 +113,13 @@ export const getWorkflowErrorDetails = (state: RootState) =>
 	state.eventDetails.workflowErrorDetails;
 export const isFetchingWorkflowErrorDetails = (state: RootState) =>
 	state.eventDetails.statusWorkflowErrorDetails === 'loading';
+
+export const getEventDetailsTobiraData = (state: RootState) =>
+	state.eventDetails.tobiraData;
+export const getEventDetailsTobiraDataError = (state: RootState) =>
+	state.eventDetails.errorTobiraData;
+export const getEventDetailsTobiraStatus = (state: RootState) =>
+	state.eventDetails.statusTobiraData;
 
 /* selectors for publications */
 export const getPublications = (state: RootState) => state.eventDetails.publications;

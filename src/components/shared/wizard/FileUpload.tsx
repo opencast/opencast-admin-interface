@@ -76,7 +76,7 @@ const FileUpload = <T extends RequiredFormProps>({
 					type: "error",
 					key: "NOTIFICATIONS.BUMPER_UPLOAD_ERROR",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				}));
 			});
@@ -113,7 +113,7 @@ const FileUpload = <T extends RequiredFormProps>({
 									}
 								>
 									<a href={URL.createObjectURL(file)} target="_blank" rel="noreferrer">
-										{formik.values[fileName]}
+										{formik.values[fileName] as string}
 									</a>
 								</p>
 								<div className="button-container">

@@ -25,6 +25,7 @@
 	"RESET": "Επαναφορά",
 	"SELECT_NO_OPTION_SELECTED": "Δεν επιλέχθηκε κάποια επιλογή",
 	"SELECT_NO_OPTIONS_AVAILABLE": "Δεν υπάρχουν διαθέσιμες επιλογές",
+	"SELECT_NO_MATCHING_RESULTS": "No matching results.",
 	"YES": "Ναί",
 	"COPY": "Αντιγραφή στο πρόχειρο",
 	"LTI": {
@@ -116,7 +117,8 @@
 				"GROUP": "Η παρακάτω ομάδα θα διαγραφεί",
 				"USER": "Ο παρακάτω χρήστης θα διαγραφεί",
 				"THEME": "Το ακόλουθο θέμα θα διαγραφεί",
-				"LOCATION": "Η ακόλουθη τοποθεσία θα διαγραφεί"
+				"LOCATION": "Η ακόλουθη τοποθεσία θα διαγραφεί",
+				"TOBIRA_PATH": "The series will be removed from the following path in Tobira:"
 			},
 			"NAME": "Όνομα"
 		},
@@ -167,9 +169,14 @@
 		"GROUP_NOT_DELETED": "Δεν ήταν δυνατή η διαγραφή της ομάδας",
 		"SERIES_ADDED": "Η σειρά έχει δημιουργηθεί",
 		"SERIES_NOT_SAVED": "Δεν ήταν δυνατή η αποθήκευση της σειράς",
+		"SERIES_PATH_UPDATED": "The series path has been updated",
+		"SERIES_PATH_REMOVED": "The series path has been removed",
+		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
+		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "Η εκδήλωση έχει δημιουργηθεί",
 		"EVENTS_UPLOAD_STARTED": "Μια εκδήλωση ανέβηκε…",
 		"EVENTS_NOT_CREATED": "Δεν ήταν δυνατή η δημιουργία της εκδήλωσης",
+		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "Όλες οι εκδηλώσεις έχουν ενημερωθεί με επιτυχία",
 		"EVENTS_NOT_UPDATED": "Δεν ήταν δυνατή η αποθήκευση της εκδήλωσης",
 		"EVENTS_NOT_UPDATED_ID": "Δεν ήταν δυνατή η αποθήκευση της εκδήλωσης {{ id }}",
@@ -180,8 +187,8 @@
 		"EVENT_DELETED": "Η εκδήλωση έχει διαγραφεί.",
 		"EVENT_WILL_BE_DELETED": "Η εκδήλωση έχει διαγραφεί",
 		"EVENTS_DELETED": "Οι εκδηλώσεις έχουν διαγραφεί.",
-		"EVENTS_NOT_DELETED": "Δεν ήταν δυνατή η διαγραφή της/των εκδήλωσης/εων.",
-		"EVENTS_NOT_DELETED_NOT_AUTHORIZED": "Η/Οι εκδήλωση/σεις δεν μπορεί/ουν να διαγραφεί/ουν, επειδή δεν έχετε τα δικαιώματα για να το πράξετε.",
+		"EVENTS_NOT_DELETED": "Δεν ήταν δυνατή η διαγραφή της\/των εκδήλωσης\/εων.",
+		"EVENTS_NOT_DELETED_NOT_AUTHORIZED": "Η\/Οι εκδήλωση\/σεις δεν μπορεί\/ουν να διαγραφεί\/ουν, επειδή δεν έχετε τα δικαιώματα για να το πράξετε.",
 		"SERIES_DELETED": "Η σειρά έχει διαγραφεί",
 		"SERIES_NOT_DELETED": "Δεν ήταν δυνατή η διαγραφή της σειράς",
 		"LOCATION_DELETED": "Η τοποθεσία έχει διαγραφεί",
@@ -192,7 +199,7 @@
 		"CONFLICT_ALREADY_ENDED": "Σφάλμα στον προγραμματισμό. Η εκδήλωση έχει ήδη λήξει.",
 		"CONFLICT_END_BEFORE_START": "Σφάλμα στον προγραμματισμό. Η προγραμματισμένη λήξη πρέπει να είναι μεταγενέστερη από την προγραμματισμένη έναρξη.",
 		"CONFLICT_IN_THE_PAST": "Ο προγραμματισμός δεν μπορεί να ενημερωθεί: δεν μπορείτε να προγραμματίσετε μια εκδήλωση στο παρελθόν.",
-		"INVALID_ACL_RULES": "Οι κανόνες πρέπει να περιέχουν έναν έγκυρο ρόλο και δικαίωμα(τα) ανάγνωσης ή/και εγγραφής.",
+		"INVALID_ACL_RULES": "Οι κανόνες πρέπει να περιέχουν έναν έγκυρο ρόλο και δικαίωμα(τα) ανάγνωσης ή\/και εγγραφής.",
 		"MISSING_ACL_RULES": "Απαιτείται τουλάχιστον ένας ρόλος με δικαιώματα ανάγνωσης και εγγραφής!",
 		"SAVED_ACL_RULES": "Οι κανόνες πρόσβασης έχουν αποθηκευτεί.",
 		"SERIES_THEME_REPROCESS_EXISTING_EVENTS": "Οι υπάρχουσες εκδηλώσεις σε αυτή τη σειρά θα πρέπει να επεξεργαστών ξάνα",
@@ -221,7 +228,18 @@
 			"NO_EVENTS_UPDATED": "Όλες οι ενημερώσεις απέτυχαν.",
 			"SOME_EVENTS_NOT_UPDATED": "Δεν ήταν δυνατή η ενημέρωση ορισμένων εκδηλώσεων."
 		},
-		"PROBLEM_ON_START": "Παρουσιάστηκε σφάλμα κατά την εκκίνηση. Επικοινωνήστε με τον διαχειριστή του Opencast"
+		"PROBLEM_ON_START": "An error occurred on start up. Please contact your Opencast admin",
+		"TOBIRA_OVERRIDE_NAME": "The title of the selected page will be overridden with the title of the series.",
+		"TOBIRA_NO_PATH_SEGMENT": "Page needs a path segment.",
+		"TOBIRA_NOT_MOUNTED": "Series could not be mounted in Tobira.",
+		"TOBIRA_PATH_SEGMENT_INVALID": "Path segment is invalid. A valid path segment is at least 2 characters long, does not contain any whitespace or control characters, none of the characters '<>\"[\\]^`{|}#%\/?]', and doesn't start with any of the characters '-+~@_!$&;:.,=*'()'.",
+		"TOBIRA_PATH_SEGMENT_UNIQUE": "The path segment of a page must be unique among all its sibling pages.",
+		"TOBIRA_PAGE_NOT_FOUND": "The page you tried to navigate to does not or no longer exist. Maybe try starting from the beginning.",
+		"TOBIRA_SERVER_ERROR": " Error talking to Tobira. Contact your system administrator and\/or try again later.",
+		"TOBIRA_COPIED_DIRECT_LINK": "Copied link to clipboard.",
+		"TOBIRA_FAILED_COPYING_DIRECT_LINK": "Couldn't copy link to clipboard.",
+		"TOBIRA_NOT_FOUND": "Tobira doesn't know about this series or event (yet). Try again in a few minutes or contact your system administrator.",
+		"TOBIRA_NOT_CONFIGURED": "Tobira is not configured (correctly)."
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Ενέργειες",
@@ -304,7 +322,7 @@
 				}
 			},
 			"EDIT": {
-				"DESCRIPTION": "Επεξεργαστείτε και / ή επιλέξτε τα πεδία μεταδεδομένων που θέλετε να ενημερώσετε. Δεν είναι δυνατή η επιλογή πεδίου εάν αυτό δεν έχει ως αποτέλεσμα αλλαγή τιμής για τουλάχιστον μια εκδήλωση ή εάν το πεδίο δεν είναι έγκυρο (π.χ. τα απαιτούμενα πεδία δεν μπορούν να είναι κενά). Τα επισημασμένα πεδία μεταδεδομένων έχουν αποκλίνουσες τιμές για τις επιλεγμένες εκδηλώσεις.",
+				"DESCRIPTION": "Επεξεργαστείτε και \/ ή επιλέξτε τα πεδία μεταδεδομένων που θέλετε να ενημερώσετε. Δεν είναι δυνατή η επιλογή πεδίου εάν αυτό δεν έχει ως αποτέλεσμα αλλαγή τιμής για τουλάχιστον μια εκδήλωση ή εάν το πεδίο δεν είναι έγκυρο (π.χ. τα απαιτούμενα πεδία δεν μπορούν να είναι κενά). Τα επισημασμένα πεδία μεταδεδομένων έχουν αποκλίνουσες τιμές για τις επιλεγμένες εκδηλώσεις.",
 				"TABLE": {
 					"CAPTION": "Μεταδεδομένα επιλεγμένων εκδηλώσεων",
 					"FIELDS": "Μεταδεδομένα",
@@ -384,8 +402,16 @@
 			"SKIP": "Να μην γίνει τώρα",
 			"CONTINUE": "Συνέχεια",
 			"BACK": "Επιστροφή",
+			"SUBMIT": "Submit",
+			"CONFIRM": "Confirm",
 			"LEGAL_INFO_STATE": {
 				"HEADER": "Αποδοχή Όρων Παροχής Υπηρεσιών και Πολιτικής Απορρήτου"
+			},
+			"SUMMARY_STATE": {
+				"HEADER": "This is a JSON summary of exactly what would be sent to Opencast's servers",
+				"GENERAL_HEADER": "Adopter Information",
+				"STATS_HEADER": "Statistical Information",
+				"NO_STATS_HEADER": "No statistics data will be shared"
 			},
 			"INFORMATION_STATE": {
 				"HEADER": "Σας ευχαριστούμε για τη χρήση του Opencast!",
@@ -393,7 +419,7 @@
 				"INFORMATION_PARAGRAPH_2": "\nΕκτιμούμε ιδιαίτερα τα σχόλια, καθώς ακόμη και μερικά από τα δεδομένα που συλλέγουμε σχετικά με τη χρήση του Opencast θα μας βοηθήσουν να δημιουργήσουμε καλύτερο λογισμικό, να έχουμε καλύτερες πιθανότητες για πρόσθετη χρηματοδότηση και να προσελκύσουμε περισσότερες εταιρείες για να παρέχουν υπηρεσίες γύρω από το Opencast."
 			},
 			"FORM_STATE": {
-				"ORGANISATION": "Οργανισμός",
+				"ORGANISATION": "Organization",
 				"DEPARTMENT": "Τμήμα",
 				"COUNTRY": "Χώρα",
 				"POSTAL_CODE": "Ταχυδρομικός Κώδικας",
@@ -409,9 +435,13 @@
 				"ADDITIONAL_ADRESS_INFO": "Επιπλέον πληροφορίες διεύθυνσης",
 				"MAIL": "Διεύθυνση ηλεκτρονικού ταχυδρομείου",
 				"CONTACT_ME": "Επικοινωνήστε μαζί μου για ενημερώσεις και ζητήματα ασφάλειας",
+				"SYSTEM_TYPE_HEADLINE": "For what purpose do you use this system?",
+				"SYSTEM_TYPE": "System Type",
+				"SYSTEM_TYPE_PRODUCTION": "Production System",
+				"SYSTEM_TYPE_TEST": "Test System",
 				"WHICH_DATA_TO_SHARE": "Ποια δεδομένα θέλετε να μοιραστείτε;",
 				"POLICY_HEADLINE": "Πολιτική Απορρήτου και όροι χρήσης",
-				"USAGE_STATISTICS": "Στατιστικά χρήσης",
+				"USAGE_STATISTICS": "Usage statistics",
 				"ERROR_REPORTS": "Αναφορές σφαλμάτων",
 				"READ_TERMS_OF_USE_BEFORE": "Έχω διαβάσει και αποδέχομαι τους ",
 				"READ_TERMS_OF_USE_LINK": "την πολιτική απορρήτου και τους όρους χρήσης",
@@ -607,7 +637,7 @@
 					"ASSETS": "Άνοιγμα λεπτομερειών αντικιεμένων",
 					"START": "Φίλτρο για αυτήν την ημερομηνία έναρξης",
 					"SERIES": "Φίλτρο για αυτή τη σειρά",
-					"STATUS": "Φίλτρο για την κατάσταση της εκδήλωσης",
+					"STATUS": "Open event status",
 					"LOCATION": "Εκδήλωση για αυτήν την τοποθεσία",
 					"DETAILS": "Προβολή λεπτομερειών εκδήλωσης",
 					"DELETE": "Διαγραφή εκδήλωσης",
@@ -616,6 +646,7 @@
 					"EDITOR_NEEDS_CUTTING": "Άνοιγμα επεξεργασίας βίντεο (ένα σχόλιο δείχνει ότι έχει ζητηθεί η επεξεργασία του βίντεο)",
 					"COMMENTS": "Δείτε σχόλια",
 					"PAUSED_WORKFLOW": "Δείτε σταματημένη εκδήλωση",
+					"PLAYER": "Open player",
 					"PRESENTER": "Φίλτρο για αυτόν τον παρουσιαστή"
 				},
 				"SELECT_ALL": "Επιλογή όλων των εκδηλώσεων",
@@ -632,7 +663,7 @@
 				"PROCESSED": "Ολοκληρώθηκε",
 				"RECORDING_FAILURE": "Αποτυχία εγγραφής",
 				"PROCESSING_FAILURE": "Αποτυχία επεξεργασίας",
-				"PROCESSING_CANCELED": "Ακύρωση επεξεργασίας"
+				"PROCESSING_CANCELLED": "Processing canceled"
 			},
 			"STATE_MAPPING": {
 				"RETRACTING": "Ανάκληση",
@@ -654,7 +685,8 @@
 					"WORKFLOWS": "Ροές εργασίας",
 					"ACCESS": "Πολιτική πρόσβασης",
 					"COMMENTS": "Σχόλια",
-					"STATISTICS": "Στατιστικά"
+					"STATISTICS": "Στατιστικά",
+					"TOBIRA": "Tobira"
 				},
 				"PUBLICATIONS": {
 					"CAPTION": "Δημοσιεύσεις",
@@ -861,8 +893,7 @@
 						"DETAILS": "Λεπτομέρειες"
 					},
 					"ROLES": {
-						"LABEL": "Επιλέξτε ένα ρόλο",
-						"EMPTY": "Κανένας ρόλος δεν βρέθηκε"
+						"LABEL": "Select or create a role"
 					}
 				},
 				"COMMENTS": {
@@ -878,9 +909,9 @@
 					"REASONS": {
 						"CUTTING": "Απαιτείται μοντάζ",
 						"REVIEW": "Απαιτείται προεπισκόπηση",
-						"ASYNC": "Ασύγχρονα κομμάτια εικόνας/ήχου",
+						"ASYNC": "Ασύγχρονα κομμάτια εικόνας\/ήχου",
 						"AUDIO_ISSUE": "Χαμένο ή ελλατωματικό κομμάτι ήχου",
-						"CANCELLED": "Cancelled event",
+						"CANCELLED": "Canceled event",
 						"CONFLICTING_METADATA": "Αντικρουόμενα μετα-δεδομένα",
 						"IMPROPER_POINT": "Λανθασμένο σημείο εισαγωγής ή εξαγωγής",
 						"MISSING_AGREEMENT": "Ελλειπής συμφνία",
@@ -928,6 +959,13 @@
 					"LOCKED": {
 						"RUNNING": "Επεξεργασία μετα-δεδομένων δεν επιτρέπεται όταν λειτουργίες εκτελούνται σε μια εκδήλωση"
 					}
+				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to event",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This event is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this event"
 				},
 				"SCHEDULING": {
 					"CAPTION": "Κατάσταση συμμετοχής",
@@ -1096,6 +1134,23 @@
 					"LABEL": "Χωρίς θέμα",
 					"EMPTY": "Κανένα θέμα δεν βρέθηκε"
 				},
+				"TOBIRA": {
+					"CAPTION": "Tobira",
+					"DESCRIPTION": "Here you can select where you want the series to show up in the Tobira video portal. You can only select one location here, and it needs to be empty (marked in bold). You can create new pages here, but note that they are only persisted if they are on the path to the selected page.",
+					"SELECT_PAGE": "Select a target page",
+					"PAGE_TITLE": "Subpage title",
+					"PATH_SEGMENT": "Path segment",
+					"SUBPAGES": "Subpages",
+					"ADD_SUBPAGE": "Add subpage",
+					"CANCEL": "Cancel",
+					"HOMEPAGE": "Homepage",
+					"SELECTED_PAGE": "Series will be mounted under the following path",
+					"NO_PAGE_SELECTED": "No page selected. Series will not be mounted in Tobira.",
+					"NO_PAGE_SELECTED_EDIT": "No page selected. Series path will not be changed.",
+					"PATH": "Path",
+					"DIRECT_LINK": "A direct link will be available.",
+					"MOUNT_DISCLAIMER": "Series can only be mounted in empty pages"
+				},
 				"SUMMARY": {
 					"CAPTION": "Περίληψη"
 				}
@@ -1124,6 +1179,7 @@
 					"EVENTS": "Εκδηλώσεις",
 					"PERMISSIONS": "Πολιτική πρόσβασης",
 					"THEME": "Θέμα",
+					"TOBIRA": "Tobira",
 					"STATISTICS": "Στατιστικά"
 				},
 				"ACCESS": {
@@ -1170,6 +1226,18 @@
 					"DESCRIPTION": "Περιγραφή",
 					"REPLACE_SERIES_METADATA": "Ενημέρωση μεταδεδομένων σειράς",
 					"REPLACE_SERIES_THEME": "Ενημέρωση θέματος σειράς"
+				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to series",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This series is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this series",
+					"SHOW_PAGES": "Show all pages",
+					"EDIT_PATH": "Edit path",
+					"REMOVE_PATH": "Remove path",
+					"MOUNT_SERIES": "Mount series",
+					"DESCRIPTION": "You may edit the path of pages containing this series if the page has no other content."
 				},
 				"EVENTS": {
 					"TITLE": "Τίτλος",
@@ -1291,6 +1359,14 @@
 					"RIGHT": "Επιλεγμένοι ρόλοι",
 					"REMOVE": "Κατάργηση ρόλου",
 					"ADD": "Προσθήκη ρόλου"
+				},
+				"STRENGTH": {
+					"BAD": "Bad password",
+					"VERYWEAK": "Very weak password",
+					"WEAK": "Weak password",
+					"GOOD": "Good password",
+					"STRONG": "Strong password",
+					"VERYSTRONG": "Very strong password"
 				}
 			}
 		},
@@ -1645,131 +1721,6 @@
 				"WARNING": "Προειδοποίηση",
 				"ERROR": "Σφάλμα"
 			}
-		}
-	},
-	"VIDEO_TOOL": {
-		"WARNING_UNSAVED": "Προειδοποίηση: Μερικές από τις αλλαγές σας δεν αποθηκεύτηκαν. Εάν κλείσετε το πρόγραμμα επεξεργασίας βίντεο, αυτές οι αλλαγές θα χαθούν. Θέλετε πραγματικά να συνεχίσετε;",
-		"TIMELINE": "Χρονολόγιο",
-		"ZOOMLEVEL": "Επίπεδο ζουμ",
-		"PREVIEW_MODE": "Λειτουργία προεπισκόπησης",
-		"PREVIEW_MODE_TOOLTIP": "Παίξε μόνο επιλεγμένα τμήματα",
-		"ZOOM": "Ζουμ",
-		"BUTTONS": {
-			"CLOSE": "Κλείσιμο",
-			"SAVE": "Αποθήκευση",
-			"PROCESS": "Αποθήκευση & συνεχεία",
-			"ADD_COMMENT": "Προσθήκη σχολίου"
-		},
-		"TABS": {
-			"EDIT": "Πρόγραμμα επεξεργασίας",
-			"CAPTIONS": "Λεζάντες",
-			"ANNOTATIONS": "Σχολιασμοί"
-		},
-		"AREAS": {
-			"METADATA": "Μεταδεδομένα",
-			"THUMBNAIL": "Μικρογραφία",
-			"COMMENTS": "Σχόλια",
-			"SEGMENTS": "Τμήματα",
-			"TRACKS": "Κομμάτια"
-		},
-		"ACTIONS": {
-			"SPLIT": "Διαχωρισμός",
-			"SPLIT_TOOLTIP": "Διαχώρηση τμήματος στην τρέχουσα θέση του κέρσορα.",
-			"CUT": "Απόκρυψη/Εμφάνιση",
-			"CUT_TOOLTIP": "Απόκρυψη ή εμφάνιση του επιλεγμένου τμήματος του βίντεο.",
-			"REPLAY_SEGMENT": "Αναπαραγωγή της αρχής του τμήματος",
-			"REPLAY_SEGMENT_TOOLTIP": "Αναπαραγωγή του τρέχοντος τμήματος από την αρχή.",
-			"REPLAY_END_OF_SEGMENT": "Αναπαραγωγή του τέλους του τμήματος",
-			"REPLAY_END_OF_SEGMENT_TOOLTIP": "Αναπαραγωγή μερικών δευτερόλεπτα στο τέλος του τρέχοντος τμήματος.",
-			"REPLAY_SEGMENT_WITH_PREROLL": "Αναπαραγωγή μετάβασης",
-			"REPLAY_SEGMENT_WITH_PREROLL_TOOLTIP": "Αναπαραγωγή μερικών δευτερολέπτων που περιέχουν το τέλος του προηγούμενου και την αρχή του επόμενου τμήματος.",
-			"UNDO": "Αναίρεση",
-			"REDO": "Ακύρωση Αναίρεσης",
-			"CLEAR_SEGMENTS": "Καθαρισμός όλων των τμημάτων",
-			"CLEAR_SEGMENTS_TOOLTIP": "Διαγραφή όλων των τμημάτων, αφήνοντας ένα μεγάλο τμήμα."
-		},
-		"SEGMENTS": {
-			"REMOVE_SEGMENT": "Αφαίρεση τμήματος",
-			"SHOW_SEGMENT": "Εμφάνιση αυτού του τμήματος",
-			"HIDE_SEGMENT": "Απόκρυψη αυτού του τμήματος",
-			"START": "Έναρξη",
-			"END": "Τέλος"
-		},
-		"THUMBNAIL": {
-			"DESCRIPTION": "Αναπαράχθηκε αυτόματα μια προεπιλεγμένη μικρογραφία για την οπτική αναπαραγωγή της εκδήλωσης. Σε περίπτωση που θέλετε να χρησιμοποιήσετε μια διαφορετική μικρογραφία, μπορείετε να εξάγετε την μικρογραφία από το βίντεο στην τρέχουσα θέση αναπαραγωγής ή να μεταφορτώσετε μια εικόνα.",
-			"ACTIONS": {
-				"EXTRACT": {
-					"FROM_VIDEO": {
-						"LABEL": "Εξαγωγή από το βίντεο",
-						"TOOLTIP": "Εξαγωγή μικρογραφίας από το βίντεο στην τρέχουσα θέση αναπαραγωγής"
-					},
-					"FROM_LEFT_VIDEO": {
-						"LABEL": "Εξαγωγή από το βίντεο αριστερά",
-						"TOOLTIP": "Εξαγωγή μικρογραφίας από το βίντεο αριστερά στην τρέχουσα θέση αναπαραγωγής"
-					},
-					"FROM_RIGHT_VIDEO": {
-						"LABEL": "Εξαγωγή από το βίντεο δεξιά",
-						"TOOLTIP": "Εξαγωγή μικρογραφίας από το βίντεο δεξιά στην τρέχουσα θέση αναπαραγωγής"
-					}
-				},
-				"UPLOAD": {
-					"LABEL": "Μεταφόρτωση εικόνας",
-					"TOOLTIP": "Μεταφόρτωση μικρογραφίας εικόνας"
-				},
-				"USE_DEFAULT": {
-					"LABEL": "Χρήση προεπιλεγμένης μικρογραφίας",
-					"TOOLTIP": "Χρήση προεπιλεγμένης μικρογραφίας που θα δημιουργηθεί αυτόματα"
-				}
-			},
-			"PREVIEW": {
-				"NOT_AVAILABLE": "Δεν υπάρχει διαθέσιμη προεπισκόπηση",
-				"OUTDATED": "Η προεπισκόπηση είναι απαρχαιωμένη, διότι κάποια τμήματα άλλαξαν. Θα ενημερωθεί αμέσως μόλις αποθηκεύσετε τις αλλαγές σας."
-			},
-			"CURRENT": {
-				"DEFAULT": "Αυτή την στιγμή χρησιμοποιείτε την προεπιλεγμένη μικρογραφία.",
-				"SNAPSHOT": "Η τρέχουσα μικρογραφία έχει εξαχθεί από το βίντεο.",
-				"UPLOAD": "Προς το παρόν χρησιμοποιείτε μια μικρογραφία που μεταφορτώθηκε."
-			}
-		},
-		"TRACKS": {
-			"DESCRIPTION": "Μπορείτε να αποεπιλέξετε κομμάτια για να τα αποκλείσετε από περαιτέρω επεξεργασία. Παρακαλώ σημειώστε ότι πρέπει να (επαν-) δημοσιεύετε την εκδλήλωση για να εφαρμόσετε τις αλλαγές.",
-			"NOTIFICATION": {
-				"NO_VIDEO_TRACK_SELECTED": "Πρέπει να ενεργοποιήσετε τουλάχιστον ένα κομμάτι βίντεο",
-				"NO_AUDIO_TRACK_SELECTED": "Πρέπει να ενεργοποιήσετε τουλάχιστον ένα κομμάτι ήχου"
-			},
-			"TRACK": {
-				"HEADER": "Κομμάτι"
-			},
-			"VIDEO": {
-				"HEADER": "Κομμάτι βίντεο",
-				"NOT_AVAILABLE": "Υπάρχουν διαθέσιμα κομμάτια βίντεο",
-				"NO_PREVIEW_AVAILABLE": "Δεν βρέθηκε η εικόνα προεπισκόπησης",
-				"NO_TRACK_SELECTED": "Δεν έχει επιλεχθεί κομμάτι βίντεο",
-				"TOOLTIPS": {
-					"HIDE": "Αυτό το κομμάτι βίντεο είναι προς το παρόν ενεργοποιημένο. Κάντε κλικ για να το απενεργοποιήσετε",
-					"UNHIDE": "Αυτό το κομμάτι βίντεο είναι προς το παρόν απενεργοποιημένο. Κάντε κλικ για να το ενεργοποιήσετε."
-				}
-			},
-			"AUDIO": {
-				"HEADER": "Κομμάτι ήχου",
-				"NOT_AVAILABLE": "Υπάρχουν διαθέσιμα κομμάτια ήχου",
-				"NO_PREVIEW_AVAILABLE": "Δεν βρέθηκε η εικόνα προεπισκόπησης",
-				"NO_TRACK_SELECTED": "Δεν έχει επιλεχθεί κομμάτι ήχου",
-				"TOOLTIPS": {
-					"HIDE": "Αυτό το κομμάτι ήχου είναι προς το παρόν ενεργοποιημένο. Κάντε κλικ για να το απενεργοποιήσετε",
-					"UNHIDE": "Αυτό το κομμάτι ήχου είναι προς το παρόν απενεργοποιημένο. Κάντε κλικ για να το ενεργοποιήσετε"
-				}
-			}
-		},
-		"PLAYER": {
-			"PLAY": "Αναπαραγωγή",
-			"PAUSE": "Παύση",
-			"NEXT_FRAME": "Επόμενο καρέ",
-			"PREVIOUS_FRAME": "Προηγούμενο καρέ",
-			"NEXT_SEGMENT": "Επόμενο τμήμα / μετακίνηση στο τέλος",
-			"PREVIOUS_SEGMENT": "Προηγούμενο τμήμα / μετακίνηση στην αρχή",
-			"MUTE": "Σίγαση",
-			"VOLUME": "Ένταση ήχου"
 		}
 	},
 	"TABLE_FILTERS": {
@@ -2128,7 +2079,7 @@
 		"TOTAL": "Σύνολο",
 		"GRANULARITY": "Διακριτότητα",
 		"NAVIGATION": {
-			"ORGANIZATION": "Οργανισμός"
+			"ORGANIZATION": "Organization"
 		},
 		"TIME_MODES": {
 			"Year": "Έτος",
@@ -2148,7 +2099,7 @@
 			"PUBLISHEDHOURS": "Δημοσιευμένες ώρες του βίντεο"
 		},
 		"DESCRIPTION": {
-			"RANDOM": "Αυτό εμφανίζει τυχαία δεδομένα ως επίδειξη. Μπορείτε να απενεργοποιήσετε αυτό το γράφημα διαγράφοντας τον ορισμό json του αντίστοιχου παροχέα στατιστικών στοιχείων από τον κατάλογο etc/providers",
+			"RANDOM": "Αυτό εμφανίζει τυχαία δεδομένα ως επίδειξη. Μπορείτε να απενεργοποιήσετε αυτό το γράφημα διαγράφοντας τον ορισμό json του αντίστοιχου παροχέα στατιστικών στοιχείων από τον κατάλογο etc\/providers",
 			"VIEWS_SUM": "Η επιλογή εμφανίζει το συνολικό αριθμό προβολών ανά μονάδα χρόνου.",
 			"VIEWS_AVG": "Αυτή η επιλογή εμφανίζει τον μέσο αριθμό ημερήσιων προβολών ανά μονάδα χρόνου.",
 			"PUBLISHEDHOURS": "Αυτή η επιλογή εμφανίζει τις δημοσιευμένες ώρες του βίντεο"
@@ -2156,12 +2107,12 @@
 	},
 	"dateFormats": {
 		"dateTime": {
-			"short": "{{dateTime, D/M/YYYY h:mm a}}",
+			"short": "{{dateTime, D\/M\/YYYY h:mm a}}",
 			"medium": "{{dateTime, D MMM YYYY h:mm:ss a}}",
 			"full": "{{dateTime, dddd, D MMMM YYYY h:mm:ss a z}}"
 		},
 		"date": {
-			"short": "{{date, D/M/YYYY}}",
+			"short": "{{date, D\/M\/YYYY}}",
 			"medium": "{{date, D MMM YYYY}}",
 			"full": "{{date, dddd, D MMMM YYYY}}"
 		},

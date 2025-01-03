@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import RenderMultiField from "../wizard/RenderMultiField";
 import {
+	Acl,
 	Role,
 	fetchAclActions,
 	fetchAclTemplateById,
@@ -8,7 +9,8 @@ import {
 	fetchRolesWithTarget,
 } from "../../../slices/aclSlice";
 import Notifications from "../Notifications";
-import { Formik, Field, FieldArray, FormikErrors } from "formik";
+import { Formik, FieldArray, FormikErrors } from "formik";
+import { Field } from "../Field";
 import { NOTIFICATION_CONTEXT } from "../../../configs/modalConfig";
 import {
 	createPolicy,
@@ -21,7 +23,11 @@ import { filterRoles, getAclTemplateText } from "../../../utils/aclUtils";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { removeNotificationWizardForm, addNotification } from "../../../slices/notificationSlice";
 import { useTranslation } from "react-i18next";
-import { Ace, TransformedAcl } from "../../../slices/aclDetailsSlice";
+import { TransformedAcl } from "../../../slices/aclDetailsSlice";
+import { AsyncThunk, unwrapResult } from "@reduxjs/toolkit";
+import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
+import { SaveEditFooter } from "../SaveEditFooter";
+
 
 /**
  * This component manages the access policy tab of resource details modals
@@ -35,7 +41,6 @@ const ResourceDetailsAccessPolicyTab = ({
 	saveNewAccessPolicies,
 	descriptionText,
 	buttonText,
-	saveButtonText,
 	editAccessRole,
 	policyChanged,
 	setPolicyChanged,
@@ -43,12 +48,11 @@ const ResourceDetailsAccessPolicyTab = ({
 	resourceId: string,
 	header: string,
 	policies: TransformedAcl[],
-	fetchHasActiveTransactions?: (id: string) => Promise<any>,
-	fetchAccessPolicies: (id: string) => void,
-	saveNewAccessPolicies: (id: string, policies: { acl: { ace: Ace[] } }) => Promise<any>,
+	fetchHasActiveTransactions?: AsyncThunk<any, string, AsyncThunkConfig>
+	fetchAccessPolicies: AsyncThunk<TransformedAcl[], string, AsyncThunkConfig>,
+	saveNewAccessPolicies:  AsyncThunk<boolean, { id: string, policies: { acl: Acl } }, AsyncThunkConfig>
 	descriptionText: string,
 	buttonText: string,
-	saveButtonText: string,
 	editAccessRole: string,
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,
@@ -87,12 +91,10 @@ const ResourceDetailsAccessPolicyTab = ({
 			const responseActions = await fetchAclActions();
 			setAclActions(responseActions);
 			setHasActions(responseActions.length > 0);
-			await fetchAccessPolicies(resourceId);
+			await dispatch(fetchAccessPolicies(resourceId));
 			fetchRolesWithTarget("ACL").then((roles) => setRoles(roles));
 			if (fetchHasActiveTransactions) {
-				const fetchTransactionResult = await fetchHasActiveTransactions(
-					resourceId
-				);
+				const fetchTransactionResult = await dispatch(fetchHasActiveTransactions(resourceId)).then(unwrapResult)
 				fetchTransactionResult.active !== undefined
 					? setTransactions({ read_only: fetchTransactionResult.active })
 					: setTransactions({ read_only: true });
@@ -104,7 +106,7 @@ const ResourceDetailsAccessPolicyTab = ({
 						type: "warning",
 						key: "ACTIVE_TRANSACTION",
 						duration: -1,
-						parameter: null,
+						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					}));
 				}
@@ -136,7 +138,7 @@ const ResourceDetailsAccessPolicyTab = ({
 				type: "warning",
 				key: "INVALID_ACL_RULES",
 				duration: -1,
-				parameter: null,
+				parameter: undefined,
 				context: NOTIFICATION_CONTEXT
 			}));
 		}
@@ -146,17 +148,17 @@ const ResourceDetailsAccessPolicyTab = ({
 				type: "warning",
 				key: "MISSING_ACL_RULES",
 				duration: -1,
-				parameter: null,
+				parameter: undefined,
 				context: NOTIFICATION_CONTEXT
 			}));
 		}
 
 		if (allRulesValid && roleWithFullRightsExists) {
-			saveNewAccessPolicies(resourceId, access).then((success) => {
+			dispatch(saveNewAccessPolicies({id: resourceId, policies: access})).then((success) => {
 				// fetch new policies from the backend, if save successful
 				if (success) {
 					setPolicyChanged(false);
-					fetchAccessPolicies(resourceId);
+					dispatch(fetchAccessPolicies(resourceId));
 				}
 			});
 		}
@@ -430,6 +432,7 @@ const ResourceDetailsAccessPolicyTab = ({
 																										}
 																										type={"aclRole"}
 																										required={true}
+																										creatable={true}
 																										handleChange={(element) => {
 																											if (element) {
 																												replace(index, {
@@ -439,13 +442,7 @@ const ResourceDetailsAccessPolicyTab = ({
 																											}
 																										}}
 																										placeholder={
-																											roles.length > 0
-																												? t(
-																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.LABEL"
-																												  )
-																												: t(
-																														"EVENTS.EVENTS.DETAILS.ACCESS.ROLES.EMPTY"
-																												  )
+																											t("EVENTS.EVENTS.DETAILS.ACCESS.ROLES.LABEL")
 																										}
 																										disabled={
 																											!hasAccess(
@@ -600,33 +597,12 @@ const ResourceDetailsAccessPolicyTab = ({
 											</div>
 
 											{/* Save and cancel buttons */}
-											{!transactions.read_only && (
-												<footer style={{ padding: "0 15px" }}>
-													{policyChanged &&
-														formik.dirty && (
-														<div className="pull-left">
-															<button
-																type="reset"
-																onClick={() => resetPolicies(formik.resetForm)}
-																className="cancel"
-															>
-																{t("CANCEL") /* Cancel */}
-															</button>
-														</div>
-													)}
-													<div className="pull-right">
-														<button
-															onClick={() => saveAccess(formik.values)}
-															disabled={!formik.isValid || !(policyChanged && formik.dirty)}
-															className={`save green  ${
-																!formik.isValid || !(policyChanged && formik.dirty) ? "disabled" : ""
-															}`}
-														>
-															{t(saveButtonText) /* Save */}
-														</button>
-													</div>
-												</footer>
-												)}
+											{!transactions.read_only && <SaveEditFooter
+												active={policyChanged && formik.dirty}
+												reset={() => resetPolicies(formik.resetForm)}
+												submit={() => saveAccess(formik.values)}
+												isValid={formik.isValid}
+											/>}
 										</div>
 									)}
 								</Formik>

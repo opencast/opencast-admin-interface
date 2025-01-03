@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import { initialFormValuesStartTask } from "../../../../configs/modalConfig";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
 import StartTaskGeneralPage from "../ModalTabsAndPages/StartTaskGeneralPage";
@@ -13,16 +12,19 @@ import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { checkValidityStartTaskEventSelection } from "../../../../utils/bulkActionUtils";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { useAppDispatch } from "../../../../store";
+import { Event } from "../../../../slices/eventSlice";
 
 /**
  * This component manages the pages of the task start bulk action
  */
 const StartTaskModal = ({
 	close,
-	postTasks,
-	changeAllSelected
-}: any) => {
+}: {
+	close: () => void,
+}) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const initialValues = initialFormValuesStartTask;
 
@@ -58,11 +60,15 @@ const StartTaskModal = ({
 		},
 	];
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const validateFormik = (values) => {
-		const errors = {};
+	const validateFormik = (values: {
+		events: Event[],
+		workflow: string,
+	}) => {
+		const errors: {
+			events?: string,
+			workflow?: string,
+		} = {};
 		if (!checkValidityStartTaskEventSelection(values)) {
-// @ts-expect-error TS(2339): Property 'events' does not exist on type '{}'.
 			errors.events = "Not on all events task startable!";
 		}
 		if (
@@ -72,16 +78,14 @@ const StartTaskModal = ({
 				values.workflow !== ""
 			)
 		) {
-// @ts-expect-error TS(2339): Property 'worflow' does not exist on type '{}'.
 			errors.workflow = "Workflow not selected!";
 		}
 		return errors;
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
-		postTasks(values);
-		changeAllSelected(false);
+	const handleSubmit = (values: typeof initialValues) => {
+		dispatch(postTasks(values));
+		dispatch(changeAllSelected(false));
 		close();
 	};
 
@@ -122,9 +126,7 @@ const StartTaskModal = ({
 								<div>
 									{page === 0 && (
 										<StartTaskGeneralPage
-											// @ts-expect-error: Type-checking gets confused by redux-connect in the child
 											formik={formik}
-											// @ts-expect-error: Type-checking gets confused by redux-connect in the child
 											nextPage={nextPage}
 										/>
 									)}
@@ -152,12 +154,4 @@ const StartTaskModal = ({
 	);
 };
 
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToState = (dispatch) => ({
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	postTasks: (values) => dispatch(postTasks(values)),
-	// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	changeAllSelected: (selected) => dispatch(changeAllSelected(selected)),
-});
-
-export default connect(null, mapDispatchToState)(StartTaskModal);
+export default StartTaskModal;

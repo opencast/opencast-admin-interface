@@ -87,6 +87,8 @@ $disable-warnings: true !default; // disables deprecation warnings
 @import "vendor/chosen";
 
 .filters-container {
+  display: flex;
+
   div.chosen-container {
     width: 230px !important;
     ul.chosen-choices {
@@ -128,6 +130,9 @@ a {
 
 .modal {
   top: 30px;
+  position: fixed;
+  max-height: 90vh;
+  overflow: scroll;
   input[readonly] {
     border: none;
   }
@@ -253,10 +258,6 @@ td.editable {
     resize: vertical;
   }
 
-  span {
-    border-bottom: 1px dashed #999;
-  }
-
   i.saved, i.edit {
     float: right;
     cursor: pointer;
@@ -359,6 +360,7 @@ input[type="text"].small-search {
 }
 
 div.table-filter {
+  display: flex;
   float: right;
   border: 1px solid #c9d0d3;
   border-radius: 4px;
@@ -366,11 +368,12 @@ div.table-filter {
   position: inherit;
 
   .filters {
+    font-size: 12px;
+    line-height: normal;
     display: flex;
+    gap: 4px;
     border: 0;
     border-radius: 4px;
-    float: left;
-    background: #fff;
     background-color: #fafafa;
     min-height: 23px;
     min-width: 150px;
@@ -388,35 +391,25 @@ div.table-filter {
       color: white;
     }
 
-    select, input, div {
-      display: inline-block;
-    }
-
-    select, input {
+    input {
+      height: auto;
       border: 1px solid #c9d0d3;
       border-radius: 3px;
       background-color: white;
     }
 
-    select {
-      height: 24px;
-    }
-
     .ng-multi-value {
-      align-self: center;
-    }
-
-    .MuiInputBase-root {
-      height: 24px;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      margin: 0;
     }
 
     .MuiInputBase-input {
-      height: 24px;
       box-sizing: border-box;
     }
 
     .MuiButtonBase-root {
-      height: 24px;
       padding: 0;
     }
 
@@ -425,20 +418,20 @@ div.table-filter {
     }
   }
 
+  .fa {
+    font-size: 13px;
+  }
+
   i {
-    color: #8a8f99;
+    color: $global-text-color;
     cursor: pointer;
 
     &.clear {
-      font-size: 20px;
-      float: left;
-      padding: 8px 8px 8px 0;
+      padding: 0 8px 0 0;
     }
 
     &.settings {
-      font-size: 20px;
-      float: left;
-      padding: 8px 8px 8px 0;
+      padding: 0 8px 0 0;
     }
   }
 
@@ -624,4 +617,11 @@ tr.info {
       max-width: 100%;
       height: auto;
   }
+}
+
+.table-filter-blue-box {
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { hasAccess } from "../../../../utils/utils";
@@ -23,6 +23,9 @@ import {
 	isFetchingScheduling,
 	hasStatistics as getHasStatistics,
 	isFetchingStatistics,
+	getModalWorkflowTabHierarchy,
+	getModalPage,
+	getEventDetailsTobiraDataError,
 } from "../../../../selectors/eventDetailsSelectors";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import EventDetailsStatisticsTab from "../ModalTabsAndPages/EventDetailsStatisticsTab";
@@ -36,8 +39,24 @@ import {
 	updateExtendedMetadata,
 	fetchSchedulingInfo,
 	fetchEventStatistics,
+	openModalTab,
+	fetchEventDetailsTobira,
 } from "../../../../slices/eventDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
+
+export enum EventDetailsPage {
+	Metadata,
+	ExtendedMetadata,
+	Publication,
+	Assets,
+	Scheduling,
+	Workflow,
+	AccessPolicy,
+	Comments,
+	Tobira,
+	Statistics,
+}
 
 export type WorkflowTabHierarchy = "entry" | "workflow-details" | "workflow-operations" | "workflow-operation-details" | "errors-and-warnings" | "workflow-error-details"
 export type AssetTabHierarchy = "entry" | "add-asset" | "asset-attachments" | "attachment-details" | "asset-catalogs" | "catalog-details" | "asset-media" | "media-details" | "asset-publications" | "publication-details";
@@ -46,13 +65,11 @@ export type AssetTabHierarchy = "entry" | "add-asset" | "asset-attachments" | "a
  * This component manages the pages of the event details
  */
 const EventDetails = ({
-	tabIndex,
 	eventId,
 	close,
 	policyChanged,
 	setPolicyChanged,
 }: {
-	tabIndex: number,
 	eventId: string,
 	close?: () => void,
 	policyChanged: boolean,
@@ -70,18 +87,8 @@ const EventDetails = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const [page, setPage] = useState(tabIndex);
-	const [workflowTabHierarchy, setWorkflowTabHierarchy] = useState<WorkflowTabHierarchy>("entry");
-	const [assetsTabHierarchy, setAssetsTabHierarchy] = useState<AssetTabHierarchy>("entry");
-
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const updateMetadataWrapper = (id: any, values: any) => {
-		dispatch(updateMetadata({eventId: id, values}));
-	}
-	const updateExtendedMetadataWrapper = (id: any, values: any, catalog: any) => {
-		dispatch(updateExtendedMetadata({eventId: id, values, catalog}));
-	}
-
+	const page = useAppSelector(state => getModalPage(state));
+	const workflowTabHierarchy = useAppSelector(state => getModalWorkflowTabHierarchy(state));
 	const user = useAppSelector(state => getUserInformation(state));
 	const metadata = useAppSelector(state => getMetadata(state));
 	const extendedMetadata = useAppSelector(state => getExtendedMetadata(state));
@@ -91,6 +98,7 @@ const EventDetails = ({
 	const hasStatistics = useAppSelector(state => getHasStatistics(state));
 	const isLoadingStatistics = useAppSelector(state => isFetchingStatistics(state));
 	const captureAgents = useAppSelector(state => getRecordings(state));
+	const tobiraError = useAppSelector(state => getEventDetailsTobiraDataError(state));
 
 	const tabs = [
 		{
@@ -98,11 +106,13 @@ const EventDetails = ({
 			bodyHeaderTranslation: "EVENTS.EVENTS.DETAILS.METADATA.CAPTION",
 			accessRole: "ROLE_UI_EVENTS_DETAILS_METADATA_VIEW",
 			name: "metadata",
+			page: EventDetailsPage.Metadata,
 		},
 		{
 			tabNameTranslation: "EVENTS.EVENTS.DETAILS.TABS.EXTENDED-METADATA",
 			accessRole: "ROLE_UI_EVENTS_DETAILS_METADATA_VIEW",
 			name: "metadata-extended",
+			page: EventDetailsPage.ExtendedMetadata,
 			hidden: !extendedMetadata || !(extendedMetadata.length > 0),
 		},
 		{
@@ -110,18 +120,21 @@ const EventDetails = ({
 			bodyHeaderTranslation: "EVENTS.EVENTS.DETAILS.PUBLICATIONS.CAPTION",
 			accessRole: "ROLE_UI_EVENTS_DETAILS_PUBLICATIONS_VIEW",
 			name: "publications",
+			page: EventDetailsPage.Publication,
 		},
 		{
 			tabNameTranslation: "EVENTS.EVENTS.DETAILS.TABS.ASSETS",
 			bodyHeaderTranslation: "EVENTS.EVENTS.DETAILS.ASSETS.CAPTION",
 			accessRole: "ROLE_UI_EVENTS_DETAILS_ASSETS_VIEW",
 			name: "assets",
+			page: EventDetailsPage.Assets,
 		},
 		{
 			tabNameTranslation: "EVENTS.EVENTS.DETAILS.TABS.SCHEDULING",
 			bodyHeaderTranslation: "EVENTS.EVENTS.DETAILS.SCHEDULING.CAPTION",
 			accessRole: "ROLE_UI_EVENTS_DETAILS_SCHEDULING_VIEW",
 			name: "scheduling",
+			page: EventDetailsPage.Scheduling,
 			hidden:
 				!hasSchedulingProperties || !hasAnyDeviceAccess(user, captureAgents),
 		},
@@ -129,151 +142,117 @@ const EventDetails = ({
 			tabNameTranslation: "EVENTS.EVENTS.DETAILS.TABS.WORKFLOWS",
 			accessRole: "ROLE_UI_EVENTS_DETAILS_WORKFLOWS_VIEW",
 			name: "workflows",
+			page: EventDetailsPage.Workflow,
 		},
 		{
 			tabNameTranslation: "EVENTS.EVENTS.DETAILS.TABS.ACCESS",
 			bodyHeaderTranslation: "EVENTS.EVENTS.DETAILS.TABS.ACCESS",
 			accessRole: "ROLE_UI_EVENTS_DETAILS_ACL_VIEW",
 			name: "access",
+			page: EventDetailsPage.AccessPolicy,
 		},
 		{
 			tabNameTranslation: "EVENTS.EVENTS.DETAILS.TABS.COMMENTS",
 			bodyHeaderTranslation: "EVENTS.EVENTS.DETAILS.COMMENTS.CAPTION",
 			accessRole: "ROLE_UI_EVENTS_DETAILS_COMMENTS_VIEW",
 			name: "comments",
+			page: EventDetailsPage.Comments,
+		},
+		{
+			tabNameTranslation: "EVENTS.EVENTS.DETAILS.TABS.TOBIRA",
+			bodyHeaderTranslation: "EVENTS.EVENTS.DETAILS.TABS.TOBIRA",
+			accessRole: "ROLE_UI_EVENTS_DETAILS_COMMENTS_VIEW",
+			name: "tobira",
+			page: EventDetailsPage.Tobira,
+			hidden: tobiraError?.message?.includes("503"),
 		},
 		{
 			tabNameTranslation: "EVENTS.EVENTS.DETAILS.TABS.STATISTICS",
 			bodyHeaderTranslation: "EVENTS.EVENTS.DETAILS.STATISTICS.CAPTION",
 			accessRole: "ROLE_UI_EVENTS_DETAILS_STATISTICS_VIEW",
 			name: "statistics",
+			page: EventDetailsPage.Statistics,
 			hidden: !hasStatistics,
 		},
 	];
 
-	const openTab = (tabNr: number) => {
+	const openTab = (tabNr: EventDetailsPage) => {
 		dispatch(removeNotificationWizardForm());
-		setWorkflowTabHierarchy("entry");
-		setAssetsTabHierarchy("entry");
-		setPage(tabNr);
+		if (tabNr === EventDetailsPage.Tobira) {
+			dispatch(fetchEventDetailsTobira(eventId));
+		}
+		dispatch(openModalTab(tabNr, "entry", "entry"))
 	};
 
 	return (
 		<>
 			<nav className="modal-nav" id="modal-nav">
-				{hasAccess(tabs[0].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 0 })} onClick={() => openTab(0)}>
-						{t(tabs[0].tabNameTranslation)}
+				{tabs.map((tab, index) => !tab.hidden && hasAccess(tab.accessRole, user) && (
+					<button
+						key={tab.name}
+						className={"button-like-anchor " + cn({ active: page === index })}
+						onClick={() => openTab(index)}
+					>
+						{t(tab.tabNameTranslation)}
 					</button>
-				)}
-				{!tabs[1].hidden && hasAccess(tabs[1].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 1 })} onClick={() => openTab(1)}>
-						{t(tabs[1].tabNameTranslation)}
-					</button>
-				)}
-				{hasAccess(tabs[2].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 2 })} onClick={() => openTab(2)}>
-						{t(tabs[2].tabNameTranslation)}
-					</button>
-				)}
-				{hasAccess(tabs[3].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 3 })} onClick={() => openTab(3)}>
-						{t(tabs[3].tabNameTranslation)}
-					</button>
-				)}
-				{!tabs[4].hidden && hasAccess(tabs[4].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 4 })} onClick={() => openTab(4)}>
-						{t(tabs[4].tabNameTranslation)}
-					</button>
-				)}
-				{hasAccess(tabs[5].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 5 })} onClick={() => openTab(5)}>
-						{t(tabs[5].tabNameTranslation)}
-					</button>
-				)}
-				{hasAccess(tabs[6].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 6 })} onClick={() => openTab(6)}>
-						{t(tabs[6].tabNameTranslation)}
-					</button>
-				)}
-				{hasAccess(tabs[7].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 7 })} onClick={() => openTab(7)}>
-						{t(tabs[7].tabNameTranslation)}
-					</button>
-				)}
-
-				{!tabs[8].hidden && hasAccess(tabs[8].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 8 })} onClick={() => openTab(8)}>
-						{t(tabs[8].tabNameTranslation)}
-					</button>
-				)}
+				))}
 			</nav>
 			{/* Initialize overall modal */}
 			<div>
-				{page === 0 && !isLoadingMetadata && (
+				{page === EventDetailsPage.Metadata && !isLoadingMetadata && (
 					<DetailsMetadataTab
 						metadataFields={metadata}
 						resourceId={eventId}
 						header={tabs[page].bodyHeaderTranslation ?? ""}
-						updateResource={updateMetadataWrapper}
+						updateResource={updateMetadata}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
 					/>
 				)}
-				{page === 1 && !isLoadingMetadata && (
+				{page === EventDetailsPage.ExtendedMetadata && !isLoadingMetadata && (
 					<DetailsExtendedMetadataTab
 						resourceId={eventId}
 						metadata={extendedMetadata}
-						updateResource={updateExtendedMetadataWrapper}
+						updateResource={updateExtendedMetadata}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
 					/>
 				)}
 				{page === 2 && <EventDetailsPublicationTab eventId={eventId} />}
-				{page === 3 && (
+				{page === EventDetailsPage.Assets && (
 					<EventDetailsAssetsTab
 						eventId={eventId}
-						assetsTabHierarchy={assetsTabHierarchy}
-						setAssetsTabHierarchy={setAssetsTabHierarchy}
 					/>
 				)}
 				{page === 4 && !isLoadingScheduling && (
 					<EventDetailsSchedulingTab eventId={eventId} />
 				)}
-				{page === 5 &&
+				{page === EventDetailsPage.Workflow &&
 					((workflowTabHierarchy === "entry" && (
 						<EventDetailsWorkflowTab
 							eventId={eventId}
-							setHierarchy={setWorkflowTabHierarchy}
 						/>
 					)) ||
 						(workflowTabHierarchy === "workflow-details" && (
 							<EventDetailsWorkflowDetails
 								eventId={eventId}
-								setHierarchy={setWorkflowTabHierarchy}
 							/>
 						)) ||
 						(workflowTabHierarchy === "workflow-operations" && (
 							<EventDetailsWorkflowOperations
 								eventId={eventId}
-								setHierarchy={setWorkflowTabHierarchy}
 							/>
 						)) ||
 						(workflowTabHierarchy === "workflow-operation-details" && (
-							<EventDetailsWorkflowOperationDetails
-								setHierarchy={setWorkflowTabHierarchy}
-							/>
+							<EventDetailsWorkflowOperationDetails />
 						)) ||
 						(workflowTabHierarchy === "errors-and-warnings" && (
 							<EventDetailsWorkflowErrors
 								eventId={eventId}
-								setHierarchy={setWorkflowTabHierarchy}
 							/>
 						)) ||
 						(workflowTabHierarchy === "workflow-error-details" && (
-							<EventDetailsWorkflowErrorDetails
-								setHierarchy={setWorkflowTabHierarchy}
-							/>
+							<EventDetailsWorkflowErrorDetails />
 						)))}
-				{page === 6 && (
+				{page === EventDetailsPage.AccessPolicy && (
 					<EventDetailsAccessPolicyTab
 						eventId={eventId}
 						header={tabs[page].bodyHeaderTranslation ?? ""}
@@ -281,13 +260,19 @@ const EventDetails = ({
 						setPolicyChanged={setPolicyChanged}
 					/>
 				)}
-				{page === 7 && (
+				{page === EventDetailsPage.Comments && (
 					<EventDetailsCommentsTab
 						eventId={eventId}
 						header={tabs[page].bodyHeaderTranslation ?? ""}
 					/>
 				)}
-				{page === 8 && !isLoadingStatistics && (
+				{page === EventDetailsPage.Tobira && (
+					<DetailsTobiraTab
+						kind="event"
+						id={eventId}
+					/>
+				)}
+				{page === EventDetailsPage.Statistics && !isLoadingStatistics && (
 					<EventDetailsStatisticsTab
 						eventId={eventId}
 						header={tabs[page].bodyHeaderTranslation ?? ""}

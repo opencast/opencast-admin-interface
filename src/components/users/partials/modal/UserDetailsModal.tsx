@@ -8,9 +8,12 @@ import { availableHotkeys } from "../../../../configs/hotkeysConfig";
  * This component renders the modal for displaying user details
  */
 const UserDetailsModal = ({
-    close,
-    username
-}: any) => {
+	close,
+	username,
+}: {
+	close: () => void,
+	username: string,
+}) => {
 	const { t } = useTranslation();
 
 	useHotkeys(

@@ -8,14 +8,41 @@ export const fetchAdopterRegistration = async () => {
 	return await response.data;
 };
 
+// get statistics information about adopter
+export const fetchAdopterStatisticsSummary = async () => {
+	const response = await axios.get("/admin-ng/adopter/summary");
+
+	return await response.data;
+};
+
+export type Registration = {
+	contactMe: boolean,
+ 	systemType: string,
+	allowsStatistics: boolean,
+	allowsErrorReports: boolean,
+	organisationName: string,
+	departmentName: string,
+	country: string,
+	postalCode: string,
+	city: string,
+	firstName: string,
+	lastName: string,
+	street: string,
+	streetNo: string,
+	email: string,
+	agreedToPolicy: boolean,
+}
+
 // post request for adopter information
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-export const postRegistration = async (values) => {
+export const postRegistration = async (
+	values: Registration
+) => {
 	// build body
 	let body = new URLSearchParams();
-	body.append("contactMe", values.contactMe);
-	body.append("allowsStatistics", values.allowsStatistics);
-	body.append("allowsErrorReports", values.allowsErrorReports);
+	body.append("contactMe", values.contactMe.toString());
+	body.append("systemType", values.systemType);
+	body.append("allowsStatistics", values.allowsStatistics.toString());
+	body.append("allowsErrorReports", values.allowsErrorReports.toString());
 	body.append("organisationName", values.organisationName);
 	body.append("departmentName", values.departmentName);
 	body.append("country", values.country);
@@ -26,6 +53,7 @@ export const postRegistration = async (values) => {
 	body.append("street", values.street);
 	body.append("streetNo", values.streetNo);
 	body.append("email", values.email);
+	body.append("agreedToPolicy", values.agreedToPolicy.toString());
 	body.append("registered", "true");
 
 	// save adopter information and return next state

@@ -5,7 +5,7 @@ import RecordingDetailsModal from "./modal/RecordingDetailsModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import { deleteRecording } from "../../../slices/recordingSlice";
+import { Recording, deleteRecording } from "../../../slices/recordingSlice";
 import { fetchRecordingDetails } from "../../../slices/recordingDetailsSlice";
 import { Tooltip } from "../../shared/Tooltip";
 
@@ -13,8 +13,9 @@ import { Tooltip } from "../../shared/Tooltip";
  * This component renders the action cells of recordings in the table view
  */
 const RecordingsActionCell = ({
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
+}: {
+	row: Recording
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -38,8 +39,7 @@ const RecordingsActionCell = ({
 		setRecordingDetails(true);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	const deletingRecording = (id) => {
+	const deletingRecording = (id: string) => {
 		dispatch(deleteRecording(id));
 	};
 

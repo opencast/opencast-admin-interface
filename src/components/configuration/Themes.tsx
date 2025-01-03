@@ -6,7 +6,6 @@ import cn from "classnames";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
 import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
-import { connect } from "react-redux";
 import { themesTemplateMap } from "../../configs/tableConfigs/themesTableMap";
 import { getTotalThemes } from "../../selectors/themeSelectors";
 import { loadThemesIntoTable } from "../../thunks/tableThunks";
@@ -25,10 +24,7 @@ import { fetchThemes } from "../../slices/themeSlice";
 /**
  * This component renders the table view of events
  */
-const Themes = ({
-// @ts-expect-error TS(7031): Binding element 'loadingThemesIntoTable' implicitl... Remove this comment to see the full error message
-	loadingThemesIntoTable,
-}) => {
+const Themes = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
@@ -40,17 +36,12 @@ const Themes = ({
 	const user = useAppSelector(state => getUserInformation(state));
 	const themes = useAppSelector(state => getTotalThemes(state));
 
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchThemesWrapper = async () => {
-		await dispatch(fetchThemes())
-	}
-
 	const loadThemes = async () => {
 		// Fetching themes from server
 		await dispatch(fetchThemes());
 
 		// Load users into table
-		loadingThemesIntoTable();
+		dispatch(loadThemesIntoTable());
 	};
 
 	useEffect(() => {
@@ -88,11 +79,12 @@ const Themes = ({
 			<Header />
 			<NavBar>
 				{/* Display modal for new series if add series button is clicked */}
-				<NewResourceModal
-					showModal={displayNewThemesModal}
-					handleClose={hideNewThemesModal}
-					resource={"themes"}
-				/>
+				{ displayNewThemesModal &&
+					<NewResourceModal
+						handleClose={hideNewThemesModal}
+						resource={"themes"}
+					/>
+				}
 
 				{/* Include Burger-button menu*/}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
@@ -127,8 +119,8 @@ const Themes = ({
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={fetchThemesWrapper}
-						loadResourceIntoTable={loadingThemesIntoTable}
+						loadResource={fetchThemes}
+						loadResourceIntoTable={loadThemesIntoTable}
 						resource={"themes"}
 					/>
 					<h1>{t("CONFIGURATION.THEMES.TABLE.CAPTION")}</h1>
@@ -142,15 +134,4 @@ const Themes = ({
 	);
 };
 
-// Getting state data out of redux store
-// @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-const mapStateToProps = (state) => ({
-});
-
-// Mapping actions to dispatch
-// @ts-expect-error TS(7006): Parameter 'dispatch' implicitly has an 'any' type.
-const mapDispatchToProps = (dispatch) => ({
-	loadingThemesIntoTable: () => dispatch(loadThemesIntoTable()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Themes);
+export default Themes;

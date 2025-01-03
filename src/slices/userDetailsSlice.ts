@@ -2,17 +2,29 @@ import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { addNotification } from './notificationSlice';
 import { buildUserBody } from "../utils/resourceUtils";
-import { NewUser } from './userSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 
 /**
  * This file contains redux reducer for actions affecting the state of details of a user
  */
+export type UserDetailsRole = {
+	name: string,
+	type: string,
+}
+
+export type UpdateUser = {
+	email: string,
+	name: string,
+	password: string,
+	roles: UserDetailsRole[],
+	username: string,
+}
+
 export type UserDetailsState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
 	provider: string,
-	roles: string[],
+	roles: UserDetailsRole[],
 	name: string,
 	username: string,
 	email: string,
@@ -42,7 +54,7 @@ export const fetchUserDetails = createAppAsyncThunk('userDetails/fetchUserDetail
 
 // update existing user with changed values
 export const updateUserDetails = createAppAsyncThunk('userDetails/updateUserDetails', async (params: {
-	values: NewUser,
+	values: UpdateUser,
 	username: string
 }, {dispatch}) => {
 	const { username, values } = params

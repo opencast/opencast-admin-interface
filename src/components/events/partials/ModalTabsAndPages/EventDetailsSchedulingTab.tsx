@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import cn from "classnames";
 import _ from "lodash";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Field, Formik } from "formik";
+import { Formik, FormikErrors, FormikProps } from "formik";
+import { Field } from "../../../shared/Field";
 import Notifications from "../../../shared/Notifications";
 import {
 	getSchedulingConflicts,
@@ -41,6 +42,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
 	checkConflicts,
 	saveSchedulingInfo,
+	SchedulingInfo,
 } from "../../../../slices/eventDetailsSlice";
 import {
 	removeNotificationWizardForm,
@@ -67,8 +69,7 @@ const EventDetailsSchedulingTab = ({
 	const checkingConflicts = useAppSelector(state => isCheckingConflicts(state));
 	const captureAgents = useAppSelector(state => getRecordings(state));
 
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const checkConflictsWrapper = (eventId: any, startDate: any, endDate: any, deviceId: any) => {
+	const checkConflictsWrapper = (eventId: string, startDate: Date, endDate: Date, deviceId: string) => {
 		dispatch(checkConflicts({eventId, startDate, endDate, deviceId}));
 	}
 
@@ -119,8 +120,7 @@ const EventDetailsSchedulingTab = ({
 	};
 
 	// changes the inputs in the formik
-// @ts-expect-error TS(7006): Parameter 'deviceId' implicitly has an 'any' type.
-	const changeInputs = (deviceId: Recording["id"], setFieldValue) => {
+	const changeInputs = (deviceId: Recording["id"], setFieldValue: (field: string, value: any) => Promise<void | FormikErrors<any>>) => {
 		setFieldValue("captureAgent", deviceId);
 		setFieldValue("inputs", []);
 	};
@@ -129,8 +129,7 @@ const EventDetailsSchedulingTab = ({
 	};
 
 	// checks validity of the formik form
-// @ts-expect-error TS(7006): Parameter 'formik' implicitly has an 'any' type.
-	const checkValidity = (formik) => {
+	const checkValidity = (formik: FormikProps<any>) => {
 		if (
 			formik.dirty &&
 			formik.isValid &&
@@ -157,8 +156,7 @@ const EventDetailsSchedulingTab = ({
 	};
 
 	// submits the formik form
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const submitForm = async (values) => {
+	const submitForm = async (values: SchedulingInfo) => {
 		dispatch(removeNotificationWizardForm());
 		const startDate = makeDate(
 			values.scheduleStartDate,
@@ -179,7 +177,7 @@ const EventDetailsSchedulingTab = ({
 						type: "error",
 						key: "EVENTS_NOT_UPDATED",
 						duration: -1,
-						parameter: null,
+						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					}));
 				}
@@ -197,12 +195,12 @@ const EventDetailsSchedulingTab = ({
 			: [];
 
 		return {
-			scheduleStartDate: startDate.setHours(0, 0, 0),
+			scheduleStartDate: startDate.setHours(0, 0, 0).toString(),
 			scheduleStartHour: source.start.hour != null ? makeTwoDigits(source.start.hour) : "",
 			scheduleStartMinute: source.start.minute != null ? makeTwoDigits(source.start.minute) : "",
 			scheduleDurationHours: source.duration.hour != null ? makeTwoDigits(source.duration.hour) : "",
 			scheduleDurationMinutes: source.duration.minute != null ? makeTwoDigits(source.duration.minute): "",
-			scheduleEndDate: endDate.setHours(0, 0, 0),
+			scheduleEndDate: endDate.setHours(0, 0, 0).toString(),
 			scheduleEndHour: source.end.hour != null ? makeTwoDigits(source.end.hour): "",
 			scheduleEndMinute: source.end.minute != null ? makeTwoDigits(source.end.minute): "",
 			captureAgent: source.device.name,
@@ -303,8 +301,7 @@ const EventDetailsSchedulingTab = ({
 															) : (
 																<>
 																	{sourceStartDate.toLocaleDateString(
-// @ts-expect-error TS(2532): Object is possibly 'undefined'.
-																		currentLanguage.dateLocale.code
+																		currentLanguage ? currentLanguage.dateLocale.code : undefined
 																	)}
 																</>
 															)}
@@ -535,8 +532,7 @@ const EventDetailsSchedulingTab = ({
 																		{new Date(
 																			formik.values.scheduleEndDate
 																		).toLocaleDateString(
-// @ts-expect-error TS(2532): Object is possibly 'undefined'.
-																			currentLanguage.dateLocale.code
+																			currentLanguage ? currentLanguage.dateLocale.code : undefined
 																		)}
 																	</span>
 																)}
@@ -552,8 +548,7 @@ const EventDetailsSchedulingTab = ({
 																		{new Date(
 																			formik.values.scheduleEndDate
 																		).toLocaleDateString(
-// @ts-expect-error TS(2532): Object is possibly 'undefined'.
-																			currentLanguage.dateLocale.code
+																			currentLanguage ? currentLanguage.dateLocale.code : undefined
 																		)}
 																	</span>
 																)}

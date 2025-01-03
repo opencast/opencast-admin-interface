@@ -8,6 +8,7 @@ import {
 	fetchSeriesDetailsFeeds,
 	fetchSeriesDetailsMetadata,
 	fetchSeriesDetailsTheme,
+	fetchSeriesDetailsTobira,
 } from "../../../slices/seriesDetailsSlice";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
@@ -17,6 +18,7 @@ import {
 } from "../../../selectors/seriesSeletctor";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import {
+	Series,
 	checkForEventsDeleteSeriesModal,
 	deleteSeries,
 } from "../../../slices/seriesSlice";
@@ -27,8 +29,9 @@ import { Tooltip } from "../../shared/Tooltip";
  * This component renders the action cells of series in the table view
  */
 const SeriesActionsCell = ({
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
+}: {
+	row: Series
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -50,8 +53,7 @@ const SeriesActionsCell = ({
 		setDeleteConfirmation(true);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	const deletingSeries = (id) => {
+	const deletingSeries = (id: string) => {
 		dispatch(deleteSeries(id));
 	};
 
@@ -65,6 +67,7 @@ const SeriesActionsCell = ({
 		await dispatch(fetchSeriesDetailsFeeds(row.id));
 		await dispatch(fetchSeriesDetailsTheme(row.id));
 		await dispatch(fetchSeriesDetailsThemeNames());
+		await dispatch(fetchSeriesDetailsTobira(row.id));
 
 		setSeriesDetailsModal(true);
 	};

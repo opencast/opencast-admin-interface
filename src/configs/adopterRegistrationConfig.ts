@@ -16,8 +16,8 @@ export const states = {
 	},
 	form: {
 		nextState: {
-			0: "thank_you",
-			1: "error",
+			0: "close",
+			1: "summary",
 			2: "legal_info",
 			3: "update",
 			4: "delete_submit",
@@ -29,7 +29,7 @@ export const states = {
 			skip: false,
 			close: true,
 			delete: false,
-			submitButtonText: "SUBMIT",
+			submitButtonText: "ADOPTER_REGISTRATION.MODAL.CONTINUE",
 		},
 	},
 	save: {
@@ -42,7 +42,7 @@ export const states = {
 			back: false,
 			skip: false,
 			close: false,
-			submitButtonText: null,
+			submitButtonText: "",
 		},
 	},
 	update: {
@@ -55,7 +55,7 @@ export const states = {
 			back: false,
 			skip: false,
 			close: false,
-			submitButtonText: null,
+			submitButtonText: "",
 		},
 	},
 	delete_submit: {
@@ -69,7 +69,7 @@ export const states = {
 			back: true,
 			skip: false,
 			close: true,
-			submitButtonText: "CONFIRM",
+			submitButtonText: "ADOPTER_REGISTRATION.MODAL.CONFIRM",
 		},
 	},
 	delete: {
@@ -82,7 +82,21 @@ export const states = {
 			back: false,
 			skip: false,
 			close: false,
-			submitButtonText: null,
+			submitButtonText: "",
+		},
+	},
+	summary: {
+		nextState: {
+			0: "thank_you",
+			1: "error",
+			5: "form",
+		},
+		buttons: {
+			submit: true,
+			back: true,
+			skip: false,
+			close: true,
+			submitButtonText: "ADOPTER_REGISTRATION.MODAL.SUBMIT",
 		},
 	},
 	thank_you: {
@@ -95,19 +109,20 @@ export const states = {
 			back: false,
 			skip: false,
 			close: true,
-			submitButtonText: null,
+			submitButtonText: "",
 		},
 	},
 	error: {
 		nextState: {
 			0: "close",
+			1: "error",
 		},
 		buttons: {
 			submit: false,
 			back: false,
 			skip: false,
 			close: true,
-			submitButtonText: null,
+			submitButtonText: "",
 		},
 	},
 	skip: {
@@ -120,7 +135,7 @@ export const states = {
 			back: false,
 			skip: false,
 			close: true,
-			submitButtonText: null,
+			submitButtonText: "",
 		},
 	},
 	legal_info: {
@@ -134,10 +149,21 @@ export const states = {
 			back: true,
 			skip: false,
 			close: true,
-			submitButtonText: null,
+			submitButtonText: "",
 		},
 	},
 };
+
+export const systemTypes = [
+	{
+		value: "production",
+		name: "ADOPTER_REGISTRATION.MODAL.FORM_STATE.SYSTEM_TYPE_PRODUCTION",
+	},
+	{
+		value: "test",
+		name: "ADOPTER_REGISTRATION.MODAL.FORM_STATE.SYSTEM_TYPE_TEST",
+	},
+];
 
 // countries that an adopter can choose as country of origin
 export const countries = [

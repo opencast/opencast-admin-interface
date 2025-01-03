@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Field, Formik } from "formik";
+import { Formik, FormikProps } from "formik";
+import { Field } from "../../../shared/Field";
 import cn from "classnames";
 import _ from "lodash";
 import Notifications from "../../../shared/Notifications";
@@ -8,10 +9,12 @@ import RenderDate from "../../../shared/RenderDate";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import RenderField from "../../../shared/wizard/RenderField";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
-import { hasAccess, isJson } from "../../../../utils/utils";
+import { hasAccess } from "../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
-import { useAppSelector } from "../../../../store";
-import { MetadataCatalog } from "../../../../slices/eventDetailsSlice";
+import { useAppDispatch, useAppSelector } from "../../../../store";
+import { MetadataCatalog } from "../../../../slices/eventSlice";
+import { AsyncThunk } from "@reduxjs/toolkit";
+import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 
 /**
  * This component renders metadata details of a certain event or series
@@ -24,22 +27,23 @@ const DetailsMetadataTab = ({
 	editAccessRole,
 }: {
 	metadataFields: MetadataCatalog,
-	updateResource: (id: string, values: { [key: string]: any }) => void,
+	updateResource: AsyncThunk<void, { id: string; values: { [key: string]: any; }; }, AsyncThunkConfig>
 	resourceId: string,
 	header: string,
 	editAccessRole: string,
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	const user = useAppSelector(state => getUserInformation(state));
 
 	const handleSubmit = (values: { [key: string]: any }) => {
-		updateResource(resourceId, values);
+		dispatch(updateResource({id: resourceId, values}));
 	};
 
 	// set current values of metadata fields as initial values
 	const getInitialValues = () => {
-		let initialValues = {};
+		let initialValues: { [key: string]: string | string[] } = {};
 
 		// Transform metadata fields and their values provided by backend (saved in redux)
 		if (
@@ -48,7 +52,6 @@ const DetailsMetadataTab = ({
 			metadataFields.fields.length > 0
 		) {
 			metadataFields.fields.forEach((field) => {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
 				initialValues[field.id] = field.value;
 			});
 		}
@@ -56,8 +59,7 @@ const DetailsMetadataTab = ({
 		return initialValues;
 	};
 
-// @ts-expect-error TS(7006): Parameter 'formik' implicitly has an 'any' type.
-	const checkValidity = (formik) => {
+	const checkValidity = (formik: FormikProps<{ [key: string]: string | string[] }>) => {
 		if (formik.dirty && formik.isValid && hasAccess(editAccessRole, user)) {
 			// check if user provided values differ from initial ones
 			return !_.isEqual(formik.values, formik.initialValues);
@@ -99,28 +101,7 @@ const DetailsMetadataTab = ({
 																// non-editable field if readOnly is set
 																!!field.collection &&
 																field.collection.length !== 0 ? (
-																	<td>
-																		{isJson(
-																			getMetadataCollectionFieldName(
-																				field,
-																				field
-																			)
-																		)
-																			? t(
-																					JSON.parse(
-																						getMetadataCollectionFieldName(
-																							field,
-																							field
-																						)
-																					).label
-																			  )
-																			: t(
-																					getMetadataCollectionFieldName(
-																						field,
-																						field
-																					)
-																			  )}
-																	</td>
+																	<td>{getMetadataCollectionFieldName(field, field, t)}</td>
 																) : (
 																	<td>{
 																		field.type === "time" || field.type === "date"
@@ -172,7 +153,7 @@ const DetailsMetadataTab = ({
 												</button>
 												<button
 													className="cancel"
-													onClick={() => formik.resetForm({ values: "" })}
+													onClick={() => formik.resetForm()}
 												>
 													{t("CANCEL")}
 												</button>

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Formik } from "formik";
+import { Formik, FormikErrors } from "formik";
 import {
 	deletingWorkflow as getDeletingWorkflow,
 	getBaseWorkflow,
@@ -19,10 +19,11 @@ import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
 	deleteWorkflow as deleteWf,
-	fetchWorkflowDetails,
 	fetchWorkflows,
 	performWorkflowAction,
 	saveWorkflowConfig,
+	setModalWorkflowId,
+	setModalWorkflowTabHierarchy,
 	updateWorkflow,
 } from "../../../../slices/eventDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
@@ -36,10 +37,8 @@ import { useTranslation } from "react-i18next";
  */
 const EventDetailsWorkflowTab = ({
 	eventId,
-	setHierarchy,
 }: {
 	eventId: string,
-	setHierarchy: (subTabName: WorkflowTabHierarchy) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -87,8 +86,8 @@ const EventDetailsWorkflowTab = ({
 	};
 
 	const openSubTab = (tabType: WorkflowTabHierarchy, workflowId: string) => {
-		dispatch(fetchWorkflowDetails({eventId, workflowId})).then();
-		setHierarchy(tabType);
+		dispatch(setModalWorkflowId(workflowId));
+		dispatch(setModalWorkflowTabHierarchy(tabType));
 		dispatch(removeNotificationWizardForm());
 	};
 
@@ -97,12 +96,11 @@ const EventDetailsWorkflowTab = ({
 		return true;
 	};
 
-// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
-	const changeWorkflow = (value, changeFormikValue) => {
+	const changeWorkflow = (value: string, changeFormikValue: (field: string, value: unknown) => Promise<void | FormikErrors<any>>) => {
 		let currentConfiguration = {};
 
 		if (value === baseWorkflow.workflowId) {
-			currentConfiguration = parseBooleanInObject(baseWorkflow.configuration);
+			currentConfiguration = parseBooleanInObject(baseWorkflow.configuration as { [key: string]: any });
 		} else {
 			currentConfiguration = setDefaultConfig(workflowDefinitions, value);
 		}
@@ -115,22 +113,22 @@ const EventDetailsWorkflowTab = ({
 	const setInitialValues = () => {
 		let initialConfig = undefined;
 
-		// TODO: Scheduled events are missing configuration for their workflow
-		// Figure out why the config is missing
 		if (baseWorkflow.configuration) {
 			initialConfig = parseBooleanInObject(baseWorkflow.configuration);
 		}
 
 		return {
-			workflowDefinition: !!workflow.workflowId
+			workflowDefinition: "workflowId" in workflow && !!workflow.workflowId
 				? workflow.workflowId
 				: baseWorkflow.workflowId,
 			configuration: initialConfig,
 		};
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (values: {
+		workflowDefinition: string,
+		configuration: { [key: string]: unknown } | undefined
+	}) => {
 		dispatch(saveWorkflowConfig({values, eventId}));
 	};
 

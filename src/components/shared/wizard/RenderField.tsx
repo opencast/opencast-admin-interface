@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import cn from "classnames";
 import { useClickOutsideField } from "../../../hooks/wizardHooks";
-import { isJson } from "../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../utils/resourceUtils";
 import DropDown, { DropDownType } from "../DropDown";
 import RenderDate from "../RenderDate";
@@ -67,15 +66,7 @@ const RenderField = ({
 						metadataField={metadataField}
 						field={field}
 						form={form}
-						text={
-							isJson(getMetadataCollectionFieldName(metadataField, field))
-								? t(
-										JSON.parse(
-											getMetadataCollectionFieldName(metadataField, field)
-										).label
-								  )
-								: t(getMetadataCollectionFieldName(metadataField, field))
-						}
+						text={getMetadataCollectionFieldName(metadataField, field, t)}
 						editMode={editMode}
 						setEditMode={setEditMode}
 						showCheck={showCheck}
@@ -87,7 +78,7 @@ const RenderField = ({
 					metadataField={metadataField}
 					field={field}
 					form={form}
-					text={t(getMetadataCollectionFieldName(metadataField, field))}
+					text={getMetadataCollectionFieldName(metadataField, field, t)}
 					editMode={editMode}
 					setEditMode={setEditMode}
 					showCheck={showCheck}

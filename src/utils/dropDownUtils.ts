@@ -27,6 +27,10 @@ export const filterBySearch = (filterText: string, type: DropDownType, options: 
 		return options.filter((item) =>
 			t(item[0]).toLowerCase().includes(filterText)
 		);
+	} else if (type === "filter") {
+		return options.filter((item) =>
+			t(item.label).toLowerCase().includes(filterText)
+		);
 	} else {
 		return options.filter((item) =>
 			item.value.toLowerCase().includes(filterText)
@@ -41,8 +45,7 @@ export const filterBySearch = (filterText: string, type: DropDownType, options: 
  * as well as adding an empty option, if available
  */
 export const formatDropDownOptions = (
-// @ts-expect-error TS(7006): Parameter 'unformattedOptions' implicitly has an '... Remove this comment to see the full error message
-	unformattedOptions,
+	unformattedOptions: any[],
 	type: DropDownType,
 	required: boolean,
 	t: TFunction
@@ -52,7 +55,7 @@ export const formatDropDownOptions = (
 	 * contains an `order` field, indicating that a custom ordering for that list
 	 * exists and the list therefore should not be ordered alphabetically.
 	 */
-	const hasCustomOrder = unformattedOptions.every((item: any) => 
+	const hasCustomOrder = unformattedOptions.every((item: any) =>
 		isJson(item.name) && JSON.parse(item.name).order !== undefined);
 
 	if (hasCustomOrder) {
@@ -115,6 +118,13 @@ export const formatDropDownOptions = (
 			formattedOptions.push({
 				value: item[0],
 				label: t(item[1]),
+			});
+		}
+	} else if (type === "filter") {
+		for (const item of unformattedOptions) {
+			formattedOptions.push({
+				value: item.value,
+				label: item.label,
 			});
 		}
 	} else {

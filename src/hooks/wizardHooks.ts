@@ -1,6 +1,7 @@
 import { FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import { Event } from "../slices/eventSlice";
+import { isEvent } from "../slices/tableSlice";
 
 export const usePageFunctions = <initialValuesType>(initialPage: number, initialValues: initialValuesType) => {
 	const [page, setPage] = useState(initialPage);
@@ -69,7 +70,7 @@ export const useSelectionChanges = <T extends RequiredFormProps>(
 	const onChangeSelected = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
 		const selected = e.target.checked;
 		let changedEvents = selectedEvents.map((event) => {
-			if (event.id === id) {
+			if (isEvent(event) && event.id === id) {
 				return {
 					...event,
 					selected: selected,

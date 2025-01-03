@@ -25,6 +25,7 @@
 	"RESET": "Sıfırla",
 	"SELECT_NO_OPTION_SELECTED": "Seçili seçenek yok",
 	"SELECT_NO_OPTIONS_AVAILABLE": "Mevcut Seçenek yok",
+	"SELECT_NO_MATCHING_RESULTS": "No matching results.",
 	"YES": "Evet",
 	"COPY": "Copy to clipboard",
 	"LTI": {
@@ -116,7 +117,8 @@
 				"GROUP": "Aşağıdaki grup silinecek",
 				"USER": "Aşağıdaki kullanıcı silinecek",
 				"THEME": "Aşağıdaki tema silinecek",
-				"LOCATION": "Aşağıdaki konum silinecek"
+				"LOCATION": "Aşağıdaki konum silinecek",
+				"TOBIRA_PATH": "The series will be removed from the following path in Tobira:"
 			},
 			"NAME": "İsim"
 		},
@@ -167,9 +169,14 @@
 		"GROUP_NOT_DELETED": "Grup silinemedi",
 		"SERIES_ADDED": "Dizi oluşturuldu",
 		"SERIES_NOT_SAVED": "Dizi kaydedilemedi",
+		"SERIES_PATH_UPDATED": "The series path has been updated",
+		"SERIES_PATH_REMOVED": "The series path has been removed",
+		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
+		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "Etkinlik oluşturuldu",
 		"EVENTS_UPLOAD_STARTED": "Etkinlik yüklenmekte…",
 		"EVENTS_NOT_CREATED": "Etkinlik oluşturulamadı",
+		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "Tüm etkinlikler başarıyla güncellendi",
 		"EVENTS_NOT_UPDATED": "Etkinlik kaydedilemedi",
 		"EVENTS_NOT_UPDATED_ID": "{{ id }} etkinliği kaydedilemedi",
@@ -192,7 +199,7 @@
 		"CONFLICT_ALREADY_ENDED": "Zamanlama hatası: Etkinlik zaten bitmiş durumda.",
 		"CONFLICT_END_BEFORE_START": "Zamanlama hatası: Bitiş zamanlaması başlangıçtan daha sonra olmalı.",
 		"CONFLICT_IN_THE_PAST": "Zamanlama planı güncelleştirilemedi: Bir etkinliği geçmişe planlayamazsınız.",
-		"INVALID_ACL_RULES": "Kuralların okuma veya/ve yazma hakkında(haklarında) etkin bir rolü olmalı.",
+		"INVALID_ACL_RULES": "Kuralların okuma veya\/ve yazma hakkında(haklarında) etkin bir rolü olmalı.",
 		"MISSING_ACL_RULES": "En az bir Yazma ve Okuma yetkisi gerekli!",
 		"SAVED_ACL_RULES": "Giriş kuralları kaydedildi.",
 		"SERIES_THEME_REPROCESS_EXISTING_EVENTS": "Dizideki mevcut etkinliklerin yeniden işlenmesi gerekecek",
@@ -221,7 +228,18 @@
 			"NO_EVENTS_UPDATED": "All updates failed.",
 			"SOME_EVENTS_NOT_UPDATED": "Some events could not be updated."
 		},
-		"PROBLEM_ON_START": "A error occurred on start up. Please contact your OpenCast admin"
+		"PROBLEM_ON_START": "An error occurred on start up. Please contact your Opencast admin",
+		"TOBIRA_OVERRIDE_NAME": "The title of the selected page will be overridden with the title of the series.",
+		"TOBIRA_NO_PATH_SEGMENT": "Page needs a path segment.",
+		"TOBIRA_NOT_MOUNTED": "Series could not be mounted in Tobira.",
+		"TOBIRA_PATH_SEGMENT_INVALID": "Path segment is invalid. A valid path segment is at least 2 characters long, does not contain any whitespace or control characters, none of the characters '<>\"[\\]^`{|}#%\/?]', and doesn't start with any of the characters '-+~@_!$&;:.,=*'()'.",
+		"TOBIRA_PATH_SEGMENT_UNIQUE": "The path segment of a page must be unique among all its sibling pages.",
+		"TOBIRA_PAGE_NOT_FOUND": "The page you tried to navigate to does not or no longer exist. Maybe try starting from the beginning.",
+		"TOBIRA_SERVER_ERROR": " Error talking to Tobira. Contact your system administrator and\/or try again later.",
+		"TOBIRA_COPIED_DIRECT_LINK": "Copied link to clipboard.",
+		"TOBIRA_FAILED_COPYING_DIRECT_LINK": "Couldn't copy link to clipboard.",
+		"TOBIRA_NOT_FOUND": "Tobira doesn't know about this series or event (yet). Try again in a few minutes or contact your system administrator.",
+		"TOBIRA_NOT_CONFIGURED": "Tobira is not configured (correctly)."
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Hareketler",
@@ -304,7 +322,7 @@
 				}
 			},
 			"EDIT": {
-				"DESCRIPTION": "Edit and/or select the metadata fields you want to update. A field cannot be selected if this doesn't result in a changed value for at least one event, or if the field isn't valid (e.g. required fields cannot be empty). Highlighted metadata fields have diverging values for the selected events.",
+				"DESCRIPTION": "Edit and\/or select the metadata fields you want to update. A field cannot be selected if this doesn't result in a changed value for at least one event, or if the field isn't valid (e.g. required fields cannot be empty). Highlighted metadata fields have diverging values for the selected events.",
 				"TABLE": {
 					"CAPTION": "Metadata of selected events",
 					"FIELDS": "Metadata",
@@ -384,8 +402,16 @@
 			"SKIP": "Not now",
 			"CONTINUE": "Continue",
 			"BACK": "Back",
+			"SUBMIT": "Submit",
+			"CONFIRM": "Confirm",
 			"LEGAL_INFO_STATE": {
 				"HEADER": "Terms of Service and Privacy Policy"
+			},
+			"SUMMARY_STATE": {
+				"HEADER": "This is a JSON summary of exactly what would be sent to Opencast's servers",
+				"GENERAL_HEADER": "Adopter Information",
+				"STATS_HEADER": "Statistical Information",
+				"NO_STATS_HEADER": "No statistics data will be shared"
 			},
 			"INFORMATION_STATE": {
 				"HEADER": "Thank you for using Opencast!",
@@ -393,7 +419,7 @@
 				"INFORMATION_PARAGRAPH_2": "We highly appreciate any feedback, as even some of the data that we gather about the Opencast usage will help us to create better software, have better chances for additional funding and attract more companies to provide services around Opencast."
 			},
 			"FORM_STATE": {
-				"ORGANISATION": "Organisation",
+				"ORGANISATION": "Organization",
 				"DEPARTMENT": "Department",
 				"COUNTRY": "Country",
 				"POSTAL_CODE": "Postal code",
@@ -409,9 +435,13 @@
 				"ADDITIONAL_ADRESS_INFO": "Add. adress information",
 				"MAIL": "Email",
 				"CONTACT_ME": "Contact me for updates and secruity issues",
+				"SYSTEM_TYPE_HEADLINE": "For what purpose do you use this system?",
+				"SYSTEM_TYPE": "System Type",
+				"SYSTEM_TYPE_PRODUCTION": "Production System",
+				"SYSTEM_TYPE_TEST": "Test System",
 				"WHICH_DATA_TO_SHARE": "Which data do you want to share?",
 				"POLICY_HEADLINE": "Privacy policy and terms of use",
-				"USAGE_STATISTICS": "Usage statistcs",
+				"USAGE_STATISTICS": "Usage statistics",
 				"ERROR_REPORTS": "Error reports",
 				"READ_TERMS_OF_USE_BEFORE": "I have read and agree to the",
 				"READ_TERMS_OF_USE_LINK": "privacy policy and terms of use",
@@ -607,7 +637,7 @@
 					"ASSETS": "Detayları görüntüle",
 					"START": "Bu başlangıç tarihi için filtre",
 					"SERIES": "Bu dizi için filtre",
-					"STATUS": "Bu etkinlik durumu için filtre",
+					"STATUS": "Open event status",
 					"LOCATION": "Yere göre filtrele",
 					"DETAILS": "Etkinlik detaylarını görüntüle",
 					"DELETE": "Etkinliği sil",
@@ -616,6 +646,7 @@
 					"EDITOR_NEEDS_CUTTING": "Video Editörünü aç (videonun kesilmesini isteyen bir yorum var)",
 					"COMMENTS": "Yorumları görüntüle",
 					"PAUSED_WORKFLOW": "Duraklatılmış iş akışını görüntüle",
+					"PLAYER": "Open player",
 					"PRESENTER": "Bu sunucu için filtre"
 				},
 				"SELECT_ALL": "Select all events",
@@ -632,7 +663,7 @@
 				"PROCESSED": "Tamamlandı",
 				"RECORDING_FAILURE": "Kayıt hatası",
 				"PROCESSING_FAILURE": "İşlem hatası",
-				"PROCESSING_CANCELED": "İşlem iptal edildi"
+				"PROCESSING_CANCELLED": "Processing canceled"
 			},
 			"STATE_MAPPING": {
 				"RETRACTING": "Geri çekilmekte",
@@ -654,7 +685,8 @@
 					"WORKFLOWS": "İş Akışları",
 					"ACCESS": "Erişim İlkesi",
 					"COMMENTS": "Yorumlar",
-					"STATISTICS": "İstatistikler"
+					"STATISTICS": "İstatistikler",
+					"TOBIRA": "Tobira"
 				},
 				"PUBLICATIONS": {
 					"CAPTION": "Yayınlar",
@@ -665,7 +697,7 @@
 					"ENGAGE": "Katıl",
 					"ENGAGE_LIVE": "Engage Live",
 					"EXTERNAL_API": "Harici API Yayıni",
-					"YOUTUBE": "Youtube",
+					"YOUTUBE": "YouTube",
 					"OAIPMH": "OAI-PMH",
 					"SELECT_WORKFLOW": "İş akışı seçin",
 					"SELECT_WORKFLOW_EMPTY": "Kullanılabilir iş alanları yok"
@@ -861,8 +893,7 @@
 						"DETAILS": "Ayrıntılar"
 					},
 					"ROLES": {
-						"LABEL": "Bir rol seç",
-						"EMPTY": "Rol bulunamadı"
+						"LABEL": "Select or create a role"
 					}
 				},
 				"COMMENTS": {
@@ -878,9 +909,9 @@
 					"REASONS": {
 						"CUTTING": "Kesme gerekli",
 						"REVIEW": "İnceleme gerekli",
-						"ASYNC": "A / V parçaları eşzamansız",
+						"ASYNC": "A \/ V parçaları eşzamansız",
 						"AUDIO_ISSUE": "Eksik ya da bozuk ses parçası",
-						"CANCELLED": "Cancelled event",
+						"CANCELLED": "Canceled event",
 						"CONFLICTING_METADATA": "Çakışan metaveri",
 						"IMPROPER_POINT": "Hatalı giriş ve çıkış noktası",
 						"MISSING_AGREEMENT": "Anlaşma eksik",
@@ -928,6 +959,13 @@
 					"LOCKED": {
 						"RUNNING": "İşlemler bir etkinlik üzerinde çalışırken düzenleme meta verisine izin verilmez"
 					}
+				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to event",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This event is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this event"
 				},
 				"SCHEDULING": {
 					"CAPTION": "Participation status",
@@ -1096,6 +1134,23 @@
 					"LABEL": "Şablon yok",
 					"EMPTY": "Şablon bulunamadı"
 				},
+				"TOBIRA": {
+					"CAPTION": "Tobira",
+					"DESCRIPTION": "Here you can select where you want the series to show up in the Tobira video portal. You can only select one location here, and it needs to be empty (marked in bold). You can create new pages here, but note that they are only persisted if they are on the path to the selected page.",
+					"SELECT_PAGE": "Select a target page",
+					"PAGE_TITLE": "Subpage title",
+					"PATH_SEGMENT": "Path segment",
+					"SUBPAGES": "Subpages",
+					"ADD_SUBPAGE": "Add subpage",
+					"CANCEL": "Cancel",
+					"HOMEPAGE": "Homepage",
+					"SELECTED_PAGE": "Series will be mounted under the following path",
+					"NO_PAGE_SELECTED": "No page selected. Series will not be mounted in Tobira.",
+					"NO_PAGE_SELECTED_EDIT": "No page selected. Series path will not be changed.",
+					"PATH": "Path",
+					"DIRECT_LINK": "A direct link will be available.",
+					"MOUNT_DISCLAIMER": "Series can only be mounted in empty pages"
+				},
 				"SUMMARY": {
 					"CAPTION": "Özet"
 				}
@@ -1124,6 +1179,7 @@
 					"EVENTS": "Etkinlikler",
 					"PERMISSIONS": "Erişim ilkesi",
 					"THEME": "Tema",
+					"TOBIRA": "Tobira",
 					"STATISTICS": "İstatistikler"
 				},
 				"ACCESS": {
@@ -1170,6 +1226,18 @@
 					"DESCRIPTION": "Açıklama",
 					"REPLACE_SERIES_METADATA": "Update series metadata",
 					"REPLACE_SERIES_THEME": "Update series theme"
+				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to series",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This series is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this series",
+					"SHOW_PAGES": "Show all pages",
+					"EDIT_PATH": "Edit path",
+					"REMOVE_PATH": "Remove path",
+					"MOUNT_SERIES": "Mount series",
+					"DESCRIPTION": "You may edit the path of pages containing this series if the page has no other content."
 				},
 				"EVENTS": {
 					"TITLE": "Başlık",
@@ -1291,6 +1359,14 @@
 					"RIGHT": "Seçilen roller",
 					"REMOVE": "Rolü sil",
 					"ADD": "Rol ekle"
+				},
+				"STRENGTH": {
+					"BAD": "Bad password",
+					"VERYWEAK": "Very weak password",
+					"WEAK": "Weak password",
+					"GOOD": "Good password",
+					"STRONG": "Strong password",
+					"VERYSTRONG": "Very strong password"
 				}
 			}
 		},
@@ -1647,131 +1723,6 @@
 			}
 		}
 	},
-	"VIDEO_TOOL": {
-		"WARNING_UNSAVED": "Uyarı: Bazı değişiklikler kaydedilmedi. Video editörü bırakırsanız, bu değişiklikler kaybolur. Gerçekten devam etmek istiyor musunuz?",
-		"TIMELINE": "Zaman tüneli",
-		"ZOOMLEVEL": "Yakınlaştırma Düzeyi",
-		"PREVIEW_MODE": "Önizleme modu",
-		"PREVIEW_MODE_TOOLTIP": "Yalnızca seçili segmentleri oynat",
-		"ZOOM": "Yakınlaştır",
-		"BUTTONS": {
-			"CLOSE": "Kapat",
-			"SAVE": "Kaydet",
-			"PROCESS": "Kaydet & Devam et",
-			"ADD_COMMENT": "Yorum Ekle"
-		},
-		"TABS": {
-			"EDIT": "Düzenleyici",
-			"CAPTIONS": "Altyazılar",
-			"ANNOTATIONS": "Ek açıklamalar"
-		},
-		"AREAS": {
-			"METADATA": "Metaveri",
-			"THUMBNAIL": "Küçük resim",
-			"COMMENTS": "Yorumlar",
-			"SEGMENTS": "Segmentler",
-			"TRACKS": "Parçalar"
-		},
-		"ACTIONS": {
-			"SPLIT": "Ayır",
-			"SPLIT_TOOLTIP": "Şu andaki imleç konumunda bölütü böl.",
-			"CUT": "Gizle/Göster",
-			"CUT_TOOLTIP": "Videonun seçilen bölümünü gizleyin veya gösterin.",
-			"REPLAY_SEGMENT": "Bölümün başlangıcını oynat",
-			"REPLAY_SEGMENT_TOOLTIP": "Mevcut bölümü en baştan oynat.",
-			"REPLAY_END_OF_SEGMENT": "Bölümün Sonunu Oynat",
-			"REPLAY_END_OF_SEGMENT_TOOLTIP": "Play a few seconds at the end of the current segment.",
-			"REPLAY_SEGMENT_WITH_PREROLL": "Geçişi Oynat",
-			"REPLAY_SEGMENT_WITH_PREROLL_TOOLTIP": "Play a few seconds containing the end of the previous and the beginning of the next segment.",
-			"UNDO": "Geri Al",
-			"REDO": "İleri Al",
-			"CLEAR_SEGMENTS": "Bölümlerin Tümünü Temizle",
-			"CLEAR_SEGMENTS_TOOLTIP": "Tüm bölümleri temizleyip yerine tek bir büyük bölüm bırak."
-		},
-		"SEGMENTS": {
-			"REMOVE_SEGMENT": "Bölümü Sil",
-			"SHOW_SEGMENT": "Bu Bölütü Göster",
-			"HIDE_SEGMENT": "Bu Bölütü Gizle",
-			"START": "Başla",
-			"END": "Son"
-		},
-		"THUMBNAIL": {
-			"DESCRIPTION": "A default thumbnail used to visually represent the event is generated automatically. In case you want to use a different thumbnail, you can extract a thumbnail from the video at the current playback position or upload an image.",
-			"ACTIONS": {
-				"EXTRACT": {
-					"FROM_VIDEO": {
-						"LABEL": "Videodan çıkarıp al",
-						"TOOLTIP": "Extract the thumbnail from the video at the current playback position"
-					},
-					"FROM_LEFT_VIDEO": {
-						"LABEL": "Sol taraftaki videodan çıkarıp al",
-						"TOOLTIP": "Extract the thumbnail from the left video at the current playback position"
-					},
-					"FROM_RIGHT_VIDEO": {
-						"LABEL": "Sağ taraftaki videodan çıkarıp al",
-						"TOOLTIP": "Küçük resmi, sağdaki videodan mevcut oynatma yerinden çıkarıp al"
-					}
-				},
-				"UPLOAD": {
-					"LABEL": "Resim yükle",
-					"TOOLTIP": "Bir küçük resim yükle"
-				},
-				"USE_DEFAULT": {
-					"LABEL": "Varsayılan küçük resim kullan",
-					"TOOLTIP": "Otomatik olarak oluşturulan varsayılan küçük resmi kullanın"
-				}
-			},
-			"PREVIEW": {
-				"NOT_AVAILABLE": "Önizleme Mevcut Değil",
-				"OUTDATED": "The preview is outdated since segments were changed. It will be updated as soon as you save your changes."
-			},
-			"CURRENT": {
-				"DEFAULT": "Şu anda varsayılan küçük resmi kullanıyorsunuz.",
-				"SNAPSHOT": "Şu anda kullanılan küçük resim videodan alınmıştır.",
-				"UPLOAD": "Şu anda yüklenmiş bir küçük resmi kullanıyorsunuz."
-			}
-		},
-		"TRACKS": {
-			"DESCRIPTION": "You can unselect tracks to exclude them from further processing. Please note that you need to (re-)publish the event to actually apply the changes.",
-			"NOTIFICATION": {
-				"NO_VIDEO_TRACK_SELECTED": "En az bir video kanalı etkinleştirmeniz gerekir",
-				"NO_AUDIO_TRACK_SELECTED": "En az bir ses parçası etkinleştirmeniz gerekir"
-			},
-			"TRACK": {
-				"HEADER": "Parça"
-			},
-			"VIDEO": {
-				"HEADER": "Video kaydı",
-				"NOT_AVAILABLE": "Hiçbir Video kaydı bulunmuyor",
-				"NO_PREVIEW_AVAILABLE": "Önizleme görseli bulunamadı",
-				"NO_TRACK_SELECTED": "Hiçbir video kaydı seçilmedi",
-				"TOOLTIPS": {
-					"HIDE": "Bu video kaydı şu anda etkin. Devre dışı bırakmak için tıklayın",
-					"UNHIDE": "Bu video kaydı şu anda devre dışı. Etkinleştirmek için tıklayın."
-				}
-			},
-			"AUDIO": {
-				"HEADER": "Ses parçası",
-				"NOT_AVAILABLE": "Hiçbir ses kaydı bulunmuyor",
-				"NO_PREVIEW_AVAILABLE": "Önizleme görseli bulunamadı",
-				"NO_TRACK_SELECTED": "Hiçbir ses kaydı seçilmedi",
-				"TOOLTIPS": {
-					"HIDE": "Bu ses kaydı şu anda etkin. Devre dışı bırakmak için tıklayın",
-					"UNHIDE": "Bu ses kaydı şu anda devre dışı. Etkinleştirmek için tıklayın"
-				}
-			}
-		},
-		"PLAYER": {
-			"PLAY": "Oynat",
-			"PAUSE": "Duraklat",
-			"NEXT_FRAME": "Sonraki kare",
-			"PREVIOUS_FRAME": "Önceki kare",
-			"NEXT_SEGMENT": "Sonraki bölüm / Sonuna atla",
-			"PREVIOUS_SEGMENT": "Önceki bölüm / Başına atla",
-			"MUTE": "Sustur",
-			"VOLUME": "Ses"
-		}
-	},
 	"TABLE_FILTERS": {
 		"FILTER_SELECTION": {
 			"PLACEHOLDER": "Lütfen bir filtre seçin…",
@@ -2117,7 +2068,7 @@
 	},
 	"EDITABLE": {
 		"MULTI": {
-			"PLACEHOLDER": "Birden çok değer eklemek için her değer arasında Giriş/Enter tuşuna basın"
+			"PLACEHOLDER": "Birden çok değer eklemek için her değer arasında Giriş\/Enter tuşuna basın"
 		}
 	},
 	"STATISTICS": {
@@ -2128,7 +2079,7 @@
 		"TOTAL": "Toplam",
 		"GRANULARITY": "Ayrıntı Düzeyi",
 		"NAVIGATION": {
-			"ORGANIZATION": "Organizasyon"
+			"ORGANIZATION": "Organization"
 		},
 		"TIME_MODES": {
 			"Year": "Year",
@@ -2148,7 +2099,7 @@
 			"PUBLISHEDHOURS": "Published Hours of Video"
 		},
 		"DESCRIPTION": {
-			"RANDOM": "Bu rastgele veriler sadece deneme ve tanıtım amaçlıdır. Bu grafiğin istatistik sağlayıcısının json tanımını 'etc/providers' klasörün içinden silerek bu grafiği devre dışı bırakabilirsiniz.",
+			"RANDOM": "Bu rastgele veriler sadece deneme ve tanıtım amaçlıdır. Bu grafiğin istatistik sağlayıcısının json tanımını 'etc\/providers' klasörün içinden silerek bu grafiği devre dışı bırakabilirsiniz.",
 			"VIEWS_SUM": "Zaman birimi başına toplam görüntülenme sayısını görüntüler.",
 			"VIEWS_AVG": "Zaman birimi başına ortalama günlük görüntü sayısını görüntüler.",
 			"PUBLISHEDHOURS": "This displays the published hours of video"

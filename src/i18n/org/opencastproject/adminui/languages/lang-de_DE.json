@@ -25,6 +25,7 @@
 	"RESET": "Zurücksetzen",
 	"SELECT_NO_OPTION_SELECTED": "Keine Option ausgewählt",
 	"SELECT_NO_OPTIONS_AVAILABLE": "Keine Optionen verfügbar",
+	"SELECT_NO_MATCHING_RESULTS": "Keine Treffer.",
 	"YES": "Ja",
 	"COPY": "In die Zwischenablage kopieren",
 	"LTI": {
@@ -116,7 +117,8 @@
 				"GROUP": "Die folgende Gruppe wird gelöscht",
 				"USER": "Der folgende Benutzer wird gelöscht",
 				"THEME": "Das folgende Branding wird gelöscht",
-				"LOCATION": "Folgender Standort wird entfernt"
+				"LOCATION": "Folgender Standort wird entfernt",
+				"TOBIRA_PATH": "The series will be removed from the following path in Tobira:"
 			},
 			"NAME": "Name"
 		},
@@ -167,9 +169,14 @@
 		"GROUP_NOT_DELETED": "Die Gruppe konnte nicht gelöscht werden",
 		"SERIES_ADDED": "Die Serie wurde angelegt",
 		"SERIES_NOT_SAVED": "Die Serie konnte nicht gespeichert werden",
+		"SERIES_PATH_UPDATED": "The series path has been updated",
+		"SERIES_PATH_REMOVED": "The series path has been removed",
+		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
+		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "Das Video wurde angelegt",
 		"EVENTS_UPLOAD_STARTED": "Das Video wird hochgeladen… {{ progress }}%",
 		"EVENTS_NOT_CREATED": "Das Video konnte nicht angelegt werden",
+		"EVENTS_UPDATED": "Das Video wurde erfolgreich aktualisiert",
 		"EVENTS_UPDATED_ALL": "Alle Videos wurden erfolgreich aktualisiert",
 		"EVENTS_NOT_UPDATED": "Das Video konnte nicht gespeichert werden",
 		"EVENTS_NOT_UPDATED_ID": "Das Video {{ id }} konnte nicht gespeichert werden",
@@ -180,8 +187,8 @@
 		"EVENT_DELETED": "Das Video wurde gelöscht.",
 		"EVENT_WILL_BE_DELETED": "Das Video wird gelöscht",
 		"EVENTS_DELETED": "Die Videos werden gelöscht.",
-		"EVENTS_NOT_DELETED": "Das/die Video(s) konnte(n) nicht gelöscht werden.",
-		"EVENTS_NOT_DELETED_NOT_AUTHORIZED": "Die/das Video(s) konnte(n) nicht gelöscht werden, da Sie dazu nicht berechtigt sind.",
+		"EVENTS_NOT_DELETED": "Das\/die Video(s) konnte(n) nicht gelöscht werden.",
+		"EVENTS_NOT_DELETED_NOT_AUTHORIZED": "Die\/das Video(s) konnte(n) nicht gelöscht werden, da Sie dazu nicht berechtigt sind.",
 		"SERIES_DELETED": "Die Serie wurde gelöscht",
 		"SERIES_NOT_DELETED": "Die Serie konnte nicht gelöscht werden",
 		"LOCATION_DELETED": "Der Standort wurde gelöscht",
@@ -192,7 +199,7 @@
 		"CONFLICT_ALREADY_ENDED": "Planungs-Fehler: Das Video endete bereits.",
 		"CONFLICT_END_BEFORE_START": "Planungs-Fehler: Der Endzeitpunkt des Ereignisses muss nach dem Anfangszeitpunkt liegen.",
 		"CONFLICT_IN_THE_PAST": "Die Planung konnte nicht aktualisiert werden: Sie können ein Video nicht in der Vergangenheit planen.",
-		"INVALID_ACL_RULES": "Regeln müssen eine gültige Rolle und Lese-/Schreibrechte enthalten.",
+		"INVALID_ACL_RULES": "Regeln müssen eine gültige Rolle und Lese-\/Schreibrechte enthalten.",
 		"MISSING_ACL_RULES": "Es ist mindestens eine Rolle mit Lese- und Schreibberechtigungen erforderlich!",
 		"SAVED_ACL_RULES": "Die Zugriffsregeln wurden gespeichert.",
 		"SERIES_THEME_REPROCESS_EXISTING_EVENTS": "Die vorhandenen Videos in dieser Serie müssen neu verarbeitet werden",
@@ -221,7 +228,18 @@
 			"NO_EVENTS_UPDATED": "Alle Aktualisierungen schlugen fehl.",
 			"SOME_EVENTS_NOT_UPDATED": "Einige Videos konnten nicht aktualisiert werden."
 		},
-		"PROBLEM_ON_START": "Beim Laden ist ein Fehler aufgetreten. Bitte den OpenCast-Admin kontaktieren"
+		"PROBLEM_ON_START": "An error occurred on start up. Please contact your Opencast admin",
+		"TOBIRA_OVERRIDE_NAME": "The title of the selected page will be overridden with the title of the series.",
+		"TOBIRA_NO_PATH_SEGMENT": "Page needs a path segment.",
+		"TOBIRA_NOT_MOUNTED": "Series could not be mounted in Tobira.",
+		"TOBIRA_PATH_SEGMENT_INVALID": "Path segment is invalid. A valid path segment is at least 2 characters long, does not contain any whitespace or control characters, none of the characters '<>\"[\\]^`{|}#%\/?]', and doesn't start with any of the characters '-+~@_!$&;:.,=*'()'.",
+		"TOBIRA_PATH_SEGMENT_UNIQUE": "The path segment of a page must be unique among all its sibling pages.",
+		"TOBIRA_PAGE_NOT_FOUND": "The page you tried to navigate to does not or no longer exist. Maybe try starting from the beginning.",
+		"TOBIRA_SERVER_ERROR": " Error talking to Tobira. Contact your system administrator and\/or try again later.",
+		"TOBIRA_COPIED_DIRECT_LINK": "Copied link to clipboard.",
+		"TOBIRA_FAILED_COPYING_DIRECT_LINK": "Couldn't copy link to clipboard.",
+		"TOBIRA_NOT_FOUND": "Tobira doesn't know about this series or event (yet). Try again in a few minutes or contact your system administrator.",
+		"TOBIRA_NOT_CONFIGURED": "Tobira is not configured (correctly)."
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Aktionen",
@@ -304,7 +322,7 @@
 				}
 			},
 			"EDIT": {
-				"DESCRIPTION": "Bearbeiten und/oder wählen Sie die Metadatenfelder, die Sie aktualisieren möchten. Ein Feld kann nicht ausgewählt werden, wenn dies nicht zu einem geänderten Wert für mindestens ein Video führt, oder wenn das Feld ungültig ist (beispielsweise dürfen Pflichtfelder nicht leer sein). Markierte Metadatenfelder haben abweichende Werte für die ausgewählten Videos.",
+				"DESCRIPTION": "Bearbeiten und\/oder wählen Sie die Metadatenfelder, die Sie aktualisieren möchten. Ein Feld kann nicht ausgewählt werden, wenn dies nicht zu einem geänderten Wert für mindestens ein Video führt, oder wenn das Feld ungültig ist (beispielsweise dürfen Pflichtfelder nicht leer sein). Markierte Metadatenfelder haben abweichende Werte für die ausgewählten Videos.",
 				"TABLE": {
 					"CAPTION": "Metadaten gewählter Videos",
 					"FIELDS": "Metadaten",
@@ -384,8 +402,16 @@
 			"SKIP": "Nicht jetzt",
 			"CONTINUE": "Weiter",
 			"BACK": "Zurück",
+			"SUBMIT": "Abschicken",
+			"CONFIRM": "Bestätigen",
 			"LEGAL_INFO_STATE": {
 				"HEADER": "Nutzungsbedingungen und Datenschutzerklärung"
+			},
+			"SUMMARY_STATE": {
+				"HEADER": "Dies ist eine JSON-Zusammenfassung dessen, was genau an Opencast's Server gesendet werden würde",
+				"GENERAL_HEADER": "Adopter-Informationen",
+				"STATS_HEADER": "Statistikinformationen",
+				"NO_STATS_HEADER": "Es werden keine statistischen Daten geteilt"
 			},
 			"INFORMATION_STATE": {
 				"HEADER": "Danke, dass Sie Opencast nutzen!",
@@ -409,9 +435,13 @@
 				"ADDITIONAL_ADRESS_INFO": "Zusätzl. Adressinformationen",
 				"MAIL": "E-Mail-Adresse",
 				"CONTACT_ME": "Kontaktiere mich für Aktualisierungen und Sicherheitsupdates",
+				"SYSTEM_TYPE_HEADLINE": "Zu welchem Zweck verwenden Sie dieses System?",
+				"SYSTEM_TYPE": "Systemtyp",
+				"SYSTEM_TYPE_PRODUCTION": "Produktivsystem",
+				"SYSTEM_TYPE_TEST": "Testsystem",
 				"WHICH_DATA_TO_SHARE": "Welche Daten möchtest du teilen?",
 				"POLICY_HEADLINE": "Datenschutzerklärung und Nutzungsbedingungen",
-				"USAGE_STATISTICS": "Nutzungsstatistik",
+				"USAGE_STATISTICS": "Nutzungsstatistiken",
 				"ERROR_REPORTS": "Fehlerberichte",
 				"READ_TERMS_OF_USE_BEFORE": "Ich las und akzeptiere die",
 				"READ_TERMS_OF_USE_LINK": "Datenschutzerklärung und Nutzungsbedingungen",
@@ -607,7 +637,7 @@
 					"ASSETS": "Anlagedetails öffnen",
 					"START": "Nach diesem Startdatum filtern",
 					"SERIES": "Nach dieser Serie filtern",
-					"STATUS": "Nach diesem Verarbeitungsstatus filtern",
+					"STATUS": "Verarbeitungsstatus anzeigen",
 					"LOCATION": "Nach diesem Standort filtern",
 					"DETAILS": "Video-Details anzeigen",
 					"DELETE": "Video löschen",
@@ -616,6 +646,7 @@
 					"EDITOR_NEEDS_CUTTING": "Video Editor öffnen (ein Kommentar zeigt, dass ein Videoschnitt angefordert wurde)",
 					"COMMENTS": "Kommentare ansehen",
 					"PAUSED_WORKFLOW": "Angehaltenen Workflow anzeigen",
+					"PLAYER": "Im Player öffnen",
 					"PRESENTER": "Nach diesem Vortragenden filtern"
 				},
 				"SELECT_ALL": "Alle Aufzeichnungen auswählen",
@@ -632,7 +663,7 @@
 				"PROCESSED": "Verarbeitet",
 				"RECORDING_FAILURE": "Aufnahme-Fehler",
 				"PROCESSING_FAILURE": "Verarbeitungs-Fehler",
-				"PROCESSING_CANCELED": "Verarbeitung abgebrochen"
+				"PROCESSING_CANCELLED": "Verarbeitung abgebrochen"
 			},
 			"STATE_MAPPING": {
 				"RETRACTING": "Wird zurückgezogen",
@@ -654,7 +685,8 @@
 					"WORKFLOWS": "Workflows",
 					"ACCESS": "Zugriffsrechte",
 					"COMMENTS": "Kommentare",
-					"STATISTICS": "Statistik"
+					"STATISTICS": "Statistik",
+					"TOBIRA": "Tobira"
 				},
 				"PUBLICATIONS": {
 					"CAPTION": "Veröffentlichungen",
@@ -861,8 +893,7 @@
 						"DETAILS": "Details"
 					},
 					"ROLES": {
-						"LABEL": "Rolle auswählen",
-						"EMPTY": "Keine Rolle gefunden"
+						"LABEL": "Rolle auswählen oder erstellen"
 					}
 				},
 				"COMMENTS": {
@@ -878,9 +909,9 @@
 					"REASONS": {
 						"CUTTING": "Schneiden erforderlich",
 						"REVIEW": "Überprüfung erforderlich",
-						"ASYNC": "A/V Spuren asynchron",
+						"ASYNC": "A\/V Spuren asynchron",
 						"AUDIO_ISSUE": "Fehlende oder beschädigte Audiospur",
-						"CANCELLED": "Cancelled event",
+						"CANCELLED": "Abgebrochene Aufzeichnung",
 						"CONFLICTING_METADATA": "Widersprüchliche Metadaten",
 						"IMPROPER_POINT": "Unpassender Start- oder Endzeitpunkt",
 						"MISSING_AGREEMENT": "Fehlende Vereinbarung",
@@ -928,6 +959,13 @@
 					"LOCKED": {
 						"RUNNING": "Das Bearbeiten von Metadaten ist nicht zulässig während sich das Video in Verarbeitung befindet"
 					}
+				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to event",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This event is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this event"
 				},
 				"SCHEDULING": {
 					"CAPTION": "Publikations-Status",
@@ -1090,11 +1128,28 @@
 				"THEME": {
 					"CAPTION": "Branding",
 					"DESCRIPTION": {
-						"TEXT": "Es kann optional ein Branding ausgewählt werden. Damit lassen sich Vor-/ Nachspannvideos, Wasserzeichen oder Titelbild mit Metadaten generieren."
+						"TEXT": "Es kann optional ein Branding ausgewählt werden. Damit lassen sich Vor-\/ Nachspannvideos, Wasserzeichen oder Titelbild mit Metadaten generieren."
 					},
 					"TITLE": "Branding",
 					"LABEL": "Branding auswählen",
 					"EMPTY": "Kein Branding gefunden"
+				},
+				"TOBIRA": {
+					"CAPTION": "Tobira",
+					"DESCRIPTION": "Hier können Sie auswählen, wo die Serie im Videoportal erscheinen soll. Sie können nur einen Ort auswählen und dieser darf nicht belegt sein (fett markiert). Sie können auch neue Seiten anlegen. Diese werden aber nur dann im Videoportal erstellt, wenn sie auf dem Pfad zur ausgewählten Seite liegen.",
+					"SELECT_PAGE": "Zielseite auswählen",
+					"PAGE_TITLE": "Titel der Unterseite",
+					"PATH_SEGMENT": "Pfadsegment",
+					"SUBPAGES": "Unterseiten",
+					"ADD_SUBPAGE": "Unterseite hinzufügen",
+					"CANCEL": "Abbrechen",
+					"HOMEPAGE": "Startseite",
+					"SELECTED_PAGE": "Serie wird in folgendem Pfad eingebunden",
+					"NO_PAGE_SELECTED": "Keine Seite ausgewählt. Serie wird nicht im Videoportal eingebunden.",
+					"NO_PAGE_SELECTED_EDIT": "No page selected. Series path will not be changed.",
+					"PATH": "Pfad",
+					"DIRECT_LINK": "A direct link will be available.",
+					"MOUNT_DISCLAIMER": "Series can only be mounted in empty pages"
 				},
 				"SUMMARY": {
 					"CAPTION": "Zusammenfassung"
@@ -1124,6 +1179,7 @@
 					"EVENTS": "Videos",
 					"PERMISSIONS": "Zugriffsrechte",
 					"THEME": "Branding",
+					"TOBIRA": "Tobira",
 					"STATISTICS": "Statistik"
 				},
 				"ACCESS": {
@@ -1170,6 +1226,18 @@
 					"DESCRIPTION": "Beschreibung",
 					"REPLACE_SERIES_METADATA": "Metadaten der Serie aktualisieren",
 					"REPLACE_SERIES_THEME": "Theme der Serie aktualisieren"
+				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Startseite)",
+					"DIRECT_LINK": "Direkter Link zur Serie",
+					"COPY_DIRECT_LINK": "In die Zwischenablage kopieren",
+					"NOT_MOUNTED": "Diese Serie ist derzeit nicht in der Seitenstruktur enthalten und kann nur über den oben genannten direkten Link erreicht werden.",
+					"PAGES": "Seiten im Videoportal, die diese Serie einbinden",
+					"SHOW_PAGES": "Show all pages",
+					"EDIT_PATH": "Edit path",
+					"REMOVE_PATH": "Remove path",
+					"MOUNT_SERIES": "Mount series",
+					"DESCRIPTION": "You may edit the path of pages containing this series if the page has no other content."
 				},
 				"EVENTS": {
 					"TITLE": "Titel",
@@ -1291,6 +1359,14 @@
 					"RIGHT": "Ausgewählten Rollen",
 					"REMOVE": "Rolle entfernen",
 					"ADD": "Rolle hinzufügen"
+				},
+				"STRENGTH": {
+					"BAD": "Schlechtes Passwort",
+					"VERYWEAK": "Sehr schwaches Passwort",
+					"WEAK": "Schwaches Passwort",
+					"GOOD": "Gutes Passwort",
+					"STRONG": "Starkes Passwort",
+					"VERYSTRONG": "Sehr starkes Passwort"
 				}
 			}
 		},
@@ -1645,131 +1721,6 @@
 				"WARNING": "Achtung",
 				"ERROR": "Fehler"
 			}
-		}
-	},
-	"VIDEO_TOOL": {
-		"WARNING_UNSAVED": "Achtung: Einige der Änderungen wurden noch nicht gespeichert. Beim Verlassen des Video Editors werden diese Änderungen verworfen. Wirklich fortsetzen?",
-		"TIMELINE": "Zeitleiste",
-		"ZOOMLEVEL": "Zoomlevel",
-		"PREVIEW_MODE": "Vorschau Modus",
-		"PREVIEW_MODE_TOOLTIP": "Nur selektierte Segmente abspielen",
-		"ZOOM": "Vergrößerung",
-		"BUTTONS": {
-			"CLOSE": "Schliessen",
-			"SAVE": "Speichern",
-			"PROCESS": "Speichern & Fortfahren",
-			"ADD_COMMENT": "Kommentar hinzufügen"
-		},
-		"TABS": {
-			"EDIT": "Editor",
-			"CAPTIONS": "Untertitel",
-			"ANNOTATIONS": "Anmerkungen"
-		},
-		"AREAS": {
-			"METADATA": "Metadaten",
-			"THUMBNAIL": "Vorschaubild",
-			"COMMENTS": "Kommentare",
-			"SEGMENTS": "Segmente",
-			"TRACKS": "Spuren"
-		},
-		"ACTIONS": {
-			"SPLIT": "Auftrennen",
-			"SPLIT_TOOLTIP": "Segment an der aktuellen Cursor-Position teilen.",
-			"CUT": "Aus-/Einblenden",
-			"CUT_TOOLTIP": "Verstecke oder zeige den ausgewählten Teil des Videos.",
-			"REPLAY_SEGMENT": "Anfang des Segments abspielen",
-			"REPLAY_SEGMENT_TOOLTIP": "Spiele das aktuelle Segment von Anfang an.",
-			"REPLAY_END_OF_SEGMENT": "Ende des Segments abspielen",
-			"REPLAY_END_OF_SEGMENT_TOOLTIP": "Spiele ein paar Sekunden am Ende des aktuellen Segments ab.",
-			"REPLAY_SEGMENT_WITH_PREROLL": "Übergang abspielen",
-			"REPLAY_SEGMENT_WITH_PREROLL_TOOLTIP": "Spiele das Ende des vorherigen und den Beginn des nächsten Segments ab.",
-			"UNDO": "Widerrufen",
-			"REDO": "Wiederholen",
-			"CLEAR_SEGMENTS": "Alle Segmente entfernen",
-			"CLEAR_SEGMENTS_TOOLTIP": "Alle Segmente zu einem großen Segment zusammenfassen."
-		},
-		"SEGMENTS": {
-			"REMOVE_SEGMENT": "Segment löschen",
-			"SHOW_SEGMENT": "Segment anzeigen",
-			"HIDE_SEGMENT": "Segment verbergen",
-			"START": "Beginn",
-			"END": "Ende"
-		},
-		"THUMBNAIL": {
-			"DESCRIPTION": "Ein Vorschaubild, welches das Video grafisch repräsentieren kann, wird automatisch erstellt. Falls Sie ein anderes Vorschaubild wünschen, können Sie eines aus dem Video an der aktuellen Wiedergabeposition extrahieren oder eine Bilddatei hochladen.",
-			"ACTIONS": {
-				"EXTRACT": {
-					"FROM_VIDEO": {
-						"LABEL": "Von Video extrahieren",
-						"TOOLTIP": "Vorschaubild an der aktuellen Wiedergabeposition vom Video extrahieren"
-					},
-					"FROM_LEFT_VIDEO": {
-						"LABEL": "Vom linken Video extrahieren",
-						"TOOLTIP": "Vorschaubild an der aktuellen Wiedergabeposition vom linken Video extrahieren"
-					},
-					"FROM_RIGHT_VIDEO": {
-						"LABEL": "Von rechten Video extrahieren",
-						"TOOLTIP": "Vorschaubild an der aktuellen Wiedergabeposition vom rechten Video extrahieren"
-					}
-				},
-				"UPLOAD": {
-					"LABEL": "Bild hochladen",
-					"TOOLTIP": "Vorschaubild hochladen"
-				},
-				"USE_DEFAULT": {
-					"LABEL": "Standard-Vorschaubild verwenden",
-					"TOOLTIP": "Das automatisch erstellte Vorschaubild verwenden"
-				}
-			},
-			"PREVIEW": {
-				"NOT_AVAILABLE": "Keine Vorschau vorhanden",
-				"OUTDATED": "Die Vorschau ist nicht aktuell weil der Schnitt geändert wurde. Sobald Sie die Änderungen speichern, wird die Vorschau aktualisiert."
-			},
-			"CURRENT": {
-				"DEFAULT": "Sie verwenden aktuell das automatisch erstellte Vorschaubild.",
-				"SNAPSHOT": "Das aktuelle Vorschaubild wurde vom Video extrahiert.",
-				"UPLOAD": "Sie verwenden aktuell ein hochgeladenes Vorschaubild."
-			}
-		},
-		"TRACKS": {
-			"DESCRIPTION": "Sie können Spuren von der Auswahl entfernen, damit diese nicht verarbeitet werden. Bitte beachten Sie, dass Sie die Videos erneut publizieren müssen, damit die Änderung aktiv werden.",
-			"NOTIFICATION": {
-				"NO_VIDEO_TRACK_SELECTED": "Bitte wählen Sie mindestens eine Videospur aus",
-				"NO_AUDIO_TRACK_SELECTED": "Bitte wählen Sie mindestens eine Audiospur aus"
-			},
-			"TRACK": {
-				"HEADER": "Spur"
-			},
-			"VIDEO": {
-				"HEADER": "Videospur",
-				"NOT_AVAILABLE": "Keine Videospuren vorhanden",
-				"NO_PREVIEW_AVAILABLE": "Keine Vorschau verfügbar",
-				"NO_TRACK_SELECTED": "Es sind keine Videospuren ausgewählt",
-				"TOOLTIPS": {
-					"HIDE": "Diese Videospur ist aktuell aktiv. Bitte klicken, um diese Spur zu deaktivieren",
-					"UNHIDE": "Diese Videospur ist aktuell inaktiv. Bitte klicken, um die Spur zu aktivieren."
-				}
-			},
-			"AUDIO": {
-				"HEADER": "Audiospur",
-				"NOT_AVAILABLE": "Keine Audiospuren vorhanden",
-				"NO_PREVIEW_AVAILABLE": "Keine Vorschau vorhanden",
-				"NO_TRACK_SELECTED": "Keine Audiospuren ausgewählt",
-				"TOOLTIPS": {
-					"HIDE": "Diese Audiospur ist aktuell aktiv. Bitte klicken, um die Spur zu deaktivieren.",
-					"UNHIDE": "Diese Audiospur ist aktuell inaktiv. Bitte klicken, um die Spur zu aktivieren."
-				}
-			}
-		},
-		"PLAYER": {
-			"PLAY": "Abspielen",
-			"PAUSE": "Pause",
-			"NEXT_FRAME": "Nächstes Bild",
-			"PREVIOUS_FRAME": "Vorheriges Bild",
-			"NEXT_SEGMENT": "Nächstes Segment/zum Ende springen",
-			"PREVIOUS_SEGMENT": "Vorheriges Segment/zum Start springen",
-			"MUTE": "Stummschalten",
-			"VOLUME": "Lautstärke"
 		}
 	},
 	"TABLE_FILTERS": {
@@ -2148,7 +2099,7 @@
 			"PUBLISHEDHOURS": "Veröffentlichte Stunden an Videomaterial"
 		},
 		"DESCRIPTION": {
-			"RANDOM": "Diese Zufallsdaten dienen ausschließlich Test- und Demonstrationszwecken. Um diese Darstellung zu deaktivieren, können Sie die entsprechende Konfiguration in etc/providers entfernen",
+			"RANDOM": "Diese Zufallsdaten dienen ausschließlich Test- und Demonstrationszwecken. Um diese Darstellung zu deaktivieren, können Sie die entsprechende Konfiguration in etc\/providers entfernen",
 			"VIEWS_SUM": "Diese Statistik zeigt die Summe der Zugriffe pro Zeiteinheit.",
 			"VIEWS_AVG": "Diese Statistik zeigt die durchschnittliche Anzahl von Zugriffe pro Zeiteinheit.",
 			"PUBLISHEDHOURS": "Dies zeigt die veröffentlichten Videostunden an"
@@ -2172,8 +2123,8 @@
 		}
 	},
 	"ABOUT": {
-		"IMPRINT": "Imprint",
-		"PRIVACY": "Privacy statement",
-		"NOCONTENT": "Content not available"
+		"IMPRINT": "Impressum",
+		"PRIVACY": "Datenschutzerklärung",
+		"NOCONTENT": "Inhalt nicht verfügbar"
 	}
 }
