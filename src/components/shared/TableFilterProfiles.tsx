@@ -31,7 +31,7 @@ const TableFiltersProfiles = ({
 }: {
 	showFilterSettings: boolean,
 	setFilterSettings: (_: boolean) => void,
-	loadResource: AsyncThunk<any, void, {}>,
+	loadResource: AsyncThunk<any, void, any>,
 	loadResourceIntoTable: () => AppThunk,
 	resource: string,
 }) => {

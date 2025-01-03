@@ -117,7 +117,8 @@
 				"GROUP": "Vaise borrar o seguinte grupo",
 				"USER": "Vaise borrar o seguinte usuario",
 				"THEME": "Vaise borrar o seguinte estilo",
-				"LOCATION": "Vaise borrar a seguinte localización"
+				"LOCATION": "Vaise borrar a seguinte localización",
+				"TOBIRA_PATH": "The series will be removed from the following path in Tobira:"
 			},
 			"NAME": "Nome"
 		},
@@ -169,7 +170,9 @@
 		"SERIES_ADDED": "Serie creada",
 		"SERIES_NOT_SAVED": "Non se puido gardar a serie",
 		"SERIES_PATH_UPDATED": "The series path has been updated",
+		"SERIES_PATH_REMOVED": "The series path has been removed",
 		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
+		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "Evento creado",
 		"EVENTS_UPLOAD_STARTED": "Cargando o evento…",
 		"EVENTS_NOT_CREATED": "Non se puido crear o evento",
@@ -1143,6 +1146,7 @@
 					"HOMEPAGE": "Homepage",
 					"SELECTED_PAGE": "Series will be mounted under the following path",
 					"NO_PAGE_SELECTED": "No page selected. Series will not be mounted in Tobira.",
+					"NO_PAGE_SELECTED_EDIT": "No page selected. Series path will not be changed.",
 					"PATH": "Path",
 					"DIRECT_LINK": "A direct link will be available.",
 					"MOUNT_DISCLAIMER": "Series can only be mounted in empty pages"
@@ -1231,6 +1235,7 @@
 					"PAGES": "Pages in Tobira that contain this series",
 					"SHOW_PAGES": "Show all pages",
 					"EDIT_PATH": "Edit path",
+					"REMOVE_PATH": "Remove path",
 					"MOUNT_SERIES": "Mount series",
 					"DESCRIPTION": "You may edit the path of pages containing this series if the page has no other content."
 				},

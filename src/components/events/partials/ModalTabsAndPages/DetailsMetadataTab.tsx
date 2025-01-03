@@ -26,7 +26,7 @@ const DetailsMetadataTab = ({
 	editAccessRole,
 }: {
 	metadataFields: MetadataCatalog,
-	updateResource: AsyncThunk<void, { id: string; values: { [key: string]: any; }; }, {}>
+	updateResource: AsyncThunk<void, { id: string; values: { [key: string]: any; }; }, any>
 	resourceId: string,
 	header: string,
 	editAccessRole: string,

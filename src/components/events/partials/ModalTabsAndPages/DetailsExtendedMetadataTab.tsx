@@ -33,7 +33,7 @@ const DetailsExtendedMetadataTab = ({
 		id: string;
 		values: { [key: string]: any; };
 		catalog: MetadataCatalog;
-	}, {}> //(id: string, values: { [key: string]: any }, catalog: MetadataCatalog) => void,
+	}, any> //(id: string, values: { [key: string]: any }, catalog: MetadataCatalog) => void,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();

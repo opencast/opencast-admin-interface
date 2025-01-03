@@ -38,7 +38,7 @@ const TableFilters = ({
 	loadResourceIntoTable,
 	resource,
 }: {
-	loadResource: AsyncThunk<any, void, {}>,
+	loadResource: AsyncThunk<any, void, any>,
 	loadResourceIntoTable: () => AppThunk,
 	resource: string,
 }) => {

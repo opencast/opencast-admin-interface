@@ -85,7 +85,7 @@ const Recordings = () => {
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={fetchRecordings as AsyncThunk<any, void, {}>}
+						loadResource={fetchRecordings as AsyncThunk<any, void, any>}
 						loadResourceIntoTable={loadRecordingsIntoTable}
 						resource={"recordings"}
 					/>
