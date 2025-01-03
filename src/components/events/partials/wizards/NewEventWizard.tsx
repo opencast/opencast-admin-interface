@@ -209,6 +209,8 @@ const NewEventWizard: React.FC<{
 										// @ts-expect-error TS(7006):
 										formik={formik}
 										editAccessRole="ROLE_UI_SERIES_DETAILS_ACL_EDIT"
+										viewUsersAccessRole="ROLE_UI_EVENTS_DETAILS_ACL_USER_ROLES_VIEW"
+										viewNonUsersAccessRole="ROLE_UI_EVENTS_DETAILS_ACL_NONUSER_ROLES_VIEW"
 										initEventAclWithSeriesAcl={initEventAclWithSeriesAcl}
 									/>
 								)}
@@ -299,7 +301,7 @@ const getInitialValues = (
 	initialValues["scheduleEndHour"] = (defaultDate.getHours() + 1).toString();
 	initialValues["scheduleEndMinute"] = "55";
 
-	initialValues["acls"] = [
+	initialValues["policies"] = [
 		{
 			role: user.userRole,
 			read: true,
