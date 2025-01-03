@@ -55,7 +55,7 @@ const FileUpload = <T extends RequiredFormProps>({
 		const data = new FormData();
 		data.append("BODY", file, file.name);
 		axios
-			.post("/staticfiles", data, {
+			.post("/staticfiles/", data, {
 				headers: {
 					"Content-Type": "multipart/form-data",
 				},
