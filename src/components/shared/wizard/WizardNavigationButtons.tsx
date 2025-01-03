@@ -11,6 +11,8 @@ const WizardNavigationButtons = <T,>({
 	formik,
 	nextPage,
 	previousPage,
+	createTranslationString,
+	cancelTranslationString,
 }: {
   isFirst?: boolean,
 	isLast?: boolean,
@@ -19,6 +21,8 @@ const WizardNavigationButtons = <T,>({
 	formik: FormikProps<T>,
 	nextPage?: (values: T) => void,
 	previousPage?: (values: T) => void,
+	createTranslationString?: string,
+	cancelTranslationString?: string,
 }) => {
 	const { t } = useTranslation();
 
@@ -44,7 +48,7 @@ const WizardNavigationButtons = <T,>({
 						}}
 						tabIndex={100}
 					>
-						{t("WIZARD.CREATE")}
+						{createTranslationString ? t(createTranslationString) : t("WIZARD.CREATE")}
 					</button>
 				) : (
 					<button
@@ -67,7 +71,7 @@ const WizardNavigationButtons = <T,>({
 						}}
 						tabIndex={101}
 					>
-						{t("WIZARD.BACK")}
+						{cancelTranslationString ? t(cancelTranslationString) : t("WIZARD.BACK")}
 					</button>
 				)}
 			</footer>
