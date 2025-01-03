@@ -420,7 +420,7 @@ const Schedule = <T extends {
 						value={input.id}
 						tabIndex={12}
 					/>
-					{t(input.value)}
+					{t(input.value, input.id)}
 				</label>
 			));
 		}
@@ -738,9 +738,22 @@ const Schedule = <T extends {
 									options={inputDevices}
 									type={"captureAgent"}
 									required={true}
-									handleChange={(element) => {
+									handleChange={async (element) => {
 										if (element) {
-											formik.setFieldValue("location", element.value)
+											// Set inputs depending on location
+											let inputDevice = inputDevices.find(
+												({ name }) => name === element.value
+											);
+											if (inputDevice) {
+												if (inputDevice.inputs.length > 0) {
+													await formik.setFieldValue("locationHasInputs", true)
+												} else {
+													await formik.setFieldValue("locationHasInputs", false)
+												}
+												await formik.setFieldValue("deviceInputs", inputDevice.inputs.map(input => input.id))
+											}
+											// Set location
+											await formik.setFieldValue("location", element.value)
 										}
 									}}
 									placeholder={t(
