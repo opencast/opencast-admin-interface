@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import MainNav from "../shared/MainNav";
-import { Link } from "react-router-dom";
-import cn from "classnames";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
@@ -10,22 +7,16 @@ import { serversTemplateMap } from "../../configs/tableConfigs/serversTableMap";
 import { getTotalServers } from "../../selectors/serverSelectors";
 import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
 import {
-	loadJobsIntoTable,
 	loadServersIntoTable,
-	loadServicesIntoTable,
 } from "../../thunks/tableThunks";
-import { setOffset } from "../../slices/tableSlice";
 import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
 import Footer from "../Footer";
-import { getUserInformation } from "../../selectors/userInfoSelectors";
-import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { fetchServices } from "../../slices/serviceSlice";
-import { fetchJobs } from "../../slices/jobSlice";
 import { fetchServers } from "../../slices/serverSlice";
+import { loadServers, systemsLinks } from "./partials/SystemsNavigation";
 
 /**
  * This component renders the table view of servers
@@ -36,38 +27,7 @@ const Servers = () => {
 	const [displayNavigation, setNavigation] = useState(false);
 
 	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
-	const user = useAppSelector(state => getUserInformation(state));
 	const servers = useAppSelector(state => getTotalServers(state));
-
-	const loadServers = async () => {
-		// Fetching servers from server
-		await dispatch(fetchServers());
-
-		// Load servers into table
-		dispatch(loadServersIntoTable());
-	};
-
-	const loadJobs = () => {
-		// Reset the current page to first page
-		dispatch(setOffset(0));
-
-		// Fetching jobs from server
-		dispatch(fetchJobs());
-
-		// Load jobs into table
-		dispatch(loadJobsIntoTable());
-	};
-
-	const loadServices = () => {
-		// Reset the current page to first page
-		dispatch(setOffset(0));
-
-		// Fetching services from server
-		dispatch(fetchServices());
-
-		// Load services into table
-		dispatch(loadServicesIntoTable());
-	};
 
 	useEffect(() => {
 		if ("servers" !== currentFilterType) {
@@ -78,56 +38,23 @@ const Servers = () => {
 		dispatch(editTextFilter(""));
 
 		// Load servers on mount
-		loadServers().then((r) => console.info(r));
+		loadServers(dispatch);
 
 		// Fetch servers every minute
-		let fetchServersInterval = setInterval(loadServers, 5000);
+		let fetchServersInterval = setInterval(() => loadServers(dispatch), 5000);
 
 		return () => clearInterval(fetchServersInterval);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const toggleNavigation = () => {
-		setNavigation(!displayNavigation);
-	};
-
 	return (
 		<>
 			<Header />
-			<NavBar>
-				{/* Include Burger-button menu*/}
-				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
-
-				<nav>
-					{hasAccess("ROLE_UI_JOBS_VIEW", user) && (
-						<Link
-							to="/systems/jobs"
-							className={cn({ active: false })}
-							onClick={() => loadJobs()}
-						>
-							{t("SYSTEMS.NAVIGATION.JOBS")}
-						</Link>
-					)}
-					{hasAccess("ROLE_UI_SERVERS_VIEW", user) && (
-						<Link
-							to="/systems/servers"
-							className={cn({ active: true })}
-							onClick={() => loadServers()}
-						>
-							{t("SYSTEMS.NAVIGATION.SERVERS")}
-						</Link>
-					)}
-					{hasAccess("ROLE_UI_SERVICES_VIEW", user) && (
-						<Link
-							to="/systems/services"
-							className={cn({ active: false })}
-							onClick={() => loadServices()}
-						>
-							{t("SYSTEMS.NAVIGATION.SERVICES")}
-						</Link>
-					)}
-				</nav>
-			</NavBar>
+			<NavBar
+				displayNavigation={displayNavigation}
+				setNavigation={setNavigation}
+				links={systemsLinks}
+			/>
 
 			<MainView open={displayNavigation}>
 				{/* Include notifications component */}

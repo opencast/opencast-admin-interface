@@ -2,24 +2,18 @@ import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
-import MainNav from "./shared/MainNav";
 import { useTranslation } from "react-i18next";
-import { Link, useLocation } from "react-router-dom";
-import cn from "classnames";
+import { useLocation } from "react-router-dom";
 import axios from 'axios';
 import i18n from "../i18n/i18n";
 import DOMPurify from "dompurify";
 
-const About: React.FC = () => {
+const About = () => {
 	const { t } = useTranslation();
 	const location = useLocation();
 
 	const [displayNavigation, setNavigation] = useState(false);
 	const [aboutContent, setAboutContent] = useState<string>("");
-
-	const toggleNavigation = () => {
-		setNavigation(!displayNavigation);
-	};
 
 	useEffect(() => {
 		const getURL = (language: string) => {
@@ -46,12 +40,24 @@ const About: React.FC = () => {
 	return (
 		<span>
 			<Header />
-			<NavBar>
-				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
-				<nav>
-					<Link to="/about/imprint" className={cn({ active: location.pathname === "/about/imprint" })} onClick={() => { }}>{t("ABOUT.IMPRINT")}</Link>
-					<Link to="/about/privacy" className={cn({ active: location.pathname === "/about/privacy" })} onClick={() => { }}>{t("ABOUT.PRIVACY")}</Link>
-				</nav>
+			<NavBar
+				displayNavigation={displayNavigation}
+				setNavigation={setNavigation}
+				links={[
+					{
+						path: "/about/imprint",
+						accessRole: "ROLE_UI_USERS_VIEW",
+						loadFn: () => { },
+						text: "ABOUT.IMPRINT"
+					},
+					{
+						path: "/about/privacy",
+						accessRole: "ROLE_UI_GROUPS_VIEW",
+						loadFn: () => { },
+						text: "ABOUT.PRIVACY"
+					},
+				]}
+			>
 			</NavBar>
 			<div className="about">
 				<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(aboutContent) }} ></div>
