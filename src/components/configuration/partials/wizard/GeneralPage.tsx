@@ -35,7 +35,7 @@ const GeneralPage = <T,>({
 					<div className="full-col">
 						<div className="form-container">
 							<div className="row">
-								<Notifications />
+								<Notifications context={"other"}/>
 								<label className="required" style={isEdit ? editStyle: undefined}>
 									{t("CONFIGURATION.THEMES.DETAILS.GENERAL.NAME")}
 								</label>

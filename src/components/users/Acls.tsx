@@ -145,7 +145,7 @@ const Acls: React.FC = () => {
 						</Link>
 					)}
 				</nav>
-				
+
 				{/* Add acl button */}
 				<div className="btn-group">
 					{hasAccess("ROLE_UI_ACLS_CREATE", user) && (
@@ -159,7 +159,7 @@ const Acls: React.FC = () => {
 
 			<MainView open={displayNavigation}>
 				{/* Include notifications component */}
-				<Notifications />
+				<Notifications context={"other"}/>
 
 				<div className="controls-container">
 					{/* Include filters component */}
