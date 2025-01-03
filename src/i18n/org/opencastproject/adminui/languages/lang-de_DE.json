@@ -117,7 +117,8 @@
 				"GROUP": "Die folgende Gruppe wird gelöscht",
 				"USER": "Der folgende Benutzer wird gelöscht",
 				"THEME": "Das folgende Branding wird gelöscht",
-				"LOCATION": "Folgender Standort wird entfernt"
+				"LOCATION": "Folgender Standort wird entfernt",
+				"TOBIRA_PATH": "The series will be removed from the following path in Tobira:"
 			},
 			"NAME": "Name"
 		},
@@ -169,7 +170,9 @@
 		"SERIES_ADDED": "Die Serie wurde angelegt",
 		"SERIES_NOT_SAVED": "Die Serie konnte nicht gespeichert werden",
 		"SERIES_PATH_UPDATED": "The series path has been updated",
+		"SERIES_PATH_REMOVED": "The series path has been removed",
 		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
+		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "Das Video wurde angelegt",
 		"EVENTS_UPLOAD_STARTED": "Das Video wird hochgeladen… {{ progress }}%",
 		"EVENTS_NOT_CREATED": "Das Video konnte nicht angelegt werden",
@@ -1143,6 +1146,7 @@
 					"HOMEPAGE": "Startseite",
 					"SELECTED_PAGE": "Serie wird in folgendem Pfad eingebunden",
 					"NO_PAGE_SELECTED": "Keine Seite ausgewählt. Serie wird nicht im Videoportal eingebunden.",
+					"NO_PAGE_SELECTED_EDIT": "No page selected. Series path will not be changed.",
 					"PATH": "Pfad",
 					"DIRECT_LINK": "A direct link will be available.",
 					"MOUNT_DISCLAIMER": "Series can only be mounted in empty pages"
@@ -1231,6 +1235,7 @@
 					"PAGES": "Seiten im Videoportal, die diese Serie einbinden",
 					"SHOW_PAGES": "Show all pages",
 					"EDIT_PATH": "Edit path",
+					"REMOVE_PATH": "Remove path",
 					"MOUNT_SERIES": "Mount series",
 					"DESCRIPTION": "You may edit the path of pages containing this series if the page has no other content."
 				},
