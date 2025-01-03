@@ -25,7 +25,6 @@ import { removeNotificationWizardForm, addNotification } from "../../../slices/n
 import { useTranslation } from "react-i18next";
 import { TransformedAcl } from "../../../slices/aclDetailsSlice";
 import { AsyncThunk, unwrapResult } from "@reduxjs/toolkit";
-import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 import { SaveEditFooter } from "../SaveEditFooter";
 
 
@@ -48,9 +47,9 @@ const ResourceDetailsAccessPolicyTab = ({
 	resourceId: string,
 	header: string,
 	policies: TransformedAcl[],
-	fetchHasActiveTransactions?: AsyncThunk<any, string, AsyncThunkConfig>
-	fetchAccessPolicies: AsyncThunk<TransformedAcl[], string, AsyncThunkConfig>,
-	saveNewAccessPolicies:  AsyncThunk<boolean, { id: string, policies: { acl: Acl } }, AsyncThunkConfig>
+	fetchHasActiveTransactions?: AsyncThunk<any, string, any>
+	fetchAccessPolicies: AsyncThunk<TransformedAcl[], string, any>,
+	saveNewAccessPolicies:  AsyncThunk<boolean, { id: string, policies: { acl: Acl } }, any>
 	descriptionText: string,
 	buttonText: string,
 	editAccessRole: string,
