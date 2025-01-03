@@ -5,6 +5,7 @@ import { TobiraPage } from "../slices/seriesSlice";
 import { initArray } from "../utils/utils";
 import { EditedEvents, Event, UploadAssetsTrack } from "../slices/eventSlice";
 import { Role } from "../slices/aclSlice";
+import { TargetFilter } from "../slices/lifeCycleSlice";
 
 // Context for notifications shown in modals
 export const NOTIFICATION_CONTEXT = "modal-form";
@@ -209,4 +210,34 @@ export const initialFormValuesEditScheduledEvents: {
 	events: [],
 	editedEvents: [],
 	changedEvents: [],
+};
+
+export const initialFormValuesNewLifeCyclePolicy: {
+	title: string,
+	isActive: boolean,
+	isCreatedFromConfig: boolean,
+	targetType: string,
+	timing: string,
+	action: string,
+	actionDate: string,
+	cronTrigger: string,
+	actionParameters: { [key: string]: unknown }
+	acls: TransformedAcl[]
+	targetFiltersArray: (TargetFilter & { filter: string })[],
+} = {
+	title: "",
+	isActive: true,
+	isCreatedFromConfig: false,
+	targetType: "EVENT",
+	timing: "SPECIFIC_DATE",
+	action: "START_WORKFLOW",
+	actionDate: "",
+	cronTrigger: "",
+	actionParameters: {
+		workflowId: "noop",
+		workflowParameters: `{"straightToPublishing": true}`
+	},
+
+	acls: [],
+	targetFiltersArray: [],
 };
