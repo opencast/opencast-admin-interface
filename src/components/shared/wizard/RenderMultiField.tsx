@@ -87,9 +87,9 @@ const RenderMultiField = ({
 		// (types: see metadata.json retrieved from backend)
 		editMode ? (
 			<>
-				{fieldInfo.type === "mixed_text" && !!fieldInfo.collection ? (
+				{fieldInfo.type === "mixed_text" && (
 					<EditMultiSelect
-						collection={fieldInfo.collection}
+						collection={fieldInfo.collection ? fieldInfo.collection : []}
 						field={field}
 						fieldValue={fieldValue}
 						inputValue={inputValue}
@@ -98,18 +98,6 @@ const RenderMultiField = ({
 						handleKeyDown={handleKeyDown}
 						handleBlur={submitValue}
 					/>
-				) : (
-					fieldInfo.type === "mixed_text" && (
-						<EditMultiValue
-							setEditMode={setEditMode}
-							fieldValue={fieldValue}
-							field={field}
-							inputValue={inputValue}
-							removeItem={removeItem}
-							handleChange={handleChange}
-							handleKeyDown={handleKeyDown}
-						/>
-					)
 				)}
 			</>
 		) : (
@@ -189,52 +177,6 @@ const EditMultiSelect = ({
 						</span>
 					))}
 			</div>
-		</>
-	);
-};
-
-// Renders editable field input for multiple values
-const EditMultiValue = ({
-	setEditMode,
-	inputValue,
-	removeItem,
-	handleChange,
-	handleKeyDown,
-	field,
-	fieldValue,
-}: {
-	setEditMode: (e: boolean) => void
-	inputValue: HTMLInputElement["value"]
-	removeItem: (key: number) => void
-	handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-	handleKeyDown: (event: React.KeyboardEvent) => void
-	field: FieldProps["field"]
-	fieldValue: FieldInputProps<unknown>["value"]
-}) => {
-	const { t } = useTranslation();
-
-	return (
-		<>
-			<div onBlur={() => setEditMode(false)} ref={childRef}>
-				<input
-					type="text"
-					name={field.name}
-					onKeyDown={(e) => handleKeyDown(e)}
-					onChange={(e) => handleChange(e)}
-					value={inputValue}
-					placeholder={t("EDITABLE.MULTI.PLACEHOLDER")}
-				/>
-			</div>
-			{fieldValue instanceof Array &&
-				fieldValue.length !== 0 &&
-				fieldValue.map((item, key) => (
-					<span className="ng-multi-value" key={key}>
-						{item}
-						<button className="button-like-anchor" onClick={() => removeItem(key)}>
-							<i className="fa fa-times" />
-						</button>
-					</span>
-				))}
 		</>
 	);
 };
