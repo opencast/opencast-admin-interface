@@ -95,6 +95,26 @@ const EditTableViewModal = ({
 		setActiveColumns((columns) => arrayMoveImmutable(columns, result.source.index, destination.index));
 	}
 
+	const getTranslationForSubheading = (resource: string) => {
+		const resourceLC = resource.toLowerCase();
+		if (resourceLC === "events" || resourceLC === "series") {
+			return "EVENTS." + resource.toUpperCase() + ".TABLE.CAPTION"
+		}
+		if (resourceLC === "recordings") {
+			return resource.toUpperCase() + "." + resource.toUpperCase() + ".TABLE.CAPTION"
+		}
+		if (resourceLC === "jobs" || resourceLC === "servers" || resourceLC === "services") {
+			return "SYSTEMS." + resource.toUpperCase() + ".TABLE.CAPTION"
+		}
+		if (resourceLC === "users" || resourceLC === "groups" || resourceLC === "acls") {
+			return "USERS." + resource.toUpperCase() + ".TABLE.CAPTION"
+		}
+		if (resourceLC === "themes") {
+			return "CONFIGURATION." + resource.toUpperCase() + ".TABLE.CAPTION"
+		}
+		return ""
+	}
+
 	return (
 		<>
 			<div className="modal-animation modal-overlay" />
@@ -118,9 +138,7 @@ const EditTableViewModal = ({
 						<div className="tab-description for-header">
 							<p>
 								{t("PREFERENCES.TABLE.SUBHEADING", {
-									tableName: t(
-										"EVENTS." + resource.toUpperCase() + ".TABLE.CAPTION"
-									),
+									tableName: t(getTranslationForSubheading(resource)),
 								})}
 							</p>
 						</div>
