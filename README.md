@@ -50,6 +50,11 @@ PROXY_TARGET=http://localhost:8080 PROXY_AUTH=jdoe:aligator3 npm start
 Similarly, if you want to change the port the development server itself runs at,
 you can specify an alternative port in the `PORT` environment variable.
 
+If you aim to test against a remote server without using a proxy, you have the option to configure the target server with the `VITE_TEST_SERVER_URL`, and the `VITE_TEST_SERVER_AUTH` environment variables while using the node development mode:
+
+```sh
+NODE_ENV=development VITE_TEST_SERVER_URL="https://develop.opencast.org" VITE_TEST_SERVER_AUTH="admin:opencast" npm start
+```
 
 How to cut a release for Opencast
 ---------------------------------
