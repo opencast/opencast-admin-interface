@@ -16,7 +16,6 @@ import MainView from "../MainView";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchRecordings } from "../../slices/recordingSlice";
 import { AsyncThunk } from "@reduxjs/toolkit";
@@ -30,7 +29,6 @@ const Recordings = () => {
 	const [displayNavigation, setNavigation] = useState(false);
 
 	const user = useAppSelector(state => getUserInformation(state));
-	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 	const recordings = useAppSelector(state => getTotalRecordings(state));
 
 	const loadRecordings = async () => {
@@ -42,9 +40,7 @@ const Recordings = () => {
 	};
 
 	useEffect(() => {
-		if ("recordings" !== currentFilterType) {
-			dispatch(fetchFilters("recordings"));
-		}
+		dispatch(fetchFilters("recordings"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));
