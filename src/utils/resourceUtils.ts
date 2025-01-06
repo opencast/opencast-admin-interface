@@ -118,32 +118,14 @@ export const buildGroupBody = (
 
 // get initial metadata field values for formik in create resources wizards
 export const getInitialMetadataFieldValues = (
-	metadataFields: MetadataCatalog,
-	extendedMetadata: MetadataCatalog[]
+	metadataCatalog: MetadataCatalog,
 ) => {
 	let initialValues: { [key: string]: string | string[] | boolean } = {};
 
-	if (!!metadataFields.fields && metadataFields.fields.length > 0) {
-		metadataFields.fields.forEach((field) => {
-			initialValues[field.id] = field.value;
+	if (!!metadataCatalog.fields && metadataCatalog.fields.length > 0) {
+		metadataCatalog.fields.forEach((field) => {
+			initialValues[metadataCatalog.flavor + "_" + field.id] = field.value;
 		});
-	}
-
-	if (extendedMetadata.length > 0) {
-		for (const metadataCatalog of extendedMetadata) {
-			if (!!metadataCatalog.fields && metadataCatalog.fields.length > 0) {
-				metadataCatalog.fields.forEach((field) => {
-					let value = false;
-					if (field.value === "true") {
-						value = true;
-					} else if (field.value === "false") {
-						value = false;
-					}
-
-					initialValues[metadataCatalog.flavor + "_" + field.id] = value;
-				});
-			}
-		}
 	}
 
 	return initialValues;

@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { MetadataField } from "../slices/eventSlice";
+import { MetadataCatalog } from "../slices/eventSlice";
 
 /**
  * This File contains all schemas used for validation with yup in the context of events and series
@@ -13,8 +13,8 @@ today.setHours(0, 0, 0, 0);
  */
 export function createMetadataSchema(
 	schema: { [key: string]: any; },
-	config: { id: string; required: boolean; type: string; })
-{
+	config: { id: string; required: boolean; type: string; },
+) {
 	const { id, required, type } = config;
 	if (!required) return schema;
 
@@ -61,9 +61,13 @@ export function createMetadataSchema(
 /**
  * Dynamically create a schema for required metadata fields
  */
-export const MetadataSchema = (fields: MetadataField[]) => {
-	const schema = fields.reduce(createMetadataSchema, {});
-	const validateSchema = Yup.object().shape(schema);
+export const MetadataSchema = (catalog: MetadataCatalog) => {
+	const schema = catalog.fields.reduce(createMetadataSchema, {});
+	const schemaKeyReplace: { [key: string]: any} = {};
+	for (const [key, value] of Object.entries(schema)) {
+		schemaKeyReplace[catalog.flavor +  "_" + key] = value
+	}
+	const validateSchema = Yup.object().shape(schemaKeyReplace);
 
 	return validateSchema;
 }

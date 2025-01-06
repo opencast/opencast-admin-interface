@@ -10,7 +10,6 @@ import {
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
 import { fetchWorkflowDef, Workflow as WorkflowDefinitions } from "./workflowSlice";
 import {
-	getMetadata,
 	getExtendedMetadata,
 	getSchedulingSource,
 	getWorkflowDefinitions,
@@ -1603,13 +1602,12 @@ export const fetchEventStatisticsValueUpdate = createAppAsyncThunk('eventDetails
 export const updateMetadata = createAppAsyncThunk('eventDetails/updateMetadata', async (params: {
 	id: string,
 	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
+	catalog: MetadataCatalog
 }, { dispatch, getState }) => {
-	const { id, values } = params;
-
-	let metadataInfos = getMetadata(getState());
+	const { id, values, catalog } = params;
 
 	const { fields, data, headers } = transformMetadataForUpdate(
-		metadataInfos,
+		catalog,
 		values
 	);
 
@@ -1617,8 +1615,8 @@ export const updateMetadata = createAppAsyncThunk('eventDetails/updateMetadata',
 
 	// updated metadata in event details redux store
 	let eventMetadata = {
-		flavor: metadataInfos.flavor,
-		title: metadataInfos.title,
+		flavor: catalog.flavor,
+		title: catalog.title,
 		fields: fields,
 	};
 	dispatch(setEventMetadata(eventMetadata));

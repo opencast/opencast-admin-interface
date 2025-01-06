@@ -3,7 +3,6 @@ import axios from 'axios';
 import _ from "lodash";
 import {
 	getSeriesDetailsExtendedMetadata,
-	getSeriesDetailsMetadata,
 	getSeriesDetailsThemeNames,
 	getStatistics,
 } from "../selectors/seriesDetailsSelectors";
@@ -242,12 +241,12 @@ export const fetchSeriesDetailsThemeNames = createAppAsyncThunk('seriesDetails/f
 export const updateSeriesMetadata = createAppAsyncThunk('seriesDetails/updateSeriesMetadata', async (params: {
 	id: string,
 	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
+	catalog: MetadataCatalog,
 }, {dispatch, getState}) => {
-	const { id, values } = params;
-	let metadataInfos = getSeriesDetailsMetadata(getState());
+	const { id, values, catalog } = params;
 
 	const { fields, data, headers } = transformMetadataForUpdate(
-		metadataInfos,
+		catalog,
 		values
 	);
 
@@ -255,8 +254,8 @@ export const updateSeriesMetadata = createAppAsyncThunk('seriesDetails/updateSer
 
 	// updated metadata in series details redux store
 	let seriesMetadata = {
-		flavor: metadataInfos.flavor,
-		title: metadataInfos.title,
+		flavor: catalog.flavor,
+		title: catalog.title,
 		fields: fields,
 	};
 	dispatch(setSeriesDetailsMetadata(seriesMetadata));

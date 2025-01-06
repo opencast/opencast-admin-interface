@@ -6,7 +6,6 @@ import {
 	getSeriesThemes,
 } from "../../../../selectors/seriesSeletctor";
 import MetadataSummaryTable from "./summaryTables/MetadataSummaryTable";
-import MetadataExtendedSummaryTable from "./summaryTables/MetadataExtendedSummaryTable";
 import AccessSummaryTable from "./summaryTables/AccessSummaryTable";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { useAppSelector } from "../../../../store";
@@ -48,7 +47,7 @@ const NewSeriesSummary = <T extends RequiredFormProps>({
 					<div className="full-col">
 						{/*Summary metadata*/}
 						<MetadataSummaryTable
-							metadataFields={metadataSeries.fields}
+							metadataCatalogs={[metadataSeries]}
 							// @ts-expect-error TS(7006):
 							formikValues={formik.values}
 							header={"EVENTS.SERIES.NEW.METADATA.CAPTION"}
@@ -56,11 +55,10 @@ const NewSeriesSummary = <T extends RequiredFormProps>({
 
 						{/*Summary metadata extended*/}
 						{!metaDataExtendedHidden ? (
-							<MetadataExtendedSummaryTable
-								extendedMetadata={extendedMetadata}
+							<MetadataSummaryTable
+								metadataCatalogs={extendedMetadata}
 								// @ts-expect-error TS(7006):
 								formikValues={formik.values}
-								// @ts-expect-error TS(7006):
 								formikInitialValues={formik.initialValues}
 								header={"EVENTS.SERIES.NEW.METADATA_EXTENDED.CAPTION"}
 							/>
