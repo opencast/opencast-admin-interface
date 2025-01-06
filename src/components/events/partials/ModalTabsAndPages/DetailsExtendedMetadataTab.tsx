@@ -10,7 +10,6 @@ import RenderField from "../../../shared/wizard/RenderField";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import {
 	hasAccess,
-	parseValueForBooleanStrings,
 } from "../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
@@ -51,8 +50,7 @@ const DetailsExtendedMetadataTab = ({
 		// Transform metadata fields and their values provided by backend (saved in redux)
 		if (!!metadataCatalog.fields && metadataCatalog.fields.length > 0) {
 			metadataCatalog.fields.forEach((field) => {
-				let value = parseValueForBooleanStrings(field.value);
-				initialValues[field.id] = value;
+				initialValues[field.id] = field.value;
 			});
 		}
 
