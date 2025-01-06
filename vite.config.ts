@@ -34,4 +34,12 @@ export default defineConfig({
             },
         },
     },
+    // Use modern SASS compiler
+    css: {
+        preprocessorOptions: {
+            scss: {
+                api: 'modern-compiler' // or "modern"
+            }
+        }
+    },
 });

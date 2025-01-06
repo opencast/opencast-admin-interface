@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "../base/variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -24,7 +27,7 @@
     display: block;
     width: 216px;
     margin: 20px 20px 15px;
-    border: $thin-border-stroke #ccc;
+    border: variables.$thin-border-stroke #ccc;
     text-shadow: none;
 
     &.left {
@@ -59,7 +62,7 @@
         color: #fff;
         text-align: center;
         margin: -1px -1px 0px -1px;
-        border: $thin-border-stroke darken($l-blue, 10%);
+        border: variables.$thin-border-stroke color.adjust(variables.$l-blue, $lightness: -10%);
         background: linear-gradient(to bottom, #388ed6, #2b77b9);
 
         a {
@@ -131,8 +134,8 @@
         a:active {
             margin: -1px;
             color: #f3f3f3;
-            background: $l-blue;
-            border: $thin-border-stroke darken($l-blue, 15%);
+            background: variables.$l-blue;
+            border: variables.$thin-border-stroke color.adjust(variables.$l-blue, $lightness: -15%);
         }
 
         &.active:first-child a,

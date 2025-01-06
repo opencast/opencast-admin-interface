@@ -1,3 +1,5 @@
+@use "../base/variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -22,18 +24,18 @@
 
 label {
     display: block;
-    color: $dark-prim-color;
+    color: variables.$dark-prim-color;
 
     > small {
         display: block;
-        color: $light-prim-color;
+        color: variables.$light-prim-color;
         font-size: 11px;
         margin-top: 3px;
     }
 
     &.required:after {
         content: "*";
-        color: $red;
+        color: variables.$red;
         margin-left: 3px;
     }
 }
@@ -43,7 +45,7 @@ label {
 // ----------------------------------------
 
 label.warning {
-    color: $red !important;
+    color: variables.$red !important;
 }
 
 

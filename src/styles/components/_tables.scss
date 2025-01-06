@@ -1,3 +1,10 @@
+@use "sass:color";
+@use "../../../node_modules/bourbon/core/bourbon/library/border-radius";
+@use "../base/fontawesome/fa-mixins";
+@use "../base/fontawesome/variables" as variables2;
+@use "../base/variables";
+@use "../mixins/mixins-config";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -28,8 +35,8 @@
     width: 100%;
     border-collapse: separate !important;
     border-spacing: 0;
-    border-radius: $main-border-radius;
-    border: $thin-border-stroke $border-color;
+    border-radius: variables.$main-border-radius;
+    border: variables.$thin-border-stroke $border-color;
 
     @mixin apply-row-stripe() {
         box-sizing: border-box;
@@ -47,17 +54,17 @@
 
 
     &.highlight-hover tr:hover {
-        background-color: $table-highlight;
+        background-color: variables.$table-highlight;
     }
 
     th {
         &.sortable {
             cursor: pointer;
             &:hover {
-                background: linear-gradient(to bottom, $off-white, darken(#f1f3f5, 3%));
+                background: linear-gradient(to bottom, variables.$off-white, color.adjust(#f1f3f5, $lightness: -3%));
             }
             &:active {
-                box-shadow: inset 0 3px 10px 2px rgba($black, 0.05);
+                box-shadow: inset 0 3px 10px 2px rgba(variables.$black, 0.05);
             }
         }
         // Layout
@@ -83,14 +90,14 @@
         border-left: 1px solid #fff;
         border-bottom: 1px solid $border-color;
         user-select: none;
-        background: linear-gradient(to bottom, darken($off-white, 1%), darken(#f1f3f5, 3%));
+        background: linear-gradient(to bottom, color.adjust(variables.$off-white, $lightness: -1%), color.adjust(#f1f3f5, $lightness: -3%));
 
         // Typography
         line-height: 35px;
         text-align: left;
         font-size: 13px;
         font-weight: 600;
-        color: $medium-prim-color;
+        color: variables.$medium-prim-color;
         text-shadow: 0px 1px 0px #fff;
 
 
@@ -98,14 +105,14 @@
         span .sort {
             float: right;
             margin: 12px 0 0 5px;
-            @include build-icon(auto, auto, tbl-sort, 8px, 13px);
+            @include mixins-config.build-icon(auto, auto, tbl-sort, 8px, 13px);
 
             &.asc  {
-                @include build-icon(auto, auto, tbl-sort-up, 8px, 13px);
+                @include mixins-config.build-icon(auto, auto, tbl-sort-up, 8px, 13px);
             }
 
             &.desc {
-                @include build-icon(auto, auto, tbl-sort-down, 8px, 13px);
+                @include mixins-config.build-icon(auto, auto, tbl-sort-down, 8px, 13px);
             }
         }
 
@@ -115,8 +122,8 @@
 
         // Darken tbl when sorted on
         &.col-sort {
-            background: darken(#f1f3f5, 2%);
-            box-shadow: inset 0 3px 10px 2px rgba($black, 0.05);
+            background: color.adjust(#f1f3f5, $lightness: -2%);
+            box-shadow: inset 0 3px 10px 2px rgba(variables.$black, 0.05);
         }
 
         // Special column
@@ -173,11 +180,11 @@
                 border-bottom: none;
 
                 &:last-child {
-                    border-bottom-right-radius: $main-border-radius;
+                    border-bottom-right-radius: variables.$main-border-radius;
                 }
 
                 &:first-child {
-                    border-bottom-left-radius: $main-border-radius;
+                    border-bottom-left-radius: variables.$main-border-radius;
                 }
             }
         }
@@ -186,8 +193,8 @@
         // at the bottom of rows.
         &.total {
             > td {
-                background: darken(#f8f8f8, 2%);
-                color: $medium-prim-color;
+                background: color.adjust(#f8f8f8, $lightness: -2%);
+                color: variables.$medium-prim-color;
                 font-weight: bold;
 
                 &:first-child {
@@ -198,7 +205,7 @@
         }
 
         &.darker-row {
-            background: darken(#f7f7f7, 5%);
+            background: color.adjust(#f7f7f7, $lightness: -5%);
         }
     }
 
@@ -208,7 +215,7 @@
 
     td {
         padding: $col-padding;
-        color: $medium-prim-color;
+        color: variables.$medium-prim-color;
         border-right: 1px solid #c9d0d6;
         line-height: 20px;
         vertical-align: middle;
@@ -224,47 +231,47 @@
             padding: unset;
 
             &.remove {
-                @include build-icon(auto, auto, remove-icon, 17px, 17px);
+                @include mixins-config.build-icon(auto, auto, remove-icon, 17px, 17px);
             }
 
             &.play {
-                color: $color-silver;
-                @include fa-icon($fa-var-play-circle-o, before, inline-block, 0, 0, $color-silver, 17px, normal, inherit);
+                color: variables.$color-silver;
+                @include fa-mixins.fa-icon(variables2.$fa-var-play-circle-o, before, inline-block, 0, 0, variables.$color-silver, 17px, normal, inherit);
 
                 &.on {
-                    color: $primary-color-green;
-                    @include fa-icon($fa-var-play-circle-o, before, inline-block, 0, 0, $primary-color-green, 17px, normal, inherit);
+                    color: variables.$primary-color-green;
+                    @include fa-mixins.fa-icon(variables2.$fa-var-play-circle-o, before, inline-block, 0, 0, variables.$primary-color-green, 17px, normal, inherit);
                 }
             }
 
             &.stop {
-                @include build-icon(auto, auto, stop-icon, 17px, 17px);
+                @include mixins-config.build-icon(auto, auto, stop-icon, 17px, 17px);
             }
 
             &.audio {
-                @include build-icon(auto, auto, audio-icon, 18px, 16px);
+                @include mixins-config.build-icon(auto, auto, audio-icon, 18px, 16px);
                 margin-right: 9px;
             }
 
             &.more {
-                @include build-icon(auto, auto, more-icon, 19px, 15px);
+                @include mixins-config.build-icon(auto, auto, more-icon, 19px, 15px);
             }
 
             &.more-series {
-                @include build-icon(auto, auto, more-series-icon, 19px, 15px);
+                @include mixins-config.build-icon(auto, auto, more-series-icon, 19px, 15px);
             }
 
             &.comments {
-                @include fa-icon($fa-var-comment-o, before, block, -3px 0 0 0, 0, inherit, 20px, normal,
+                @include fa-mixins.fa-icon(variables2.$fa-var-comment-o, before, block, -3px 0 0 0, 0, inherit, 20px, normal,
                                  inherit);
             }
 
             &.comments-open {
-                @include fa-icon($fa-var-comment, before, block, -3px 0 0 0, 0, inherit, 20px, normal, inherit);
+                @include fa-mixins.fa-icon(variables2.$fa-var-comment, before, block, -3px 0 0 0, 0, inherit, 20px, normal, inherit);
             }
 
             &.cut {
-                @include fa-icon($fa-var-scissors, before, inline-block, 2px 0 0 0, 0, inherit, 18px, normal, inherit);
+                @include fa-mixins.fa-icon(variables2.$fa-var-scissors, before, inline-block, 2px 0 0 0, 0, inherit, 18px, normal, inherit);
 
                 .badge {
                   position: relative;
@@ -275,17 +282,17 @@
                   height: 6px;
                   display: inline-block;
                   border-radius:100%;
-                  background-color: $red;
+                  background-color: variables.$red;
                 }
             }
 
             &.edit {
-                color: $l-blue;
+                color: variables.$l-blue;
             }
 
             &.fa {
                 font-size: 18px;
-                color: $color-darkgray;
+                color: variables.$color-darkgray;
             }
 
             &.crosslink {
@@ -305,7 +312,7 @@
                 height: 7px;
                 border-radius: 50%;
                 border: 2px solid #fff;
-                background: $red;
+                background: variables.$red;
                 width: 10px;
                 height: 10px;
             }
@@ -325,7 +332,7 @@
                 }
 
                 > hr {
-                    background: lighten($main-border-color, 10%);
+                    background: color.adjust(variables.$main-border-color, $lightness: 10%);
                     height: 1px;
                     border: none;
                 }
@@ -369,19 +376,19 @@
         }
 
         span[data-status="AGENTS.STATUS.IDLE"]:before {
-            background: $green;
+            background: variables.$green;
         }
 
         span[data-status="AGENTS.STATUS.SHUTTING_DOWN"]:before,span[data-status="AGENTS.STATUS.UNKNOWN"]:before {
-            background: $yellow;
+            background: variables.$yellow;
         }
 
         span[data-status="AGENTS.STATUS.CAPTURING"]:before,span[data-status="AGENTS.STATUS.UPLOADING"]:before {
-            background: $l-blue;
+            background: variables.$l-blue;
         }
 
         span[data-status="AGENTS.STATUS.ERROR"]:before {
-            background: $red;
+            background: variables.$red;
         }
 
         // Circles used on server page
@@ -392,27 +399,27 @@
             margin: 0;
 
             &.green {
-                background: $green;
+                background: variables.$green;
             }
 
             &.red {
-                background: $red;
+                background: variables.$red;
             }
 
             &.blue {
-                background: $l-blue;
+                background: variables.$l-blue;
             }
 
             &.yellow {
-                background: $yellow;
+                background: variables.$yellow;
             }
         }
 
         // Input
         > input {
             box-sizing: border-box;
-            border: $thin-border-stroke #ccc;
-            border-radius: $main-border-radius;
+            border: variables.$thin-border-stroke #ccc;
+            border-radius: variables.$main-border-radius;
             display: inline-block;
             padding-left: 10px;
             vertical-align: middle;
@@ -422,12 +429,12 @@
             border: none;
             width: 100%;
             height: 100%;
-            color: $dark-prim-color;
+            color: variables.$dark-prim-color;
             padding-left: 0;
         }
 
         .required {
-            color: $red;
+            color: variables.$red;
         }
 
         textarea.hidden-input {
@@ -439,7 +446,7 @@
         }
 
         &.js-has-check {
-            @include fa-icon($fa-var-check, after, inline-block, 3px 0 0 0, 0, $green, 18px);
+            @include fa-mixins.fa-icon(variables2.$fa-var-check, after, inline-block, 3px 0 0 0, 0, variables.$green, 18px);
 
             &:after {
                 opacity: 0;
@@ -505,12 +512,12 @@
         }
 
         .main-tbl {
-            border-top: 1px solid $main-border-color;
-            border-bottom: 1px solid $main-border-color;
+            border-top: 1px solid variables.$main-border-color;
+            border-bottom: 1px solid variables.$main-border-color;
         }
 
         .sub-tbl tr:first-child > td {
-            border-top: 1px solid $main-border-color;
+            border-top: 1px solid variables.$main-border-color;
         }
 
         // This is used to know if the row that opened the tbl was striped
@@ -521,8 +528,8 @@
             }
 
             .sub-tbl tr:last-child > td {
-                border-bottom: 1px solid $main-border-color;
-                @include border-bottom-radius(0);
+                border-bottom: 1px solid variables.$main-border-color;
+                @include border-radius.border-bottom-radius(0);
             }
         }
 
@@ -554,6 +561,6 @@
     border-radius: 0 !important;
 
     &:not(:first-child) {
-        border-top: 1px solid $main-border-color;
+        border-top: 1px solid variables.$main-border-color;
     }
 }

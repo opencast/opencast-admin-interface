@@ -1,3 +1,7 @@
+@use "../base/fontawesome/fa-mixins";
+@use "../base/fontawesome/variables" as variables2;
+@use "../base/variables";
+
 // controlling element of the popover
 .popover-wrapper {
     position: relative;
@@ -15,8 +19,8 @@
     position: absolute;
     width: 250px;
     background: #efefef;
-    border-radius: $main-border-radius;
-    border: $thin-border-stroke $main-border-color;
+    border-radius: variables.$main-border-radius;
+    border: variables.$thin-border-stroke variables.$main-border-color;
     z-index: 1;
 }
 
@@ -31,7 +35,7 @@
         position: absolute;
         pointer-events: none;
         border-color: transparent;
-        border-right-color: $main-border-color;
+        border-right-color: variables.$main-border-color;
         border-width: 10px;
         margin-top: 0;
     }
@@ -51,7 +55,7 @@
 .popover.popover-left {
     &:after {
         @include popover-arrow();
-        border-left-color: $main-border-color;
+        border-left-color: variables.$main-border-color;
         left: 100%;
     }
 }
@@ -60,12 +64,12 @@
     &:after {
         @include popover-arrow();
         right: 100%;
-        border-right-color: $main-border-color;
+        border-right-color: variables.$main-border-color;
     }
 }
 
 .popover__header {
-    background: $main-border-color;
+    background: variables.$main-border-color;
     height: 26px;
     position: relative;
 }
@@ -75,7 +79,7 @@
 }
 
 .popover__list-item {
-    @include fa-icon($fa-var-play-circle-o, before, inline-block, 0, 0, #37c180, 20px, normal, inherit);
+    @include fa-mixins.fa-icon(variables2.$fa-var-play-circle-o, before, inline-block, 0, 0, #37c180, 20px, normal, inherit);
     background-position-y: center;
     margin: 6px 0;
     padding-left: 30px;
@@ -89,7 +93,7 @@
 }
 
 .popover__list-item-disabled {
-    @include fa-icon($fa-var-play-circle-o, before, inline-block, 0, 0, inherit, 20px, normal, inherit);
+    @include fa-mixins.fa-icon(variables2.$fa-var-play-circle-o, before, inline-block, 0, 0, inherit, 20px, normal, inherit);
     margin: 6px 0;
     padding-left: 30px;
     line-height: 22px;

@@ -1,3 +1,6 @@
+@use "../base/variables";
+@use "../mixins/triangle-point";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -27,17 +30,17 @@
 
     // Base Properties
     $padding: 8px 0;
-    $background-color: rgba($white, 0.98    );
+    $background-color: rgba(variables.$white, 0.98    );
     $border-stroke: 1px;
-    $border-color: rgba($black, 0.1);
-    $border-radius: $main-border-radius;
-    $box-shadow: 0 1px 3px rgba($black, 0.1), 0 0 1px $border-stroke rgba($black, 0.1);
+    $border-color: rgba(variables.$black, 0.1);
+    $border-radius: variables.$main-border-radius;
+    $box-shadow: 0 1px 3px rgba(variables.$black, 0.1), 0 0 1px $border-stroke rgba(variables.$black, 0.1);
     $point-width: 7px;
     $point-height: 7px;
     $point-position-from-right: 10px;
 
     // Link Properties (List Items)
-    $link-hover-color: rgba($black, 0.05);
+    $link-hover-color: rgba(variables.$black, 0.05);
     $link-padding: 8px 15px;
     $link-transition-property: background, color;
     $link-transition-duration: 250ms;
@@ -59,7 +62,7 @@
         transition-timing-function: ease-in;
         text-overflow: ellipsis;
         white-space: nowrap;
-        font-weight: $weight-semibold;
+        font-weight: variables.$weight-semibold;
         height: 32px;
         width: 100%;
         text-align: left;
@@ -70,5 +73,5 @@
     }
 
     // Top Point
-    @include triangle-point(top, $point-width, $point-height, $point-position-from-right, $background-color, $border-stroke, $border-color);
+    @include triangle-point.triangle-point(top, $point-width, $point-height, $point-position-from-right, $background-color, $border-stroke, $border-color);
 }

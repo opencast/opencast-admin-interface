@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "../base/variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -23,8 +26,8 @@
 // About Variables
 // ----------------------------------------
 
-$about-border-color: darken($body-background, 13%);
-$about-background-color: darken($body-background, 5%);
+$about-border-color: color.adjust(variables.$body-background, $lightness: -13%);
+$about-background-color: color.adjust(variables.$body-background, $lightness: -5%);
 
 // Styles
 // ----------------------------------------

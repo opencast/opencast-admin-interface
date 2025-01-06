@@ -1,3 +1,14 @@
+@use "sass:color";
+@use "../../../node_modules/bourbon/core/bourbon/library/border-radius";
+@use "../../../node_modules/bourbon/core/bourbon/library/clearfix";
+@use "../base/fontawesome/fa-mixins";
+@use "../base/fontawesome/variables" as variables2;
+@use "../base/variables";
+@use "../mixins/button";
+@use "../mixins/mixins-config";
+@use "../mixins/triangle-point";
+@use "_menu-dropdown.scss";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -27,7 +38,7 @@
     $height: 50px;
     width: 100%;
     height: $height;
-    box-shadow: 0 1px 3px 1px rgba($black, 0.3);
+    box-shadow: 0 1px 3px 1px rgba(variables.$black, 0.3);
     position: relative;
     border-bottom: 1px solid #1d3041;
     background: linear-gradient(to bottom, #388ed6, #2075b1);
@@ -40,8 +51,8 @@
             padding: 14px 20px 13px;
 
             img {
-                width: $logo-width;
-                height: $logo-height;
+                width: variables.$logo-width;
+                height: variables.$logo-height;
             }
         }
     }
@@ -53,7 +64,7 @@
 
 .header-nav {
     position: absolute;
-    right: $side-margin;
+    right: variables.$side-margin;
     top: 5px;
 
     // Nav items
@@ -76,7 +87,7 @@
 
     .dropdown-ul {
         position: absolute;
-        z-index: $max-z + 10;
+        z-index: variables.$max-z + 10;
         opacity: 1;
         visibility: visible;
         @extend %menu-dropdown-base;
@@ -102,17 +113,17 @@
     }
 
     // Menu Icon Settings
-    $icon-color: $medium-prim-color;
+    $icon-color: variables.$medium-prim-color;
     $icon-font-size: 15px;
     $icon-display-value: inline-block;
     $icon-pesudo-position: before;
 
     .cogs-icon {
-        @include fa-icon($fa-var-cogs, $icon-pesudo-position, $icon-display-value, 0 10px 0 0, 0, $icon-color, $icon-font-size);
+        @include fa-mixins.fa-icon(variables2.$fa-var-cogs, $icon-pesudo-position, $icon-display-value, 0 10px 0 0, 0, $icon-color, $icon-font-size);
     }
 
     .logout-icon {
-        @include fa-icon($fa-var-power-off, $icon-pesudo-position, $icon-display-value, 0 14px 0 0, 0, $icon-color, $icon-font-size);
+        @include fa-mixins.fa-icon(variables2.$fa-var-power-off, $icon-pesudo-position, $icon-display-value, 0 14px 0 0, 0, $icon-color, $icon-font-size);
     }
 
     .fa {
@@ -132,7 +143,7 @@
 
     .lang-dd .dropdown-ul {
         .selected {
-            @include fa-icon($fa-var-check, $icon-pesudo-position, $icon-display-value, 0 7px 0 0, 0, $green, $icon-font-size);
+            @include fa-mixins.fa-icon(variables2.$fa-var-check, $icon-pesudo-position, $icon-display-value, 0 7px 0 0, 0, variables.$green, $icon-font-size);
         }
 
         button:not(.selected) {
@@ -171,7 +182,7 @@
 // ----------------------------------------
 
 .dropdown-icon {
-    @include fa-icon($fa-var-chevron-down, after, inline-block, 0 0 0 5px);
+    @include fa-mixins.fa-icon(variables2.$fa-var-chevron-down, after, inline-block, 0 0 0 5px);
 }
 
 
@@ -185,31 +196,31 @@
     display: flex;
     flex-direction: row;
     align-items: flex-end;
-    background: $d-blue;
+    background: variables.$d-blue;
 
     .btn-group {
-         margin-right: $side-margin;
+         margin-right: variables.$side-margin;
          align-self: center;
 
         // btn specific styles
         .add {
-            @include btn(green-dark-bg);
+            @include button.btn(green-dark-bg);
 
             &.plus-icon {
-                @include fa-icon($fa-var-plus, before, inline-block, 0 10px 0 0);
+                @include fa-mixins.fa-icon(variables2.$fa-var-plus, before, inline-block, 0 10px 0 0);
             }
 
             &.user-icon {
-                @include fa-icon($fa-var-user, before, inline-block, 0 10px 0 0);
+                @include fa-mixins.fa-icon(variables2.$fa-var-user, before, inline-block, 0 10px 0 0);
             }
 
             &.group-icon {
-                @include fa-icon($fa-var-users, before, inline-block, 0 10px 0 0);
+                @include fa-mixins.fa-icon(variables2.$fa-var-users, before, inline-block, 0 10px 0 0);
             }
         }
 
         .secondary {
-             @include btn(blue-dark-bg);
+             @include button.btn(blue-dark-bg);
              margin-right: 20px;
 
              &:first-child {
@@ -233,7 +244,7 @@
                 vertical-align: middle;
 
                 &:first-child {
-                    @include build-icon(auto, auto, export, 19px, 16px);
+                    @include mixins-config.build-icon(auto, auto, export, 19px, 16px);
                 }
 
                 &.fa-chevron-down {
@@ -246,7 +257,7 @@
 
         .upload > i {
             vertical-align: middle;
-            @include build-icon(auto, auto, upload, 19px, 16px);
+            @include mixins-config.build-icon(auto, auto, upload, 19px, 16px);
         }
     }
 
@@ -255,10 +266,10 @@
         width: 80px;
         height: 42px;
         background: #243e55;
-        @include border-top-radius(4px);
-        border: $thin-border-stroke darken(#1e364b, 3%);
+        @include border-radius.border-top-radius(4px);
+        border: variables.$thin-border-stroke color.adjust(#1e364b, $lightness: -3%);
         border-bottom: none;
-        margin: 0 $side-margin;
+        margin: 0 variables.$side-margin;
         position: relative;
 
         > button {
@@ -279,21 +290,21 @@
 
         a {
             display: inline-block;
-            color: $subpage-navigation-link-color;
+            color: variables.$subpage-navigation-link-color;
             text-align: center;
             position: relative;
             padding: 0 20px;
             margin-bottom: 16px;
 
             &:hover {
-                color: $subpage-navigation-link-hover-color;
+                color: variables.$subpage-navigation-link-hover-color;
             }
 
             &.active {
                 font-weight: 600;
-                color: $off-white;
+                color: variables.$off-white;
 
-                @include triangle-point(bottom, 7px, 7px, 50%, $off-white, 0, transparent, 9px);
+                @include triangle-point.triangle-point(bottom, 7px, 7px, 50%, variables.$off-white, 0, transparent, 9px);
                 &:before,
                 &:after {
                     margin-right: -7px;
@@ -324,11 +335,13 @@
 
         &.grey a,
         a {
-            @include btn(white);
-            border: 1px solid $main-border-color;
+            @include button.btn(white);
+            & {
+                border: 1px solid variables.$main-border-color;
+            }
 
             &:not(:last-child) {
-                border-right: 1px solid $main-border-color;
+                border-right: 1px solid variables.$main-border-color;
             }
         }
 
@@ -337,15 +350,15 @@
         // ------------------------------
 
         &.dark-blue a {
-            @include btn(blue);
-            border: $thin-border-stroke darken($dark-blue, 5%);
+            @include button.btn(blue);
+            border: variables.$thin-border-stroke color.adjust($dark-blue, $lightness: -5%);
             display: inline-block;
             padding: 12px 15px;
-            text-shadow: 0 1px 1px rgba($black, 0.15);
+            text-shadow: 0 1px 1px rgba(variables.$black, 0.15);
             border-radius: 0;
 
             &.active {
-                border: darken($mid-blue, 50%);
+                border: color.adjust($mid-blue, $lightness: -50%);
 
                 &:not(:first-child) {
                     border-left: 1px solid $dark-blue;
@@ -375,13 +388,13 @@
             }
 
             &:first-child {
-                border-top-left-radius: $main-border-radius;
-                border-bottom-left-radius: $main-border-radius;
+                border-top-left-radius: variables.$main-border-radius;
+                border-bottom-left-radius: variables.$main-border-radius;
             }
 
             &:last-child {
-                border-top-right-radius: $main-border-radius;
-                border-bottom-right-radius: $main-border-radius;
+                border-top-right-radius: variables.$main-border-radius;
+                border-bottom-right-radius: variables.$main-border-radius;
             }
 
             // Active Page
@@ -389,14 +402,14 @@
 
             &.active {
                 color: #fff !important;
-                text-shadow: 0 1px 0 rgba($black, 0.2);
-                border: 1px solid $l-blue;
+                text-shadow: 0 1px 0 rgba(variables.$black, 0.2);
+                border: 1px solid variables.$l-blue;
 
-                background: linear-gradient(to bottom, lighten($mid-blue, 20%), lighten($mid-blue, 10%));
-                box-shadow: inset 0 1px 0 0 rgba($white, 0.2), 0 2px 3px 1px rgba($black, 0.05);
+                background: linear-gradient(to bottom, color.adjust($mid-blue, $lightness: 20%), color.adjust($mid-blue, $lightness: 10%));
+                box-shadow: inset 0 1px 0 0 rgba(variables.$white, 0.2), 0 2px 3px 1px rgba(variables.$black, 0.05);
 
                 &:hover {
-                    background: linear-gradient(to bottom, lighten($mid-blue, 20%), lighten($mid-blue, 10%));
+                    background: linear-gradient(to bottom, color.adjust($mid-blue, $lightness: 20%), color.adjust($mid-blue, $lightness: 10%));
                 }
 
                 &:active {
@@ -425,7 +438,7 @@
 // Example: https://gist.github.com/mattmischuk/b4dcb1e245f00b21c6a6
 
 .page-nav-container {
-    @include clearfix();
+    @include clearfix.clearfix();
     width: 100%;
 
     .page-nav-bar {

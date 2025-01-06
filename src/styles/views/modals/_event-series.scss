@@ -1,3 +1,9 @@
+@use "../../../../node_modules/bourbon/core/bourbon/library/border-radius";
+@use "../../base/variables";
+@use "../../components/alerts";
+@use "../../mixins/button";
+@use "../../components/modals/_modal-base";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -46,7 +52,7 @@
                 }
 
                 > a {
-                    @include btn(white);
+                    @include button.btn(white);
                 }
             }
         }
@@ -58,7 +64,7 @@
             }
 
             .action-container {
-                border-top: 1px solid $main-border-color;
+                border-top: 1px solid variables.$main-border-color;
                 padding: 20px;
                 margin: 0 auto;
                 text-align: center;
@@ -68,7 +74,7 @@
                 }
 
                 > a {
-                    @include btn(white);
+                    @include button.btn(white);
                     margin-left: 5px;
                     vertical-align: middle;
                 }
@@ -86,14 +92,14 @@
             }
 
             .main-tbl {
-                border-top: 1px solid $main-border-color;
+                border-top: 1px solid variables.$main-border-color;
                 margin-top: 0;
-                @include border-top-radius(0);
+                @include border-radius.border-top-radius(0);
             }
 
             .add-remove-container {
                 box-sizing: border-box;
-                border-top: 1px solid $main-border-color;
+                border-top: 1px solid variables.$main-border-color;
                 padding: 20px;
                 width: 100%;
 
@@ -112,22 +118,22 @@
                 }
 
                 .fa-plus-circle {
-                    color: $green;
+                    color: variables.$green;
                 }
 
                 .fa-minus-circle {
-                    color: $red;
+                    color: variables.$red;
                 }
 
                 .btn {
-                    @include btn(green);
+                    @include button.btn(green);
                 }
             }
         }
 
         .trim-btn-container {
             .trim-btn {
-                @include btn(lightblue);
+                @include button.btn(lightblue);
                 display: inline-block;
                 padding: 10px 25px;
                 margin-bottom: 10px;
@@ -136,14 +142,14 @@
 
         .media-stream-details {
             .main-tbl {
-                border-bottom: 1px solid $main-border-color;
+                border-bottom: 1px solid variables.$main-border-color;
             }
         }
 
         .more-info-actions {
 
             ul {
-                padding: $modal-container-padding;
+                padding: variables.$modal-container-padding;
                 font-size: 12px;
 
                 li {
@@ -163,16 +169,16 @@
             }
 
             .fa-plus-circle {
-                color: $green;
+                color: variables.$green;
             }
 
             .cancel {
-                @include btn(white);
+                @include button.btn(white);
                 margin-right: 5px;
             }
 
             .apply {
-                @include btn(green);
+                @include button.btn(green);
             }
 
             .btn-container {
@@ -188,19 +194,19 @@
         }
 
         .scheduling-conflict {
-          @include alert-variant($state-danger-bg, $state-danger-border, $state-danger-text);
+          @include alerts.alert-variant(variables.$state-danger-bg, variables.$state-danger-border, variables.$state-danger-text);
           margin-bottom: 15px;
         }
     }
 }
 
 .tobira-page-separator {
-    color: $color-gray;
+    color: variables.$color-gray;
 }
 
 .tobira-leaf-page {
     font-size: larger;
-    font-weight: $weight-bold;
+    font-weight: variables.$weight-bold;
 }
 
 .tobira-not-mounted {
@@ -209,7 +215,7 @@
 
 .tobira-copy-direct-link {
     margin-left: 6px;
-    @include btn(white);
+    @include button.btn(white);
     i {
         margin: 0;
     }

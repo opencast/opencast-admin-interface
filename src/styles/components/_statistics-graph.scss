@@ -1,3 +1,9 @@
+@use "sass:color";
+@use "../base/fontawesome/fa-mixins";
+@use "../base/fontawesome/variables" as variables2;
+@use "../base/variables";
+@use "../mixins/button";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -30,7 +36,7 @@
     }
 
     > label {
-      @include btn($white);
+      @include button.btn(variables.$white);
       display: inline;
       border-radius: 0;
       margin: -2px;
@@ -48,9 +54,9 @@
 
     > input[type="radio"]:checked + label {
       cursor: pointer;
-      border: $thin-border-stroke darken($main-border-color, 2%);
-      background: linear-gradient(darken(#fff, 4%), darken(#f7f7f7, 10%));
-      color: $medium-prim-color;
+      border: variables.$thin-border-stroke color.adjust(variables.$main-border-color, $lightness: -2%);
+      background: linear-gradient(color.adjust(#fff, $lightness: -4%), color.adjust(#f7f7f7, $lightness: -10%));
+      color: variables.$medium-prim-color;
       box-shadow: inset 0px 1px 6px 2px rgba(0,0,0,.1);
     }
   }
@@ -67,14 +73,14 @@
 
     .navigation {
 
-      @include btn($white);
+      @include button.btn(variables.$white);
 
       &.prev {
-        @include fa-icon($fa-var-chevron-left, before, inline-block, 0 0 0 0, 0, inherit, 10px);
+        @include fa-mixins.fa-icon(variables2.$fa-var-chevron-left, before, inline-block, 0 0 0 0, 0, inherit, 10px);
       }
 
       &.next {
-        @include fa-icon($fa-var-chevron-right, after, inline-block, 0 0 0 0, 0, inherit, 10px);
+        @include fa-mixins.fa-icon(variables2.$fa-var-chevron-right, after, inline-block, 0 0 0 0, 0, inherit, 10px);
       }
     }
 
@@ -100,7 +106,7 @@
     margin-left: -100%;
 
     .download-icon {
-        @include fa-icon($fa-var-download, before, inline-block, 0 0 0 0, 0, inherit, 30px);
+        @include fa-mixins.fa-icon(variables2.$fa-var-download, before, inline-block, 0 0 0 0, 0, inherit, 30px);
     }
   }
 

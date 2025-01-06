@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "../base/variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -20,7 +23,7 @@
  */
 
 
-@mixin triangle-point($position, $width, $height, $position-from-right: 10px, $background-color: $white, $border-stroke: 1px, $border-color: darken($main-border-color, 5%), $position-from-origin: 1) {
+@mixin triangle-point($position, $width, $height, $position-from-right: 10px, $background-color: variables.$white, $border-stroke: 1px, $border-color: color.adjust(variables.$main-border-color, $lightness: -5%), $position-from-origin: 1) {
 
     @if $position == top {
 
@@ -43,7 +46,7 @@
         &:before {
             top: - (($height + $position-from-origin) - $border-stroke);
             border-color: transparent transparent $background-color transparent;
-            z-index: $z-100;
+            z-index: variables.$z-100;
         }
     }
 
@@ -68,7 +71,7 @@
         &:before {
             bottom: - (($height + $position-from-origin) + $border-stroke);
             border-color: transparent transparent $background-color transparent;
-            z-index: $z-100;
+            z-index: variables.$z-100;
         }
     }
 }

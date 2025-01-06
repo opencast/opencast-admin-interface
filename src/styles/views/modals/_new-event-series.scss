@@ -1,3 +1,7 @@
+@use "../../base/variables";
+@use "../../components/alerts";
+@use "../../components/modals/_modal-base";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -42,15 +46,15 @@
             float: none;
 
             &:hover {
-                color: $l-blue;
+                color: variables.$l-blue;
             }
         }
 
         .fa-plus-circle {
-            color: $primary-color-green;
+            color: variables.$primary-color-green;
 
             &:hover {
-                color: $primary-color-green-light-1;
+                color: variables.$primary-color-green-light-1;
             }
         }
 
@@ -64,7 +68,7 @@
         }
         
         .scheduling-conflict {
-          @include alert-variant($state-danger-bg, $state-danger-border, $state-danger-text);
+          @include alerts.alert-variant(variables.$state-danger-bg, variables.$state-danger-border, variables.$state-danger-text);
           margin-bottom: 15px;
         }
     }

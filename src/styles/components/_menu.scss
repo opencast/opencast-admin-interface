@@ -1,3 +1,8 @@
+@use "../../../node_modules/bourbon/core/bourbon/library/border-radius";
+@use "../base/fontawesome/fa-mixins";
+@use "../base/fontawesome/variables" as variables2;
+@use "../base/variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -26,9 +31,9 @@
     float: left;
     width: 80px;
     background: #fff;
-    border: $thin-border-stroke #c3cbd0;
+    border: variables.$thin-border-stroke #c3cbd0;
     border-top: none;
-    @include border-bottom-radius(4px);
+    @include border-radius.border-bottom-radius(4px);
     position: absolute;
     top: 1px;
     left: -1px;
@@ -69,7 +74,7 @@
         &:hover > i,
         &:active > i {
             color: #24425c;
-            @include fa-icon-color(before, "#24425c");
+            @include fa-mixins.fa-icon-color(before, "#24425c");
         }
 
         @keyframes fadeIn {
@@ -85,27 +90,27 @@
         }
 
         .events {
-            @include fa-icon($fa-var-calendar-check-o, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
+            @include fa-mixins.fa-icon(variables2.$fa-var-calendar-check-o, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
         }
 
         .systems {
-            @include fa-icon($fa-var-server, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
+            @include fa-mixins.fa-icon(variables2.$fa-var-server, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
         }
 
         .recordings {
-            @include fa-icon($fa-var-video-camera, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
+            @include fa-mixins.fa-icon(variables2.$fa-var-video-camera, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
         }
 
         .users {
-            @include fa-icon($fa-var-user, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
+            @include fa-mixins.fa-icon(variables2.$fa-var-user, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
         }
 
         .statistics {
-            @include fa-icon($fa-var-signal, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
+            @include fa-mixins.fa-icon(variables2.$fa-var-signal, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
         }
 
         .configuration {
-            @include fa-icon($fa-var-cogs, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
+            @include fa-mixins.fa-icon(variables2.$fa-var-cogs, before, block, -3px 0 0 0, 0, inherit, 29px, normal, inherit);
         }
     }
 }

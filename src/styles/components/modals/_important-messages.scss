@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "../../base/variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -21,10 +24,10 @@
 
 
 .important-message {
-    border: $thin-border-stroke $main-border-color;
-    border-radius: $main-border-radius;
+    border: variables.$thin-border-stroke variables.$main-border-color;
+    border-radius: variables.$main-border-radius;
     background: #fff;
-    box-shadow: 0 0 4px $light-black-alpha;
+    box-shadow: 0 0 4px variables.$light-black-alpha;
     margin: 20px auto;
 
     &:first-child {
@@ -33,13 +36,13 @@
 
     .message-header,
     .message-body {
-        color: $grey;
+        color: variables.$grey;
         font-weight: 600;
     }
 
     .message-header {
-        border-bottom: 1px solid lighten($main-border-color, 5%);
-        box-shadow: 0 1px 2px $light-black-alpha;
+        border-bottom: 1px solid color.adjust(variables.$main-border-color, $lightness: 5%);
+        box-shadow: 0 1px 2px variables.$light-black-alpha;
         font-size: 16px;
         line-height: 18px;
         padding: 10px 10px;
@@ -60,7 +63,7 @@
     &.danger {
         .message-header,
         .message-body {
-            color: $alt-red;
+            color: variables.$alt-red;
         }
 
         .message-header {
@@ -75,10 +78,10 @@
                 position: absolute;
                 top: 11px;
                 left: 10px;
-                z-index: $max-z;
+                z-index: variables.$max-z;
                 width: $w;
                 height: $h;
-                background-image: url("#{$img-path}/#{$image-name}.png");
+                background-image: url("#{variables.$img-path}/#{$image-name}.png");
                 background-size: $w $h;
             }
         }
@@ -87,7 +90,7 @@
     &.info {
         .message-header,
         .message-body {
-            color: $l-blue;
+            color: variables.$l-blue;
         }
     }
 }

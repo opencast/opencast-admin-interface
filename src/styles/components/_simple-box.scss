@@ -1,3 +1,7 @@
+@use "sass:color";
+@use "../../../node_modules/bourbon/core/bourbon/library/border-radius";
+@use "../base/variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -34,9 +38,9 @@
         margin: -3px 8px 0 0;
         padding: 0 20px;
         display: inline-block;
-        background: darken($body-background, 1%);
-        border: $thin-border-stroke $main-border-color;
-        @include border-top-radius($main-border-radius);
+        background: color.adjust(variables.$body-background, $lightness: -1%);
+        border: variables.$thin-border-stroke variables.$main-border-color;
+        @include border-radius.border-top-radius(variables.$main-border-radius);
         font-size: 13px;
 
         &.active {
@@ -49,8 +53,8 @@
 
 // Main Simple Box Styles (formerly ".container")
 .simple-box {
-    border-radius: $main-border-radius;
-    border: 1px solid $main-border-color;
+    border-radius: variables.$main-border-radius;
+    border: 1px solid variables.$main-border-color;
     background: #fff;
     padding: 25px 20px 25px;
 
@@ -66,7 +70,7 @@
         }
 
         > h1 {
-            color: darken($grey, 20%);
+            color: color.adjust(variables.$grey, $lightness: -20%);
             font-size: 23px;
             margin: 10px 0;
         }
@@ -74,7 +78,7 @@
         > p {
            line-height: 23px;
            font-size: 12px;
-           color: $medium-prim-color;
+           color: variables.$medium-prim-color;
            margin-bottom: 10px;
 
         }
@@ -83,7 +87,7 @@
         ul {
             padding-left: 20px;
             list-style: disc;
-            color: $light-prim-color;
+            color: variables.$light-prim-color;
         }
 
         li {
@@ -94,14 +98,14 @@
                 margin-right: 5px;
 
                 strong {
-                    color: $medium-prim-color;
+                    color: variables.$medium-prim-color;
                 }
 
                 &:hover {
-                    color: $l-blue;
+                    color: variables.$l-blue;
 
                     > strong {
-                        color: $l-blue;
+                        color: variables.$l-blue;
                     }
                 }
             }

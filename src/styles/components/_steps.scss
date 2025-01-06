@@ -1,3 +1,5 @@
+@use "../base/variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -23,28 +25,28 @@
 .step-by-step {
 
     .MuiStepLabel-iconContainer svg {
-        color: $color-gray !important;
+        color: variables.$color-gray !important;
     }
 
     .MuiStepLabel-labelContainer .Mui-active {
-        border-bottom: 1px solid $primary-color-blue;
+        border-bottom: 1px solid variables.$primary-color-blue;
         font-weight: 800;
     }
 
     .Mui-active svg {
-        color: $primary-color-blue !important;
+        color: variables.$primary-color-blue !important;
         transform: none !important;
     }
 
     .MuiStepLabel-labelContainer span {
-        color: $color-darkgray;
+        color: variables.$color-darkgray;
         margin: 3px 10px;
         position: relative;
     }
 
     $height: 100px;
-    background: $modal-nav-bg-color;
-    border-bottom: 1px solid $modal-nav-border-color;
+    background: variables.$modal-nav-bg-color;
+    border-bottom: 1px solid variables.$modal-nav-border-color;
     height: $height;
     text-align: center;
     position: relative;
@@ -58,18 +60,18 @@
         left: 0;
         width: 100%;
         height: 1px;
-        background: $main-border-color;
+        background: variables.$main-border-color;
         background: linear-gradient(
             to left,
-            rgba($modal-nav-border-color, 0) 5%,
-            rgba($modal-nav-border-color, 1) 25%,
-            rgba($modal-nav-border-color, 1) 75%,
-            rgba($modal-nav-border-color, 0) 95%
+            rgba(variables.$modal-nav-border-color, 0) 5%,
+            rgba(variables.$modal-nav-border-color, 1) 25%,
+            rgba(variables.$modal-nav-border-color, 1) 75%,
+            rgba(variables.$modal-nav-border-color, 0) 95%
         );
     }
 
     > a {
-        color: $modal-nav-link-color;
+        color: variables.$modal-nav-link-color;
         margin: 0 10px;
         position: relative;
         line-height: $height + 30;
@@ -82,7 +84,7 @@
             top: -20px;
             left: 50%;
             margin-left: -5px;
-            background: $modal-nav-link-color;
+            background: variables.$modal-nav-link-color;
             border-radius: 50%;
             width: 12px;
             height: 12px;
@@ -90,23 +92,23 @@
 
         // First line
         &:first-child:before {
-            background: linear-gradient(to right, $modal-nav-bg-color, $modal-nav-border-color);
+            background: linear-gradient(to right, variables.$modal-nav-bg-color, variables.$modal-nav-border-color);
         }
 
         // Last line
         &:last-child:before {
-            background: linear-gradient(to right, $modal-nav-border-color, $modal-nav-bg-color);
+            background: linear-gradient(to right, variables.$modal-nav-border-color, variables.$modal-nav-bg-color);
         }
 
         // Active step
         &.active {
-            color: $modal-nav-link-active-color;
+            color: variables.$modal-nav-link-active-color;
             font-weight: 600;
 
             // Active Dot
             &:after {
                 width: 22px; height: 22px;
-                background: $modal-nav-link-active-color;
+                background: variables.$modal-nav-link-active-color;
                 margin-left: -11px; top: -25px;
             }
         }

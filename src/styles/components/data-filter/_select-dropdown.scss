@@ -1,3 +1,8 @@
+@use "../../base/fontawesome/fa-mixins";
+@use "../../base/fontawesome/variables" as variables2;
+@use "../../base/variables";
+@use "../../mixins/button";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -41,7 +46,7 @@ $df-select-dropdown-horizontal-padding: 6px;
 
 .df-select-dropdown {
     box-sizing: border-box;
-    @include btn(white);
+    @include button.btn(white);
     appearance: none;
     display: inline-block;
     float: left;
@@ -54,8 +59,8 @@ $df-select-dropdown-horizontal-padding: 6px;
     white-space: nowrap;
     text-overflow: clip;
     font-size: 9px;
-    font-weight: $weight-semibold;
-    color: $medium-prim-color;
+    font-weight: variables.$weight-semibold;
+    color: variables.$medium-prim-color;
 
     // DF Select Dropdown (1st State)
     .js-df-state-new-filter & {
@@ -100,8 +105,8 @@ $df-select-dropdown-horizontal-padding: 6px;
 
         &:hover {
             background: linear-gradient(#fff, #f7f7f7);
-            border: $thin-border-stroke $main-border-color;
-            color: $medium-prim-color;
+            border: variables.$thin-border-stroke variables.$main-border-color;
+            color: variables.$medium-prim-color;
         }
 
         &:active {
@@ -129,7 +134,7 @@ $df-select-dropdown-horizontal-padding: 6px;
 
 .df-delete-select-dropdown-button {
     box-sizing: border-box;
-    @include btn(white);
+    @include button.btn(white);
     display: block;
     float: left;
     width: auto;
@@ -139,10 +144,10 @@ $df-select-dropdown-horizontal-padding: 6px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 
-    @include fa-icon($fa-var-close, before, inline-block, 4px 0 0 0, 0, $medium-prim-color, 10px);
+    @include fa-mixins.fa-icon(variables2.$fa-var-close, before, inline-block, 4px 0 0 0, 0, variables.$medium-prim-color, 10px);
 
     &.disabled {
-        @include fa-icon-color(before, $light-prim-color);
+        @include fa-mixins.fa-icon-color(before, variables.$light-prim-color);
     }
 
     transition-property: visibility, opacity;
@@ -155,6 +160,6 @@ $df-select-dropdown-horizontal-padding: 6px;
     }
 
     &:hover:not(.disabled) {
-        @include fa-icon-color(before, $alt-red);
+        @include fa-mixins.fa-icon-color(before, variables.$alt-red);
     }
 }

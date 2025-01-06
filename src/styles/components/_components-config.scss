@@ -20,35 +20,35 @@
  */
 
 
-@import "simple-box";
-@import "helper-classes";
-@import "cal";
-@import "ui";
-@import "dropdowns";
-@import "menu-dropdown";
-@import "form";
-@import "multi-select";
-@import "steps";
-@import "breadcrumbs";
-@import "header";
-@import "menu";
-@import "footer";
-@import "tables";
-@import "date-picker";
-@import "alerts";
-@import "inputs";
-@import "stats";
-@import "popover";
-@import "collapsible-box";
-@import "about";
-@import "tooltips";
+@use "simple-box";
+@use "helper-classes";
+@use "cal";
+@use "ui";
+@use "dropdowns";
+@use "menu-dropdown";
+@use "form";
+@use "multi-select";
+@use "steps";
+@use "breadcrumbs";
+@use "header";
+@use "menu";
+@use "footer";
+@use "tables";
+@use "date-picker";
+@use "alerts";
+@use "inputs";
+@use "stats";
+@use "popover";
+@use "collapsible-box";
+@use "about";
+@use "tooltips";
 
 // Integrated From Extensions
-@import "labels";
-@import "progress-bar";
-@import "toggle-buttons";
-@import "statistics-graph";
+@use "labels";
+@use "progress-bar";
+@use "toggle-buttons";
+@use "statistics-graph";
 
 // Large Components
-@import "modals/modals-config";
-@import "data-filter/data-filter-config";
+@use "modals/modals-config";
+@use "data-filter/data-filter-config";

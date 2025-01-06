@@ -1,3 +1,5 @@
+@use "../../../base/variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -27,7 +29,7 @@
     }
 
     .modal-content {
-        background-color: $primary-color-white;
+        background-color: variables.$primary-color-white;
         //background-color: $white;
         .row {
             margin: 6px 0;
@@ -35,11 +37,11 @@
 
     fieldset {
       margin: 0px 0px 5px 0px;
-      border: $thin-border-stroke $main-border-color;
-      border-radius: $main-border-radius;
+      border: variables.$thin-border-stroke variables.$main-border-color;
+      border-radius: variables.$main-border-radius;
       legend {
         font-weight: bold;
-        color: $medium-prim-color;
+        color: variables.$medium-prim-color;
         padding: 0px 3px;
       }
       padding: 0px 20px;
@@ -48,19 +50,19 @@
     hr {
       border: none;
       height: 1px;
-      color: $main-border-color;
-      background-color: $main-border-color;
+      color: variables.$main-border-color;
+      background-color: variables.$main-border-color;
       margin: 2px 0px;
     }
 
     p {
-      color: $dark-prim-color;
+      color: variables.$dark-prim-color;
       font-size: 15px;
       line-height: 1.25;
     }
 
     b {
-      color: $dark-prim-color;
+      color: variables.$dark-prim-color;
       font-weight: 700;
     }
 
@@ -70,7 +72,7 @@
       margin-bottom: 0.3rem;
 
       select {
-        height: $input-height;
+        height: variables.$input-height;
         padding-left: 17px;
       }
       select:-moz-focusring {
@@ -145,15 +147,15 @@
     }
     .scrollbox {
       h1 {
-        color: $dark-prim-color;
+        color: variables.$dark-prim-color;
         font-size: 18px;
         font-weight: 600;
         margin-bottom: 20px;
         margin-top: 10px;
       }
-      background-color: $white;
-      border: $thin-border-stroke $main-border-color;
-      border-radius: $main-border-radius;
+      background-color: variables.$white;
+      border: variables.$thin-border-stroke variables.$main-border-color;
+      border-radius: variables.$main-border-radius;
       max-height: 350px;
       padding: 10px;
       overflow: auto;
@@ -164,7 +166,7 @@
     .registration-header {
         padding: 10px 0;
         padding-top: 0;
-        color: $medium-prim-color;
+        color: variables.$medium-prim-color;
         font-size: 12px;
         line-height: 20px;
         width: 100%;
@@ -172,7 +174,7 @@
 
         h2 {
           font-size: 31px;
-          color: $dark-prim-color;
+          color: variables.$dark-prim-color;
           overflow: visible;
         }
 
@@ -193,7 +195,7 @@
     .col {
         width: 48.72%;
         h3 {
-          color: $dark-prim-color;
+          color: variables.$dark-prim-color;
           font-size: 18px;
           font-weight: 600;
         }
@@ -227,7 +229,7 @@
         .skip-registration {
             float: none;
             height: 100%;
-            color: $light-prim-color;
+            color: variables.$light-prim-color;
             font-size: small;
         }
         .skip-registration-text {

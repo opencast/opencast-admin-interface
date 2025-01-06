@@ -20,18 +20,18 @@
  */
 
 
-@import "variables";
-@import "fa-variables"; // Our own version
-@import "mixins";
-@import "fa-mixins"; // Our own version
+@use "variables";
+@use "fa-variables"; // Our own version
+@use "mixins";
+@use "fa-mixins"; // Our own version
 //@import "path"; // already included
-@import "core";
-@import "larger";
-@import "fixed-width";
-@import "list";
-@import "bordered-pulled";
-@import "animated";
-@import "rotated-flipped";
-@import "stacked";
-@import "icons";
-@import "screen-reader";
+@use "core";
+@use "larger";
+@use "fixed-width";
+@use "list";
+@use "bordered-pulled";
+@use "animated";
+@use "rotated-flipped";
+@use "stacked";
+@use "icons";
+@use "screen-reader";

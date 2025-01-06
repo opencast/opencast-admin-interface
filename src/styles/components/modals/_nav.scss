@@ -1,3 +1,6 @@
+@use "../../base/variables";
+@use "../../mixins/triangle-point";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -26,8 +29,8 @@
     $line-height: 20px;
     width: 100%;
     height: $height;
-    background: $modal-nav-bg-color;
-    border-bottom: 1px solid $modal-nav-border-color;
+    background: variables.$modal-nav-bg-color;
+    border-bottom: 1px solid variables.$modal-nav-border-color;
 
     > button {
         $width: 100px;
@@ -40,7 +43,7 @@
         box-sizing: border-box;
         height : $height;
         line-height: $line-height;
-        color: $modal-nav-link-color;
+        color: variables.$modal-nav-link-color;
         font-size: 13px;
 
         &.wider {
@@ -53,17 +56,17 @@
         }
 
         &:hover {
-            color: $modal-nav-link-active-color;
+            color: variables.$modal-nav-link-active-color;
         }
 
         &.active {
-            color: $modal-nav-link-active-color;
+            color: variables.$modal-nav-link-active-color;
             font-weight: 600;
 
             $size: 8px;
             $position-from-right: ($width*0.5) - $size;
 
-            @include triangle-point(bottom, $size, $size, $position-from-right, $off-white, 1px, $modal-nav-border-color, -8px);
+            @include triangle-point.triangle-point(bottom, $size, $size, $position-from-right, variables.$off-white, 1px, variables.$modal-nav-border-color, -8px);
         }
 
         // Notifiction

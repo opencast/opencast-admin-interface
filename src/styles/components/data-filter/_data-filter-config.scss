@@ -36,14 +36,14 @@
 // Component Partials
 // ----------------------------------------
 
-@import "base";
-@import "label";
-@import "add-button";
-@import "input-base";
-@import "clear-filters";
-@import "filter-profiles";
-@import "select-dropdown";
-@import "select-title";
-@import "select-options";
-@import "input-button";
-@import "popout";
+@use "base";
+@use "label";
+@use "add-button";
+@use "input-base";
+@use "clear-filters";
+@use "filter-profiles";
+@use "select-dropdown";
+@use "select-title";
+@use "select-options";
+@use "input-button";
+@use "popout";

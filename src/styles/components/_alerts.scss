@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "../base/variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -33,7 +36,7 @@
     }
 
     a {
-        color: lighten($text-color, 10%);
+        color: color.adjust($text-color, $lightness: 10%);
 
         &:hover {
             color: $text-color;
@@ -98,7 +101,7 @@
 .global-notifications {
     position: fixed;
     max-width: 300px;
-    z-index: $max-z;
+    z-index: variables.$max-z;
 
     .alert {
         .close {
@@ -121,12 +124,12 @@
 
 .alert {
     min-height: 40px;
-    border-radius: $main-border-radius;
+    border-radius: variables.$main-border-radius;
     position: absolute;
     top: 20px;
     left: 0px;
     right: 20px;
-    z-index: $max-z;
+    z-index: variables.$max-z;
     font-weight: 600;
     padding: 0 15px;
     overflow: hidden;
@@ -146,7 +149,7 @@
         right: 10px;
         font-size: 20px;
         margin-top: 9px;
-        transition: $alert-transition;
+        transition: variables.$alert-transition;
         text-decoration: none;
         color: inherit;
     }
@@ -161,19 +164,19 @@
     // Color variables are located in assets/less/base/_variables.less
 
     &.info {
-        @include alert-variant($state-info-bg, $state-info-border, $state-info-text);
+        @include alert-variant(variables.$state-info-bg, variables.$state-info-border, variables.$state-info-text);
     }
 
     &.warning {
-        @include alert-variant($state-warning-bg, $state-warning-border, $state-warning-text);
+        @include alert-variant(variables.$state-warning-bg, variables.$state-warning-border, variables.$state-warning-text);
     }
 
     &.success {
-        @include alert-variant($state-success-bg, $state-success-border, $state-success-text);
+        @include alert-variant(variables.$state-success-bg, variables.$state-success-border, variables.$state-success-text);
     }
 
     &.danger {
-        @include alert-variant($state-danger-bg, $state-danger-border, $state-danger-text);
+        @include alert-variant(variables.$state-danger-bg, variables.$state-danger-border, variables.$state-danger-text);
     }
 }
 
