@@ -18,38 +18,44 @@
  * the License.
  *
  */
+ @use "sass:color";
 
+ .datepicker-custom {
+    z-index: 10000 !important;
 
-@import "simple-box";
-@import "helper-classes";
-@import "cal";
-@import "ui";
-@import "dropdowns";
-@import "menu-dropdown";
-@import "form";
-@import "multi-select";
-@import "steps";
-@import "breadcrumbs";
-@import "header";
-@import "menu";
-@import "footer";
-@import "tables";
-@import "date-picker";
-@import "datepicker-custom";
-@import "alerts";
-@import "inputs";
-@import "stats";
-@import "popover";
-@import "collapsible-box";
-@import "about";
-@import "tooltips";
+    &-wrapper {
+      width: 100%;
+    }
 
-// Integrated From Extensions
-@import "labels";
-@import "progress-bar";
-@import "toggle-buttons";
-@import "statistics-graph";
+    &-input {
+      height: 25px !important;
+    }
+  }
 
-// Large Components
-@import "modals/modals-config";
-@import "data-filter/data-filter-config";
+ .react-datepicker__navigation--years {
+    &::before {
+      border-color: #ccc;
+      border-style: solid;
+      border-width: 3px 3px 0 0;
+      content: '';
+      display: block;
+      height: 9px;
+      left: 11px;
+      position: absolute;
+      width: 9px;
+    }
+
+    &-upcoming::before {
+      top: 17px;
+      transform: rotate(315deg);
+    }
+
+    &-previous::before {
+      top: 6px;
+      transform: rotate(135deg);
+    }
+
+    &:hover::before {
+      border-color: color.adjust(#ccc, $lightness: -15%);
+    }
+  }

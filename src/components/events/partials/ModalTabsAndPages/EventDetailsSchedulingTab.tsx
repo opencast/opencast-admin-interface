@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import cn from "classnames";
 import _ from "lodash";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import DatePicker from "react-datepicker";
 import { Formik, FormikErrors, FormikProps } from "formik";
 import { Field } from "../../../shared/Field";
 import Notifications from "../../../shared/Notifications";
@@ -289,8 +289,7 @@ const EventDetailsSchedulingTab = ({
 																/* date picker for start date */
 																<DatePicker
 																	name="scheduleStartDate"
-																	// tabIndex={1}
-																	value={new Date(formik.values.scheduleStartDate)}
+																	selected={new Date(formik.values.scheduleStartDate)}
 																	onChange={(value: Date | null) =>
 																		value && changeStartDate(
 																			value,
@@ -300,6 +299,14 @@ const EventDetailsSchedulingTab = ({
 																			checkConflictsWrapper
 																		)
 																	}
+																	showYearDropdown
+																	showMonthDropdown
+																	yearDropdownItemNumber={2}
+																	dateFormat="P"
+																	popperClassName="datepicker-custom"
+																	className="datepicker-custom-input"
+																	portalId="root"
+																	locale={currentLanguage?.dateLocale}
 																/>
 															) : (
 																<>
