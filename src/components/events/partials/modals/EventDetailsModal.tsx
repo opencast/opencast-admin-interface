@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import EventDetails from "./EventDetails";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
-import { useHotkeys } from "react-hotkeys-hook";
-import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 import { getModalEvent } from "../../../../selectors/eventDetailsSelectors";
 import { setModalEvent, setShowModal } from "../../../../slices/eventDetailsSlice";
+import { Modal, ModalHandle } from "../../../shared/modals/Modal";
 
 /**
  * This component renders the modal for displaying event details
@@ -14,6 +13,7 @@ import { setModalEvent, setShowModal } from "../../../../slices/eventDetailsSlic
 const EventDetailsModal = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
+	const modalRef = useRef<ModalHandle>(null);
 
 	// tracks, whether the policies are different to the initial value
 	const [policyChanged, setPolicyChanged] = useState(false);
@@ -37,41 +37,21 @@ const EventDetailsModal = () => {
 		}
 	};
 
-	useHotkeys(
-		availableHotkeys.general.CLOSE_MODAL.sequence,
-		() => close(),
-		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
-		[close],
-  	);
-
 	return (
-		// todo: add hotkeys
-		<>
-			<div className="modal-animation modal-overlay" />
-			<section
-				id="event-details-modal"
-				tabIndex={0}
-				className="modal wizard modal-animation"
-			>
-				<header>
-					<button className="button-like-anchor fa fa-times close-modal" onClick={() => close()} />
-					<h2>
-						{
-							t("EVENTS.EVENTS.DETAILS.HEADER", {
-								resourceId: event.title,
-							}) /*Event details - {resourceTitle}*/
-						}
-					</h2>
-				</header>
-
-				<EventDetails
-					eventId={event.id}
-					policyChanged={policyChanged}
-					setPolicyChanged={(value) => setPolicyChanged(value)}
-				/>
-			</section>
-		</>
-	)
-};
+		<Modal
+			open
+			closeCallback={close}
+			header={t("EVENTS.EVENTS.DETAILS.HEADER", { resourceId: event.title })}
+			classId="event-details-modal"
+			ref={modalRef}
+		>
+			<EventDetails
+				eventId={event.id}
+				policyChanged={policyChanged}
+				setPolicyChanged={(value) => setPolicyChanged(value)}
+			/>
+		</Modal>
+	);
+}
 
 export default EventDetailsModal;

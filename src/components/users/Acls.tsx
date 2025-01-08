@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import MainNav from "../shared/MainNav";
 import { Link } from "react-router-dom";
@@ -27,6 +27,7 @@ import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchAcls } from "../../slices/aclSlice";
 import { fetchUsers } from "../../slices/userSlice";
 import { fetchGroups } from "../../slices/groupSlice";
+import { ModalHandle } from "../shared/modals/Modal";
 
 /**
  * This component renders the table view of acls
@@ -34,7 +35,7 @@ import { fetchGroups } from "../../slices/groupSlice";
 const Acls: React.FC = () => {
 	const { t } = useTranslation();
 	const [displayNavigation, setNavigation] = useState(false);
-	const [displayNewAclModal, setNewAclModal] = useState(false);
+	const newAclModalRef = useRef<ModalHandle>(null);
 
 	const dispatch = useAppDispatch();
 	const acls = useAppSelector(state => getTotalAcls(state));
@@ -94,11 +95,11 @@ const Acls: React.FC = () => {
 	};
 
 	const showNewAclModal = () => {
-		setNewAclModal(true);
+		newAclModalRef.current?.open();
 	};
 
 	const hideNewAclModal = () => {
-		setNewAclModal(false);
+		newAclModalRef.current?.close?.();
 	};
 
 	return (
@@ -106,12 +107,11 @@ const Acls: React.FC = () => {
 			<Header />
 			<NavBar>
 				{/* Display modal for new acl if add acl button is clicked */}
-				{ displayNewAclModal &&
-					<NewResourceModal
-						handleClose={hideNewAclModal}
-						resource="acl"
-					/>
-				}
+				<NewResourceModal
+					handleClose={hideNewAclModal}
+					resource="acl"
+					modalRef={newAclModalRef}
+				/>
 
 				{/* Include Burger-button menu*/}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
@@ -145,7 +145,7 @@ const Acls: React.FC = () => {
 						</Link>
 					)}
 				</nav>
-				
+
 				{/* Add acl button */}
 				<div className="btn-group">
 					{hasAccess("ROLE_UI_ACLS_CREATE", user) && (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { Link, useLocation } from "react-router-dom";
@@ -43,6 +43,7 @@ import {
 import { fetchSeries } from "../../slices/seriesSlice";
 import EventDetailsModal from "./partials/modals/EventDetailsModal";
 import { showModal } from "../../selectors/eventDetailsSelectors";
+import { Modal, ModalHandle } from "../shared/modals/Modal";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef<HTMLDivElement>();
@@ -59,16 +60,11 @@ const Events = () => {
 
 	const [displayActionMenu, setActionMenu] = useState(false);
 	const [displayNavigation, setNavigation] = useState(false);
-	const [displayNewEventModal, setNewEventModal] = useState(false);
-	const [displayDeleteModal, setDeleteModal] = useState(false);
-	const [displayStartTaskModal, setStartTaskModal] = useState(false);
-	const [
-		displayEditScheduledEventsModal,
-		setEditScheduledEventsModal,
-	] = useState(false);
-	const [displayEditMetadataEventsModal, setEditMetadataEventsModal] = useState(
-		false
-	);
+	const newEventModalRef = useRef<ModalHandle>(null);
+	const startTaskModalRef = useRef<ModalHandle>(null);
+	const deleteModalRef = useRef<ModalHandle>(null);
+	const editScheduledEventsModalRef = useRef<ModalHandle>(null);
+	const editMetadataEventsModalRef = useRef<ModalHandle>(null);
 
 	const user = useAppSelector(state => getUserInformation(state));
 	const showActions = useAppSelector(state => isShowActions(state));
@@ -149,27 +145,27 @@ const Events = () => {
 		await dispatch(fetchEventMetadata());
 		await dispatch(fetchAssetUploadOptions());
 
-		setNewEventModal(true);
+		newEventModalRef.current?.open();
 	};
 
 	const hideNewEventModal = () => {
-		setNewEventModal(false);
+		newEventModalRef.current?.close?.();
 	};
 
 	const hideDeleteModal = () => {
-		setDeleteModal(false);
+		deleteModalRef.current?.close?.();
 	};
 
 	const hideStartTaskModal = () => {
-		setStartTaskModal(false);
+		startTaskModalRef.current?.close?.();
 	};
 
 	const hideEditScheduledEventsModal = () => {
-		setEditScheduledEventsModal(false);
+		editScheduledEventsModalRef.current?.close?.();
 	};
 
 	const hideEditMetadataEventsModal = () => {
-		setEditMetadataEventsModal(false);
+		editMetadataEventsModalRef.current?.close?.();
 	};
 
 	useHotkeys(
@@ -187,26 +183,48 @@ const Events = () => {
 			<NavBar>
 				{
 					/* Display modal for new event if add event button is clicked */
-					!isFetchingAssetUploadOptions && displayNewEventModal && (
+					!isFetchingAssetUploadOptions && (
 						<NewResourceModal
 							handleClose={hideNewEventModal}
 							resource={"events"}
+							modalRef={newEventModalRef}
 						/>
 					)
 				}
 
 				{/* Display bulk actions modal if one is chosen from dropdown */}
-				{displayDeleteModal && <DeleteEventsModal close={hideDeleteModal} />}
+				<Modal
+					header={t("BULK_ACTIONS.DELETE.EVENTS.CAPTION")}
+					classId="delete-events-status-modal"
+					className="modal active modal-open"
+					ref={deleteModalRef}
+				>
+					<DeleteEventsModal close={hideDeleteModal} />
+				</Modal>
 
-				{displayStartTaskModal && <StartTaskModal close={hideStartTaskModal} />}
+				<Modal
+					header={t("BULK_ACTIONS.SCHEDULE_TASK.CAPTION")}
+					classId=""
+					ref={startTaskModalRef}
+				>
+					<StartTaskModal close={hideStartTaskModal} />
+				</Modal>
 
-				{displayEditScheduledEventsModal && (
+				<Modal
+					header={t("BULK_ACTIONS.EDIT_EVENTS.CAPTION")}
+					classId=""
+					ref={editScheduledEventsModalRef}
+				>
 					<EditScheduledEventsModal close={hideEditScheduledEventsModal} />
-				)}
+				</Modal>
 
-				{displayEditMetadataEventsModal && (
+				<Modal
+					header={t("BULK_ACTIONS.EDIT_EVENTS_METADATA.CAPTION")}
+					classId=""
+					ref={editMetadataEventsModalRef}
+				>
 					<EditMetadataEventsModal close={hideEditMetadataEventsModal} />
-				)}
+				</Modal>
 
 				{/* Include Burger-button menu */}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
@@ -238,7 +256,7 @@ const Events = () => {
 						<Stats />
 					</div>
 				)}
-				
+
 				<div className="btn-group">
 					{hasAccess("ROLE_UI_EVENTS_CREATE", user) && (
 						<button className="add" onClick={() => showNewEventModal()}>
@@ -266,14 +284,14 @@ const Events = () => {
 								<ul className="dropdown-ul">
 									{hasAccess("ROLE_UI_EVENTS_DELETE", user) && (
 										<li>
-											<button className="button-like-anchor" onClick={() => setDeleteModal(true)}>
+											<button className="button-like-anchor" onClick={() => deleteModalRef.current?.open()}>
 												{t("BULK_ACTIONS.DELETE.EVENTS.CAPTION")}
 											</button>
 										</li>
 									)}
 									{hasAccess("ROLE_UI_TASKS_CREATE", user) && (
 										<li>
-											<button className="button-like-anchor" onClick={() => setStartTaskModal(true)}>
+											<button className="button-like-anchor" onClick={() => startTaskModalRef.current?.open()}>
 												{t("BULK_ACTIONS.SCHEDULE_TASK.CAPTION")}
 											</button>
 										</li>
@@ -281,14 +299,14 @@ const Events = () => {
 									{hasAccess("ROLE_UI_EVENTS_DETAILS_SCHEDULING_EDIT", user) &&
 										hasAccess("ROLE_UI_EVENTS_DETAILS_METADATA_EDIT", user) && (
 											<li>
-												<button className="button-like-anchor" onClick={() => setEditScheduledEventsModal(true)}>
+												<button className="button-like-anchor" onClick={() => editScheduledEventsModalRef.current?.open()}>
 													{t("BULK_ACTIONS.EDIT_EVENTS.CAPTION")}
 												</button>
 											</li>
 										)}
 									{hasAccess("ROLE_UI_EVENTS_DETAILS_METADATA_EDIT", user) && (
 										<li>
-											<button className="button-like-anchor" onClick={() => setEditMetadataEventsModal(true)}>
+											<button className="button-like-anchor" onClick={() => editMetadataEventsModalRef.current?.open()}>
 												{t("BULK_ACTIONS.EDIT_EVENTS_METADATA.CAPTION")}
 											</button>
 										</li>

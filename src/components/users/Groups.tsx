@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import MainNav from "../shared/MainNav";
 import { Link } from "react-router-dom";
@@ -27,6 +27,7 @@ import { fetchAcls } from "../../slices/aclSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchUsers } from "../../slices/userSlice";
 import { fetchGroups } from "../../slices/groupSlice";
+import { ModalHandle } from "../shared/modals/Modal";
 
 /**
  * This component renders the table view of groups
@@ -35,7 +36,7 @@ const Groups = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
-	const [displayNewGroupModal, setNewGroupModal] = useState(false);
+	const newGroupModalRef = useRef<ModalHandle>(null);
 
 	const user = useAppSelector(state => getUserInformation(state));
 	const groups = useAppSelector(state => getTotalGroups(state));
@@ -94,11 +95,11 @@ const Groups = () => {
 	};
 
 	const showNewGroupModal = () => {
-		setNewGroupModal(true);
+		newGroupModalRef.current?.open();
 	};
 
 	const hideNewGroupModal = () => {
-		setNewGroupModal(false);
+		newGroupModalRef.current?.close?.();
 	};
 
 	return (
@@ -106,12 +107,11 @@ const Groups = () => {
 			<Header />
 			<NavBar>
 				{/* Display modal for new acl if add acl button is clicked */}
-				{ displayNewGroupModal &&
-					<NewResourceModal
-						handleClose={hideNewGroupModal}
-						resource="group"
-					/>
-				}
+				<NewResourceModal
+					handleClose={hideNewGroupModal}
+					resource="group"
+					modalRef={newGroupModalRef}
+				/>
 
 				{/* Include Burger-button menu*/}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />

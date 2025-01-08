@@ -125,112 +125,100 @@ const DeleteSeriesModal = ({
 
 	return (
 		<>
-			<div className="modal-animation modal-overlay" />
-			<section
-				className="modal active modal-open"
-				id="delete-series-status-modal"
-				style={{ display: "block" }}
-			>
-				<header>
-					<button onClick={() => close()} className="button-like-anchor fa fa-times close-modal" />
-					<h2>{t("BULK_ACTIONS.DELETE.SERIES.CAPTION")}</h2>
-				</header>
+			<div className="modal-content">
+				<div className="modal-body">
+					<div className="modal-alert danger obj">
+						<p>{t("BULK_ACTIONS.DELETE_SERIES_WARNING_LINE1")}</p>
+						<p>{t("BULK_ACTIONS.DELETE_SERIES_WARNING_LINE2")}</p>
+					</div>
 
-				<div className="modal-content">
-					<div className="modal-body">
-						<div className="modal-alert danger obj">
-							<p>{t("BULK_ACTIONS.DELETE_SERIES_WARNING_LINE1")}</p>
-							<p>{t("BULK_ACTIONS.DELETE_SERIES_WARNING_LINE2")}</p>
+					{/* Only show if series not allowed to be deleted */}
+					{!isAllowed() && (
+						<div className="alert sticky warning">
+							<p>{t("BULK_ACTIONS.DELETE.SERIES.CANNOT_DELETE")}</p>
 						</div>
+					)}
 
-						{/* Only show if series not allowed to be deleted */}
-						{!isAllowed() && (
-							<div className="alert sticky warning">
-								<p>{t("BULK_ACTIONS.DELETE.SERIES.CANNOT_DELETE")}</p>
-							</div>
-						)}
-
-						<div className="full-col">
-							<div className="obj">
-								<header>{t("EVENTS.SERIES.TABLE.CAPTION")}</header>
-								<div className="obj-container">
-									<table className="main-tbl">
-										<thead>
-											<tr>
-												<th className="small">
+					<div className="full-col">
+						<div className="obj">
+							<header>{t("EVENTS.SERIES.TABLE.CAPTION")}</header>
+							<div className="obj-container">
+								<table className="main-tbl">
+									<thead>
+										<tr>
+											<th className="small">
+												<input
+													type="checkbox"
+													checked={allChecked}
+													onChange={(e) => onChangeAllSelected(e)}
+													className="select-all-cbox"
+												/>
+											</th>
+											<th>{t("EVENTS.SERIES.TABLE.TITLE")}</th>
+											<th>{t("EVENTS.SERIES.TABLE.ORGANIZERS")}</th>
+											<th>{t("EVENTS.SERIES.TABLE.HAS_EVENTS")}</th>
+										</tr>
+									</thead>
+									<tbody>
+										{/* Repeat for each marked series */}
+										{selectedSeries.map((series, key) => (
+											<tr
+												key={key}
+												className={cn({
+													error:
+														!deleteWithSeriesAllowed &&
+														series.selected &&
+														series.hasEvents,
+												})}
+											>
+												<td>
 													<input
 														type="checkbox"
-														checked={allChecked}
-														onChange={(e) => onChangeAllSelected(e)}
-														className="select-all-cbox"
+														name="selection"
+														checked={series.selected}
+														onChange={(e) => onChangeSelected(e, isSeries(series) ?series.id : "")}
+														className="child-cbox"
 													/>
-												</th>
-												<th>{t("EVENTS.SERIES.TABLE.TITLE")}</th>
-												<th>{t("EVENTS.SERIES.TABLE.ORGANIZERS")}</th>
-												<th>{t("EVENTS.SERIES.TABLE.HAS_EVENTS")}</th>
-											</tr>
-										</thead>
-										<tbody>
-											{/* Repeat for each marked series */}
-											{selectedSeries.map((series, key) => (
-												<tr
-													key={key}
-													className={cn({
-														error:
-															!deleteWithSeriesAllowed &&
-															series.selected &&
-															series.hasEvents,
-													})}
-												>
-													<td>
-														<input
-															type="checkbox"
-															name="selection"
-															checked={series.selected}
-															onChange={(e) => onChangeSelected(e, isSeries(series) ?series.id : "")}
-															className="child-cbox"
-														/>
-													</td>
-													<td>{isSeries(series) && series.title}</td>
-													<td>
-														{/*Repeat for each creator*/}
+												</td>
+												<td>{isSeries(series) && series.title}</td>
+												<td>
+													{/*Repeat for each creator*/}
 {/* @ts-expect-error TS(7006): Parameter 'organizer' implicitly has an 'any' type */}
-														{series.organizers.map((organizer, key) => (
-															<span className="metadata-entry" key={key}>
-																{organizer}
-															</span>
-														))}
-													</td>
-													{/* Only show check if row has events, else empty cell*/}
-													<td>
-														{series.hasEvents && <i className="fa fa-check" />}
-													</td>
-												</tr>
-											))}
-										</tbody>
-									</table>
-								</div>
+													{series.organizers.map((organizer, key) => (
+														<span className="metadata-entry" key={key}>
+															{organizer}
+														</span>
+													))}
+												</td>
+												{/* Only show check if row has events, else empty cell*/}
+												<td>
+													{series.hasEvents && <i className="fa fa-check" />}
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
 							</div>
 						</div>
 					</div>
 				</div>
+			</div>
 
-				<footer>
-					<button
-						onClick={() => deleteSelectedSeries()}
-						disabled={!checkValidity()}
-						className={cn("danger", {
-							active: checkValidity(),
-							inactive: !checkValidity(),
-						})}
-					>
-						{t("BULK_ACTIONS.DELETE.SERIES.BUTTON")}
-					</button>
-					<button className="cancel" onClick={() => close()}>
-						{t("CANCEL")}
-					</button>
-				</footer>
-			</section>
+			<footer>
+				<button
+					onClick={() => deleteSelectedSeries()}
+					disabled={!checkValidity()}
+					className={cn("danger", {
+						active: checkValidity(),
+						inactive: !checkValidity(),
+					})}
+				>
+					{t("BULK_ACTIONS.DELETE.SERIES.BUTTON")}
+				</button>
+				<button className="cancel" onClick={() => close()}>
+					{t("CANCEL")}
+				</button>
+			</footer>
 		</>
 	);
 };

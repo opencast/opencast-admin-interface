@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
 import RecordingDetailsModal from "./modal/RecordingDetailsModal";
@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../../store";
 import { Recording, deleteRecording } from "../../../slices/recordingSlice";
 import { fetchRecordingDetails } from "../../../slices/recordingDetailsSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import { ModalHandle } from "../../shared/modals/Modal";
 
 /**
  * This component renders the action cells of recordings in the table view
@@ -20,23 +21,23 @@ const RecordingsActionCell = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
-	const [displayRecordingDetails, setRecordingDetails] = useState(false);
+	const deleteConfirmationModalRef = useRef<ModalHandle>(null);
+	const recordingDetailsModalRef = useRef<ModalHandle>(null);
 
 	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
-		setDeleteConfirmation(false);
+		deleteConfirmationModalRef.current?.close?.();
 	};
 
 	const hideRecordingDetails = () => {
-		setRecordingDetails(false);
+		recordingDetailsModalRef.current?.close?.()
 	};
 
 	const showRecordingDetails = async () => {
 		await dispatch(fetchRecordingDetails(row.name));
 
-		setRecordingDetails(true);
+		recordingDetailsModalRef.current?.open()
 	};
 
 	const deletingRecording = (id: string) => {
@@ -55,32 +56,30 @@ const RecordingsActionCell = ({
 				</Tooltip>
 			)}
 
-			{displayRecordingDetails && (
-				<RecordingDetailsModal
-					close={hideRecordingDetails}
-					recordingId={row.name}
-				/>
-			)}
+			<RecordingDetailsModal
+				close={hideRecordingDetails}
+				recordingId={row.name}
+				modalRef={recordingDetailsModalRef}
+			/>
 
 			{/* delete location/recording */}
 			{hasAccess("ROLE_UI_LOCATIONS_DELETE", user) && (
 				<Tooltip title={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DELETE")}>
 					<button
 						className="button-like-anchor remove"
-						onClick={() => setDeleteConfirmation(true)}
+						onClick={() => deleteConfirmationModalRef.current?.open()}
 					/>
 				</Tooltip>
 			)}
 
-			{displayDeleteConfirmation && (
-				<ConfirmModal
-					close={hideDeleteConfirmation}
-					resourceName={row.name}
-					resourceType="LOCATION"
-					resourceId={row.name}
-					deleteMethod={deletingRecording}
-				/>
-			)}
+			<ConfirmModal
+				close={hideDeleteConfirmation}
+				resourceName={row.name}
+				resourceType="LOCATION"
+				resourceId={row.name}
+				deleteMethod={deletingRecording}
+				modalRef={deleteConfirmationModalRef}
+			/>
 		</>
 	);
 };

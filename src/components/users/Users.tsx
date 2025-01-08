@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import cn from "classnames";
@@ -27,6 +27,7 @@ import { fetchAcls } from "../../slices/aclSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchUsers } from "../../slices/userSlice";
 import { fetchGroups } from "../../slices/groupSlice";
+import { ModalHandle } from "../shared/modals/Modal";
 
 /**
  * This component renders the table view of users
@@ -35,7 +36,7 @@ const Users: React.FC = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
-	const [displayNewUserModal, setNewUserModal] = useState(false);
+	const newUserModalRef = useRef<ModalHandle>(null);
 
   const users = useAppSelector(state => getTotalUsers(state));
   const user = useAppSelector(state => getUserInformation(state));
@@ -94,11 +95,11 @@ const Users: React.FC = () => {
 	};
 
 	const showNewUserModal = () => {
-		setNewUserModal(true);
+		newUserModalRef.current?.open();
 	};
 
 	const hideNewUserModal = () => {
-		setNewUserModal(false);
+		newUserModalRef.current?.close?.();
 	};
 
 	return (
@@ -106,12 +107,11 @@ const Users: React.FC = () => {
 			<Header />
 			<NavBar>
 				{/* Display modal for new acl if add acl button is clicked */}
-				{ displayNewUserModal &&
-					<NewResourceModal
-						handleClose={hideNewUserModal}
-						resource="user"
-					/>
-				}
+				<NewResourceModal
+					handleClose={hideNewUserModal}
+					resource="user"
+					modalRef={newUserModalRef}
+				/>
 
 				{/* Include Burger-button menu*/}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />

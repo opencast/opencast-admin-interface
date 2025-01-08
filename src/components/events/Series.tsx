@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MainNav from "../shared/MainNav";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
@@ -22,9 +22,7 @@ import MainView from "../MainView";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
-import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
-import { useHotkeys } from "react-hotkeys-hook";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchEvents } from "../../slices/eventSlice";
 import {
@@ -34,6 +32,7 @@ import {
 	showActionsSeries,
 } from "../../slices/seriesSlice";
 import { fetchSeriesDetailsTobiraNew } from "../../slices/seriesSlice";
+import { Modal, ModalHandle } from "../shared/modals/Modal";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef<HTMLDivElement>();
@@ -46,8 +45,8 @@ const Series = () => {
 	const dispatch = useAppDispatch();
 	const [displayActionMenu, setActionMenu] = useState(false);
 	const [displayNavigation, setNavigation] = useState(false);
-	const [displayNewSeriesModal, setNewSeriesModal] = useState(false);
-	const [displayDeleteSeriesModal, setDeleteSeriesModal] = useState(false);
+	const newSeriesModalRef = useRef<ModalHandle>(null);
+	const deleteModalRef = useRef<ModalHandle>(null);
 
   const user = useAppSelector(state => getUserInformation(state));
 	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
@@ -130,39 +129,36 @@ const Series = () => {
 		await dispatch(fetchSeriesThemes());
 		await dispatch(fetchSeriesDetailsTobiraNew("/"));
 
-		setNewSeriesModal(true);
+		newSeriesModalRef.current?.open();
 	};
 
 	const hideNewSeriesModal = () => {
-		setNewSeriesModal(false);
+		newSeriesModalRef.current?.close?.();
 	};
 
 	const hideDeleteModal = () => {
-		setDeleteSeriesModal(false);
+		deleteModalRef.current?.close?.();
 	};
-
-	useHotkeys(
-    availableHotkeys.general.NEW_SERIES.sequence,
-    () => showNewSeriesModal(),
-		{ description: t(availableHotkeys.general.NEW_SERIES.description) ?? undefined },
-    [showNewSeriesModal]
-  );
 
 	return (
 		<>
 			<Header />
 			<NavBar>
 				{/* Display modal for new series if add series button is clicked */}
-				{ displayNewSeriesModal &&
-					<NewResourceModal
-						handleClose={hideNewSeriesModal}
-						resource={"series"}
-					/>
-				}
+				<NewResourceModal
+					handleClose={hideNewSeriesModal}
+					resource={"series"}
+					modalRef={newSeriesModalRef}
+				/>
 
-				{displayDeleteSeriesModal && (
+				<Modal
+					header={t("BULK_ACTIONS.DELETE.SERIES.CAPTION")}
+					classId="delete-series-status-modal"
+					className="modal active modal-open"
+					ref={deleteModalRef}
+				>
 					<DeleteSeriesModal close={hideDeleteModal} />
-				)}
+				</Modal>
 
 				{/* Include Burger-button menu */}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
@@ -187,7 +183,7 @@ const Series = () => {
 						</Link>
 					)}
 				</nav>
-				
+
 				<div className="btn-group">
 					{hasAccess("ROLE_UI_SERIES_CREATE", user) && (
 						<button className="add" onClick={() => showNewSeriesModal()}>
@@ -215,7 +211,7 @@ const Series = () => {
 								<ul className="dropdown-ul">
 									{hasAccess("ROLE_UI_SERIES_DELETE", user) && (
 										<li>
-											<button className="button-like-anchor" onClick={() => setDeleteSeriesModal(true)}>
+											<button className="button-like-anchor" onClick={() => deleteModalRef.current?.open()}>
 												{t("BULK_ACTIONS.DELETE.SERIES.CAPTION")}
 											</button>
 										</li>

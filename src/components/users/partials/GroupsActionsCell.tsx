@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
 import GroupDetailsModal from "./modal/GroupDetailsModal";
@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector  } from "../../../store";
 import { Group, deleteGroup } from "../../../slices/groupSlice";
 import { fetchGroupDetails } from "../../../slices/groupDetailsSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import { ModalHandle } from "../../shared/modals/Modal";
 
 /**
  * This component renders the action cells of groups in the table view
@@ -20,13 +21,13 @@ const GroupsActionsCell = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
-	const [displayGroupDetails, setGroupDetails] = useState(false);
+	const deleteConfirmationModalRef = useRef<ModalHandle>(null);
+	const detailsModalRef = useRef<ModalHandle>(null);
 
 	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
-		setDeleteConfirmation(false);
+		deleteConfirmationModalRef.current?.close?.();
 	};
 
 	const deletingGroup = (id: string) => {
@@ -34,13 +35,13 @@ const GroupsActionsCell = ({
 	};
 
 	const hideGroupDetails = () => {
-		setGroupDetails(false);
+		detailsModalRef.current?.close?.();
 	};
 
 	const showGroupDetails = async () => {
 		await dispatch(fetchGroupDetails(row.id));
 
-		setGroupDetails(true);
+		detailsModalRef.current?.open();
 	};
 
 	return (
@@ -56,30 +57,31 @@ const GroupsActionsCell = ({
 			)}
 
 			{/*modal displaying details about group*/}
-			{displayGroupDetails && (
-				<GroupDetailsModal close={hideGroupDetails} groupName={row.name} />
-			)}
+			<GroupDetailsModal
+				close={hideGroupDetails}
+				groupName={row.name}
+				modalRef={detailsModalRef}
+			/>
 
 			{/* delete group */}
 			{hasAccess("ROLE_UI_GROUPS_DELETE", user) && (
 				<Tooltip title={t("USERS.GROUPS.TABLE.TOOLTIP.DETAILS")}>
 					<button
-						onClick={() => setDeleteConfirmation(true)}
+						onClick={() => deleteConfirmationModalRef.current?.open()}
 						className="button-like-anchor remove"
 					/>
 				</Tooltip>
 			)}
 
 			{/*Confirmation for deleting a group*/}
-			{displayDeleteConfirmation && (
-				<ConfirmModal
-					close={hideDeleteConfirmation}
-					resourceId={row.id}
-					resourceName={row.name}
-					deleteMethod={deletingGroup}
-					resourceType="GROUP"
-				/>
-			)}
+			<ConfirmModal
+				close={hideDeleteConfirmation}
+				resourceId={row.id}
+				resourceName={row.name}
+				deleteMethod={deletingGroup}
+				resourceType="GROUP"
+				modalRef={deleteConfirmationModalRef}
+			/>
 		</>
 	);
 };

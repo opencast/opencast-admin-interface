@@ -1,22 +1,21 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import SeriesDetails from "./SeriesDetails";
-import { useHotkeys } from "react-hotkeys-hook";
-import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { useAppDispatch } from "../../../../store";
+import { Modal, ModalHandle } from "../../../shared/modals/Modal";
 
 /**
  * This component renders the modal for displaying series details
  */
 const SeriesDetailsModal = ({
-	handleClose,
 	seriesTitle,
-	seriesId
+	seriesId,
+	modalRef,
 }: {
-	handleClose: () => void
 	seriesTitle: string
 	seriesId: string
+	modalRef: React.RefObject<ModalHandle>
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -32,36 +31,22 @@ const SeriesDetailsModal = ({
 		if (!policyChanged || confirmUnsaved()) {
 			setPolicyChanged(false);
 			dispatch(removeNotificationWizardForm());
-			handleClose();
 		}
 	};
 
-	useHotkeys(
-		availableHotkeys.general.CLOSE_MODAL.sequence,
-		() => close(),
-		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
-		[close],
-  	);
-
-	// todo: add hotkeys
 	return (
-		<>
-			<div className="modal-animation modal-overlay" />
-			<section className="modal modal-animation" id="series-details-modal">
-				<header>
-					<button className="button-like-anchor fa fa-times close-modal" onClick={() => close()} />
-					<h2>
-						{t("EVENTS.SERIES.DETAILS.HEADER", { resourceId: seriesTitle })}
-					</h2>
-				</header>
-
-				<SeriesDetails
-					seriesId={seriesId}
-					policyChanged={policyChanged}
-					setPolicyChanged={(value) => setPolicyChanged(value)}
-				/>
-			</section>
-		</>
+		<Modal
+			closeCallback={close}
+			header={t("EVENTS.SERIES.DETAILS.HEADER", { resourceId: seriesTitle })}
+			classId="series-details-modal"
+			ref={modalRef}
+		>
+			<SeriesDetails
+				seriesId={seriesId}
+				policyChanged={policyChanged}
+				setPolicyChanged={(value) => setPolicyChanged(value)}
+			/>
+		</Modal>
 	);
 };
 
