@@ -94,10 +94,6 @@ const DeleteEventsModal = ({
 									<p>{t("BULK_ACTIONS.DELETE_EVENTS_WARNING_LINE1")}</p>
 									<p>{t("BULK_ACTIONS.DELETE_EVENTS_WARNING_LINE2")}</p>
 								</div>
-								{/*todo: only show if scheduling Authorized*/}
-								<div>
-									<p>{t("BULK_ACTIONS.DELETE.EVENTS.UNAUTHORIZED")}</p>
-								</div>
 
 								<div className="full-col">
 									<div className="obj">
