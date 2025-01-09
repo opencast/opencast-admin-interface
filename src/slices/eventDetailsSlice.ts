@@ -1329,9 +1329,6 @@ if (endDate < now) {
 });
 
 export const fetchWorkflows = createAppAsyncThunk('eventDetails/fetchWorkflows', async (eventId: string, { dispatch, getState }) => {
-	// todo: show notification if there are active transactions
-	// dispatch(addNotification('warning', 'ACTIVE_TRANSACTION', -1, null, NOTIFICATION_CONTEXT));
-
 	const data = await axios.get(`/admin-ng/event/${eventId}/workflows.json`);
 	const workflowsData = await data.data;
 	let workflows: Workflow;
@@ -2393,8 +2390,6 @@ const eventDetailsSlice = createSlice({
 				};
 				state.workflows.workflow = emptyWorkflowData;
 				state.errorWorkflowDetails = action.error;
-				// todo: probably needs a Notification to the user
-				console.error(action.error);
 			})
 			// performWorkflowAction
 			.addCase(performWorkflowAction.pending, (state) => {
@@ -2437,8 +2432,6 @@ const eventDetailsSlice = createSlice({
 				state.statusWorkflowOperations = 'failed';
 				state.workflowOperations = { entries: [] };
 				state.errorWorkflowOperations = action.error;
-				// todo: probably needs a Notification to the user
-				console.error(action.error);
 			})
 			// fetchWorkflowOperationDetails
 			.addCase(fetchWorkflowOperationDetails.pending, (state) => {
@@ -2469,8 +2462,6 @@ const eventDetailsSlice = createSlice({
 				};
 				state.workflowOperationDetails = emptyOperationDetails;
 				state.errorWorkflowOperationDetails= action.error;
-				// todo: probably needs a Notification to the user
-				console.error(action.error);
 			})
 			// fetchWorkflowErrors
 			.addCase(fetchWorkflowErrors.pending, (state) => {
@@ -2486,8 +2477,6 @@ const eventDetailsSlice = createSlice({
 				state.statusWorkflowErrors = 'failed';
 				state.workflowErrors = { entries: [] };
 				state.errorWorkflowOperations = action.error;
-				// todo: probably needs a Notification to the user
-				console.error(action.error);
 			})
 			// fetchWorkflowErrorDetails
 			.addCase(fetchWorkflowErrorDetails.pending, (state) => {
@@ -2514,8 +2503,6 @@ const eventDetailsSlice = createSlice({
 					title: "",
 				};
 				state.errorWorkflowOperationDetails = action.error;
-				// todo: probably needs a Notification to the user
-				console.error(action.error);
 			})
 			// fetchEventStatistics
 			.addCase(fetchEventStatistics.pending, (state) => {

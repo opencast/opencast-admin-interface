@@ -175,7 +175,7 @@ type EventState = {
 	statusAssetUploadOptions: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAssetUploadOptions: SerializedError | null,
 	results: Event[],
-	columns: TableConfig["columns"],  // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],
 	total: number,
 	count: number,
 	offset: number,
@@ -185,7 +185,7 @@ type EventState = {
 	extendedMetadata: MetadataCatalog[],
 	isFetchingAssetUploadOptions: boolean,
 	uploadAssetOptions: UploadAssetOption[],
-	uploadAssetWorkflow: string | undefined,  // TODO: proper typing
+	uploadAssetWorkflow: string | undefined,
 	schedulingInfo: {
 		editedEvents: EditedEvents[],
 		seriesOptions: {
@@ -828,8 +828,6 @@ export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateSched
 						required: false,
 						type: "text",
 						value: eventChanges.changedTitle,
-						// todo: what is hashkey?
-						$$hashKey: "object:1588",
 					},
 					{
 						id: "isPartOf",
@@ -840,8 +838,6 @@ export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateSched
 						translatable: false,
 						type: "text",
 						value: eventChanges.changedSeries,
-						// todo: what is hashkey?
-						$$hashKey: "object:1589",
 					},
 				],
 			},

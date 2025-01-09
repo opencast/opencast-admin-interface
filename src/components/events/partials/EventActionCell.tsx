@@ -118,7 +118,6 @@ const EventActionCell = ({
 			)}
 
 			{/* Delete an event */}
-			{/*TODO: needs to be checked if event is published */}
 			{hasAccess("ROLE_UI_EVENTS_DELETE", user) && (
 				<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.DELETE")}>
 					<button

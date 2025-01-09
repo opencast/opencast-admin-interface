@@ -223,20 +223,17 @@ export const prepareMetadataFieldsForPost = (
 		type: string,
 		value: unknown,
 		tabindex: number,
-		$$hashKey?: string,
 		translatable?: boolean,
 	}
 	let metadataFields: FieldValue[] = [];
 
 	// fill metadataField with field information send by server previously and values provided by user
-	// Todo: What is hashkey?
 	for (const [i, info] of metadataInfo.entries()) {
 		let fieldValue: FieldValue = {
 			id: info.id,
 			type: info.type,
 			value: values[formikIdPrefix + info.id],
 			tabindex: i + 1,
-			$$hashKey: "object:123",
 		};
 		if (!!info.translatable) {
 			fieldValue = {
@@ -265,12 +262,10 @@ export const prepareExtendedMetadataFieldsForPost = (
 			catalogPrefix
 		);
 
-		// Todo: What is hashkey?
 		const metadataCatalog = {
 			flavor: catalog.flavor,
 			title: catalog.title,
 			fields: metadataFields,
-			$$hashKey: "object:123",
 		};
 
 		extendedMetadataFields.push(metadataCatalog);
@@ -358,7 +353,6 @@ export const prepareSeriesExtendedMetadataFieldsForPost = (
 			catalogPrefix
 		);
 
-		// Todo: What is hashkey?
 		const metadataCatalog = {
 			flavor: catalog.flavor,
 			title: catalog.title,

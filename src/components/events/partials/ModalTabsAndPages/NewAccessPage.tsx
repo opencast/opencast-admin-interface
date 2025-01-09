@@ -310,7 +310,6 @@ const NewAccessPage = <T extends RequiredFormProps>({
 																			</tr>
 																		)}
 
-																		{/*Todo: show only if user has role ROLE_UI_SERIES_DETAILS_ACL_EDIT */}
 																		{hasAccess(editAccessRole, user) && (
 																			<tr>
 																				{/*Add additional policy row*/}

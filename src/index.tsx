@@ -22,7 +22,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { getCurrentLanguageInformation } from "./utils/utils";
 
-// todo: comment persistent stuff in, only out commented because for debugging purposes
+// Commenting persistent stuff out can help with debugging
 const persistor = persistStore(store);
 
 const theme = createTheme({
