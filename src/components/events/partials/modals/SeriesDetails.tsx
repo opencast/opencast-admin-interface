@@ -90,7 +90,7 @@ const SeriesDetails = ({
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.TOBIRA",
 			accessRole: "ROLE_UI_SERIES_DETAILS_TOBIRA_VIEW",
 			name: "tobira",
-			hidden: tobiraError?.message?.includes("503"),
+			hidden: (tobiraError === undefined || tobiraError?.message === undefined || tobiraError?.message?.includes("503")),
 		},
 		{
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.STATISTICS",

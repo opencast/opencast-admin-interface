@@ -71,7 +71,7 @@ const NewSeriesWizard: React.FC<{
 		{
 			translation: "EVENTS.SERIES.NEW.TOBIRA.CAPTION",
 			name: "tobira",
-			hidden: !!tobiraError?.message?.includes("503"),
+			hidden: (tobiraError === undefined || tobiraError?.message === undefined || tobiraError?.message?.includes("503")),
 		},
 		{
 			translation: "EVENTS.SERIES.NEW.SUMMARY.CAPTION",

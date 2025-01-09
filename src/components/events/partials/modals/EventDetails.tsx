@@ -164,7 +164,7 @@ const EventDetails = ({
 			accessRole: "ROLE_UI_EVENTS_DETAILS_COMMENTS_VIEW",
 			name: "tobira",
 			page: EventDetailsPage.Tobira,
-			hidden: tobiraError?.message?.includes("503"),
+			hidden: (tobiraError === undefined || tobiraError?.message === undefined || tobiraError?.message?.includes("503")),
 		},
 		{
 			tabNameTranslation: "EVENTS.EVENTS.DETAILS.TABS.STATISTICS",
