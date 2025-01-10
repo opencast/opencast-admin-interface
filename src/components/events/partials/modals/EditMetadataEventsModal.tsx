@@ -324,8 +324,6 @@ const EditMetadataEventsModal = ({
 										{t("CLOSE")}
 									</button>
 								</footer>
-
-								<div className="btm-spacer" />
 							</>
 						)}
 					</Formik>

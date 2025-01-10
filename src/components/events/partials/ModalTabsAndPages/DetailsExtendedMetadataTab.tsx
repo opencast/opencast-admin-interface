@@ -164,7 +164,6 @@ const DetailsExtendedMetadataTab = ({
 														</button>
 													</footer>
 
-													<div className="btm-spacer" />
 												</>
 											)}
 										</div>

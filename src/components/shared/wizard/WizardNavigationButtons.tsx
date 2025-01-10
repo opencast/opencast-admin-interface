@@ -71,8 +71,6 @@ const WizardNavigationButtons = <T,>({
 					</button>
 				)}
 			</footer>
-
-			<div className="btm-spacer" />
 		</>
 	);
 };

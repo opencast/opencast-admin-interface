@@ -362,8 +362,6 @@ const AclAccessPage = <T extends RequiredFormProps>({
 							{t("WIZARD.BACK")}
 						</button>
 					</footer>
-
-					<div className="btm-spacer" />
 				</>
 			)}
 		</>

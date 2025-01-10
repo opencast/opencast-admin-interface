@@ -131,8 +131,6 @@ const ThemeDetails : React.FC<{
 								{t("CANCEL")}
 							</button>
 						</footer>
-
-						<div className="btm-spacer" />
 					</div>
 				)}
 			</Formik>

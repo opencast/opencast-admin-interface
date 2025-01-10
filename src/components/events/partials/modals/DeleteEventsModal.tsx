@@ -170,8 +170,6 @@ const DeleteEventsModal = ({
 						{t("CANCEL")}
 					</button>
 				</footer>
-
-				<div className="btm-spacer" />
 			</section>
 		</>
 	);

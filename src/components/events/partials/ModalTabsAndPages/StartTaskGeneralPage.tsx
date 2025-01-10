@@ -143,8 +143,6 @@ const StartTaskGeneralPage = <T extends RequiredFormProps>({
 					{t("WIZARD.NEXT_STEP")}
 				</button>
 			</footer>
-
-			<div className="btm-spacer" />
 		</>
 	);
 };

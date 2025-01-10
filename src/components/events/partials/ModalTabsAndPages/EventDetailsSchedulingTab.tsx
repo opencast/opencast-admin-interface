@@ -681,8 +681,6 @@ const EventDetailsSchedulingTab = ({
 														{t("CANCEL") /* Cancel */}
 													</button>
 												</footer>
-
-												<div className="btm-spacer" />
 											</>
 										)}
 									</div>

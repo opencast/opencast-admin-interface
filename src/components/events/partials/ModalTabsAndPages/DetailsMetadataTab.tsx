@@ -157,8 +157,6 @@ const DetailsMetadataTab = ({
 													{t("CANCEL")}
 												</button>
 											</footer>
-
-											<div className="btm-spacer" />
 										</>
 									)}
 								</div>

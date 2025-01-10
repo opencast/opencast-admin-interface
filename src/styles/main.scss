@@ -132,7 +132,7 @@ a {
   top: 30px;
   position: fixed;
   max-height: 90vh;
-  overflow: scroll;
+  overflow: auto;
   input[readonly] {
     border: none;
   }
