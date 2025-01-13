@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import cn from "classnames";
 import { FieldArray, FormikProps } from "formik";
 import Notifications from "../../../shared/Notifications";
 import { getTimezoneOffset, hasAccess } from "../../../../utils/utils";
@@ -22,6 +21,7 @@ import {
 } from "../../../../slices/eventSlice";
 import { Recording } from "../../../../slices/recordingSlice";
 import lodash, { groupBy } from "lodash";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
  * This component renders the edit page for scheduled events of the corresponding bulk action
@@ -522,15 +522,10 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 			</div>
 
 			{/* Navigation buttons */}
-			<footer>
-				<button
-					type="submit"
-					className={cn("submit", {
-						active: formik.dirty && formik.isValid,
-						inactive: !(formik.dirty && formik.isValid),
-					})}
-					disabled={!(formik.dirty && formik.isValid)}
-					onClick={async () => {
+			<WizardNavigationButtons
+				formik={formik}
+				nextPage={
+					async () => {
 						dispatch(removeNotificationWizardForm());
 						if (
 							await checkSchedulingConflicts(
@@ -541,24 +536,18 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 						) {
 							nextPage(formik.values);
 						}
-					}}
-				>
-					{t("WIZARD.NEXT_STEP")}
-				</button>
-
-				<button
-					className="cancel"
-					onClick={() => {
+					}
+				}
+				previousPage={
+					() => {
 						previousPage(formik.values);
 						if (!formik.isValid) {
 							// set page as not filled out
 							setPageCompleted([]);
 						}
-					}}
-				>
-					{t("WIZARD.BACK")}
-				</button>
-			</footer>
+					}
+				}
+			/>
 
 			<div className="btm-spacer" />
 		</>
