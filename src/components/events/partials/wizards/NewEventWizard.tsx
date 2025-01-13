@@ -21,6 +21,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { MetadataCatalog, UploadAssetOption, postNewEvent } from "../../../../slices/eventSlice";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the pages of the new event wizard and the submission of values
@@ -37,6 +38,12 @@ const NewEventWizard: React.FC<{
 	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
+
+	useEffect(() => {
+		dispatch(removeNotificationWizardForm());
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	// Whether the ACL of a new event is initialized with the ACL of its series.
 	let initEventAclWithSeriesAcl = true
