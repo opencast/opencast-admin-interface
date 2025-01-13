@@ -27,7 +27,7 @@ const MetadataExtendedSummaryTable = ({
 		let metadata: {
 			name: string,
 			label: string,
-			value: unknown,
+			value: string | string[] | boolean,
 		}[] = [];
 
 		for (let i = 0; metadataFields.length > i; i++) {

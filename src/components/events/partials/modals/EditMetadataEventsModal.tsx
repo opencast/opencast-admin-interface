@@ -119,7 +119,15 @@ const EditMetadataEventsModal = ({
 			return true;
 		}
 
-		if (fetchedValues[field.id] !== formikValues[field.id]) {
+		let fetched = fetchedValues[field.id];
+		let inForm = formikValues[field.id];
+		let same = false;
+		if (fetched === inForm) {
+			same = true;
+		} else if (Array.isArray(fetched) && Array.isArray(inForm)) {
+			same = fetched.length === inForm.length && fetched.every((e, i) => e === inForm[i]);
+		}
+		if (!same) {
 			let fields = metadataFields;
 			fields.mergedMetadata = metadataFields.mergedMetadata.map((f) => {
 				if (f.id === field.id) {

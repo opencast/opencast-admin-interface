@@ -119,7 +119,8 @@
 				"GROUP": "The following group will be deleted",
 				"USER": "The following user will be deleted",
 				"THEME": "The following theme will be deleted",
-				"LOCATION": "The following location will be deleted"
+				"LOCATION": "The following location will be deleted",
+				"TOBIRA_PATH": "The series will be removed from the following path in Tobira:"
 			},
 			"NAME": "Name"
 		},
@@ -170,6 +171,10 @@
 		"GROUP_NOT_DELETED": "The group could not be deleted",
 		"SERIES_ADDED": "The series has been created",
 		"SERIES_NOT_SAVED": "The series could not be saved",
+		"SERIES_PATH_UPDATED": "The series path has been updated",
+		"SERIES_PATH_REMOVED": "The series path has been removed",
+		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
+		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "The event has been created",
 		"EVENTS_UPLOAD_STARTED": "The event is being uploaded… {{ progress }}%",
 		"EVENTS_NOT_CREATED": "The event could not be created",
@@ -225,7 +230,18 @@
 			"NO_EVENTS_UPDATED": "All updates failed.",
 			"SOME_EVENTS_NOT_UPDATED": "Some events could not be updated."
 		},
-		"PROBLEM_ON_START": "A error occurred on start up. Please contact your Opencast admin"
+		"PROBLEM_ON_START": "An error occurred on start up. Please contact your Opencast admin",
+		"TOBIRA_OVERRIDE_NAME": "The title of the selected page will be overridden with the title of the series.",
+		"TOBIRA_NO_PATH_SEGMENT": "Page needs a path segment.",
+		"TOBIRA_NOT_MOUNTED": "Series could not be mounted in Tobira.",
+		"TOBIRA_PATH_SEGMENT_INVALID": "Path segment is invalid. A valid path segment is at least 2 characters long, does not contain any whitespace or control characters, none of the characters '<>\"[\\]^`{|}#%\/?]', and doesn't start with any of the characters '-+~@_!$&;:.,=*'()'.",
+		"TOBIRA_PATH_SEGMENT_UNIQUE": "The path segment of a page must be unique among all its sibling pages.",
+		"TOBIRA_PAGE_NOT_FOUND": "The page you tried to navigate to does not or no longer exist. Maybe try starting from the beginning.",
+		"TOBIRA_SERVER_ERROR":" Error talking to Tobira. Contact your system administrator and/or try again later.",
+		"TOBIRA_COPIED_DIRECT_LINK": "Copied link to clipboard.",
+		"TOBIRA_FAILED_COPYING_DIRECT_LINK": "Couldn't copy link to clipboard.",
+		"TOBIRA_NOT_FOUND": "Tobira doesn't know about this series or event (yet). Try again in a few minutes or contact your system administrator.",
+		"TOBIRA_NOT_CONFIGURED": "Tobira is not configured (correctly)."
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Actions",
@@ -672,7 +688,8 @@
 					"WORKFLOWS": "Workflows",
 					"ACCESS": "Access policy",
 					"COMMENTS": "Comments",
-					"STATISTICS": "Statistics"
+					"STATISTICS": "Statistics",
+					"TOBIRA": "Tobira"
 				},
 				"PUBLICATIONS": {
 					"CAPTION": "Publications",
@@ -946,6 +963,13 @@
 						"RUNNING": "Editing metadata is not allowed when operations are running on an event"
 					}
 				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to event",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This event is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this event"
+				},
 				"SCHEDULING": {
 					"CAPTION": "Scheduling configuration",
 					"PLACEHOLDER": {
@@ -1113,6 +1137,23 @@
 					"LABEL": "Please select a theme",
 					"EMPTY": "No theme found"
 				},
+				"TOBIRA": {
+					"CAPTION": "Tobira",
+					"DESCRIPTION": "Here you can select where you want the series to show up in the Tobira video portal. You can only select one location here, and it needs to be empty (marked in bold). You can create new pages here, but note that they are only persisted if they are on the path to the selected page.",
+					"SELECT_PAGE": "Select a target page",
+					"PAGE_TITLE": "Subpage title",
+					"PATH_SEGMENT": "Path segment",
+					"SUBPAGES": "Subpages",
+					"ADD_SUBPAGE": "Add subpage",
+					"CANCEL": "Cancel",
+					"HOMEPAGE": "Homepage",
+					"SELECTED_PAGE": "Series will be mounted under the following path",
+					"NO_PAGE_SELECTED": "No page selected. Series will not be mounted in Tobira.",
+					"NO_PAGE_SELECTED_EDIT": "No page selected. Series path will not be changed.",
+					"PATH": "Path",
+					"DIRECT_LINK": "A direct link will be available.",
+					"MOUNT_DISCLAIMER": "Series can only be mounted in empty pages"
+				},
 				"SUMMARY": {
 					"CAPTION": "Summary"
 				}
@@ -1141,6 +1182,7 @@
 					"EVENTS": "Events",
 					"PERMISSIONS": "Access policy",
 					"THEME": "Theme",
+					"TOBIRA": "Tobira",
 					"STATISTICS": "Statistics"
 				},
 				"ACCESS": {
@@ -1187,6 +1229,18 @@
 					"DESCRIPTION": "Description",
 					"REPLACE_SERIES_METADATA": "Update series metadata",
 					"REPLACE_SERIES_THEME": "Update series theme"
+				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to series",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This series is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this series",
+					"SHOW_PAGES": "Show all pages",
+					"EDIT_PATH" : "Edit path",
+					"REMOVE_PATH" : "Remove path",
+					"MOUNT_SERIES": "Mount series",
+					"DESCRIPTION": "You may edit the path of pages containing this series if the page has no other content."
 				},
 				"EVENTS": {
 					"TITLE": "Title",

@@ -84,7 +84,7 @@ const StartTaskModal = ({
 	};
 
 	const handleSubmit = (values: typeof initialValues) => {
-		postTasks(values);
+		dispatch(postTasks(values));
 		dispatch(changeAllSelected(false));
 		close();
 	};

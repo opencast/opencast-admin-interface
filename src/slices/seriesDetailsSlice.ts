@@ -14,12 +14,17 @@ import {
 	transformMetadataForUpdate,
 } from "../utils/resourceUtils";
 import { transformToIdValueArray } from "../utils/utils";
-import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
+import { NOTIFICATION_CONTEXT, NOTIFICATION_CONTEXT_TOBIRA } from "../configs/modalConfig";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 import { Ace } from './aclSlice';
 import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
+import { TobiraPage } from './seriesSlice';
+import { TobiraTabHierarchy } from '../components/events/partials/ModalTabsAndPages/DetailsTobiraTab';
+import { TobiraFormProps } from '../components/events/partials/ModalTabsAndPages/NewTobiraPage';
+import { handleTobiraError } from './shared/tobiraErrors';
+
 
 /**
  * This file contains redux reducer for actions affecting the state of a series
@@ -29,6 +34,11 @@ export type Feed = {
 	type: string,
 	version: string,
 }
+
+export type TobiraData = {
+	baseURL: string,
+	hostPages: TobiraPage[],
+};
 
 type SeriesDetailsState = {
 	statusMetadata: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
@@ -45,6 +55,8 @@ type SeriesDetailsState = {
 	errorStatistics: SerializedError | null,
 	statusStatisticsValue: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorStatisticsValue: SerializedError | null,
+	statusTobiraData: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	errorTobiraData: SerializedError | null,
   	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	feeds: Feed[],
@@ -54,6 +66,8 @@ type SeriesDetailsState = {
 	fetchingStatisticsInProgress: boolean,
 	statistics: Statistics[],
 	hasStatisticsError: boolean,
+	tobiraTab: TobiraTabHierarchy,
+	tobiraData: TobiraData,
 }
 
 // Initial state of series details in redux store
@@ -72,6 +86,8 @@ const initialState: SeriesDetailsState = {
 	errorStatistics: null,
 	statusStatisticsValue: 'uninitialized',
 	errorStatisticsValue: null,
+	statusTobiraData: 'uninitialized',
+	errorTobiraData: null,
 	metadata: {
 		title: "",
 		flavor: "",
@@ -85,6 +101,11 @@ const initialState: SeriesDetailsState = {
 	fetchingStatisticsInProgress: false,
 	statistics: [],
 	hasStatisticsError: false,
+	tobiraTab: "main",
+	tobiraData: {
+		baseURL: "",
+		hostPages: [],
+	},
 };
 
 // fetch metadata of certain series from server
@@ -123,7 +144,7 @@ export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSe
 				type: "warning",
 				key: "SERIES_ACL_LOCKED",
 				duration: -1,
-				parameter: null,
+				parameter: undefined,
 				context: NOTIFICATION_CONTEXT
 			})
 		);
@@ -304,7 +325,7 @@ export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSerie
 					type: "info",
 					key: "SAVED_ACL_RULES",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -317,7 +338,7 @@ export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSerie
 					type: "error",
 					key: "ACL_NOT_SAVED",
 					duration: -1,
-					parameter: null,
+					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -344,7 +365,7 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
                         type: "warning",
                         key:"SERIES_THEME_REPROCESS_EXISTING_EVENTS",
                         duration: 10,
-                        parameter: null,
+                        parameter: undefined,
                         context: NOTIFICATION_CONTEXT
                     })
                 );
@@ -359,7 +380,7 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
                 type: "error",
                 key: "SERIES_NOT_SAVED",
                 duration: 10,
-                parameter: null,
+                parameter: undefined,
                 context: NOTIFICATION_CONTEXT
             })
         );
@@ -380,7 +401,7 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
                         type: "warning",
                         key:"SERIES_THEME_REPROCESS_EXISTING_EVENTS",
                         duration: 10,
-                        parameter: null,
+                        parameter: undefined,
                         context: NOTIFICATION_CONTEXT
                     })
                 );
@@ -390,6 +411,103 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
             });
     }
 });
+
+// fetch Tobira data of certain series from server
+export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsTobira', async (
+	id: string,
+	{ dispatch }
+) => {
+	const res = await axios.get(`/admin-ng/series/${id}/tobira/pages`)
+		.catch(response => handleTobiraError(response, dispatch));
+
+	if (!res) {
+		throw Error;
+	}
+
+	const data = res.data;
+	return data;
+});
+
+export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTobiraData', async (
+	params: TobiraFormProps & { seriesId: string },
+	{ dispatch },
+) => {
+	const tobiraParams = new URLSearchParams();
+	const pathComponents = params.breadcrumbs.slice(1).map(crumb => ({
+		name: crumb.title,
+		pathSegment: crumb.segment,
+	}));
+
+	if (params.selectedPage) {
+		pathComponents.push({
+			// Passing a dummy value here so Tobira won't freak out.
+			name: params.selectedPage.title ?? "dummy",
+			pathSegment: params.selectedPage.segment,
+		});
+
+		tobiraParams.append("pathComponents", JSON.stringify(pathComponents));
+		tobiraParams.append("targetPath", params.selectedPage.path);
+	}
+
+	if (params.currentPath) {
+		tobiraParams.append("currentPath", params.currentPath);
+	}
+
+	try {
+		const response = await axios.post(`/admin-ng/series/${params.seriesId}/tobira/path`, tobiraParams.toString(), {
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+		});
+
+		console.info(response);
+		dispatch(addNotification({
+			type: 'success',
+			key: 'SERIES_PATH_UPDATED',
+			context: NOTIFICATION_CONTEXT_TOBIRA,
+		}));
+
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		dispatch(addNotification({
+			type: 'error',
+			key: 'SERIES_PATH_NOT_UPDATED',
+			context: NOTIFICATION_CONTEXT_TOBIRA,
+		}));
+		throw error;
+	}}
+);
+
+export const removeSeriesTobiraPath = createAppAsyncThunk('series/removeSeriesTobiraData', async (
+	params: Required<Pick<TobiraFormProps, 'currentPath'>> & { seriesId: string },
+	{ dispatch },
+) => {
+	const path = encodeURIComponent(params.currentPath);
+
+	try {
+		const response = await axios.delete(
+			`/admin-ng/series/${params.seriesId}/tobira/${path}`,
+		);
+
+		console.info(response);
+		dispatch(addNotification({
+			type: 'success',
+			key: 'SERIES_PATH_REMOVED',
+			context: NOTIFICATION_CONTEXT_TOBIRA,
+		}));
+
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		dispatch(addNotification({
+			type: 'error',
+			key: 'SERIES_PATH_NOT_REMOVED',
+			context: NOTIFICATION_CONTEXT_TOBIRA,
+		}));
+		throw error;
+	}}
+);
 
 // thunks for statistics
 export const fetchSeriesStatistics = createAppAsyncThunk('seriesDetails/fetchSeriesStatistics', async (seriesId: string, {getState}) => {
@@ -463,6 +581,11 @@ const seriesDetailsSlice = createSlice({
 			SeriesDetailsState["statistics"]
 		>) {
 			state.statistics = action.payload;
+		},
+		setTobiraTabHierarchy(state, action: PayloadAction<
+			SeriesDetailsState["tobiraTab"]
+		>) {
+			state.tobiraTab = action.payload;
 		},
 		setDoNothing(state) {
 
@@ -543,6 +666,20 @@ const seriesDetailsSlice = createSlice({
 				state.statusThemeNames = 'failed';
 				state.errorThemeNames = action.error;
 			})
+			.addCase(fetchSeriesDetailsTobira.pending, (state) => {
+				state.statusTobiraData = 'loading';
+			})
+			.addCase(fetchSeriesDetailsTobira.fulfilled, (state, action: PayloadAction<
+				SeriesDetailsState["tobiraData"]
+			>) => {
+				state.errorTobiraData = null;
+				state.statusTobiraData = 'succeeded';
+				state.tobiraData = action.payload;
+			})
+			.addCase(fetchSeriesDetailsTobira.rejected, (state, action) => {
+				state.statusTobiraData = 'failed';
+				state.errorTobiraData = action.error;
+			})
 			.addCase(fetchSeriesStatistics.pending, (state) => {
 				state.statusStatistics = 'loading';
 			})
@@ -581,6 +718,7 @@ export const {
 	setSeriesDetailsExtendedMetadata,
 	setSeriesStatisticsError,
 	setSeriesStatistics,
+	setTobiraTabHierarchy,
 	setDoNothing,
 } = seriesDetailsSlice.actions;
 

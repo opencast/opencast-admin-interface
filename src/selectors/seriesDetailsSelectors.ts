@@ -11,6 +11,13 @@ export const getSeriesDetailsTheme = (state: RootState) => state.seriesDetails.t
 export const getSeriesDetailsThemeNames = (state: RootState) =>
 	state.seriesDetails.themeNames;
 
+export const getSeriesDetailsTobiraData = (state: RootState) =>
+	state.seriesDetails.tobiraData;
+export const getSeriesDetailsTobiraDataError = (state: RootState) =>
+	state.seriesDetails.errorTobiraData;
+export const getTobiraTabHierarchy = (state: RootState) =>
+	state.seriesDetails.tobiraTab;
+
 /* selectors for statistics */
 export const hasStatistics = (state: RootState) =>
 	state.seriesDetails.statistics.length > 0;

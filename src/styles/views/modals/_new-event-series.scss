@@ -69,3 +69,17 @@
         }
     }
 }
+
+.tobira-selectable {
+    font-weight: bold;
+}
+
+td > button.tobira-button-disabled {
+    cursor: default;
+    opacity: .8;
+    color: #666666;
+}
+
+.tobira-path {
+    font-family: monospace;
+}

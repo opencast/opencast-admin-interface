@@ -5,8 +5,8 @@ import NavigationButtons from "../NavigationButtons";
 const WizardNavigationButtons = <T,>({
 	isFirst,
 	isLast,
-	noValidation,
-	customValidation,
+	noValidation, // Do not validate
+	customValidation, // Custom validation. If your component does its own validation instead of using Yup
 	formik,
 	nextPage,
 	previousPage,

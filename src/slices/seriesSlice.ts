@@ -17,6 +17,7 @@ import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { TransformedAcl } from './aclDetailsSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { MetadataCatalog } from './eventSlice';
+import { handleTobiraError } from './shared/tobiraErrors';
 
 /**
  * This file contains redux reducer for actions affecting the state of series
@@ -40,6 +41,20 @@ type Theme = {
 	name: string,
 }
 
+export interface TobiraPage {
+	title?: string,
+	path: string,
+	segment: string,
+	children: TobiraPage[],
+	ancestors: TobiraPage[]
+
+	subpages?: string,  // not returned by endpoint
+	new?: boolean,      // not returned by endpoint
+	blocks: {
+		id: string,
+	}[],
+}
+
 type SeriesState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
@@ -47,18 +62,21 @@ type SeriesState = {
 	errorMetadata: SerializedError | null,
 	statusThemes: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorThemes: SerializedError | null,
+	statusTobiraPage: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	errorTobiraPage: SerializedError | null,
 	results: Series[],
 	columns: TableConfig["columns"],
-  showActions: boolean,
+	showActions: boolean,
 	total: number,
 	count: number,
 	offset: number,
 	limit: number,
-  metadata: MetadataCatalog,
+	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	themes: Theme[],
 	deletionAllowed: boolean,
 	hasEvents: boolean,
+	tobiraPage: TobiraPage,
 }
 
 // Fill columns initially with columns defined in seriesTableConfig
@@ -75,6 +93,8 @@ const initialState: SeriesState = {
 	errorMetadata: null,
 	statusThemes: 'uninitialized',
 	errorThemes: null,
+	statusTobiraPage: 'uninitialized',
+	errorTobiraPage: null,
 	results: [],
 	columns: initialColumns,
 	showActions: false,
@@ -91,6 +111,14 @@ const initialState: SeriesState = {
 	themes: [],
 	deletionAllowed: true,
 	hasEvents: false,
+	tobiraPage: {
+		title: undefined,
+		path: "/",
+		segment: "",
+		children: [],
+		ancestors: [],
+		blocks: [],
+	},
 };
 
 // fetch series from server
@@ -155,6 +183,8 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 		// subject: string,
 		theme: string,
 		// title: string,
+		selectedPage?: TobiraPage,
+		breadcrumbs?: TobiraPage[],
 	},
 	metadataInfo: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[]
@@ -186,15 +216,38 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 
 	let access = prepareAccessPolicyRulesForPost(values.acls);
 
+	// Tobira
+	let tobira: any = {};
+	if (values.selectedPage && values.breadcrumbs) {
+		let existingPages: any[] = [];
+		let newPages: any[] = [];
+		values.breadcrumbs.concat(values.selectedPage).forEach( function (page: TobiraPage) {
+			if (page.new) {
+				newPages.push({
+					name: page.title,
+					pathSegment: page.segment,
+				});
+			} else {
+				existingPages.push(page);
+			}
+		});
+
+		tobira["parentPagePath"] = existingPages.pop().path;
+		tobira["newPages"] = newPages;
+	}
+
+
 	let jsonData: {
 		metadata: typeof metadata,
 		options: {},
 		access: typeof access,
 		theme?: number,
+		tobira?: any
 	} = {
 		metadata: metadata,
 		options: {},
 		access: access,
+		tobira: tobira,
 	};
 
 	if (values.theme !== "") {
@@ -296,6 +349,19 @@ export const deleteMultipleSeries = createAppAsyncThunk('series/deleteMultipleSe
 		});
 });
 
+// fetch metadata of certain series from server
+export const fetchSeriesDetailsTobiraNew = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsTobiraNew', async (path: TobiraPage["path"], {dispatch}) => {
+	const res = await axios.get(`/admin-ng/series/new/tobira/page?path=` + path)
+		.catch(response => handleTobiraError(response, dispatch));
+
+	if (!res) {
+		throw Error;
+	}
+
+	const data = res.data;
+	return data;
+});
+
 // Get names and ids of selectable series
 export const fetchSeriesOptions = async () => {
 	let data = await axios.get("/admin-ng/resources/SERIES.json");
@@ -347,6 +413,16 @@ const seriesSlice = createSlice({
 			state.deletionAllowed = action.payload.deletionAllowed;
 			state.hasEvents = action.payload.hasEvents;
 		},
+		setTobiraPage(state, action: PayloadAction<
+			SeriesState["tobiraPage"]
+		>) {
+			state.tobiraPage = action.payload;
+		},
+		setErrorTobiraPage(state, action: PayloadAction<
+			SeriesState["errorTobiraPage"]
+		>) {
+			state.errorTobiraPage = action.payload;
+		}
 	},
 	// These are used for thunks
 	extraReducers: builder => {
@@ -403,6 +479,19 @@ const seriesSlice = createSlice({
 			.addCase(fetchSeriesThemes.rejected, (state, action) => {
 				state.statusThemes = 'failed';
 				state.errorThemes = action.error;
+			})
+			.addCase(fetchSeriesDetailsTobiraNew.pending, (state) => {
+				state.statusTobiraPage = 'loading';
+			})
+			.addCase(fetchSeriesDetailsTobiraNew.fulfilled, (state, action: PayloadAction<
+				SeriesState["tobiraPage"]
+			>) => {
+				state.statusTobiraPage = 'succeeded';
+				state.tobiraPage = action.payload;
+			})
+			.addCase(fetchSeriesDetailsTobiraNew.rejected, (state, action) => {
+				state.statusTobiraPage = 'failed';
+				state.errorTobiraPage = action.error;
 			});
 	}
 });
@@ -411,6 +500,8 @@ export const {
 	setSeriesColumns,
 	showActionsSeries,
 	setSeriesDeletionAllowed,
+	setTobiraPage,
+	setErrorTobiraPage,
 } = seriesSlice.actions;
 
 // Export the slice reducer as the default export
