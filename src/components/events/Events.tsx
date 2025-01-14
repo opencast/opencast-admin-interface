@@ -43,6 +43,7 @@ import {
 import { fetchSeries } from "../../slices/seriesSlice";
 import EventDetailsModal from "./partials/modals/EventDetailsModal";
 import { showModal } from "../../selectors/eventDetailsSelectors";
+import { ShowSeriesDetailsModal } from "./partials/modals/ShowSeriesDetailsModal";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef<HTMLDivElement>();
@@ -308,10 +309,11 @@ const Events = () => {
 					<h4>{t("TABLE_SUMMARY", { numberOfRows: events })}</h4>
 				</div>
 
-				{/*Include table modal*/}
+				{/*Include table modals*/}
 				{displayEventDetailsModal &&
 					<EventDetailsModal />
 				}
+				<ShowSeriesDetailsModal />
 
 				{/*Include table component*/}
 				{/* <Table templateMap={eventsTemplateMap} resourceType="events" /> */}

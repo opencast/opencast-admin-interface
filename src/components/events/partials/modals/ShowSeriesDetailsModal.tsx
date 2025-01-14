@@ -1,27 +1,51 @@
 import { useEffect, useState } from "react";
 import SeriesDetailsModal from "./SeriesDetailsModal";
-import { useAppDispatch } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchSeriesDetailsMetadata, fetchSeriesDetailsAcls, fetchSeriesDetailsFeeds, fetchSeriesDetailsTheme, fetchSeriesDetailsThemeNames, fetchSeriesDetailsTobira } from "../../../../slices/seriesDetailsSlice";
+import { useSearchParams } from "react-router-dom";
+import { getSeriesDetailsMetadata } from "../../../../selectors/seriesDetailsSelectors";
 
-export const ShowSeriesDetailsModal = (props: Parameters<typeof SeriesDetailsModal>[0]) => {
-	const dispatch = useAppDispatch();
+export const ShowSeriesDetailsModal = () => {
+
+	const [searchParams, setSearchParams] = useSearchParams();
+	const seriesId = searchParams.get('seriesId');
+	const metadata = useAppSelector(state => getSeriesDetailsMetadata(state));
+	const title = metadata.fields.find(field => field.id === "title")?.value as string;
 
 	const [loaded, setLoaded] = useState(false);
 
+	const dispatch = useAppDispatch();
+
 	useEffect(() => {
+		if (!seriesId) {
+			setLoaded(false);
+			return;
+		}
+
 		const fetchData = async () => {
-			await dispatch(fetchSeriesDetailsMetadata(props.seriesId));
-			await dispatch(fetchSeriesDetailsAcls(props.seriesId));
-			await dispatch(fetchSeriesDetailsFeeds(props.seriesId));
-			await dispatch(fetchSeriesDetailsTheme(props.seriesId));
+			await dispatch(fetchSeriesDetailsMetadata(seriesId));
+			await dispatch(fetchSeriesDetailsAcls(seriesId));
+			await dispatch(fetchSeriesDetailsFeeds(seriesId));
+			await dispatch(fetchSeriesDetailsTheme(seriesId));
 			await dispatch(fetchSeriesDetailsThemeNames());
-			await dispatch(fetchSeriesDetailsTobira(props.seriesId));
+			await dispatch(fetchSeriesDetailsTobira(seriesId));
 
 			setLoaded(true);
 		};
 
 		fetchData();
-	});
+	}, [seriesId, dispatch]);
 
-	return loaded && <SeriesDetailsModal {...props} />;
+	const handleClose = () => {
+		setSearchParams(params => {
+			params.delete('seriesId');
+			return params;
+		});
+	};
+
+	return loaded && <SeriesDetailsModal
+		seriesId={seriesId!}
+		seriesTitle={title!}
+		handleClose={handleClose}
+	/>;
 };

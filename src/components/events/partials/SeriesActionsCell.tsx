@@ -16,7 +16,6 @@ import {
 
 import { Tooltip } from "../../shared/Tooltip";
 import { SeriesDetailsAction } from "./SeriesDetailsAction";
-import { ShowSeriesDetailsModal } from "./modals/ShowSeriesDetailsModal";
 
 /**
  * This component renders the action cells of series in the table view
@@ -30,7 +29,6 @@ const SeriesActionsCell = ({
 	const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
-	const [displaySeriesDetailsModal, setSeriesDetailsModal] = useState(false);
 
 	const user = useAppSelector(state => getUserInformation(state));
 	const hasEvents = useAppSelector(state => getSeriesHasEvents(state));
@@ -50,26 +48,10 @@ const SeriesActionsCell = ({
 		dispatch(deleteSeries(id));
 	};
 
-	const hideSeriesDetailsModal = () => {
-		setSeriesDetailsModal(false);
-	};
-
-	const showSeriesDetailsModal = async () => {
-		setSeriesDetailsModal(true);
-	};
-
 	return (
 		<>
 			{/* series details */}
-			<SeriesDetailsAction onClick={showSeriesDetailsModal} />
-
-			{displaySeriesDetailsModal && (
-				<ShowSeriesDetailsModal
-					handleClose={hideSeriesDetailsModal}
-					seriesId={row.id}
-					seriesTitle={row.title}
-				/>
-			)}
+			<SeriesDetailsAction id={row.id} />
 
 			{/* delete series */}
 			{hasAccess("ROLE_UI_SERIES_DELETE", user) && (

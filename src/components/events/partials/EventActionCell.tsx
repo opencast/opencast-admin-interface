@@ -10,7 +10,6 @@ import { Event, deleteEvent } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
 import { openModal } from "../../../slices/eventDetailsSlice";
 import { SeriesDetailsAction } from "./SeriesDetailsAction";
-import { ShowSeriesDetailsModal } from "./modals/ShowSeriesDetailsModal";
 
 /**
  * This component renders the action cells of events in the table view
@@ -24,7 +23,6 @@ const EventActionCell = ({
 	const dispatch = useAppDispatch();
 
 	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
-	const [displaySeriesDetailsModal, setSeriesDetailsModal] = useState(false);
 	const [displayEmbeddingCodeModal, setEmbeddingCodeModal] = useState(false);
 
 	const user = useAppSelector(state => getUserInformation(state));
@@ -45,14 +43,6 @@ const EventActionCell = ({
 		setEmbeddingCodeModal(true);
 	};
 
-	const showSeriesDetailsModal = () => {
-		setSeriesDetailsModal(true);
-	};
-
-	const hideSeriesDetailsModal = () => {
-		setSeriesDetailsModal(false);
-	};
-
 	const onClickEventDetails = () => {
 		dispatch(openModal(EventDetailsPage.Metadata, row));
 	};
@@ -71,14 +61,6 @@ const EventActionCell = ({
 
 	return (
 		<>
-			{!!row.series && displaySeriesDetailsModal && (
-				<ShowSeriesDetailsModal
-					handleClose={hideSeriesDetailsModal}
-					seriesId={row.series.id}
-					seriesTitle={row.series.title}
-				/>
-			)}
-
 			{/* Open event details */}
 			{hasAccess("ROLE_UI_EVENTS_DETAILS_VIEW", user) && (
 				<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.DETAILS")}>
@@ -90,7 +72,7 @@ const EventActionCell = ({
 			)}
 
 			{/* If event belongs to a series then the corresponding series details can be opened */}
-			{!!row.series && <SeriesDetailsAction onClick={showSeriesDetailsModal} />}
+			{!!row.series && <SeriesDetailsAction id={row.series.id} />}
 
 			{/* Delete an event */}
 			{/*TODO: needs to be checked if event is published */}
