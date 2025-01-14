@@ -15,6 +15,7 @@ import {
 } from "../../utils/adopterRegistrationUtils";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
+import ModalContent from "./modals/ModalContent";
 
 /**
  * This component renders the adopter registration modal. This modal has various states.
@@ -143,150 +144,136 @@ const RegistrationModal = ({
 
 				{/* shows information about the registration*/}
 				{state === "information" && (
-					<div className="modal-content" style={{ display: "block" }}>
-						<div className="modal-body">
-							<div
-								className="registration-header"
-								style={{ padding: "5px 0 15px 0" }}
-							>
-								<h2>
-									{t("ADOPTER_REGISTRATION.MODAL.INFORMATION_STATE.HEADER")}
-								</h2>
-							</div>
-							<div>
-								<div className="row">
-									<p>
-										{t(
-											"ADOPTER_REGISTRATION.MODAL.INFORMATION_STATE.INFORMATION_PARAGRAPH_1"
-										)}
-									</p>
-									<br />
-									<p>
-										{t(
-											"ADOPTER_REGISTRATION.MODAL.INFORMATION_STATE.INFORMATION_PARAGRAPH_2"
-										)}
-									</p>
-								</div>
+					<ModalContent modalContentClassName="modal-content active">
+						<div
+							className="registration-header"
+							style={{ padding: "5px 0 15px 0" }}
+						>
+							<h2>
+								{t("ADOPTER_REGISTRATION.MODAL.INFORMATION_STATE.HEADER")}
+							</h2>
+						</div>
+						<div>
+							<div className="row">
+								<p>
+									{t(
+										"ADOPTER_REGISTRATION.MODAL.INFORMATION_STATE.INFORMATION_PARAGRAPH_1"
+									)}
+								</p>
+								<br />
+								<p>
+									{t(
+										"ADOPTER_REGISTRATION.MODAL.INFORMATION_STATE.INFORMATION_PARAGRAPH_2"
+									)}
+								</p>
 							</div>
 						</div>
-					</div>
+					</ModalContent>
 				)}
 
 				{/* shows terms of use */}
 				{state === "legal_info" && (
-					<div className="modal-content" style={{ display: "block" }}>
-						<div className="modal-body">
-							<div>
-								<div className="row">
-									<div className="scrollbox">
-										<TermsOfUsePage />
-									</div>
+					<ModalContent modalContentClassName="modal-content active">
+						<div>
+							<div className="row">
+								<div className="scrollbox">
+									<TermsOfUsePage />
 								</div>
 							</div>
 						</div>
-					</div>
+					</ModalContent>
 				)}
 
 				{/* shows state after skipping the registration */}
 				{state === "skip" && (
-					<div className="modal-content" style={{ display: "block" }}>
-						<div className="modal-body">
-							<div className="registration-header">
-								<h2>{t("ADOPTER_REGISTRATION.MODAL.SKIP_STATE.HEADER")}</h2>
-							</div>
-							<div>
-								<div className="row">
-									<p>
-										<span>
-											{t("ADOPTER_REGISTRATION.MODAL.SKIP_STATE.TEXT")}
-										</span>
-										<br />
-									</p>
-								</div>
+					<ModalContent modalContentClassName="modal-content active">
+						<div className="registration-header">
+							<h2>{t("ADOPTER_REGISTRATION.MODAL.SKIP_STATE.HEADER")}</h2>
+						</div>
+						<div>
+							<div className="row">
+								<p>
+									<span>
+										{t("ADOPTER_REGISTRATION.MODAL.SKIP_STATE.TEXT")}
+									</span>
+									<br />
+								</p>
 							</div>
 						</div>
-					</div>
+					</ModalContent>
 				)}
 
 				{/* shows delete confirmation */}
 				{state === "delete_submit" && (
-					<div className="modal-content" style={{ display: "block" }}>
-						<div className="modal-body">
-							<p>
-								<span>
-									{t("ADOPTER_REGISTRATION.MODAL.DELETE_SUBMIT_STATE.TEXT")}
-								</span>
-							</p>
-						</div>
-					</div>
+					<ModalContent modalContentClassName="modal-content active">
+						<p>
+							<span>
+								{t("ADOPTER_REGISTRATION.MODAL.DELETE_SUBMIT_STATE.TEXT")}
+							</span>
+						</p>
+					</ModalContent>
 				)}
 
 				{/* shows spinner while API requests are processed */}
 				{(state === "save" || state === "delete" || state === "update") && (
-					<div className="modal-content" style={{ display: "block" }}>
-						<div className="modal-body">
-							<div>
-								<div className="row spinner-container">
-									<i className="fa fa-spinner fa-spin fa-4x fa-fw" />
-								</div>
+					<ModalContent modalContentClassName="modal-content active">
+						<div>
+							<div className="row spinner-container">
+								<i className="fa fa-spinner fa-spin fa-4x fa-fw" />
 							</div>
 						</div>
-					</div>
+					</ModalContent>
 				)}
 
 				{/* shows thank you after registration */}
 				{state === "thank_you" && (
-					<div className="modal-content" style={{ display: "block" }}>
-						<div className="modal-body">
-							<div className="registration-header">
-								<h2>
-									{t("ADOPTER_REGISTRATION.MODAL.THANK_YOU_STATE.HEADER")}
-								</h2>
-							</div>
+					<ModalContent modalContentClassName="modal-content active">
+						<div className="registration-header">
+							<h2>
+								{t("ADOPTER_REGISTRATION.MODAL.THANK_YOU_STATE.HEADER")}
+							</h2>
+						</div>
+						<div>
 							<div>
-								<div>
-									<p>
-										<span>
-											{t(
-												"ADOPTER_REGISTRATION.MODAL.THANK_YOU_STATE.TEXT_LEADING_TO_PATH"
-											)}
-										</span>
-										<b>
-											(<span>{t("HELP.HELP")}</span>)
-											{" "}
-											<span className="fa fa-question-circle" />
-											{" > "}
-											<span>{t("HELP.ADOPTER_REGISTRATION")}</span>
-										</b>
-										<span>
-											{" "}
-											{t(
-												"ADOPTER_REGISTRATION.MODAL.THANK_YOU_STATE.TEXT_LEADING_AFTER_PATH"
-											)}
-										</span>
-									</p>
-								</div>
+								<p>
+									<span>
+										{t(
+											"ADOPTER_REGISTRATION.MODAL.THANK_YOU_STATE.TEXT_LEADING_TO_PATH"
+										)}
+									</span>
+									<b>
+										(<span>{t("HELP.HELP")}</span>)
+										{" "}
+										<span className="fa fa-question-circle" />
+										{" > "}
+										<span>{t("HELP.ADOPTER_REGISTRATION")}</span>
+									</b>
+									<span>
+										{" "}
+										{t(
+											"ADOPTER_REGISTRATION.MODAL.THANK_YOU_STATE.TEXT_LEADING_AFTER_PATH"
+										)}
+									</span>
+								</p>
 							</div>
 						</div>
-					</div>
+					</ModalContent>
 				)}
 
 				{/* shows error */}
 				{state === "error" && (
-					<div className="modal-content" style={{ display: "block" }}>
-						<div className="modal-body">
-							<div className="registration-header">
-								<h2>{t("ADOPTER_REGISTRATION.MODAL.ERROR.HEADER")}</h2>
-							</div>
-							<div>
-								<div className="row">
-									<p>
-										<span>{t("ADOPTER_REGISTRATION.MODAL.ERROR.TEXT")}</span>
-									</p>
-								</div>
+					<ModalContent modalContentClassName="modal-content active">
+						<div className="registration-header">
+							<h2>{t("ADOPTER_REGISTRATION.MODAL.ERROR.HEADER")}</h2>
+						</div>
+						<div>
+							<div className="row">
+								<p>
+									<span>{t("ADOPTER_REGISTRATION.MODAL.ERROR.TEXT")}</span>
+								</p>
 							</div>
 						</div>
-					</div>
+					</ModalContent>
 				)}
 
 				{/* shows registration form containing adaptor information */}
@@ -299,411 +286,407 @@ const RegistrationModal = ({
 					{(formik) => (
 						<>
 							{state === "form" && (
-								<div className="modal-content" style={{ display: "block" }}>
-									<div className="modal-body">
-										<div>
-											<fieldset>
-												<legend>
-													{t(
-														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.ORGANISATION"
-													)}
-												</legend>
-												<div className="row">
-													<div className="col">
-														<div className="form-group">
-															<Field
-																type="text"
-																name="organisationName"
-																id="adopter_organisation"
-																className="form-control"
-															/>
-															<label
-																className="form-control-placeholder"
-																htmlFor="adopter_organisation"
-																style={
-																	formik.values.organisationName
-																		? styleWithContent
-																		: {}
-																}
-															>
-																{t(
-																	"ADOPTER_REGISTRATION.MODAL.FORM_STATE.ORGANISATION"
-																)}
-															</label>
-														</div>
-													</div>
-													<div className="col">
-														<div className="form-group">
-															<Field
-																type="text"
-																name="departmentName"
-																id="adopter_department"
-																className="form-control"
-															/>
-															<label
-																className="form-control-placeholder"
-																htmlFor="adopter_department"
-																style={
-																	formik.values.departmentName
-																		? styleWithContent
-																		: {}
-																}
-															>
-																{t(
-																	"ADOPTER_REGISTRATION.MODAL.FORM_STATE.DEPARTMENT"
-																)}
-															</label>
-														</div>
-													</div>
-												</div>
-												<div className="row">
-													<div className="col">
-														<div className="form-group">
-															<Field
-																style={{ color: "#666", fontWeight: "600" }}
-																id="adopter_country"
-																name="country"
-																as="select"
-																className="form-control"
-															>
-																<option value="" />
-																{countries.map((country, key) => (
-																	<option key={key} value={country.code}>
-																		{country.name}
-																	</option>
-																))}
-															</Field>
-															<label
-																className="form-control-placeholder"
-																htmlFor="adopter_country"
-																style={
-																	formik.values.country ? styleWithContent : {}
-																}
-															>
-																{t(
-																	"ADOPTER_REGISTRATION.MODAL.FORM_STATE.COUNTRY"
-																)}
-															</label>
-														</div>
-													</div>
-													<div className="col">
-														<div className="form-group-pair">
-															<div className="form-group">
-																<Field
-																	type="text"
-																	name="postalCode"
-																	id="adopter_postalcode"
-																	className="form-control"
-																/>
-																<label
-																	className="form-control-placeholder"
-																	htmlFor="adopter_postalcode"
-																	style={
-																		formik.values.postalCode
-																			? styleWithContent
-																			: {}
-																	}
-																>
-																	{t(
-																		"ADOPTER_REGISTRATION.MODAL.FORM_STATE.POSTAL_CODE"
-																	)}
-																</label>
-															</div>
-															<div className="form-group">
-																<Field
-																	type="text"
-																	name="city"
-																	id="adopter_city"
-																	className="form-control"
-																/>
-																<label
-																	className="form-control-placeholder"
-																	htmlFor="adopter_city"
-																	style={
-																		formik.values.city ? styleWithContent : {}
-																	}
-																>
-																	{t(
-																		"ADOPTER_REGISTRATION.MODAL.FORM_STATE.CITY"
-																	)}
-																</label>
-															</div>
-														</div>
-													</div>
-												</div>
-											</fieldset>
-											<fieldset>
-												<legend>
-													{t(
-														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.CONTACT_INFO"
-													)}
-												</legend>
-												<div className="row">
-													<div className="col">
-														<div className="form-group">
-															<Field
-																type="text"
-																name="firstName"
-																id="adopter_firstname"
-																className="form-control"
-															/>
-															<label
-																className="form-control-placeholder"
-																htmlFor="adopter_firstname"
-																style={
-																	formik.values.firstName
-																		? styleWithContent
-																		: {}
-																}
-															>
-																{t(
-																	"ADOPTER_REGISTRATION.MODAL.FORM_STATE.FIRST_NAME"
-																)}
-															</label>
-														</div>
-													</div>
-													<div className="col">
-														<div className="form-group">
-															<Field
-																type="text"
-																name="lastName"
-																id="adopter_lastname"
-																className="form-control"
-															/>
-															<label
-																className="form-control-placeholder"
-																htmlFor="adopter_lastname"
-																style={
-																	formik.values.lastName ? styleWithContent : {}
-																}
-															>
-																{t(
-																	"ADOPTER_REGISTRATION.MODAL.FORM_STATE.LAST_NAME"
-																)}
-															</label>
-														</div>
-													</div>
-												</div>
-												<div className="row">
-													<div className="col">
-														<div className="form-group">
-															<Field
-																type="text"
-																name="street"
-																id="adopter_street"
-																className="form-control"
-															/>
-															<label
-																className="form-control-placeholder"
-																htmlFor="adopter_street"
-																style={
-																	formik.values.street ? styleWithContent : {}
-																}
-															>
-																{t(
-																	"ADOPTER_REGISTRATION.MODAL.FORM_STATE.STREET"
-																)}
-															</label>
-														</div>
-													</div>
-													<div className="col">
-														<div className="form-group">
-															<Field
-																type="text"
-																name="streetNo"
-																id="adopter_streetnumber"
-																className="form-control"
-															/>
-															<label
-																className="form-control-placeholder"
-																htmlFor="adopter_streetnumber"
-																style={
-																	formik.values.streetNo ? styleWithContent : {}
-																}
-															>
-																{t(
-																	"ADOPTER_REGISTRATION.MODAL.FORM_STATE.NUMBER"
-																)}
-															</label>
-														</div>
-													</div>
-												</div>
-												<div className="row">
-													<div className="col">
-														<div className="form-group">
-															<Field
-																id="adopter_emailadr"
-																name="email"
-																type="email"
-																className="form-control"
-															/>
-															<label
-																className="form-control-placeholder"
-																htmlFor="adopter_emailadr"
-																style={
-																	formik.values.email ? styleWithContent : {}
-																}
-															>
-																{t(
-																	"ADOPTER_REGISTRATION.MODAL.FORM_STATE.MAIL"
-																)}
-															</label>
-														</div>
-													</div>
-													<div className="col">
-														<div className="form-group form-group-checkbox">
-															<Field
-																type="checkbox"
-																name="contactme"
-																id="adopter_contactme"
-																className="form-control"
-															/>
-															<label htmlFor="adopter_contactme">
-																{t(
-																	"ADOPTER_REGISTRATION.MODAL.FORM_STATE.CONTACT_ME"
-																)}
-															</label>
-														</div>
-													</div>
-												</div>
-											</fieldset>
-											<fieldset>
-												<legend>
-													{t(
-														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.SYSTEM_TYPE_HEADLINE"
-													)}
-												</legend>
-												<div className="row">
+								<ModalContent modalContentClassName="modal-content active">
+									<div>
+										<fieldset>
+											<legend>
+												{t(
+													"ADOPTER_REGISTRATION.MODAL.FORM_STATE.ORGANISATION"
+												)}
+											</legend>
+											<div className="row">
+												<div className="col">
 													<div className="form-group">
 														<Field
-															style={{color: "#666", fontWeight: "600"}}
-															id="system_type"
-															name="systemType"
+															type="text"
+															name="organisationName"
+															id="adopter_organisation"
+															className="form-control"
+														/>
+														<label
+															className="form-control-placeholder"
+															htmlFor="adopter_organisation"
+															style={
+																formik.values.organisationName
+																	? styleWithContent
+																	: {}
+															}
+														>
+															{t(
+																"ADOPTER_REGISTRATION.MODAL.FORM_STATE.ORGANISATION"
+															)}
+														</label>
+													</div>
+												</div>
+												<div className="col">
+													<div className="form-group">
+														<Field
+															type="text"
+															name="departmentName"
+															id="adopter_department"
+															className="form-control"
+														/>
+														<label
+															className="form-control-placeholder"
+															htmlFor="adopter_department"
+															style={
+																formik.values.departmentName
+																	? styleWithContent
+																	: {}
+															}
+														>
+															{t(
+																"ADOPTER_REGISTRATION.MODAL.FORM_STATE.DEPARTMENT"
+															)}
+														</label>
+													</div>
+												</div>
+											</div>
+											<div className="row">
+												<div className="col">
+													<div className="form-group">
+														<Field
+															style={{ color: "#666", fontWeight: "600" }}
+															id="adopter_country"
+															name="country"
 															as="select"
 															className="form-control"
 														>
-															<option value=""/>
-															{systemTypes.map((systemType, key) => (
-																<option key={key} value={systemType.value}>
-																	{t(systemType.name)}
+															<option value="" />
+															{countries.map((country, key) => (
+																<option key={key} value={country.code}>
+																	{country.name}
 																</option>
 															))}
 														</Field>
 														<label
 															className="form-control-placeholder"
-															htmlFor="system_type"
+															htmlFor="adopter_country"
 															style={
-																formik.values.systemType ? styleWithContent : {}
+																formik.values.country ? styleWithContent : {}
 															}
 														>
 															{t(
-																"ADOPTER_REGISTRATION.MODAL.FORM_STATE.SYSTEM_TYPE"
+																"ADOPTER_REGISTRATION.MODAL.FORM_STATE.COUNTRY"
 															)}
 														</label>
 													</div>
 												</div>
-											</fieldset>
-											<fieldset>
-												<legend>
-													{t(
-														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.WHICH_DATA_TO_SHARE"
-													)}
-												</legend>
-												<div className="form-group form-group-checkbox">
-													<Field
-														type="checkbox"
-														name="allowsStatistics"
-														id="adopter_allows_statistics"
-														className="form-control"
-													/>
-													<label htmlFor="adopter_allows_statistics">
-														{t(
-															"ADOPTER_REGISTRATION.MODAL.FORM_STATE.USAGE_STATISTICS"
-														)}
-													</label>
+												<div className="col">
+													<div className="form-group-pair">
+														<div className="form-group">
+															<Field
+																type="text"
+																name="postalCode"
+																id="adopter_postalcode"
+																className="form-control"
+															/>
+															<label
+																className="form-control-placeholder"
+																htmlFor="adopter_postalcode"
+																style={
+																	formik.values.postalCode
+																		? styleWithContent
+																		: {}
+																}
+															>
+																{t(
+																	"ADOPTER_REGISTRATION.MODAL.FORM_STATE.POSTAL_CODE"
+																)}
+															</label>
+														</div>
+														<div className="form-group">
+															<Field
+																type="text"
+																name="city"
+																id="adopter_city"
+																className="form-control"
+															/>
+															<label
+																className="form-control-placeholder"
+																htmlFor="adopter_city"
+																style={
+																	formik.values.city ? styleWithContent : {}
+																}
+															>
+																{t(
+																	"ADOPTER_REGISTRATION.MODAL.FORM_STATE.CITY"
+																)}
+															</label>
+														</div>
+													</div>
 												</div>
-												<div className="form-group form-group-checkbox">
-													<Field
-														type="checkbox"
-														name="allowsErrorReports"
-														id="adopter_allows_err_reports"
-														className="form-control"
-													/>
-													<label htmlFor="adopter_allows_err_reports">
-														{t(
-															"ADOPTER_REGISTRATION.MODAL.FORM_STATE.ERROR_REPORTS"
-														)}
-													</label>
-												</div>
-											</fieldset>
-											<fieldset>
-												<legend>
-													{t(
-														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.POLICY_HEADLINE"
-													)}
-												</legend>
-												<div className="form-group form-group-checkbox">
-													<Field
-														type="checkbox"
-														name="agreedToPolicy"
-														id="agreedToPolicy"
-														className="form-control"
-													/>
-													<label htmlFor="agreedToPolicy">
-														<span>
-															{t(
-																"ADOPTER_REGISTRATION.MODAL.FORM_STATE.READ_TERMS_OF_USE_BEFORE"
-															)}
-														</span>
-														<span
-															className="link"
-															onClick={() =>
-																setState(states[state].nextState[2] as keyof typeof states)
+											</div>
+										</fieldset>
+										<fieldset>
+											<legend>
+												{t(
+													"ADOPTER_REGISTRATION.MODAL.FORM_STATE.CONTACT_INFO"
+												)}
+											</legend>
+											<div className="row">
+												<div className="col">
+													<div className="form-group">
+														<Field
+															type="text"
+															name="firstName"
+															id="adopter_firstname"
+															className="form-control"
+														/>
+														<label
+															className="form-control-placeholder"
+															htmlFor="adopter_firstname"
+															style={
+																formik.values.firstName
+																	? styleWithContent
+																	: {}
 															}
 														>
-															{" " + t(
-																"ADOPTER_REGISTRATION.MODAL.FORM_STATE.READ_TERMS_OF_USE_LINK"
-															) + " "}
-														</span>
-														<span>
 															{t(
-																"ADOPTER_REGISTRATION.MODAL.FORM_STATE.READ_TERMS_OF_USE_AFTER"
+																"ADOPTER_REGISTRATION.MODAL.FORM_STATE.FIRST_NAME"
 															)}
-														</span>
+														</label>
+													</div>
+												</div>
+												<div className="col">
+													<div className="form-group">
+														<Field
+															type="text"
+															name="lastName"
+															id="adopter_lastname"
+															className="form-control"
+														/>
+														<label
+															className="form-control-placeholder"
+															htmlFor="adopter_lastname"
+															style={
+																formik.values.lastName ? styleWithContent : {}
+															}
+														>
+															{t(
+																"ADOPTER_REGISTRATION.MODAL.FORM_STATE.LAST_NAME"
+															)}
+														</label>
+													</div>
+												</div>
+											</div>
+											<div className="row">
+												<div className="col">
+													<div className="form-group">
+														<Field
+															type="text"
+															name="street"
+															id="adopter_street"
+															className="form-control"
+														/>
+														<label
+															className="form-control-placeholder"
+															htmlFor="adopter_street"
+															style={
+																formik.values.street ? styleWithContent : {}
+															}
+														>
+															{t(
+																"ADOPTER_REGISTRATION.MODAL.FORM_STATE.STREET"
+															)}
+														</label>
+													</div>
+												</div>
+												<div className="col">
+													<div className="form-group">
+														<Field
+															type="text"
+															name="streetNo"
+															id="adopter_streetnumber"
+															className="form-control"
+														/>
+														<label
+															className="form-control-placeholder"
+															htmlFor="adopter_streetnumber"
+															style={
+																formik.values.streetNo ? styleWithContent : {}
+															}
+														>
+															{t(
+																"ADOPTER_REGISTRATION.MODAL.FORM_STATE.NUMBER"
+															)}
+														</label>
+													</div>
+												</div>
+											</div>
+											<div className="row">
+												<div className="col">
+													<div className="form-group">
+														<Field
+															id="adopter_emailadr"
+															name="email"
+															type="email"
+															className="form-control"
+														/>
+														<label
+															className="form-control-placeholder"
+															htmlFor="adopter_emailadr"
+															style={
+																formik.values.email ? styleWithContent : {}
+															}
+														>
+															{t(
+																"ADOPTER_REGISTRATION.MODAL.FORM_STATE.MAIL"
+															)}
+														</label>
+													</div>
+												</div>
+												<div className="col">
+													<div className="form-group form-group-checkbox">
+														<Field
+															type="checkbox"
+															name="contactme"
+															id="adopter_contactme"
+															className="form-control"
+														/>
+														<label htmlFor="adopter_contactme">
+															{t(
+																"ADOPTER_REGISTRATION.MODAL.FORM_STATE.CONTACT_ME"
+															)}
+														</label>
+													</div>
+												</div>
+											</div>
+										</fieldset>
+										<fieldset>
+											<legend>
+												{t(
+													"ADOPTER_REGISTRATION.MODAL.FORM_STATE.SYSTEM_TYPE_HEADLINE"
+												)}
+											</legend>
+											<div className="row">
+												<div className="form-group">
+													<Field
+														style={{color: "#666", fontWeight: "600"}}
+														id="system_type"
+														name="systemType"
+														as="select"
+														className="form-control"
+													>
+														<option value=""/>
+														{systemTypes.map((systemType, key) => (
+															<option key={key} value={systemType.value}>
+																{t(systemType.name)}
+															</option>
+														))}
+													</Field>
+													<label
+														className="form-control-placeholder"
+														htmlFor="system_type"
+														style={
+															formik.values.systemType ? styleWithContent : {}
+														}
+													>
+														{t(
+															"ADOPTER_REGISTRATION.MODAL.FORM_STATE.SYSTEM_TYPE"
+														)}
 													</label>
 												</div>
-											</fieldset>
-										</div>
+											</div>
+										</fieldset>
+										<fieldset>
+											<legend>
+												{t(
+													"ADOPTER_REGISTRATION.MODAL.FORM_STATE.WHICH_DATA_TO_SHARE"
+												)}
+											</legend>
+											<div className="form-group form-group-checkbox">
+												<Field
+													type="checkbox"
+													name="allowsStatistics"
+													id="adopter_allows_statistics"
+													className="form-control"
+												/>
+												<label htmlFor="adopter_allows_statistics">
+													{t(
+														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.USAGE_STATISTICS"
+													)}
+												</label>
+											</div>
+											<div className="form-group form-group-checkbox">
+												<Field
+													type="checkbox"
+													name="allowsErrorReports"
+													id="adopter_allows_err_reports"
+													className="form-control"
+												/>
+												<label htmlFor="adopter_allows_err_reports">
+													{t(
+														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.ERROR_REPORTS"
+													)}
+												</label>
+											</div>
+										</fieldset>
+										<fieldset>
+											<legend>
+												{t(
+													"ADOPTER_REGISTRATION.MODAL.FORM_STATE.POLICY_HEADLINE"
+												)}
+											</legend>
+											<div className="form-group form-group-checkbox">
+												<Field
+													type="checkbox"
+													name="agreedToPolicy"
+													id="agreedToPolicy"
+													className="form-control"
+												/>
+												<label htmlFor="agreedToPolicy">
+													<span>
+														{t(
+															"ADOPTER_REGISTRATION.MODAL.FORM_STATE.READ_TERMS_OF_USE_BEFORE"
+														)}
+													</span>
+													<span
+														className="link"
+														onClick={() =>
+															setState(states[state].nextState[2] as keyof typeof states)
+														}
+													>
+														{" " + t(
+															"ADOPTER_REGISTRATION.MODAL.FORM_STATE.READ_TERMS_OF_USE_LINK"
+														) + " "}
+													</span>
+													<span>
+														{t(
+															"ADOPTER_REGISTRATION.MODAL.FORM_STATE.READ_TERMS_OF_USE_AFTER"
+														)}
+													</span>
+												</label>
+											</div>
+										</fieldset>
 									</div>
-								</div>
+								</ModalContent>
 							)}
 
 							{/* shows summary of information */}
 							{state === "summary" && (
-								<div className="modal-content" style={{ display: "block" }}>
-									<div className="modal-body">
-										<p>{t("ADOPTER_REGISTRATION.MODAL.SUMMARY_STATE.HEADER")}</p>
-										<p>{t("ADOPTER_REGISTRATION.MODAL.SUMMARY_STATE.GENERAL_HEADER")}</p>
+								<ModalContent modalContentClassName="modal-content active">
+									<p>{t("ADOPTER_REGISTRATION.MODAL.SUMMARY_STATE.HEADER")}</p>
+									<p>{t("ADOPTER_REGISTRATION.MODAL.SUMMARY_STATE.GENERAL_HEADER")}</p>
+									<div className="scrollbox">
+										<pre>
+											{JSON.stringify(formik.values, null, "\t")}
+										</pre>
+									</div>
+									<br />
+
+									{formik.values.allowsStatistics ?
+									<>
+										<p>{t("ADOPTER_REGISTRATION.MODAL.SUMMARY_STATE.STATS_HEADER")}</p>
 										<div className="scrollbox">
 											<pre>
-												{JSON.stringify(formik.values, null, "\t")}
+												{JSON.stringify(statisticsSummary?.statistics, null, "\t")}
 											</pre>
 										</div>
-										<br />
-
-										{formik.values.allowsStatistics ?
-										<>
-											<p>{t("ADOPTER_REGISTRATION.MODAL.SUMMARY_STATE.STATS_HEADER")}</p>
-											<div className="scrollbox">
-												<pre>
-													{JSON.stringify(statisticsSummary?.statistics, null, "\t")}
-												</pre>
-											</div>
-										</>
-										: <p>{t("ADOPTER_REGISTRATION.MODAL.SUMMARY_STATE.NO_STATS_HEADER")}</p>
-										}
-									</div>
-								</div>
+									</>
+									: <p>{t("ADOPTER_REGISTRATION.MODAL.SUMMARY_STATE.NO_STATS_HEADER")}</p>
+									}
+								</ModalContent>
 							)}
 
 							{/* navigation buttons depending on state of modal */}

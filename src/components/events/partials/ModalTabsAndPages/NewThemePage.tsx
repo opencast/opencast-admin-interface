@@ -5,6 +5,7 @@ import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButt
 import DropDown from "../../../shared/DropDown";
 import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component renders the theme page for new series in the new series wizard.
@@ -40,52 +41,48 @@ const NewThemePage = <T extends RequiredFormProps>({
 
 	return (
 		<>
-			<div className="modal-content">
-				<div className="modal-body">
-					<div className="full-col">
-						<div className="obj quick-actions">
-							<header className="no-expand">
-								{t("EVENTS.SERIES.NEW.THEME.TITLE")}
-							</header>
-							<div className="obj-container padded">
-								<ul>
-									<li>
-										<p>{t("EVENTS.SERIES.NEW.THEME.DESCRIPTION.TEXT")}</p>
-										{seriesThemes.length > 0 ? (
-											<>
-												<p>
-													<div className="editable">
-														<DropDown
-															value={formik.values.theme}
-															text={
-																getName(formik.values.theme) ?? ""
-															}
-															options={seriesThemes}
-															type={"newTheme"}
-															required={false}
-															handleChange={(element) => {
-																if (element) {
-																	formik.setFieldValue("theme", element.value)
-																}
-															}}
-															placeholder={t("EVENTS.SERIES.NEW.THEME.LABEL")}
-														/>
-													</div>
-												</p>
-												{!!formik.values.theme && (
-													<p>{getDescription(formik.values.theme)}</p>
-												)}
-											</>
-										) : (
-											<p>{t("EVENTS.SERIES.NEW.THEME.EMPTY")}</p>
+			<ModalContentTable>
+				<div className="obj quick-actions">
+					<header className="no-expand">
+						{t("EVENTS.SERIES.NEW.THEME.TITLE")}
+					</header>
+					<div className="obj-container padded">
+						<ul>
+							<li>
+								<p>{t("EVENTS.SERIES.NEW.THEME.DESCRIPTION.TEXT")}</p>
+								{seriesThemes.length > 0 ? (
+									<>
+										<p>
+											<div className="editable">
+												<DropDown
+													value={formik.values.theme}
+													text={
+														getName(formik.values.theme) ?? ""
+													}
+													options={seriesThemes}
+													type={"newTheme"}
+													required={false}
+													handleChange={(element) => {
+														if (element) {
+															formik.setFieldValue("theme", element.value)
+														}
+													}}
+													placeholder={t("EVENTS.SERIES.NEW.THEME.LABEL")}
+												/>
+											</div>
+										</p>
+										{!!formik.values.theme && (
+											<p>{getDescription(formik.values.theme)}</p>
 										)}
-									</li>
-								</ul>
-							</div>
-						</div>
+									</>
+								) : (
+									<p>{t("EVENTS.SERIES.NEW.THEME.EMPTY")}</p>
+								)}
+							</li>
+						</ul>
 					</div>
 				</div>
-			</div>
+			</ModalContentTable>
 
 			{/* Button for navigation to next page and previous page */}
 			<WizardNavigationButtons

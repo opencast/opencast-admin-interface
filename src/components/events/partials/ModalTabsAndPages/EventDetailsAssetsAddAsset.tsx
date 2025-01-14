@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { setModalAssetsTabHierarchy, updateAssets } from "../../../../slices/eventDetailsSlice";
 import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component manages the add asset sub-tab for assets tab of event details modal
@@ -51,108 +52,104 @@ const EventDetailsAssetsAddAsset = ({
 	};
 
 	return (
-		<div className="modal-content">
-			{/* Hierarchy navigation */}
-			<EventDetailsTabHierarchyNavigation
-				openSubTab={openSubTab}
-				hierarchyDepth={0}
-				translationKey0={"EVENTS.EVENTS.NEW.UPLOAD_ASSET.ADD"}
-				subTabArgument0={"add-asset"}
-			/>
-
-			<div className="modal-body">
-				{/* Notifications */}
-				<Notifications context="not_corner" />
-
-				{/* section for adding assets */}
-				<div className="full-col">
-					<div className="obj tbl-container operations-tbl">
-						<header>
-							{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.ADD") /* Attachments */}
-						</header>
-						<div className="obj-container">
-							<Formik
-								initialValues={initialValues}
-								onSubmit={(values) => saveAssets(values)}
-							>
-								{(formik) => (
-									<div>
-										{/* file select for upload for different types of assets */}
-										<table className="main-tbl">
-											<tbody>
-												{uploadAssets.length === 0 ? (
-													<tr>
-														<td>
-															{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.NO_OPTIONS")}
-														</td>
-													</tr>
-												) : (
-													uploadAssets.map((asset, key) => (
-														<tr key={key}>
-															<td>
-																{" "}
-																{translateOverrideFallback(asset, t)}
-															</td>
-															<td>
-																<div className="file-upload">
-																	<input
-																		id={asset.id}
-																		className="blue-btn file-select-btn"
-																		accept={asset.accept}
-																		onChange={(e) =>
-																			handleChange(e, formik, asset.id)
-																		}
-																		type="file"
-																		tabIndex={0}
-																	/>
-																	{formik.values[asset.id] && (
-																		<span className="ui-helper">
-																			{formik.values[asset.id].name.substr(
-																				0,
-																				50
-																			)}
-																		</span>
+		<ModalContentTable
+			modalContentChildren={
+				/* Hierarchy navigation */
+				<EventDetailsTabHierarchyNavigation
+					openSubTab={openSubTab}
+					hierarchyDepth={0}
+					translationKey0={"EVENTS.EVENTS.NEW.UPLOAD_ASSET.ADD"}
+					subTabArgument0={"add-asset"}
+				/>
+			}
+			modalBodyChildren={<Notifications context="not_corner" />}
+		>
+			{/* section for adding assets */}
+			<div className="obj tbl-container operations-tbl">
+				<header>
+					{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.ADD") /* Attachments */}
+				</header>
+				<div className="obj-container">
+					<Formik
+						initialValues={initialValues}
+						onSubmit={(values) => saveAssets(values)}
+					>
+						{(formik) => (
+							<div>
+								{/* file select for upload for different types of assets */}
+								<table className="main-tbl">
+									<tbody>
+										{uploadAssets.length === 0 ? (
+											<tr>
+												<td>
+													{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.NO_OPTIONS")}
+												</td>
+											</tr>
+										) : (
+											uploadAssets.map((asset, key) => (
+												<tr key={key}>
+													<td>
+														{" "}
+														{translateOverrideFallback(asset, t)}
+													</td>
+													<td>
+														<div className="file-upload">
+															<input
+																id={asset.id}
+																className="blue-btn file-select-btn"
+																accept={asset.accept}
+																onChange={(e) =>
+																	handleChange(e, formik, asset.id)
+																}
+																type="file"
+																tabIndex={0}
+															/>
+															{formik.values[asset.id] && (
+																<span className="ui-helper">
+																	{formik.values[asset.id].name.substr(
+																		0,
+																		50
 																	)}
-																</div>
-															</td>
-															{/*Button to remove asset*/}
-															<td className="fit">
-																<button
-																	className="button-like-anchor remove"
-																	onClick={() => {
-																		formik.setFieldValue(asset.id, null);
-																		const element = document.getElementById(asset.id) as HTMLInputElement;
-																		if (element) {
-																			element.value = "";
-																		}
-																	}}
-																/>
-															</td>
-														</tr>
-													))
-												)}
-											</tbody>
-										</table>
+																</span>
+															)}
+														</div>
+													</td>
+													{/*Button to remove asset*/}
+													<td className="fit">
+														<button
+															className="button-like-anchor remove"
+															onClick={() => {
+																formik.setFieldValue(asset.id, null);
+																const element = document.getElementById(asset.id) as HTMLInputElement;
+																if (element) {
+																	element.value = "";
+																}
+															}}
+														/>
+													</td>
+												</tr>
+											))
+										)}
+									</tbody>
+								</table>
 
-										{/* add asset button */}
-										<footer>
-											<button
-												className="submit"
-												style={style_button_spacing}
-												type="submit"
-												onClick={() => formik.handleSubmit()}
-											>
-												{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.ADD")}
-											</button>
-										</footer>
-									</div>
-								)}
-							</Formik>
-						</div>
-					</div>
+								{/* add asset button */}
+								<footer>
+									<button
+										className="submit"
+										style={style_button_spacing}
+										type="submit"
+										onClick={() => formik.handleSubmit()}
+									>
+										{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.ADD")}
+									</button>
+								</footer>
+							</div>
+						)}
+					</Formik>
 				</div>
 			</div>
-		</div>
+		</ModalContentTable>
 	);
 };
 

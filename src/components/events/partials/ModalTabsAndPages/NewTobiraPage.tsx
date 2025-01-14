@@ -10,6 +10,7 @@ import { getSeriesTobiraPage, getSeriesTobiraPageError } from "../../../../selec
 import { NOTIFICATION_CONTEXT_TOBIRA } from "../../../../configs/modalConfig";
 import { SaveEditFooter } from "../../../shared/SaveEditFooter";
 import { Tooltip } from "../../../shared/Tooltip";
+import ModalContent from "../../../shared/modals/ModalContent";
 
 /**
  * This component renders the theme page for new series in the new series wizard.
@@ -202,8 +203,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 	}));
 
 	return <>
-		<div className="modal-content">
-			<div className="modal-body">
+		<ModalContent>
 				{/* Notifications */}
 				<Notifications context="tobira" />
 				<p className="tab-description">{t("EVENTS.SERIES.NEW.TOBIRA.DESCRIPTION")}</p>
@@ -349,7 +349,6 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 					</p>
 					{!mode.edit && <p style={{ fontSize: 12 }}>{t("EVENTS.SERIES.NEW.TOBIRA.DIRECT_LINK")}</p>}
 				</>}
-			</div>
 			{/* Render buttons for saving or resetting updated path */}
 			{mode.edit && <SaveEditFooter
 				active={formik.values.selectedPage !== undefined}
@@ -357,7 +356,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 				submit={() => formik.handleSubmit()}
 				{...{ isValid }}
 			/>}
-		</div>
+		</ModalContent>
 
 		{/* Button for navigation to next page and previous page */}
 		{!mode.edit && <WizardNavigationButtons

@@ -11,6 +11,7 @@ import {
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 import { isSeries } from "../../../../slices/tableSlice";
+import ModalContent from "../../../shared/modals/ModalContent";
 
 /**
  * This component manges the delete series bulk action
@@ -136,84 +137,82 @@ const DeleteSeriesModal = ({
 					<h2>{t("BULK_ACTIONS.DELETE.SERIES.CAPTION")}</h2>
 				</header>
 
-				<div className="modal-content">
-					<div className="modal-body">
-						<div className="modal-alert danger obj">
-							<p>{t("BULK_ACTIONS.DELETE_SERIES_WARNING_LINE1")}</p>
-							<p>{t("BULK_ACTIONS.DELETE_SERIES_WARNING_LINE2")}</p>
+				<ModalContent>
+					<div className="modal-alert danger obj">
+						<p>{t("BULK_ACTIONS.DELETE_SERIES_WARNING_LINE1")}</p>
+						<p>{t("BULK_ACTIONS.DELETE_SERIES_WARNING_LINE2")}</p>
+					</div>
+
+					{/* Only show if series not allowed to be deleted */}
+					{!isAllowed() && (
+						<div className="alert sticky warning">
+							<p>{t("BULK_ACTIONS.DELETE.SERIES.CANNOT_DELETE")}</p>
 						</div>
+					)}
 
-						{/* Only show if series not allowed to be deleted */}
-						{!isAllowed() && (
-							<div className="alert sticky warning">
-								<p>{t("BULK_ACTIONS.DELETE.SERIES.CANNOT_DELETE")}</p>
-							</div>
-						)}
-
-						<div className="full-col">
-							<div className="obj">
-								<header>{t("EVENTS.SERIES.TABLE.CAPTION")}</header>
-								<div className="obj-container">
-									<table className="main-tbl">
-										<thead>
-											<tr>
-												<th className="small">
+					<div className="full-col">
+						<div className="obj">
+							<header>{t("EVENTS.SERIES.TABLE.CAPTION")}</header>
+							<div className="obj-container">
+								<table className="main-tbl">
+									<thead>
+										<tr>
+											<th className="small">
+												<input
+													type="checkbox"
+													checked={allChecked}
+													onChange={(e) => onChangeAllSelected(e)}
+													className="select-all-cbox"
+												/>
+											</th>
+											<th>{t("EVENTS.SERIES.TABLE.TITLE")}</th>
+											<th>{t("EVENTS.SERIES.TABLE.ORGANIZERS")}</th>
+											<th>{t("EVENTS.SERIES.TABLE.HAS_EVENTS")}</th>
+										</tr>
+									</thead>
+									<tbody>
+										{/* Repeat for each marked series */}
+										{selectedSeries.map((series, key) => (
+											<tr
+												key={key}
+												className={cn({
+													error:
+														!deleteWithSeriesAllowed &&
+														series.selected &&
+														series.hasEvents,
+												})}
+											>
+												<td>
 													<input
 														type="checkbox"
-														checked={allChecked}
-														onChange={(e) => onChangeAllSelected(e)}
-														className="select-all-cbox"
+														name="selection"
+														checked={series.selected}
+														onChange={(e) => onChangeSelected(e, isSeries(series) ?series.id : "")}
+														className="child-cbox"
 													/>
-												</th>
-												<th>{t("EVENTS.SERIES.TABLE.TITLE")}</th>
-												<th>{t("EVENTS.SERIES.TABLE.ORGANIZERS")}</th>
-												<th>{t("EVENTS.SERIES.TABLE.HAS_EVENTS")}</th>
-											</tr>
-										</thead>
-										<tbody>
-											{/* Repeat for each marked series */}
-											{selectedSeries.map((series, key) => (
-												<tr
-													key={key}
-													className={cn({
-														error:
-															!deleteWithSeriesAllowed &&
-															series.selected &&
-															series.hasEvents,
-													})}
-												>
-													<td>
-														<input
-															type="checkbox"
-															name="selection"
-															checked={series.selected}
-															onChange={(e) => onChangeSelected(e, isSeries(series) ?series.id : "")}
-															className="child-cbox"
-														/>
-													</td>
-													<td>{isSeries(series) && series.title}</td>
-													<td>
-														{/*Repeat for each creator*/}
+												</td>
+												<td>{isSeries(series) && series.title}</td>
+												<td>
+													{/*Repeat for each creator*/}
 {/* @ts-expect-error TS(7006): Parameter 'organizer' implicitly has an 'any' type */}
-														{series.organizers.map((organizer, key) => (
-															<span className="metadata-entry" key={key}>
-																{organizer}
-															</span>
-														))}
-													</td>
-													{/* Only show check if row has events, else empty cell*/}
-													<td>
-														{series.hasEvents && <i className="fa fa-check" />}
-													</td>
-												</tr>
-											))}
-										</tbody>
-									</table>
-								</div>
+													{series.organizers.map((organizer, key) => (
+														<span className="metadata-entry" key={key}>
+															{organizer}
+														</span>
+													))}
+												</td>
+												{/* Only show check if row has events, else empty cell*/}
+												<td>
+													{series.hasEvents && <i className="fa fa-check" />}
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
 							</div>
 						</div>
 					</div>
-				</div>
+				</ModalContent>
 
 				<footer>
 					<button
