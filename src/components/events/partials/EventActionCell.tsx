@@ -17,6 +17,7 @@ import {
 import { Event, deleteEvent } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
 import { openModal } from "../../../slices/eventDetailsSlice";
+import { SeriesDetailsAction } from "./SeriesDetailsAction";
 
 /**
  * This component renders the action cells of events in the table view
@@ -108,14 +109,7 @@ const EventActionCell = ({
 			)}
 
 			{/* If event belongs to a series then the corresponding series details can be opened */}
-			{!!row.series && hasAccess("ROLE_UI_SERIES_DETAILS_VIEW", user) && (
-				<Tooltip title={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}>
-					<button
-						onClick={() => onClickSeriesDetails()}
-						className="button-like-anchor more-series"
-					/>
-				</Tooltip>
-			)}
+			{!!row.series && <SeriesDetailsAction onClick={onClickSeriesDetails} />}
 
 			{/* Delete an event */}
 			{/*TODO: needs to be checked if event is published */}

@@ -24,6 +24,7 @@ import {
 } from "../../../slices/seriesSlice";
 
 import { Tooltip } from "../../shared/Tooltip";
+import { SeriesDetailsAction } from "./SeriesDetailsAction";
 
 /**
  * This component renders the action cells of series in the table view
@@ -75,14 +76,7 @@ const SeriesActionsCell = ({
 	return (
 		<>
 			{/* series details */}
-			{hasAccess("ROLE_UI_SERIES_DETAILS_VIEW", user) && (
-				<Tooltip title={t("EVENTS.SERIES.TABLE.TOOLTIP.DETAILS")}>
-					<button
-						onClick={() => showSeriesDetailsModal()}
-						className="button-like-anchor more-series"
-					/>
-				</Tooltip>
-			)}
+			<SeriesDetailsAction onClick={showSeriesDetailsModal} />
 
 			{displaySeriesDetailsModal && (
 				<SeriesDetailsModal
