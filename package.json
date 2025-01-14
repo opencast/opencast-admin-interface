@@ -10,7 +10,6 @@
     "@mui/x-date-pickers": "^7.23.1",
     "@reduxjs/toolkit": "^2.5.0",
     "@types/dompurify": "^3.2.0",
-    "@types/react-router-dom": "^5.3.3",
     "array-move": "^4.0.0",
     "axios": "^1.7.9",
     "bourbon": "^7.3.0",
