@@ -181,7 +181,7 @@ const Header = () => {
 										}
 										target="_blank" rel="noreferrer"
 									>
-										<span className="fa fa-play-circle" />
+										<i className="fa fa-play-circle" />
 									</a>
 								</Tooltip>
 							</div>
@@ -192,7 +192,7 @@ const Header = () => {
 						<div className="nav-dd">
 							<Tooltip  title={t("STUDIO")}>
 								<a href={studioURL} target="_blank" rel="noreferrer">
-									<span className="fa fa-video-camera" />
+									<i className="fa fa-video-camera" />
 								</a>
 							</Tooltip>
 						</div>

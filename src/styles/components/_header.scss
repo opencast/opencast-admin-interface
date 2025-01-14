@@ -72,6 +72,16 @@
             opacity: 1;
             visibility: visible;
         }
+
+        // Make anchor elements look like buttons when tab targeted
+        > a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 39px;
+            width: 28px;
+            margin-left: 12px;
+        }
     }
 
     .dropdown-ul {
