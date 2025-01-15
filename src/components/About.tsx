@@ -3,7 +3,7 @@ import Header from "./Header";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import axios from 'axios';
 import i18n from "../i18n/i18n";
 import DOMPurify from "dompurify";

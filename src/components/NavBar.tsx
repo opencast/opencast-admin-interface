@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 import { hasAccess } from "../utils/utils";
 import { AppDispatch, useAppDispatch, useAppSelector } from "../store";
 import { getUserInformation } from "../selectors/userInfoSelectors";
