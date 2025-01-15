@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
+import { HashRouter, Navigate, Route, Routes } from "react-router";
 import "./App.scss";
 import Events from "./components/events/Events";
 import Recordings from "./components/recordings/Recordings";

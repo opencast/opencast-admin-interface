@@ -24,7 +24,6 @@ type AxiosErrorResponse = {
 // as it isn't really helpful and might not even be considered as one (see TODO comment below).
 export const handleTobiraError = (response: AxiosErrorResponse, dispatch: AppDispatch) => {
     const data = response.response;
-    console.info(response.message);
 
     if (data.status === 503) {
         // TODO: figure out what to do:
@@ -42,7 +41,6 @@ export const handleTobiraError = (response: AxiosErrorResponse, dispatch: AppDis
         //     context: NOTIFICATION_CONTEXT,
         // }));
 
-        console.info(data.data);
         throw Error(response.message);
     } else if (data.status === 500) {
         dispatch(addNotification({
@@ -53,7 +51,6 @@ export const handleTobiraError = (response: AxiosErrorResponse, dispatch: AppDis
             noDuplicates: true,
         }));
 
-        console.error(response);
         throw Error(response.message);
     } else if (data.status === 404) {
         dispatch(addNotification({
@@ -64,7 +61,6 @@ export const handleTobiraError = (response: AxiosErrorResponse, dispatch: AppDis
             noDuplicates: true,
         }));
 
-        console.error(response);
         throw Error(response.message);
     }
 };

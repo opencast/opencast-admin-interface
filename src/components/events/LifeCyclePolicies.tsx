@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MainNav from "../shared/MainNav";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import cn from "classnames";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
@@ -17,7 +17,6 @@ import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { AsyncThunk } from "@reduxjs/toolkit";
-import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 import { getTotalLifeCyclePolicies } from "../../selectors/lifeCycleSelectors";
 import { fetchLifeCyclePolicies } from "../../slices/lifeCycleSlice";
 import { lifeCyclePoliciesTemplateMap } from "../../configs/tableConfigs/lifeCyclePoliciesTableMap";
@@ -171,7 +170,7 @@ const LifeCyclePolicies = () => {
 					{/* But if we don't include this component, the policies won't load on page load, because the first
 							fetch request we send to the backend contains invalid params >.> */}
 					<TableFilters
-						loadResource={fetchLifeCyclePolicies as AsyncThunk<any, void, AsyncThunkConfig>}
+						loadResource={fetchLifeCyclePolicies as AsyncThunk<any, void, any>}
 						loadResourceIntoTable={loadLifeCyclePoliciesIntoTable}
 						resource={"lifeCyclePolicies"}
 					/>
