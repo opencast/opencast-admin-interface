@@ -9,7 +9,6 @@ import { EventDetailsPage } from "./modals/EventDetails";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import {
 	fetchSeriesDetailsAcls,
-	fetchSeriesDetailsFeeds,
 	fetchSeriesDetailsMetadata,
 	fetchSeriesDetailsTheme,
 	fetchSeriesDetailsThemeNames,
@@ -63,7 +62,6 @@ const EventActionCell = ({
 		if (!!row.series) {
 			await dispatch(fetchSeriesDetailsMetadata(row.series.id));
 			await dispatch(fetchSeriesDetailsAcls(row.series.id));
-			await dispatch(fetchSeriesDetailsFeeds(row.series.id));
 			await dispatch(fetchSeriesDetailsTheme(row.series.id));
 			await dispatch(fetchSeriesDetailsThemeNames());
 

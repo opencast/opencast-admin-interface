@@ -29,12 +29,6 @@ import { handleTobiraError } from './shared/tobiraErrors';
 /**
  * This file contains redux reducer for actions affecting the state of a series
  */
-export type Feed = {
-	link: string,
-	type: string,
-	version: string,
-}
-
 export type TobiraData = {
 	baseURL: string,
 	hostPages: TobiraPage[],
@@ -45,8 +39,6 @@ type SeriesDetailsState = {
 	errorMetadata: SerializedError | null,
 	statusAcl: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAcl: SerializedError | null,
-	statusFeeds: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
-	errorFeeds: SerializedError | null,
 	statusTheme: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorTheme: SerializedError | null,
 	statusThemeNames: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
@@ -59,7 +51,6 @@ type SeriesDetailsState = {
 	errorTobiraData: SerializedError | null,
   	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
-	feeds: Feed[],
 	acl: TransformedAcl[],
 	theme: string,
 	themeNames: { id: string, value: string }[],
@@ -76,8 +67,6 @@ const initialState: SeriesDetailsState = {
 	errorMetadata: null,
 	statusAcl: 'uninitialized',
 	errorAcl: null,
-	statusFeeds: 'uninitialized',
-	errorFeeds: null,
 	statusTheme: 'uninitialized',
 	errorTheme: null,
 	statusThemeNames: 'uninitialized',
@@ -94,7 +83,6 @@ const initialState: SeriesDetailsState = {
 		fields: [],
 	},
 	extendedMetadata: [],
-	feeds: [],
 	acl: [],
 	theme: "",
 	themeNames: [],
@@ -170,45 +158,6 @@ export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSe
 	}
 
 	return seriesAcls;
-});
-
-// fetch feeds of certain series from server
-export const fetchSeriesDetailsFeeds = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsFeeds', async (id: string) => {
-	const res = await axios.get("/admin-ng/feeds/feeds");
-	const feedsResponse = res.data;
-
-	let seriesFeeds: any[] = [];
-	for (let i = 0; i < feedsResponse.length; i++) {
-		if (feedsResponse[i].name === "Series") {
-			let pattern =
-				feedsResponse[i].identifier.split("/series")[0] +
-				feedsResponse[i].pattern;
-			let uidLink = pattern.split("<series_id>")[0] + id;
-			let typeLink = uidLink.split("<type>");
-			let versionLink = typeLink[1].split("<version>");
-			seriesFeeds = [
-				{
-					type: "atom",
-					version: "0.3",
-					link:
-						typeLink[0] + "atom" + versionLink[0] + "0.3" + versionLink[1],
-				},
-				{
-					type: "atom",
-					version: "1.0",
-					link:
-						typeLink[0] + "atom" + versionLink[0] + "1.0" + versionLink[1],
-				},
-				{
-					type: "rss",
-					version: "2.0",
-					link: typeLink[0] + "rss" + versionLink[0] + "2.0" + versionLink[1],
-				},
-			];
-		}
-	}
-
-	return seriesFeeds;
 });
 
 // fetch theme of certain series from server
@@ -623,20 +572,6 @@ const seriesDetailsSlice = createSlice({
 			.addCase(fetchSeriesDetailsAcls.rejected, (state, action) => {
 				state.statusAcl = 'failed';
 				state.errorAcl = action.error;
-			})
-			.addCase(fetchSeriesDetailsFeeds.pending, (state) => {
-				state.statusFeeds = 'loading';
-			})
-			.addCase(fetchSeriesDetailsFeeds.fulfilled, (state, action: PayloadAction<
-				SeriesDetailsState["feeds"]
-			>) => {
-				state.statusFeeds = 'succeeded';
-				const seriesDetailsFeeds = action.payload;
-				state.feeds = seriesDetailsFeeds;
-			})
-			.addCase(fetchSeriesDetailsFeeds.rejected, (state, action) => {
-				state.statusFeeds = 'failed';
-				state.errorFeeds = action.error;
 			})
 			.addCase(fetchSeriesDetailsTheme.pending, (state) => {
 				state.statusTheme = 'loading';
