@@ -12,6 +12,7 @@ import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { TableColumn } from "../../configs/tableConfigs/aclsTableConfig";
+import ButtonLikeAnchor from "./ButtonLikeAnchor";
 
 /**
  * This component renders the modal for editing which columns are shown in the table
@@ -123,8 +124,8 @@ const EditTableViewModal = ({
 				id="edit-table-view-modal"
 			>
 				<header>
-					<button
-						className="button-like-anchor fa fa-times close-modal"
+					<ButtonLikeAnchor
+						extraClassName="fa fa-times close-modal"
 						onClick={() => {
 							clearData();
 							close();
@@ -160,12 +161,12 @@ const EditTableViewModal = ({
 											column ? (
 												<li className="drag-item" key={key}>
 													<div className="title">{t(column.label)}</div>
-													<button
-														className="button-like-anchor move-item add"
+													<ButtonLikeAnchor
+														extraClassName="move-item add"
 														onClick={() => changeColumn(column, false)}
 													>
 														<span className="sr-only">{t("PREFERENCES.TABLE.ADD_COLUMN")}</span>
-													</button>
+													</ButtonLikeAnchor>
 												</li>
 											) : null
 										)}
@@ -210,12 +211,12 @@ const EditTableViewModal = ({
 																				<div className="title">
 																					{t(column.label)}
 																				</div>
-																				<button
-																					className="button-like-anchor move-item remove"
+																				<ButtonLikeAnchor
+																					extraClassName="move-item remove"
 																					onClick={() => changeColumn(column, true)}
 																				>
 																					<span className="sr-only">{t("PREFERENCES.TABLE.REMOVE_COLUMN")}</span>
-																				</button>
+																				</ButtonLikeAnchor>
 																			</div>
 																		)}
 																	</Draggablee>

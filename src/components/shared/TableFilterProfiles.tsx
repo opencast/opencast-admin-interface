@@ -15,8 +15,8 @@ import { FilterData, loadFilterProfile } from "../../slices/tableFilterSlice";
 import { AppThunk, useAppDispatch, useAppSelector } from "../../store";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
-import { Tooltip } from "./Tooltip";
 import { AsyncThunk } from "@reduxjs/toolkit";
+import ButtonLikeAnchor from "./ButtonLikeAnchor";
 
 /**
  * This component renders the table filter profiles in the upper right corner when clicked on settings icon of the
@@ -149,8 +149,8 @@ const TableFiltersProfiles = ({
 						// if settingsMode is true the list with all saved profiles is shown
 						<div className="filters-list">
 							<header>
-								<button
-									className="button-like-anchor icon close"
+								<ButtonLikeAnchor
+									extraClassName="icon close"
 									onClick={closeFilterSetting}
 								/>
 								<h4>{t("TABLE_FILTERS.PROFILES.FILTERS_HEADER")}</h4>
@@ -163,28 +163,24 @@ const TableFiltersProfiles = ({
 									// repeat for each profile in profiles filtered for currently shown resource (else-case)
 									currentProfiles.map((profile, key) => (
 										<li key={key}>
-											<Tooltip title={profile.description}>
-												<button
-													onClick={() => chooseFilterProfile(profile.filterMap)}
-													className="button-like-anchor"
-												>
-													{profile.name.substr(0, 70)}
-												</button>
-											</Tooltip>
+											<ButtonLikeAnchor
+												onClick={() => chooseFilterProfile(profile.filterMap)}
+												tooltipText={profile.description}
+											>
+												{profile.name.substr(0, 70)}
+											</ButtonLikeAnchor>
 											{/* Settings icon to edit profile */}
-											<Tooltip title={t("TABLE_FILTERS.PROFILES.EDIT")}>
-												<button
-													onClick={() => editFilterProfile(profile)}
-													className="button-like-anchor icon edit"
-												/>
-											</Tooltip>
+											<ButtonLikeAnchor
+												onClick={() => editFilterProfile(profile)}
+												extraClassName="icon edit"
+												tooltipText="TABLE_FILTERS.PROFILES.EDIT"
+											/>
 											{/* Remove icon to remove profile */}
-											<Tooltip title={t("TABLE_FILTERS.PROFILES.REMOVE")}>
-												<button
-													onClick={() => dispatch(removeFilterProfile(profile))}
-													className="button-like-anchor icon remove"
-												/>
-											</Tooltip>
+											<ButtonLikeAnchor
+												onClick={() => dispatch(removeFilterProfile(profile))}
+												extraClassName="icon remove"
+												tooltipText="TABLE_FILTERS.PROFILES.REMOVE"
+											/>
 										</li>
 									))
 								)}
@@ -194,12 +190,12 @@ const TableFiltersProfiles = ({
 							{/* settingsMode is switched and save dialog is opened*/}
 							<div className="input-container">
 								<div className="btn-container">
-									<button
-										className="button-like-anchor save"
+									<ButtonLikeAnchor
+										extraClassName="save"
 										onClick={() => setSettingsMode(!settingsMode)}
 									>
 										{t("TABLE_FILTERS.PROFILES.ADD").substr(0, 70)}
-									</button>
+									</ButtonLikeAnchor>
 								</div>
 							</div>
 						</div>
@@ -207,8 +203,8 @@ const TableFiltersProfiles = ({
 						// if settingsMode is false then show editing dialog of selected filter profile
 						<div className="filter-details">
 							<header>
-								<button
-									className="button-like-anchor icon close"
+								<ButtonLikeAnchor
+									extraClassName="icon close"
 									onClick={closeFilterSetting}
 								/>
 								<h4>{t("TABLE_FILTERS.PROFILES.FILTER_HEADER")}</h4>
@@ -243,15 +239,15 @@ const TableFiltersProfiles = ({
 							<div className="input-container">
 								{/* Buttons for saving and canceling editing */}
 								<div className="btn-container">
-									<button onClick={cancelEditProfile} className="button-like-anchor cancel">
+									<ButtonLikeAnchor onClick={cancelEditProfile} extraClassName="cancel">
 										{t("CANCEL")}
-									</button>
-									<button
+									</ButtonLikeAnchor>
+									<ButtonLikeAnchor
 										onClick={saveProfile}
-										className={"button-like-anchor " + cn("save", { disabled: !validName })}
+										extraClassName={cn("save", { disabled: !validName })}
 									>
 										{t("SAVE")}
-									</button>
+									</ButtonLikeAnchor>
 								</div>
 							</div>
 						</div>

@@ -10,6 +10,7 @@ import { getSeriesTobiraPage, getSeriesTobiraPageError } from "../../../../selec
 import { NOTIFICATION_CONTEXT_TOBIRA } from "../../../../configs/modalConfig";
 import { SaveEditFooter } from "../../../shared/SaveEditFooter";
 import { Tooltip } from "../../../shared/Tooltip";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 
 /**
  * This component renders the theme page for new series in the new series wizard.
@@ -215,16 +216,16 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 							</header>
 							<div className="breadcrumb">
 								{formik.values.breadcrumbs.map((breadcrumb, key) => (
-									<button
+									<ButtonLikeAnchor
 										key={key}
-										className="button-like-anchor breadcrumb-link"
+										extraClassName="breadcrumb-link"
 										onClick={() => back(key)}
 									>
 										{breadcrumb.segment === ''
 											? t('EVENTS.SERIES.NEW.TOBIRA.HOMEPAGE')
 											: breadcrumb.title
 										}
-									</button>
+									</ButtonLikeAnchor>
 								))}
 							</div>
 							<table className="main-tbl highlight-hover">
@@ -268,16 +269,16 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 													value={page.title ?? ""}
 													onChange={e => setPage(key, e, "title")}
 												/>
-												: <button
-													className={"button-like-anchor "
-														+ (!page.blocks?.length
+												: <ButtonLikeAnchor
+													extraClassName={
+															(!page.blocks?.length
 															? "tobira-selectable"
 															: "tobira-button-disabled"
 														)
 													}
 													disabled={!!page.blocks?.length}
 													onClick={() => page.blocks?.length || select(page)}
-												>{page.title}</button>
+												>{page.title}</ButtonLikeAnchor>
 											}
 										</td>
 										<td>
@@ -295,15 +296,15 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 											</code>
 										</td>
 										<td>
-											{((!page.new || isValid) && page.title) && <button
-												className="button-like-anchor details-link"
+											{((!page.new || isValid) && page.title) && <ButtonLikeAnchor
+												extraClassName="details-link"
 												onClick={() => goto(page)}
 											>
 												{t("EVENTS.SERIES.NEW.TOBIRA.SUBPAGES")}
-											</button>}
+											</ButtonLikeAnchor>}
 										</td>
 										{editing && <td>
-											{page.new && <button
+											{page.new && <ButtonLikeAnchor
 												onClick={() => {
 													dispatch(setTobiraPage({
 														...currentPage,
@@ -314,18 +315,17 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 													select(undefined);
 												}}
 												title={t('EVENTS.SERIES.NEW.TOBIRA.CANCEL')}
-												className="button-like-anchor remove"
+												extraClassName="remove"
 											/>}
 										</td>}
 									</tr>)}
 									{!editing && <tr>
 										<td colSpan={4}>
-											<button
-												className={"button-like-anchor"}
+											<ButtonLikeAnchor
 												onClick={() => addChild()}
 											>
 												+ {t('EVENTS.SERIES.NEW.TOBIRA.ADD_SUBPAGE')}
-											</button>
+											</ButtonLikeAnchor>
 										</td>
 									</tr>}
 								</tbody>

@@ -23,6 +23,7 @@ import { UserInfoState } from "../slices/userInfoSlice";
 import { Tooltip } from "./shared/Tooltip";
 import { HiTranslate } from "react-icons/hi";
 import { IconContext } from "react-icons";
+import ButtonLikeAnchor from "./shared/ButtonLikeAnchor";
 
 // References for detecting a click outside of the container of the dropdown menus
 const containerLang = React.createRef<HTMLDivElement>();
@@ -295,12 +296,12 @@ const MenuLang = () => {
 			{/* one list item for each available language */}
 			{languages.map((language, key) => (
 				<li key={key}>
-					<button
-						className={"button-like-anchor" + (i18n.language === language.code ? " selected" : "")}
+					<ButtonLikeAnchor
+						extraClassName={(i18n.language === language.code ? "selected" : "")}
 						onClick={() => changeLanguage(language.code)}
 					>
 						{language.long}
-					</button>
+					</ButtonLikeAnchor>
 				</li>
 			))}
 		</ul>
@@ -403,16 +404,16 @@ const MenuHelp = ({
 						</li>
 					)}
 				<li>
-					<button className="button-like-anchor" onClick={() => showHotKeys()}>
+					<ButtonLikeAnchor onClick={() => showHotKeys()}>
 						<span>{t("HELP.HOTKEY_CHEAT_SHEET")}</span>
-					</button>
+					</ButtonLikeAnchor>
 				</li>
 				{/* Adoter registration Modal */}
 				{user.isAdmin && (
 					<li>
-						<button className="button-like-anchor" onClick={() => showAdoptersRegistrationModal()}>
+						<ButtonLikeAnchor onClick={() => showAdoptersRegistrationModal()}>
 							<span>{t("HELP.ADOPTER_REGISTRATION")}</span>
-						</button>
+						</ButtonLikeAnchor>
 					</li>
 				)}
 			</ul>
@@ -425,9 +426,9 @@ const MenuUser = () => {
 	return (
 		<ul className="dropdown-ul">
 			<li>
-				<button className="button-like-anchor" onClick={() => logout()}>
+				<ButtonLikeAnchor onClick={() => logout()}>
 					<span className="logout-icon">{t("LOGOUT")}</span>
-				</button>
+				</ButtonLikeAnchor>
 			</li>
 		</ul>
 	);

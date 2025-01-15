@@ -15,6 +15,7 @@ import {
 } from "../../utils/adopterRegistrationUtils";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
+import ButtonLikeAnchor from "./ButtonLikeAnchor";
 
 /**
  * This component renders the adopter registration modal. This modal has various states.
@@ -134,9 +135,9 @@ const RegistrationModal = ({
 				className="modal active modal-open modal-animation"
 			>
 				<header>
-					<button
+					<ButtonLikeAnchor
 						onClick={() => handleClose()}
-						className="button-like-anchor fa fa-times close-modal"
+						extraClassName="fa fa-times close-modal"
 					/>
 					<h2>{t("ADOPTER_REGISTRATION.MODAL.CAPTION")}</h2>
 				</header>

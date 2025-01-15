@@ -9,7 +9,7 @@ import { getUsernames } from "../../../../selectors/userSelectors";
 import { NewUserSchema } from "../../../../utils/validate";
 import { NewUser, postNewUser } from "../../../../slices/userSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { Tooltip } from "../../../shared/Tooltip";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 
 /**
  * This component renders the new user wizard
@@ -46,20 +46,19 @@ const NewUserWizard = ({
 		<>
 			{/*Head navigation*/}
 			<nav className="modal-nav" id="modal-nav" style={navStyle}>
-				<button
-					className={"button-like-anchor " + cn("wider", { active: tab === 0 })}
+				<ButtonLikeAnchor
+					extraClassName={cn("wider", { active: tab === 0 })}
 					onClick={() => openTab(0)}
 				>
 					{t("USERS.USERS.DETAILS.TABS.USER")}
-				</button>
-				<Tooltip title={t("USERS.USERS.DETAILS.DESCRIPTION.ROLES")}>
-					<button
-						className={"button-like-anchor " + cn("wider", { active: tab === 1 })}
-						onClick={() => openTab(1)}
-					>
-						{t("USERS.USERS.DETAILS.TABS.ROLES")}
-					</button>
-				</Tooltip>
+				</ButtonLikeAnchor>
+				<ButtonLikeAnchor
+					extraClassName={cn("wider", { active: tab === 1 })}
+					onClick={() => openTab(1)}
+					tooltipText="USERS.USERS.DETAILS.DESCRIPTION.ROLES"
+				>
+					{t("USERS.USERS.DETAILS.TABS.ROLES")}
+				</ButtonLikeAnchor>
 			</nav>
 
 			{/* Initialize overall form */}

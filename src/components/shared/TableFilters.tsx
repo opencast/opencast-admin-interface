@@ -27,9 +27,9 @@ import moment from "moment";
 import { AppThunk, useAppDispatch, useAppSelector } from "../../store";
 import { renderValidDate } from "../../utils/dateUtils";
 import { getCurrentLanguageInformation } from "../../utils/utils";
-import { Tooltip } from "./Tooltip";
 import DropDown from "./DropDown";
 import { AsyncThunk } from "@reduxjs/toolkit";
+import ButtonLikeAnchor from "./ButtonLikeAnchor";
 
 /**
  * This component renders the table filters in the upper right corner of the table
@@ -220,11 +220,12 @@ const TableFilters = ({
 				{!!filterMap && (
 					<div className="table-filter">
 						<div className="filters">
-							<Tooltip title={t("TABLE_FILTERS.ADD")}>
-								<button className="button-like-anchor" onClick={() => setFilterSelector(!showFilterSelector)}>
-									<i className="fa fa-filter" />
-								</button>
-							</Tooltip>
+							<ButtonLikeAnchor
+								onClick={() => setFilterSelector(!showFilterSelector)}
+								tooltipText="TABLE_FILTERS.ADD"
+							>
+								<i className="fa fa-filter" />
+							</ButtonLikeAnchor>
 
 							{/*show if icon is clicked*/}
 							{showFilterSelector && (
@@ -303,31 +304,31 @@ const TableFilters = ({
 											)
 										}
 										{/* Remove icon in blue area around filter */}
-										<Tooltip title={t("TABLE_FILTERS.REMOVE")}>
-											<button
-												onClick={() => removeFilter(filter)}
-												className="button-like-anchor"
-											>
-												<i className="fa fa-times" />
-											</button>
-										</Tooltip>
+										<ButtonLikeAnchor
+											onClick={() => removeFilter(filter)}
+											tooltipText="TABLE_FILTERS.REMOVE"
+										>
+											<i className="fa fa-times" />
+										</ButtonLikeAnchor>
 									</span>
 								);
 							})}
 						</div>
 
 						{/* Remove icon to clear all filters */}
-						<Tooltip title={t("TABLE_FILTERS.CLEAR")}>
-							<button className="button-like-anchor" onClick={removeFilters}>
-								<i className="clear fa fa-times" />
-							</button>
-						</Tooltip>
+						<ButtonLikeAnchor
+							onClick={removeFilters}
+							tooltipText="TABLE_FILTERS.CLEAR"
+						>
+							<i className="clear fa fa-times" />
+						</ButtonLikeAnchor>
 						{/* Settings icon to open filters profile dialog (save and editing filter profiles)*/}
-						<Tooltip title={t("TABLE_FILTERS.PROFILES.FILTERS_HEADER")}>
-							<button className="button-like-anchor" onClick={() => setFilterSettings(!showFilterSettings)}>
-								<i className="settings fa fa-cog fa-times" />
-							</button>
-						</Tooltip>
+						<ButtonLikeAnchor
+							onClick={() => setFilterSettings(!showFilterSettings)}
+							tooltipText="TABLE_FILTERS.PROFILES.FILTERS_HEADER"
+						>
+							<i className="settings fa fa-cog fa-times" />
+						</ButtonLikeAnchor>
 
 						{/* Filter profile dialog for saving and editing filter profiles */}
 						<TableFilterProfiles

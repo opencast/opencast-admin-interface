@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { useHotkeys, useHotkeysContext } from "react-hotkeys-hook";
 import { Hotkey } from "react-hotkeys-hook/dist/types";
+import ButtonLikeAnchor from "./ButtonLikeAnchor";
 
 /**
  * This component renders the hotkey cheat sheet showing all available hotkeys
@@ -44,8 +45,8 @@ const HotKeyCheatSheet: React.FC<{
 			<div className="modal-animation modal-overlay" />
 			<div className="modal modal-animation">
 				<header>
-					<button
-						className="button-like-anchor fa fa-times close-modal"
+					<ButtonLikeAnchor
+						extraClassName="fa fa-times close-modal"
 						onClick={() => handleClose()}
 					/>
 					<h2>{t("HOTKEYS.CHEAT_SHEET.TITLE")}</h2>

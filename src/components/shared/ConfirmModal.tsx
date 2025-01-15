@@ -2,6 +2,7 @@ import React from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useTranslation } from "react-i18next";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
+import ButtonLikeAnchor from "./ButtonLikeAnchor";
 
 const ConfirmModal = <T,>({
 	close,
@@ -51,8 +52,8 @@ const ConfirmModal = <T,>({
 				style={{ fontSize: "14px" }}
 			>
 				<header>
-					<button
-						className="button-like-anchor fa fa-times close-modal"
+					<ButtonLikeAnchor
+						extraClassName="fa fa-times close-modal"
 						onClick={() => handleClose()}
 					/>
 					<h2>{t("CONFIRMATIONS.ACTIONS.CONFIRMATION")}</h2>

@@ -14,6 +14,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 import { useAppDispatch } from "../../../../store";
 import { Event } from "../../../../slices/eventSlice";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 
 /**
  * This component manages the pages of the task start bulk action
@@ -94,7 +95,7 @@ const StartTaskModal = ({
 			<div className="modal-animation modal-overlay" />
 			<section className="modal wizard modal-animation">
 				<header>
-					<button className="button-like-anchor fa fa-times close-modal" onClick={() => close()} />
+					<ButtonLikeAnchor extraClassName="fa fa-times close-modal" onClick={() => close()} />
 					<h2>{t("BULK_ACTIONS.SCHEDULE_TASK.CAPTION")}</h2>
 				</header>
 

@@ -24,6 +24,7 @@ import { fetchRecordings } from "../../../../slices/recordingSlice";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 import { Event } from "../../../../slices/eventSlice";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 
 /**
  * This component manages the pages of the edit scheduled bulk action
@@ -128,7 +129,7 @@ const EditScheduledEventsModal = ({
 			<div className="modal-animation modal-overlay" />
 			<section className="modal wizard modal-animation">
 				<header>
-					<button className="button-like-anchor fa fa-times close-modal" onClick={() => close()} />
+					<ButtonLikeAnchor className="fa fa-times close-modal" onClick={() => close()} />
 					<h2>{t("BULK_ACTIONS.EDIT_EVENTS.CAPTION")}</h2>
 				</header>
 

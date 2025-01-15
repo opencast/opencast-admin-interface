@@ -7,6 +7,7 @@ import { deleteMultipleEvent } from "../../../../slices/eventSlice";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 import { isEvent } from "../../../../slices/tableSlice";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 
 /**
  * This component manages the delete bulk action
@@ -82,7 +83,7 @@ const DeleteEventsModal = ({
 				style={{ display: "block" }}
 			>
 				<header>
-					<button onClick={close} className="button-like-anchor fa fa-times close-modal" />
+					<ButtonLikeAnchor onClick={close} extraClassName="fa fa-times close-modal" />
 					<h2>{t("BULK_ACTIONS.DELETE.EVENTS.CAPTION")}</h2>
 				</header>
 

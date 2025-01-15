@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Event } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import ButtonLikeAnchor from "../../shared/ButtonLikeAnchor";
 
 // References for detecting a click outside of the container of the popup listing publications of an event
 const containerPublications = React.createRef<HTMLDivElement>();
@@ -48,17 +49,17 @@ const PublishCell = ({
 			{onlyEngage && (
 				<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PLAYER")}>
 					<a href={row.publications[0].url} rel='noreferrer' target="_blank">
-						<button className="button-like-anchor">
+						<ButtonLikeAnchor>
 							{t("YES")}
-						</button>
+						</ButtonLikeAnchor>
 					</a>
 				</Tooltip>
 			)}
 			{!onlyEngage && row.publications.length > 0 && (
 				<>
-					<button className="button-like-anchor popover-wrapper__trigger">
+					<ButtonLikeAnchor extraClassName="popover-wrapper__trigger">
 						<span onClick={() => setShowPopup(!showPopup)}>{t("YES")}</span>
-					</button>
+					</ButtonLikeAnchor>
 					{showPopup && (
 						<div className="js-popover popover" ref={containerPublications}>
 							<div className="popover__header" />
@@ -78,9 +79,9 @@ const PublishCell = ({
 												<span>{t(publication.name)}</span>
 											</a>
 										) : (
-											<button key={key} className="button-like-anchor popover__list-item">
+											<ButtonLikeAnchor key={key} extraClassName="popover__list-item">
 												<span>{t(publication.name)}</span>
-											</button>
+											</ButtonLikeAnchor>
 										)
 									) : null
 								)}

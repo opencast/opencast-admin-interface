@@ -26,6 +26,7 @@ import { useTranslation } from "react-i18next";
 import { TransformedAcl } from "../../../slices/aclDetailsSlice";
 import { AsyncThunk, unwrapResult } from "@reduxjs/toolkit";
 import { SaveEditFooter } from "../SaveEditFooter";
+import ButtonLikeAnchor from "../ButtonLikeAnchor";
 
 
 /**
@@ -554,11 +555,11 @@ const ResourceDetailsAccessPolicyTab = ({
 																							) && (
 																								<td>
 																									{!transactions.read_only && (
-																										<button
+																										<ButtonLikeAnchor
 																											onClick={() =>
 																												remove(index)
 																											}
-																											className="button-like-anchor remove"
+																											extraClassName="remove"
 																										/>
 																									)}
 																								</td>
@@ -572,17 +573,16 @@ const ResourceDetailsAccessPolicyTab = ({
 																				hasAccess(editAccessRole, user) && (
 																					<tr>
 																						<td colSpan={5}>
-																							<button
+																							<ButtonLikeAnchor
 																								onClick={() =>
 																									push(createPolicy(""))
 																								}
-                                                className="button-like-anchor"
 																							>
 																								+{" "}
 																								{t(
 																									"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW"
 																								)}
-																							</button>
+																							</ButtonLikeAnchor>
 																						</td>
 																					</tr>
 																				)}

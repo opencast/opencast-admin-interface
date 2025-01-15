@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { getSourceURL } from "../../../../utils/embeddedCodeUtils";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 
 /**
  * This component renders the embedding code modal
@@ -95,8 +96,8 @@ const EmbeddingCodeModal = ({
 			<div className="modal-animation modal-overlay" />
 			<section className="modal modal-animation" id="embedding-code">
 				<header>
-					<button
-						className="button-like-anchor fa fa-times close-modal"
+					<ButtonLikeAnchor
+						extraClassName="fa fa-times close-modal"
 						onClick={() => handleClose()}
 					/>
 					<h2>{t("CONFIRMATIONS.ACTIONS.SHOW.EMBEDDING_CODE")}</h2>
@@ -104,41 +105,41 @@ const EmbeddingCodeModal = ({
 
 				{/* embed size buttons */}
 				<div className="embedded-code-boxes">
-					<button
+					<ButtonLikeAnchor
 						id="620x349"
-						className="embedSizeButton size_620x349 button-like-anchor"
+						extraClassName="embedSizeButton size_620x349"
 						onClick={(e) => updateTextArea(e)}
 					>
 						<span className="span-embedded-code">620x349</span>
-					</button>
-					<button
+					</ButtonLikeAnchor>
+					<ButtonLikeAnchor
 						id="540x304"
-						className="embedSizeButton size_540x304 button-like-anchor"
+						extraClassName="embedSizeButton size_540x304"
 						onClick={(e) => updateTextArea(e)}
 					>
 						<span className="span-embedded-code">540x304</span>
-					</button>
-					<button
+					</ButtonLikeAnchor>
+					<ButtonLikeAnchor
 						id="460x259"
-						className="embedSizeButton size_460x259 button-like-anchor"
+						extraClassName="embedSizeButton size_460x259"
 						onClick={(e) => updateTextArea(e)}
 					>
 						<span className="span-embedded-code">460x259</span>
-					</button>
-					<button
+					</ButtonLikeAnchor>
+					<ButtonLikeAnchor
 						id="380x214"
-						className="embedSizeButton size_380x214 button-like-anchor"
+						extraClassName="embedSizeButton size_380x214"
 						onClick={(e) => updateTextArea(e)}
 					>
 						<span className="span-embedded-code">380x214</span>
-					</button>
-					<button
+					</ButtonLikeAnchor>
+					<ButtonLikeAnchor
 						id="300x169"
-						className="embedSizeButton size_300x169 button-like-anchor"
+						extraClassName="embedSizeButton size_300x169"
 						onClick={(e) => updateTextArea(e)}
 					>
 						<span className="span-embedded-code">300x169</span>
-					</button>
+					</ButtonLikeAnchor>
 				</div>
 
 				<span id="id_video" className="embedded-code-no-visible">

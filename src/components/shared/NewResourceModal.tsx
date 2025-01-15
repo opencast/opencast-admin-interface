@@ -8,6 +8,7 @@ import NewGroupWizard from "../users/partials/wizard/NewGroupWizard";
 import NewUserWizard from "../users/partials/wizard/NewUserWizard";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
+import ButtonLikeAnchor from "./ButtonLikeAnchor";
 
 /**
  * This component renders the modal for adding new resources
@@ -42,8 +43,8 @@ const NewResourceModal = ({
 				id="add-event-modal"
 			>
 				<header>
-					<button
-						className="button-like-anchor fa fa-times close-modal"
+					<ButtonLikeAnchor
+						extraClassName="fa fa-times close-modal"
 						onClick={() => close()}
 					/>
 					{resource === "events" && <h2>{t("EVENTS.EVENTS.NEW.CAPTION")}</h2>}

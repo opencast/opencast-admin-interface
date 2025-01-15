@@ -43,6 +43,7 @@ import { Recording, fetchRecordings } from "../../../../slices/recordingSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { parseISO } from "date-fns";
 import { checkConflicts, UploadAssetsTrack } from "../../../../slices/eventSlice";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 
 /**
  * This component renders the source page for new events in the new event wizard.
@@ -328,9 +329,9 @@ const Upload = <T extends RequiredFormPropsUpload>({
 												</div>
 											</td>
 											<td className="fit">
-												<button
+												<ButtonLikeAnchor
 													style={{ visibility: asset.file ? "visible" : "hidden" }}
-													className="button-like-anchor remove"
+													extraClassName="remove"
 													onClick={(e) => {
 														formik.setFieldValue(
 															`uploadAssetsTrack.${key}.file`,

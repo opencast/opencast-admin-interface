@@ -11,6 +11,7 @@ import {
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 import { isSeries } from "../../../../slices/tableSlice";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 
 /**
  * This component manges the delete series bulk action
@@ -132,7 +133,7 @@ const DeleteSeriesModal = ({
 				style={{ display: "block" }}
 			>
 				<header>
-					<button onClick={() => close()} className="button-like-anchor fa fa-times close-modal" />
+					<ButtonLikeAnchor onClick={() => close()} extraClassName="fa fa-times close-modal" />
 					<h2>{t("BULK_ACTIONS.DELETE.SERIES.CAPTION")}</h2>
 				</header>
 

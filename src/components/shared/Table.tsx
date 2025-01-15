@@ -35,6 +35,7 @@ import sortDownIcon from "../../img/tbl-sort-down.png";
 import Notifications from "./Notifications";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { TableColumn } from "../../configs/tableConfigs/aclsTableConfig";
+import ButtonLikeAnchor from "./ButtonLikeAnchor";
 
 const SortIcon = styled.i`
 	float: right;
@@ -178,12 +179,11 @@ const Table = ({
 			<div className="action-bar">
 				<ul>
 					<li>
-						<button
-              onClick={() => showEditTableViewModal()}
-              className="button-like-anchor"
-            >
-                {t("TABLE_EDIT")}
-            </button>
+						<ButtonLikeAnchor
+							onClick={() => showEditTableViewModal()}
+						>
+								{t("TABLE_EDIT")}
+						</ButtonLikeAnchor>
 					</li>
 				</ul>
 			</div>
@@ -313,12 +313,11 @@ const Table = ({
 						<ul className="dropdown-ul">
 							{sizeOptions.map((size, key) => (
 								<li key={key}>
-									<button
-                    onClick={() => changePageSize(size)}
-                    className="button-like-anchor"
-                  >
-                    {size}
-                  </button>
+									<ButtonLikeAnchor
+										onClick={() => changePageSize(size)}
+									>
+										{size}
+									</ButtonLikeAnchor>
 								</li>
 							))}
 						</ul>
@@ -327,30 +326,30 @@ const Table = ({
 
 				{/* Pagination and navigation trough pages */}
 				<div className="pagination">
-					<button
-						className={"button-like-anchor " + cn("prev", { disabled: !isNavigatePrevious() })}
+					<ButtonLikeAnchor
+						extraClassName={cn("prev", { disabled: !isNavigatePrevious() })}
 						onClick={() => dispatch(goToPage(pageOffset - 1))}
 					>
 						<span className="sr-only">{t("TABLE_PREVIOUS")}</span>
-					</button>
+					</ButtonLikeAnchor>
 					{directAccessible.map((page, key) =>
 						page.active ? (
-							<button key={key} className="button-like-anchor active">
+							<ButtonLikeAnchor key={key} extraClassName="active">
 								{page.label}
-							</button>
+							</ButtonLikeAnchor>
 						) : (
-							<button key={key} className="button-like-anchor" onClick={() => dispatch(goToPage(page.number))}>
+							<ButtonLikeAnchor key={key} onClick={() => dispatch(goToPage(page.number))}>
 								{page.label}
-							</button>
+							</ButtonLikeAnchor>
 						)
 					)}
 
-					<button
-						className={"button-like-anchor " + cn("next", { disabled: !isNavigateNext() })}
+					<ButtonLikeAnchor
+						extraClassName={cn("next", { disabled: !isNavigateNext() })}
 						onClick={() => dispatch(goToPage(pageOffset + 1))}
 					>
 						<span className="sr-only">{t("TABLE_NEXT")}</span>
-					</button>
+					</ButtonLikeAnchor>
 				</div>
 			</div>
 		</>

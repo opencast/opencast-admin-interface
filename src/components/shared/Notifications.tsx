@@ -12,6 +12,7 @@ import {
 } from "../../configs/modalConfig";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { OurNotification, setHidden } from "../../slices/notificationSlice";
+import ButtonLikeAnchor from "./ButtonLikeAnchor";
 
 /**
  * This component renders notifications about occurred errors, warnings and info
@@ -30,9 +31,9 @@ const Notifications : React.FC<{ context?: string }> = ({ context }) => {
 	const renderNotification = (notification: OurNotification, key: number) => (
 		<li key={key}>
 			<div className={cn(notification.type, "alert sticky")}>
-				<button
+				<ButtonLikeAnchor
 					onClick={() => closeNotification(notification.id)}
-					className="button-like-anchor fa fa-times close"
+					extraClassName="fa fa-times close"
 				/>
 				<p>{t(notification.message, notification.parameter)}</p>
 			</div>

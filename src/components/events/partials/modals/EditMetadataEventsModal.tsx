@@ -20,6 +20,7 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 import { isEvent } from "../../../../slices/tableSlice";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 
 /**
  * This component manges the edit metadata bulk action
@@ -151,7 +152,7 @@ const EditMetadataEventsModal = ({
 			<div className="modal-animation modal-overlay" />
 			<section className="modal wizard modal-animation">
 				<header>
-					<button className="button-like-anchor fa fa-times close-modal" onClick={() => close()} />
+					<ButtonLikeAnchor extraClassName="fa fa-times close-modal" onClick={() => close()} />
 					<h2>{t("BULK_ACTIONS.EDIT_EVENTS_METADATA.CAPTION")}</h2>
 				</header>
 
