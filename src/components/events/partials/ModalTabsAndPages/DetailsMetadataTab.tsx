@@ -14,7 +14,6 @@ import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils"
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
 import { AsyncThunk } from "@reduxjs/toolkit";
-import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 
 /**
  * This component renders metadata details of a certain event or series
@@ -27,7 +26,7 @@ const DetailsMetadataTab = ({
 	editAccessRole,
 }: {
 	metadataFields: MetadataCatalog,
-	updateResource: AsyncThunk<void, { id: string; values: { [key: string]: any; }; }, AsyncThunkConfig>
+	updateResource: AsyncThunk<void, { id: string; values: { [key: string]: any; }; }, any>
 	resourceId: string,
 	header: string,
 	editAccessRole: string,
