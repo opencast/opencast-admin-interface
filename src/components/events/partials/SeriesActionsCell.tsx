@@ -1,15 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import SeriesDetailsModal from "./modals/SeriesDetailsModal";
-import {
-	fetchSeriesDetailsThemeNames,
-	fetchSeriesDetailsAcls,
-	fetchSeriesDetailsFeeds,
-	fetchSeriesDetailsMetadata,
-	fetchSeriesDetailsTheme,
-	fetchSeriesDetailsTobira,
-} from "../../../slices/seriesDetailsSlice";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import {
@@ -25,6 +16,7 @@ import {
 
 import { Tooltip } from "../../shared/Tooltip";
 import { SeriesDetailsAction } from "./SeriesDetailsAction";
+import { ShowSeriesDetailsModal } from "./modals/ShowSeriesDetailsModal";
 
 /**
  * This component renders the action cells of series in the table view
@@ -63,13 +55,6 @@ const SeriesActionsCell = ({
 	};
 
 	const showSeriesDetailsModal = async () => {
-		await dispatch(fetchSeriesDetailsMetadata(row.id));
-		await dispatch(fetchSeriesDetailsAcls(row.id));
-		await dispatch(fetchSeriesDetailsFeeds(row.id));
-		await dispatch(fetchSeriesDetailsTheme(row.id));
-		await dispatch(fetchSeriesDetailsThemeNames());
-		await dispatch(fetchSeriesDetailsTobira(row.id));
-
 		setSeriesDetailsModal(true);
 	};
 
@@ -79,7 +64,7 @@ const SeriesActionsCell = ({
 			<SeriesDetailsAction onClick={showSeriesDetailsModal} />
 
 			{displaySeriesDetailsModal && (
-				<SeriesDetailsModal
+				<ShowSeriesDetailsModal
 					handleClose={hideSeriesDetailsModal}
 					seriesId={row.id}
 					seriesTitle={row.title}

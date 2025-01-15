@@ -4,20 +4,13 @@ import ConfirmModal from "../../shared/ConfirmModal";
 import EmbeddingCodeModal from "./modals/EmbeddingCodeModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
-import SeriesDetailsModal from "./modals/SeriesDetailsModal";
 import { EventDetailsPage } from "./modals/EventDetails";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import {
-	fetchSeriesDetailsAcls,
-	fetchSeriesDetailsFeeds,
-	fetchSeriesDetailsMetadata,
-	fetchSeriesDetailsTheme,
-	fetchSeriesDetailsThemeNames,
-} from "../../../slices/seriesDetailsSlice";
 import { Event, deleteEvent } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
 import { openModal } from "../../../slices/eventDetailsSlice";
 import { SeriesDetailsAction } from "./SeriesDetailsAction";
+import { ShowSeriesDetailsModal } from "./modals/ShowSeriesDetailsModal";
 
 /**
  * This component renders the action cells of events in the table view
@@ -60,18 +53,6 @@ const EventActionCell = ({
 		setSeriesDetailsModal(false);
 	};
 
-	const onClickSeriesDetails = async () => {
-		if (!!row.series) {
-			await dispatch(fetchSeriesDetailsMetadata(row.series.id));
-			await dispatch(fetchSeriesDetailsAcls(row.series.id));
-			await dispatch(fetchSeriesDetailsFeeds(row.series.id));
-			await dispatch(fetchSeriesDetailsTheme(row.series.id));
-			await dispatch(fetchSeriesDetailsThemeNames());
-
-			showSeriesDetailsModal();
-		}
-	};
-
 	const onClickEventDetails = () => {
 		dispatch(openModal(EventDetailsPage.Metadata, row));
 	};
@@ -91,7 +72,7 @@ const EventActionCell = ({
 	return (
 		<>
 			{!!row.series && displaySeriesDetailsModal && (
-				<SeriesDetailsModal
+				<ShowSeriesDetailsModal
 					handleClose={hideSeriesDetailsModal}
 					seriesId={row.series.id}
 					seriesTitle={row.series.title}
@@ -109,7 +90,7 @@ const EventActionCell = ({
 			)}
 
 			{/* If event belongs to a series then the corresponding series details can be opened */}
-			{!!row.series && <SeriesDetailsAction onClick={onClickSeriesDetails} />}
+			{!!row.series && <SeriesDetailsAction onClick={showSeriesDetailsModal} />}
 
 			{/* Delete an event */}
 			{/*TODO: needs to be checked if event is published */}
