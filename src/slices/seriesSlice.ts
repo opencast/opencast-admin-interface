@@ -5,6 +5,7 @@ import {
 	getURLParams,
 	prepareAccessPolicyRulesForPost,
 	prepareSeriesExtendedMetadataFieldsForPost,
+	prepareSeriesMetadataFieldsForPost,
 	transformMetadataCollection,
 } from "../utils/resourceUtils";
 import {
@@ -191,10 +192,10 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 	const { values, metadataInfo, extendedMetadata } = params
 
 	// prepare metadata provided by user
-	let metadataFields = prepareSeriesExtendedMetadataFieldsForPost(
-		[metadataInfo],
+	let metadataFields = prepareSeriesMetadataFieldsForPost(
+		metadataInfo.fields,
 		values
-	)[0].fields;
+	);
 	let extendedMetadataFields = prepareSeriesExtendedMetadataFieldsForPost(
 		extendedMetadata,
 		values
