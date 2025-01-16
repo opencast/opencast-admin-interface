@@ -58,7 +58,7 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 			blocks: [],
 		};
 
-		return [homepage, ...currentPage.ancestors, currentPage];
+		return [homepage, ...currentPage.ancestors];
 	}
 
 	const copyTobiraDirectLink = () => {
@@ -105,12 +105,15 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 	const openSubTab = async (tabType: TobiraTabHierarchy, currentPage?: TobiraPage) => {
 		if (!!currentPage) {
 			const breadcrumbs = getBreadcrumbs(currentPage);
+			// Breadcrumbs always include at least the homepage, so the length is at least 1.
+			const hostPage = breadcrumbs[breadcrumbs.length - 1];
+
 			setInitialValues({
 				...initialValues,
 				currentPath: currentPage.path,
 				breadcrumbs,
 			});
-			await dispatch(fetchSeriesDetailsTobiraNew(currentPage.path));
+			await dispatch(fetchSeriesDetailsTobiraNew(hostPage.path));
 		} else {
 			await dispatch(fetchSeriesDetailsTobiraNew("/"));
 		}

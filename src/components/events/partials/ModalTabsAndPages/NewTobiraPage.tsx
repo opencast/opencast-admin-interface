@@ -253,8 +253,17 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 											<td>
 												<input
 													type="checkbox"
-													checked={isValid && formik.values.selectedPage?.path
-														=== currentPage.children[key].path
+													checked={
+														// This will either highlight the selected page
+														// (first condition),
+														// or the page the series is currently mounted in,
+														// if no other page is selected (second condition).
+														(isValid && formik.values.selectedPage?.path
+															=== currentPage.children[key].path
+														)
+														|| (page.path === formik.values.currentPath
+															&& !formik.values.selectedPage
+														)
 													}
 													disabled={!!page.blocks?.length}
 													onChange={() => page.blocks?.length || select(page)}
