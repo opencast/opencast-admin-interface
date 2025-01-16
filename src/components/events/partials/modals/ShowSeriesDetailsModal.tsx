@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import SeriesDetailsModal from "./SeriesDetailsModal";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchSeriesDetailsMetadata, fetchSeriesDetailsAcls, fetchSeriesDetailsFeeds, fetchSeriesDetailsTheme, fetchSeriesDetailsThemeNames, fetchSeriesDetailsTobira } from "../../../../slices/seriesDetailsSlice";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 import { getSeriesDetailsMetadata } from "../../../../selectors/seriesDetailsSelectors";
 
 export const ShowSeriesDetailsModal = () => {

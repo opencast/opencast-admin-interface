@@ -3,7 +3,7 @@ import { t } from "i18next";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { useAppSelector } from "../../../store";
 import { hasAccess } from "../../../utils/utils";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 
 export const SeriesDetailsAction = ({ id }: {
 	id: string,

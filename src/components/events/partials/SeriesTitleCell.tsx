@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { setSpecificEventFilter } from "../../../slices/tableFilterSlice";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useAppDispatch } from "../../../store";
 import { Tooltip } from "../../shared/Tooltip";
 import { Series } from "../../../slices/seriesSlice";
