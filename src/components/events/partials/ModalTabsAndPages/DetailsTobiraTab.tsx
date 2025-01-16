@@ -3,7 +3,7 @@ import Notifications from "../../../shared/Notifications";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { getSeriesDetailsTobiraData, getSeriesDetailsTobiraDataError, getTobiraTabHierarchy } from "../../../../selectors/seriesDetailsSelectors";
 import { addNotification } from "../../../../slices/notificationSlice";
-import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
+import { NOTIFICATION_CONTEXT, NOTIFICATION_CONTEXT_TOBIRA } from "../../../../configs/modalConfig";
 import { getEventDetailsTobiraData, getEventDetailsTobiraDataError } from "../../../../selectors/eventDetailsSelectors";
 import { Formik } from "formik";
 import { useRef, useState } from "react";
@@ -68,7 +68,7 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 				key: "TOBIRA_COPIED_DIRECT_LINK",
 				duration: 3000,
 				parameter: undefined,
-				context: NOTIFICATION_CONTEXT
+				context: NOTIFICATION_CONTEXT_TOBIRA,
 			}));
 		}, function () {
 			dispatch(addNotification({
@@ -76,7 +76,7 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 				key: "TOBIRA_FAILED_COPYING_DIRECT_LINK",
 				duration: 3000,
 				parameter: undefined,
-				context: NOTIFICATION_CONTEXT
+				context: NOTIFICATION_CONTEXT_TOBIRA,
 			}));
 		});
 	}
