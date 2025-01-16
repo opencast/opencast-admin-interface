@@ -50,6 +50,7 @@ import {
 } from "../../../../slices/notificationSlice";
 import { Recording } from "../../../../slices/recordingSlice";
 import { useTranslation } from "react-i18next";
+import { formatCaptureAgentForDropdown, formatTimeForDropdown } from "../../../../utils/dropDownUtils";
 
 /**
  * This component manages the main assets tab of event details modal
@@ -331,8 +332,7 @@ const EventDetailsSchedulingTab = ({
 																<DropDown
 																	value={formik.values.scheduleStartHour}
 																	text={formik.values.scheduleStartHour}
-																	options={hours}
-																	type={"time"}
+																	options={formatTimeForDropdown(hours)}
 																	required={true}
 																	handleChange={(element) => {
 																		if (element) {
@@ -351,6 +351,7 @@ const EventDetailsSchedulingTab = ({
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
+																	customCSS={{width: 70}}
 																/>
 
 																{/* drop-down for minute
@@ -360,8 +361,7 @@ const EventDetailsSchedulingTab = ({
 																<DropDown
 																	value={formik.values.scheduleStartMinute}
 																	text={formik.values.scheduleStartMinute}
-																	options={minutes}
-																	type={"time"}
+																	options={formatTimeForDropdown(minutes)}
 																	required={true}
 																	handleChange={(element) => {
 																		if (element) {
@@ -380,6 +380,7 @@ const EventDetailsSchedulingTab = ({
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
+																	customCSS={{width: 70}}
 																/>
 															</td>
 														)}
@@ -407,8 +408,7 @@ const EventDetailsSchedulingTab = ({
 																<DropDown
 																	value={formik.values.scheduleDurationHours}
 																	text={formik.values.scheduleDurationHours}
-																	options={hours}
-																	type={"time"}
+																	options={formatTimeForDropdown(hours)}
 																	required={true}
 																	handleChange={(element) => {
 																		if (element) {
@@ -425,6 +425,7 @@ const EventDetailsSchedulingTab = ({
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
+																	customCSS={{width: 70}}
 																/>
 
 																{/* drop-down for minute
@@ -436,8 +437,7 @@ const EventDetailsSchedulingTab = ({
 																		formik.values.scheduleDurationMinutes
 																	}
 																	text={formik.values.scheduleDurationMinutes}
-																	options={minutes}
-																	type={"time"}
+																	options={formatTimeForDropdown(minutes)}
 																	required={true}
 																	handleChange={(element) => {
 																		if (element) {
@@ -454,6 +454,7 @@ const EventDetailsSchedulingTab = ({
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
+																	customCSS={{width: 70}}
 																/>
 															</td>
 														)}
@@ -481,8 +482,7 @@ const EventDetailsSchedulingTab = ({
 																<DropDown
 																	value={formik.values.scheduleEndHour}
 																	text={formik.values.scheduleEndHour}
-																	options={hours}
-																	type={"time"}
+																	options={formatTimeForDropdown(hours)}
 																	required={true}
 																	handleChange={(element) => {
 																		if (element) {
@@ -501,6 +501,7 @@ const EventDetailsSchedulingTab = ({
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
+																	customCSS={{width: 70}}
 																/>
 
 																{/* drop-down for minute
@@ -510,8 +511,7 @@ const EventDetailsSchedulingTab = ({
 																<DropDown
 																	value={formik.values.scheduleEndMinute}
 																	text={formik.values.scheduleEndMinute}
-																	options={minutes}
-																	type={"time"}
+																	options={formatTimeForDropdown(minutes)}
 																	required={true}
 																	handleChange={(element) => {
 																		if (element) {
@@ -530,6 +530,7 @@ const EventDetailsSchedulingTab = ({
 																	disabled={
 																		!accessAllowed(formik.values.captureAgent)
 																	}
+																	customCSS={{width: 70}}
 																/>
 
 																{/* display end date if on different day to start date */}
@@ -579,11 +580,14 @@ const EventDetailsSchedulingTab = ({
 																<DropDown
 																	value={formik.values.captureAgent}
 																	text={formik.values.captureAgent}
-																	options={filterDevicesForAccess(
-																		user,
-																		captureAgents
-																	).filter((a) => filterCaptureAgents(a))}
-																	type={"captureAgent"}
+																	options={
+																		formatCaptureAgentForDropdown(
+																			filterDevicesForAccess(
+																				user,
+																				captureAgents
+																			).filter((a) => filterCaptureAgents(a))
+																		)
+																	}
 																	required={true}
 																	handleChange={(element) => {
 																		if (element) {

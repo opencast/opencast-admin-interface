@@ -8,6 +8,7 @@ import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchWorkflowDef } from "../../../../slices/workflowSlice";
 import { FormikProps } from "formik";
+import { formatWorkflowsForDropdown } from "../../../../utils/dropDownUtils";
 
 /**
  * This component renders the workflow selection for start task bulk action
@@ -76,8 +77,7 @@ const StartTaskWorkflowPage = <T extends RequiredFormProps>({
 														workflowDef.id === formik.values.workflow
 												)?.title ?? ""
 											}
-											options={workflowDef}
-											type={"workflow"}
+											options={formatWorkflowsForDropdown(workflowDef)}
 											required={true}
 											handleChange={(element) => {
 												if (element) {
@@ -88,6 +88,7 @@ const StartTaskWorkflowPage = <T extends RequiredFormProps>({
 												"EVENTS.EVENTS.DETAILS.PUBLICATIONS.SELECT_WORKFLOW"
 											)}
 											tabIndex={99}
+											customCSS={{width: "100%"}}
 										/>
 									</div>
 								)}

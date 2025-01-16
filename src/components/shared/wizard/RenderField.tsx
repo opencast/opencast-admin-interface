@@ -5,7 +5,7 @@ import cn from "classnames";
 import { useClickOutsideField } from "../../../hooks/wizardHooks";
 import { getMetadataCollectionFieldName } from "../../../utils/resourceUtils";
 import { getCurrentLanguageInformation } from "../../../utils/utils";
-import DropDown, { DropDownType } from "../DropDown";
+import DropDown from "../DropDown";
 import RenderDate from "../RenderDate";
 import { parseISO } from "date-fns";
 import { FieldProps } from "formik";
@@ -246,8 +246,10 @@ const EditableSingleSelect = ({
 			<DropDown
 				value={field.value}
 				text={text}
-				options={metadataField.collection ? metadataField.collection : []}
-				type={metadataField.id as DropDownType}
+				options={metadataField.collection ?
+					metadataField.collection.map(item => ({ label: item.label ?? item.name, value: item.value, order: item.order }))
+					: []
+				}
 				required={metadataField.required}
 				handleChange={(element) => element && setFieldValue(field.name, element.value)}
 				placeholder={`-- ${t("SELECT_NO_OPTION_SELECTED")} --`}

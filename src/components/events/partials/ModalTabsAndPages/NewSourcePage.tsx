@@ -43,6 +43,7 @@ import { Recording, fetchRecordings } from "../../../../slices/recordingSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { parseISO } from "date-fns";
 import { checkConflicts, UploadAssetsTrack } from "../../../../slices/eventSlice";
+import { formatCaptureAgentForDropdown, formatTimeForDropdown } from "../../../../utils/dropDownUtils";
 
 /**
  * This component renders the source page for new events in the new event wizard.
@@ -537,8 +538,7 @@ const Schedule = <T extends {
 								<DropDown
 									value={formik.values.scheduleStartHour}
 									text={formik.values.scheduleStartHour.toString()}
-									options={hours}
-									type={"time"}
+									options={formatTimeForDropdown(hours)}
 									required={true}
 									handleChange={(element) => {
 										if (element) {
@@ -558,6 +558,7 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
+									customCSS={{width: 70}}
 								/>
 
 								{/* drop-down for minute
@@ -567,8 +568,7 @@ const Schedule = <T extends {
 								<DropDown
 									value={formik.values.scheduleStartMinute}
 									text={formik.values.scheduleStartMinute.toString()}
-									options={minutes}
-									type={"time"}
+									options={formatTimeForDropdown(minutes)}
 									required={true}
 									handleChange={(element) => {
 										if (element) {
@@ -588,6 +588,7 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
+									customCSS={{width: 70}}
 								/>
 							</td>
 						</tr>
@@ -604,8 +605,7 @@ const Schedule = <T extends {
 								<DropDown
 									value={formik.values.scheduleDurationHours}
 									text={formik.values.scheduleDurationHours.toString()}
-									options={hours}
-									type={"time"}
+									options={formatTimeForDropdown(hours)}
 									required={true}
 									handleChange={(element) => {
 										if (element) {
@@ -625,6 +625,7 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
+									customCSS={{width: 70}}
 								/>
 
 								{/* drop-down for minute
@@ -634,8 +635,7 @@ const Schedule = <T extends {
 								<DropDown
 									value={formik.values.scheduleDurationMinutes}
 									text={formik.values.scheduleDurationMinutes.toString()}
-									options={minutes}
-									type={"time"}
+									options={formatTimeForDropdown(minutes)}
 									required={true}
 									handleChange={(element) => {
 										if (element) {
@@ -655,6 +655,7 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
+									customCSS={{width: 70}}
 								/>
 							</td>
 						</tr>
@@ -671,8 +672,7 @@ const Schedule = <T extends {
 								<DropDown
 									value={formik.values.scheduleEndHour}
 									text={formik.values.scheduleEndHour.toString()}
-									options={hours}
-									type={"time"}
+									options={formatTimeForDropdown(hours)}
 									required={true}
 									handleChange={(element) => {
 										if (element) {
@@ -692,6 +692,7 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.HOUR")}
+									customCSS={{width: 70}}
 								/>
 
 								{/* drop-down for minute
@@ -701,8 +702,7 @@ const Schedule = <T extends {
 								<DropDown
 									value={formik.values.scheduleEndMinute}
 									text={formik.values.scheduleEndMinute.toString()}
-									options={minutes}
-									type={"time"}
+									options={formatTimeForDropdown(minutes)}
 									required={true}
 									handleChange={(element) => {
 										if (element) {
@@ -722,6 +722,7 @@ const Schedule = <T extends {
 										}
 									}}
 									placeholder={t("EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.MINUTE")}
+									customCSS={{width: 70}}
 								/>
 
 								{/* display end date if on different day to start date, only if this is current source mode */}
@@ -751,8 +752,7 @@ const Schedule = <T extends {
 								<DropDown
 									value={formik.values.location}
 									text={formik.values.location}
-									options={inputDevices}
-									type={"captureAgent"}
+									options={formatCaptureAgentForDropdown(inputDevices)}
 									required={true}
 									handleChange={(element) => {
 										if (element) {

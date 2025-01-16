@@ -22,6 +22,7 @@ import {
 } from "../../../../slices/eventSlice";
 import { Recording } from "../../../../slices/recordingSlice";
 import lodash, { groupBy } from "lodash";
+import { formatCaptureAgentForDropdown, formatTimeForDropdown } from "../../../../utils/dropDownUtils";
 
 /**
  * This component renders the edit page for scheduled events of the corresponding bulk action
@@ -216,8 +217,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																	text={
 																		formik.values.editedEvents.length > 0 ? findSeriesName(seriesOptions, formik.values.editedEvents) : ""
 																	}
-																	options={seriesOptions}
-																	type={"isPartOf"}
+																	options={seriesOptions.map((option) => ({ label: option.name, value: option.value }) )}
 																	required={false}
 																	handleChange={(element) => {
 																		if (element) {
@@ -287,8 +287,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																						groupedEvent
 																							.changedStartTimeHour
 																					}
-																					options={hours}
-																					type={"time"}
+																					options={formatTimeForDropdown(hours)}
 																					required={true}
 																					handleChange={(element) => {
 																						if (element) {
@@ -305,6 +304,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					placeholder={t(
 																						"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
 																					)}
+																					customCSS={{width: 70}}
 																				/>
 
 																				{/* drop-down for minute
@@ -322,8 +322,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																						groupedEvent
 																							.changedStartTimeMinutes
 																					}
-																					options={minutes}
-																					type={"time"}
+																					options={formatTimeForDropdown(minutes)}
 																					required={true}
 																					handleChange={(element) => {
 																						if (element) {
@@ -340,6 +339,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					placeholder={t(
 																						"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
 																					)}
+																					customCSS={{width: 70}}
 																				/>
 																			</td>
 																		</tr>
@@ -365,8 +365,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																						groupedEvent
 																							.changedEndTimeHour
 																					}
-																					options={hours}
-																					type={"time"}
+																					options={formatTimeForDropdown(hours)}
 																					required={true}
 																					handleChange={(element) => {
 																						if (element) {
@@ -383,6 +382,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					placeholder={t(
 																						"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
 																					)}
+																					customCSS={{width: 70}}
 																				/>
 
 																				{/* drop-down for minute
@@ -400,8 +400,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																						groupedEvent
 																							.changedEndTimeMinutes
 																					}
-																					options={minutes}
-																					type={"time"}
+																					options={formatTimeForDropdown(minutes)}
 																					required={true}
 																					handleChange={(element) => {
 																						if (element) {
@@ -418,6 +417,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					placeholder={t(
 																						"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
 																					)}
+																					customCSS={{width: 70}}
 																				/>
 																			</td>
 																		</tr>
@@ -444,8 +444,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																						groupedEvent
 																							.changedLocation
 																					}
-																					options={inputDevices}
-																					type={"captureAgent"}
+																					options={formatCaptureAgentForDropdown(inputDevices)}
 																					required={true}
 																					handleChange={(element) => {
 																						if (element) {

@@ -31,6 +31,7 @@ import { renderValidDate } from "../../../../utils/dateUtils";
 import { Tooltip } from "../../../shared/Tooltip";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import { formatWorkflowsForDropdown } from "../../../../utils/dropDownUtils";
 
 /**
  * This component manages the workflows tab of the event details modal
@@ -350,10 +351,9 @@ const EventDetailsWorkflowTab = ({
 																					options={
 																						!!workflowDefinitions &&
 																						workflowDefinitions.length > 0
-																							? workflowDefinitions /*w.id as w.title for w in workflowDefinitions | orderBy: 'displayOrder':true*/
+																							? formatWorkflowsForDropdown(workflowDefinitions)
 																							: []
 																					}
-																					type={"workflow"}
 																					required={true}
 																					handleChange={(element) => {
 																						if (element) {
@@ -377,6 +377,7 @@ const EventDetailsWorkflowTab = ({
 																						!hasCurrentAgentAccess() ||
 																						!isRoleWorkflowEdit
 																					}
+																					customCSS={{width: "100%"}}
 																				/>
 																				{/*pre-select-from="workflowDefinitionIds"*/}
 																			</div>
