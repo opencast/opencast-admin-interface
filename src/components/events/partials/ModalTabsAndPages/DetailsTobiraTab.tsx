@@ -126,8 +126,8 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 			{tabHierarchy === "edit-path" && <EventDetailsTabHierarchyNavigation
 				openSubTab={openSubTab}
 				hierarchyDepth={0}
-				translationKey0={"EVENTS.SERIES.DETAILS.TOBIRA.SHOW_PAGES"}
-				subTabArgument0={"main"}
+				translationKey0="EVENTS.SERIES.DETAILS.TOBIRA.DISCARD"
+				subTabArgument0="main"
 			/>}
 			{tabHierarchy === "main" && <div className="modal-body">
 				{/* Notifications */}

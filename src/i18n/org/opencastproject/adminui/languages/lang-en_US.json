@@ -1237,7 +1237,7 @@
 					"COPY_DIRECT_LINK": "Copy to clipboard",
 					"NOT_MOUNTED": "This series is currently not included the page structure, and can only be reached using the direct link above.",
 					"PAGES": "Pages in Tobira that contain this series",
-					"SHOW_PAGES": "Show all pages",
+					"DISCARD": "Discard",
 					"EDIT_PATH" : "Edit path",
 					"REMOVE_PATH" : "Remove path",
 					"MOUNT_SERIES": "Mount series",
