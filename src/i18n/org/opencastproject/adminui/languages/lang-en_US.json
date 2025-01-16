@@ -1142,6 +1142,7 @@
 					"DESCRIPTION": "Here you can select where you want the series to show up in the Tobira video portal. You can only select one location here, and it needs to be empty (marked in bold). You can create new pages here, but note that they are only persisted if they are on the path to the selected page.",
 					"SELECT_PAGE": "Select a target page",
 					"PAGE_TITLE": "Subpage title",
+					"TITLE_OF_SERIES": "(Title of series)",
 					"PATH_SEGMENT": "Path segment",
 					"SUBPAGES": "Subpages",
 					"ADD_SUBPAGE": "Add subpage",
