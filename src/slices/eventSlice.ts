@@ -6,7 +6,6 @@ import {
 	getURLParams,
 	prepareAccessPolicyRulesForPost,
 	prepareExtendedMetadataFieldsForPost,
-	prepareMetadataFieldsForPost,
 	transformMetadataCollection,
 	transformMetadataFields,
 } from "../utils/resourceUtils";
@@ -462,7 +461,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	} | undefined = undefined;
 
 	// prepare metadata provided by user
-	let metadataFields = prepareMetadataFieldsForPost(metadataInfo.fields, values);
+	let metadataFields = prepareExtendedMetadataFieldsForPost([metadataInfo], values)[0].fields;
 	let extendedMetadataFields = prepareExtendedMetadataFieldsForPost(
 		extendedMetadata,
 		values
