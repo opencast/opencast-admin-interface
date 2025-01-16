@@ -195,7 +195,7 @@ export const transformMetadataForUpdate = (catalog: MetadataCatalog, values: { [
 };
 
 // Prepare metadata for post of new events or series
-export const prepareMetadataFieldsForPost = (
+const prepareMetadataFieldsForPost = (
 	metadataInfo: MetadataField[],
 	values: { [key: string]: unknown },
 	formikIdPrefix = ""
@@ -261,7 +261,7 @@ export const prepareExtendedMetadataFieldsForPost = (
 	return extendedMetadataFields;
 };
 
-export const prepareSeriesMetadataFieldsForPost = (
+const prepareSeriesMetadataFieldsForPost = (
 	metadataInfo: MetadataCatalog["fields"],
 	values: { [key: string]: string[] },
 	formikIdPrefix = ""
