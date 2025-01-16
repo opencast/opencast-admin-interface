@@ -195,57 +195,43 @@ export const transformMetadataForUpdate = (catalog: MetadataCatalog, values: { [
 };
 
 // Prepare metadata for post of new events or series
-const prepareMetadataFieldsForPost = (
-	metadataInfo: MetadataField[],
-	values: { [key: string]: unknown },
-	formikIdPrefix = ""
-) => {
-	type FieldValue = {
-		id: string,
-		type: string,
-		value: unknown,
-		tabindex: number,
-		$$hashKey?: string,
-		translatable?: boolean,
-	}
-	let metadataFields: FieldValue[] = [];
-
-	// fill metadataField with field information send by server previously and values provided by user
-	// Todo: What is hashkey?
-	for (const [i, info] of metadataInfo.entries()) {
-		let fieldValue: FieldValue = {
-			id: info.id,
-			type: info.type,
-			value: values[formikIdPrefix + info.id],
-			tabindex: i + 1,
-			$$hashKey: "object:123",
-		};
-		if (!!info.translatable) {
-			fieldValue = {
-				...fieldValue,
-				translatable: info.translatable,
-			};
-		}
-		metadataFields = metadataFields.concat(fieldValue);
-	}
-
-	return metadataFields;
-};
-
-// Prepare extended metadata for post of new events or series
-export const prepareExtendedMetadataFieldsForPost = (
-	extendedMetadata: MetadataCatalog[],
+export const prepareMetadataFieldsForPost = (
+	metadataCatalogs: MetadataCatalog[],
 	values: { [key: string]: unknown },
 ) => {
-	const extendedMetadataFields = [];
+	const preparedMetadataCatalogs = [];
 
-	for (const catalog of extendedMetadata) {
+	for (const catalog of metadataCatalogs) {
 		const catalogPrefix = catalog.flavor + "_";
-		const metadataFields = prepareMetadataFieldsForPost(
-			catalog.fields,
-			values,
-			catalogPrefix
-		);
+
+		type FieldValue = {
+			id: string,
+			type: string,
+			value: unknown,
+			tabindex: number,
+			$$hashKey?: string,
+			translatable?: boolean,
+		}
+		let metadataFields: FieldValue[] = [];
+
+		// fill metadataField with field information send by server previously and values provided by user
+		// Todo: What is hashkey?
+		for (const [i, info] of catalog.fields.entries()) {
+			let fieldValue: FieldValue = {
+				id: info.id,
+				type: info.type,
+				value: values[catalogPrefix + info.id],
+				tabindex: i + 1,
+				$$hashKey: "object:123",
+			};
+			if (!!info.translatable) {
+				fieldValue = {
+					...fieldValue,
+					translatable: info.translatable,
+				};
+			}
+			metadataFields = metadataFields.concat(fieldValue);
+		}
 
 		// Todo: What is hashkey?
 		const metadataCatalog = {
@@ -255,10 +241,10 @@ export const prepareExtendedMetadataFieldsForPost = (
 			$$hashKey: "object:123",
 		};
 
-		extendedMetadataFields.push(metadataCatalog);
+		preparedMetadataCatalogs.push(metadataCatalog);
 	}
 
-	return extendedMetadataFields;
+	return preparedMetadataCatalogs;
 };
 
 // returns the name for a field value from the collection
