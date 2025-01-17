@@ -22,7 +22,7 @@ export type OurNotification = {
 	hidden: boolean,
 	duration: number,  // in milliseconds. -1 means stay forever
 	type: "error" | "success" | "warning" | "info",
-	parameter: any,
+	parameter?: { [key: string]:  unknown },
 	key: string,
 	context: string
 }
@@ -183,7 +183,7 @@ const notificationSlice = createSlice({
 		},
 		removeNotificationWizardForm(state) {
 			state.notifications = state.notifications.filter(
-				(notification) => notification.context !== NOTIFICATION_CONTEXT
+				(notification) => notification.context === NOTIFICATION_CONTEXT
 			)
 		},
 		removeNotificationWizardAccess(state) {

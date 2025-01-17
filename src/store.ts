@@ -37,6 +37,7 @@ import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
  */
 
 // Configuration for persisting states in store
+const tableFilterProfilesPersistConfig = { key: "tableFilterProfiles", storage, whitelist: ["profiles"] }
 const eventsPersistConfig = { key: "events", storage, whitelist: ["columns"] }
 const seriesPersistConfig = { key: "series", storage, whitelist: ["columns"] }
 const lifeCyclePersistConfig = { key: "lifeCycle", storage, whitelist: ["columns"] }
@@ -53,7 +54,7 @@ const themesPersistConfig = { key: "themes", storage, whitelist: ["columns"] }
 // form reducer and all other reducers used in this app
 const reducers = combineReducers({
 	tableFilters,
-	tableFilterProfiles,
+	tableFilterProfiles: persistReducer(tableFilterProfilesPersistConfig, tableFilterProfiles),
 	events: persistReducer(eventsPersistConfig, events),
 	series: persistReducer(seriesPersistConfig, series),
 	lifeCycle: persistReducer(lifeCyclePersistConfig, lifeCycle),

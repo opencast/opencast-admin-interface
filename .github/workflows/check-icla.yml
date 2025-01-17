@@ -7,10 +7,10 @@ on:
 jobs:
   main:
     if: github.event.pull_request.user.login != 'dependabot[bot]'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Install Python module
-        run: pip install apereocla
+        run: pip install --break-system-packages apereocla
 
       - name: Check Apereo ICLA for GitHub user
         run: apereocla -g "${{ github.event.pull_request.user.login }}"
@@ -23,7 +23,7 @@ jobs:
           message: >
             Hi @${{ github.event.pull_request.user.login }}
 
-            Thank you for contributing to the Opencast Editor.
+            Thank you for contributing to the Opencast Admin UI.
 
             We noticed that you have not yet filed an [Individual Contributor License Agreement](https://www.apereo.org/licensing/agreements/icla).
             Doing that (once) helps us to ensure that Opencast stays free for all.

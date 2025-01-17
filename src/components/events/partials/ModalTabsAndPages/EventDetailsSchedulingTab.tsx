@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import cn from "classnames";
 import _ from "lodash";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import DatePicker from "react-datepicker";
 import { Formik, FormikErrors, FormikProps } from "formik";
 import { Field } from "../../../shared/Field";
 import Notifications from "../../../shared/Notifications";
@@ -177,7 +177,7 @@ const EventDetailsSchedulingTab = ({
 						type: "error",
 						key: "EVENTS_NOT_UPDATED",
 						duration: -1,
-						parameter: null,
+						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					}));
 				}
@@ -194,13 +194,16 @@ const EventDetailsSchedulingTab = ({
 			? Array.from(source.device.inputMethods)
 			: [];
 
+		startDate.setHours(0, 0, 0);
+		endDate.setHours(0, 0, 0);
+
 		return {
-			scheduleStartDate: startDate.setHours(0, 0, 0).toString(),
+			scheduleStartDate: startDate.toISOString(),
 			scheduleStartHour: source.start.hour != null ? makeTwoDigits(source.start.hour) : "",
 			scheduleStartMinute: source.start.minute != null ? makeTwoDigits(source.start.minute) : "",
 			scheduleDurationHours: source.duration.hour != null ? makeTwoDigits(source.duration.hour) : "",
 			scheduleDurationMinutes: source.duration.minute != null ? makeTwoDigits(source.duration.minute): "",
-			scheduleEndDate: endDate.setHours(0, 0, 0).toString(),
+			scheduleEndDate: endDate.toISOString(),
 			scheduleEndHour: source.end.hour != null ? makeTwoDigits(source.end.hour): "",
 			scheduleEndMinute: source.end.minute != null ? makeTwoDigits(source.end.minute): "",
 			captureAgent: source.device.name,
@@ -286,8 +289,7 @@ const EventDetailsSchedulingTab = ({
 																/* date picker for start date */
 																<DatePicker
 																	name="scheduleStartDate"
-																	// tabIndex={1}
-																	value={new Date(formik.values.scheduleStartDate)}
+																	selected={new Date(formik.values.scheduleStartDate)}
 																	onChange={(value: Date | null) =>
 																		value && changeStartDate(
 																			value,
@@ -297,6 +299,14 @@ const EventDetailsSchedulingTab = ({
 																			checkConflictsWrapper
 																		)
 																	}
+																	showYearDropdown
+																	showMonthDropdown
+																	yearDropdownItemNumber={2}
+																	dateFormat="P"
+																	popperClassName="datepicker-custom"
+																	className="datepicker-custom-input"
+																	portalId="root"
+																	locale={currentLanguage?.dateLocale}
 																/>
 															) : (
 																<>
