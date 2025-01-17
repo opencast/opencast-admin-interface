@@ -194,13 +194,16 @@ const EventDetailsSchedulingTab = ({
 			? Array.from(source.device.inputMethods)
 			: [];
 
+		startDate.setHours(0, 0, 0);
+		endDate.setHours(0, 0, 0);
+
 		return {
-			scheduleStartDate: startDate.toString(),
+			scheduleStartDate: startDate.toISOString(),
 			scheduleStartHour: source.start.hour != null ? makeTwoDigits(source.start.hour) : "",
 			scheduleStartMinute: source.start.minute != null ? makeTwoDigits(source.start.minute) : "",
 			scheduleDurationHours: source.duration.hour != null ? makeTwoDigits(source.duration.hour) : "",
 			scheduleDurationMinutes: source.duration.minute != null ? makeTwoDigits(source.duration.minute): "",
-			scheduleEndDate: endDate.toString(),
+			scheduleEndDate: endDate.toISOString(),
 			scheduleEndHour: source.end.hour != null ? makeTwoDigits(source.end.hour): "",
 			scheduleEndMinute: source.end.minute != null ? makeTwoDigits(source.end.minute): "",
 			captureAgent: source.device.name,

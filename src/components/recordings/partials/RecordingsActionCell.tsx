@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import RecordingDetailsModal from "./modal/RecordingDetailsModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../store";
@@ -9,6 +8,7 @@ import { Recording, deleteRecording } from "../../../slices/recordingSlice";
 import { fetchRecordingDetails } from "../../../slices/recordingDetailsSlice";
 import { Tooltip } from "../../shared/Tooltip";
 import { ModalHandle } from "../../shared/modals/Modal";
+import RecordingDetailsModal from "./modal/RecordingDetailsModal";
 
 /**
  * This component renders the action cells of recordings in the table view

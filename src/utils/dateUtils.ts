@@ -6,11 +6,6 @@ import { FormikErrors } from "formik";
  * This File contains methods concerning dates
  */
 
-// Get the ISO date string based on local time
-const getISODateString = (date: Date) => {
-	return moment(date).format('YYYY-MM-DD');
-}
-
 // check if date can be parsed
 export const renderValidDate = (date: string) => {
 	return !isNaN(Date.parse(date)) ? new Date(date) : ""
@@ -126,8 +121,8 @@ const changeStart = (
 	}
 
 	setDuration(startDate, endDate, setFieldValue);
-	setFieldValue("scheduleEndDate", getISODateString(endDate));
-	setFieldValue("scheduleStartDate", getISODateString(startDate));
+	setFieldValue("scheduleEndDate", endDate.toISOString());
+	setFieldValue("scheduleStartDate", startDate.toISOString());
 
 	if (!!checkConflicts && !!formikValues.captureAgent) {
 		checkConflicts(
@@ -230,7 +225,7 @@ const changeEnd = (
 	}
 
 	setDuration(startDate, endDate, setFieldValue);
-	setFieldValue("scheduleEndDate", getISODateString(endDate));
+	setFieldValue("scheduleEndDate", endDate.toISOString());
 
 	if (!!checkConflicts && !!formikValues.captureAgent) {
 		checkConflicts(
@@ -304,7 +299,7 @@ const changeDuration = (
 
 	setFieldValue("scheduleEndHour", makeTwoDigits(endDate.getHours()));
 	setFieldValue("scheduleEndMinute", makeTwoDigits(endDate.getMinutes()));
-	setFieldValue("scheduleEndDate", getISODateString(endDate));
+	setFieldValue("scheduleEndDate", endDate.toISOString());
 
 	if (!!checkConflicts && !!formikValues.captureAgent) {
 		checkConflicts(
@@ -405,8 +400,8 @@ const changeStartMultiple = (
 		endDate.setDate(startDate.getDate() + 1);
 	}
 
-	setFieldValue("scheduleEndDate", getISODateString(endDate));
-	setFieldValue("scheduleStartDate", getISODateString(startDate));
+	setFieldValue("scheduleEndDate", endDate.toISOString());
+	setFieldValue("scheduleStartDate", startDate.toISOString());
 
 	if (!!checkConflicts && !! formikValues.captureAgent) {
 		checkConflicts(
@@ -525,8 +520,8 @@ export const changeEndDateMultiple = async (
 		}
 	}
 
-	setFieldValue("scheduleEndDate", getISODateString(endDate));
-	setFieldValue("scheduleStartDate", getISODateString(startDate));
+	setFieldValue("scheduleEndDate", endDate.toISOString());
+	setFieldValue("scheduleStartDate", startDate.toISOString());
 
 	if (!!checkConflicts && !!formikValues.captureAgent) {
 		checkConflicts(
@@ -571,7 +566,7 @@ const changeEndMultiple = (
 
 	if (isEndBeforeStart(startDate, endDate)) {
 		endDate.setDate(startDate.getDate() + 1);
-	  setFieldValue("scheduleEndDate", getISODateString(endDate));
+	  setFieldValue("scheduleEndDate", endDate.toISOString());
 	}
 
 	if (!!checkConflicts && !!formikValues.captureAgent) {
@@ -668,7 +663,7 @@ const changeDurationMultiple = (
 
 	setFieldValue("scheduleEndHour", makeTwoDigits(endDate.getHours()));
 	setFieldValue("scheduleEndMinute", makeTwoDigits(endDate.getMinutes()));
-	setFieldValue("scheduleEndDate", getISODateString(endDate));
+	setFieldValue("scheduleEndDate", endDate.toISOString());
 
 	if (!!checkConflicts && !!formikValues.captureAgent) {
 		checkConflicts(
