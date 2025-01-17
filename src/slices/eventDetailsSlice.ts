@@ -118,7 +118,7 @@ export type Publication = {
 	id: string,
 	label?: string,
 	hide?: boolean,
-	name: string,	// translation key
+	name: string, // translation key
 	order: number,
 	url: string,
 	description?: string,
