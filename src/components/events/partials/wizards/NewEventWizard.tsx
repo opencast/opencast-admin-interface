@@ -21,6 +21,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { MetadataCatalog, UploadAssetOption, postNewEvent } from "../../../../slices/eventSlice";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
+import { hasAccess } from "../../../../utils/utils";
 
 /**
  * This component manages the pages of the new event wizard and the submission of values
@@ -88,7 +89,7 @@ const NewEventWizard: React.FC<{
 		{
 			translation: "EVENTS.EVENTS.NEW.ACCESS.CAPTION",
 			name: "access",
-			hidden: false,
+			hidden: !hasAccess("ROLE_UI_EVENTS_DETAILS_ACL_VIEW", user),
 		},
 		{
 			translation: "EVENTS.EVENTS.NEW.SUMMARY.CAPTION",
