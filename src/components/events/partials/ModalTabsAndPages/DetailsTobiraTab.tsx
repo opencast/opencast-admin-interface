@@ -3,10 +3,10 @@ import Notifications from "../../../shared/Notifications";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { getSeriesDetailsTobiraData, getSeriesDetailsTobiraDataError, getTobiraTabHierarchy } from "../../../../selectors/seriesDetailsSelectors";
 import { addNotification } from "../../../../slices/notificationSlice";
-import { NOTIFICATION_CONTEXT, NOTIFICATION_CONTEXT_TOBIRA } from "../../../../configs/modalConfig";
+import { NOTIFICATION_CONTEXT_TOBIRA } from "../../../../configs/modalConfig";
 import { getEventDetailsTobiraData, getEventDetailsTobiraDataError } from "../../../../selectors/eventDetailsSelectors";
 import { Formik } from "formik";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import NewTobiraPage, { TobiraFormProps } from "./NewTobiraPage";
 import { fetchSeriesDetailsTobira, removeSeriesTobiraPath, setTobiraTabHierarchy, TobiraData, updateSeriesTobiraPath } from "../../../../slices/seriesDetailsSlice";
@@ -14,6 +14,7 @@ import { fetchSeriesDetailsTobiraNew, TobiraPage } from "../../../../slices/seri
 import ConfirmModal from "../../../shared/ConfirmModal";
 import { Tooltip } from "../../../shared/Tooltip";
 import { ModalHandle } from "../../../shared/modals/Modal";
+import { fetchEventDetailsTobira } from "../../../../slices/eventDetailsSlice";
 
 
 export type TobiraTabHierarchy = "main" | "edit-path";
@@ -30,6 +31,17 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	const tabHierarchy = useAppSelector(state => getTobiraTabHierarchy(state));
+
+	useEffect(() => {
+		if (kind === "event") {
+			// Needed to dispatch the correct notification if the event is not found.
+			// While the data is also fetched in `EventDetails.tsx`, it's used there
+			// only to check the error status. The dispatched `NOT_FOUND` notification
+			// is removed when switching to another tab.
+			dispatch(fetchEventDetailsTobira(id));
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [id]);
 
 	const [initialValues, setInitialValues] = useState<TobiraFormProps>({
 		breadcrumbs: [],

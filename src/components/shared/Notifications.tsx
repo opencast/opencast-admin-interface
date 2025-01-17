@@ -55,7 +55,7 @@ const Notifications = ({
 						|| notification.context === NOTIFICATION_CONTEXT_TOBIRA
 				) && renderNotification(notification, key))}
 			</ul>
-		) : context === "tobira" ? (
+		) : context === NOTIFICATION_CONTEXT_TOBIRA ? (
 			<ul>
 				{notifications.map((notification, key) => !notification.hidden && (
 					notification.context === NOTIFICATION_CONTEXT_TOBIRA
