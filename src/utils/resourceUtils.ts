@@ -69,7 +69,7 @@ export const getURLParams = (
 		};
 	}
 
-	if (getTableSorting(state) !== "") {
+	if (!!getTableSorting(state)) {
 		params = {
 			...params,
 			sort: getTableSorting(state) + ":" + getTableDirection(state),
