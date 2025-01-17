@@ -6,39 +6,6 @@ import { createPolicyLabel } from "../components/shared/modals/ResourceDetailsAc
  * this file contains functions, which are needed for the searchable drop-down selections
  */
 
-export const filterBySearch = (filterText: string, type: DropDownType, options: any[], t: TFunction) => {
-	if (type === "language") {
-		return options.filter((item) =>
-			t(item.name).toLowerCase().includes(filterText)
-		);
-	} else if (
-		type === "isPartOf" ||
-		type === "captureAgent" ||
-		type === "aclRole" ||
-		type === "newTheme"
-	) {
-		return options.filter((item) =>
-			item.name.toLowerCase().includes(filterText)
-		);
-	} else if (type === "workflow") {
-		return options.filter((item) =>
-			item.title.toLowerCase().includes(filterText)
-		);
-	} else if (type === "comment") {
-		return options.filter((item) =>
-			t(item[0]).toLowerCase().includes(filterText)
-		);
-	} else if (type === "filter") {
-		return options.filter((item) =>
-			t(item.label).toLowerCase().includes(filterText)
-		);
-	} else {
-		return options.filter((item) =>
-			item.value.toLowerCase().includes(filterText)
-		);
-	}
-};
-
 /*
  * the Select component needs options to have an internal value and a displayed label
  * this function formats selection options as provided by the backend into that scheme
@@ -97,7 +64,7 @@ export const formatDropDownOptions = (
 		for (const item of unformattedOptions) {
 			formattedOptions.push({
 				value: item.name,
-				label: createPolicyLabel(item) ? createPolicyLabel(item) : item.name,
+				label: createPolicyLabel(item) ?? item.name,
 			});
 		}
 	} else if (type === "workflow") {

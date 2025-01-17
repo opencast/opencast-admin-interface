@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	dropDownSpacingTheme,
 	dropDownStyle,
 } from "../../utils/componentStyles";
 import {
-	filterBySearch,
 	formatDropDownOptions,
 } from "../../utils/dropDownUtils";
 import Select, { createFilter, GroupBase, MenuListProps, Props, SelectInstance } from "react-select";
@@ -62,7 +61,6 @@ const DropDown = <T,>({
 
 	const selectRef = React.useRef<SelectInstance<any, boolean, GroupBase<any>>>(null);
 
-	const [searchText, setSearch] = useState("");
 
 	const style = dropDownStyle(type);
 
@@ -87,15 +85,13 @@ const DropDown = <T,>({
 		autoFocus: autoFocus,
 		isSearchable: true,
 		value: { value: value, label: text === "" ? placeholder : text },
-		inputValue: searchText,
 		options: formatDropDownOptions(
-			filterBySearch(searchText.toLowerCase(), type, options, t),
+			options,
 			type,
 			required,
 			t
 		),
 		placeholder: placeholder,
-		onInputChange: (value: string) => setSearch(value),
 		onChange: (element) => handleChange(element as {value: T, label: string}),
 		menuIsOpen: menuIsOpen,
 		onMenuOpen: () => openMenu(true),
@@ -107,7 +103,9 @@ const DropDown = <T,>({
 	if (type === "aclRole") {
 		// @ts-ignore Typing problem in library
 		commonProps.components = { MenuList }
-		commonProps.filterOption = createFilter({ ignoreAccents: false }) // To improve performance on filtering
+		commonProps.filterOption = createFilter({
+			ignoreAccents: false, // To improve performance on filtering
+		})
 	}
 
 	return creatable ? (
