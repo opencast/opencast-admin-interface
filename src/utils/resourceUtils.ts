@@ -84,10 +84,10 @@ export const buildUserBody = (values: NewUser | UpdateUser) => {
 	let data = new URLSearchParams();
 	// fill form data with user inputs
 	data.append("username", values.username);
-	data.append("name", values.name);
-	data.append("email", values.email);
-	data.append("password", values.password);
-	data.append("roles", JSON.stringify(values.roles));
+	values.name && data.append("name", values.name);
+	values.email && data.append("email", values.email);
+	values.password && data.append("password", values.password);
+	values.roles && data.append("roles", JSON.stringify(values.roles));
 
 	return data;
 };
@@ -222,7 +222,6 @@ export const prepareMetadataFieldsForPost = (
 		id: string,
 		type: string,
 		value: unknown,
-		tabindex: number,
 		$$hashKey?: string,
 		translatable?: boolean,
 	}
@@ -230,12 +229,11 @@ export const prepareMetadataFieldsForPost = (
 
 	// fill metadataField with field information send by server previously and values provided by user
 	// Todo: What is hashkey?
-	for (const [i, info] of metadataInfo.entries()) {
+	for (const [, info] of metadataInfo.entries()) {
 		let fieldValue: FieldValue = {
 			id: info.id,
 			type: info.type,
 			value: values[formikIdPrefix + info.id],
-			tabindex: i + 1,
 			$$hashKey: "object:123",
 		};
 		if (!!info.translatable) {

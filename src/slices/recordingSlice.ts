@@ -94,7 +94,7 @@ export const fetchRecordings = createAppAsyncThunk('recordings/fetchRecordings',
 });
 
 // delete location with provided id
-export const deleteRecording = createAppAsyncThunk('recordings/deleteRecording', async (id: string, { dispatch }) => {
+export const deleteRecording = createAppAsyncThunk('recordings/deleteRecording', async (id: Recording["id"], { dispatch }) => {
 	// API call for deleting a location
 	axios
 		.delete(`/admin-ng/capture-agents/${id}`)

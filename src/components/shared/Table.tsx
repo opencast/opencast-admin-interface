@@ -105,9 +105,9 @@ const Table = ({
 
 	useEffect(() => {
 		// Function for handling clicks outside of an open dropdown menu
-		const handleClickOutside = (e: any) => {
+		const handleClickOutside = (e: MouseEvent) => {
 			if (
-				e && containerPageSize.current && !containerPageSize.current.contains(e.target)
+				e && containerPageSize.current && !containerPageSize.current.contains(e.target as Node)
 			) {
 				setShowPageSizes(false);
 			}
@@ -409,7 +409,7 @@ const getDirectAccessiblePages = (pages: Page[], pagination: Pagination) => {
 };
 
 // Apply a column template and render corresponding components
-const ColumnTemplate = ({ row, column, templateMap }: {row: Row, column: TableColumn, templateMap: any}) => {
+const ColumnTemplate = ({ row, column, templateMap }: {row: Row, column: TableColumn, templateMap: TemplateMap}) => {
 	if (!column.template) {
 		return <></>;
 	}

@@ -10,7 +10,6 @@ import {
 } from "../utils/resourceUtils";
 import {
 	transformToIdValueArray,
-	transformToObjectArray,
 } from "../utils/utils";
 import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
@@ -163,8 +162,14 @@ export const fetchSeriesMetadata = createAppAsyncThunk('series/fetchSeriesMetada
 // fetch series themes from server
 export const fetchSeriesThemes = createAppAsyncThunk('series/fetchSeriesThemes', async () => {
 	let res = await axios.get("/admin-ng/series/new/themes");
-	const data = await res.data;
-	const themes = transformToObjectArray(data);
+	const data = await res.data as { [key: string]: { name: string, description: string } };
+	// Transform object of objects to array of objects
+	const themes = Object.keys(data).map((key) => {
+		return {
+			id: key,
+			...data[key],
+		};
+	});
 	return themes;
 });
 
@@ -278,7 +283,7 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 });
 
 // check for events of the series and if deleting the series if it has events is allowed
-export const checkForEventsDeleteSeriesModal = createAppAsyncThunk('series/checkForEventsDeleteSeriesModal', async (id: string, {dispatch}) => {
+export const checkForEventsDeleteSeriesModal = createAppAsyncThunk('series/checkForEventsDeleteSeriesModal', async (id: Series["id"], {dispatch}) => {
 	const hasEventsRequest = await axios.get(
 		`/admin-ng/series/${id}/hasEvents.json`
 	);
@@ -298,7 +303,7 @@ export const checkForEventsDeleteSeriesModal = createAppAsyncThunk('series/check
 });
 
 // delete series with provided id
-export const deleteSeries = createAppAsyncThunk('series/deleteSeries', async (id: string, {dispatch}) => {
+export const deleteSeries = createAppAsyncThunk('series/deleteSeries', async (id: Series["id"], {dispatch}) => {
 	// API call for deleting a series
 	axios
 		.delete(`/admin-ng/series/${id}`)
@@ -377,7 +382,7 @@ export const fetchSeriesOptions = async () => {
 };
 
 // Check if a series has events
-export const hasEvents = async (seriesId: string) => {
+export const hasEvents = async (seriesId: Series["id"]) => {
 	let data = await axios.get(`/admin-ng/series/${seriesId}/hasEvents.json`);
 
 	return (await data.data).hasEvents;

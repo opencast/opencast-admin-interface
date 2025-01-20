@@ -99,7 +99,7 @@ export const initialFormValuesNewSeries: {
 
 	breadcrumbs: TobiraPage[],
 	selectedPage?: TobiraPage,
-	[key: string]: any,  // Metadata fields that are getting added later
+	[key: string]: unknown,  // Metadata fields that are getting added later
 } = {
 	acls: [
 		{

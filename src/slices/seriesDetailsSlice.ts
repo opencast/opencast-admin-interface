@@ -17,10 +17,10 @@ import { transformToIdValueArray } from "../utils/utils";
 import { NOTIFICATION_CONTEXT, NOTIFICATION_CONTEXT_TOBIRA } from "../configs/modalConfig";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
-import { Ace } from './aclSlice';
+import { Ace, Acl } from './aclSlice';
 import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
-import { TobiraPage } from './seriesSlice';
+import { Series, TobiraPage } from './seriesSlice';
 import { TobiraTabHierarchy } from '../components/events/partials/ModalTabsAndPages/DetailsTobiraTab';
 import { TobiraFormProps } from '../components/events/partials/ModalTabsAndPages/NewTobiraPage';
 import { handleTobiraError } from './shared/tobiraErrors';
@@ -109,7 +109,7 @@ const initialState: SeriesDetailsState = {
 };
 
 // fetch metadata of certain series from server
-export const fetchSeriesDetailsMetadata = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsMetadata', async (id: string, { rejectWithValue }) => {
+export const fetchSeriesDetailsMetadata = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsMetadata', async (id: Series["id"], { rejectWithValue }) => {
 	const res = await axios.get(`/admin-ng/series/${id}/metadata.json`);
 	const metadataResponse = res.data;
 
@@ -134,7 +134,7 @@ export const fetchSeriesDetailsMetadata = createAppAsyncThunk('seriesDetails/fet
 });
 
 // fetch acls of certain series from server
-export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsAcls', async (id: string, {dispatch}) => {
+export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsAcls', async (id: Series["id"], {dispatch}) => {
 	const res = await axios.get(`/admin-ng/series/${id}/access.json`);
 	const response = res.data;
 
@@ -212,7 +212,7 @@ export const fetchSeriesDetailsFeeds = createAppAsyncThunk('seriesDetails/fetchS
 });
 
 // fetch theme of certain series from server
-export const fetchSeriesDetailsTheme = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsTheme', async (id: string) => {
+export const fetchSeriesDetailsTheme = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsTheme', async (id: Series["id"]) => {
 	const res = await axios.get(`/admin-ng/series/${id}/theme.json`);
 	const themeResponse = res.data;
 
@@ -240,7 +240,7 @@ export const fetchSeriesDetailsThemeNames = createAppAsyncThunk('seriesDetails/f
 
 // update series with new metadata
 export const updateSeriesMetadata = createAppAsyncThunk('seriesDetails/updateSeriesMetadata', async (params: {
-	id: string,
+	id: Series["id"],
 	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
 }, {dispatch, getState}) => {
 	const { id, values } = params;
@@ -264,7 +264,7 @@ export const updateSeriesMetadata = createAppAsyncThunk('seriesDetails/updateSer
 
 // update series with new metadata
 export const updateExtendedSeriesMetadata = createAppAsyncThunk('seriesDetails/updateExtendedSeriesMetadata', async (params: {
-	id: string,
+	id: Series["id"],
 	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
 	catalog: MetadataCatalog,
 }, {dispatch, getState}) => {
@@ -302,8 +302,8 @@ export const updateExtendedSeriesMetadata = createAppAsyncThunk('seriesDetails/u
 });
 
 export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSeriesAccess', async (params: {
-	id: string,
-	policies: { acl: { ace: Ace[] } }
+	id: Series["id"],
+	policies: { acl: Acl }
 }, {dispatch}) => {
 	const { id, policies } = params;
 
@@ -348,7 +348,7 @@ export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSerie
 
 export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeriesTheme', async (params: {
 	id: string,
-	values: { theme: string},
+	values: { theme: SeriesDetailsState["theme"] },
 }, {dispatch, getState}) => {
 	const { id, values } = params;
 
@@ -414,7 +414,7 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
 
 // fetch Tobira data of certain series from server
 export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsTobira', async (
-	id: string,
+	id: Series["id"],
 	{ dispatch }
 ) => {
 	const res = await axios.get(`/admin-ng/series/${id}/tobira/pages`)
@@ -429,7 +429,7 @@ export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetch
 });
 
 export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTobiraData', async (
-	params: TobiraFormProps & { seriesId: string },
+	params: TobiraFormProps & { seriesId: Series["id"] },
 	{ dispatch },
 ) => {
 	const tobiraParams = new URLSearchParams();
@@ -480,7 +480,7 @@ export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTo
 );
 
 export const removeSeriesTobiraPath = createAppAsyncThunk('series/removeSeriesTobiraData', async (
-	params: Required<Pick<TobiraFormProps, 'currentPath'>> & { seriesId: string },
+	params: Required<Pick<TobiraFormProps, 'currentPath'>> & { seriesId: Series["id"] },
 	{ dispatch },
 ) => {
 	const path = encodeURIComponent(params.currentPath);
@@ -510,7 +510,7 @@ export const removeSeriesTobiraPath = createAppAsyncThunk('series/removeSeriesTo
 );
 
 // thunks for statistics
-export const fetchSeriesStatistics = createAppAsyncThunk('seriesDetails/fetchSeriesStatistics', async (seriesId: string, {getState}) => {
+export const fetchSeriesStatistics = createAppAsyncThunk('seriesDetails/fetchSeriesStatistics', async (seriesId: Series["id"], {getState}) => {
 	// get prior statistics
 	const state = getState();
 	const statistics = getStatistics(state);
@@ -525,7 +525,7 @@ export const fetchSeriesStatistics = createAppAsyncThunk('seriesDetails/fetchSer
 });
 
 export const fetchSeriesStatisticsValueUpdate = createAppAsyncThunk('seriesDetails/fetchSeriesStatisticsValueUpdate', async (params: {
-	seriesId: string,
+	seriesId: Series["id"],
 	providerId: string,
 	from: string,
 	to: string,

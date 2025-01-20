@@ -12,7 +12,7 @@ import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 export type ThemeDetailsType = {
 	bumperActive: boolean,
 	bumperFile: string,
-	creationDate: any,
+	creationDate: string,
 	creator: string,
 	default: boolean,
 	description: string,
@@ -119,7 +119,7 @@ export const postNewTheme = createAppAsyncThunk('theme/postNewTheme', async (val
 });
 
 // delete theme with provided id
-export const deleteTheme = createAppAsyncThunk('theme/deleteTheme', async (id: number, {dispatch}) => {
+export const deleteTheme = createAppAsyncThunk('theme/deleteTheme', async (id: ThemeDetailsType["id"], {dispatch}) => {
 	axios
 		.delete(`/admin-ng/themes/${id}`)
 		.then((res) => {
