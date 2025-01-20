@@ -675,7 +675,7 @@
 				"UPDATING_PREVIEWS": "Updating previews"
 			},
 			"DETAILS": {
-				"HEADER": "פרטי אירוע - {{resourceId}}",
+				"HEADER": "Event details - {{name}}",
 				"TABS": {
 					"METADATA": "מטא-נתונים",
 					"EXTENDED-METADATA": "מטא-נתונים II",
@@ -1172,7 +1172,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "פרטי סידרה - {{resourceId}}",
+				"HEADER": "Series details - {{name}}",
 				"TABS": {
 					"METADATA": "מטא-נתונים",
 					"EXTENDED_METADATA": "מטא-נתונים II",
@@ -1278,7 +1278,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "פרטי מיקום - {{resourceId}}",
+				"HEADER": "Location details - {{name}}",
 				"TAB": {
 					"GENERAL": "כללי",
 					"CONFIGURATION": "הגדרות",
@@ -1335,7 +1335,7 @@
 			},
 			"DETAILS": {
 				"NEWCAPTION": "צור משתמש",
-				"EDITCAPTION": "פרטי משתמש - {{username}}",
+				"EDITCAPTION": "User details - {{name}}",
 				"TABS": {
 					"USER": "משתמש",
 					"ROLES": "תפקידים",
