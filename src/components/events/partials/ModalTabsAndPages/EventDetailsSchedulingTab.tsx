@@ -3,7 +3,6 @@ import cn from "classnames";
 import _ from "lodash";
 import DatePicker from "react-datepicker";
 import { Formik, FormikErrors, FormikProps } from "formik";
-import { Field } from "../../../shared/Field";
 import Notifications from "../../../shared/Notifications";
 import {
 	getSchedulingConflicts,
@@ -29,15 +28,12 @@ import {
 	changeStartHour,
 	changeStartMinute,
 	makeDate,
-	renderValidDate,
 } from "../../../../utils/dateUtils";
-import { hours, minutes } from "../../../../configs/modalConfig";
 import {
 	filterDevicesForAccess,
 	hasDeviceAccess,
 } from "../../../../utils/resourceUtils";
 import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
-import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
 	checkConflicts,
@@ -50,8 +46,13 @@ import {
 } from "../../../../slices/notificationSlice";
 import { Recording } from "../../../../slices/recordingSlice";
 import { useTranslation } from "react-i18next";
+import SchedulingTime from "../wizards/scheduling/SchedulingTime";
+import SchedulingEndDateDisplay from "../wizards/scheduling/SchedulingEndDateDisplay";
+import SchedulingLocation from "../wizards/scheduling/SchedulingLocation";
+import SchedulingInputs from "../wizards/scheduling/SchedulingInputs";
+import SchedulingConflicts from "../wizards/scheduling/SchedulingConflicts";
 
-/**
+/**../wizards/scheduling/SchedulingTime
  * This component manages the main assets tab of event details modal
  */
 const EventDetailsSchedulingTab = ({
@@ -219,28 +220,9 @@ const EventDetailsSchedulingTab = ({
 
 				<div className="full-col">
 					{
-						/*list of scheduling conflicts*/
-						conflicts.length > 0 && (
-							<table className="main-tbl scheduling-conflict">
-								<tbody>
-									{conflicts.map((conflict, key) => (
-										<tr key={key}>
-											<td>{conflict.title}</td>
-											<td>
-												{t("dateFormats.dateTime.medium", {
-													dateTime: renderValidDate(conflict.start),
-												})}
-											</td>
-											<td>
-												{t("dateFormats.dateTime.medium", {
-													dateTime: renderValidDate(conflict.end),
-												})}
-											</td>
-										</tr>
-									))}
-								</tbody>
-							</table>
-						)
+						<SchedulingConflicts
+							conflicts={conflicts}
+						/>
 					}
 
 					{
@@ -319,294 +301,176 @@ const EventDetailsSchedulingTab = ({
 													</tr>
 
 													{/* start time */}
+													{hasAccessRole && (
+														<SchedulingTime
+															hour={formik.values.scheduleStartHour}
+															minute={formik.values.scheduleStartMinute}
+															disabled={!accessAllowed(formik.values.captureAgent)}
+															title={"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_TIME"}
+															hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
+															minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+															callbackHour={(value: string) => {
+																changeStartHour(
+																	value,
+																	formik.values,
+																	formik.setFieldValue,
+																	eventId,
+																	checkConflictsWrapper
+																)
+															}}
+															callbackMinute={(value: string) => {
+																changeStartMinute(
+																	value,
+																	formik.values,
+																	formik.setFieldValue,
+																	eventId,
+																	checkConflictsWrapper
+																)
+															}}
+														/>
+													)}
+													{!hasAccessRole && (
 													<tr>
 														<td>
-															{t(
-																"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_TIME"
-															)}
+															{t("EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_TIME")}
 														</td>
-														{hasAccessRole && (
-															<td className="editable">
-																{/* drop-down for hour
-																	*
-																	* This is the second input field.
-																	*/}
-																<DropDown
-																	value={formik.values.scheduleStartHour}
-																	text={formik.values.scheduleStartHour}
-																	options={hours}
-																	type={"time"}
-																	required={true}
-																	handleChange={(element) => {
-																		if (element) {
-																			changeStartHour(
-																				element.value,
-																				formik.values,
-																				formik.setFieldValue,
-																				eventId,
-																				checkConflictsWrapper
-																			)
-																		}
-																	}}
-																	placeholder={t(
-																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
-																	)}
-																	disabled={
-																		!accessAllowed(formik.values.captureAgent)
-																	}
-																/>
-
-																{/* drop-down for minute
-																	*
-																	* This is the third input field.
-																	*/}
-																<DropDown
-																	value={formik.values.scheduleStartMinute}
-																	text={formik.values.scheduleStartMinute}
-																	options={minutes}
-																	type={"time"}
-																	required={true}
-																	handleChange={(element) => {
-																		if (element) {
-																			changeStartMinute(
-																				element.value,
-																				formik.values,
-																				formik.setFieldValue,
-																				eventId,
-																				checkConflictsWrapper
-																			)
-																		}
-																	}}
-																	placeholder={t(
-																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
-																	)}
-																	disabled={
-																		!accessAllowed(formik.values.captureAgent)
-																	}
-																/>
-															</td>
-														)}
-														{!hasAccessRole && (
-															<td>
-																{source.start.hour ? makeTwoDigits(source.start.hour) : ""}:
-																{source.start.minute ? makeTwoDigits(source.start.minute) : ""}
-															</td>
-														)}
+														<td>
+															{source.start.hour ? makeTwoDigits(source.start.hour) : ""}:
+															{source.start.minute ? makeTwoDigits(source.start.minute) : ""}
+														</td>
 													</tr>
-
+													)}
 													{/* duration */}
+													{hasAccessRole && (
+														<SchedulingTime
+															hour={formik.values.scheduleDurationHours}
+															minute={formik.values.scheduleDurationMinutes}
+															disabled={!accessAllowed(formik.values.captureAgent)}
+															title={"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.DURATION"}
+															hourPlaceholder={"WIZARD.DURATION.HOURS"}
+															minutePlaceholder={"WIZARD.DURATION.MINUTES"}
+															callbackHour={(value: string) => {
+																changeDurationHour(
+																	value,
+																	formik.values,
+																	formik.setFieldValue,
+																	eventId,
+																	checkConflictsWrapper
+																)
+															}}
+															callbackMinute={(value: string) => {
+																changeDurationMinute(
+																	value,
+																	formik.values,
+																	formik.setFieldValue,
+																	eventId,
+																	checkConflictsWrapper
+																)
+															}}
+														/>
+													)}
+													{!hasAccessRole && (
 													<tr>
 														<td>
 															{t(
 																"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.DURATION"
 															)}
 														</td>
-														{hasAccessRole && (
-															<td className="editable">
-																{/* drop-down for hour
-																	*
-																	* This is the fourth input field.
-																	*/}
-																<DropDown
-																	value={formik.values.scheduleDurationHours}
-																	text={formik.values.scheduleDurationHours}
-																	options={hours}
-																	type={"time"}
-																	required={true}
-																	handleChange={(element) => {
-																		if (element) {
-																			changeDurationHour(
-																				element.value,
-																				formik.values,
-																				formik.setFieldValue,
-																				eventId,
-																				checkConflictsWrapper
-																			)
-																		}
-																	}}
-																	placeholder={t("WIZARD.DURATION.HOURS")}
-																	disabled={
-																		!accessAllowed(formik.values.captureAgent)
-																	}
-																/>
-
-																{/* drop-down for minute
-																	*
-																	* This is the fifth input field.
-																	*/}
-																<DropDown
-																	value={
-																		formik.values.scheduleDurationMinutes
-																	}
-																	text={formik.values.scheduleDurationMinutes}
-																	options={minutes}
-																	type={"time"}
-																	required={true}
-																	handleChange={(element) => {
-																		if (element) {
-																			changeDurationMinute(
-																				element.value,
-																				formik.values,
-																				formik.setFieldValue,
-																				eventId,
-																				checkConflictsWrapper
-																			)
-																		}
-																	}}
-																	placeholder={t("WIZARD.DURATION.MINUTES")}
-																	disabled={
-																		!accessAllowed(formik.values.captureAgent)
-																	}
-																/>
-															</td>
-														)}
-														{!hasAccessRole && (
-															<td>
-																{source.duration.hour ? makeTwoDigits(source.duration.hour) : ""}:
-																{source.duration.minute ? makeTwoDigits(source.duration.minute) : ""}
-															</td>
-														)}
+														<td>
+															{source.duration.hour ? makeTwoDigits(source.duration.hour) : ""}:
+															{source.duration.minute ? makeTwoDigits(source.duration.minute) : ""}
+														</td>
 													</tr>
-
+													)}
 													{/* end time */}
+													{hasAccessRole && (
+														<SchedulingTime
+															hour={formik.values.scheduleEndHour}
+															minute={formik.values.scheduleEndMinute}
+															disabled={!accessAllowed(formik.values.captureAgent)}
+															title={"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.END_TIME"}
+															hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
+															minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"}
+															callbackHour={(value: string) => {
+																changeEndHour(
+																	value,
+																	formik.values,
+																	formik.setFieldValue,
+																	eventId,
+																	checkConflictsWrapper
+																)
+															}}
+															callbackMinute={(value: string) => {
+																changeEndMinute(
+																	value,
+																	formik.values,
+																	formik.setFieldValue,
+																	eventId,
+																	checkConflictsWrapper
+																)
+															}}
+														/>
+													)}
+													{hasAccessRole &&
+														formik.values.scheduleEndDate.toString() !==
+															formik.values.scheduleStartDate.toString() && (
+																<SchedulingEndDateDisplay
+																	scheduleEndDate={formik.values.scheduleEndDate}
+																/>
+														)
+													}
+													{!hasAccessRole && (
 													<tr>
 														<td>
 															{t(
 																"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.END_TIME"
 															)}
 														</td>
-														{hasAccessRole && (
-															<td className="editable">
-																{/* drop-down for hour
-																	*
-																	* This is the sixth input field.
-																	*/}
-																<DropDown
-																	value={formik.values.scheduleEndHour}
-																	text={formik.values.scheduleEndHour}
-																	options={hours}
-																	type={"time"}
-																	required={true}
-																	handleChange={(element) => {
-																		if (element) {
-																			changeEndHour(
-																				element.value,
-																				formik.values,
-																				formik.setFieldValue,
-																				eventId,
-																				checkConflictsWrapper
-																			)
-																		}
-																	}}
-																	placeholder={t(
-																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"
-																	)}
-																	disabled={
-																		!accessAllowed(formik.values.captureAgent)
-																	}
-																/>
-
-																{/* drop-down for minute
-																	*
-																	* This is the seventh input field.
-																	*/}
-																<DropDown
-																	value={formik.values.scheduleEndMinute}
-																	text={formik.values.scheduleEndMinute}
-																	options={minutes}
-																	type={"time"}
-																	required={true}
-																	handleChange={(element) => {
-																		if (element) {
-																			changeEndMinute(
-																				element.value,
-																				formik.values,
-																				formik.setFieldValue,
-																				eventId,
-																				checkConflictsWrapper
-																			)
-																		}
-																	}}
-																	placeholder={t(
-																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
-																	)}
-																	disabled={
-																		!accessAllowed(formik.values.captureAgent)
-																	}
-																/>
-
-																{/* display end date if on different day to start date */}
-																{formik.values.scheduleEndDate.toString() !==
-																	formik.values.scheduleStartDate.toString() && (
-																	<span style={{ marginLeft: "10px" }}>
-																		{new Date(
-																			formik.values.scheduleEndDate
-																		).toLocaleDateString(
-																			currentLanguage ? currentLanguage.dateLocale.code : undefined
-																		)}
-																	</span>
-																)}
-															</td>
-														)}
-														{!hasAccessRole && (
-															<td>
-																{source.end.hour ? makeTwoDigits(source.end.hour) : ""}:
-																{source.end.minute ? makeTwoDigits(source.end.minute) : ""}
-																{formik.values.scheduleEndDate.toString() !==
-																	formik.values.scheduleStartDate.toString() && (
-																	<span>
-																		{new Date(
-																			formik.values.scheduleEndDate
-																		).toLocaleDateString(
-																			currentLanguage ? currentLanguage.dateLocale.code : undefined
-																		)}
-																	</span>
-																)}
-															</td>
-														)}
-													</tr>
-
-													{/* capture agent (aka. room or location) */}
-													<tr>
 														<td>
-															{t(
-																"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"
+															{source.end.hour ? makeTwoDigits(source.end.hour) : ""}:
+															{source.end.minute ? makeTwoDigits(source.end.minute) : ""}
+															{formik.values.scheduleEndDate.toString() !==
+																formik.values.scheduleStartDate.toString() && (
+																<span>
+																	{new Date(
+																		formik.values.scheduleEndDate
+																	).toLocaleDateString(
+																		currentLanguage ? currentLanguage.dateLocale.code : undefined
+																	)}
+																</span>
 															)}
 														</td>
+													</tr>
+													)}
+													{/* capture agent (aka. room or location) */}
 														{hasAccessRole && (
-															<td className="editable">
-																{/* drop-down for capture agents (aka. rooms or locations)
-																	*
-																	* This is the eighth input field.
-																	*/}
-																<DropDown
-																	value={formik.values.captureAgent}
-																	text={formik.values.captureAgent}
-																	options={filterDevicesForAccess(
-																		user,
-																		captureAgents
-																	).filter((a) => filterCaptureAgents(a))}
-																	type={"captureAgent"}
-																	required={true}
-																	handleChange={(element) => {
-																		if (element) {
-																			changeInputs(
-																				element.value,
-																				formik.setFieldValue
-																			)
-																		}
-																	}}
-																	placeholder={t(
+															<SchedulingLocation
+																location={formik.values.captureAgent}
+																inputDevices={filterDevicesForAccess(
+																	user,
+																	captureAgents
+																).filter((a) => filterCaptureAgents(a))}
+																disabled={!accessAllowed(formik.values.captureAgent)}
+																title={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"}
+																placeholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"}
+																callback={(value: string) => {
+																	changeInputs(
+																		value,
+																		formik.setFieldValue
+																	)
+																}}
+															/>
+														)}
+														{!hasAccessRole &&
+															<tr>
+																<td>
+																	{t(
 																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"
 																	)}
-																	disabled={
-																		!accessAllowed(formik.values.captureAgent)
-																	}
-																/>
-															</td>
-														)}
-														{!hasAccessRole && <td>{source.device.name}</td>}
-													</tr>
+																</td>
+																<td>{source.device.name}</td>
+															</tr>
+														}
 
 													{/* inputs */}
 													<tr>
@@ -622,29 +486,13 @@ const EventDetailsSchedulingTab = ({
 																	0 &&
 																(hasAccessRole &&
 																accessAllowed(formik.values.captureAgent)
-																	? /* checkboxes for available inputs
-																			*
-																			* These are the input fields starting at 8.
-																			*/
-																		getInputs(formik.values.captureAgent).map(
-																			(inputMethod, key) => (
-																				<label key={key}>
-																					<Field
-																						name="inputs"
-																						type="checkbox"
-																						tabIndex={8 + key}
-																						value={inputMethod.id}
-																					/>
-																					{t(inputMethod.value)}
-																				</label>
-																			)
-																		)
+																	? <SchedulingInputs
+																			inputs={getInputs(formik.values.captureAgent)}
+																		/>
 																	: formik.values.inputs.map((input, key) => (
 																			<span key={key}>
 																				{t(
-																					getInputs(
-																						formik.values.captureAgent
-																					).find(
+																					getInputs(formik.values.captureAgent).find(
 																						(agent) => agent.id === input
 																					)?.value ?? ""
 																				)}
