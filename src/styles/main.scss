@@ -130,6 +130,9 @@ a {
 
 .modal {
   top: 30px;
+  position: fixed;
+  max-height: 90vh;
+  overflow: scroll;
   input[readonly] {
     border: none;
   }
@@ -253,10 +256,6 @@ td.editable {
 
   .vertical-resize {
     resize: vertical;
-  }
-
-  span {
-    border-bottom: 1px dashed #999;
   }
 
   i.saved, i.edit {
@@ -618,4 +617,11 @@ tr.info {
       max-width: 100%;
       height: auto;
   }
+}
+
+.table-filter-blue-box {
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
