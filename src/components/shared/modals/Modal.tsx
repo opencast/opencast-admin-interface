@@ -10,7 +10,8 @@ import { useTranslation } from "react-i18next";
 
 export type ModalProps = {
 	open?: boolean
-	closeCallback?: () => void
+	// Having this return false will prevent the modal from closing
+	closeCallback?: () => boolean
 	/** If true, the first element in the modal automatically be focused. If false,
 	 * no element is initially focused */
 	initialFocus?: false | string
@@ -43,7 +44,10 @@ export const Modal = forwardRef<ModalHandle, PropsWithChildren<ModalProps>>(({
 		isOpen: () => isOpen,
 		open: () => setOpen(true),
 		close: () => {
-			closeCallback !== undefined && closeCallback();
+			if (closeCallback !== undefined && !closeCallback()) {
+				// Don't close modal
+				return;
+			}
 			setOpen(false);
 		},
 	}), [closeCallback, isOpen]);

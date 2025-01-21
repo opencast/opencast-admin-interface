@@ -31,7 +31,9 @@ const SeriesDetailsModal = ({
 		if (!policyChanged || confirmUnsaved()) {
 			setPolicyChanged(false);
 			dispatch(removeNotificationWizardForm());
+			return true;
 		}
+		return false;
 	};
 
 	return (

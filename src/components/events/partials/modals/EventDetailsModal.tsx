@@ -34,7 +34,9 @@ const EventDetailsModal = () => {
 			setPolicyChanged(false);
 			dispatch(removeNotificationWizardForm());
 			hideModal();
+			return true;
 		}
+		return false;
 	};
 
 	return (

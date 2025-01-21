@@ -30,10 +30,6 @@ const RecordingsActionCell = ({
 		deleteConfirmationModalRef.current?.close?.();
 	};
 
-	const hideRecordingDetails = () => {
-		recordingDetailsModalRef.current?.close?.()
-	};
-
 	const showRecordingDetails = async () => {
 		await dispatch(fetchRecordingDetails(row.name));
 
@@ -57,7 +53,6 @@ const RecordingsActionCell = ({
 			)}
 
 			<RecordingDetailsModal
-				close={hideRecordingDetails}
 				recordingId={row.name}
 				modalRef={recordingDetailsModalRef}
 			/>

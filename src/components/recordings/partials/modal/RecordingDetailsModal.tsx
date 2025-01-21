@@ -7,11 +7,9 @@ import { Modal, ModalHandle } from "../../../shared/modals/Modal";
  * This component renders the modal for displaying recording details
  */
 const RecordingDetailsModal = ({
-	close,
 	recordingId,
 	modalRef,
 }: {
-	close: () => void,
 	recordingId: string,
 	modalRef: React.RefObject<ModalHandle>
 }) => {
@@ -19,7 +17,6 @@ const RecordingDetailsModal = ({
 
 	return (
 		<Modal
-			closeCallback={close}
 			header={t("RECORDINGS.RECORDINGS.DETAILS.HEADER", {
 				name: recordingId,
 			})}
