@@ -4,6 +4,7 @@ import cn from "classnames";
 import Notifications from "../../../shared/Notifications";
 import DatePicker from "react-datepicker";
 import {
+	getCurrentLanguageInformation,
 	getTimezoneOffset,
 	translateOverrideFallback,
 } from "../../../../utils/utils";
@@ -384,6 +385,7 @@ const Schedule = <T extends {
 	inputDevices: Recording[]
 }) => {
 	const { t } = useTranslation();
+	const currentLanguage = getCurrentLanguageInformation();
 
 	const renderInputDeviceOptions = () => {
 		if (!!formik.values.location) {
