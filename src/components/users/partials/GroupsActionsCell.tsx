@@ -8,6 +8,7 @@ import { Group, deleteGroup } from "../../../slices/groupSlice";
 import { fetchGroupDetails } from "../../../slices/groupDetailsSlice";
 import { Tooltip } from "../../shared/Tooltip";
 import { ModalHandle } from "../../shared/modals/Modal";
+import GroupDetailsModal from "./modal/GroupDetailsModal";
 
 /**
  * This component renders the action cells of groups in the table view
