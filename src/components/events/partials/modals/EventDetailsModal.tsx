@@ -41,7 +41,7 @@ const EventDetailsModal = () => {
 		<Modal
 			open
 			closeCallback={close}
-			header={t("EVENTS.EVENTS.DETAILS.HEADER", { resourceId: event.title })}
+			header={t("EVENTS.EVENTS.DETAILS.HEADER", { name: event.title })}
 			classId="event-details-modal"
 			ref={modalRef}
 		>

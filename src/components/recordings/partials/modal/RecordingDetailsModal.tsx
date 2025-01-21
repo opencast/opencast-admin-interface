@@ -21,7 +21,7 @@ const RecordingDetailsModal = ({
 		<Modal
 			closeCallback={close}
 			header={t("RECORDINGS.RECORDINGS.DETAILS.HEADER", {
-				resourceId: recordingId,
+				name: recordingId,
 			})}
 			classId="capture-agent-details-modal"
 			ref={modalRef}

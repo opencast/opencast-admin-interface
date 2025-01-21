@@ -37,7 +37,7 @@ const SeriesDetailsModal = ({
 	return (
 		<Modal
 			closeCallback={close}
-			header={t("EVENTS.SERIES.DETAILS.HEADER", { resourceId: seriesTitle })}
+			header={t("EVENTS.SERIES.DETAILS.HEADER", { name: seriesTitle })}
 			classId="series-details-modal"
 			ref={modalRef}
 		>
