@@ -15,6 +15,10 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
 import { AsyncThunk } from "@reduxjs/toolkit";
 
+type InitialValues = {
+	[key: string]: string | string[];
+}
+
 /**
  * This component renders metadata details of a certain event or series
  */
@@ -24,12 +28,14 @@ const DetailsMetadataTab = ({
 	resourceId,
 	header,
 	editAccessRole,
+	formikRef,
 }: {
 	metadataFields: MetadataCatalog,
 	updateResource: AsyncThunk<void, { id: string; values: { [key: string]: any; }; }, any>
 	resourceId: string,
 	header: string,
 	editAccessRole: string,
+	formikRef?: React.RefObject<FormikProps<InitialValues>>
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -69,10 +75,11 @@ const DetailsMetadataTab = ({
 
 	return (
 		// initialize form
-		<Formik
+		<Formik<InitialValues>
 			enableReinitialize
 			initialValues={getInitialValues()}
 			onSubmit={(values) => handleSubmit(values)}
+			innerRef={formikRef}
 		>
 			{(formik) => (
 				<>

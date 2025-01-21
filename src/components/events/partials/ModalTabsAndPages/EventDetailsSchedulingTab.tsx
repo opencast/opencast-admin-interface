@@ -51,13 +51,28 @@ import {
 import { Recording } from "../../../../slices/recordingSlice";
 import { useTranslation } from "react-i18next";
 
+export type InitialValues = {
+	scheduleStartDate: string;
+	scheduleStartHour: string;
+	scheduleStartMinute: string;
+	scheduleDurationHours: string;
+	scheduleDurationMinutes: string;
+	scheduleEndDate: string;
+	scheduleEndHour: string;
+	scheduleEndMinute: string;
+	captureAgent: string;
+	inputs: string[];
+}
+
 /**
  * This component manages the main assets tab of event details modal
  */
 const EventDetailsSchedulingTab = ({
 	eventId,
+	formikRef
 }: {
 	eventId: string,
+	formikRef?: React.RefObject<FormikProps<InitialValues>>
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -247,10 +262,11 @@ const EventDetailsSchedulingTab = ({
 						/* Scheduling configuration */
 						hasSchedulingProperties && (
 						/* Initialize form */
-							<Formik
+							<Formik<InitialValues>
 								enableReinitialize
 								initialValues={getInitialValues()}
 								onSubmit={(values) => submitForm(values).then((r) => {})}
+								innerRef={formikRef}
 							>
 								{(formik) => (
 									<div className="obj tbl-details">

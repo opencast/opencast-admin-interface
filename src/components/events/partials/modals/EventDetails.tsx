@@ -45,6 +45,7 @@ import {
 } from "../../../../slices/eventDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
+import { FormikProps } from "formik";
 
 export enum EventDetailsPage {
 	Metadata,
@@ -70,11 +71,13 @@ const EventDetails = ({
 	close,
 	policyChanged,
 	setPolicyChanged,
+	formikRef,
 }: {
 	eventId: string,
 	close?: () => void,
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,
+	formikRef: React.RefObject<FormikProps<any>>
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -206,6 +209,7 @@ const EventDetails = ({
 						header={tabs[page].bodyHeaderTranslation ?? ""}
 						updateResource={updateMetadata}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
+						formikRef={formikRef}
 					/>
 				)}
 				{page === EventDetailsPage.ExtendedMetadata && !isLoadingMetadata && (
@@ -214,6 +218,7 @@ const EventDetails = ({
 						metadata={extendedMetadata}
 						updateResource={updateExtendedMetadata}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
+						formikRef={formikRef}
 					/>
 				)}
 				{page === 2 && <EventDetailsPublicationTab eventId={eventId} />}
@@ -223,12 +228,16 @@ const EventDetails = ({
 					/>
 				)}
 				{page === 4 && !isLoadingScheduling && (
-					<EventDetailsSchedulingTab eventId={eventId} />
+					<EventDetailsSchedulingTab
+					eventId={eventId}
+					formikRef={formikRef}
+					/>
 				)}
 				{page === EventDetailsPage.Workflow &&
 					((workflowTabHierarchy === "entry" && (
 						<EventDetailsWorkflowTab
 							eventId={eventId}
+							formikRef={formikRef}
 						/>
 					)) ||
 						(workflowTabHierarchy === "workflow-details" && (
