@@ -9,7 +9,6 @@
     "@mui/material": "^6.3.0",
     "@mui/x-date-pickers": "^7.23.1",
     "@reduxjs/toolkit": "^2.5.0",
-    "@types/dompurify": "^3.2.0",
     "array-move": "^4.0.0",
     "axios": "^1.7.9",
     "bourbon": "^7.3.0",
