@@ -15,6 +15,7 @@ import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
 import { Event } from "../../../../slices/eventSlice";
 import ModalContent from "../../../shared/modals/ModalContent";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
  * This component renders the table overview of selected events in edit scheduled events bulk action
@@ -129,30 +130,17 @@ const EditScheduledEventsGeneralPage = <T extends RequiredFormProps>({
 			</ModalContent>
 
 			{/* Button for navigation to next page */}
-			<footer>
-				<button
-					type="submit"
-					className={cn("submit", {
-						active: checkValidityUpdateScheduleEventSelection(
-							formik.values,
-							user
-						),
-						inactive: !checkValidityUpdateScheduleEventSelection(
-							formik.values,
-							user
-						),
-					})}
-					disabled={
-						!checkValidityUpdateScheduleEventSelection(formik.values, user)
-					}
-					onClick={() => {
-						nextPage(formik.values);
-					}}
-					tabIndex={100}
-				>
-					{t("WIZARD.NEXT_STEP")}
-				</button>
-			</footer>
+			<WizardNavigationButtons
+				formik={formik}
+				nextPage={nextPage}
+				customValidation={
+					!checkValidityUpdateScheduleEventSelection(
+						formik.values,
+						user
+					)
+				}
+				isFirst
+			/>
 
 			<div className="btm-spacer" />
 		</>

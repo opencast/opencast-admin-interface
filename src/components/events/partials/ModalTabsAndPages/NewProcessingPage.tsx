@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import cn from "classnames";
 import { getWorkflowDef } from "../../../../selectors/workflowSelectors";
 import RenderWorkflowConfig from "../wizards/RenderWorkflowConfig";
 import { setDefaultConfig } from "../../../../utils/workflowPanelUtils";
@@ -9,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchWorkflowDef } from "../../../../slices/workflowSlice";
 import { FormikProps } from "formik";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
  * This component renders the processing page for new events in the new event wizard.
@@ -125,25 +125,11 @@ const NewProcessingPage = <T extends RequiredFormProps>({
 			</ModalContentTable>
 
 			{/* Button for navigation to next page and previous page */}
-			<footer>
-				<button
-					type="submit"
-					className={cn("submit", {
-						active: formik.values.processingWorkflow && formik.isValid,
-						inactive: !(formik.values.processingWorkflow && formik.isValid),
-					})}
-					disabled={!(formik.values.processingWorkflow && formik.isValid)}
-					onClick={() => {
-						nextPage(formik.values);
-					}}
-					tabIndex={100}
-				>
-					{t("WIZARD.NEXT_STEP")}
-				</button>
-				<button className="cancel" onClick={() => previous()} tabIndex={101}>
-					{t("WIZARD.BACK")}
-				</button>
-			</footer>
+			<WizardNavigationButtons
+				formik={formik}
+				nextPage={nextPage}
+				previousPage={() => previous()}
+			/>
 
 			<div className="btm-spacer" />
 		</>

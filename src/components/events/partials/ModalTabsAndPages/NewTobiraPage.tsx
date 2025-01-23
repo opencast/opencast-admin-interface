@@ -363,7 +363,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 			formik={formik}
 			nextPage={nextPage}
 			previousPage={previousPage}
-			additionalValidation={!isValid}
+			customValidation={!isValid}
 		/>}
 	</>;
 };
