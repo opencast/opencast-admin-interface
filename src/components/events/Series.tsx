@@ -48,7 +48,7 @@ const Series = () => {
 	const newSeriesModalRef = useRef<ModalHandle>(null);
 	const deleteModalRef = useRef<ModalHandle>(null);
 
-  const user = useAppSelector(state => getUserInformation(state));
+	const user = useAppSelector(state => getUserInformation(state));
 	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	let location = useLocation();
