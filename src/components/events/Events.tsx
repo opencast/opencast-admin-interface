@@ -333,7 +333,7 @@ const Events = () => {
 
 				{/*Include table component*/}
 				{/* <Table templateMap={eventsTemplateMap} resourceType="events" /> */}
-        <Table templateMap={eventsTemplateMap} />
+				<Table templateMap={eventsTemplateMap} />
 			</MainView>
 			<Footer />
 		</>
