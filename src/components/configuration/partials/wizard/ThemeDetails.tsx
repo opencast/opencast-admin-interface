@@ -19,10 +19,10 @@ import { ThemeDetailsInitialValues } from "../../../../slices/themeSlice";
 /**
  * This component manages the pages of the theme details
  */
-const ThemeDetails : React.FC<{
+const ThemeDetails = ({
+	close,
+}: {
 	close: () => void,
-}> = ({
-  close,
 }) => {
 	const dispatch = useAppDispatch();
 
