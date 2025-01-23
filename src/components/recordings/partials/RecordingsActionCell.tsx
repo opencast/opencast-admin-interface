@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import RecordingDetailsModal from "./modal/RecordingDetailsModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { Recording, deleteRecording } from "../../../slices/recordingSlice";
 import { fetchRecordingDetails } from "../../../slices/recordingDetailsSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import DetailsModal from "../../shared/modals/DetailsModal";
+import RecordingsDetails from "./modal/RecordingsDetails";
 
 /**
  * This component renders the action cells of recordings in the table view
@@ -56,10 +57,13 @@ const RecordingsActionCell = ({
 			)}
 
 			{displayRecordingDetails && (
-				<RecordingDetailsModal
-					close={hideRecordingDetails}
-					recordingId={row.name}
-				/>
+				<DetailsModal
+					handleClose={hideRecordingDetails}
+					title={row.name}
+					prefix={"RECORDINGS.RECORDINGS.DETAILS.HEADER"}
+				>
+					<RecordingsDetails/>
+				</DetailsModal>
 			)}
 
 			{/* delete location/recording */}

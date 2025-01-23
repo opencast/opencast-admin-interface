@@ -12,7 +12,6 @@ import { fetchWorkflowDef, Workflow as WorkflowDefinitions } from "./workflowSli
 import {
 	getExtendedMetadata,
 	getSchedulingSource,
-	getWorkflowDefinitions,
 	getWorkflows,
 	getStatistics,
 } from "../selectors/eventDetailsSelectors";
@@ -1839,19 +1838,6 @@ export const deleteCommentReply = createAppAsyncThunk('eventDetails/deleteCommen
 	return true;
 });
 
-export const updateWorkflow = createAppAsyncThunk('eventDetails/updateWorkflow', async (workflowId: string, { dispatch, getState }) => {
-	const state = getState();
-	const workflowDefinitions = getWorkflowDefinitions(state);
-	const workflowDef = workflowDefinitions.find((def) => def.id === workflowId);
-	await dispatch(
-		setEventWorkflow({
-			workflowId: workflowId,
-			description: workflowDef?.description,
-			configuration: workflowDef?.configuration_panel_json // previously `workflowDef.configuration`. Might cause error
-		})
-	);
-});
-
 export const saveWorkflowConfig = createAppAsyncThunk('eventDetails/saveWorkflowConfig', async (params: {
 	values: {
 		workflowDefinition: string,
@@ -2562,13 +2548,6 @@ const eventDetailsSlice = createSlice({
 			})
 			.addCase(deleteComment.rejected, (state, action) => {
 				console.error(action.error);
-			})
-			.addCase(updateWorkflow.fulfilled, (state, action) => {
-				if ("workflowId" in state.workflows.workflow && !!state.workflows.workflow.workflowId) {
-					state.workflowConfiguration = state.workflows.workflow;
-				} else {
-					state.workflowConfiguration = state.baseWorkflow;
-				}
 			})
 			// fetch Tobira data
 			.addCase(fetchEventDetailsTobira.pending, (state) => {

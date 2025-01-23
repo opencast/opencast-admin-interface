@@ -187,7 +187,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 												</td>
 												<td>
 													{t("dateFormats.date.short", {
-														date: formik.values.scheduleStartDate,
+														date: renderValidDate(formik.values.scheduleStartDate),
 													})}
 												</td>
 											</tr>
@@ -207,7 +207,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 													</td>
 													<td>
 														{t("dateFormats.date.short", {
-															date: formik.values.scheduleEndDate,
+															date: renderValidDate(formik.values.scheduleEndDate),
 														})}
 													</td>
 												</tr>

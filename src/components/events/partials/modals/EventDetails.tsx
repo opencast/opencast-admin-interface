@@ -25,6 +25,7 @@ import {
 	getModalWorkflowTabHierarchy,
 	getModalPage,
 	getEventDetailsTobiraDataError,
+	getEventDetailsTobiraStatus,
 } from "../../../../selectors/eventDetailsSelectors";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import EventDetailsStatisticsTab from "../ModalTabsAndPages/EventDetailsStatisticsTab";
@@ -83,6 +84,7 @@ const EventDetails = ({
 		dispatch(fetchSchedulingInfo(eventId)).then();
 		dispatch(fetchEventStatistics(eventId)).then();
 		dispatch(fetchAssetUploadOptions()).then();
+		dispatch(fetchEventDetailsTobira(eventId));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -97,6 +99,7 @@ const EventDetails = ({
 	const hasStatistics = useAppSelector(state => getHasStatistics(state));
 	const isLoadingStatistics = useAppSelector(state => isFetchingStatistics(state));
 	const captureAgents = useAppSelector(state => getRecordings(state));
+	const tobiraStatus = useAppSelector(state => getEventDetailsTobiraStatus(state));
 	const tobiraError = useAppSelector(state => getEventDetailsTobiraDataError(state));
 
 	const tabs = [
@@ -163,7 +166,7 @@ const EventDetails = ({
 			accessRole: "ROLE_UI_EVENTS_DETAILS_COMMENTS_VIEW",
 			name: "tobira",
 			page: EventDetailsPage.Tobira,
-			hidden: tobiraError?.message?.includes("503"),
+			hidden: tobiraStatus === "failed" && tobiraError?.message?.includes("503"),
 		},
 		{
 			tabNameTranslation: "EVENTS.EVENTS.DETAILS.TABS.STATISTICS",
@@ -177,9 +180,6 @@ const EventDetails = ({
 
 	const openTab = (tabNr: EventDetailsPage) => {
 		dispatch(removeNotificationWizardForm());
-		if (tabNr === EventDetailsPage.Tobira) {
-			dispatch(fetchEventDetailsTobira(eventId));
-		}
 		dispatch(openModalTab(tabNr, "entry", "entry"))
 	};
 

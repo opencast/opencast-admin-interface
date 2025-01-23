@@ -8,6 +8,7 @@ import {
 	getSeriesDetailsTheme,
 	getSeriesDetailsThemeNames,
 	getSeriesDetailsTobiraDataError,
+	getSeriesDetailsTobiraStatus,
 	hasStatistics as seriesHasStatistics,
 } from "../../../../selectors/seriesDetailsSelectors";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
@@ -19,6 +20,7 @@ import SeriesDetailsFeedsTab from "../ModalTabsAndPages/SeriesDetailsFeedsTab";
 import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsMetadataTab";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
+	fetchSeriesDetailsTobira,
 	fetchSeriesStatistics,
 	setTobiraTabHierarchy,
 	updateExtendedSeriesMetadata,
@@ -47,10 +49,12 @@ const SeriesDetails = ({
 	const theme = useAppSelector(state => getSeriesDetailsTheme(state));
 	const themeNames = useAppSelector(state => getSeriesDetailsThemeNames(state));
 	const hasStatistics = useAppSelector(state => seriesHasStatistics(state));
+	const tobiraStatus = useAppSelector(state => getSeriesDetailsTobiraStatus(state));
 	const tobiraError = useAppSelector(state => getSeriesDetailsTobiraDataError(state));
 
 	useEffect(() => {
 		dispatch(fetchSeriesStatistics(seriesId));
+		dispatch(fetchSeriesDetailsTobira(seriesId));
 		dispatch(setTobiraTabHierarchy("main"));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -89,7 +93,7 @@ const SeriesDetails = ({
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.TOBIRA",
 			accessRole: "ROLE_UI_SERIES_DETAILS_TOBIRA_VIEW",
 			name: "tobira",
-			hidden: tobiraError?.message?.includes("503"),
+			hidden: tobiraStatus === "failed" && tobiraError?.message?.includes("503"),
 		},
 		{
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.STATISTICS",

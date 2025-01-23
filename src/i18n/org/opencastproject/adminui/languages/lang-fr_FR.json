@@ -675,7 +675,7 @@
 				"UPDATING_PREVIEWS": "Actualisation des aperçus"
 			},
 			"DETAILS": {
-				"HEADER": "Détails de l'événement {{resourceId}}",
+				"HEADER": "Event details - {{name}}",
 				"TABS": {
 					"METADATA": "Métadonnées",
 					"EXTENDED-METADATA": "Métadonnées II",
@@ -1172,7 +1172,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Détails de la série - {{resourceId}}",
+				"HEADER": "Series details - {{name}}",
 				"TABS": {
 					"METADATA": "Métadonnées",
 					"EXTENDED_METADATA": "Métadonnées II",
@@ -1278,7 +1278,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Détails de l'emplacement - {{resourceId}}",
+				"HEADER": "Location details - {{name}}",
 				"TAB": {
 					"GENERAL": "Général",
 					"CONFIGURATION": "Configuration",
@@ -1335,7 +1335,7 @@
 			},
 			"DETAILS": {
 				"NEWCAPTION": "Créer utilisateur",
-				"EDITCAPTION": "Détails de l'utilisateur - {{username}}",
+				"EDITCAPTION": "User details - {{name}}",
 				"TABS": {
 					"USER": "Utilisateur",
 					"ROLES": "Rôles",
