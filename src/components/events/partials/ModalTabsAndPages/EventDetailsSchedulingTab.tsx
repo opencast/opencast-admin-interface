@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import cn from "classnames";
 import _ from "lodash";
 import DatePicker from "react-datepicker";
 import { Formik, FormikErrors, FormikProps } from "formik";
@@ -46,6 +45,7 @@ import {
 } from "../../../../slices/notificationSlice";
 import { Recording } from "../../../../slices/recordingSlice";
 import { useTranslation } from "react-i18next";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import SchedulingTime from "../wizards/scheduling/SchedulingTime";
 import SchedulingEndDateDisplay from "../wizards/scheduling/SchedulingEndDateDisplay";
 import SchedulingLocation from "../wizards/scheduling/SchedulingLocation";
@@ -509,29 +509,18 @@ const EventDetailsSchedulingTab = ({
 										{formik.dirty && (
 											<>
 												{/* Render buttons for updating scheduling */}
-												<footer>
-													<button
-														type="submit"
-														onClick={() => formik.handleSubmit()}
-														disabled={!checkValidity(formik)}
-														className={cn("submit", {
-															active: checkValidity(formik),
-															inactive: !checkValidity(formik),
-														})}
-													>
-														{t("SAVE") /* Save */}
-													</button>
-													<button
-														className="cancel"
-														onClick={() => {
-															formik.resetForm({
-																values: getInitialValues(),
-															});
-														}}
-													>
-														{t("CANCEL") /* Cancel */}
-													</button>
-												</footer>
+												<WizardNavigationButtons
+													formik={formik}
+													customValidation={!checkValidity(formik)}
+													previousPage={() => {
+														formik.resetForm({
+															values: getInitialValues(),
+														});
+													}}
+													createTranslationString="SAVE"
+													cancelTranslationString="CANCEL"
+													isLast
+												/>
 
 												<div className="btm-spacer" />
 											</>
