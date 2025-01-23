@@ -130,6 +130,9 @@ a {
 
 .modal {
   top: 30px;
+  position: fixed;
+  max-height: 90vh;
+  overflow: scroll;
   input[readonly] {
     border: none;
   }
@@ -253,10 +256,6 @@ td.editable {
 
   .vertical-resize {
     resize: vertical;
-  }
-
-  span {
-    border-bottom: 1px dashed #999;
   }
 
   i.saved, i.edit {

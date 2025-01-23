@@ -7,6 +7,8 @@ import {
 	getSeriesDetailsMetadata,
 	getSeriesDetailsTheme,
 	getSeriesDetailsThemeNames,
+	getSeriesDetailsTobiraDataError,
+	getSeriesDetailsTobiraStatus,
 	hasStatistics as seriesHasStatistics,
 } from "../../../../selectors/seriesDetailsSelectors";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
@@ -19,11 +21,13 @@ import DetailsMetadataTab from "../ModalTabsAndPages/DetailsMetadataTab";
 import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsExtendedMetadataTab";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
+	fetchSeriesDetailsTobira,
 	fetchSeriesStatistics,
+	setTobiraTabHierarchy,
 	updateExtendedSeriesMetadata,
 	updateSeriesMetadata,
 } from "../../../../slices/seriesDetailsSlice";
-import SeriesDetailsTobiraTab from "../ModalTabsAndPages/SeriesDetailsTobiraTab";
+import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
 
 /**
  * This component manages the tabs of the series details modal
@@ -46,9 +50,13 @@ const SeriesDetails = ({
 	const theme = useAppSelector(state => getSeriesDetailsTheme(state));
 	const themeNames = useAppSelector(state => getSeriesDetailsThemeNames(state));
 	const hasStatistics = useAppSelector(state => seriesHasStatistics(state));
+	const tobiraStatus = useAppSelector(state => getSeriesDetailsTobiraStatus(state));
+	const tobiraError = useAppSelector(state => getSeriesDetailsTobiraDataError(state));
 
 	useEffect(() => {
 		dispatch(fetchSeriesStatistics(seriesId));
+		dispatch(fetchSeriesDetailsTobira(seriesId));
+		dispatch(setTobiraTabHierarchy("main"));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -86,7 +94,7 @@ const SeriesDetails = ({
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.TOBIRA",
 			accessRole: "ROLE_UI_SERIES_DETAILS_TOBIRA_VIEW",
 			name: "tobira",
-			hidden: false, // TODO: Set to true if there no tobira data
+			hidden: tobiraStatus === "failed" && tobiraError?.message?.includes("503"),
 		},
 		{
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.STATISTICS",
@@ -104,36 +112,15 @@ const SeriesDetails = ({
 		<>
 			{/* navigation for navigating between tabs */}
 			<nav className="modal-nav" id="modal-nav">
-				{hasAccess(tabs[0].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 0 })} onClick={() => openTab(0)}>
-						{t(tabs[0].tabNameTranslation)}
+				{tabs.map((tab, index) => !tab.hidden && hasAccess(tab.accessRole, user) && (
+					<button
+						key={tab.name}
+						className={"button-like-anchor " + cn({ active: page === index })}
+						onClick={() => openTab(index)}
+					>
+						{t(tab.tabNameTranslation)}
 					</button>
-				)}
-				{!tabs[1].hidden && hasAccess(tabs[1].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 1 })} onClick={() => openTab(1)}>
-						{t(tabs[1].tabNameTranslation)}
-					</button>
-				)}
-				{hasAccess(tabs[2].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 2 })} onClick={() => openTab(2)}>
-						{t(tabs[2].tabNameTranslation)}
-					</button>
-				)}
-				{!tabs[3].hidden && hasAccess(tabs[3].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 3 })} onClick={() => openTab(3)}>
-						{t(tabs[3].tabNameTranslation)}
-					</button>
-				)}
-				{!tabs[4].hidden && hasAccess(tabs[4].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 4 })} onClick={() => openTab(4)}>
-						{t(tabs[4].tabNameTranslation)}
-					</button>
-				)}
-				{!tabs[5].hidden && hasAccess(tabs[5].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 5 })} onClick={() => openTab(5)}>
-						{t(tabs[5].tabNameTranslation)}
-					</button>
-				)}
+				))}
 				{feeds.length > 0 && (
 					<button className={"button-like-anchor " + cn({ active: page === 6 })} onClick={() => openTab(6)}>
 						{"Feeds"}
@@ -176,8 +163,9 @@ const SeriesDetails = ({
 					/>
 				)}
 				{page === 4 && (
-					<SeriesDetailsTobiraTab
-						seriesId={seriesId}
+					<DetailsTobiraTab
+						kind="series"
+						id={seriesId}
 					/>
 				)}
 				{page === 5 && (
