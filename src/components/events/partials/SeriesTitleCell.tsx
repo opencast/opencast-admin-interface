@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { setSpecificEventFilter } from "../../../slices/tableFilterSlice";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useAppDispatch } from "../../../store";
 import { Tooltip } from "../../shared/Tooltip";
 import { Series } from "../../../slices/seriesSlice";
@@ -18,8 +18,7 @@ const SeriesTitleCell = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-// @ts-expect-error TS(7006): Parameter 'seriesId' implicitly has an 'any' type.
-	const redirectToEvents = async (seriesId) => {
+	const redirectToEvents = async (seriesId: string) => {
 		// redirect to tables
 		await dispatch(loadEventsIntoTable());
 

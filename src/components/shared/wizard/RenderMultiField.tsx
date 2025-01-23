@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { ReactNode, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { useClickOutsideField } from "../../../hooks/wizardHooks";
@@ -173,7 +173,7 @@ const EditMultiSelect = ({
 					{/* Display possible options for values as some kind of dropdown */}
 					<datalist id="data-list">
 						{collection.map((item, key) => (
-							<option key={key}>{item.value}</option>
+							<option key={key}>{item.value as ReactNode}</option>
 						))}
 					</datalist>
 				</div>
@@ -249,7 +249,7 @@ const ShowValue = ({
   setEditMode: (e: boolean) => void
 	form: FieldProps["form"]
 	field: FieldProps["field"]
-	showCheck: any,
+	showCheck: boolean,
 }) => {
 	return (
 		<div onClick={() => setEditMode(true)} className="show-edit">

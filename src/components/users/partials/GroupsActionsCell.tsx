@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import GroupDetailsModal from "./modal/GroupDetailsModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch, useAppSelector  } from "../../../store";
 import { Group, deleteGroup } from "../../../slices/groupSlice";
 import { fetchGroupDetails } from "../../../slices/groupDetailsSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import DetailsModal from "../../shared/modals/DetailsModal";
+import GroupDetails from "./modal/GroupDetails";
 
 /**
  * This component renders the action cells of groups in the table view
@@ -29,8 +30,7 @@ const GroupsActionsCell = ({
 		setDeleteConfirmation(false);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	const deletingGroup = (id) => {
+	const deletingGroup = (id: string) => {
 		dispatch(deleteGroup(id));
 	};
 
@@ -58,7 +58,13 @@ const GroupsActionsCell = ({
 
 			{/*modal displaying details about group*/}
 			{displayGroupDetails && (
-				<GroupDetailsModal close={hideGroupDetails} groupName={row.name} />
+				<DetailsModal
+					handleClose={hideGroupDetails}
+					title={row.name}
+					prefix={"USERS.GROUPS.DETAILS.EDITCAPTION"}
+				>
+					<GroupDetails close={hideGroupDetails} />
+				</DetailsModal>
 			)}
 
 			{/* delete group */}

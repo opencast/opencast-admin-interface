@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
 import { AclResult, deleteAcl } from "../../../slices/aclSlice";
-import AclDetailsModal from "./modal/AclDetailsModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchAclDetails } from "../../../slices/aclDetailsSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import DetailsModal from "../../shared/modals/DetailsModal";
+import AclDetails from "./modal/AclDetails";
 
 /**
  * This component renders the action cells of acls in the table view
@@ -29,8 +30,7 @@ const AclsActionsCell = ({
 		setDeleteConfirmation(false);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	const deletingAcl = (id) => {
+	const deletingAcl = (id: number) => {
 		dispatch(deleteAcl(id));
 	};
 
@@ -57,7 +57,13 @@ const AclsActionsCell = ({
 			)}
 
 			{displayAclDetails && (
-				<AclDetailsModal close={hideAclDetails} aclName={row.name} />
+				<DetailsModal
+					handleClose={hideAclDetails}
+					title={row.name}
+					prefix={"USERS.ACLS.DETAILS.HEADER"}
+				>
+					<AclDetails close={hideAclDetails} />
+				</DetailsModal>
 			)}
 
 			{/* delete ACL */}

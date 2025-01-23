@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import UserDetailsModal from "./modal/UserDetailsModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { UserResult, deleteUser } from "../../../slices/userSlice";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchUserDetails } from "../../../slices/userDetailsSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import DetailsModal from "../../shared/modals/DetailsModal";
+import UserDetails from "./modal/UserDetails";
 
 /**
  * This component renders the action cells of users in the table view
@@ -29,8 +30,7 @@ const UsersActionCell = ({
 		setDeleteConfirmation(false);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'id' implicitly has an 'any' type.
-	const deletingUser = (id) => {
+	const deletingUser = (id: string) => {
 		dispatch(deleteUser(id));
 	};
 
@@ -57,7 +57,13 @@ const UsersActionCell = ({
 			)}
 
 			{displayUserDetails && (
-				<UserDetailsModal close={hideUserDetails} username={row.username} />
+				<DetailsModal
+					handleClose={hideUserDetails}
+					title={row.username}
+					prefix={"USERS.USERS.DETAILS.EDITCAPTION"}
+				>
+					<UserDetails close={hideUserDetails} />
+				</DetailsModal>
 			)}
 
 			{(row.manageable || (row.provider !== "opencast" && row.provider !== "system"))

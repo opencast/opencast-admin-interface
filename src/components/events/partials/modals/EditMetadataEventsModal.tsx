@@ -20,6 +20,7 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 import { isEvent } from "../../../../slices/tableSlice";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
  * This component manges the edit metadata bulk action
@@ -45,8 +46,8 @@ const EditMetadataEventsModal = ({
 		mergedMetadata: []
 	});
 	const [loading, setLoading] = useState(true);
-	const [fatalError, setFatalError] = useState({});
-	const [fetchedValues, setFetchedValues] = useState(null);
+	const [fatalError, setFatalError] = useState<string | undefined>(undefined);
+	const [fetchedValues, setFetchedValues] = useState<{ [key: string]: string | string[] }>({});
 
 	const user = useAppSelector(state => getUserInformation(state));
 
@@ -61,31 +62,27 @@ const EditMetadataEventsModal = ({
 		async function fetchData() {
 			setLoading(true);
 
-// @ts-expect-error TS(7034): Variable 'eventIds' implicitly has type 'any[]' in... Remove this comment to see the full error message
-			let eventIds = [];
+			let eventIds: string[] = [];
 			selectedEvents.forEach((event) => isEvent(event) &&  eventIds.push(event.id));
 
 			// Get merged metadata from backend
-// @ts-expect-error TS(7005): Variable 'eventIds' implicitly has an 'any[]' type... Remove this comment to see the full error message
 			// const responseMetadataFields = await dispatch(postEditMetadata(eventIds))
 			await dispatch(postEditMetadata(eventIds))
 			.then(unwrapResult)
 			.then((result) => {
-				// Set fatal error if response contains error
-				if (!!result.fatalError) {
-					setFatalError(result);
-				} else {
-					// Set initial values and save metadata field infos in state
-					let initialValues = getInitialValues(result);
-	// @ts-expect-error TS(2345): Argument of type '{}' is not assignable to paramet... Remove this comment to see the full error message
-					setFetchedValues(initialValues);
-					setMetadataFields({
-						merged: result.merged,
-						mergedMetadata: result.mergedMetadata,
-						notFound: result.notFound,
-						runningWorkflow: result.runningWorkflow,
-					});
-				}
+				// Set initial values and save metadata field infos in state
+				let initialValues = getInitialValues(result.mergedMetadata);
+				setFetchedValues(initialValues);
+				setMetadataFields({
+					merged: result.merged,
+					mergedMetadata: result.mergedMetadata,
+					notFound: result.notFound,
+					runningWorkflow: result.runningWorkflow,
+				});
+			})
+			// Set fatal error if response contains error
+			.catch((e: Error) => {
+				setFatalError(e.message);
 			});
 			setLoading(false);
 		}
@@ -93,15 +90,13 @@ const EditMetadataEventsModal = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (values: { [key: string]: unknown }) => {
 		const response = dispatch(updateBulkMetadata({metadataFields, values}));
 		console.info(response);
 		close();
 	};
 
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const onChangeSelected = (e, fieldId) => {
+	const onChangeSelected = (e: React.ChangeEvent<HTMLInputElement>, fieldId: string) => {
 		let selected = e.target.checked;
 		let fields = metadataFields;
 		fields.mergedMetadata = metadataFields.mergedMetadata.map((field) => {
@@ -119,14 +114,20 @@ const EditMetadataEventsModal = ({
 	};
 
 	// Check if value of metadata field is changed
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
-	const isTouchedOrSelected = (field, formikValues) => {
+	const isTouchedOrSelected = (field: MetadataFieldSelected, formikValues: { [key: string]: string | string[] }) => {
 		if (field.selected) {
 			return true;
 		}
 
-// @ts-expect-error TS(2531): Object is possibly 'null'.
-		if (fetchedValues[field.id] !== formikValues[field.id]) {
+		let fetched = fetchedValues[field.id];
+		let inForm = formikValues[field.id];
+		let same = false;
+		if (fetched === inForm) {
+			same = true;
+		} else if (Array.isArray(fetched) && Array.isArray(inForm)) {
+			same = fetched.length === inForm.length && fetched.every((e, i) => e === inForm[i]);
+		}
+		if (!same) {
 			let fields = metadataFields;
 			fields.mergedMetadata = metadataFields.mergedMetadata.map((f) => {
 				if (f.id === field.id) {
@@ -167,16 +168,14 @@ const EditMetadataEventsModal = ({
 				)}
 
 				{/* Fatal error view */}
-{/* @ts-expect-error TS(2339): Property 'fatalError' does not exist on type '{}'. */}
-				{!!fatalError.fatalError && (
+				{!!fatalError && (
 					<div className="modal-content">
 						<div className="modal-body">
 							<div className="row">
 								<div className="alert sticky error">
 									<p>
 										{t("BULK_ACTIONS.EDIT_EVENTS_METADATA.FATAL_ERROR", {
-// @ts-expect-error TS(2339): Property 'fatalError' does not exist on type '{}'.
-											fatalError: fatalError.fatalError,
+											fatalError: fatalError,
 										})}
 									</p>
 								</div>
@@ -187,10 +186,8 @@ const EditMetadataEventsModal = ({
 
 				{/* todo: Request Errors View and Update Errors View (not quite sure what this is used for) */}
 
-{/* @ts-expect-error TS(2339): Property 'fatalError' does not exist on type '{}'. */}
-				{!loading && fatalError.fatalError === undefined && (
+				{!loading && fatalError === undefined && (
 					<Formik
-// @ts-expect-error TS(2322): Type 'null' is not assignable to type 'FormikValue... Remove this comment to see the full error message
 						initialValues={fetchedValues}
 						onSubmit={(values) => handleSubmit(values)}
 					>
@@ -299,35 +296,23 @@ const EditMetadataEventsModal = ({
 								</div>
 
 								{/* Buttons for cancel and submit */}
-								<footer>
-									<button
-										type="submit"
-										onClick={() => formik.handleSubmit()}
-										disabled={!(formik.dirty && formik.isValid)}
-										className={cn("submit", {
-											active:
-												formik.dirty &&
-												formik.isValid &&
-												hasAccess(
-													"ROLE_UI_EVENTS_DETAILS_METADATA_EDIT",
-													user
-												),
-											inactive: !(
-												formik.dirty &&
-												formik.isValid &&
-												hasAccess(
-													"ROLE_UI_EVENTS_DETAILS_METADATA_EDIT",
-													user
-												)
-											),
-										})}
-									>
-										{t("WIZARD.UPDATE")}
-									</button>
-									<button onClick={() => close()} className="cancel">
-										{t("CLOSE")}
-									</button>
-								</footer>
+								<WizardNavigationButtons
+									formik={formik}
+									customValidation={
+										!(
+											formik.dirty &&
+											formik.isValid &&
+											hasAccess(
+												"ROLE_UI_EVENTS_DETAILS_METADATA_EDIT",
+												user
+											)
+										)
+									}
+									previousPage={() => close()}
+									createTranslationString="WIZARD.UPDATE"
+									cancelTranslationString="CLOSE"
+									isLast
+								/>
 
 								<div className="btm-spacer" />
 							</>
@@ -339,13 +324,10 @@ const EditMetadataEventsModal = ({
 	);
 };
 
-// @ts-expect-error TS(7006): Parameter 'metadataFields' implicitly has an 'any'... Remove this comment to see the full error message
-const getInitialValues = (metadataFields) => {
+const getInitialValues = (metadataFields: MetadataFieldSelected[]) => {
 	// Transform metadata fields provided by backend (saved in redux)
-	let initialValues = {};
-// @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type.
-	metadataFields.mergedMetadata.forEach((field) => {
-// @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+	let initialValues: { [key: string]: string | string[] } = {};
+	metadataFields.forEach((field) => {
 		initialValues[field.id] = field.value;
 	});
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MainNav from "../shared/MainNav";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
@@ -33,6 +33,7 @@ import {
 	fetchSeriesThemes,
 	showActionsSeries,
 } from "../../slices/seriesSlice";
+import { fetchSeriesDetailsTobiraNew } from "../../slices/seriesSlice";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef<HTMLDivElement>();
@@ -127,6 +128,7 @@ const Series = () => {
 	const showNewSeriesModal = async () => {
 		await dispatch(fetchSeriesMetadata());
 		await dispatch(fetchSeriesThemes());
+		await dispatch(fetchSeriesDetailsTobiraNew("/"));
 
 		setNewSeriesModal(true);
 	};

@@ -16,6 +16,8 @@ import {
 	setOffset,
 	setSortBy,
 	updatePageSize,
+	Page,
+	Pagination,
 } from "../../slices/tableSlice";
 import {
 	changeAllSelected,
@@ -32,6 +34,7 @@ import sortUpIcon from "../../img/tbl-sort-up.png";
 import sortDownIcon from "../../img/tbl-sort-down.png";
 import Notifications from "./Notifications";
 import { useAppDispatch, useAppSelector } from "../../store";
+import { TableColumn } from "../../configs/tableConfigs/aclsTableConfig";
 
 const SortIcon = styled.i`
 	float: right;
@@ -50,18 +53,23 @@ const SortActiveIcon = styled.i<{order: string}>`
     left: auto;
     width: 8px;
     height: 13px;
-    background-image: url(${(props: any) =>
+    background-image: url(${(props: { order: string }) =>
 			props.order === "ASC" ? sortUpIcon : sortDownIcon})};
 `;
 
-const containerPageSize = React.createRef();
+const containerPageSize = React.createRef<HTMLButtonElement>();
+
+type TemplateMap = {
+	[key: string]: ({ row }: { row: any }) => JSX.Element | JSX.Element[]
+}
 
 /**
  * This component renders the table in the table views of resources
  */
 const Table = ({
-// @ts-expect-error TS(7031): Binding element 'templateMap' implicitly has an 'a... Remove this comment to see the full error message
 	templateMap,
+}: {
+	templateMap: TemplateMap
 }) => {
 	const dispatch = useAppDispatch();
 
@@ -97,12 +105,9 @@ const Table = ({
 
 	useEffect(() => {
 		// Function for handling clicks outside of an open dropdown menu
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-		const handleClickOutside = (e) => {
+		const handleClickOutside = (e: any) => {
 			if (
-				containerPageSize.current &&
-// @ts-expect-error TS(2571): Object is of type 'unknown'.
-				!containerPageSize.current.contains(e.target)
+				e && containerPageSize.current && !containerPageSize.current.contains(e.target)
 			) {
 				setShowPageSizes(false);
 			}
@@ -117,14 +122,12 @@ const Table = ({
 	});
 
 	// Select or deselect all rows on a page
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const onChangeAllSelected = (e) => {
+	const onChangeAllSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selected = e.target.checked;
 		dispatch(changeAllSelected(selected));
 	};
 
-// @ts-expect-error TS(7006): Parameter 'size' implicitly has an 'any' type.
-	const changePageSize = (size) => {
+	const changePageSize = (size: number) => {
 		dispatch(updatePageSize(size));
 		dispatch(setOffset(0));
 		dispatch(updatePages());
@@ -302,7 +305,6 @@ const Table = ({
 				<button
 					className="drop-down-container small flipped"
 					onClick={() => setShowPageSizes(!showPageSizes)}
-// @ts-expect-error TS(2322): Type 'RefObject<unknown>' is not assignable to typ... Remove this comment to see the full error message
 					ref={containerPageSize}
 				>
 					<span>{pagination.limit}</span>
@@ -356,8 +358,8 @@ const Table = ({
 };
 
 // get all pages directly accessible from current page
-// @ts-expect-error TS(7006): Parameter 'pages' implicitly has an 'any' type.
-const getDirectAccessiblePages = (pages, pagination) => {
+
+const getDirectAccessiblePages = (pages: Page[], pagination: Pagination) => {
 	let startIndex = pagination.offset - pagination.directAccessibleNo,
 		endIndex = pagination.offset + pagination.directAccessibleNo,
 		directAccessible = [],
@@ -407,8 +409,10 @@ const getDirectAccessiblePages = (pages, pagination) => {
 };
 
 // Apply a column template and render corresponding components
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
-const ColumnTemplate = ({ row, column, templateMap }) => {
+const ColumnTemplate = ({ row, column, templateMap }: {row: Row, column: TableColumn, templateMap: any}) => {
+	if (!column.template) {
+		return <></>;
+	}
 	let Template = templateMap[column.template];
 	return <Template row={row} />;
 };

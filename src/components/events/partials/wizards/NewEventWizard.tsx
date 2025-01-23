@@ -7,8 +7,7 @@ import NewMetadataPage from "../ModalTabsAndPages/NewMetadataPage";
 import NewAccessPage from "../ModalTabsAndPages/NewAccessPage";
 import NewProcessingPage from "../ModalTabsAndPages/NewProcessingPage";
 import NewSourcePage from "../ModalTabsAndPages/NewSourcePage";
-import { NewEventSchema } from "../../../../utils/validate";
-import WizardStepperEvent from "../../../shared/wizard/WizardStepperEvent";
+import { NewEventSchema, MetadataSchema } from "../../../../utils/validate";
 import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
 import { initialFormValuesNewEvents } from "../../../../configs/modalConfig";
@@ -21,6 +20,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { MetadataCatalog, UploadAssetOption, postNewEvent } from "../../../../slices/eventSlice";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
+import WizardStepper from "../../../shared/wizard/WizardStepper";
 
 /**
  * This component manages the pages of the new event wizard and the submission of values
@@ -98,7 +98,12 @@ const NewEventWizard: React.FC<{
 	];
 
 	// Validation schema of current page
-	const currentValidationSchema = NewEventSchema[page];
+	let currentValidationSchema;
+	if (page === 0 || page === 1) {
+		currentValidationSchema = MetadataSchema(metadataFields.fields);
+	} else {
+		currentValidationSchema = NewEventSchema[page];
+	}
 
 	const nextPage = (values: typeof initialValues) => {
 		setSnapshot(values);
@@ -153,13 +158,14 @@ const NewEventWizard: React.FC<{
 					return (
 						<>
 							{/* Stepper that shows each step of wizard as header */}
-							<WizardStepperEvent
+							<WizardStepper
 								steps={steps}
 								page={page}
 								setPage={setPage}
 								completed={pageCompleted}
 								setCompleted={setPageCompleted}
 								formik={formik}
+								hasAccessPage
 							/>
 							<div>
 								{page === 0 && (
@@ -201,8 +207,11 @@ const NewEventWizard: React.FC<{
 								)}
 								{page === 5 && (
 									<NewAccessPage
+									// @ts-expect-error TS(7006):
 										previousPage={previousPage}
+										// @ts-expect-error TS(7006):
 										nextPage={nextPage}
+										// @ts-expect-error TS(7006):
 										formik={formik}
 										editAccessRole="ROLE_UI_SERIES_DETAILS_ACL_EDIT"
 										initEventAclWithSeriesAcl={initEventAclWithSeriesAcl}
@@ -278,6 +287,11 @@ const getInitialValues = (
 				initialValues[option.id] = null;
 			}
 		};
+	}
+
+	// Add all initial form values known upfront listed in newEventsConfig
+	for (const [key, value] of Object.entries(initialFormValuesNewEvents)) {
+		initialValues[key] = value;
 	}
 
 	const defaultDate = new Date();

@@ -6,6 +6,7 @@ import {
 	getWorkflowDefById,
 } from "../../../../selectors/workflowSelectors";
 import { useAppSelector } from "../../../../store";
+import { FieldSetField } from "../../../../slices/workflowSlice";
 
 /**
  * This component renders the configuration panel for the selected workflow in the processing step of the new event
@@ -72,7 +73,6 @@ const RenderWorkflowConfig = <T extends RequiredFormProps>({
 									<p>{configOption.description}</p>
 								)}
 								<ul>
-{/* @ts-expect-error TS(7006): Parameter 'field' implicitly has an 'any' type. */}
 									{configOption.fieldset?.map((field, keys) =>
 										renderInputByType(field, keys, formik)
 									)}
@@ -88,7 +88,7 @@ const RenderWorkflowConfig = <T extends RequiredFormProps>({
 
 // render input depending on field type
 const renderInputByType = <T extends RequiredFormProps>(
-	field: any,
+	field: FieldSetField,
 	key: React.Key | null | undefined,
 	formik: FormikProps<T>,
 ) => {
@@ -109,17 +109,17 @@ const renderInputByType = <T extends RequiredFormProps>(
 };
 
 const RenderDatetimeLocal = <T extends RequiredFormProps>(
-	{ field, formik } : { field: any, formik: FormikProps<T> }) => {
+	{ field, formik } : { field: FieldSetField, formik: FormikProps<T> }) => {
 		return <RenderField field={field} formik={formik} />;
 };
 
 const RenderCheckbox = <T extends RequiredFormProps>(
-	{ field, formik } : { field: any, formik: FormikProps<T> }) => {
+	{ field, formik } : { field: FieldSetField, formik: FormikProps<T> }) => {
 		return <RenderField field={field} formik={formik} />;
 };
 
 const RenderRadio = <T extends RequiredFormProps>(
-	{ field, formik } : { field: any, formik: FormikProps<T> }) => {
+	{ field, formik } : { field: FieldSetField, formik: FormikProps<T> }) => {
 		return <RenderField field={field} formik={formik} />;
 };
 
@@ -141,7 +141,7 @@ const RenderText = <T extends RequiredFormProps>({
 	field,
 	formik
 }: {
-	field: any,
+	field: FieldSetField,
 	formik: FormikProps<T>,
 }) => {
 		return <RenderField field={field} formik={formik} />;
@@ -152,7 +152,7 @@ const RenderField = <T extends RequiredFormProps>({
 	formik,
 	validate = undefined
 }: {
-	field: any,
+	field: FieldSetField,
 	formik: FormikProps<T>,
 	validate?: (value: any) => string | undefined,
 }) => {
@@ -179,12 +179,11 @@ const RenderField = <T extends RequiredFormProps>({
 	return (
 		<li>
 			{renderField()}
-			<label htmlFor={uuid}>{field.label}</label>
+			<label htmlFor={uuid}>{field.label as string}</label>
 			{/* if input has an additional fieldset or further configuration inputs
 						then render again by input type*/}
 			{!!field.fieldset && !!formik.values.configuration && !!formik.values.configuration[field.name] && (
 				<ul className="workflow-configuration-subpanel">
-{/* @ts-expect-error TS(7006): Parameter 'f' implicitly has an 'any' type. */}
 					{field.fieldset?.map((f, keys) => renderInputByType(f, keys, formik))}
 				</ul>
 			)}

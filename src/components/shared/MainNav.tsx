@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
 import {
 	loadAclsIntoTable,
 	loadEventsIntoTable,
@@ -39,10 +39,11 @@ import { Tooltip } from "./Tooltip";
  * This component renders the main navigation that opens when the burger button is clicked
  */
 const MainNav = ({
-// @ts-expect-error TS(7031): Binding element 'isOpen' implicitly has an 'any' t... Remove this comment to see the full error message
 	isOpen,
-// @ts-expect-error TS(7031): Binding element 'toggleMenu' implicitly has an 'an... Remove this comment to see the full error message
 	toggleMenu,
+}: {
+	isOpen: boolean,
+	toggleMenu: () => void,
 }) => {
 	const { t } = useTranslation();
         const dispatch = useAppDispatch();
@@ -52,7 +53,7 @@ const MainNav = ({
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
 
 	const statisticsEnabled = (orgProperties['admin.statistics.enabled'] || 'false').toLowerCase() === 'true';
-	const themesEnabled = (orgProperties['admin.themes.enabled'] || 'true').toLowerCase() === 'true';
+	const themesEnabled = (orgProperties['admin.themes.enabled'] || 'false').toLowerCase() === 'true';
 
 	const loadEvents = () => {
 		dispatch(fetchFilters("events"));

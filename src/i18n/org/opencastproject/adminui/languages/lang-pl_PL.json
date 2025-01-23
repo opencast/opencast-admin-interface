@@ -117,7 +117,8 @@
 				"GROUP": "Następująca grupa zostanie usunięta",
 				"USER": "Następujący użytkownik zostanie usunięty",
 				"THEME": "Następujący motyw zostanie usunięty",
-				"LOCATION": "Następująca lokalizacja zostanie usunięta"
+				"LOCATION": "Następująca lokalizacja zostanie usunięta",
+				"TOBIRA_PATH": "The series will be removed from the following path in Tobira:"
 			},
 			"NAME": "Imię"
 		},
@@ -168,6 +169,10 @@
 		"GROUP_NOT_DELETED": "Nie można usunąć grupy",
 		"SERIES_ADDED": "Seria została utworzona",
 		"SERIES_NOT_SAVED": "Nie można zapisać serii",
+		"SERIES_PATH_UPDATED": "The series path has been updated",
+		"SERIES_PATH_REMOVED": "The series path has been removed",
+		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
+		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "Wydarzenie zostało utworzone",
 		"EVENTS_UPLOAD_STARTED": "Ładowanie wydarzenia…",
 		"EVENTS_NOT_CREATED": "Nie można było utworzyć wydarzenia",
@@ -194,7 +199,7 @@
 		"CONFLICT_ALREADY_ENDED": "Błąd w harmonogramie: Wydarzenie się już zakończyło.",
 		"CONFLICT_END_BEFORE_START": "Błąd w harmonogramie: Rozpoczęcie zakończenie zdarzenia zaplanowano przed jego rozpoczęciem.",
 		"CONFLICT_IN_THE_PAST": "Nie można zaktualizować harmonogramu: nie można zaplanować wydarzenia w przeszłości.",
-		"INVALID_ACL_RULES": "Reguły dostępu muszą zawierać poprawne role użytkownika z określonymi zasadami odczytu i/lub zapisu.",
+		"INVALID_ACL_RULES": "Reguły dostępu muszą zawierać poprawne role użytkownika z określonymi zasadami odczytu i\/lub zapisu.",
 		"MISSING_ACL_RULES": "Przynajmniej jedna rola, z uprawnieniem do zapisu lub odczytu jest wymagana!",
 		"SAVED_ACL_RULES": "Reguły dostępu zostały zapisane.",
 		"SERIES_THEME_REPROCESS_EXISTING_EVENTS": "Wydarzenia w tej serii będą musiały być przetworzone ponownie",
@@ -223,7 +228,18 @@
 			"NO_EVENTS_UPDATED": "All updates failed.",
 			"SOME_EVENTS_NOT_UPDATED": "Some events could not be updated."
 		},
-		"PROBLEM_ON_START": "A error occurred on start up. Please contact your OpenCast admin"
+		"PROBLEM_ON_START": "An error occurred on start up. Please contact your Opencast admin",
+		"TOBIRA_OVERRIDE_NAME": "The title of the selected page will be overridden with the title of the series.",
+		"TOBIRA_NO_PATH_SEGMENT": "Page needs a path segment.",
+		"TOBIRA_NOT_MOUNTED": "Series could not be mounted in Tobira.",
+		"TOBIRA_PATH_SEGMENT_INVALID": "Path segment is invalid. A valid path segment is at least 2 characters long, does not contain any whitespace or control characters, none of the characters '<>\"[\\]^`{|}#%\/?]', and doesn't start with any of the characters '-+~@_!$&;:.,=*'()'.",
+		"TOBIRA_PATH_SEGMENT_UNIQUE": "The path segment of a page must be unique among all its sibling pages.",
+		"TOBIRA_PAGE_NOT_FOUND": "The page you tried to navigate to does not or no longer exist. Maybe try starting from the beginning.",
+		"TOBIRA_SERVER_ERROR": " Error talking to Tobira. Contact your system administrator and\/or try again later.",
+		"TOBIRA_COPIED_DIRECT_LINK": "Copied link to clipboard.",
+		"TOBIRA_FAILED_COPYING_DIRECT_LINK": "Couldn't copy link to clipboard.",
+		"TOBIRA_NOT_FOUND": "Tobira doesn't know about this series or event (yet). Try again in a few minutes or contact your system administrator.",
+		"TOBIRA_NOT_CONFIGURED": "Tobira is not configured (correctly)."
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Działania",
@@ -306,7 +322,7 @@
 				}
 			},
 			"EDIT": {
-				"DESCRIPTION": "Edit and/or select the metadata fields you want to update. A field cannot be selected if this doesn't result in a changed value for at least one event, or if the field isn't valid (e.g. required fields cannot be empty). Highlighted metadata fields have diverging values for the selected events.",
+				"DESCRIPTION": "Edit and\/or select the metadata fields you want to update. A field cannot be selected if this doesn't result in a changed value for at least one event, or if the field isn't valid (e.g. required fields cannot be empty). Highlighted metadata fields have diverging values for the selected events.",
 				"TABLE": {
 					"CAPTION": "Metadata of selected events",
 					"FIELDS": "Metadane",
@@ -403,7 +419,7 @@
 				"INFORMATION_PARAGRAPH_2": "Bardzo doceniamy każdą opinię, ponieważ nawet niektóre dane, które gromadzimy na temat korzystania z Opencast pomogą nam stworzyć lepsze oprogramowanie, większe szanse na dodatkowe finansowanie i przyciągnięcie większej liczby przedsiębiorstw do świadczenia usług w okolicach Opencast."
 			},
 			"FORM_STATE": {
-				"ORGANISATION": "Organisation",
+				"ORGANISATION": "Organization",
 				"DEPARTMENT": "Department",
 				"COUNTRY": "Country",
 				"POSTAL_CODE": "Kod pocztowy",
@@ -419,9 +435,13 @@
 				"ADDITIONAL_ADRESS_INFO": "Add. adress information",
 				"MAIL": "E-mail",
 				"CONTACT_ME": "Skontaktuj się ze mną w celu aktualizacji i problemów z bezpieczeństwem",
+				"SYSTEM_TYPE_HEADLINE": "For what purpose do you use this system?",
+				"SYSTEM_TYPE": "System Type",
+				"SYSTEM_TYPE_PRODUCTION": "Production System",
+				"SYSTEM_TYPE_TEST": "Test System",
 				"WHICH_DATA_TO_SHARE": "Które dane chcesz udostępnić?",
 				"POLICY_HEADLINE": "Polityka prywatności i warunki użytkowania",
-				"USAGE_STATISTICS": "Statystyki użytkowania",
+				"USAGE_STATISTICS": "Usage statistics",
 				"ERROR_REPORTS": "Error reports",
 				"READ_TERMS_OF_USE_BEFORE": "I have read and agree to the",
 				"READ_TERMS_OF_USE_LINK": "privacy policy and terms of use",
@@ -626,6 +646,7 @@
 					"EDITOR_NEEDS_CUTTING": "Otwórz w Edytorze (komenarz wskazuje, że ktoś domaga się wycięcia fragmentu filmu)",
 					"COMMENTS": "Pokaż komentarze",
 					"PAUSED_WORKFLOW": "Zobacz zatrzymane procesy zadań",
+					"PLAYER": "Open player",
 					"PRESENTER": "Filter for this presenter"
 				},
 				"SELECT_ALL": "Select all events",
@@ -654,7 +675,7 @@
 				"UPDATING_PREVIEWS": "Updating previews"
 			},
 			"DETAILS": {
-				"HEADER": "Szczegóły wydarzenia - {{resourceId}}",
+				"HEADER": "Event details - {{name}}",
 				"TABS": {
 					"METADATA": "Metadane",
 					"EXTENDED-METADATA": "Metadane II",
@@ -664,7 +685,8 @@
 					"WORKFLOWS": "Przepływy pracy",
 					"ACCESS": "Zasady dostępu",
 					"COMMENTS": "Komentarze",
-					"STATISTICS": "Statistics"
+					"STATISTICS": "Statistics",
+					"TOBIRA": "Tobira"
 				},
 				"PUBLICATIONS": {
 					"CAPTION": "Publikacje",
@@ -887,9 +909,9 @@
 					"REASONS": {
 						"CUTTING": "Wymaga cięć",
 						"REVIEW": "Wymaga przeglądu",
-						"ASYNC": "Ścieżki A/V asynchroniczne",
+						"ASYNC": "Ścieżki A\/V asynchroniczne",
 						"AUDIO_ISSUE": "Brakująca lub uszkodzona ścieżka dżwiękowa",
-						"CANCELLED": "Cancelled event",
+						"CANCELLED": "Canceled event",
 						"CONFLICTING_METADATA": "Konflikt w metadanych",
 						"IMPROPER_POINT": "Niewłaściwy punkt rozpoczęcia lub zakończenia",
 						"MISSING_AGREEMENT": "Brak umowy",
@@ -937,6 +959,13 @@
 					"LOCKED": {
 						"RUNNING": "Edytowanie metadanych nie jest dozwolone jeśli dla wydarzenia uruchomione są operacje"
 					}
+				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to event",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This event is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this event"
 				},
 				"SCHEDULING": {
 					"CAPTION": "Stanu uczestnictwa",
@@ -1105,6 +1134,23 @@
 					"LABEL": "Brak motywu",
 					"EMPTY": "Nie znaleciono motywu"
 				},
+				"TOBIRA": {
+					"CAPTION": "Tobira",
+					"DESCRIPTION": "Here you can select where you want the series to show up in the Tobira video portal. You can only select one location here, and it needs to be empty (marked in bold). You can create new pages here, but note that they are only persisted if they are on the path to the selected page.",
+					"SELECT_PAGE": "Select a target page",
+					"PAGE_TITLE": "Subpage title",
+					"PATH_SEGMENT": "Path segment",
+					"SUBPAGES": "Subpages",
+					"ADD_SUBPAGE": "Add subpage",
+					"CANCEL": "Cancel",
+					"HOMEPAGE": "Homepage",
+					"SELECTED_PAGE": "Series will be mounted under the following path",
+					"NO_PAGE_SELECTED": "No page selected. Series will not be mounted in Tobira.",
+					"NO_PAGE_SELECTED_EDIT": "No page selected. Series path will not be changed.",
+					"PATH": "Path",
+					"DIRECT_LINK": "A direct link will be available.",
+					"MOUNT_DISCLAIMER": "Series can only be mounted in empty pages"
+				},
 				"SUMMARY": {
 					"CAPTION": "Podsumowanie"
 				}
@@ -1126,13 +1172,14 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Więcej na temat serii - {{resourceId}}",
+				"HEADER": "Series details - {{name}}",
 				"TABS": {
 					"METADATA": "Metadane",
 					"EXTENDED_METADATA": "Metadane II",
 					"EVENTS": "Wydarzenia",
 					"PERMISSIONS": "Zasady dostępu",
 					"THEME": "Motyw",
+					"TOBIRA": "Tobira",
 					"STATISTICS": "Statistics"
 				},
 				"ACCESS": {
@@ -1180,6 +1227,18 @@
 					"REPLACE_SERIES_METADATA": "Update series metadata",
 					"REPLACE_SERIES_THEME": "Update series theme"
 				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to series",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This series is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this series",
+					"SHOW_PAGES": "Show all pages",
+					"EDIT_PATH": "Edit path",
+					"REMOVE_PATH": "Remove path",
+					"MOUNT_SERIES": "Mount series",
+					"DESCRIPTION": "You may edit the path of pages containing this series if the page has no other content."
+				},
 				"EVENTS": {
 					"TITLE": "Tytuł",
 					"PRESENTER": "Prezenter(rzy)",
@@ -1219,7 +1278,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Szczegóły lokalizacji - {{resourceId}}",
+				"HEADER": "Location details - {{name}}",
 				"TAB": {
 					"GENERAL": "Ogólne",
 					"CONFIGURATION": "Konfiguracja",
@@ -1276,7 +1335,7 @@
 			},
 			"DETAILS": {
 				"NEWCAPTION": "Utwórz użytkownika",
-				"EDITCAPTION": "Dane użytkownika - {{username}}",
+				"EDITCAPTION": "User details - {{name}}",
 				"TABS": {
 					"USER": "Użytkownik",
 					"ROLES": "Role",
@@ -2020,7 +2079,7 @@
 		"TOTAL": "Total",
 		"GRANULARITY": "Granularity",
 		"NAVIGATION": {
-			"ORGANIZATION": "Organisation"
+			"ORGANIZATION": "Organization"
 		},
 		"TIME_MODES": {
 			"Year": "Year",
@@ -2040,7 +2099,7 @@
 			"PUBLISHEDHOURS": "Opublikowane godziny wideo"
 		},
 		"DESCRIPTION": {
-			"RANDOM": "Wyświetla losowe dane jako prezentację. Możesz wyłączyć ten wykres usuwając definicję json dostawcy statystyk z etc/providers",
+			"RANDOM": "Wyświetla losowe dane jako prezentację. Możesz wyłączyć ten wykres usuwając definicję json dostawcy statystyk z etc\/providers",
 			"VIEWS_SUM": "Wyświetla całkowitą liczbę wyświetleń na jednostkę czasu.",
 			"VIEWS_AVG": "To wyświetla średnią liczbę wyświetleń dziennie na jednostkę czasu.",
 			"PUBLISHEDHOURS": "Wyświetla opublikowane godziny wideo"

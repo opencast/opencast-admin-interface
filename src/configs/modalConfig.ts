@@ -1,8 +1,9 @@
 // All fields for new event form that are fix and not depending on response of backend
 // InitialValues of Formik form (others computed dynamically depending on responses from backend)
+import { TransformedAcl } from "../slices/aclDetailsSlice";
+import { TobiraPage } from "../slices/seriesSlice";
 import { initArray } from "../utils/utils";
 import { EditedEvents, Event, UploadAssetsTrack } from "../slices/eventSlice";
-import { TransformedAcl } from "../slices/aclDetailsSlice";
 import { Role } from "../slices/aclSlice";
 
 // Context for notifications shown in modals
@@ -10,6 +11,9 @@ export const NOTIFICATION_CONTEXT = "modal-form";
 
 // Context for notifications shown in wizard access page
 export const NOTIFICATION_CONTEXT_ACCESS = "wizard-access";
+
+// Context for notifications shown in tobira tabs.
+export const NOTIFICATION_CONTEXT_TOBIRA = "tobira";
 
 export const initialFormValuesNewEvents: {
 	sourceMode: string,
@@ -92,10 +96,22 @@ export const WORKFLOW_UPLOAD_ASSETS_NON_TRACK = "publish-uploaded-assets";
 export const initialFormValuesNewSeries: {
 	acls: TransformedAcl[],
 	theme: string,
+
+	breadcrumbs: TobiraPage[],
+	selectedPage?: TobiraPage,
 	[key: string]: any,  // Metadata fields that are getting added later
 } = {
-	acls: [],
+	acls: [
+		{
+			role: "ROLE_USER_ADMIN",
+			read: true,
+			write: true,
+			actions: [],
+		},
+	],
 	theme: "",
+	breadcrumbs: [],
+	selectedPage: undefined,
 };
 
 // All fields for new theme form that are fix and not depending on response of backend
@@ -118,6 +134,15 @@ export const initialFormValuesNewThemes = {
 	watermarkFile: "",
 	watermarkFileName: "",
 	watermarkPosition: "topRight",
+
+	// Don't care about these, but they are required by type
+	creationDate: "",
+	creator: "",
+	default: false,
+	id: 0,
+	licenseSlideBackground: "",
+	licenseSlideDescription: "",
+	titleSlideMetadata: "",
 };
 
 // All fields for new acl form that are fix and not depending on response of backend
@@ -166,7 +191,11 @@ export const initialFormValuesNewUser: {
 
 // All fields for start task form that are fix and not depending on response of backend
 // InitialValues of Formik form (others computed dynamically depending on responses from backend)
-export const initialFormValuesStartTask = {
+export const initialFormValuesStartTask: {
+	events: Event[],
+	workflow: string,
+	configuration: { [key: string]: string },
+} = {
 	events: [],
 	workflow: "",
 	configuration: {},

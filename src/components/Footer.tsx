@@ -3,9 +3,8 @@ import {
 	getOrgProperties,
 	getUserInformation,
 } from "../selectors/userInfoSelectors";
-import { hasAccess } from "../utils/utils";
 import { useAppSelector } from "../store";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import { Tooltip } from "./shared/Tooltip";
 
@@ -37,7 +36,7 @@ const Footer: React.FC = () => {
 						<li>
 							{"Opencast "}
 							<Tooltip title={t('BUILD.VERSION')}><span>{version}</span></Tooltip>
-							{hasAccess("ROLE_ADMIN", user) && (
+							{user.isAdmin && (
 								<span>
 								{user.ocVersion.buildNumber && (
 									<>{" – "} <Tooltip title={t('BUILD.COMMIT')}><span>{user.ocVersion.buildNumber}</span></Tooltip></>

@@ -7,7 +7,7 @@ import { Service } from './serviceSlice';
 import { UserResult } from './userSlice';
 import { Group } from './groupSlice';
 import { AclResult } from './aclSlice';
-import { Details } from './themeSlice';
+import { ThemeDetailsType } from './themeSlice';
 import { Series } from './seriesSlice';
 import { Event } from './eventSlice';
 
@@ -39,11 +39,18 @@ const columns = [{
  * This file contains methods/thunks used to manage the table in the main view and its state changes
  */
 
-type Page = {
+export type Page = {
 	active: boolean,
 	label: string,
 	number: number,
 };
+
+export type Pagination = {
+	limit: number,
+	offset: number,
+	totalItems: number,
+	directAccessibleNo: number,
+}
 
 export function isRowSelectable(row: Row) {
 	if ("id" in row === true) {
@@ -52,16 +59,16 @@ export function isRowSelectable(row: Row) {
 	return false;
 }
 
-export function isEvent(row: Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | Details): row is Event {
+export function isEvent(row: Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | ThemeDetailsType): row is Event {
 	return (row as Event).event_status !== undefined;
 }
 
-export function isSeries(row: Row | Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | Details): row is Series {
+export function isSeries(row: Row | Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | ThemeDetailsType): row is Series {
 	return (row as Series).organizers !== undefined;
 }
 
 // TODO: Improve row typing. While this somewhat correctly reflects the current state of our code, it is rather annoying to work with.
-export type Row = { selected: boolean } & ( Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | Details )
+export type Row = { selected: boolean } & ( Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | ThemeDetailsType )
 
 type TableState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
@@ -75,12 +82,7 @@ type TableState = {
 	reverse: string,
 	rows: Row[],
 	maxLabel: string,
-	pagination: {
-		limit: number,
-		offset: number,
-		totalItems: number,
-		directAccessibleNo: number,
-	},
+	pagination: Pagination,
 }
 
 // initial redux state

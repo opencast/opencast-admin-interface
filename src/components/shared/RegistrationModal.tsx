@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Formik } from "formik";
 import { Field } from "./Field";
 import TermsOfUsePage from "./modals/TermsOfUsePage";
-import { countries, states } from "../../configs/adopterRegistrationConfig";
+import { countries, states, systemTypes } from "../../configs/adopterRegistrationConfig";
 import cn from "classnames";
 import { AdopterRegistrationSchema } from "../../utils/validate";
 import {
@@ -31,6 +31,7 @@ const RegistrationModal = ({
 	// initial values for Formik
 	const [initialValues, setInitialValues] = useState<Registration & { agreedToPolicy: boolean, registered: boolean }>({
 		contactMe: false,
+		systemType: "",
 		allowsStatistics: false,
 		allowsErrorReports: false,
 		organisationName: "",
@@ -66,6 +67,7 @@ const RegistrationModal = ({
 	useEffect(() => {
 		fetchRegistrationInfos().then((r) => console.log(r));
 		fetchStatisticSummary();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const onClickContinue = async () => {
@@ -80,8 +82,8 @@ const RegistrationModal = ({
 	const fetchRegistrationInfos = async () => {
 		let registrationInfo = await fetchAdopterRegistration();
 
-		// set response as initial values for formik
-		setInitialValues(registrationInfo);
+		// merge response into initial values for formik
+		setInitialValues({...initialValues, ...registrationInfo});
 	};
 
 	const fetchStatisticSummary = async () => {
@@ -562,6 +564,42 @@ const RegistrationModal = ({
 																)}
 															</label>
 														</div>
+													</div>
+												</div>
+											</fieldset>
+											<fieldset>
+												<legend>
+													{t(
+														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.SYSTEM_TYPE_HEADLINE"
+													)}
+												</legend>
+												<div className="row">
+													<div className="form-group">
+														<Field
+															style={{color: "#666", fontWeight: "600"}}
+															id="system_type"
+															name="systemType"
+															as="select"
+															className="form-control"
+														>
+															<option value=""/>
+															{systemTypes.map((systemType, key) => (
+																<option key={key} value={systemType.value}>
+																	{t(systemType.name)}
+																</option>
+															))}
+														</Field>
+														<label
+															className="form-control-placeholder"
+															htmlFor="system_type"
+															style={
+																formik.values.systemType ? styleWithContent : {}
+															}
+														>
+															{t(
+																"ADOPTER_REGISTRATION.MODAL.FORM_STATE.SYSTEM_TYPE"
+															)}
+														</label>
 													</div>
 												</div>
 											</fieldset>

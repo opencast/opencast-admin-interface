@@ -1,14 +1,14 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Formik } from "formik";
+import { Formik, FormikProps } from "formik";
 import _ from "lodash";
-import cn from "classnames";
 import Notifications from "../../../shared/Notifications";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
 import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { updateSeriesTheme } from "../../../../slices/seriesDetailsSlice";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
  * This component renders the tab for editing the theme of a certain series
@@ -19,7 +19,7 @@ const SeriesDetailsThemeTab = ({
 	seriesId,
 }: {
 	theme: string,
-	themeNames: any[]
+	themeNames: unknown[]
 	seriesId: string
 }) => {
 	const { t } = useTranslation();
@@ -27,13 +27,11 @@ const SeriesDetailsThemeTab = ({
 
 	const user = useAppSelector(state => getUserInformation(state));
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (values: { theme: string }) => {
 		dispatch(updateSeriesTheme({id: seriesId, values: values}));
 	};
 
-// @ts-expect-error TS(7006): Parameter 'formik' implicitly has an 'any' type.
-	const checkValidity = (formik) => {
+	const checkValidity = (formik: FormikProps<{theme: string }>) => {
 		if (formik.dirty && formik.isValid) {
 			// check if user provided values differ from initial ones
 			return !_.isEqual(formik.values, formik.initialValues);
@@ -90,26 +88,14 @@ const SeriesDetailsThemeTab = ({
 									{formik.dirty && (
 										<>
 											{/* Render buttons for updating theme */}
-											<footer>
-												<button
-													type="submit"
-													onClick={() => formik.handleSubmit()}
-													disabled={!checkValidity(formik)}
-													className={cn("submit", {
-														active: checkValidity(formik),
-														inactive: !checkValidity(formik),
-													})}
-												>
-													{t("SAVE")}
-												</button>
-												<button
-// @ts-expect-error TS(2322): Type 'string' is not assignable to type '{ theme: ... Remove this comment to see the full error message
-													onClick={() => formik.resetForm({ values: "" })}
-													className="cancel"
-												>
-													{t("CANCEL")}
-												</button>
-											</footer>
+											<WizardNavigationButtons
+												formik={formik}
+												customValidation={!checkValidity(formik)}
+												previousPage={() => formik.resetForm()}
+												createTranslationString="SAVE"
+												cancelTranslationString="CANCEL"
+												isLast
+											/>
 
 											<div className="btm-spacer" />
 										</>

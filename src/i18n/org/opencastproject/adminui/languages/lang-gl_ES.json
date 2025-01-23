@@ -117,7 +117,8 @@
 				"GROUP": "Vaise borrar o seguinte grupo",
 				"USER": "Vaise borrar o seguinte usuario",
 				"THEME": "Vaise borrar o seguinte estilo",
-				"LOCATION": "Vaise borrar a seguinte localización"
+				"LOCATION": "Vaise borrar a seguinte localización",
+				"TOBIRA_PATH": "The series will be removed from the following path in Tobira:"
 			},
 			"NAME": "Nome"
 		},
@@ -168,6 +169,10 @@
 		"GROUP_NOT_DELETED": "Non se puido borrar o grupo",
 		"SERIES_ADDED": "Serie creada",
 		"SERIES_NOT_SAVED": "Non se puido gardar a serie",
+		"SERIES_PATH_UPDATED": "The series path has been updated",
+		"SERIES_PATH_REMOVED": "The series path has been removed",
+		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
+		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "Evento creado",
 		"EVENTS_UPLOAD_STARTED": "Cargando o evento…",
 		"EVENTS_NOT_CREATED": "Non se puido crear o evento",
@@ -194,7 +199,7 @@
 		"CONFLICT_ALREADY_ENDED": "Erro de programación: O evento xa rematou.",
 		"CONFLICT_END_BEFORE_START": "Erro de programación: O final ten que ser máis tarde que o comezo.",
 		"CONFLICT_IN_THE_PAST": "Non se puido actualizar a programación: non se pode programar un evento no pasado.",
-		"INVALID_ACL_RULES": "As regras deben conter un nome de rol válido e permiso(s) de lectura e/ou escritura.",
+		"INVALID_ACL_RULES": "As regras deben conter un nome de rol válido e permiso(s) de lectura e\/ou escritura.",
 		"MISSING_ACL_RULES": "Requírese, como mínimo, un rol con permisos de Lectura e Escritura!",
 		"SAVED_ACL_RULES": "Regras de acceso gardadas.",
 		"SERIES_THEME_REPROCESS_EXISTING_EVENTS": "Os eventos que contén esta serie terán que ser reprocesados",
@@ -223,7 +228,18 @@
 			"NO_EVENTS_UPDATED": "Fallaron tódalas actualizacións.",
 			"SOME_EVENTS_NOT_UPDATED": "Non se puideron crear algúns eventos."
 		},
-		"PROBLEM_ON_START": "Ocorreu un erro no arranque. Contacte co seu administrador OpenCast"
+		"PROBLEM_ON_START": "An error occurred on start up. Please contact your Opencast admin",
+		"TOBIRA_OVERRIDE_NAME": "The title of the selected page will be overridden with the title of the series.",
+		"TOBIRA_NO_PATH_SEGMENT": "Page needs a path segment.",
+		"TOBIRA_NOT_MOUNTED": "Series could not be mounted in Tobira.",
+		"TOBIRA_PATH_SEGMENT_INVALID": "Path segment is invalid. A valid path segment is at least 2 characters long, does not contain any whitespace or control characters, none of the characters '<>\"[\\]^`{|}#%\/?]', and doesn't start with any of the characters '-+~@_!$&;:.,=*'()'.",
+		"TOBIRA_PATH_SEGMENT_UNIQUE": "The path segment of a page must be unique among all its sibling pages.",
+		"TOBIRA_PAGE_NOT_FOUND": "The page you tried to navigate to does not or no longer exist. Maybe try starting from the beginning.",
+		"TOBIRA_SERVER_ERROR": " Error talking to Tobira. Contact your system administrator and\/or try again later.",
+		"TOBIRA_COPIED_DIRECT_LINK": "Copied link to clipboard.",
+		"TOBIRA_FAILED_COPYING_DIRECT_LINK": "Couldn't copy link to clipboard.",
+		"TOBIRA_NOT_FOUND": "Tobira doesn't know about this series or event (yet). Try again in a few minutes or contact your system administrator.",
+		"TOBIRA_NOT_CONFIGURED": "Tobira is not configured (correctly)."
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Accións",
@@ -267,7 +283,7 @@
 			"CONFLICT_CHECK_RUNNING": "Verificación de conflitos en curso…",
 			"GENERAL": {
 				"CAPTION": "Xeral",
-				"CANNOTSTART": "O/Os evento( s) destacado(s) non poden ser procesados, admítense soamente os eventos programados.",
+				"CANNOTSTART": "O\/Os evento( s) destacado(s) non poden ser procesados, admítense soamente os eventos programados.",
 				"NOCHANGES": "¡Non se detectaron cambios nos eventos!",
 				"CONFLICT_FIRST_EVENT": "Evento modificado",
 				"CONFLICT_SECOND_EVENT": "Evento en conflicto",
@@ -306,7 +322,7 @@
 				}
 			},
 			"EDIT": {
-				"DESCRIPTION": "Modificar e/ou seleccionar os metadatos que se queiran actualizar. Non se poden seleccionar os campos que non cambien o valor dun ou máis eventos, ou os que conteñan valores non válidos (por exemplo, os campos obrigatorios non poden estar baleiros). Os campos resaltados conteñen distintos valores para os eventos seleccionados.",
+				"DESCRIPTION": "Modificar e\/ou seleccionar os metadatos que se queiran actualizar. Non se poden seleccionar os campos que non cambien o valor dun ou máis eventos, ou os que conteñan valores non válidos (por exemplo, os campos obrigatorios non poden estar baleiros). Os campos resaltados conteñen distintos valores para os eventos seleccionados.",
 				"TABLE": {
 					"CAPTION": "Metadatos dos eventos seleccionados",
 					"FIELDS": "Metadatos",
@@ -403,7 +419,7 @@
 				"INFORMATION_PARAGRAPH_2": "Agradecemos moito calquera suxestion, xa que algúns dos datos que recompilamos sobre o uso de Opencast axudaranos a crear un mellor software, ter mellores posibilidades para obter financiamento adicional e atraer máis empresas para ofrecer servizos sobre Opencast."
 			},
 			"FORM_STATE": {
-				"ORGANISATION": "Organización",
+				"ORGANISATION": "Organization",
 				"DEPARTMENT": "Departamento",
 				"COUNTRY": "País",
 				"POSTAL_CODE": "Código Postal",
@@ -419,9 +435,13 @@
 				"ADDITIONAL_ADRESS_INFO": "Outra información do enderezo",
 				"MAIL": "Correo electrónico",
 				"CONTACT_ME": "Póñase en contacto comigo para obter actualizacións e problemas de seguranza",
+				"SYSTEM_TYPE_HEADLINE": "For what purpose do you use this system?",
+				"SYSTEM_TYPE": "System Type",
+				"SYSTEM_TYPE_PRODUCTION": "Production System",
+				"SYSTEM_TYPE_TEST": "Test System",
 				"WHICH_DATA_TO_SHARE": "¿Que datos queres compartir?",
 				"POLICY_HEADLINE": "Privacy policy and terms of use",
-				"USAGE_STATISTICS": "Usage statistcs",
+				"USAGE_STATISTICS": "Usage statistics",
 				"ERROR_REPORTS": "Error reports",
 				"READ_TERMS_OF_USE_BEFORE": "I have read and agree to the",
 				"READ_TERMS_OF_USE_LINK": "privacy policy and terms of use",
@@ -626,6 +646,7 @@
 					"EDITOR_NEEDS_CUTTING": "Abrir editor de vídeo (un comentario indica que se solicitou cortar o vídeo)",
 					"COMMENTS": "Ver comentarios",
 					"PAUSED_WORKFLOW": "Ver fluxos de traballo pausados",
+					"PLAYER": "Open player",
 					"PRESENTER": "Filtrar por este presentador"
 				},
 				"SELECT_ALL": "Select all events",
@@ -654,7 +675,7 @@
 				"UPDATING_PREVIEWS": "Actualizando vistas previas"
 			},
 			"DETAILS": {
-				"HEADER": "Detalles do evento - {{resourceId}}",
+				"HEADER": "Event details - {{name}}",
 				"TABS": {
 					"METADATA": "Metadatos",
 					"EXTENDED-METADATA": "Metadatos II",
@@ -664,7 +685,8 @@
 					"WORKFLOWS": "Fluxos de Traballo",
 					"ACCESS": "Política de acceso",
 					"COMMENTS": "Comentarios",
-					"STATISTICS": "Estatísticas"
+					"STATISTICS": "Estatísticas",
+					"TOBIRA": "Tobira"
 				},
 				"PUBLICATIONS": {
 					"CAPTION": "Publicacións",
@@ -887,9 +909,9 @@
 					"REASONS": {
 						"CUTTING": "Pendente de cortar",
 						"REVIEW": "Pendente de revisar",
-						"ASYNC": "Pistas de A/V asíncronas",
+						"ASYNC": "Pistas de A\/V asíncronas",
 						"AUDIO_ISSUE": "Pista de audio non dispoñible ou defectuosa",
-						"CANCELLED": "Cancelled event",
+						"CANCELLED": "Canceled event",
 						"CONFLICTING_METADATA": "Conflito de metadatos",
 						"IMPROPER_POINT": "Punto inicial ou final incorrecto",
 						"MISSING_AGREEMENT": "Acordo non dispoñible",
@@ -937,6 +959,13 @@
 					"LOCKED": {
 						"RUNNING": "Non está permitida a edición de metadatos mentres se executan operacións nun evento"
 					}
+				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to event",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This event is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this event"
 				},
 				"SCHEDULING": {
 					"CAPTION": "Estado de aprobación",
@@ -1105,6 +1134,23 @@
 					"LABEL": "Por favor seleccione un estilo",
 					"EMPTY": "Non hai estilos dispoñibles"
 				},
+				"TOBIRA": {
+					"CAPTION": "Tobira",
+					"DESCRIPTION": "Here you can select where you want the series to show up in the Tobira video portal. You can only select one location here, and it needs to be empty (marked in bold). You can create new pages here, but note that they are only persisted if they are on the path to the selected page.",
+					"SELECT_PAGE": "Select a target page",
+					"PAGE_TITLE": "Subpage title",
+					"PATH_SEGMENT": "Path segment",
+					"SUBPAGES": "Subpages",
+					"ADD_SUBPAGE": "Add subpage",
+					"CANCEL": "Cancel",
+					"HOMEPAGE": "Homepage",
+					"SELECTED_PAGE": "Series will be mounted under the following path",
+					"NO_PAGE_SELECTED": "No page selected. Series will not be mounted in Tobira.",
+					"NO_PAGE_SELECTED_EDIT": "No page selected. Series path will not be changed.",
+					"PATH": "Path",
+					"DIRECT_LINK": "A direct link will be available.",
+					"MOUNT_DISCLAIMER": "Series can only be mounted in empty pages"
+				},
 				"SUMMARY": {
 					"CAPTION": "Resumo"
 				}
@@ -1126,13 +1172,14 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Detalles da serie - {{resourceId}}",
+				"HEADER": "Series details - {{name}}",
 				"TABS": {
 					"METADATA": "Metadatos",
 					"EXTENDED_METADATA": "Metadatos II",
 					"EVENTS": "Eventos",
 					"PERMISSIONS": "Política de acceso",
 					"THEME": "Estilo",
+					"TOBIRA": "Tobira",
 					"STATISTICS": "Estatísticas"
 				},
 				"ACCESS": {
@@ -1180,6 +1227,18 @@
 					"REPLACE_SERIES_METADATA": "Update series metadata",
 					"REPLACE_SERIES_THEME": "Update series theme"
 				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to series",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This series is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this series",
+					"SHOW_PAGES": "Show all pages",
+					"EDIT_PATH": "Edit path",
+					"REMOVE_PATH": "Remove path",
+					"MOUNT_SERIES": "Mount series",
+					"DESCRIPTION": "You may edit the path of pages containing this series if the page has no other content."
+				},
 				"EVENTS": {
 					"TITLE": "Título",
 					"PRESENTER": "Relator(es)",
@@ -1219,7 +1278,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Detalles da ubicación - {{resourceId}}",
+				"HEADER": "Location details - {{name}}",
 				"TAB": {
 					"GENERAL": "Xeral",
 					"CONFIGURATION": "Configuración",
@@ -1276,7 +1335,7 @@
 			},
 			"DETAILS": {
 				"NEWCAPTION": "Crear usuario",
-				"EDITCAPTION": "Detalles do usuario - {{username}}",
+				"EDITCAPTION": "User details - {{name}}",
 				"TABS": {
 					"USER": "Usuario",
 					"ROLES": "Roles",
@@ -2020,7 +2079,7 @@
 		"TOTAL": "Total",
 		"GRANULARITY": "Granularidade",
 		"NAVIGATION": {
-			"ORGANIZATION": "Organización"
+			"ORGANIZATION": "Organization"
 		},
 		"TIME_MODES": {
 			"Year": "Year",
@@ -2040,7 +2099,7 @@
 			"PUBLISHEDHOURS": "Horas de Vídeo Publicadas"
 		},
 		"DESCRIPTION": {
-			"RANDOM": "Esta gráfica amosa datos aleatorios como exemplo. Para que deixe de mostrarse, elimine da carpeta etc/providers o ficheiro JSON coa definición correspondente a este provedor",
+			"RANDOM": "Esta gráfica amosa datos aleatorios como exemplo. Para que deixe de mostrarse, elimine da carpeta etc\/providers o ficheiro JSON coa definición correspondente a este provedor",
 			"VIEWS_SUM": "Aquí amósase o número total de visualizacións por unidade de tempo.",
 			"VIEWS_AVG": "Aquí amósase o número total de visualizacións diarias por unidade de tempo.",
 			"PUBLISHEDHOURS": "This displays the published hours of video"
@@ -2048,12 +2107,12 @@
 	},
 	"dateFormats": {
 		"dateTime": {
-			"short": "{{dateTime, M/D/YY h:mm a}}",
+			"short": "{{dateTime, M\/D\/YY h:mm a}}",
 			"medium": "{{dateTime, MMM D, YYYY h:mm:ss a}}",
 			"full": "{{dateTime, dddd, MMMM D, YYYY h:mm:ss a z}}"
 		},
 		"date": {
-			"short": "{{date, M/D/YY}}",
+			"short": "{{date, M\/D\/YY}}",
 			"medium": "{{date, MMM D, YYYY}}",
 			"full": "{{date, dddd, MMMM D, YYYY}}"
 		},

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import i18n from "../i18n/i18n";
 import languages from "../i18n/languages";
 import opencastLogo from "../img/opencast-white.svg?url";
@@ -199,7 +199,7 @@ const Header = () => {
 					)}
 
 					{/* System warnings and notifications */}
-					{hasAccess("ROLE_ADMIN", user) && (
+					{user.isAdmin && (
 						<div
 							className="nav-dd info-dd"
 							id="info-dd"
@@ -390,8 +390,7 @@ const MenuHelp = ({
 					</li>
 				)}
 				{/* Show only if restUrl is set */}
-				{!!orgProperties["org.opencastproject.admin.help.restdocs.url"] &&
-					hasAccess("ROLE_ADMIN", user) && (
+				{!!orgProperties["org.opencastproject.admin.help.restdocs.url"] && user.isAdmin && (
 						<li>
 							<a
 								target="_blank" rel="noreferrer"
@@ -409,7 +408,7 @@ const MenuHelp = ({
 					</button>
 				</li>
 				{/* Adoter registration Modal */}
-				{hasAccess("ROLE_ADMIN", user) && (
+				{user.isAdmin && (
 					<li>
 						<button className="button-like-anchor" onClick={() => showAdoptersRegistrationModal()}>
 							<span>{t("HELP.ADOPTER_REGISTRATION")}</span>

@@ -16,28 +16,27 @@ import {
 } from "../../../../utils/bulkActionUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
-	checkForSchedulingConflicts,
+	EditedEvents,
 	updateScheduledEventsBulk,
+	Conflict,
 } from "../../../../slices/eventSlice";
 import { fetchRecordings } from "../../../../slices/recordingSlice";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import { Event } from "../../../../slices/eventSlice";
 
 /**
  * This component manages the pages of the edit scheduled bulk action
  */
 const EditScheduledEventsModal = ({
-// @ts-expect-error TS(7031): Binding element 'close' implicitly has an 'any' ty... Remove this comment to see the full error message
 	close,
+}: {
+	close: () => void
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const inputDevices = useAppSelector(state => getRecordings(state));
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const checkForSchedulingConflictsWrapper = async(events: any) => {
-		return dispatch(checkForSchedulingConflicts(events));
-	}
 
 	const initialValues = initialFormValuesEditScheduledEvents;
 
@@ -52,7 +51,7 @@ const EditScheduledEventsModal = ({
 	} = usePageFunctions(0, initialValues);
 
 	// for edit page: conflicts with other events
-	const [conflicts, setConflicts] = useState([]);
+	const [conflicts, setConflicts] = useState<Conflict[]>([]);
 
 	const user = useAppSelector(state => getUserInformation(state));
 
@@ -84,23 +83,24 @@ const EditScheduledEventsModal = ({
 		},
 	];
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const validateFormik = (values) => {
-		const errors = {};
+	const validateFormik = (values: {
+		events: Event[],
+		editedEvents: EditedEvents[],
+	}) => {
+		const errors: {
+			events?: string,
+			editedEvents?: string,
+		} = {};
 		if (!checkValidityUpdateScheduleEventSelection(values, user)) {
-// @ts-expect-error TS(2339): Property 'events' does not exist on type '{}'.
 			errors.events = "Not all events editable!";
 		}
 		if (steps[page].name !== "general") {
 			return checkSchedulingConflicts(
 				values,
 				setConflicts,
-				checkForSchedulingConflictsWrapper,
 				dispatch
 			).then((result) => {
-				const errors = {};
 				if (!result) {
-// @ts-expect-error TS(2339): Property 'editedEvents' does not exist on type '{}... Remove this comment to see the full error message
 					errors.editedEvents = "Scheduling conflicts exist!";
 				}
 				return errors;
@@ -110,8 +110,11 @@ const EditScheduledEventsModal = ({
 		}
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (values: {
+		events: Event[];
+		editedEvents: EditedEvents[];
+		changedEvents: string[];
+	}) => {
 		// Only update events if there are changes
 		if (values.changedEvents.length > 0) {
 			const response = dispatch(updateScheduledEventsBulk(values));

@@ -19,9 +19,7 @@
  *
  */
 .modal {
-    &#event-details-modal,
-    &#series-details-modal,
-    &#task-details-modal {
+    &#details-modal {
 
         // Modal Size
         @extend .large-modal;
@@ -191,5 +189,26 @@
           @include alert-variant($state-danger-bg, $state-danger-border, $state-danger-text);
           margin-bottom: 15px;
         }
+    }
+}
+
+.tobira-page-separator {
+    color: $color-gray;
+}
+
+.tobira-leaf-page {
+    font-size: larger;
+    font-weight: $weight-bold;
+}
+
+.tobira-not-mounted {
+    font-style: italic;
+}
+
+.tobira-copy-direct-link {
+    margin-left: 6px;
+    @include btn(white);
+    i {
+        margin: 0;
     }
 }

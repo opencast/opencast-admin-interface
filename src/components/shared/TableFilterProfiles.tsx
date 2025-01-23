@@ -11,11 +11,12 @@ import {
 	goToPage,
 } from "../../thunks/tableThunks";
 import { getFilters } from "../../selectors/tableFilterSelectors";
-import { loadFilterProfile } from "../../slices/tableFilterSlice";
+import { FilterData, loadFilterProfile } from "../../slices/tableFilterSlice";
 import { AppThunk, useAppDispatch, useAppSelector } from "../../store";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { Tooltip } from "./Tooltip";
+import { AsyncThunk } from "@reduxjs/toolkit";
 
 /**
  * This component renders the table filter profiles in the upper right corner when clicked on settings icon of the
@@ -30,8 +31,7 @@ const TableFiltersProfiles = ({
 }: {
 	showFilterSettings: boolean,
 	setFilterSettings: (_: boolean) => void,
-	// TODO: Figure out proper typings
-	loadResource: any,
+	loadResource: AsyncThunk<any, void, any>,
 	loadResourceIntoTable: () => AppThunk,
 	resource: string,
 }) => {
@@ -77,8 +77,7 @@ const TableFiltersProfiles = ({
 		resetStateValues();
 	};
 
-// @ts-expect-error TS(7006): Parameter 'profile' implicitly has an 'any' type.
-	const editFilterProfile = (profile) => {
+	const editFilterProfile = (profile: FilterProfile) => {
 		setSettingsMode(false);
 		setCurrentlyEditing(profile);
 		setProfileName(profile.name);
@@ -110,8 +109,7 @@ const TableFiltersProfiles = ({
 		setValidName(false);
 	};
 
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const handleChange = (e) => {
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const itemName = e.target.name;
 		const itemValue = e.target.value;
 
@@ -131,8 +129,7 @@ const TableFiltersProfiles = ({
 		}
 	};
 
-// @ts-expect-error TS(7006): Parameter 'filterMap' implicitly has an 'any' type... Remove this comment to see the full error message
-	const chooseFilterProfile = (filterMap) => {
+	const chooseFilterProfile = (filterMap: FilterData[]) => {
 		dispatch(loadFilterProfile(filterMap));
 
 		// No matter what, we go to page one.

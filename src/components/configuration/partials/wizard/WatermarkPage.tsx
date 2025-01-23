@@ -31,8 +31,7 @@ const WatermarkPage = <T extends RequiredFormProps>({
 }) => {
 	const { t } = useTranslation();
 
-// @ts-expect-error TS(7006): Parameter 'position' implicitly has an 'any' type.
-	const handleButtonClick = (position) => {
+	const handleButtonClick = (position: "topLeft" | "topRight" | "bottomLeft" | "bottomRight") => {
 		formik.setFieldValue("watermarkPosition", position);
 	};
 

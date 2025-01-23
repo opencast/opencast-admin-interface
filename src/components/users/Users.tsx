@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import cn from "classnames";
 import MainNav from "../shared/MainNav";
 import TableFilters from "../shared/TableFilters";
@@ -40,11 +40,6 @@ const Users: React.FC = () => {
   const users = useAppSelector(state => getTotalUsers(state));
   const user = useAppSelector(state => getUserInformation(state));
   const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
-
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchUsersWrapper = async () => {
-		await dispatch(fetchUsers())
-	}
 
 	const loadUsers = async () => {
 		// Fetching users from server
@@ -169,7 +164,7 @@ const Users: React.FC = () => {
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={fetchUsersWrapper}
+						loadResource={fetchUsers}
 						loadResourceIntoTable={loadUsersIntoTable}
 						resource={"users"}
 					/>

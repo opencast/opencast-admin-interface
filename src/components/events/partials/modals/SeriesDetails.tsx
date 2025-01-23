@@ -7,6 +7,8 @@ import {
 	getSeriesDetailsMetadata,
 	getSeriesDetailsTheme,
 	getSeriesDetailsThemeNames,
+	getSeriesDetailsTobiraDataError,
+	getSeriesDetailsTobiraStatus,
 	hasStatistics as seriesHasStatistics,
 } from "../../../../selectors/seriesDetailsSelectors";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
@@ -19,21 +21,25 @@ import DetailsMetadataTab from "../ModalTabsAndPages/DetailsMetadataTab";
 import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsExtendedMetadataTab";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
+	fetchSeriesDetailsTobira,
 	fetchSeriesStatistics,
+	setTobiraTabHierarchy,
 	updateExtendedSeriesMetadata,
 	updateSeriesMetadata,
 } from "../../../../slices/seriesDetailsSlice";
+import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
 
 /**
  * This component manages the tabs of the series details modal
  */
 const SeriesDetails = ({
-// @ts-expect-error TS(7031): Binding element 'seriesId' implicitly has an 'any'... Remove this comment to see the full error message
 	seriesId,
-// @ts-expect-error TS(7031): Binding element 'policyChanged' implicitly has an ... Remove this comment to see the full error message
 	policyChanged,
-// @ts-expect-error TS(7031): Binding element 'setPolicyChanged' implicitly has ... Remove this comment to see the full error message
 	setPolicyChanged,
+}: {
+	seriesId: string
+	policyChanged: boolean
+	setPolicyChanged: (policyChanged: boolean) => void
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -44,17 +50,13 @@ const SeriesDetails = ({
 	const theme = useAppSelector(state => getSeriesDetailsTheme(state));
 	const themeNames = useAppSelector(state => getSeriesDetailsThemeNames(state));
 	const hasStatistics = useAppSelector(state => seriesHasStatistics(state));
-
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const updateSeriesMetadataWrapper = (id: any, values: any) => {
-		dispatch(updateSeriesMetadata({id, values}));
-	}
-	const updateExtendedSeriesMetadataWrapper = (id: any, values: any, catalog: any) => {
-		dispatch(updateExtendedSeriesMetadata({id, values, catalog}));
-	}
+	const tobiraStatus = useAppSelector(state => getSeriesDetailsTobiraStatus(state));
+	const tobiraError = useAppSelector(state => getSeriesDetailsTobiraDataError(state));
 
 	useEffect(() => {
 		dispatch(fetchSeriesStatistics(seriesId));
+		dispatch(fetchSeriesDetailsTobira(seriesId));
+		dispatch(setTobiraTabHierarchy("main"));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -62,7 +64,7 @@ const SeriesDetails = ({
 
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
-	const themesEnabled = (orgProperties['admin.themes.enabled'] || 'true').toLowerCase() === 'true';
+	const themesEnabled = (orgProperties['admin.themes.enabled'] || 'false').toLowerCase() === 'true';
 
 	// information about each tab
 	const tabs = [
@@ -89,6 +91,12 @@ const SeriesDetails = ({
 			hidden: !theme && !themesEnabled
 		},
 		{
+			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.TOBIRA",
+			accessRole: "ROLE_UI_SERIES_DETAILS_TOBIRA_VIEW",
+			name: "tobira",
+			hidden: tobiraStatus === "failed" && tobiraError?.message?.includes("503"),
+		},
+		{
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.STATISTICS",
 			accessRole: "ROLE_UI_SERIES_DETAILS_STATISTICS_VIEW",
 			name: "statistics",
@@ -96,8 +104,7 @@ const SeriesDetails = ({
 		},
 	];
 
-// @ts-expect-error TS(7006): Parameter 'tabNr' implicitly has an 'any' type.
-	const openTab = (tabNr) => {
+	const openTab = (tabNr: number) => {
 		setPage(tabNr);
 	};
 
@@ -105,33 +112,17 @@ const SeriesDetails = ({
 		<>
 			{/* navigation for navigating between tabs */}
 			<nav className="modal-nav" id="modal-nav">
-				{hasAccess(tabs[0].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 0 })} onClick={() => openTab(0)}>
-						{t(tabs[0].tabNameTranslation)}
+				{tabs.map((tab, index) => !tab.hidden && hasAccess(tab.accessRole, user) && (
+					<button
+						key={tab.name}
+						className={"button-like-anchor " + cn({ active: page === index })}
+						onClick={() => openTab(index)}
+					>
+						{t(tab.tabNameTranslation)}
 					</button>
-				)}
-				{!tabs[1].hidden && hasAccess(tabs[1].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 1 })} onClick={() => openTab(1)}>
-						{t(tabs[1].tabNameTranslation)}
-					</button>
-				)}
-				{hasAccess(tabs[2].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 2 })} onClick={() => openTab(2)}>
-						{t(tabs[2].tabNameTranslation)}
-					</button>
-				)}
-				{!tabs[3].hidden && hasAccess(tabs[3].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 3 })} onClick={() => openTab(3)}>
-						{t(tabs[3].tabNameTranslation)}
-					</button>
-				)}
-				{!tabs[4].hidden && hasAccess(tabs[4].accessRole, user) && (
-					<button className={"button-like-anchor " + cn({ active: page === 4 })} onClick={() => openTab(4)}>
-						{t(tabs[4].tabNameTranslation)}
-					</button>
-				)}
+				))}
 				{feeds.length > 0 && (
-					<button className={"button-like-anchor " + cn({ active: page === 5 })} onClick={() => openTab(5)}>
+					<button className={"button-like-anchor " + cn({ active: page === 6 })} onClick={() => openTab(6)}>
 						{"Feeds"}
 					</button>
 				)}
@@ -144,7 +135,7 @@ const SeriesDetails = ({
 						metadataFields={metadataFields}
 						resourceId={seriesId}
 						header={tabs[page].tabNameTranslation}
-						updateResource={updateSeriesMetadataWrapper}
+						updateResource={updateSeriesMetadata}
 						editAccessRole="ROLE_UI_SERIES_DETAILS_METADATA_EDIT"
 					/>
 				)}
@@ -152,7 +143,7 @@ const SeriesDetails = ({
 					<DetailsExtendedMetadataTab
 						resourceId={seriesId}
 						metadata={extendedMetadata}
-						updateResource={updateExtendedSeriesMetadataWrapper}
+						updateResource={updateExtendedSeriesMetadata}
 						editAccessRole="ROLE_UI_SERIES_DETAILS_METADATA_EDIT"
 					/>
 				)}
@@ -172,12 +163,18 @@ const SeriesDetails = ({
 					/>
 				)}
 				{page === 4 && (
+					<DetailsTobiraTab
+						kind="series"
+						id={seriesId}
+					/>
+				)}
+				{page === 5 && (
 					<SeriesDetailsStatisticTab
 						seriesId={seriesId}
 						header={tabs[page].tabNameTranslation}
 					/>
 				)}
-				{page === 5 && <SeriesDetailsFeedsTab feeds={feeds} />}
+				{page === 6 && <SeriesDetailsFeedsTab feeds={feeds} />}
 			</div>
 		</>
 	);

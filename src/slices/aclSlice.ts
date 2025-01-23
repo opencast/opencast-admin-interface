@@ -144,7 +144,7 @@ export const postNewAcl = (values: typeof initialFormValuesNewAcl) => async (dis
 		});
 };
 // delete acl with provided id
-export const deleteAcl = (id: string) => async (dispatch: AppDispatch) => {
+export const deleteAcl = (id: number) => async (dispatch: AppDispatch) => {
 	axios
 		.delete(`/admin-ng/acl/${id}`)
 		.then((res) => {
@@ -193,7 +193,7 @@ export const checkAcls = (acls: TransformedAcl[]) => async (dispatch: AppDispatc
 				type: "warning",
 				key: "INVALID_ACL_RULES",
 				duration: -1,
-				parameter: null,
+				parameter: undefined,
 				context: NOTIFICATION_CONTEXT_ACCESS
 			})
 		);
@@ -205,7 +205,7 @@ export const checkAcls = (acls: TransformedAcl[]) => async (dispatch: AppDispatc
 				type: "warning",
 				key: "MISSING_ACL_RULES",
 				duration: -1,
-				parameter: null,
+				parameter: undefined,
 				context: NOTIFICATION_CONTEXT_ACCESS
 			})
 		);

@@ -11,6 +11,7 @@ import {
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 import { isSeries } from "../../../../slices/tableSlice";
+import NavigationButtons from "../../../shared/NavigationButtons";
 
 /**
  * This component manges the delete series bulk action
@@ -68,8 +69,7 @@ const DeleteSeriesModal = ({
 	};
 
 	// Select or deselect all rows in table
-// @ts-expect-error TS(7006): Parameter 'e' implicitly has an 'any' type.
-	const onChangeAllSelected = (e) => {
+	const onChangeAllSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selected = e.target.checked;
 		setAllChecked(selected);
 		let changedSelection = selectedSeries.map((series) => {
@@ -216,21 +216,15 @@ const DeleteSeriesModal = ({
 					</div>
 				</div>
 
-				<footer>
-					<button
-						onClick={() => deleteSelectedSeries()}
-						disabled={!checkValidity()}
-						className={cn("danger", {
-							active: checkValidity(),
-							inactive: !checkValidity(),
-						})}
-					>
-						{t("BULK_ACTIONS.DELETE.SERIES.BUTTON")}
-					</button>
-					<button className="cancel" onClick={() => close()}>
-						{t("CANCEL")}
-					</button>
-				</footer>
+				<NavigationButtons
+					isLast
+					isSubmitDisabled={!checkValidity()}
+					submitClassName="danger"
+					nextPage={deleteSelectedSeries}
+					previousPage={close}
+					nextTranslationString="BULK_ACTIONS.DELETE.SERIES.BUTTON"
+					previousTranslationString="CANCEL"
+				/>
 			</section>
 		</>
 	);

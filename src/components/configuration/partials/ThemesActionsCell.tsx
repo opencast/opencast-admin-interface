@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import ThemeDetailsModal from "./wizard/ThemeDetailsModal";
 import {
 	fetchThemeDetails,
 	fetchUsage,
@@ -9,15 +8,18 @@ import {
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import { deleteTheme } from "../../../slices/themeSlice";
+import { deleteTheme, ThemeDetailsType } from "../../../slices/themeSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import ThemeDetails from "./wizard/ThemeDetails";
+import DetailsModal from "../../shared/modals/DetailsModal";
 
 /**
  * This component renders the action cells of themes in the table view
  */
 const ThemesActionsCell = ({
-// @ts-expect-error TS(7031): Binding element 'row' implicitly has an 'any' type... Remove this comment to see the full error message
 	row,
+}: {
+	row: ThemeDetailsType
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -59,11 +61,13 @@ const ThemesActionsCell = ({
 			)}
 
 			{displayThemeDetails && (
-				<ThemeDetailsModal
+				<DetailsModal
 					handleClose={hideThemeDetails}
-					themeId={row.id}
-					themeName={row.name}
-				/>
+					title={row.name}
+					prefix={"CONFIGURATION.THEMES.DETAILS.EDITCAPTION"}
+				>
+					<ThemeDetails close={hideThemeDetails} />
+				</DetailsModal>
 			)}
 
 			{/* delete themes */}

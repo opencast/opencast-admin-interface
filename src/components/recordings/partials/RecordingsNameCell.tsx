@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { setSpecificEventFilter } from "../../../slices/tableFilterSlice";
 import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { useAppDispatch } from "../../../store";
@@ -18,8 +18,7 @@ const RecordingsNameCell = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-// @ts-expect-error TS(7006): Parameter 'locationName' implicitly has an 'any' t... Remove this comment to see the full error message
-	const redirectToEvents = async (locationName) => {
+	const redirectToEvents = async (locationName: string) => {
 		// redirect to tables
 		await dispatch(loadEventsIntoTable());
 

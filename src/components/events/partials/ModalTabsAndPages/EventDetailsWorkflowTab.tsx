@@ -14,7 +14,6 @@ import Notifications from "../../../shared/Notifications";
 import RenderWorkflowConfig from "../wizards/RenderWorkflowConfig";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess, parseBooleanInObject } from "../../../../utils/utils";
-import { setDefaultConfig } from "../../../../utils/workflowPanelUtils";
 import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
@@ -24,7 +23,6 @@ import {
 	saveWorkflowConfig,
 	setModalWorkflowId,
 	setModalWorkflowTabHierarchy,
-	updateWorkflow,
 } from "../../../../slices/eventDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
@@ -96,40 +94,25 @@ const EventDetailsWorkflowTab = ({
 		return true;
 	};
 
-// @ts-expect-error TS(7006): Parameter 'value' implicitly has an 'any' type.
-	const changeWorkflow = (value, changeFormikValue) => {
-		let currentConfiguration = {};
-
-		if (value === baseWorkflow.workflowId) {
-			currentConfiguration = parseBooleanInObject(baseWorkflow.configuration);
-		} else {
-			currentConfiguration = setDefaultConfig(workflowDefinitions, value);
-		}
-
-		changeFormikValue("configuration", currentConfiguration);
-		changeFormikValue("workflowDefinition", value);
-		dispatch(updateWorkflow(value));
-	};
-
 	const setInitialValues = () => {
 		let initialConfig = undefined;
 
-		// TODO: Scheduled events are missing configuration for their workflow
-		// Figure out why the config is missing
 		if (baseWorkflow.configuration) {
 			initialConfig = parseBooleanInObject(baseWorkflow.configuration);
 		}
 
 		return {
-			workflowDefinition: !!workflow.workflowId
+			workflowDefinition: "workflowId" in workflow && !!workflow.workflowId
 				? workflow.workflowId
 				: baseWorkflow.workflowId,
 			configuration: initialConfig,
 		};
 	};
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (values: {
+		workflowDefinition: string,
+		configuration: { [key: string]: unknown } | undefined
+	}) => {
 		dispatch(saveWorkflowConfig({values, eventId}));
 	};
 
@@ -358,10 +341,7 @@ const EventDetailsWorkflowTab = ({
 																					required={true}
 																					handleChange={(element) => {
 																						if (element) {
-																							changeWorkflow(
-																								element.value,
-																								formik.setFieldValue
-																							)
+																							formik.setFieldValue("workflowDefinition", element.value)
 																						}
 																					}}
 																					placeholder={
@@ -454,10 +434,6 @@ const EventDetailsWorkflowTab = ({
 																<button
 																	type="reset"
 																	onClick={() => {
-																		changeWorkflow(
-																			baseWorkflow.workflowId,
-																			formik.setFieldValue
-																		);
 																		formik.resetForm();
 																	}}
 																	disabled={!formik.isValid}

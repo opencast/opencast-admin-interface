@@ -7,7 +7,6 @@ import {
 } from "../../../../selectors/eventDetailsSelectors";
 import { formatDuration } from "../../../../utils/eventDetailsUtils";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
-import { hasAccess } from "../../../../utils/utils";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
@@ -44,6 +43,11 @@ const EventDetailsWorkflowDetails = ({
 		dispatch(removeNotificationWizardForm());
 		dispatch(setModalWorkflowTabHierarchy(tabType));
 	};
+
+	// Type narrowing. If type is wrong this component breaks.
+	if (!("wiid" in workflowData)) {
+		return <></>;
+	}
 
 	return (
 		<div className="modal-content">
@@ -146,7 +150,7 @@ const EventDetailsWorkflowDetails = ({
 													<td>{formatDuration(workflowData.executionTime)}</td>
 												</tr>
 											)}
-											{hasAccess("ROLE_ADMIN", user) && (
+											{user.isAdmin && (
 												<>
 													<tr>
 														<td>
@@ -172,7 +176,7 @@ const EventDetailsWorkflowDetails = ({
 							</div>
 
 							{/* 'Workflow configuration' table */}
-							{hasAccess("ROLE_ADMIN", user) && (
+							{user.isAdmin && (
 								<div className="obj tbl-details">
 									<header>
 										{
@@ -189,7 +193,7 @@ const EventDetailsWorkflowDetails = ({
 													([confKey, confValue], key) => (
 														<tr key={key}>
 															<td>{confKey}</td>
-															<td>{confValue}</td>
+															<td>{confValue as string}</td>
 														</tr>
 													)
 												)}
@@ -278,7 +282,7 @@ const EventDetailsWorkflowDetails = ({
 							</div>
 
 							{/* 'Workflow configuration' table */}
-							{hasAccess("ROLE_ADMIN", user) && (
+							{user.isAdmin && (
 								<div className="obj tbl-details">
 									<header>
 										{

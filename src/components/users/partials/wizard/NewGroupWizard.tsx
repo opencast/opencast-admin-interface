@@ -56,8 +56,7 @@ const NewGroupWizard: React.FC<{
 	// Validation schema of current page
 	const currentValidationSchema = NewGroupSchema[page];
 
-// @ts-expect-error TS(7006): Parameter 'values' implicitly has an 'any' type.
-	const handleSubmit = (values) => {
+	const handleSubmit = (values: typeof initialFormValuesNewGroup) => {
 		const response = dispatch(postNewGroup(values));
 		console.info(response);
 		close();

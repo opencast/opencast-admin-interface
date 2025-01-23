@@ -17,6 +17,7 @@ export const fetchAdopterStatisticsSummary = async () => {
 
 export type Registration = {
 	contactMe: boolean,
+ 	systemType: string,
 	allowsStatistics: boolean,
 	allowsErrorReports: boolean,
 	organisationName: string,
@@ -29,6 +30,7 @@ export type Registration = {
 	street: string,
 	streetNo: string,
 	email: string,
+	agreedToPolicy: boolean,
 }
 
 // post request for adopter information
@@ -38,6 +40,7 @@ export const postRegistration = async (
 	// build body
 	let body = new URLSearchParams();
 	body.append("contactMe", values.contactMe.toString());
+	body.append("systemType", values.systemType);
 	body.append("allowsStatistics", values.allowsStatistics.toString());
 	body.append("allowsErrorReports", values.allowsErrorReports.toString());
 	body.append("organisationName", values.organisationName);
@@ -50,6 +53,7 @@ export const postRegistration = async (
 	body.append("street", values.street);
 	body.append("streetNo", values.streetNo);
 	body.append("email", values.email);
+	body.append("agreedToPolicy", values.agreedToPolicy.toString());
 	body.append("registered", "true");
 
 	// save adopter information and return next state

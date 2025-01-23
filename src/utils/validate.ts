@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import { MetadataField } from "../slices/eventSlice";
 
 /**
  * This File contains all schemas used for validation with yup in the context of events and series
@@ -7,11 +8,70 @@ import * as Yup from "yup";
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 
+/**
+ * Dynamically create a schema for a required metadata field
+ */
+export function createMetadataSchema(
+	schema: { [key: string]: any; },
+	config: { id: string; required: boolean; type: string; })
+{
+	const { id, required, type } = config;
+	if (!required) return schema;
+
+	let validationType: "string" | "array" | "date" = "string";
+	const validations: {
+		type: string,
+		params: any[],
+	}[] = [
+		{
+			type: "required",
+			params: ["this field is required"]
+		},
+	]
+
+	if (type === "mixed_text") {
+		validationType = "array";
+		validations.push({
+			type: "min",
+			params: [1, "there should be atleast one entry"]
+		})
+	}
+
+	if (type === "date" || type === "start_date") {
+		validationType = "date";
+	}
+
+	if (!Yup[validationType as keyof typeof Yup]) {
+		return schema;
+	}
+	let validator = Yup[validationType as "string"]();
+	validations.forEach(validation => {
+		const { params, type } = validation;
+		// @ts-expect-error
+		if (!validator[type]) {
+			return;
+		}
+		// @ts-expect-error
+		validator = validator[type](...params);
+	});
+	schema[id] = validator;
+	return schema;
+}
+
+/**
+ * Dynamically create a schema for required metadata fields
+ */
+export const MetadataSchema = (fields: MetadataField[]) => {
+	const schema = fields.reduce(createMetadataSchema, {});
+	const validateSchema = Yup.object().shape(schema);
+
+	return validateSchema;
+}
+
+
 // Validation Schema used in new event wizard (each step has its own yup validation object)
 export const NewEventSchema = [
-	Yup.object().shape({
-		title: Yup.string().required("Required"),
-	}),
+	Yup.object().shape({}),
 	Yup.object().shape({}),
 	Yup.object().shape({
 		uploadAssetsTrack: Yup.array().when("sourceMode", {
@@ -73,6 +133,7 @@ export const NewEventSchema = [
 			then: () => Yup.string().required("Required"),
 		}),
 	}),
+	Yup.object().shape({}),
 	Yup.object().shape({
 		processingWorkflow: Yup.string().required("Required"),
 	}),

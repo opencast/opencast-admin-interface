@@ -2,6 +2,7 @@ import languages from "../i18n/languages";
 import i18n from "../i18n/i18n";
 import { TFunction } from "i18next";
 import { UserInfoState } from "../slices/userInfoSlice";
+import { UploadAssetOption } from "../slices/eventSlice";
 
 /**
  * This File contains methods that are needed in more than one places
@@ -22,7 +23,11 @@ export const getCurrentLanguageInformation = () => {
 	// Get code, flag, name and date locale of the current language
 	let currentLang = languages.find(({ code }) => code === i18n.language);
 	if (typeof currentLang === "undefined") {
-		currentLang = languages.find(({ code }) => code === "en-US");
+		// If detected language code, like "de-CH", isn't part of translations try 2-digit language code
+		currentLang = languages.find(({ code }) => code === i18n.language.split("-")[0]);
+		if (typeof currentLang === "undefined") {
+			currentLang = languages.find(({ code }) => code === "en-US");
+		}
 	}
 
 	return currentLang;
@@ -105,7 +110,7 @@ export const parseBooleanInObject = (baseObject: {[key: string]: any}) => {
  * switches 'true'- and 'false'-Strings
  * to their corresponding boolean value. All other kinds of values stay the same.
  */
-export const parseValueForBooleanStrings = (value: any) => {
+export const parseValueForBooleanStrings = (value: unknown) => {
 	let parsedValue = value;
 	if (parsedValue === "true") {
 		parsedValue = true;
@@ -143,19 +148,19 @@ export const isJson = (text: string) => {
  * t is the hook returned by i18next.useTranslation
  * suffix further specifies the asset value if necessary, e.g. "SHORT" for "displayOverride.SHORT"
  */
-export const translateOverrideFallback = (asset: any, t: TFunction, suffix?: string) => {
+export const translateOverrideFallback = (asset: UploadAssetOption, t: TFunction, suffix?: "SHORT" | "DETAIL") => {
 	let result = undefined;
-	const sub = !!suffix ? "." + suffix : "";
+	const sub = !!suffix ? `.${suffix}` as const : "" as const;
 	const translatable = asset["title"] + sub;
 
-	if (asset['displayOverride' + sub]) {
-		result = asset['displayOverride' + sub];
+	if (asset[`displayOverride${sub}` as const]) {
+		result = asset[`displayOverride${sub}` as const];
 
 	} else if (i18n.exists(translatable)) {
 		result = t(translatable);
 
-	} else if (asset['displayFallback' + sub]) {
-		result = asset['displayFallback' + sub];
+	} else if (asset[`displayFallback${sub}` as const]) {
+		result = asset[`displayFallback${sub}` as const];
 
 	} else {
 		// no translate, override, or fallback, use what is given
