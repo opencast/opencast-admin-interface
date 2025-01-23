@@ -49,7 +49,7 @@ const Series = () => {
 	const [displayNewSeriesModal, setNewSeriesModal] = useState(false);
 	const [displayDeleteSeriesModal, setDeleteSeriesModal] = useState(false);
 
-  const user = useAppSelector(state => getUserInformation(state));
+	const user = useAppSelector(state => getUserInformation(state));
 	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	let location = useLocation();
@@ -142,18 +142,18 @@ const Series = () => {
 	};
 
 	useHotkeys(
-    availableHotkeys.general.NEW_SERIES.sequence,
-    () => showNewSeriesModal(),
+		availableHotkeys.general.NEW_SERIES.sequence,
+		() => showNewSeriesModal(),
 		{ description: t(availableHotkeys.general.NEW_SERIES.description) ?? undefined },
-    [showNewSeriesModal]
-  );
+		[showNewSeriesModal]
+	);
 
 	return (
 		<>
 			<Header />
 			<NavBar>
 				{/* Display modal for new series if add series button is clicked */}
-				{ displayNewSeriesModal &&
+				{displayNewSeriesModal &&
 					<NewResourceModal
 						handleClose={hideNewSeriesModal}
 						resource={"series"}

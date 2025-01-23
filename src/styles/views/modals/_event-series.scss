@@ -19,9 +19,7 @@
  *
  */
 .modal {
-    &#event-details-modal,
-    &#series-details-modal,
-    &#task-details-modal {
+    &#details-modal {
 
         // Modal Size
         @extend .large-modal;
