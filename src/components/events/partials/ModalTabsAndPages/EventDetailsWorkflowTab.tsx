@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Formik, FormikErrors } from "formik";
+import { Formik } from "formik";
 import {
 	deletingWorkflow as getDeletingWorkflow,
 	getBaseWorkflow,
@@ -14,7 +14,6 @@ import Notifications from "../../../shared/Notifications";
 import RenderWorkflowConfig from "../wizards/RenderWorkflowConfig";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess, parseBooleanInObject } from "../../../../utils/utils";
-import { setDefaultConfig } from "../../../../utils/workflowPanelUtils";
 import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
@@ -24,7 +23,6 @@ import {
 	saveWorkflowConfig,
 	setModalWorkflowId,
 	setModalWorkflowTabHierarchy,
-	updateWorkflow,
 } from "../../../../slices/eventDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
@@ -95,20 +93,6 @@ const EventDetailsWorkflowTab = ({
 	const hasCurrentAgentAccess = () => {
 		//todo
 		return true;
-	};
-
-	const changeWorkflow = (value: string, changeFormikValue: (field: string, value: unknown) => Promise<void | FormikErrors<any>>) => {
-		let currentConfiguration = {};
-
-		if (value === baseWorkflow.workflowId) {
-			currentConfiguration = parseBooleanInObject(baseWorkflow.configuration as { [key: string]: any });
-		} else {
-			currentConfiguration = setDefaultConfig(workflowDefinitions, value);
-		}
-
-		changeFormikValue("configuration", currentConfiguration);
-		changeFormikValue("workflowDefinition", value);
-		dispatch(updateWorkflow(value));
 	};
 
 	const setInitialValues = () => {
@@ -357,10 +341,7 @@ const EventDetailsWorkflowTab = ({
 																					required={true}
 																					handleChange={(element) => {
 																						if (element) {
-																							changeWorkflow(
-																								element.value,
-																								formik.setFieldValue
-																							)
+																							formik.setFieldValue("workflowDefinition", element.value)
 																						}
 																					}}
 																					placeholder={
@@ -454,10 +435,6 @@ const EventDetailsWorkflowTab = ({
 																<button
 																	type="reset"
 																	onClick={() => {
-																		changeWorkflow(
-																			baseWorkflow.workflowId,
-																			formik.setFieldValue
-																		);
 																		formik.resetForm();
 																	}}
 																	disabled={!formik.isValid}

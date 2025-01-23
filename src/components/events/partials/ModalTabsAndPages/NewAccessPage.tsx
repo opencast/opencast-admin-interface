@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import cn from "classnames";
 import Notifications from "../../../shared/Notifications";
 import {
 	Role,
@@ -20,6 +19,7 @@ import { filterRoles, getAclTemplateText } from "../../../../utils/aclUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchSeriesDetailsAcls } from "../../../../slices/seriesDetailsSlice";
 import { getSeriesDetailsAcl } from "../../../../selectors/seriesDetailsSelectors";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 import { formatAclRolesForDropdown, formatAclTemplatesForDropdown } from "../../../../utils/dropDownUtils";
 
@@ -354,31 +354,15 @@ const NewAccessPage = <T extends RequiredFormProps>({
 				</div>
 			</div>
 			{/* Button for navigation to next page and previous page */}
-			<footer>
-				<button
-					type="submit"
-					className={cn("submit", {
-						active: formik.dirty && formik.isValid,
-						inactive: !(formik.dirty && formik.isValid),
-					})}
-					disabled={!(formik.dirty && formik.isValid)}
-					onClick={async () => {
-						if (await dispatch(checkAcls(formik.values.acls))) {
-							nextPage(formik.values);
-						}
-					}}
-					tabIndex={100}
-				>
-					{t("WIZARD.NEXT_STEP")}
-				</button>
-				<button
-					className="cancel"
-					onClick={() => previousPage(formik.values, false)}
-					tabIndex={101}
-				>
-					{t("WIZARD.BACK")}
-				</button>
-			</footer>
+			<WizardNavigationButtons
+				formik={formik}
+				nextPage={async () => {
+					if (await dispatch(checkAcls(formik.values.acls))) {
+						nextPage(formik.values);
+					}
+				}}
+				previousPage={previousPage}
+			/>
 
 			<div className="btm-spacer" />
 		</>
