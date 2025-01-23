@@ -8,7 +8,6 @@ import NewAccessPage from "../ModalTabsAndPages/NewAccessPage";
 import NewProcessingPage from "../ModalTabsAndPages/NewProcessingPage";
 import NewSourcePage from "../ModalTabsAndPages/NewSourcePage";
 import { NewEventSchema, MetadataSchema } from "../../../../utils/validate";
-import WizardStepperEvent from "../../../shared/wizard/WizardStepperEvent";
 import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
 import { initialFormValuesNewEvents } from "../../../../configs/modalConfig";
@@ -22,6 +21,7 @@ import { getOrgProperties, getUserInformation } from "../../../../selectors/user
 import { MetadataCatalog, UploadAssetOption, postNewEvent } from "../../../../slices/eventSlice";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
 import { hasAccess } from "../../../../utils/utils";
+import WizardStepper from "../../../shared/wizard/WizardStepper";
 
 /**
  * This component manages the pages of the new event wizard and the submission of values
@@ -121,7 +121,7 @@ const NewEventWizard: React.FC<{
 		}
 	};
 
-	const previousPage = (values: typeof initialValues, twoPagesBack?: boolean) => {
+	const previousPage = (values: typeof initialValues, twoPagesBack: boolean = false) => {
 		setSnapshot(values);
 		// if previous page is hidden or not always shown, than go back two pages
 		if (steps[page - 1].hidden || twoPagesBack) {
@@ -155,13 +155,14 @@ const NewEventWizard: React.FC<{
 					return (
 						<>
 							{/* Stepper that shows each step of wizard as header */}
-							<WizardStepperEvent
+							<WizardStepper
 								steps={steps}
 								page={page}
 								setPage={setPage}
 								completed={pageCompleted}
 								setCompleted={setPageCompleted}
 								formik={formik}
+								hasAccessPage
 							/>
 							<div>
 								{page === 0 && (

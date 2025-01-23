@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Formik } from "formik";
-import cn from "classnames";
 import AclAccessPage from "../wizard/AclAccessPage";
 import AclMetadataPage from "../wizard/AclMetadataPage";
 import { getAclDetails } from "../../../../selectors/aclDetailsSelectors";
@@ -10,6 +8,7 @@ import ModalNavigation from "../../../shared/modals/ModalNavigation";
 import { checkAcls } from "../../../../slices/aclSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { TransformedAcl, updateAclDetails } from "../../../../slices/aclDetailsSlice";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
  * This component manages the pages of the acl details modal
@@ -19,7 +18,6 @@ const AclDetails = ({
 } : {
 	close: () => void,
 }) => {
-	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const [page, setPage] = useState(0);
@@ -83,26 +81,19 @@ const AclDetails = ({
 						)}
 
 						{/* Navigation buttons and validation */}
-						<footer>
-							<button
-								className={cn("submit", {
-									active: formik.dirty && formik.isValid,
-									inactive: !(formik.dirty && formik.isValid),
-								})}
-								disabled={!(formik.dirty && formik.isValid)}
-								onClick={async () => {
+						<WizardNavigationButtons
+							formik={formik}
+							submitPage={
+								async () => {
 									if (await dispatch(checkAcls(formik.values.policies))) {
 										formik.handleSubmit();
 									}
-								}}
-								type="submit"
-							>
-								{t("SUBMIT")}
-							</button>
-							<button className="cancel" onClick={() => close()}>
-								{t("CANCEL")}
-							</button>
-						</footer>
+								}
+							}
+							createTranslationString="SUBMIT"
+							cancelTranslationString="CANCEL"
+							isLast
+						/>
 					</>
 				)}
 			</Formik>

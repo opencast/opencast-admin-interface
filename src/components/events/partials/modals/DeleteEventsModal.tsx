@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import cn from "classnames";
 import { getSelectedRows } from "../../../../selectors/tableSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { deleteMultipleEvent } from "../../../../slices/eventSlice";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 import { isEvent } from "../../../../slices/tableSlice";
+import NavigationButtons from "../../../shared/NavigationButtons";
 
 /**
  * This component manages the delete bulk action
@@ -153,23 +153,15 @@ const DeleteEventsModal = ({
 					</div>
 				</div>
 
-				<footer>
-					<button
-						onClick={() => deleteSelectedEvents()}
-						disabled={!selectedEvents.some((event) => event.selected === true)}
-						className={cn("danger", {
-							active: selectedEvents.some((event) => event.selected === true),
-							inactive: !selectedEvents.some(
-								(event) => event.selected === true
-							),
-						})}
-					>
-						{t("WIZARD.DELETE")}
-					</button>
-					<button onClick={() => close()} className="cancel">
-						{t("CANCEL")}
-					</button>
-				</footer>
+				<NavigationButtons
+					isLast
+					isSubmitDisabled={!selectedEvents.some((event) => event.selected === true)}
+					submitClassName="danger"
+					nextPage={deleteSelectedEvents}
+					previousPage={close}
+					nextTranslationString="WIZARD.DELETE"
+					previousTranslationString="CANCEL"
+				/>
 
 				<div className="btm-spacer" />
 			</section>
