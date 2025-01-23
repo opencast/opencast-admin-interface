@@ -18,6 +18,7 @@ import {
 } from "../../../../slices/eventSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { isEvent } from "../../../../slices/tableSlice";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
  * This component manges the edit metadata bulk action
@@ -279,35 +280,23 @@ const EditMetadataEventsModal = ({
 							</div>
 
 							{/* Buttons for cancel and submit */}
-							<footer>
-								<button
-									type="submit"
-									onClick={() => formik.handleSubmit()}
-									disabled={!(formik.dirty && formik.isValid)}
-									className={cn("submit", {
-										active:
-											formik.dirty &&
-											formik.isValid &&
-											hasAccess(
-												"ROLE_UI_EVENTS_DETAILS_METADATA_EDIT",
-												user
-											),
-										inactive: !(
-											formik.dirty &&
-											formik.isValid &&
-											hasAccess(
-												"ROLE_UI_EVENTS_DETAILS_METADATA_EDIT",
-												user
-											)
-										),
-									})}
-								>
-									{t("WIZARD.UPDATE")}
-								</button>
-								<button onClick={() => close()} className="cancel">
-									{t("CLOSE")}
-								</button>
-							</footer>
+							<WizardNavigationButtons
+								formik={formik}
+								customValidation={
+									!(
+										formik.dirty &&
+										formik.isValid &&
+										hasAccess(
+											"ROLE_UI_EVENTS_DETAILS_METADATA_EDIT",
+											user
+										)
+									)
+								}
+								previousPage={() => close()}
+								createTranslationString="WIZARD.UPDATE"
+								cancelTranslationString="CLOSE"
+								isLast
+							/>
 
 							<div className="btm-spacer" />
 						</>
