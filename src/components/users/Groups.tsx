@@ -22,7 +22,6 @@ import MainView from "../MainView";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { fetchAcls } from "../../slices/aclSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchUsers } from "../../slices/userSlice";
@@ -39,7 +38,6 @@ const Groups = () => {
 
 	const user = useAppSelector(state => getUserInformation(state));
 	const groups = useAppSelector(state => getTotalGroups(state));
-	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	const loadGroups = async () => {
 		// Fetching groups from server
@@ -72,9 +70,7 @@ const Groups = () => {
 	};
 
 	useEffect(() => {
-		if ("groups" !== currentFilterType) {
-			dispatch(fetchFilters("groups"));
-		}
+		dispatch(fetchFilters("groups"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));
