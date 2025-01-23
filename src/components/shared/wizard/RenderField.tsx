@@ -195,6 +195,7 @@ const EditableDateValue = ({
 			className="datepicker-custom-input"
 			wrapperClassName="datepicker-custom-wrapper"
 			locale={getCurrentLanguageInformation()?.dateLocale}
+			strictParsing
 		/>
 	</div>
 ) : (
@@ -399,6 +400,7 @@ const EditableSingleValueTime = ({
 				className="datepicker-custom-input"
 				wrapperClassName="datepicker-custom-wrapper"
 				locale={getCurrentLanguageInformation()?.dateLocale}
+				strictParsing
 			/>
 		</div>
 	) : (

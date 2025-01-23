@@ -289,6 +289,7 @@ const EventDetailsSchedulingTab = ({
 																	className="datepicker-custom-input"
 																	portalId="root"
 																	locale={currentLanguage?.dateLocale}
+																	strictParsing
 																/>
 															) : (
 																<>
