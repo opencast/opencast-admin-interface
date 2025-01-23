@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 import TableFilters from "../shared/TableFilters";
 import MainNav from "../shared/MainNav";
 import Stats from "../shared/Stats";
@@ -311,7 +311,7 @@ const Events = () => {
 
 				{/*Include table component*/}
 				{/* <Table templateMap={eventsTemplateMap} resourceType="events" /> */}
-        <Table templateMap={eventsTemplateMap} />
+				<Table templateMap={eventsTemplateMap} />
 			</MainView>
 			<Footer />
 		</>

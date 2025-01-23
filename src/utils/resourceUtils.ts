@@ -41,12 +41,12 @@ export const getURLParams = (
 
 	// check if textFilter has value and transform for use as URL param
 	if (textFilter !== "") {
-		filters.push("textFilter:" + textFilter);
+		filters.push(["textFilter", textFilter]);
 	}
 	// transform filters for use as URL param
 	for (let key in filterMap) {
 		if (!!filterMap[key].value) {
-			filters.push(filterMap[key].name + ":" + filterMap[key].value.toString());
+			filters.push([filterMap[key].name, filterMap[key].value.toString()]);
 		}
 	}
 
@@ -63,7 +63,9 @@ export const getURLParams = (
 	if (filters.length) {
 		params = {
 			...params,
-			filter: filters.join(","),
+			filter: filters
+				.map(([key, value]) => `${key}:${encodeURIComponent(value)}`)
+				.join(","),
 		};
 	}
 

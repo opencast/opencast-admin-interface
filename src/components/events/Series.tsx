@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MainNav from "../shared/MainNav";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
@@ -138,18 +138,18 @@ const Series = () => {
 	};
 
 	useHotkeys(
-    availableHotkeys.general.NEW_SERIES.sequence,
-    () => showNewSeriesModal(),
+		availableHotkeys.general.NEW_SERIES.sequence,
+		() => showNewSeriesModal(),
 		{ description: t(availableHotkeys.general.NEW_SERIES.description) ?? undefined },
-    [showNewSeriesModal]
-  );
+		[showNewSeriesModal]
+	);
 
 	return (
 		<>
 			<Header />
 			<NavBar>
 				{/* Display modal for new series if add series button is clicked */}
-				{ displayNewSeriesModal &&
+				{displayNewSeriesModal &&
 					<NewResourceModal
 						handleClose={hideNewSeriesModal}
 						resource={"series"}

@@ -4,7 +4,7 @@ import NavBar from "./NavBar";
 import Footer from "./Footer";
 import MainNav from "./shared/MainNav";
 import { useTranslation } from "react-i18next";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 import cn from "classnames";
 import axios from 'axios';
 import i18n from "../i18n/i18n";
