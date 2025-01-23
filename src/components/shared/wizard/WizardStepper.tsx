@@ -54,10 +54,14 @@ const WizardStepper = ({
 				setCompleted(updatedCompleted);
 				setPage(key);
 			}
+
+			if (!formik.isValid) {
+				if (completed[key]) {
+					setPage(key);
+				}
+			}
 		}
 	};
-
-	const disabled = !(formik.dirty && formik.isValid);
 
 	return (
 		<Stepper
@@ -71,7 +75,7 @@ const WizardStepper = ({
 			{steps.map((label, key) =>
 				!label.hidden ? (
 					<Step key={label.translation} completed={completed[key]}>
-						<StepButton onClick={() => handleOnClick(key)} disabled={disabled}>
+						<StepButton onClick={() => handleOnClick(key)}>
 							<StepLabel sx={stepLabelStyle.root} StepIconComponent={CustomStepIcon}>
 								{t(label.translation)}
 							</StepLabel>

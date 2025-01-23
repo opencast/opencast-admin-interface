@@ -14,6 +14,7 @@ import {
 	Event,
 } from "../../../../slices/eventSlice";
 import { useAppSelector } from "../../../../store";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
  * This component renders the table overview of selected events in start task bulk action
@@ -127,22 +128,12 @@ const StartTaskGeneralPage = <T extends RequiredFormProps>({
 			</div>
 
 			{/* Button for navigation to next page and previous page */}
-			<footer>
-				<button
-					type="submit"
-					className={cn("submit", {
-						active: checkValidityStartTaskEventSelection(formik.values),
-						inactive: !checkValidityStartTaskEventSelection(formik.values),
-					})}
-					disabled={!checkValidityStartTaskEventSelection(formik.values)}
-					onClick={() => {
-						nextPage(formik.values);
-					}}
-					tabIndex={100}
-				>
-					{t("WIZARD.NEXT_STEP")}
-				</button>
-			</footer>
+			<WizardNavigationButtons
+				formik={formik}
+				nextPage={nextPage}
+				customValidation={!checkValidityStartTaskEventSelection(formik.values)}
+				isFirst
+			/>
 		</>
 	);
 };
