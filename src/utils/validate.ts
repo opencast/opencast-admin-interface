@@ -133,6 +133,7 @@ export const NewEventSchema = [
 			then: () => Yup.string().required("Required"),
 		}),
 	}),
+	Yup.object().shape({}),
 	Yup.object().shape({
 		processingWorkflow: Yup.string().required("Required"),
 	}),

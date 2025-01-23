@@ -43,7 +43,7 @@ const Series = () => {
 	const [displayNavigation, setNavigation] = useState(false);
 	const [displayDeleteSeriesModal, setDeleteSeriesModal] = useState(false);
 
-  const user = useAppSelector(state => getUserInformation(state));
+	const user = useAppSelector(state => getUserInformation(state));
 	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	let location = useLocation();

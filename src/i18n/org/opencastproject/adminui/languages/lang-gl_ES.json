@@ -675,7 +675,7 @@
 				"UPDATING_PREVIEWS": "Actualizando vistas previas"
 			},
 			"DETAILS": {
-				"HEADER": "Detalles do evento - {{resourceId}}",
+				"HEADER": "Event details - {{name}}",
 				"TABS": {
 					"METADATA": "Metadatos",
 					"EXTENDED-METADATA": "Metadatos II",
@@ -1172,7 +1172,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Detalles da serie - {{resourceId}}",
+				"HEADER": "Series details - {{name}}",
 				"TABS": {
 					"METADATA": "Metadatos",
 					"EXTENDED_METADATA": "Metadatos II",
@@ -1278,7 +1278,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Detalles da ubicación - {{resourceId}}",
+				"HEADER": "Location details - {{name}}",
 				"TAB": {
 					"GENERAL": "Xeral",
 					"CONFIGURATION": "Configuración",
@@ -1335,7 +1335,7 @@
 			},
 			"DETAILS": {
 				"NEWCAPTION": "Crear usuario",
-				"EDITCAPTION": "Detalles do usuario - {{username}}",
+				"EDITCAPTION": "User details - {{name}}",
 				"TABS": {
 					"USER": "Usuario",
 					"ROLES": "Roles",
