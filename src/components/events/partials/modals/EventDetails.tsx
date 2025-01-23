@@ -81,10 +81,10 @@ const EventDetails = ({
 
 	useEffect(() => {
 		dispatch(removeNotificationWizardForm());
-		dispatch(fetchMetadata(eventId)).then();
-		dispatch(fetchSchedulingInfo(eventId)).then();
-		dispatch(fetchEventStatistics(eventId)).then();
-		dispatch(fetchAssetUploadOptions()).then();
+		dispatch(fetchMetadata(eventId));
+		dispatch(fetchSchedulingInfo(eventId));
+		dispatch(fetchEventStatistics(eventId));
+		dispatch(fetchAssetUploadOptions());
 		dispatch(fetchEventDetailsTobira(eventId));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
