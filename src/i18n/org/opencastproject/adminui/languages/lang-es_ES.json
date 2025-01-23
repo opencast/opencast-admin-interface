@@ -117,7 +117,8 @@
 				"GROUP": "The following group will be deleted",
 				"USER": "The following user will be deleted",
 				"THEME": "The following theme will be deleted",
-				"LOCATION": "The following location will be deleted"
+				"LOCATION": "The following location will be deleted",
+				"TOBIRA_PATH": "The series will be removed from the following path in Tobira:"
 			},
 			"NAME": "Name"
 		},
@@ -168,6 +169,10 @@
 		"GROUP_NOT_DELETED": "The group could not be deleted",
 		"SERIES_ADDED": "The series has been created",
 		"SERIES_NOT_SAVED": "The series could not be saved",
+		"SERIES_PATH_UPDATED": "The series path has been updated",
+		"SERIES_PATH_REMOVED": "The series path has been removed",
+		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
+		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "The event has been created",
 		"EVENTS_UPLOAD_STARTED": "The event is being uploaded… {{ progress }}%",
 		"EVENTS_NOT_CREATED": "The event could not be created",
@@ -194,7 +199,7 @@
 		"CONFLICT_ALREADY_ENDED": "Scheduling error: The event has already ended.",
 		"CONFLICT_END_BEFORE_START": "Scheduling error: Schedule end has to be later than the start.",
 		"CONFLICT_IN_THE_PAST": "The schedule could not be updated: You cannot schedule an event to be in the past.",
-		"INVALID_ACL_RULES": "Rules have to contain a valid role and read or/and write right(s).",
+		"INVALID_ACL_RULES": "Rules have to contain a valid role and read or\/and write right(s).",
 		"MISSING_ACL_RULES": "At least one role with Read and Write permissions is required!",
 		"SAVED_ACL_RULES": "The access rules have been saved.",
 		"SERIES_THEME_REPROCESS_EXISTING_EVENTS": "The existing events in this series will need to be reprocessed",
@@ -223,7 +228,18 @@
 			"NO_EVENTS_UPDATED": "All updates failed.",
 			"SOME_EVENTS_NOT_UPDATED": "Some events could not be updated."
 		},
-		"PROBLEM_ON_START": "A error occurred on start up. Please contact your Opencast admin"
+		"PROBLEM_ON_START": "An error occurred on start up. Please contact your Opencast admin",
+		"TOBIRA_OVERRIDE_NAME": "The title of the selected page will be overridden with the title of the series.",
+		"TOBIRA_NO_PATH_SEGMENT": "Page needs a path segment.",
+		"TOBIRA_NOT_MOUNTED": "Series could not be mounted in Tobira.",
+		"TOBIRA_PATH_SEGMENT_INVALID": "Path segment is invalid. A valid path segment is at least 2 characters long, does not contain any whitespace or control characters, none of the characters '<>\"[\\]^`{|}#%\/?]', and doesn't start with any of the characters '-+~@_!$&;:.,=*'()'.",
+		"TOBIRA_PATH_SEGMENT_UNIQUE": "The path segment of a page must be unique among all its sibling pages.",
+		"TOBIRA_PAGE_NOT_FOUND": "The page you tried to navigate to does not or no longer exist. Maybe try starting from the beginning.",
+		"TOBIRA_SERVER_ERROR": " Error talking to Tobira. Contact your system administrator and\/or try again later.",
+		"TOBIRA_COPIED_DIRECT_LINK": "Copied link to clipboard.",
+		"TOBIRA_FAILED_COPYING_DIRECT_LINK": "Couldn't copy link to clipboard.",
+		"TOBIRA_NOT_FOUND": "Tobira doesn't know about this series or event (yet). Try again in a few minutes or contact your system administrator.",
+		"TOBIRA_NOT_CONFIGURED": "Tobira is not configured (correctly)."
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Actions",
@@ -248,7 +264,7 @@
 			"GENERAL": {
 				"CAPTION": "General",
 				"SUMMARY": "({{ count }} events selected)",
-				"CANNOTSTART": "Highlighted event(s) cannot be processed at the moment. Deselect it/them or try again later."
+				"CANNOTSTART": "Highlighted event(s) cannot be processed at the moment. Deselect it\/them or try again later."
 			},
 			"TASKS": {
 				"CAPTION": "Tasks",
@@ -306,7 +322,7 @@
 				}
 			},
 			"EDIT": {
-				"DESCRIPTION": "Edit and/or select the metadata fields you want to update. A field cannot be selected if this doesn't result in a changed value for at least one event, or if the field isn't valid (e.g. required fields cannot be empty). Highlighted metadata fields have diverging values for the selected events.",
+				"DESCRIPTION": "Edit and\/or select the metadata fields you want to update. A field cannot be selected if this doesn't result in a changed value for at least one event, or if the field isn't valid (e.g. required fields cannot be empty). Highlighted metadata fields have diverging values for the selected events.",
 				"TABLE": {
 					"CAPTION": "Metadata of selected events",
 					"FIELDS": "Metadata",
@@ -659,7 +675,7 @@
 				"UPDATING_PREVIEWS": "Updating previews"
 			},
 			"DETAILS": {
-				"HEADER": "Event details - {{resourceId}}",
+				"HEADER": "Event details - {{name}}",
 				"TABS": {
 					"METADATA": "Metadata",
 					"EXTENDED-METADATA": "Metadata II",
@@ -669,7 +685,8 @@
 					"WORKFLOWS": "Workflows",
 					"ACCESS": "Access policy",
 					"COMMENTS": "Comments",
-					"STATISTICS": "Statistics"
+					"STATISTICS": "Statistics",
+					"TOBIRA": "Tobira"
 				},
 				"PUBLICATIONS": {
 					"CAPTION": "Publications",
@@ -892,7 +909,7 @@
 					"REASONS": {
 						"CUTTING": "Cutting required",
 						"REVIEW": "Review required",
-						"ASYNC": "A/V tracks asynchronous",
+						"ASYNC": "A\/V tracks asynchronous",
 						"AUDIO_ISSUE": "Missing or defective audio track",
 						"CANCELLED": "Canceled event",
 						"CONFLICTING_METADATA": "Conflicting metadata",
@@ -942,6 +959,13 @@
 					"LOCKED": {
 						"RUNNING": "Editing metadata is not allowed when operations are running on an event"
 					}
+				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to event",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This event is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this event"
 				},
 				"SCHEDULING": {
 					"CAPTION": "Scheduling configuration",
@@ -1122,7 +1146,10 @@
 					"HOMEPAGE": "Homepage",
 					"SELECTED_PAGE": "Series will be mounted under the following path",
 					"NO_PAGE_SELECTED": "No page selected. Series will not be mounted in Tobira.",
-					"PATH": "Path"
+					"NO_PAGE_SELECTED_EDIT": "No page selected. Series path will not be changed.",
+					"PATH": "Path",
+					"DIRECT_LINK": "A direct link will be available.",
+					"MOUNT_DISCLAIMER": "Series can only be mounted in empty pages"
 				},
 				"SUMMARY": {
 					"CAPTION": "Summary"
@@ -1145,7 +1172,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Series details - {{resourceId}}",
+				"HEADER": "Series details - {{name}}",
 				"TABS": {
 					"METADATA": "Metadata",
 					"EXTENDED_METADATA": "Metadata II",
@@ -1205,7 +1232,12 @@
 					"DIRECT_LINK": "Direct link to series",
 					"COPY_DIRECT_LINK": "Copy to clipboard",
 					"NOT_MOUNTED": "This series is currently not included the page structure, and can only be reached using the direct link above.",
-					"PAGES": "Pages in Tobira that contain this series"
+					"PAGES": "Pages in Tobira that contain this series",
+					"SHOW_PAGES": "Show all pages",
+					"EDIT_PATH": "Edit path",
+					"REMOVE_PATH": "Remove path",
+					"MOUNT_SERIES": "Mount series",
+					"DESCRIPTION": "You may edit the path of pages containing this series if the page has no other content."
 				},
 				"EVENTS": {
 					"TITLE": "Title",
@@ -1246,7 +1278,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Location details - {{resourceId}}",
+				"HEADER": "Location details - {{name}}",
 				"TAB": {
 					"GENERAL": "General",
 					"CONFIGURATION": "Configuration",
@@ -1303,7 +1335,7 @@
 			},
 			"DETAILS": {
 				"NEWCAPTION": "Create user",
-				"EDITCAPTION": "User details - {{username}}",
+				"EDITCAPTION": "User details - {{name}}",
 				"TABS": {
 					"USER": "User",
 					"ROLES": "Roles",
@@ -2067,7 +2099,7 @@
 			"PUBLISHEDHOURS": "Published Hours of Video"
 		},
 		"DESCRIPTION": {
-			"RANDOM": "This displays random data as a showcase. You can disable this chart by deleting the corresponding statistics provider's json definition from etc/providers",
+			"RANDOM": "This displays random data as a showcase. You can disable this chart by deleting the corresponding statistics provider's json definition from etc\/providers",
 			"VIEWS_SUM": "This displays the total number of views per time unit.",
 			"VIEWS_AVG": "This displays the mean number of daily views per time unit.",
 			"PUBLISHEDHOURS": "This displays the published hours of video"
@@ -2075,12 +2107,12 @@
 	},
 	"dateFormats": {
 		"dateTime": {
-			"short": "{{dateTime, M/D/YY h:mm a}}",
+			"short": "{{dateTime, M\/D\/YY h:mm a}}",
 			"medium": "{{dateTime, MMM D, YYYY h:mm:ss a}}",
 			"full": "{{dateTime, dddd, MMMM D, yyyy h:mm:ss a z}}"
 		},
 		"date": {
-			"short": "{{date, M/D/YY}}",
+			"short": "{{date, M\/D\/YY}}",
 			"medium": "{{date, MMM D, YYYY}}",
 			"full": "{{date, dddd, MMMM D, YYYY}}"
 		},

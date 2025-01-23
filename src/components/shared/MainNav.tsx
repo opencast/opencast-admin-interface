@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
 import {
 	loadAclsIntoTable,
 	loadEventsIntoTable,
@@ -53,7 +53,7 @@ const MainNav = ({
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
 
 	const statisticsEnabled = (orgProperties['admin.statistics.enabled'] || 'false').toLowerCase() === 'true';
-	const themesEnabled = (orgProperties['admin.themes.enabled'] || 'true').toLowerCase() === 'true';
+	const themesEnabled = (orgProperties['admin.themes.enabled'] || 'false').toLowerCase() === 'true';
 
 	const loadEvents = () => {
 		dispatch(fetchFilters("events"));

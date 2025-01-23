@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import SeriesDetails from "./SeriesDetails";
-import { useHotkeys } from "react-hotkeys-hook";
-import { availableHotkeys } from "../../../../configs/hotkeysConfig";
+import DetailsModal from "../../../shared/modals/DetailsModal";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { useAppDispatch } from "../../../../store";
 
 /**
  * This component renders the modal for displaying series details
@@ -17,6 +18,7 @@ const SeriesDetailsModal = ({
 	seriesId: string
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
 	// tracks, whether the policies are different to the initial value
 	const [policyChanged, setPolicyChanged] = useState(false);
@@ -28,36 +30,23 @@ const SeriesDetailsModal = ({
 	const close = () => {
 		if (!policyChanged || confirmUnsaved()) {
 			setPolicyChanged(false);
+			dispatch(removeNotificationWizardForm());
 			handleClose();
 		}
 	};
 
-	useHotkeys(
-		availableHotkeys.general.CLOSE_MODAL.sequence,
-		() => close(),
-		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
-		[close],
-  	);
-
-	// todo: add hotkeys
 	return (
-		<>
-			<div className="modal-animation modal-overlay" />
-			<section className="modal modal-animation" id="series-details-modal">
-				<header>
-					<button className="button-like-anchor fa fa-times close-modal" onClick={() => close()} />
-					<h2>
-						{t("EVENTS.SERIES.DETAILS.HEADER", { resourceId: seriesTitle })}
-					</h2>
-				</header>
-
+		<DetailsModal
+			handleClose={close}
+			prefix={"EVENTS.SERIES.DETAILS.HEADER"}
+			title={seriesTitle}
+		>
 				<SeriesDetails
 					seriesId={seriesId}
 					policyChanged={policyChanged}
 					setPolicyChanged={(value) => setPolicyChanged(value)}
 				/>
-			</section>
-		</>
+		</DetailsModal>
 	);
 };
 

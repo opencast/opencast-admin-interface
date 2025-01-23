@@ -19,9 +19,7 @@
  *
  */
 .modal {
-    &#event-details-modal,
-    &#series-details-modal,
-    &#task-details-modal {
+    &#details-modal {
 
         // Modal Size
         @extend .large-modal;
@@ -208,6 +206,7 @@
 }
 
 .tobira-copy-direct-link {
+    margin-left: 6px;
     @include btn(white);
     i {
         margin: 0;

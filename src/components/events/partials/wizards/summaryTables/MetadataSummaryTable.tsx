@@ -21,7 +21,7 @@ const MetadataSummaryTable = ({
 	let metadata: {
 		name: string,
 		label: string,
-		value: unknown,
+		value: string | string[] | boolean,
 	}[] = [];
 	for (let i = 0; metadataFields.length > i; i++) {
 		let fieldValue = formikValues[metadataFields[i].id];

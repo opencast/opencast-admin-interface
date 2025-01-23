@@ -2,7 +2,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Formik, FormikProps } from "formik";
 import { Field } from "../../../shared/Field";
-import cn from "classnames";
 import _ from "lodash";
 import Notifications from "../../../shared/Notifications";
 import RenderDate from "../../../shared/RenderDate";
@@ -14,7 +13,7 @@ import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils"
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
 import { AsyncThunk } from "@reduxjs/toolkit";
-import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
  * This component renders metadata details of a certain event or series
@@ -27,7 +26,7 @@ const DetailsMetadataTab = ({
 	editAccessRole,
 }: {
 	metadataFields: MetadataCatalog,
-	updateResource: AsyncThunk<void, { id: string; values: { [key: string]: any; }; }, AsyncThunkConfig>
+	updateResource: AsyncThunk<void, { id: string; values: { [key: string]: any; }; }, any>
 	resourceId: string,
 	header: string,
 	editAccessRole: string,
@@ -139,25 +138,14 @@ const DetailsMetadataTab = ({
 									{formik.dirty && (
 										<>
 											{/* Render buttons for updating metadata */}
-											<footer>
-												<button
-													type="submit"
-													onClick={() => formik.handleSubmit()}
-													disabled={!checkValidity(formik)}
-													className={cn("submit", {
-														active: checkValidity(formik),
-														inactive: !checkValidity(formik),
-													})}
-												>
-													{t("SAVE")}
-												</button>
-												<button
-													className="cancel"
-													onClick={() => formik.resetForm()}
-												>
-													{t("CANCEL")}
-												</button>
-											</footer>
+											<WizardNavigationButtons
+												formik={formik}
+												customValidation={!checkValidity(formik)}
+												previousPage={() => formik.resetForm()}
+												createTranslationString="SAVE"
+												cancelTranslationString="CANCEL"
+												isLast
+											/>
 
 											<div className="btm-spacer" />
 										</>

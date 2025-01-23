@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MainNav from "../shared/MainNav";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import cn from "classnames";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
@@ -19,7 +19,6 @@ import { hasAccess } from "../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchRecordings } from "../../slices/recordingSlice";
 import { AsyncThunk } from "@reduxjs/toolkit";
-import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 
 /**
  * This component renders the table view of recordings
@@ -82,7 +81,7 @@ const Recordings = () => {
 				<div className="controls-container">
 					{/* Include filters component */}
 					<TableFilters
-						loadResource={fetchRecordings as AsyncThunk<any, void, AsyncThunkConfig>}
+						loadResource={fetchRecordings as AsyncThunk<any, void, any>}
 						loadResourceIntoTable={loadRecordingsIntoTable}
 						resource={"recordings"}
 					/>
