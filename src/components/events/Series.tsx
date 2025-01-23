@@ -138,18 +138,18 @@ const Series = () => {
 	};
 
 	useHotkeys(
-    availableHotkeys.general.NEW_SERIES.sequence,
-    () => showNewSeriesModal(),
+		availableHotkeys.general.NEW_SERIES.sequence,
+		() => showNewSeriesModal(),
 		{ description: t(availableHotkeys.general.NEW_SERIES.description) ?? undefined },
-    [showNewSeriesModal]
-  );
+		[showNewSeriesModal]
+	);
 
 	return (
 		<>
 			<Header />
 			<NavBar>
 				{/* Display modal for new series if add series button is clicked */}
-				{ displayNewSeriesModal &&
+				{displayNewSeriesModal &&
 					<NewResourceModal
 						handleClose={hideNewSeriesModal}
 						resource={"series"}
