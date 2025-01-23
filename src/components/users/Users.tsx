@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import cn from "classnames";
 import MainNav from "../shared/MainNav";
 import TableFilters from "../shared/TableFilters";

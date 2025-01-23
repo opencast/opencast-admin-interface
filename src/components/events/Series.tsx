@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MainNav from "../shared/MainNav";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation } from "react-router-dom";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
