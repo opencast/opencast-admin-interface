@@ -38,7 +38,6 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^3.1.0",
     "reselect": "^5.1.1",
-    "styled-components": "^6.1.13",
     "yup": "^1.6.1"
   },
   "scripts": {
