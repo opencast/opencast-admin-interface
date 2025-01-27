@@ -5,6 +5,8 @@
   "private": true,
   "homepage": "/admin-ui",
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@hello-pangea/dnd": "^17.0.0",
     "@mui/material": "^6.3.0",
     "@mui/x-date-pickers": "^7.23.1",
