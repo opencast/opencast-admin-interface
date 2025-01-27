@@ -60,7 +60,7 @@ export const fetchAssetUploadOptions = createAppAsyncThunk('assets/fetchAssetUpl
  * Adds information from the publication list provider to publications.
  * The additional info is used for rendering purposes
  */
-export const enrichPublications = createAppAsyncThunk('assets/fetchAssetUploadOptionsAsyncThunk', async (
+export const enrichPublications = createAppAsyncThunk('assets/enrichPublications', async (
 	publications: {
 		publications: {
 			id: string,
