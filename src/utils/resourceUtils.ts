@@ -118,32 +118,14 @@ export const buildGroupBody = (
 
 // get initial metadata field values for formik in create resources wizards
 export const getInitialMetadataFieldValues = (
-	metadataFields: MetadataCatalog,
-	extendedMetadata: MetadataCatalog[]
+	metadataCatalog: MetadataCatalog,
 ) => {
 	let initialValues: { [key: string]: string | string[] | boolean } = {};
 
-	if (!!metadataFields.fields && metadataFields.fields.length > 0) {
-		metadataFields.fields.forEach((field) => {
-			initialValues[field.id] = field.value;
+	if (!!metadataCatalog.fields && metadataCatalog.fields.length > 0) {
+		metadataCatalog.fields.forEach((field) => {
+			initialValues[metadataCatalog.flavor + "_" + field.id] = field.value;
 		});
-	}
-
-	if (extendedMetadata.length > 0) {
-		for (const metadataCatalog of extendedMetadata) {
-			if (!!metadataCatalog.fields && metadataCatalog.fields.length > 0) {
-				metadataCatalog.fields.forEach((field) => {
-					let value: string | string[] | boolean = field.value;
-					if (field.value === "true") {
-						value = true;
-					} else if (field.value === "false") {
-						value = false;
-					}
-
-					initialValues[metadataCatalog.flavor + "_" + field.id] = value;
-				});
-			}
-		}
 	}
 
 	return initialValues;
@@ -214,56 +196,42 @@ export const transformMetadataForUpdate = (catalog: MetadataCatalog, values: { [
 
 // Prepare metadata for post of new events or series
 export const prepareMetadataFieldsForPost = (
-	metadataInfo: MetadataField[],
-	values: { [key: string]: unknown },
-	formikIdPrefix = ""
-) => {
-	type FieldValue = {
-		id: string,
-		type: string,
-		value: unknown,
-		tabindex: number,
-		$$hashKey?: string,
-		translatable?: boolean,
-	}
-	let metadataFields: FieldValue[] = [];
-
-	// fill metadataField with field information send by server previously and values provided by user
-	// Todo: What is hashkey?
-	for (const [i, info] of metadataInfo.entries()) {
-		let fieldValue: FieldValue = {
-			id: info.id,
-			type: info.type,
-			value: values[formikIdPrefix + info.id],
-			tabindex: i + 1,
-			$$hashKey: "object:123",
-		};
-		if (!!info.translatable) {
-			fieldValue = {
-				...fieldValue,
-				translatable: info.translatable,
-			};
-		}
-		metadataFields = metadataFields.concat(fieldValue);
-	}
-
-	return metadataFields;
-};
-
-// Prepare extended metadata for post of new events or series
-export const prepareExtendedMetadataFieldsForPost = (
-	extendedMetadata: MetadataCatalog[],
+	metadataCatalogs: MetadataCatalog[],
 	values: { [key: string]: unknown },
 ) => {
-	const extendedMetadataFields = [];
+	const preparedMetadataCatalogs = [];
 
-	for (const catalog of extendedMetadata) {
+	for (const catalog of metadataCatalogs) {
 		const catalogPrefix = catalog.flavor + "_";
-		const metadataFields = prepareMetadataFieldsForPost(
-			catalog.fields,
-			values,
-			catalogPrefix
-		);
+
+		type FieldValue = {
+			id: string,
+			type: string,
+			value: unknown,
+			tabindex: number,
+			$$hashKey?: string,
+			translatable?: boolean,
+		}
+		let metadataFields: FieldValue[] = [];
+
+		// fill metadataField with field information send by server previously and values provided by user
+		// Todo: What is hashkey?
+		for (const [i, info] of catalog.fields.entries()) {
+			let fieldValue: FieldValue = {
+				id: info.id,
+				type: info.type,
+				value: values[catalogPrefix + info.id],
+				tabindex: i + 1,
+				$$hashKey: "object:123",
+			};
+			if (!!info.translatable) {
+				fieldValue = {
+					...fieldValue,
+					translatable: info.translatable,
+				};
+			}
+			metadataFields = metadataFields.concat(fieldValue);
+		}
 
 		// Todo: What is hashkey?
 		const metadataCatalog = {
@@ -273,102 +241,10 @@ export const prepareExtendedMetadataFieldsForPost = (
 			$$hashKey: "object:123",
 		};
 
-		extendedMetadataFields.push(metadataCatalog);
+		preparedMetadataCatalogs.push(metadataCatalog);
 	}
 
-	return extendedMetadataFields;
-};
-
-export const prepareSeriesMetadataFieldsForPost = (
-	metadataInfo: MetadataCatalog["fields"],
-	values: { [key: string]: string[] },
-	formikIdPrefix = ""
-) => {
-	type FieldValue = {
-		readOnly: boolean,
-		id: string,
-		label: string,
-		type: string,
-		value: string[],
-		tabindex: number,
-		translatable?: boolean,
-		collection?: unknown[],
-		required?: boolean,
-		presentableValue?: string | string[],
-	}
-	let metadataFields: FieldValue[] = [];
-
-	// fill metadataField with field information sent by server previously and values provided by user
-	for (const [i, info] of metadataInfo.entries()) {
-		let fieldValue: FieldValue = {
-			readOnly: info.readOnly,
-			id: info.id,
-			label: info.label,
-			type: info.type,
-			value: values[formikIdPrefix + info.id],
-			tabindex: i + 1,
-		};
-		if (!!info.translatable) {
-			fieldValue = {
-				...fieldValue,
-				translatable: info.translatable,
-			};
-		}
-		if (!!info.collection) {
-			fieldValue = {
-				...fieldValue,
-				collection: [],
-			};
-		}
-		if (!!info.required) {
-			fieldValue = {
-				...fieldValue,
-				required: info.required,
-			};
-		}
-		if (info.type === "mixed_text") {
-			fieldValue = {
-				...fieldValue,
-				presentableValue: values[formikIdPrefix + info.id].join(),
-			};
-		} else {
-			fieldValue = {
-				...fieldValue,
-				presentableValue: values[formikIdPrefix + info.id],
-			};
-		}
-		metadataFields = metadataFields.concat(fieldValue);
-	}
-
-	return metadataFields;
-};
-
-// Prepare extended metadata for post of new events or series
-export const prepareSeriesExtendedMetadataFieldsForPost = (
-	extendedMetadata: MetadataCatalog[],
-	values: { [key: string]: string[] },
-) => {
-	const extendedMetadataFields = [];
-
-	for (const catalog of extendedMetadata) {
-		const catalogPrefix = catalog.flavor + "_";
-		const metadataFields = prepareSeriesMetadataFieldsForPost(
-			catalog.fields,
-			values,
-			catalogPrefix
-		);
-
-		// Todo: What is hashkey?
-		const metadataCatalog = {
-			flavor: catalog.flavor,
-			title: catalog.title,
-			fields: metadataFields,
-		};
-
-		extendedMetadataFields.push(metadataCatalog);
-	}
-
-	return extendedMetadataFields;
+	return preparedMetadataCatalogs;
 };
 
 // returns the name for a field value from the collection
