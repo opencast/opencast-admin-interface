@@ -1,3 +1,6 @@
+@use "../base/variables";
+@use "../mixins/mixins-config";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -24,11 +27,11 @@
     box-sizing: content-box;
 
     &.popover{
-        @include btn-dd-content-mixin(520px);
+        @include mixins-config.btn-dd-content-mixin(520px);
         left: auto;
         right: 0;
         height: 320px;
-        z-index: $max-z;
+        z-index: variables.$max-z;
 
         .dates {
             clear: both;
@@ -51,7 +54,7 @@
                 position: absolute;
                 top: 3px;
                 left: 50%;
-                color: $light-prim-color;
+                color: variables.$light-prim-color;
                 margin-left: -7px;
                 text-transform: uppercase;
             }

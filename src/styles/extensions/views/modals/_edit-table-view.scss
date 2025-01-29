@@ -1,3 +1,5 @@
+@use "../../../base/variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -30,7 +32,7 @@
 
         .tab-description {
             padding: 10px 0;
-            color: $medium-prim-color;
+            color: variables.$medium-prim-color;
             font-size: 12px;
             line-height: 20px;
             width: 100%;

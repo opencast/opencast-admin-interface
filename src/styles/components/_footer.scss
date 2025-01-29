@@ -1,3 +1,7 @@
+@use "sass:color";
+@use "../../../node_modules/bourbon/core/bourbon/library/clearfix";
+@use "../base/variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -23,8 +27,8 @@
 // Footer Variables
 // ----------------------------------------
 
-$footer-border-color: darken($body-background, 13%);
-$footer-background-color: darken($body-background, 5%);
+$footer-border-color: color.adjust(variables.$body-background, $lightness: -13%);
+$footer-background-color: color.adjust(variables.$body-background, $lightness: -5%);
 
 @mixin footer-component-padding() {
     padding-top: 10px;
@@ -44,7 +48,7 @@ $footer-background-color: darken($body-background, 5%);
     border-top: 1px solid $footer-border-color;
 
     .feedback-btn {
-        @include clearfix();
+        @include clearfix.clearfix();
         width: 90px;
         position: absolute;
         right: 0;
@@ -63,7 +67,7 @@ $footer-background-color: darken($body-background, 5%);
             padding-right: 5px;
 
             &:hover {
-                background: rgba($white, 0.8);
+                background: rgba(variables.$white, 0.8);
             }
 
             &:before {
@@ -80,7 +84,7 @@ $footer-background-color: darken($body-background, 5%);
     }
 
     ul li {
-        color: $light-prim-color;
+        color: variables.$light-prim-color;
         margin-left: 10px;
         vertical-align: top;
         font-size: 10px;
