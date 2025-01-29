@@ -6,7 +6,6 @@ import {
 	getSeriesThemes,
 } from "../../../../selectors/seriesSeletctor";
 import MetadataSummaryTable from "./summaryTables/MetadataSummaryTable";
-import MetadataExtendedSummaryTable from "./summaryTables/MetadataExtendedSummaryTable";
 import AccessSummaryTable from "./summaryTables/AccessSummaryTable";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { useAppSelector } from "../../../../store";
@@ -45,25 +44,24 @@ const NewSeriesSummary = <T extends RequiredFormProps>({
 	return (
 		<>
 			<ModalContentTable>
-				{/*Summary metadata*/}
-				<MetadataSummaryTable
-					metadataFields={metadataSeries.fields}
-					// @ts-expect-error TS(7006):
-					formikValues={formik.values}
-					header={"EVENTS.SERIES.NEW.METADATA.CAPTION"}
-				/>
+						{/*Summary metadata*/}
+						<MetadataSummaryTable
+							metadataCatalogs={[metadataSeries]}
+							// @ts-expect-error TS(7006):
+							formikValues={formik.values}
+							header={"EVENTS.SERIES.NEW.METADATA.CAPTION"}
+						/>
 
-				{/*Summary metadata extended*/}
-				{!metaDataExtendedHidden ? (
-					<MetadataExtendedSummaryTable
-						extendedMetadata={extendedMetadata}
-						// @ts-expect-error TS(7006):
-						formikValues={formik.values}
-						// @ts-expect-error TS(7006):
-						formikInitialValues={formik.initialValues}
-						header={"EVENTS.SERIES.NEW.METADATA_EXTENDED.CAPTION"}
-					/>
-				) : null}
+						{/*Summary metadata extended*/}
+						{!metaDataExtendedHidden ? (
+							<MetadataSummaryTable
+								metadataCatalogs={extendedMetadata}
+								// @ts-expect-error TS(7006):
+								formikValues={formik.values}
+								formikInitialValues={formik.initialValues}
+								header={"EVENTS.SERIES.NEW.METADATA_EXTENDED.CAPTION"}
+							/>
+						) : null}
 
 				{/*Summary access configuration*/}
 				<AccessSummaryTable

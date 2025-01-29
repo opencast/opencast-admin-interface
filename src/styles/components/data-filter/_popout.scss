@@ -1,3 +1,10 @@
+@use "sass:color";
+@use "../../base/fontawesome/fa-mixins";
+@use "../../base/fontawesome/variables" as variables2;
+@use "../../base/variables";
+@use "../../mixins/button";
+@use "../../mixins/triangle-point";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -30,11 +37,11 @@
     width: $width;
 
     // Styles
-    border: $thin-border-stroke $main-border-color;
-    border-radius: $main-border-radius;
-    background: rgba($white, 0.98);
-    box-shadow: 0 1px 3px rgba($black, 0.06);
-    @include triangle-point(top, 10px, 10px);
+    border: variables.$thin-border-stroke variables.$main-border-color;
+    border-radius: variables.$main-border-radius;
+    background: rgba(variables.$white, 0.98);
+    box-shadow: 0 1px 3px rgba(variables.$black, 0.06);
+    @include triangle-point.triangle-point(top, 10px, 10px);
 
     // Type
     text-align: left;
@@ -49,18 +56,18 @@
     }
 
     &:hover {
-        color: $medium-prim-color;
+        color: variables.$medium-prim-color;
     }
 }
 
 .df-popout-header {
-    background: linear-gradient($white, #f7f7f7);
-    border-top-left-radius: $main-border-radius;
-    border-top-right-radius: $main-border-radius;
-    border-bottom: $thin-border-stroke $main-border-color;
+    background: linear-gradient(variables.$white, #f7f7f7);
+    border-top-left-radius: variables.$main-border-radius;
+    border-top-right-radius: variables.$main-border-radius;
+    border-bottom: variables.$thin-border-stroke variables.$main-border-color;
     height: 30px;
     padding: 8px 10px;
-    font-weight: $weight-semibold;
+    font-weight: variables.$weight-semibold;
     font-size: 12px;
 }
 
@@ -102,7 +109,7 @@
         padding: 5px 0;
 
         font-size: 12px;
-        font-weight: $weight-semibold;
+        font-weight: variables.$weight-semibold;
     }
 
     .df-saved-actions {
@@ -125,32 +132,32 @@ $df-saved-actions-padding: null;
 $df-saved-actions-font-size: 11px;
 
 .df-saved-edit {
-    @include fa-icon($fa-var-pencil, $df-saved-actions-pseudo-position, $df-saved-actions-position, $df-saved-actions-margin, $df-saved-actions-padding, $bright-blue, $df-saved-actions-font-size);
+    @include fa-mixins.fa-icon(variables2.$fa-var-pencil, $df-saved-actions-pseudo-position, $df-saved-actions-position, $df-saved-actions-margin, $df-saved-actions-padding, variables.$bright-blue, $df-saved-actions-font-size);
 
     &:hover {
-        @include fa-icon-color($df-saved-actions-pseudo-position, darken($bright-blue, 5%));
+        @include fa-mixins.fa-icon-color($df-saved-actions-pseudo-position, color.adjust(variables.$bright-blue, $lightness: -5%));
     }
 }
 
 .df-saved-delete {
-    @include fa-icon($fa-var-close, $df-saved-actions-pseudo-position, $df-saved-actions-position, 0 0 0 5px, $df-saved-actions-padding, $medium-prim-color, $df-saved-actions-font-size);
+    @include fa-mixins.fa-icon(variables2.$fa-var-close, $df-saved-actions-pseudo-position, $df-saved-actions-position, 0 0 0 5px, $df-saved-actions-padding, variables.$medium-prim-color, $df-saved-actions-font-size);
 
     &:hover {
-        @include fa-icon-color($df-saved-actions-pseudo-position, $alt-red);
+        @include fa-mixins.fa-icon-color($df-saved-actions-pseudo-position, variables.$alt-red);
     }
 }
 
 // Save Filters Button
 
 .df-save-button {
-    @include btn(white);
+    @include button.btn(white);
     box-sizing: border-box;
     padding: 10px;
     margin: 10px;
     margin-top: 5px;
     text-align: center;
     font-size: 11px;
-    font-weight: $weight-semibold;
+    font-weight: variables.$weight-semibold;
 }
 
 // Filter Set Form
@@ -175,9 +182,9 @@ $df-saved-actions-font-size: 11px;
     }
 
     label {
-        color: $medium-prim-color;
+        color: variables.$medium-prim-color;
         font-size: 12px;
-        font-weight: $weight-semibold;
+        font-weight: variables.$weight-semibold;
         margin-bottom: 5px;
     }
 
@@ -203,12 +210,12 @@ $df-saved-actions-font-size: 11px;
     }
 
     .df-save-set-button {
-        @include btn(brightblue);
+        @include button.btn(brightblue);
         @extend %df-save-set-button;
     }
 
     .df-cancel-save-set-button {
-        @include btn(white);
+        @include button.btn(white);
         @extend %df-save-set-button;
     }
 }

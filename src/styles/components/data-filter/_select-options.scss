@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "../../base/variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -27,7 +30,7 @@
 
     // Layout
     position: absolute;
-    z-index: $z-50;
+    z-index: variables.$z-50;
     top: 32px;
     left: 5px;
     min-width: 100px;
@@ -37,10 +40,10 @@
     text-align: left;
 
     // Styles
-    border: $thin-border-stroke lighten($main-border-color, 8%);
-    border-radius: $main-border-radius;
-    background: rgba($white, 0.98);
-    box-shadow: 0 1px 3px rgba($black, 0.06);
+    border: variables.$thin-border-stroke color.adjust(variables.$main-border-color, $lightness: 8%);
+    border-radius: variables.$main-border-radius;
+    background: rgba(variables.$white, 0.98);
+    box-shadow: 0 1px 3px rgba(variables.$black, 0.06);
 
     transition-property: visibility, opacity;
     transition-duration: 100ms;
@@ -48,9 +51,9 @@
 
     a {
         display: block;
-        color: $medium-prim-color;
+        color: variables.$medium-prim-color;
         font-size: 10px;
-        font-weight: $weight-semibold;
+        font-weight: variables.$weight-semibold;
         line-height: 11px;
         padding: 5px 10px;
         text-shadow: none;
@@ -63,8 +66,8 @@
         // ----------------------------------------
 
         &:hover {
-            color: $white;
-            background: $bright-blue;
+            color: variables.$white;
+            background: variables.$bright-blue;
         }
     }
 }
