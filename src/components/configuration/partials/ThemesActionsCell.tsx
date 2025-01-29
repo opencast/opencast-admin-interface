@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import ThemeDetailsModal from "./wizard/ThemeDetailsModal";
 import {
 	fetchThemeDetails,
 	fetchUsage,
@@ -11,6 +10,8 @@ import { hasAccess } from "../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { deleteTheme, ThemeDetailsType } from "../../../slices/themeSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import ThemeDetails from "./wizard/ThemeDetails";
+import DetailsModal from "../../shared/modals/DetailsModal";
 
 /**
  * This component renders the action cells of themes in the table view
@@ -60,10 +61,13 @@ const ThemesActionsCell = ({
 			)}
 
 			{displayThemeDetails && (
-				<ThemeDetailsModal
+				<DetailsModal
 					handleClose={hideThemeDetails}
-					themeName={row.name}
-				/>
+					title={row.name}
+					prefix={"CONFIGURATION.THEMES.DETAILS.EDITCAPTION"}
+				>
+					<ThemeDetails close={hideThemeDetails} />
+				</DetailsModal>
 			)}
 
 			{/* delete themes */}
