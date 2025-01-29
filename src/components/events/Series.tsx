@@ -34,6 +34,7 @@ import {
 	showActionsSeries,
 } from "../../slices/seriesSlice";
 import { fetchSeriesDetailsTobiraNew } from "../../slices/seriesSlice";
+import { ShowSeriesDetailsModal } from "./partials/modals/ShowSeriesDetailsModal";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef<HTMLDivElement>();
@@ -234,6 +235,9 @@ const Series = () => {
 					{/* Include table view */}
 					<h4>{t("TABLE_SUMMARY", { numberOfRows: series })}</h4>
 				</div>
+
+				<ShowSeriesDetailsModal />
+
 				<Table templateMap={seriesTemplateMap} />
 			</MainView>
 			<Footer />
