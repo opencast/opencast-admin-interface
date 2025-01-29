@@ -1805,7 +1805,7 @@ export const updateComment = createAppAsyncThunk('eventDetails/updateComment', a
 	data.append("text", commentText);
 	data.append("reason", commentReason);
 
-	const commentUpdated = await axios.post(
+	const commentUpdated = await axios.put(
 		`/admin-ng/event/${eventId}/comment/${commentId}`,
 		data.toString(),
 		headers
