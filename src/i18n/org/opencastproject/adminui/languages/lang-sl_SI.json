@@ -675,7 +675,7 @@
 				"UPDATING_PREVIEWS": "Updating previews"
 			},
 			"DETAILS": {
-				"HEADER": "Podrobnosti dogodka – {{resourceId}}",
+				"HEADER": "Event details - {{name}}",
 				"TABS": {
 					"METADATA": "Metapodatki",
 					"EXTENDED-METADATA": "Metapodatki II",
@@ -1172,7 +1172,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Podrobnosti serije – {{resourceId}}",
+				"HEADER": "Series details - {{name}}",
 				"TABS": {
 					"METADATA": "Metapodatki",
 					"EXTENDED_METADATA": "Metapodatki II",
@@ -1278,7 +1278,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Podrobnosti lokacije – {{resourceId}}",
+				"HEADER": "Location details - {{name}}",
 				"TAB": {
 					"GENERAL": "Splošno",
 					"CONFIGURATION": "Konfiguracija",
@@ -1335,7 +1335,7 @@
 			},
 			"DETAILS": {
 				"NEWCAPTION": "Ustvari uporabnika",
-				"EDITCAPTION": "Podrobnosti uporabnika - {{username}}",
+				"EDITCAPTION": "User details - {{name}}",
 				"TABS": {
 					"USER": "Uporabnik",
 					"ROLES": "Vloge",

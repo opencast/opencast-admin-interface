@@ -675,7 +675,7 @@
 				"UPDATING_PREVIEWS": "Updating previews"
 			},
 			"DETAILS": {
-				"HEADER": "Szczegóły wydarzenia - {{resourceId}}",
+				"HEADER": "Event details - {{name}}",
 				"TABS": {
 					"METADATA": "Metadane",
 					"EXTENDED-METADATA": "Metadane II",
@@ -1172,7 +1172,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Więcej na temat serii - {{resourceId}}",
+				"HEADER": "Series details - {{name}}",
 				"TABS": {
 					"METADATA": "Metadane",
 					"EXTENDED_METADATA": "Metadane II",
@@ -1278,7 +1278,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Szczegóły lokalizacji - {{resourceId}}",
+				"HEADER": "Location details - {{name}}",
 				"TAB": {
 					"GENERAL": "Ogólne",
 					"CONFIGURATION": "Konfiguracja",
@@ -1335,7 +1335,7 @@
 			},
 			"DETAILS": {
 				"NEWCAPTION": "Utwórz użytkownika",
-				"EDITCAPTION": "Dane użytkownika - {{username}}",
+				"EDITCAPTION": "User details - {{name}}",
 				"TABS": {
 					"USER": "Użytkownik",
 					"ROLES": "Role",

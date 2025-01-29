@@ -5,7 +5,6 @@ import moment from "moment-timezone";
 import {
 	getURLParams,
 	prepareAccessPolicyRulesForPost,
-	prepareExtendedMetadataFieldsForPost,
 	prepareMetadataFieldsForPost,
 	transformMetadataCollection,
 	transformMetadataFields,
@@ -462,8 +461,11 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	} | undefined = undefined;
 
 	// prepare metadata provided by user
-	let metadataFields = prepareMetadataFieldsForPost(metadataInfo.fields, values);
-	let extendedMetadataFields = prepareExtendedMetadataFieldsForPost(
+	let metadata = prepareMetadataFieldsForPost(
+		[metadataInfo],
+		values
+	);
+	const extendedMetadataCatalogs = prepareMetadataFieldsForPost(
 		extendedMetadata,
 		values
 	);
@@ -475,24 +477,15 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 			type: values.sourceMode,
 		};
 		if (sourceMetadata.UPLOAD) {
-			for (const metadata of sourceMetadata.UPLOAD.metadata) {
-				metadataFields = metadataFields.concat({
-					id: metadata.id,
-					value: values[metadata.id],
-					type: metadata.type,
+			for (const smetadata of sourceMetadata.UPLOAD.metadata) {
+				metadata[0].fields = metadata[0].fields.concat({
+					id: smetadata.id,
+					value: values[smetadata.id],
+					type: smetadata.type,
 				});
 			}
 		}
 	}
-
-	// metadata for post request
-	let metadata = [
-		{
-			flavor: metadataInfo.flavor,
-			title: metadataInfo.title,
-			fields: metadataFields,
-		},
-	];
 
 	// transform date data for post request if source mode is SCHEDULE_*
 	if (
@@ -611,7 +604,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 		configurationPrepared[config] = String(values.configuration[config]);
 	});
 
-	for (const entry of extendedMetadataFields) {
+	for (const entry of extendedMetadataCatalogs) {
 		metadata.push(entry);
 	}
 
