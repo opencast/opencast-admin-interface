@@ -675,7 +675,7 @@
 				"UPDATING_PREVIEWS": "Önizlemeler güncelleniyor"
 			},
 			"DETAILS": {
-				"HEADER": "Etkinlik detayları - {{resourceId}}",
+				"HEADER": "Event details - {{name}}",
 				"TABS": {
 					"METADATA": "Üstveri",
 					"EXTENDED-METADATA": "Üstveri II",
@@ -1172,7 +1172,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Seri ayrıntıları - {{resourceId}}",
+				"HEADER": "Series details - {{name}}",
 				"TABS": {
 					"METADATA": "Meta verisi",
 					"EXTENDED_METADATA": "Meta Verisi II",
@@ -1278,7 +1278,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Konum ayarları - {{resourceId}}",
+				"HEADER": "Location details - {{name}}",
 				"TAB": {
 					"GENERAL": "Genel",
 					"CONFIGURATION": "Yapılandır",
@@ -1335,7 +1335,7 @@
 			},
 			"DETAILS": {
 				"NEWCAPTION": "Kullanıcı oluştur",
-				"EDITCAPTION": "Kullanıcı ayrıntıları - {{username}}",
+				"EDITCAPTION": "User details - {{name}}",
 				"TABS": {
 					"USER": "Kullanıcı",
 					"ROLES": "Roller",
