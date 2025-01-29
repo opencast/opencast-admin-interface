@@ -26,25 +26,32 @@
 $disable-warnings: true !default; // disables deprecation warnings
 
 // Imports
-@import "../../node_modules/bourbon/core/bourbon";
+@use "sass:meta";
+@use "../../node_modules/bourbon/core/bourbon";
 
 // Foundation
 // ----------------------------------------
 
 // Base
-@import "base/base-config";
+@use "base/base-config";
 
 // Mixins
-@import "mixins/_mixins-config";
+@use "mixins/_mixins-config";
 
 // Components
-@import "components/components-config";
+@use "components/components-config";
 
 // Views
-@import "views/views-config";
+@use "views/views-config";
 
 // Extensions
-@import "extensions/extensions-config";
+@use "extensions/extensions-config";
+@use "../../node_modules/bourbon/core/bourbon/library/clearfix";
+@use "base/fontawesome/fa-mixins";
+@use "base/fontawesome/variables" as variables2;
+@use "base/variables";
+@use "components/alerts";
+@use "mixins/button";
 
 
 // Template Files
@@ -84,7 +91,7 @@ $disable-warnings: true !default; // disables deprecation warnings
   }
 }
 
-@import "vendor/chosen";
+@include meta.load-css("vendor/chosen");
 
 .filters-container {
   display: flex;
@@ -186,7 +193,7 @@ a.disabled, button.disabled, div.disabled {
   padding: 0px 5px;
   margin: 1px 5px 1px 0;
   font-size: 11px;
-  background: $l-blue;
+  background: variables.$l-blue;
   color: #fff;
   border-radius: 4px;
 
@@ -279,11 +286,11 @@ textarea.editable {
 }
 
 button.red {
-  @include btn(red);
+  @include button.btn(red);
 }
 
 button.green {
-  @include btn(green-dark-bg);
+  @include button.btn(green-dark-bg);
 }
 
 div[data-modal-tab-content="metadata"], div[data-modal-tab-content="extended-metadata"] {
@@ -332,7 +339,7 @@ div[data-modal-tab-content="metadata"], div[data-modal-tab-content="extended-met
       color: #919FA5;
     }
     button.cancel {
-      @include btn(grey);
+      @include button.btn(grey);
       height: 40px;
     }
     button.save{
@@ -423,7 +430,7 @@ div.table-filter {
   }
 
   i {
-    color: $global-text-color;
+    color: variables.$global-text-color;
     cursor: pointer;
 
     &.clear {
@@ -487,7 +494,7 @@ input.disabled, select.disabled {
 // Notification alias error to danger
 .alert {
   &.error {
-    @include alert-variant($state-danger-bg, $state-danger-border, $state-danger-text);
+    @include alerts.alert-variant(variables.$state-danger-bg, variables.$state-danger-border, variables.$state-danger-text);
   }
   & .autonomous {
     padding-right: 20px; /* fixes a design bug */
@@ -525,12 +532,12 @@ main.main-view {
 
       &.prev {
         //override right margin with 0
-        @include fa-icon($fa-var-chevron-left, before, inline-block, 0 0 0 0, 0, inherit, 10px);
+        @include fa-mixins.fa-icon(variables2.$fa-var-chevron-left, before, inline-block, 0 0 0 0, 0, inherit, 10px);
       }
 
       &.next {
         //override left margin with 0
-        @include fa-icon($fa-var-chevron-right, after, inline-block, 0 0 0 0, 0, inherit, 10px);
+        @include fa-mixins.fa-icon(variables2.$fa-var-chevron-right, after, inline-block, 0 0 0 0, 0, inherit, 10px);
       }
 
       .active {
@@ -568,7 +575,7 @@ table.main-tbl {
   td {
     .fa-check {
       float: right;
-      color: $green;
+      color: variables.$green;
       margin-top: 3px;
       font-size: 18px;
       opacity: 0;
@@ -597,15 +604,15 @@ table.main-tbl {
 }
 
 tr.error {
-  background: $state-warning-bg !important;
+  background: variables.$state-warning-bg !important;
 }
 
 tr.info {
-  background: $state-info-bg !important;
+  background: variables.$state-info-bg !important;
 }
 
 .video-player {
-  @include clearfix();
+  @include clearfix.clearfix();
   width: 100%;
   margin: 0 auto;
   background: #1e1e1e;

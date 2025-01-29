@@ -21,13 +21,13 @@
 
 
 // Base Elements
-@import "_modal-base";
-@import "_header";
-@import "_nav";
-@import "_footer";
-@import "_wizard";
+@use "_modal-base";
+@use "_header";
+@use "_nav";
+@use "_footer";
+@use "_wizard";
 
 // Components
-@import "_modal-components";
-@import "_important-messages";
-@import "_modal-alerts";
+@use "_modal-components";
+@use "_important-messages";
+@use "_modal-alerts";
