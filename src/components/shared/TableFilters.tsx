@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import DatePicker from "react-datepicker";
 import {
 	getFilters,
 	getSecondFilter,
@@ -26,10 +26,10 @@ import { useHotkeys } from "react-hotkeys-hook";
 import moment from "moment";
 import { AppThunk, useAppDispatch, useAppSelector } from "../../store";
 import { renderValidDate } from "../../utils/dateUtils";
+import { getCurrentLanguageInformation } from "../../utils/utils";
 import { Tooltip } from "./Tooltip";
 import DropDown from "./DropDown";
 import { AsyncThunk } from "@reduxjs/toolkit";
-import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 
 /**
  * This component renders the table filters in the upper right corner of the table
@@ -39,7 +39,7 @@ const TableFilters = ({
 	loadResourceIntoTable,
 	resource,
 }: {
-	loadResource: AsyncThunk<any, void, AsyncThunkConfig>,
+	loadResource: AsyncThunk<any, void, any>,
 	loadResourceIntoTable: () => AppThunk,
 	resource: string,
 }) => {
@@ -147,77 +147,34 @@ const TableFilters = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [itemValue]);
 
-	// Set the sate of startDate and endDate picked with datepicker
-	const handleDatepickerChange = async (date: Date | null, isStart = false) => {
-		if (date === null) {
-			return;
-		}
+	const handleDatepicker = async (dates?:  [Date | undefined | null, Date | undefined | null]) => {
+		if (dates != null) {
+			let [start, end] = dates;
 
-		if (isStart) {
-			date.setHours(0);
-			date.setMinutes(0);
-			date.setSeconds(0);
-			setStartDate(date);
-		} else {
-			date.setHours(23);
-			date.setMinutes(59);
-			date.setSeconds(59);
-			setEndDate(date);
-		}
-	};
+			start?.setHours(0);
+			start?.setMinutes(0);
+			start?.setSeconds(0)
+			end?.setHours(23);
+			end?.setMinutes(59);
+			end?.setSeconds(59);
 
-	// If both dates are set, set the value for the startDate filter
-	// If the just changed, it can be passed here so we don't have wait a render
-	// cycle for the useState state to update
-	const handleDatepickerConfirm = async (date?: Date | null, isStart = false) => {
-		if (date === null) {
-			return;
-		}
-
-		let myStartDate = startDate;
-		let myEndDate = endDate;
-		if (date && isStart) {
-			myStartDate = date;
-			myStartDate.setHours(0);
-			myStartDate.setMinutes(0);
-			myStartDate.setSeconds(0);
-		}
-		if (date && !isStart) {
-			myEndDate = date;
-			myEndDate.setHours(23);
-			myEndDate.setMinutes(59);
-			myEndDate.setSeconds(59);
-		}
-
-		if (myStartDate && myEndDate && moment(myStartDate).isValid() && moment(myEndDate).isValid()) {
-			let filter = filterMap.find(({ name }) => name === selectedFilter);
-			if (filter) {
-				dispatch(editFilterValue({
-					filterName: filter.name,
-					value: myStartDate.toISOString() + "/" + myEndDate.toISOString()
-				}));
-				setFilterSelector(false);
-				dispatch(removeSelectedFilter());
-				// Reload of resource after going to very first page.
-				dispatch(goToPage(0))
-				await dispatch(loadResource());
-				dispatch(loadResourceIntoTable());
+			if (start && end && moment(start).isValid() && moment(end).isValid()) {
+				let filter = filterMap.find(({ name }) => name === selectedFilter);
+				if (filter) {
+					dispatch(editFilterValue({
+						filterName: filter.name,
+						value: start.toISOString() + "/" + end.toISOString()
+					}));
+					setFilterSelector(false);
+					dispatch(removeSelectedFilter());
+					// Reload of resource after going to very first page.
+					dispatch(goToPage(0))
+					await dispatch(loadResource());
+					dispatch(loadResourceIntoTable());
+				}
 			}
-		}
-
-		if (myStartDate && isStart && !endDate) {
-			let tmp = new Date(myStartDate.getTime());
-			tmp.setHours(23);
-			tmp.setMinutes(59);
-			tmp.setSeconds(59);
-			setEndDate(tmp);
-		}
-		if (myEndDate && !isStart && !startDate) {
-			let tmp = new Date(myEndDate.getTime());
-			tmp.setHours(0);
-			tmp.setMinutes(0);
-			tmp.setSeconds(0);
-			setStartDate(tmp);
+			if (start) setStartDate(start);
+			if (end) setEndDate(end);
 		}
 	}
 
@@ -316,8 +273,7 @@ const TableFilters = ({
 										secondFilter={secondFilter}
 										startDate={startDate}
 										endDate={endDate}
-										handleDate={handleDatepickerChange}
-										handleDateConfirm={handleDatepickerConfirm}
+										handleDate={handleDatepicker}
 										handleChange={handleChange}
 										openSecondFilterMenu={openSecondFilterMenu}
 										setOpenSecondFilterMenu={setOpenSecondFilterMenu}
@@ -399,7 +355,6 @@ const FilterSwitch = ({
 	startDate,
 	endDate,
 	handleDate,
-	handleDateConfirm,
 	secondFilter,
 	openSecondFilterMenu,
 	setOpenSecondFilterMenu,
@@ -408,16 +363,12 @@ const FilterSwitch = ({
 	handleChange: (name: string, value: string) => void,
 	startDate: Date | undefined,
 	endDate: Date | undefined,
-	handleDate: (date: Date | null, isStart?: boolean) => void,
-	handleDateConfirm: (date: Date | undefined | null, isStart?: boolean) => void,
+	handleDate: (dates: [Date | undefined | null, Date | undefined | null]) => void,
 	secondFilter: string,
 	openSecondFilterMenu: boolean,
 	setOpenSecondFilterMenu: (open: boolean) => void,
 }) => {
 	const { t } = useTranslation();
-
-	const startDateRef = useRef<HTMLInputElement>(null);
-	const endDateRef = useRef<HTMLInputElement>(null);
 
 	if (!filter) {
 		return null;
@@ -472,51 +423,25 @@ const FilterSwitch = ({
 		case "period":
 			return (
 				<div>
-					{/* Show datepicker for start date */}
 					<DatePicker
-						autoFocus={true}
-						inputRef={startDateRef}
-						className="small-search start-date"
-						value={startDate ?? null}
-						format="dd/MM/yyyy"
-						onChange={(date) => handleDate(date as Date | null, true)}
-						// FixMe: onAccept does not trigger if the already set value is the same as the selected value
-						// This prevents us from confirming from confirming our filter, if someone wants to selected the same
-						// day for both start and end date (since we automatically set one to the other)
-						onAccept={(e) => {handleDateConfirm(e as Date | null, true)}}
-						slotProps={{
-							textField: {
-								onKeyDown: (event) => {
-									if (event.key === "Enter") {
-										handleDateConfirm(undefined, true)
-										if (endDateRef.current && startDate && moment(startDate).isValid()) {
-											endDateRef.current.focus();
-										}
-									}
-								},
-							},
-						}}
-					/>
-					<DatePicker
-						inputRef={endDateRef}
-						className="small-search end-date"
-						value={endDate ?? null}
-						format="dd/MM/yyyy"
-						onChange={(date) => handleDate(date as Date | null)}
-						// FixMe: See above
-						onAccept={(e) => handleDateConfirm(e as Date | null, false)}
-						slotProps={{
-							textField: {
-								onKeyDown: (event) => {
-									if (event.key === "Enter") {
-										handleDateConfirm(undefined, false)
-										if (startDateRef.current && endDate && moment(endDate).isValid()) {
-											startDateRef.current.focus();
-										}
-									}
-								},
-							},
-						}}
+						startOpen
+						autoFocus
+						selected={startDate}
+						onChange={(dates) => handleDate(dates)}
+						startDate={startDate}
+						endDate={endDate}
+						selectsRange
+						showYearDropdown
+						showMonthDropdown
+						yearDropdownItemNumber={2}
+						swapRange
+						allowSameDay
+						dateFormat="P"
+						popperPlacement="bottom"
+						popperClassName="datepicker-custom"
+						className="datepicker-custom-input"
+						locale={getCurrentLanguageInformation()?.dateLocale}
+
 					/>
 				</div>
 			);
