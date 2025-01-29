@@ -4,33 +4,36 @@ import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButt
 import { MetadataCatalog } from "../../../../slices/eventSlice";
 import NewMetadataPage from "./NewMetadataPage";
 
-const NewMetadataExtendedPage = <T,>({
+/**
+ * This component renders the metadata page for new events and series in the wizards.
+ */
+const NewMetadataCommonPage = <T,>({
 	formik,
 	nextPage,
-	previousPage,
-	extendedMetadataFields,
+	metadataFields,
+	header
 }: {
 	formik: FormikProps<T>,
 	nextPage: (values: T) => void,
-	previousPage: (values: T, twoPagesBack?: boolean) => void,
-	extendedMetadataFields: MetadataCatalog[],
+	metadataFields: MetadataCatalog,
+	header: string
 }) => {
 
 	return (
 		<>
 			<NewMetadataPage
-				metadataCatalogs={extendedMetadataFields}
+				metadataCatalogs={[metadataFields]}
+				header={header}
 			/>
 
 			{/* Button for navigation to next page */}
 			<WizardNavigationButtons
-				noValidation
-				nextPage={nextPage}
-				previousPage={previousPage}
+				isFirst
 				formik={formik}
+				nextPage={nextPage}
 			/>
 		</>
 	);
 };
 
-export default NewMetadataExtendedPage;
+export default NewMetadataCommonPage;

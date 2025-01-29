@@ -15,8 +15,7 @@ import { hasAccess } from "../../../../utils/utils";
 import SeriesDetailsAccessTab from "../ModalTabsAndPages/SeriesDetailsAccessTab";
 import SeriesDetailsThemeTab from "../ModalTabsAndPages/SeriesDetailsThemeTab";
 import SeriesDetailsStatisticTab from "../ModalTabsAndPages/SeriesDetailsStatisticTab";
-import DetailsMetadataTab from "../ModalTabsAndPages/DetailsMetadataTab";
-import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsExtendedMetadataTab";
+import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsMetadataTab";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
 	fetchSeriesDetailsTobira,
@@ -123,12 +122,12 @@ const SeriesDetails = ({
 			{/* render modal content depending on current page */}
 			<div>
 				{page === 0 && (
-					<DetailsMetadataTab
-						metadataFields={metadataFields}
+					<DetailsExtendedMetadataTab
 						resourceId={seriesId}
-						header={tabs[page].tabNameTranslation}
+						metadata={[metadataFields]}
 						updateResource={updateSeriesMetadata}
 						editAccessRole="ROLE_UI_SERIES_DETAILS_METADATA_EDIT"
+						header={tabs[page].tabNameTranslation}
 					/>
 				)}
 				{page === 1 && (
