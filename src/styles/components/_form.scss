@@ -1,3 +1,6 @@
+@use "../../../node_modules/bourbon/core/bourbon/library/clearfix";
+@use "../base/variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -21,7 +24,7 @@
 
 
 .form-container {
-    @include clearfix();
+    @include clearfix.clearfix();
     max-width: 100%;
     padding: 0;
     margin: 15px 0;
@@ -35,7 +38,7 @@
     }
 
     label {
-        color: $medium-prim-color;
+        color: variables.$medium-prim-color;
     }
 
     input[type="text"],
@@ -57,7 +60,7 @@
     }
 
     .row {
-        @include clearfix();
+        @include clearfix.clearfix();
         display: block;
         width: 100%;
         margin: 15px 0;

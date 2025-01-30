@@ -1,3 +1,6 @@
+@use "sass:meta";
+@use "variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -26,10 +29,10 @@
 @mixin font-face($font-family, $file, $font-weight, $font-style) {
   @font-face {
     font-family: $font-family;
-      src: url('#{$font-path}#{$file}.eot');
-      src: url('#{$font-path}#{$file}.eot?#iefix') format('embedded-opentype'),
-           url('#{$font-path}#{$file}.woff') format('woff'),
-           url('#{$font-path}#{$file}.ttf') format('truetype');
+      src: url('#{variables.$font-path}#{$file}.eot');
+      src: url('#{variables.$font-path}#{$file}.eot?#iefix') format('embedded-opentype'),
+           url('#{variables.$font-path}#{$file}.woff') format('woff'),
+           url('#{variables.$font-path}#{$file}.ttf') format('truetype');
     font-weight: $font-weight;
     font-style: $font-style;
   }
@@ -53,4 +56,4 @@
 
 @include font-face('FontAwesome', 'fontawesome-webfont', normal, normal);
 
-@import "fontawesome/fontawesome-config";
+@include meta.load-css("fontawesome/fontawesome-config");

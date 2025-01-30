@@ -1,73 +1,90 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { getMetadataCollectionFieldName } from "../../../../../utils/resourceUtils";
-import { MetadataField } from "../../../../../slices/eventSlice";
+import { MetadataCatalog } from "../../../../../slices/eventSlice";
+import { isEmpty } from "lodash";
+import { isEmptyArray } from "formik";
 
 /**
  * This component renders the metadata table containing access rules provided by user before in wizard summary pages
  */
 const MetadataSummaryTable = ({
-	metadataFields,
+	metadataCatalogs,
 	formikValues,
 	header
 }: {
-	metadataFields: MetadataField[],
-	formikValues: { [key: string]: string | string[] },
+	metadataCatalogs: MetadataCatalog[],
+	formikValues: { [key: string]: string | string[] | boolean },
 	header: string,
 }) => {
 	const { t } = useTranslation();
 
 	// metadata that user has provided
-	let metadata: {
-		name: string,
-		label: string,
-		value: string | string[] | boolean,
-	}[] = [];
-	for (let i = 0; metadataFields.length > i; i++) {
-		let fieldValue = formikValues[metadataFields[i].id];
-		if (!!fieldValue && fieldValue.length > 0) {
-			const collection = metadataFields[i].collection;
-			if (
-				metadataFields[i].type === "text" &&
-				!!collection &&
-				collection.length > 0
-			) {
-				fieldValue = getMetadataCollectionFieldName(
-					metadataFields[i],
-					{
-						value: fieldValue,
-					},
-					t
-				)
+	const catalogs = [];
+	for (const catalog of metadataCatalogs) {
+		const metadataFields = catalog.fields;
+		let metadata: {
+			name: string,
+			label: string,
+			value: string | string[] | boolean,
+		}[] = [];
+		for (let i = 0; metadataFields.length > i; i++) {
+			let fieldValue =
+				formikValues[catalog.flavor + "_" + metadataFields[i].id];
+
+			if (fieldValue === true) {
+				fieldValue = "true";
+			} else if (fieldValue === false) {
+				fieldValue = "false";
 			}
 
-			metadata = metadata.concat({
-				name: metadataFields[i].id,
-				label: metadataFields[i].label,
-				value: fieldValue,
-			});
+			if (!!fieldValue && (!isEmpty(fieldValue) || !isEmptyArray(fieldValue))) {
+				const collection = metadataFields[i].collection;
+				if (
+					metadataFields[i].type === "text" &&
+					!!collection &&
+					collection.length > 0
+				) {
+					fieldValue = getMetadataCollectionFieldName(
+						metadataFields[i],
+						{
+							value: fieldValue,
+						},
+						t
+					)
+				}
+
+				metadata = metadata.concat({
+					name: metadataFields[i].id,
+					label: metadataFields[i].label,
+					value: fieldValue,
+				});
+			}
 		}
+		catalogs.push(metadata);
 	}
 
 	return (
 		<div className="obj tbl-list">
 			<header className="no-expand">{t(header)}</header>
 			<div className="obj-container">
-				<table className="main-tbl">
-					<tbody>
-						{/*Insert row for each metadata entry user has provided*/}
-						{metadata.map((entry, key) => (
-							<tr key={key}>
-								<td>{t(entry.label)}</td>
-								<td>
-									{Array.isArray(entry.value)
-										? entry.value.join(", ")
-										: entry.value}
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
+				{catalogs.map((catalog, key) => (
+					<table key={key} className="main-tbl">
+						<tbody>
+							{/*Insert row for each metadata entry user has provided*/}
+							{catalog.map((entry, key) => (
+								<tr key={key}>
+									<td>{t(entry.label)}</td>
+									<td>
+										{Array.isArray(entry.value)
+											? entry.value.join(", ")
+											: entry.value}
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				))}
 			</div>
 		</div>
 	);
