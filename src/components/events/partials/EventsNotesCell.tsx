@@ -56,7 +56,7 @@ const EventsNotesCell = ({
 	}
 
 	return (
-		<div className="comment-container">
+		<div className="comment-container" key={row.id}>
 			{comments.length === 0 &&
 				<textarea
 					className="textarea"
