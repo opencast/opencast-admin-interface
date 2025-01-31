@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
 import SeriesDetailsModal from "./modals/SeriesDetailsModal";
@@ -24,6 +24,7 @@ import {
 } from "../../../slices/seriesSlice";
 
 import { Tooltip } from "../../shared/Tooltip";
+import { ModalHandle } from "../../shared/modals/Modal";
 
 /**
  * This component renders the action cells of series in the table view
@@ -36,29 +37,25 @@ const SeriesActionsCell = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
-	const [displaySeriesDetailsModal, setSeriesDetailsModal] = useState(false);
+	const deleteConfirmationModalRef = useRef<ModalHandle>(null);
+	const detailsModalRef = useRef<ModalHandle>(null);
 
 	const user = useAppSelector(state => getUserInformation(state));
 	const hasEvents = useAppSelector(state => getSeriesHasEvents(state));
 	const deleteAllowed = useAppSelector(state => isSeriesDeleteAllowed(state));
 
 	const hideDeleteConfirmation = () => {
-		setDeleteConfirmation(false);
+		deleteConfirmationModalRef.current?.close?.();
 	};
 
 	const showDeleteConfirmation = async () => {
 		await dispatch(checkForEventsDeleteSeriesModal(row.id));
 
-		setDeleteConfirmation(true);
+		deleteConfirmationModalRef.current?.open();
 	};
 
 	const deletingSeries = (id: string) => {
 		dispatch(deleteSeries(id));
-	};
-
-	const hideSeriesDetailsModal = () => {
-		setSeriesDetailsModal(false);
 	};
 
 	const showSeriesDetailsModal = async () => {
@@ -69,7 +66,7 @@ const SeriesActionsCell = ({
 		await dispatch(fetchSeriesDetailsThemeNames());
 		await dispatch(fetchSeriesDetailsTobira(row.id));
 
-		setSeriesDetailsModal(true);
+		detailsModalRef.current?.open();
 	};
 
 	return (
@@ -84,13 +81,11 @@ const SeriesActionsCell = ({
 				</Tooltip>
 			)}
 
-			{displaySeriesDetailsModal && (
-				<SeriesDetailsModal
-					handleClose={hideSeriesDetailsModal}
-					seriesId={row.id}
-					seriesTitle={row.title}
-				/>
-			)}
+			<SeriesDetailsModal
+				seriesId={row.id}
+				seriesTitle={row.title}
+				modalRef={detailsModalRef}
+			/>
 
 			{/* delete series */}
 			{hasAccess("ROLE_UI_SERIES_DELETE", user) && (
@@ -103,23 +98,22 @@ const SeriesActionsCell = ({
 				</Tooltip>
 			)}
 
-			{displayDeleteConfirmation && (
-				<ConfirmModal
-					close={hideDeleteConfirmation}
-					resourceName={row.title}
-					resourceType="SERIES"
-					resourceId={row.id}
-					deleteMethod={deletingSeries}
-					deleteAllowed={deleteAllowed}
-					showCautionMessage={hasEvents}
-					deleteNotAllowedMessage={
-						"CONFIRMATIONS.ERRORS.SERIES_HAS_EVENTS"
-					} /* The highlighted series cannot be deleted as they still contain events */
-					deleteWithCautionMessage={
-						"CONFIRMATIONS.WARNINGS.SERIES_HAS_EVENTS"
-					} /* This series does contain events. Deleting the series will not delete the events. */
-				/>
-			)}
+			<ConfirmModal
+				close={hideDeleteConfirmation}
+				resourceName={row.title}
+				resourceType="SERIES"
+				resourceId={row.id}
+				deleteMethod={deletingSeries}
+				deleteAllowed={deleteAllowed}
+				showCautionMessage={hasEvents}
+				deleteNotAllowedMessage={
+					"CONFIRMATIONS.ERRORS.SERIES_HAS_EVENTS"
+				} /* The highlighted series cannot be deleted as they still contain events */
+				deleteWithCautionMessage={
+					"CONFIRMATIONS.WARNINGS.SERIES_HAS_EVENTS"
+				} /* This series does contain events. Deleting the series will not delete the events. */
+				modalRef={deleteConfirmationModalRef}
+			/>
 		</>
 	);
 };

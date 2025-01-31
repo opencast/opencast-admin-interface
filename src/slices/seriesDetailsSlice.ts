@@ -143,7 +143,8 @@ export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSe
 				key: "SERIES_ACL_LOCKED",
 				duration: -1,
 				parameter: undefined,
-				context: NOTIFICATION_CONTEXT
+				context: NOTIFICATION_CONTEXT,
+				noDuplicates: true
 			})
 		);
 	}

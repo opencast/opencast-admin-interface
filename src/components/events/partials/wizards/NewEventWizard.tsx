@@ -20,6 +20,7 @@ import { getOrgProperties, getUserInformation } from "../../../../selectors/user
 import { MetadataCatalog, UploadAssetOption, postNewEvent } from "../../../../slices/eventSlice";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
 import { hasAccess } from "../../../../utils/utils";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import NewMetadataCommonPage from "../ModalTabsAndPages/NewMetadataCommonPage";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
 
@@ -38,6 +39,12 @@ const NewEventWizard: React.FC<{
 	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
+
+	useEffect(() => {
+		dispatch(removeNotificationWizardForm());
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	// Whether the ACL of a new event is initialized with the ACL of its series.
 	let initEventAclWithSeriesAcl = true
