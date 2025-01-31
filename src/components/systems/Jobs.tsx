@@ -58,7 +58,7 @@ const Jobs = () => {
 
 			<MainView open={displayNavigation}>
 				{/* Include notifications component */}
-				<Notifications />
+				<Notifications context={"other"}/>
 
 				<div className="controls-container">
 					{/* Include filters component */}
