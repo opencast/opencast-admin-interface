@@ -7,7 +7,6 @@ import {
 } from "../../../../selectors/eventSelectors";
 import { getWorkflowDef } from "../../../../selectors/workflowSelectors";
 import MetadataSummaryTable from "./summaryTables/MetadataSummaryTable";
-import MetadataExtendedSummaryTable from "./summaryTables/MetadataExtendedSummaryTable";
 import AccessSummaryTable from "./summaryTables/AccessSummaryTable";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { translateOverrideFallback } from "../../../../utils/utils";
@@ -96,23 +95,21 @@ const NewEventSummary = <T extends RequiredFormProps>({
 					<div className="full-col">
 						{/*Summary metadata*/}
 						<MetadataSummaryTable
-							metadataFields={metadataEvents.fields}
-							// @ts-expect-error TS(7006):
+							metadataCatalogs={[metadataEvents]}
+							//@ts-ignore
 							formikValues={formik.values}
 							header={"EVENTS.EVENTS.NEW.METADATA.CAPTION"}
 						/>
 
 						{/*Summary metadata extended*/}
-						{!metaDataExtendedHidden ? (
-							<MetadataExtendedSummaryTable
-								extendedMetadata={extendedMetadata}
-								// @ts-expect-error TS(7006):
+						{!metaDataExtendedHidden && (
+							<MetadataSummaryTable
+								metadataCatalogs={extendedMetadata}
+								//@ts-ignore
 								formikValues={formik.values}
-								// @ts-expect-error TS(7006):
-								formikInitialValues={formik.initialValues}
 								header={"EVENTS.EVENTS.NEW.METADATA_EXTENDED.CAPTION"}
 							/>
-						) : null}
+						)}
 
 						{/*Summary upload assets*/}
 						{/*Show only if asset upload page is not hidden, the sourceMode is UPLOAD and the there

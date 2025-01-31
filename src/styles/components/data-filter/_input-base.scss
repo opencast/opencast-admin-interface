@@ -1,3 +1,6 @@
+@use "../../base/variables";
+@use "base";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -31,11 +34,11 @@
 
     float: left;
     width: 0px;
-    height: $df-height;
+    height: base.$df-height;
     visibility: hidden;
     opacity: 0;
 
-    $border: $thin-border-stroke #c9d0d3;
+    $border: variables.$thin-border-stroke #c9d0d3;
     border-top: $border;
     border-bottom: $border;
     background-color: #f7f7f7;
