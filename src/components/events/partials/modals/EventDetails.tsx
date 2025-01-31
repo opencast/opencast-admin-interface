@@ -13,7 +13,6 @@ import EventDetailsWorkflowErrors from "../ModalTabsAndPages/EventDetailsWorkflo
 import EventDetailsWorkflowErrorDetails from "../ModalTabsAndPages/EventDetailsWorkflowErrorDetails";
 import EventDetailsAssetsTab from "../ModalTabsAndPages/EventDetailsAssetsTab";
 import EventDetailsSchedulingTab from "../ModalTabsAndPages/EventDetailsSchedulingTab";
-import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsExtendedMetadataTab";
 import DetailsMetadataTab from "../ModalTabsAndPages/DetailsMetadataTab";
 import {
 	getMetadata,
@@ -204,16 +203,16 @@ const EventDetails = ({
 			<div>
 				{page === EventDetailsPage.Metadata && !isLoadingMetadata && (
 					<DetailsMetadataTab
-						metadataFields={metadata}
 						resourceId={eventId}
-						header={tabs[page].bodyHeaderTranslation ?? ""}
+						metadata={[metadata]}
 						updateResource={updateMetadata}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
 						formikRef={formikRef}
+						header={tabs[page].bodyHeaderTranslation ?? ""}
 					/>
 				)}
 				{page === EventDetailsPage.ExtendedMetadata && !isLoadingMetadata && (
-					<DetailsExtendedMetadataTab
+					<DetailsMetadataTab
 						resourceId={eventId}
 						metadata={extendedMetadata}
 						updateResource={updateExtendedMetadata}
