@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import EventDetails from "./EventDetails";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { getModalEvent } from "../../../../selectors/eventDetailsSelectors";
 import { setModalEvent, setShowModal } from "../../../../slices/eventDetailsSlice";
-import DetailsModal from "../../../shared/modals/DetailsModal";
+import { Modal, ModalHandle } from "../../../shared/modals/Modal";
 
 /**
  * This component renders the modal for displaying event details
@@ -13,6 +13,7 @@ import DetailsModal from "../../../shared/modals/DetailsModal";
 const EventDetailsModal = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
+	const modalRef = useRef<ModalHandle>(null);
 
 	// tracks, whether the policies are different to the initial value
 	const [policyChanged, setPolicyChanged] = useState(false);
@@ -33,22 +34,26 @@ const EventDetailsModal = () => {
 			setPolicyChanged(false);
 			dispatch(removeNotificationWizardForm());
 			hideModal();
+			return true;
 		}
+		return false;
 	};
 
 	return (
-		<DetailsModal
-			handleClose={close}
-			prefix={"EVENTS.EVENTS.DETAILS.HEADER"}
-			title={event.title}
+		<Modal
+			open
+			closeCallback={close}
+			header={t("EVENTS.EVENTS.DETAILS.HEADER", { name: event.title })}
+			classId="event-details-modal"
+			ref={modalRef}
 		>
 			<EventDetails
 				eventId={event.id}
 				policyChanged={policyChanged}
 				setPolicyChanged={(value) => setPolicyChanged(value)}
 			/>
-		</DetailsModal>
-	)
-};
+		</Modal>
+	);
+}
 
 export default EventDetailsModal;
