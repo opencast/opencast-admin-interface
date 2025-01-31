@@ -259,7 +259,7 @@ const ResourceDetailsAccessPolicyTab = ({
 			}
 			if (aclDefaults["write_enabled"] && aclDefaults["write_enabled"] === "true") {
 				role.write = true;
-			} else if (aclDefaults["read_enabled"] && aclDefaults["write_enabled"] === "false") {
+			} else if (aclDefaults["write_enabled"] && aclDefaults["write_enabled"] === "false") {
 				role.write = false;
 			}
 			if (aclDefaults["default_actions"]) {
