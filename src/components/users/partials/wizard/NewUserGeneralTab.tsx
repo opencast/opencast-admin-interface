@@ -27,7 +27,7 @@ const NewUserGeneralTab = <T extends RequiredFormProps>({
 	return (
 		<ModalContent>
 			<div className="form-container">
-				<Notifications />
+				<Notifications context={"other"}/>
 				{/* Fields for user information needed */}
 				<div className="row">
 					<label>

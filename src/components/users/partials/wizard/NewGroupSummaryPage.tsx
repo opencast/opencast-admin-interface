@@ -30,7 +30,7 @@ const NewGroupSummaryPage = <T extends typeof initialFormValuesNewGroup>({
 	return (
 		<>
 			<ModalContentTable>
-				<Notifications />
+				<Notifications context={"other"}/>
 
 				<div className="obj">
 					<header>{t("USERS.GROUPS.DETAILS.FORM.SUMMARY")}</header>

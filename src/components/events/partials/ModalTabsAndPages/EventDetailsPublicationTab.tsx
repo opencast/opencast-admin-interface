@@ -30,7 +30,7 @@ const EventDetailsPublicationTab = ({
 	return (
 		<>
 			<ModalContentTable
-				modalBodyChildren={<Notifications />}
+				modalBodyChildren={<Notifications context={"other"}/>}
 			>
 				<div className="obj list-obj">
 					<header>{t("EVENTS.EVENTS.DETAILS.PUBLICATIONS.CAPTION")}</header>
