@@ -41,7 +41,7 @@ const PublishCell = ({
 
 	const onlyEngage = row.publications.length === 1
 		&& row.publications[0].enabled
-		&& !row.publications[0].hiding
+		&& !row.publications[0].hide
 		&& row.publications[0].id === 'engage-player';
 
 	return (
@@ -66,7 +66,7 @@ const PublishCell = ({
 							<div className="popover__content">
 								{/* Show a list item for each publication of an event that isn't hidden*/}
 								{row.publications.map((publication, key) =>
-									!publication.hiding ? (
+									!publication.hide ? (
 										// Check if publications is enabled and choose icon according
 										publication.enabled ? (
 											<a
@@ -76,11 +76,11 @@ const PublishCell = ({
 												rel='noreferrer'
 												key={key}
 											>
-												<span>{t(publication.name)}</span>
+												<span>{publication.label ? t(publication.label) : t(publication.name)}</span>
 											</a>
 										) : (
-											<ButtonLikeAnchor key={key} extraClassName="popover__list-item">
-												<span>{t(publication.name)}</span>
+											<ButtonLikeAnchor key={key} extraClassName="button-like-anchor popover__list-item">
+												<span>{publication.label ? t(publication.label) : t(publication.name)}</span>
 											</ButtonLikeAnchor>
 										)
 									) : null
