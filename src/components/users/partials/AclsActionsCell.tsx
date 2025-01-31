@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { AclResult, deleteAcl } from "../../../slices/aclSlice";
 import { useAppDispatch } from "../../../store";
 import { fetchAclDetails } from "../../../slices/aclDetailsSlice";
-import DetailsModal from "../../shared/modals/DetailsModal";
+import { Modal, ModalHandle } from "../../shared/modals/Modal";
 import AclDetails from "./modal/AclDetails";
 import { ActionCellDelete } from "../../shared/ActionCellDelete";
 import { IconButton } from "../../shared/IconButton";
+import { useTranslation } from "react-i18next";
 
 /**
  * This component renders the action cells of acls in the table view
@@ -15,18 +16,19 @@ const AclsActionsCell = ({
 }: {
 	row: AclResult
 }) => {
+	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const [displayAclDetails, setAclDetails] = useState(false);
+	const modalRef = useRef<ModalHandle>(null);
 
 	const hideAclDetails = () => {
-		setAclDetails(false);
+		modalRef.current?.close?.()
 	};
 
 	const showAclDetails = async () => {
 		await dispatch(fetchAclDetails(row.id));
 
-		setAclDetails(true);
+		modalRef.current?.open()
 	};
 
 	const deletingAcl = (id: number) => {
@@ -42,15 +44,16 @@ const AclsActionsCell = ({
 				editAccessRole={"ROLE_UI_ACLS_EDIT"}
 				tooltipText={"USERS.ACLS.TABLE.TOOLTIP.DETAILS"}
 			/>
-			{displayAclDetails && (
-				<DetailsModal
-					handleClose={hideAclDetails}
-					title={row.name}
-					prefix={"USERS.ACLS.DETAILS.HEADER"}
-				>
-					<AclDetails close={hideAclDetails} />
-				</DetailsModal>
-			)}
+
+			{/* ACL details modal */}
+			<Modal
+				header={t("USERS.ACLS.DETAILS.HEADER", { name: row.name })}
+				classId="acl-details-modal"
+				ref={modalRef}
+			>
+				{/* component that manages tabs of acl details modal*/}
+				<AclDetails close={hideAclDetails} />
+			</Modal>
 
 			{/* delete ACL */}
 			<ActionCellDelete

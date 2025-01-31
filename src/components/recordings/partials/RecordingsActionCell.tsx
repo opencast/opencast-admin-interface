@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { useAppDispatch } from "../../../store";
 import { Recording, deleteRecording } from "../../../slices/recordingSlice";
 import { fetchRecordingDetails } from "../../../slices/recordingDetailsSlice";
-import DetailsModal from "../../shared/modals/DetailsModal";
-import RecordingsDetails from "./modal/RecordingsDetails";
 import { ActionCellDelete } from "../../shared/ActionCellDelete";
 import { IconButton } from "../../shared/IconButton";
+import { ModalHandle } from "../../shared/modals/Modal";
+import RecordingDetailsModal from "./modal/RecordingDetailsModal";
 
 /**
  * This component renders the action cells of recordings in the table view
@@ -17,16 +17,12 @@ const RecordingsActionCell = ({
 }) => {
 	const dispatch = useAppDispatch();
 
-	const [displayRecordingDetails, setRecordingDetails] = useState(false);
-
-	const hideRecordingDetails = () => {
-		setRecordingDetails(false);
-	};
+	const recordingDetailsModalRef = useRef<ModalHandle>(null);
 
 	const showRecordingDetails = async () => {
 		await dispatch(fetchRecordingDetails(row.name));
 
-		setRecordingDetails(true);
+		recordingDetailsModalRef.current?.open()
 	};
 
 	const deletingRecording = (id: string) => {
@@ -42,15 +38,11 @@ const RecordingsActionCell = ({
 				editAccessRole={"ROLE_UI_LOCATIONS_DETAILS_VIEW"}
 				tooltipText={"RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DETAILS"}
 			/>
-			{displayRecordingDetails && (
-				<DetailsModal
-					handleClose={hideRecordingDetails}
-					title={row.name}
-					prefix={"RECORDINGS.RECORDINGS.DETAILS.HEADER"}
-				>
-					<RecordingsDetails/>
-				</DetailsModal>
-			)}
+
+			<RecordingDetailsModal
+				recordingId={row.name}
+				modalRef={recordingDetailsModalRef}
+			/>
 
 			{/* delete location/recording */}
 			<ActionCellDelete

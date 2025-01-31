@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import EmbeddingCodeModal from "./modals/EmbeddingCodeModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
@@ -18,6 +18,7 @@ import { Tooltip } from "../../shared/Tooltip";
 import { openModal } from "../../../slices/eventDetailsSlice";
 import { ActionCellDelete } from "../../shared/ActionCellDelete";
 import { IconButton } from "../../shared/IconButton";
+import { Modal, ModalHandle } from "../../shared/modals/Modal";
 
 /**
  * This component renders the action cells of events in the table view
@@ -30,8 +31,8 @@ const EventActionCell = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const [displaySeriesDetailsModal, setSeriesDetailsModal] = useState(false);
-	const [displayEmbeddingCodeModal, setEmbeddingCodeModal] = useState(false);
+	const seriesDetailsModalRef = useRef<ModalHandle>(null);
+	const embeddingCodeModalRef = useRef<ModalHandle>(null);
 
 	const user = useAppSelector(state => getUserInformation(state));
 
@@ -40,19 +41,15 @@ const EventActionCell = ({
 	};
 
 	const hideEmbeddingCodeModal = () => {
-		setEmbeddingCodeModal(false);
+		embeddingCodeModalRef.current?.close?.();
 	};
 
 	const showEmbeddingCodeModal = () => {
-		setEmbeddingCodeModal(true);
+		embeddingCodeModalRef.current?.open();
 	};
 
 	const showSeriesDetailsModal = () => {
-		setSeriesDetailsModal(true);
-	};
-
-	const hideSeriesDetailsModal = () => {
-		setSeriesDetailsModal(false);
+		seriesDetailsModalRef.current?.open();
 	};
 
 	const onClickSeriesDetails = async () => {
@@ -85,11 +82,11 @@ const EventActionCell = ({
 
 	return (
 		<>
-			{!!row.series && displaySeriesDetailsModal && (
+			{!!row.series && (
 				<SeriesDetailsModal
-					handleClose={hideSeriesDetailsModal}
 					seriesId={row.series.id}
 					seriesTitle={row.series.title}
+					modalRef={seriesDetailsModalRef}
 				/>
 			)}
 
@@ -186,9 +183,15 @@ const EventActionCell = ({
 				tooltipText={"EVENTS.EVENTS.TABLE.TOOLTIP.EMBEDDING_CODE"}
 			/>
 
-			{displayEmbeddingCodeModal && (
+			{/* Embedding Code Modal */}
+			<Modal
+				header={t("CONFIRMATIONS.ACTIONS.SHOW.EMBEDDING_CODE")}
+				classId="embedding-code"
+				ref={embeddingCodeModalRef}
+			>
+				{/* component that manages tabs of theme details modal*/}
 				<EmbeddingCodeModal close={hideEmbeddingCodeModal} eventId={row.id} />
-			)}
+			</Modal>
 		</>
 	);
 };

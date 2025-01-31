@@ -1,6 +1,7 @@
 import ConfirmModal, { ResourceType } from "./ConfirmModal";
-import { useState } from "react";
+import { useRef } from "react";
 import { IconButton } from "./IconButton";
+import { ModalHandle } from "./modals/Modal";
 
 export const ActionCellDelete = <T,>({
 	editAccessRole,
@@ -25,32 +26,31 @@ export const ActionCellDelete = <T,>({
 	deleteNotAllowedMessage?: string,
 	deleteWithCautionMessage?: string,
 }) => {
-	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
+	const deleteConfirmationModalRef = useRef<ModalHandle>(null);
 
 	return (
 		<>
 			{/* delete button */}
 			<IconButton
-				callback={() => setDeleteConfirmation(true)}
+				callback={() => deleteConfirmationModalRef.current?.open()}
 				iconClassname={"remove"}
 				editAccessRole={editAccessRole}
 				tooltipText={tooltipText}
 			/>
 
 			{/* Confirmation modal for deleting */}
-			{displayDeleteConfirmation && (
-				<ConfirmModal
-					close={() => setDeleteConfirmation(false)}
-					resourceName={resourceName}
-					resourceId={resourceId}
-					resourceType={resourceType}
-					deleteMethod={deleteMethod}
-					deleteAllowed={deleteAllowed}
-					showCautionMessage={showCautionMessage}
-					deleteNotAllowedMessage={deleteNotAllowedMessage}
-					deleteWithCautionMessage={deleteWithCautionMessage}
-				/>
-			)}
+			<ConfirmModal
+				close={() => deleteConfirmationModalRef.current?.close?.()}
+				resourceName={resourceName}
+				resourceId={resourceId}
+				resourceType={resourceType}
+				deleteMethod={deleteMethod}
+				deleteAllowed={deleteAllowed}
+				showCautionMessage={showCautionMessage}
+				deleteNotAllowedMessage={deleteNotAllowedMessage}
+				deleteWithCautionMessage={deleteWithCautionMessage}
+				modalRef={deleteConfirmationModalRef}
+			/>
 		</>
 	)
 };

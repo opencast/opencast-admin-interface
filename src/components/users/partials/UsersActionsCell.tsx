@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { UserResult, deleteUser } from "../../../slices/userSlice";
 import { useAppDispatch } from "../../../store";
 import { fetchUserDetails } from "../../../slices/userDetailsSlice";
-import DetailsModal from "../../shared/modals/DetailsModal";
+import { Modal, ModalHandle } from "../../shared/modals/Modal";
 import UserDetails from "./modal/UserDetails";
 import { ActionCellDelete } from "../../shared/ActionCellDelete";
 import { IconButton } from "../../shared/IconButton";
@@ -15,9 +16,10 @@ const UsersActionCell = ({
 }: {
 	row: UserResult
 }) => {
-  const dispatch = useAppDispatch();
+	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
-	const [displayUserDetails, setUserDetails] = useState(false);
+	const modalRef = useRef<ModalHandle>(null);
 
 	const deletingUser = (id: string) => {
 		dispatch(deleteUser(id));
@@ -26,11 +28,11 @@ const UsersActionCell = ({
 	const showUserDetails = async () => {
 		await dispatch(fetchUserDetails(row.username));
 
-		setUserDetails(true);
+		modalRef.current?.open()
 	};
 
 	const hideUserDetails = () => {
-		setUserDetails(false);
+		modalRef.current?.close?.()
 	};
 
 	return (
@@ -42,15 +44,16 @@ const UsersActionCell = ({
 				editAccessRole={"ROLE_UI_USERS_EDIT"}
 				tooltipText={"USERS.USERS.TABLE.TOOLTIP.DETAILS"}
 			/>
-			{displayUserDetails && (
-				<DetailsModal
-					handleClose={hideUserDetails}
-					title={row.username}
-					prefix={"USERS.USERS.DETAILS.EDITCAPTION"}
-				>
-					<UserDetails close={hideUserDetails} />
-				</DetailsModal>
-			)}
+
+			{/* user details modal */}
+			<Modal
+				header={t("USERS.USERS.DETAILS.EDITCAPTION", { username: row.username })}
+				classId="user-details-modal"
+				ref={modalRef}
+			>
+				{/* component that manages tabs of user details modal*/}
+				<UserDetails close={hideUserDetails} />
+			</Modal>
 
 			{(row.manageable || (row.provider !== "opencast" && row.provider !== "system")) &&
 				<ActionCellDelete

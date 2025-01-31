@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { useAppDispatch,  } from "../../../store";
+import React, { useRef } from "react";
 import { Group, deleteGroup } from "../../../slices/groupSlice";
 import { fetchGroupDetails } from "../../../slices/groupDetailsSlice";
-import DetailsModal from "../../shared/modals/DetailsModal";
-import GroupDetails from "./modal/GroupDetails";
 import { ActionCellDelete } from "../../shared/ActionCellDelete";
 import { IconButton } from "../../shared/IconButton";
+import { useAppDispatch  } from "../../../store";
+import { ModalHandle } from "../../shared/modals/Modal";
+import GroupDetailsModal from "./modal/GroupDetailsModal";
 
 /**
  * This component renders the action cells of groups in the table view
@@ -17,20 +17,20 @@ const GroupsActionsCell = ({
 }) => {
 	const dispatch = useAppDispatch();
 
-	const [displayGroupDetails, setGroupDetails] = useState(false);
+	const detailsModalRef = useRef<ModalHandle>(null);
 
 	const deletingGroup = (id: string) => {
 		dispatch(deleteGroup(id));
 	};
 
 	const hideGroupDetails = () => {
-		setGroupDetails(false);
+		detailsModalRef.current?.close?.();
 	};
 
 	const showGroupDetails = async () => {
 		await dispatch(fetchGroupDetails(row.id));
 
-		setGroupDetails(true);
+		detailsModalRef.current?.open();
 	};
 
 	return (
@@ -43,15 +43,11 @@ const GroupsActionsCell = ({
 				tooltipText={"USERS.GROUPS.TABLE.TOOLTIP.DETAILS"}
 			/>
 			{/*modal displaying details about group*/}
-			{displayGroupDetails && (
-				<DetailsModal
-					handleClose={hideGroupDetails}
-					title={row.name}
-					prefix={"USERS.GROUPS.DETAILS.EDITCAPTION"}
-				>
-					<GroupDetails close={hideGroupDetails} />
-				</DetailsModal>
-			)}
+			<GroupDetailsModal
+				close={hideGroupDetails}
+				groupName={row.name}
+				modalRef={detailsModalRef}
+			/>
 
 			{/* delete group */}
 			<ActionCellDelete
