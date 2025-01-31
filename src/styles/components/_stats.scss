@@ -1,3 +1,5 @@
+@use "../base/variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -40,7 +42,7 @@
       text-align: center;
       cursor: pointer;
       overflow: hidden;
-      color: $stats-color;
+      color: variables.$stats-color;
       border: none;
       border-radius: 0;
       background-color: transparent;
@@ -50,10 +52,10 @@
       font-size: unset;
 
       &:hover {
-        color: $stats-hover-color;
+        color: variables.$stats-hover-color;
       }
       &:focus {
-        outline: $stats-color solid thin;
+        outline: variables.$stats-color solid thin;
       }
 
       h1 {
@@ -61,7 +63,7 @@
         font-size: 24px;
         margin: 0 0 5px 0;
         padding: 2px 0;
-        border-bottom: $thin-border-stroke $stats-color;
+        border-bottom: variables.$thin-border-stroke variables.$stats-color;
       }
 
       span {

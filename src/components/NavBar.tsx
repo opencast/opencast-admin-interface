@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { Link, useLocation } from "react-router";
 import { hasAccess } from "../utils/utils";
 import { AppDispatch, useAppDispatch, useAppSelector } from "../store";
@@ -9,6 +9,7 @@ import MainNav from "./shared/MainNav";
 import { setOffset } from "../slices/tableSlice";
 import NewResourceModal, { NewResource } from "./shared/NewResourceModal";
 import { useHotkeys } from "react-hotkeys-hook";
+import { ModalHandle } from "./shared/modals/Modal";
 
 /**
  * Component that renders the nav bar
@@ -53,16 +54,16 @@ const NavBar = ({
 
 	const user = useAppSelector(state => getUserInformation(state));
 
-	const [displayNewResourceModal, setNewResourceModal] = useState(false);
+	const newResourceModalRef = useRef<ModalHandle>(null);
 
 	const showNewResourceModal = async () => {
 		create && create.onShowModal && await create.onShowModal()
-		setNewResourceModal(true);
+		newResourceModalRef.current?.open()
 	};
 
 	const hideNewResourceModal = () => {
 		create && create.onHideModal && create.onHideModal()
-		setNewResourceModal(false);
+		newResourceModalRef.current?.close?.()
 	};
 
 	const toggleNavigation = () => {
@@ -79,10 +80,11 @@ const NavBar = ({
 	return (
 		<section className="action-nav-bar" role="navigation">
 			{/* Display modal for new resource if add button is clicked */}
-			{ create && (create.isDisplay === undefined || create.isDisplay) && displayNewResourceModal &&
+			{ create && (create.isDisplay === undefined || create.isDisplay) &&
 				<NewResourceModal
 					handleClose={hideNewResourceModal}
 					resource={create.resource}
+					modalRef={newResourceModalRef}
 				/>
 			}
 

@@ -1,3 +1,11 @@
+@use "sass:color";
+@use "../../../../node_modules/bourbon/core/bourbon/library/border-radius";
+@use "../../../../node_modules/bourbon/core/bourbon/library/clearfix";
+@use "../../base/fontawesome/fa-mixins";
+@use "../../base/fontawesome/variables" as variables2;
+@use "../../base/variables";
+@use "../../mixins/button";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -31,7 +39,7 @@
     &.comments {
 
         .comment-container {
-            padding: $modal-container-padding;
+            padding: variables.$modal-container-padding;
             height: 400px;
             overflow-y: auto;
 
@@ -63,7 +71,7 @@
                 }
 
                 > hr {
-                    background: lighten($main-border-color, 10%);
+                    background: color.adjust(variables.$main-border-color, $lightness: 10%);
                     height: 1px;
                     border: none;
                     margin: 30px 0 20px;
@@ -75,18 +83,18 @@
 
                 .category {
                     font-size: 10px;
-                    color: $medium-prim-color;
+                    color: variables.$medium-prim-color;
 
                     > strong {
-                        color: $medium-prim-color;
+                        color: variables.$medium-prim-color;
                     }
                 }
 
                 .date {
                     float: right;
                     font-size: 10px;
-                    color: $light-prim-color;
-                    @include fa-icon($fa-var-clock-o, before, inline-block, 0 5px 0 0, 0, inherit, 10px);
+                    color: variables.$light-prim-color;
+                    @include fa-mixins.fa-icon(variables2.$fa-var-clock-o, before, inline-block, 0 5px 0 0, 0, inherit, 10px);
                 }
 
                 > p {
@@ -95,7 +103,7 @@
                    line-height: 15px;
 
                     > span {
-                        color: $l-blue;
+                        color: variables.$l-blue;
                     }
                 }
 
@@ -106,33 +114,33 @@
                     font-size: 11px;
                     font-weight: 600;
                     cursor: pointer;
-                    color: $l-blue;
+                    color: variables.$l-blue;
                     display: inline-block;
                     line-height: inherit;
                     padding: initial;
                 }
 
                 .delete {
-                    color: $red;
+                    color: variables.$red;
                     margin-left: 10px;
 
                 }
 
                 .resolve {
-                    color: $light-prim-color;
+                    color: variables.$light-prim-color;
                     margin-right: 10px;
 
                     &.resolved {
-                        color: $green;
+                        color: variables.$green;
                     }
                 }
             }
         }
 
         .add-comment {
-            background: $off-white;
-            border-top: $thin-border-stroke #e9e9e9;
-            @include border-bottom-radius($main-border-radius);
+            background: variables.$off-white;
+            border-top: variables.$thin-border-stroke #e9e9e9;
+            @include border-radius.border-bottom-radius(variables.$main-border-radius);
             height: 191px;
             padding: 3%;
             display: flex;
@@ -156,12 +164,12 @@
 
             button.save {
                 min-width: 100px;
-                @include btn(green);
+                @include button.btn(green);
             }
 
             button.cancel {
               min-width: 100px;
-              @include btn(red);
+              @include button.btn(red);
 
             }
 
@@ -185,11 +193,11 @@
             text-align: center;
             padding: 10px 0 0;
             height: 42px;
-            background: darken($body-background, 3%);
-            border-bottom: 1px solid $main-border-color;
+            background: color.adjust(variables.$body-background, $lightness: -3%);
+            border-bottom: 1px solid variables.$main-border-color;
 
             > a {
-                @include btn(green);
+                @include button.btn(green);
                 margin-left: 10px;
             }
 
@@ -203,9 +211,9 @@
                 padding: 5px 7px;
                 margin: 5px 5px 0 0;
                 font-size: 12px;
-                background: $l-blue;
+                background: variables.$l-blue;
                 color: #fff;
-                border-radius: $main-border-radius;
+                border-radius: variables.$main-border-radius;
 
                 > a {
                     margin-left: 5px;
@@ -240,7 +248,7 @@
         }
 
         &:last-child {
-            color: $dark-prim-color;
+            color: variables.$dark-prim-color;
         }
     }
 
@@ -284,13 +292,13 @@
     // ----------------------------------------
 
     .details-link {
-        color: $l-blue;
+        color: variables.$l-blue;
         position: relative;
         white-space: nowrap;
-        @include fa-icon($fa-var-chevron-right, after, inline-block, 0, 0, inherit, 8px);
+        @include fa-mixins.fa-icon(variables2.$fa-var-chevron-right, after, inline-block, 0, 0, inherit, 8px);
 
         &:hover {
-            color: darken($l-blue, 20%);
+            color: color.adjust(variables.$l-blue, $lightness: -20%);
         }
 
         &:after {
@@ -306,7 +314,7 @@
 
     .remove-btn-container {
         height: 50px;
-        border-top: 1px solid $main-border-color;
+        border-top: 1px solid variables.$main-border-color;
     }
 
     .red-btn {
@@ -333,16 +341,16 @@
     // ----------------------------------------
 
     .file-upload {
-        @include clearfix();
+        @include clearfix.clearfix();
     }
 
     .upload-file-info {
-        @include clearfix();
-        color: $medium-prim-color;
+        @include clearfix.clearfix();
+        color: variables.$medium-prim-color;
         font-size: 10px;
-        font-weight: $weight-semibold;
+        font-weight: variables.$weight-semibold;
         background: #fff;
-        border: 1px solid $main-border-color;
+        border: 1px solid variables.$main-border-color;
         border-radius: 10px;
         height: 19px;
         display: inline-block;
@@ -350,7 +358,7 @@
 
         // Filename label
         p {
-            color: $dark-prim-color;
+            color: variables.$dark-prim-color;
             display: inline-block;
             padding: 4px 10px;
             float: left;
@@ -375,17 +383,17 @@
             margin: auto;;
             height: 100%;
             min-width: 0;
-            color: $medium-prim-color;
+            color: variables.$medium-prim-color;
             border-radius: 0;
 
             // Styles
-            border-left: 1px solid $main-border-color;
+            border-left: 1px solid variables.$main-border-color;
             padding: 0 6px;
             padding-right: 8px;
             border-top-right-radius: 10px;
             border-bottom-right-radius: 10px;
 
-            @include fa-icon($fa-var-close, after, inline-block, 0, 0, $main-border-color, 10px);
+            @include fa-mixins.fa-icon(variables2.$fa-var-close, after, inline-block, 0, 0, variables.$main-border-color, 10px);
 
             &::after {
                 position: relative;
@@ -393,17 +401,17 @@
             }
 
             &:hover {
-                @include fa-icon-color(after, $medium-prim-color);
+                @include fa-mixins.fa-icon-color(after, variables.$medium-prim-color);
             }
         }
     }
 
     .progress {
-        border: 1px solid darken($bright-blue, 5%);
+        border: 1px solid color.adjust(variables.$bright-blue, $lightness: -5%);
     }
 
     .progress-bar {
-        background: linear-gradient(to bottom, lighten($bright-blue, 5%), $bright-blue);
+        background: linear-gradient(to bottom, color.adjust(variables.$bright-blue, $lightness: 5%), variables.$bright-blue);
     }
 
     button {
@@ -418,7 +426,7 @@
     }
 
     .upload-button {
-        @include btn(brightblue);
+        @include button.btn(brightblue);
     }
 
 
@@ -446,17 +454,17 @@
 
         h4 {
             font-size: 18px;
-            font-weight: $weight-regular;
+            font-weight: variables.$weight-regular;
             line-height: 24px;
-            color: $dark-prim-color;
+            color: variables.$dark-prim-color;
             margin-bottom: 5px;
         }
     }
 
     .list-row {
-        @include clearfix();
+        @include clearfix.clearfix();
         padding: 15px 0;
-        border-bottom: 1px solid $main-border-color;
+        border-bottom: 1px solid variables.$main-border-color;
 
         &:first-child {
             padding-top: 0;
@@ -473,7 +481,7 @@
     }
 
     .list-sub-row {
-        @include clearfix();
+        @include clearfix.clearfix();
         padding: 5px 0;
 
         &:last-child {
@@ -504,7 +512,7 @@
     // ----------------------------------------
 
     .video-container {
-        @include clearfix();
+        @include clearfix.clearfix();
         position: relative;
 
         .video-wrapper {
@@ -512,14 +520,14 @@
             width: 500px;
             height: auto;
             padding: 5px;
-            border: 1px solid $main-border-color;
-            border-radius: $main-border-radius;
+            border: 1px solid variables.$main-border-color;
+            border-radius: variables.$main-border-radius;
             box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
         }
 
         .video-overlay {
             position: absolute;
-            z-index: $z-60;
+            z-index: variables.$z-60;
             width: 500px;
             height: 100%;
             max-width: calc(100% - 10px);
@@ -553,7 +561,7 @@
 
         .watermark-image {
             position: absolute;
-            z-index: $z-60;
+            z-index: variables.$z-60;
 
             img {
                 max-width: 50px;
@@ -590,20 +598,20 @@
         .position-selection {
             position: relative;
             padding: 5px;
-            border: 1px solid $main-border-color;
-            border-radius: $main-border-radius;
+            border: 1px solid variables.$main-border-color;
+            border-radius: variables.$main-border-radius;
             box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
             background: #fff;
             min-height: 202px;
         }
 
         .position-button {
-            @include btn(white);
+            @include button.btn(white);
             position: absolute;
             min-width: 100px;
 
             &.active {
-                @include btn(brightblue);
+                @include button.btn(brightblue);
                 text-shadow: none !important;
                 position: absolute;
             }
@@ -631,11 +639,11 @@
 
         .overlay-meta {
             padding: 40px 20px;
-            color: rgba($white, 0.98);
-            text-shadow: 0 1px 2px rgba($black, 0.2);
+            color: rgba(variables.$white, 0.98);
+            text-shadow: 0 1px 2px rgba(variables.$black, 0.2);
             font-size: 18px;
             line-height: 22px;
-            font-weight: $weight-semibold;
+            font-weight: variables.$weight-semibold;
             text-align: center;
             max-height: calc(100% - 0px);
 
@@ -659,42 +667,42 @@
             h1 {
                 font-size: 30px;
                 line-height: 36px;
-                font-weight: $weight-semibold;
+                font-weight: variables.$weight-semibold;
             }
 
             h2 {
                 font-size: 28px;
                 line-height: 34px;
-                font-weight: $weight-semibold;
+                font-weight: variables.$weight-semibold;
             }
 
             h3 {
                 font-size: 26px;
                 line-height: 32px;
-                font-weight: $weight-semibold;
+                font-weight: variables.$weight-semibold;
             }
 
             h4 {
                 font-size: 24px;
                 line-height: 30px;
-                font-weight: $weight-semibold;
+                font-weight: variables.$weight-semibold;
             }
 
             h5 {
                 font-size: 22px;
                 line-height: 28px;
-                font-weight: $weight-regular;
+                font-weight: variables.$weight-regular;
             }
 
             h6 {
                 font-size: 20px;
                 line-height: 26px;
-                font-weight: $weight-regular;
+                font-weight: variables.$weight-regular;
             }
 
             // for legal or other small print
             &.paragraph-meta {
-                background: linear-gradient(to bottom, rgba($black, 0.8), rgba($black, 0.2));
+                background: linear-gradient(to bottom, rgba(variables.$black, 0.8), rgba(variables.$black, 0.2));
                 height: 100%;
                 font-size: 12px;
                 line-height: 18px;
@@ -714,8 +722,8 @@
         font-size: 14px;
 
         .field-title {
-            font-weight: $weight-semibold;
-            color: $dark-prim-color;
+            font-weight: variables.$weight-semibold;
+            color: variables.$dark-prim-color;
         }
     }
 
