@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import {
@@ -35,6 +35,7 @@ import sortDownIcon from "../../img/tbl-sort-down.png";
 import Notifications from "./Notifications";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { TableColumn } from "../../configs/tableConfigs/aclsTableConfig";
+import { ModalHandle } from "./modals/Modal";
 
 const SortIcon = styled.i`
 	float: right;
@@ -101,7 +102,7 @@ const Table = ({
 
 	// State of dropdown menu
 	const [showPageSizes, setShowPageSizes] = useState(false);
-	const [displayEditTableViewModal, setEditTableViewModal] = useState(false);
+	const editTableViewModalRef = useRef<ModalHandle>(null);
 
 	useEffect(() => {
 		// Function for handling clicks outside of an open dropdown menu
@@ -154,11 +155,11 @@ const Table = ({
 	};
 
 	const showEditTableViewModal = async () => {
-		setEditTableViewModal(true);
+		editTableViewModalRef.current?.open()
 	};
 
 	const hideEditTableViewModal = () => {
-		setEditTableViewModal(false);
+		editTableViewModalRef.current?.close?.()
 	};
 
 	const tryToGetValueForKeyFromRowAsString = (row: Row, key: string) => {
@@ -189,11 +190,10 @@ const Table = ({
 			</div>
 
 			{/* Display modal for editing table view if table edit button is clicked */}
-			{ displayEditTableViewModal &&
-				<EditTableViewModal
-					handleClose={hideEditTableViewModal}
-				/>
-			}
+			<EditTableViewModal
+				close={hideEditTableViewModal}
+				modalRef={editTableViewModalRef}
+			/>
 
 			<div id="length-div" style={lengthDivStyle}></div>
 			<table className={"main-tbl highlight-hover"}>

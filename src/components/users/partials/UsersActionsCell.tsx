@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
@@ -7,7 +7,7 @@ import { User, deleteUser } from "../../../slices/userSlice";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchUserDetails } from "../../../slices/userDetailsSlice";
 import { Tooltip } from "../../shared/Tooltip";
-import DetailsModal from "../../shared/modals/DetailsModal";
+import { Modal, ModalHandle } from "../../shared/modals/Modal";
 import UserDetails from "./modal/UserDetails";
 
 /**
@@ -21,13 +21,13 @@ const UsersActionCell = ({
 	const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
-	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
-	const [displayUserDetails, setUserDetails] = useState(false);
+	const deleteConfirmationModalRef = useRef<ModalHandle>(null);
+	const modalRef = useRef<ModalHandle>(null);
 
 	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
-		setDeleteConfirmation(false);
+		deleteConfirmationModalRef.current?.close?.();
 	};
 
 	const deletingUser = (id: string) => {
@@ -37,11 +37,11 @@ const UsersActionCell = ({
 	const showUserDetails = async () => {
 		await dispatch(fetchUserDetails(row.username));
 
-		setUserDetails(true);
+		modalRef.current?.open()
 	};
 
 	const hideUserDetails = () => {
-		setUserDetails(false);
+		modalRef.current?.close?.()
 	};
 
 	return (
@@ -56,35 +56,34 @@ const UsersActionCell = ({
 				</Tooltip>
 			)}
 
-			{displayUserDetails && (
-				<DetailsModal
-					handleClose={hideUserDetails}
-					title={row.username}
-					prefix={"USERS.USERS.DETAILS.EDITCAPTION"}
-				>
-					<UserDetails close={hideUserDetails} />
-				</DetailsModal>
-			)}
+			{/* user details modal */}
+			<Modal
+				header={t("USERS.USERS.DETAILS.EDITCAPTION", { username: row.username })}
+				classId="user-details-modal"
+				ref={modalRef}
+			>
+				{/* component that manages tabs of user details modal*/}
+				<UserDetails close={hideUserDetails} />
+			</Modal>
 
 			{(row.manageable || (row.provider !== "opencast" && row.provider !== "system"))
 				&& hasAccess("ROLE_UI_USERS_DELETE", user) && <>
 					<Tooltip title={t("USERS.USERS.TABLE.TOOLTIP.DETAILS")}>
 						<button
-							onClick={() => setDeleteConfirmation(true)}
+							onClick={() => deleteConfirmationModalRef.current?.open()}
 							className="button-like-anchor remove"
 						/>
 					</Tooltip>
 
 					{/* Confirmation for deleting a user */}
-					{displayDeleteConfirmation && (
-						<ConfirmModal
-							close={hideDeleteConfirmation}
-							resourceName={row.name}
-							resourceId={row.username}
-							resourceType="USER"
-							deleteMethod={deletingUser}
-						/>
-					)}
+					<ConfirmModal
+						close={hideDeleteConfirmation}
+						resourceName={row.name}
+						resourceId={row.username}
+						resourceType="USER"
+						deleteMethod={deletingUser}
+						modalRef={deleteConfirmationModalRef}
+					/>
 				</>
 			}
 		</>
