@@ -512,8 +512,7 @@ const ResourceDetailsAccessPolicyTab = ({
 																											editAccessRole,
 																											user
 																										) ||
-																										(aclDefaults
-(aclDefaults && aclDefaults["read_readonly"] !== "false")
+																										(aclDefaults && aclDefaults["read_readonly"] !== "false")
 																									}
 																									className={`${
 																										transactions.read_only
