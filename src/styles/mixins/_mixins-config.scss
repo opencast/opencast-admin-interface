@@ -20,24 +20,15 @@
  */
 
 
-@import "button";
-@import "triangle-point";
+@use "sass:color";
+@use "button";
+@use "triangle-point";
+@use "../../../node_modules/bourbon/core/bourbon/library/border-radius";
+@use "../base/fontawesome/fa-mixins";
+@use "../base/fontawesome/variables" as variables2;
+@use "../base/variables";
 
 // Temporary Inline Files
-
-// Font Smoothing
-@mixin font-smoothing($value: on) {
-
-    @if $value == on {
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-
-    @if $value == off {
-        -webkit-font-smoothing: subpixel-antialiased;
-        -moz-osx-font-smoothing: auto;
-    }
-}
 
 // Build icons mixin
 @mixin build-icon($top, $left, $image, $width, $height) {
@@ -45,7 +36,7 @@
     left: $left;
     width: $width;
     height: $height;
-    background-image: url("#{$img-path}/#{$image}.png");
+    background-image: url("#{variables.$img-path}/#{$image}.png");
     background-size: $width $height;
 }
 
@@ -65,27 +56,27 @@
     height: $height;
     line-height: $height;
     background: linear-gradient(to bottom, #fff, #f3f5f6);
-    border-bottom: 1px solid $main-border-color;
-    @include border-top-radius($main-border-radius);
+    border-bottom: 1px solid variables.$main-border-color;
+    @include border-radius.border-top-radius(variables.$main-border-radius);
     margin: 0;
     width: 100%;
     padding-left: 10px;
     padding-right: 10px;
-    color: darken(#8c939b, 10%);
+    color: color.adjust(#8c939b, $lightness: -10%);
     font-weight: 600;
-    text-shadow: 0 1px 0 $white;
+    text-shadow: 0 1px 0 variables.$white;
     font-size: 13px;
 
     @if $expand == true {
         cursor: pointer;
-        @include fa-icon($fa-var-chevron-down, after, inline-block, 10px 0);
+        @include fa-mixins.fa-icon(variables2.$fa-var-chevron-down, after, inline-block, 10px 0);
 
         &:hover {
-            background: linear-gradient(to bottom, #fff, darken(#f3f5f6, 2%));
+            background: linear-gradient(to bottom, #fff, color.adjust(#f3f5f6, $lightness: -2%));
         }
 
         &:active {
-            background: linear-gradient(to bottom, darken(#fff, 2%), darken(#f3f5f6, 3%));
+            background: linear-gradient(to bottom, color.adjust(#fff, $lightness: -2%), color.adjust(#f3f5f6, $lightness: -3%));
         }
 
         &:after {
@@ -100,19 +91,19 @@
     position: absolute;
     top: 52px;
     left: -($width * 0.5 - 20);
-    z-index: $max-z - 9;
+    z-index: variables.$max-z - 9;
     visibility: hidden;
     opacity: 0;
     transition: all 200ms;
-    background: $white;
-    border: $thin-border-stroke $main-border-color;
-    border-radius: $main-border-radius;
+    background: variables.$white;
+    border: variables.$thin-border-stroke variables.$main-border-color;
+    border-radius: variables.$main-border-radius;
     width: $width;
 
     header {
-        background: linear-gradient($white, #f7f7f7);
-        @include border-top-radius($main-border-radius);
-        border-bottom: $thin-border-stroke $main-border-color;
+        background: linear-gradient(variables.$white, #f7f7f7);
+        @include border-radius.border-top-radius(variables.$main-border-radius);
+        border-bottom: variables.$thin-border-stroke variables.$main-border-color;
         height: 30px;
 
         > h4 {
@@ -122,9 +113,9 @@
     }
 
     .footer-btn {
-        background: linear-gradient($off-white, #f0f2f5);
-        border-top: $thin-border-stroke darken(#f0f2f5, 10%);
-        @include border-bottom-radius($main-border-radius);
+        background: linear-gradient(variables.$off-white, #f0f2f5);
+        border-top: variables.$thin-border-stroke color.adjust(#f0f2f5, $lightness: -10%);
+        @include border-radius.border-bottom-radius(variables.$main-border-radius);
         display: block;
         line-height: 30px;
         text-align: center;

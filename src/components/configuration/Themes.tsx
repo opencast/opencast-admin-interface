@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import MainNav from "../shared/MainNav";
 import { Link } from "react-router";
@@ -19,6 +19,7 @@ import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchThemes } from "../../slices/themeSlice";
+import { ModalHandle } from "../shared/modals/Modal";
 
 /**
  * This component renders the table view of events
@@ -28,7 +29,7 @@ const Themes = () => {
 	const dispatch = useAppDispatch();
 
 	const [displayNavigation, setNavigation] = useState(false);
-	const [displayNewThemesModal, setNewThemesModal] = useState(false);
+	const newThemesModalRef = useRef<ModalHandle>(null);
 
 	const user = useAppSelector(state => getUserInformation(state));
 	const themes = useAppSelector(state => getTotalThemes(state));
@@ -62,11 +63,11 @@ const Themes = () => {
 	};
 
 	const showNewThemesModal = () => {
-		setNewThemesModal(true);
+		newThemesModalRef.current?.open();
 	};
 
 	const hideNewThemesModal = () => {
-		setNewThemesModal(false);
+		newThemesModalRef.current?.close?.();
 	};
 
 	return (
@@ -74,12 +75,11 @@ const Themes = () => {
 			<Header />
 			<NavBar>
 				{/* Display modal for new series if add series button is clicked */}
-				{ displayNewThemesModal &&
-					<NewResourceModal
-						handleClose={hideNewThemesModal}
-						resource={"themes"}
-					/>
-				}
+				<NewResourceModal
+					handleClose={hideNewThemesModal}
+					resource={"themes"}
+					modalRef={newThemesModalRef}
+				/>
 
 				{/* Include Burger-button menu*/}
 				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
