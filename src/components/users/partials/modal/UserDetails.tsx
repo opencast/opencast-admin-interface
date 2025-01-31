@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Formik } from "formik";
-import cn from "classnames";
 import { EditUserSchema } from "../../../../utils/validate";
 import UserRolesTab from "../wizard/UserRolesTab";
 import { getUserDetails } from "../../../../selectors/userDetailsSelectors";
@@ -10,6 +8,7 @@ import UserEffectiveRolesTab from "../wizard/UserEffectiveRolesTab";
 import ModalNavigation from "../../../shared/modals/ModalNavigation";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { UpdateUser, updateUserDetails } from "../../../../slices/userDetailsSlice";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
  * This component manages the pages of the user details
@@ -19,7 +18,6 @@ const UserDetails: React.FC<{
 }> = ({
 	close,
 }) => {
-	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const [page, setPage] = useState(0);
@@ -79,22 +77,12 @@ const UserDetails: React.FC<{
 
 						{/* Navigation buttons and validation */}
 						{page !== 2 && (
-							<footer>
-								<button
-									className={cn("submit", {
-										active: formik.dirty && formik.isValid,
-										inactive: !(formik.dirty && formik.isValid),
-									})}
-									disabled={!(formik.dirty && formik.isValid)}
-									onClick={() => formik.handleSubmit()}
-									type="submit"
-								>
-									{t("SUBMIT")}
-								</button>
-								<button className="cancel" onClick={() => close()}>
-									{t("CANCEL")}
-								</button>
-							</footer>
+							<WizardNavigationButtons
+								formik={formik}
+								createTranslationString="SUBMIT"
+								cancelTranslationString="CANCEL"
+								isLast
+							/>
 						)}
 					</>
 				)}
