@@ -107,7 +107,8 @@ const ResourceDetailsAccessPolicyTab = ({
 						key: "ACTIVE_TRANSACTION",
 						duration: -1,
 						parameter: undefined,
-						context: NOTIFICATION_CONTEXT
+						context: NOTIFICATION_CONTEXT,
+						noDuplicates: true,
 					}));
 				}
 			}
