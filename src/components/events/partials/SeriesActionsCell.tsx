@@ -1,5 +1,4 @@
-import React, { useState, useRef } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useRef } from "react";
 import ConfirmModal from "../../shared/ConfirmModal";
 import SeriesDetailsModal from "./modals/SeriesDetailsModal";
 import {
@@ -22,7 +21,6 @@ import {
 } from "../../../slices/seriesSlice";
 import { IconButton } from "../../shared/IconButton";
 
-import { Tooltip } from "../../shared/Tooltip";
 import { ModalHandle } from "../../shared/modals/Modal";
 
 /**
