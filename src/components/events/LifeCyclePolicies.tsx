@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MainNav from "../shared/MainNav";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
@@ -25,6 +25,7 @@ import { setOffset } from "../../slices/tableSlice";
 import { fetchSeries } from "../../slices/seriesSlice";
 import NewResourceModal from "../shared/NewResourceModal";
 import { fetchLifeCyclePolicyActions, fetchLifeCyclePolicyTargetTypes, fetchLifeCyclePolicyTimings } from "../../slices/lifeCycleDetailsSlice";
+import { ModalHandle } from "../shared/modals/Modal";
 
 /**
  * This component renders the table view of policies
@@ -33,7 +34,7 @@ const LifeCyclePolicies = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
-	const [displayNewPolicyModal, setNewPolicyModal] = useState(false);
+	const newPolicyModalRef = useRef<ModalHandle>(null);
 
 	const user = useAppSelector(state => getUserInformation(state));
 	const policiesTotal = useAppSelector(state => getTotalLifeCyclePolicies(state));
@@ -96,11 +97,11 @@ const LifeCyclePolicies = () => {
 		await dispatch(fetchLifeCyclePolicyTargetTypes());
 		await dispatch(fetchLifeCyclePolicyTimings());
 
-		setNewPolicyModal(true);
+		newPolicyModalRef.current?.open()
 	};
 
 	const hideNewPolicyModal = () => {
-		setNewPolicyModal(false);
+		newPolicyModalRef.current?.close?.()
 	};
 
 	return (
@@ -109,12 +110,11 @@ const LifeCyclePolicies = () => {
 			<NavBar>
 				{
 					/* Display modal for new event if add event button is clicked */
-					displayNewPolicyModal && (
-						<NewResourceModal
-							handleClose={hideNewPolicyModal}
-							resource={"lifecyclepolicy"}
-						/>
-					)
+					<NewResourceModal
+						handleClose={hideNewPolicyModal}
+						resource={"lifecyclepolicy"}
+						modalRef={newPolicyModalRef}
+					/>
 				}
 
 				{/* Include Burger-button menu*/}

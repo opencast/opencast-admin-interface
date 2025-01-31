@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { Tooltip } from "../../shared/Tooltip";
@@ -9,6 +9,7 @@ import { hasAccess } from "../../../utils/utils";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { fetchLifeCyclePolicyDetails } from "../../../slices/lifeCycleDetailsSlice";
 import ConfirmModal from "../../shared/ConfirmModal";
+import { ModalHandle } from "../../shared/modals/Modal";
 
 /**
  * This component renders the title cells of series in the table view
@@ -22,7 +23,7 @@ const LifeCyclePolicyActionCell = ({
 	const dispatch = useAppDispatch();
 
 	const [displayLifeCyclePolicyDetails, setLifeCyclePolicyDetails] = useState(false);
-	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
+	const deleteConfirmationModalRef = useRef<ModalHandle>(null);
 
 	const user = useAppSelector(state => getUserInformation(state));
 
@@ -37,11 +38,11 @@ const LifeCyclePolicyActionCell = ({
 	};
 
 	const hideDeleteConfirmation = () => {
-		setDeleteConfirmation(false);
+		deleteConfirmationModalRef.current?.close?.()
 	};
 
 	const showDeleteConfirmation = async () => {
-		setDeleteConfirmation(true);
+		deleteConfirmationModalRef.current?.open()
 	};
 
 	const deletingPolicy = (id: string) => {
@@ -81,15 +82,14 @@ const LifeCyclePolicyActionCell = ({
 				</Tooltip>
 			)}
 
-			{displayDeleteConfirmation && (
-				<ConfirmModal
-					close={hideDeleteConfirmation}
-					resourceName={row.title}
-					resourceType="LIFECYCLE_POLICY"
-					resourceId={row.id}
-					deleteMethod={deletingPolicy}
-				/>
-			)}
+			<ConfirmModal
+				close={hideDeleteConfirmation}
+				resourceName={row.title}
+				resourceType="LIFECYCLE_POLICY"
+				resourceId={row.id}
+				deleteMethod={deletingPolicy}
+				modalRef={deleteConfirmationModalRef}
+			/>
 		</>
 	);
 };
