@@ -6,13 +6,14 @@ import { addNotification } from "../../../../slices/notificationSlice";
 import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 import { getEventDetailsTobiraData, getEventDetailsTobiraDataError } from "../../../../selectors/eventDetailsSelectors";
 import { Formik } from "formik";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import NewTobiraPage, { TobiraFormProps } from "./NewTobiraPage";
 import { fetchSeriesDetailsTobira, removeSeriesTobiraPath, setTobiraTabHierarchy, TobiraData, updateSeriesTobiraPath } from "../../../../slices/seriesDetailsSlice";
 import { fetchSeriesDetailsTobiraNew, TobiraPage } from "../../../../slices/seriesSlice";
 import ConfirmModal from "../../../shared/ConfirmModal";
 import { Tooltip } from "../../../shared/Tooltip";
+import { ModalHandle } from "../../../shared/modals/Modal";
 
 
 export type TobiraTabHierarchy = "main" | "edit-path";
@@ -187,7 +188,7 @@ type TobiraTableProps = {
 
 const TobiraTable = ({ tobiraData, i18nKey, openSubTab, handleDelete }: TobiraTableProps) => {
 	const { t } = useTranslation();
-	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+	const deleteConfirmationModalRef = useRef<ModalHandle>(null);
 
 	return <div className="obj">
 		<header>{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.PAGES`)}</header>
@@ -230,7 +231,7 @@ const TobiraTable = ({ tobiraData, i18nKey, openSubTab, handleDelete }: TobiraTa
 							<Tooltip title={t("EVENTS.SERIES.DETAILS.TOBIRA.REMOVE_PATH")}>
 								<button
 									style={{ margin: 5 }}
-									onClick={() => setShowConfirmationModal(true)}
+									onClick={() => deleteConfirmationModalRef.current?.open()}
 									className="button-like-anchor remove pull-right"
 								/>
 							</Tooltip>
@@ -241,13 +242,14 @@ const TobiraTable = ({ tobiraData, i18nKey, openSubTab, handleDelete }: TobiraTa
 									onClick={() => openSubTab("edit-path", hostPage)}
 								/>
 							</Tooltip>
-							{showConfirmationModal && <ConfirmModal
-								close={() => setShowConfirmationModal(false)}
+							<ConfirmModal
+								close={() => deleteConfirmationModalRef.current?.close?.()}
 								resourceName={hostPage.path}
 								resourceId={null}
 								deleteMethod={() => handleDelete(hostPage)}
 								resourceType="TOBIRA_PATH"
-							/>}
+								modalRef={deleteConfirmationModalRef}
+							/>
 						</>}
 					</td>
 				</tr>)}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
 import {
@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../../store";
 import { deleteTheme, ThemeDetailsType } from "../../../slices/themeSlice";
 import { Tooltip } from "../../shared/Tooltip";
 import ThemeDetails from "./wizard/ThemeDetails";
-import DetailsModal from "../../shared/modals/DetailsModal";
+import { Modal, ModalHandle } from "../../shared/modals/Modal";
 
 /**
  * This component renders the action cells of themes in the table view
@@ -24,24 +24,24 @@ const ThemesActionsCell = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
-	const [displayThemeDetails, setThemeDetails] = useState(false);
+	const deleteConfirmationModalRef = useRef<ModalHandle>(null);
+	const detailsModalRef = useRef<ModalHandle>(null);
 
 	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
-		setDeleteConfirmation(false);
+		deleteConfirmationModalRef.current?.close?.();
 	};
 
 	const hideThemeDetails = () => {
-		setThemeDetails(false);
+		detailsModalRef.current?.close?.();
 	};
 
 	const showThemeDetails = async () => {
 		await dispatch(fetchThemeDetails(row.id));
 		await dispatch(fetchUsage(row.id));
 
-		setThemeDetails(true);
+		detailsModalRef.current?.open();
 	};
 
 	const deletingTheme = (id: number) => {
@@ -60,35 +60,34 @@ const ThemesActionsCell = ({
 				</Tooltip>
 			)}
 
-			{displayThemeDetails && (
-				<DetailsModal
-					handleClose={hideThemeDetails}
-					title={row.name}
-					prefix={"CONFIGURATION.THEMES.DETAILS.EDITCAPTION"}
-				>
-					<ThemeDetails close={hideThemeDetails} />
-				</DetailsModal>
-			)}
+			{/* themes details modal */}
+			<Modal
+				header={t("CONFIGURATION.THEMES.DETAILS.EDITCAPTION", { name: row.name })}
+				classId="theme-details-modal"
+				ref={detailsModalRef}
+			>
+				{/* component that manages tabs of theme details modal*/}
+				<ThemeDetails close={hideThemeDetails} />
+			</Modal>
 
 			{/* delete themes */}
 			{hasAccess("ROLE_UI_THEMES_DELETE", user) && (
 				<Tooltip title={t("CONFIGURATION.THEMES.TABLE.TOOLTIP.DELETE")}>
 					<button
-						onClick={() => setDeleteConfirmation(true)}
+						onClick={() => deleteConfirmationModalRef.current?.open()}
 						className="button-like-anchor remove ng-scope ng-isolate-scope"
 					/>
 				</Tooltip>
 			)}
 
-			{displayDeleteConfirmation && (
-				<ConfirmModal
-					close={hideDeleteConfirmation}
-					resourceName={row.name}
-					resourceId={row.id}
-					deleteMethod={deletingTheme}
-					resourceType="THEME"
-				/>
-			)}
+			<ConfirmModal
+				close={hideDeleteConfirmation}
+				resourceName={row.name}
+				resourceId={row.id}
+				deleteMethod={deletingTheme}
+				resourceType="THEME"
+				modalRef={deleteConfirmationModalRef}
+			/>
 		</>
 	);
 };
