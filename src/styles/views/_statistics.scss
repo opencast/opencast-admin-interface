@@ -1,11 +1,14 @@
+@use "../../../node_modules/bourbon/core/bourbon/library/border-radius";
+@use "../base/variables";
+
 .statistics header {
     box-sizing: border-box;
     width: 100%;
     height: 40px;
     line-height: 40px;
     background: linear-gradient(to bottom, #fbfbfb, #e8e8e8);
-    border-bottom: 1px solid $main-border-color;
-    @include border-top-radius($main-border-radius);
+    border-bottom: 1px solid variables.$main-border-color;
+    @include border-radius.border-top-radius(variables.$main-border-radius);
     padding: 0 20px;
 }
 
@@ -18,9 +21,9 @@
     height: 100%;
     box-sizing: border-box;
     background: #fff;
-    border-radius: $main-border-radius;
-    border: $thin-border-stroke $main-border-color;
-    color: $medium-prim-color;
+    border-radius: variables.$main-border-radius;
+    border: variables.$thin-border-stroke variables.$main-border-color;
+    color: variables.$medium-prim-color;
 
     &:not(:last-child) {
         margin-bottom: 20px;

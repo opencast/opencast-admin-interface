@@ -1,3 +1,7 @@
+@use "sass:color";
+@use "../base/variables";
+@use "../mixins/button";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -32,9 +36,9 @@
         }
 
         a {
-            @include btn(white);
+            @include button.btn(white);
             font-size: 13px;
-            border: 1px solid $main-border-color;
+            border: 1px solid variables.$main-border-color;
             border-radius: 0;
             padding: 10px 12px;
             margin: 0;
@@ -42,25 +46,25 @@
             &.active {
                 color: #fff !important;
                 text-shadow: 0px 1px 0px rgba(0,0,0,0.2);
-                border: 1px solid $l-blue;
-                border-right: 1px solid darken($l-blue, 10%);
-                background: linear-gradient(to bottom, lighten(#2b77b9, 5%), #388ed6);
+                border: 1px solid variables.$l-blue;
+                border-right: 1px solid color.adjust(variables.$l-blue, $lightness: -10%);
+                background: linear-gradient(to bottom, color.adjust(#2b77b9, $lightness: 5%), #388ed6);
                 box-shadow: 0px 2px 3px 1px rgba(0,0,0,.05);
             }
         }
 
         &:first-child {
             a {
-                border-top-left-radius: $main-border-radius;
-                border-bottom-left-radius: $main-border-radius;
+                border-top-left-radius: variables.$main-border-radius;
+                border-bottom-left-radius: variables.$main-border-radius;
                 border-right: none;
             }
         }
 
         &:last-child {
             a {
-                border-top-right-radius: $main-border-radius;
-                border-bottom-right-radius: $main-border-radius;
+                border-top-right-radius: variables.$main-border-radius;
+                border-bottom-right-radius: variables.$main-border-radius;
                 border-left: none;
             }
         }

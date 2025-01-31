@@ -1,3 +1,7 @@
+@use "../../base/fontawesome/fa-mixins";
+@use "../../base/fontawesome/variables";
+@use "../../base/variables" as variables2;
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -38,7 +42,7 @@
         right: 8px;
         cursor: pointer;
         pointer-events: auto;
-        @include fa-icon($fa-var-close, before, inline-block, 0, 0, $medium-prim-color, 10px);
+        @include fa-mixins.fa-icon(variables.$fa-var-close, before, inline-block, 0, 0, variables2.$medium-prim-color, 10px);
         font-family: "Open Sans", sans-serif;
         color: #555;
 
@@ -52,15 +56,15 @@
         }
 
         &:hover {
-            @include fa-icon-color(before, $alt-red);
+            @include fa-mixins.fa-icon-color(before, variables2.$alt-red);
         }
     }
 
     &.disabled .df-clear-button {
-        @include fa-icon-color(before, $light-prim-color);
+        @include fa-mixins.fa-icon-color(before, variables2.$light-prim-color);
 
         &:hover {
-            @include fa-icon-color(before, $light-prim-color);
+            @include fa-mixins.fa-icon-color(before, variables2.$light-prim-color);
         }
     }
 
