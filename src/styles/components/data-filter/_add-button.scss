@@ -1,3 +1,8 @@
+@use "../../base/fontawesome/fa-mixins";
+@use "../../base/fontawesome/variables";
+@use "../../mixins/button";
+@use "base";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -21,8 +26,8 @@
 
 .df-add-button {
     box-sizing: border-box;
-    @include btn(white);
-    @include fa-icon($fa-var-plus, before, inline-block, 0 8px 0 0, 0, inherit, 11px);
+    @include button.btn(white);
+    @include fa-mixins.fa-icon(variables.$fa-var-plus, before, inline-block, 0 8px 0 0, 0, inherit, 11px);
 
     transition-property: width, padding, border-radius;
     transition-duration: 200ms;
@@ -31,7 +36,7 @@
     float: left;
     padding: 12px 10px;
     width: 92px;
-    height: $df-height;
+    height: base.$df-height;
     cursor: pointer;
     text-align: center;
     box-shadow: none;
@@ -46,7 +51,7 @@
     }
 
     .js-df-state-new-filter & {
-        @include fa-icon($fa-var-plus, before, inline-block, 0, 0, #c9d0d3, 11px);
+        @include fa-mixins.fa-icon(variables.$fa-var-plus, before, inline-block, 0, 0, #c9d0d3, 11px);
 
         width: 25px;
         padding: 12px 5px;

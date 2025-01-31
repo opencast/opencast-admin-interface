@@ -3,12 +3,10 @@ import { Formik } from "formik";
 import NewEventSummary from "./NewEventSummary";
 import NewAssetUploadPage from "../ModalTabsAndPages/NewAssetUploadPage";
 import NewMetadataExtendedPage from "../ModalTabsAndPages/NewMetadataExtendedPage";
-import NewMetadataPage from "../ModalTabsAndPages/NewMetadataPage";
 import NewAccessPage from "../ModalTabsAndPages/NewAccessPage";
 import NewProcessingPage from "../ModalTabsAndPages/NewProcessingPage";
 import NewSourcePage from "../ModalTabsAndPages/NewSourcePage";
 import { NewEventSchema, MetadataSchema } from "../../../../utils/validate";
-import WizardStepperEvent from "../../../shared/wizard/WizardStepperEvent";
 import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { sourceMetadata } from "../../../../configs/sourceConfig";
 import { initialFormValuesNewEvents } from "../../../../configs/modalConfig";
@@ -22,6 +20,9 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { MetadataCatalog, UploadOption, postNewEvent } from "../../../../slices/eventSlice";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import NewMetadataCommonPage from "../ModalTabsAndPages/NewMetadataCommonPage";
+import WizardStepper from "../../../shared/wizard/WizardStepper";
 
 /**
  * This component manages the pages of the new event wizard and the submission of values
@@ -39,6 +40,12 @@ const NewEventWizard: React.FC<{
 	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
+
+	useEffect(() => {
+		dispatch(removeNotificationWizardForm());
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	// Whether the ACL of a new event is initialized with the ACL of its series.
 	let initEventAclWithSeriesAcl = true
@@ -100,7 +107,7 @@ const NewEventWizard: React.FC<{
 	// Validation schema of current page
 	let currentValidationSchema;
 	if (page === 0 || page === 1) {
-		currentValidationSchema = MetadataSchema(metadataFields.fields);
+		currentValidationSchema = MetadataSchema(metadataFields);
 	} else {
 		currentValidationSchema = NewEventSchema[page];
 	}
@@ -120,7 +127,7 @@ const NewEventWizard: React.FC<{
 		}
 	};
 
-	const previousPage = (values: typeof initialValues, twoPagesBack?: boolean) => {
+	const previousPage = (values: typeof initialValues, twoPagesBack: boolean = false) => {
 		setSnapshot(values);
 		// if previous page is hidden or not always shown, than go back two pages
 		if (steps[page - 1].hidden || twoPagesBack) {
@@ -154,17 +161,18 @@ const NewEventWizard: React.FC<{
 					return (
 						<>
 							{/* Stepper that shows each step of wizard as header */}
-							<WizardStepperEvent
+							<WizardStepper
 								steps={steps}
 								page={page}
 								setPage={setPage}
 								completed={pageCompleted}
 								setCompleted={setPageCompleted}
 								formik={formik}
+								hasAccessPage
 							/>
 							<div>
 								{page === 0 && (
-									<NewMetadataPage
+									<NewMetadataCommonPage
 										nextPage={nextPage}
 										formik={formik}
 										metadataFields={metadataFields}
@@ -240,9 +248,14 @@ const getInitialValues = (
 
 	// Transform metadata fields provided by backend (saved in redux)
 	initialValues = {...initialValues, ...getInitialMetadataFieldValues(
-		metadataFields,
-		extendedMetadata
+		metadataFields
 	)};
+
+	for (const catalog of extendedMetadata) {
+		initialValues = {...initialValues, ...getInitialMetadataFieldValues(
+			catalog
+		)};
+	}
 
 	// Update start date for uploads
 	if (sourceMetadata?.UPLOAD?.metadata?.[0]) {

@@ -23,7 +23,11 @@ export const getCurrentLanguageInformation = () => {
 	// Get code, flag, name and date locale of the current language
 	let currentLang = languages.find(({ code }) => code === i18n.language);
 	if (typeof currentLang === "undefined") {
-		currentLang = languages.find(({ code }) => code === "en-US");
+		// If detected language code, like "de-CH", isn't part of translations try 2-digit language code
+		currentLang = languages.find(({ code }) => code === i18n.language.split("-")[0]);
+		if (typeof currentLang === "undefined") {
+			currentLang = languages.find(({ code }) => code === "en-US");
+		}
 	}
 
 	return currentLang;

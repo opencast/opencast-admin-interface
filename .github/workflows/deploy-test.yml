@@ -98,7 +98,7 @@ jobs:
       - name: add comment with deployment location
         uses: thollander/actions-comment-pull-request@v3
         with:
-          comment_tag: static-test-deployment
+          comment-tag: static-test-deployment
           message: >
             This pull request is deployed at
             [test.admin-interface.opencast.org/${{ steps.build-path.outputs.build }}

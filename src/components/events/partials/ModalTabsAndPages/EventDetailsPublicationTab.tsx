@@ -30,7 +30,7 @@ const EventDetailsPublicationTab = ({
 		<>
 			<div className="modal-content">
 				<div className="modal-body">
-					<Notifications />
+					<Notifications context={"other"}/>
 					<div className="full-col">
 						<div className="obj list-obj">
 							<header>{t("EVENTS.EVENTS.DETAILS.PUBLICATIONS.CAPTION")}</header>

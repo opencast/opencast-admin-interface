@@ -5,7 +5,7 @@ import viteTsconfigPaths from "vite-tsconfig-paths";
 import preserveDirectives from "rollup-preserve-directives";
 import child from "child_process";
 
-const commitHash = child.execSync("git rev-parse HEAD").toString().trim();
+const commitHash = child.execSync("git rev-parse HEAD || cat commit || echo 'unknown'").toString().trim();
 
 export default defineConfig({
     base: process.env.PUBLIC_URL || "",
@@ -33,5 +33,13 @@ export default defineConfig({
                 },
             },
         },
+    },
+    // Use modern SASS compiler
+    css: {
+        preprocessorOptions: {
+            scss: {
+                api: 'modern-compiler' // or "modern"
+            }
+        }
     },
 });

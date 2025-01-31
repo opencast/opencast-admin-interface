@@ -117,7 +117,8 @@
 				"GROUP": "Den følgende gruppe slettes",
 				"USER": "Den følgende bruger slettes",
 				"THEME": "Det følgende tema slettes",
-				"LOCATION": "Den følgende placering slettes"
+				"LOCATION": "Den følgende placering slettes",
+				"TOBIRA_PATH": "The series will be removed from the following path in Tobira:"
 			},
 			"NAME": "Navn"
 		},
@@ -168,6 +169,10 @@
 		"GROUP_NOT_DELETED": "Gruppen kunne ikke slettes",
 		"SERIES_ADDED": "Serien er blevet oprettet",
 		"SERIES_NOT_SAVED": "Serien kunne ikke gemmes",
+		"SERIES_PATH_UPDATED": "The series path has been updated",
+		"SERIES_PATH_REMOVED": "The series path has been removed",
+		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
+		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "Begivenheden er blevet oprettet",
 		"EVENTS_UPLOAD_STARTED": "Begivenheden uploades…",
 		"EVENTS_NOT_CREATED": "Begivenheden kunne ikke oprettes",
@@ -194,7 +199,7 @@
 		"CONFLICT_ALREADY_ENDED": "Planlægningsfejl: Begivenheden er allerede afsluttet.",
 		"CONFLICT_END_BEFORE_START": "Planlægningsfejl: Sluttidspunkt skal ligge efter starttidspunkt.",
 		"CONFLICT_IN_THE_PAST": "Tidsplan kunne ikke opdateres: Begivenheder kan ikke planlægges i fortiden.",
-		"INVALID_ACL_RULES": "Regler skal indeholde en gyldig rolle og læse eller/og skrive rettighed(-er).",
+		"INVALID_ACL_RULES": "Regler skal indeholde en gyldig rolle og læse eller\/og skrive rettighed(-er).",
 		"MISSING_ACL_RULES": "Mindst én rolle med Læse- og skriverettighed kræves!",
 		"SAVED_ACL_RULES": "Adgangsreglerne er blevet gemt.",
 		"SERIES_THEME_REPROCESS_EXISTING_EVENTS": "De eksisterende begivenheder i denne serie skal genbehandles",
@@ -223,7 +228,18 @@
 			"NO_EVENTS_UPDATED": "All updates failed.",
 			"SOME_EVENTS_NOT_UPDATED": "Some events could not be updated."
 		},
-		"PROBLEM_ON_START": "A error occurred on start up. Please contact your Opencast admin"
+		"PROBLEM_ON_START": "An error occurred on start up. Please contact your Opencast admin",
+		"TOBIRA_OVERRIDE_NAME": "The title of the selected page will be overridden with the title of the series.",
+		"TOBIRA_NO_PATH_SEGMENT": "Page needs a path segment.",
+		"TOBIRA_NOT_MOUNTED": "Series could not be mounted in Tobira.",
+		"TOBIRA_PATH_SEGMENT_INVALID": "Path segment is invalid. A valid path segment is at least 2 characters long, does not contain any whitespace or control characters, none of the characters '<>\"[\\]^`{|}#%\/?]', and doesn't start with any of the characters '-+~@_!$&;:.,=*'()'.",
+		"TOBIRA_PATH_SEGMENT_UNIQUE": "The path segment of a page must be unique among all its sibling pages.",
+		"TOBIRA_PAGE_NOT_FOUND": "The page you tried to navigate to does not or no longer exist. Maybe try starting from the beginning.",
+		"TOBIRA_SERVER_ERROR": " Error talking to Tobira. Contact your system administrator and\/or try again later.",
+		"TOBIRA_COPIED_DIRECT_LINK": "Copied link to clipboard.",
+		"TOBIRA_FAILED_COPYING_DIRECT_LINK": "Couldn't copy link to clipboard.",
+		"TOBIRA_NOT_FOUND": "Tobira doesn't know about this series or event (yet). Try again in a few minutes or contact your system administrator.",
+		"TOBIRA_NOT_CONFIGURED": "Tobira is not configured (correctly)."
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Handlinger",
@@ -248,7 +264,7 @@
 			"GENERAL": {
 				"CAPTION": "Generelt",
 				"SUMMARY": "({{ count }} begivenheder valgt)",
-				"CANNOTSTART": "Fremhævede begivenhed(-er) kan pt. ikke behandles. Fravælg den/dem eller forsøg igen senere."
+				"CANNOTSTART": "Fremhævede begivenhed(-er) kan pt. ikke behandles. Fravælg den\/dem eller forsøg igen senere."
 			},
 			"TASKS": {
 				"CAPTION": "Opgaver",
@@ -306,7 +322,7 @@
 				}
 			},
 			"EDIT": {
-				"DESCRIPTION": "Edit and/or select the metadata fields you want to update. A field cannot be selected if this doesn't result in a changed value for at least one event, or if the field isn't valid (e.g. required fields cannot be empty). Highlighted metadata fields have diverging values for the selected events.",
+				"DESCRIPTION": "Edit and\/or select the metadata fields you want to update. A field cannot be selected if this doesn't result in a changed value for at least one event, or if the field isn't valid (e.g. required fields cannot be empty). Highlighted metadata fields have diverging values for the selected events.",
 				"TABLE": {
 					"CAPTION": "Metadata of selected events",
 					"FIELDS": "Metadata",
@@ -659,7 +675,7 @@
 				"UPDATING_PREVIEWS": "Updating previews"
 			},
 			"DETAILS": {
-				"HEADER": "Begivenhedsoplydninger - {{resourceId}}",
+				"HEADER": "Event details - {{name}}",
 				"TABS": {
 					"METADATA": "Metadata",
 					"EXTENDED-METADATA": "Metadata II",
@@ -669,7 +685,8 @@
 					"WORKFLOWS": "Arbejdsgange",
 					"ACCESS": "Adgangspolitik",
 					"COMMENTS": "Kommentarer",
-					"STATISTICS": "Statistics"
+					"STATISTICS": "Statistics",
+					"TOBIRA": "Tobira"
 				},
 				"PUBLICATIONS": {
 					"CAPTION": "Udgivelser",
@@ -892,7 +909,7 @@
 					"REASONS": {
 						"CUTTING": "Beskæring krævet",
 						"REVIEW": "Gennemsyn krævet",
-						"ASYNC": "Asynkrone A/V-spor",
+						"ASYNC": "Asynkrone A\/V-spor",
 						"AUDIO_ISSUE": "Manglende eller ødelagt lydspor",
 						"CANCELLED": "Canceled event",
 						"CONFLICTING_METADATA": "Modstridende metadata",
@@ -942,6 +959,13 @@
 					"LOCKED": {
 						"RUNNING": "Redigering af metadata er ikke tilladt under effektuering af handlinger på en begivenhed"
 					}
+				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to event",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This event is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this event"
 				},
 				"SCHEDULING": {
 					"CAPTION": "Planlægningsopsætning",
@@ -1122,7 +1146,10 @@
 					"HOMEPAGE": "Homepage",
 					"SELECTED_PAGE": "Series will be mounted under the following path",
 					"NO_PAGE_SELECTED": "No page selected. Series will not be mounted in Tobira.",
-					"PATH": "Path"
+					"NO_PAGE_SELECTED_EDIT": "No page selected. Series path will not be changed.",
+					"PATH": "Path",
+					"DIRECT_LINK": "A direct link will be available.",
+					"MOUNT_DISCLAIMER": "Series can only be mounted in empty pages"
 				},
 				"SUMMARY": {
 					"CAPTION": "Oversigt"
@@ -1145,7 +1172,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Serieoplysninger - {{resourceId}}",
+				"HEADER": "Series details - {{name}}",
 				"TABS": {
 					"METADATA": "Metadata",
 					"EXTENDED_METADATA": "Metadata II",
@@ -1205,7 +1232,12 @@
 					"DIRECT_LINK": "Direct link to series",
 					"COPY_DIRECT_LINK": "Copy to clipboard",
 					"NOT_MOUNTED": "This series is currently not included the page structure, and can only be reached using the direct link above.",
-					"PAGES": "Pages in Tobira that contain this series"
+					"PAGES": "Pages in Tobira that contain this series",
+					"SHOW_PAGES": "Show all pages",
+					"EDIT_PATH": "Edit path",
+					"REMOVE_PATH": "Remove path",
+					"MOUNT_SERIES": "Mount series",
+					"DESCRIPTION": "You may edit the path of pages containing this series if the page has no other content."
 				},
 				"EVENTS": {
 					"TITLE": "Titel",
@@ -1246,7 +1278,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Placeringsoplydninger - {{resourceId}}",
+				"HEADER": "Location details - {{name}}",
 				"TAB": {
 					"GENERAL": "Generelt",
 					"CONFIGURATION": "Opsætning",
@@ -1303,7 +1335,7 @@
 			},
 			"DETAILS": {
 				"NEWCAPTION": "Opret bruger",
-				"EDITCAPTION": "Brugerdetaljer - {{username}}",
+				"EDITCAPTION": "User details - {{name}}",
 				"TABS": {
 					"USER": "Bruger",
 					"ROLES": "Roller",
@@ -2067,7 +2099,7 @@
 			"PUBLISHEDHOURS": "Published Hours of Video"
 		},
 		"DESCRIPTION": {
-			"RANDOM": "This displays random data as a showcase. You can disable this chart by deleting the corresponding statistics provider's json definition from etc/providers",
+			"RANDOM": "This displays random data as a showcase. You can disable this chart by deleting the corresponding statistics provider's json definition from etc\/providers",
 			"VIEWS_SUM": "This displays the total number of views per time unit.",
 			"VIEWS_AVG": "This displays the mean number of daily views per time unit.",
 			"PUBLISHEDHOURS": "This displays the published hours of video"

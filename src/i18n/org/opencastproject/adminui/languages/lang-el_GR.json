@@ -117,7 +117,8 @@
 				"GROUP": "Η παρακάτω ομάδα θα διαγραφεί",
 				"USER": "Ο παρακάτω χρήστης θα διαγραφεί",
 				"THEME": "Το ακόλουθο θέμα θα διαγραφεί",
-				"LOCATION": "Η ακόλουθη τοποθεσία θα διαγραφεί"
+				"LOCATION": "Η ακόλουθη τοποθεσία θα διαγραφεί",
+				"TOBIRA_PATH": "The series will be removed from the following path in Tobira:"
 			},
 			"NAME": "Όνομα"
 		},
@@ -168,6 +169,10 @@
 		"GROUP_NOT_DELETED": "Δεν ήταν δυνατή η διαγραφή της ομάδας",
 		"SERIES_ADDED": "Η σειρά έχει δημιουργηθεί",
 		"SERIES_NOT_SAVED": "Δεν ήταν δυνατή η αποθήκευση της σειράς",
+		"SERIES_PATH_UPDATED": "The series path has been updated",
+		"SERIES_PATH_REMOVED": "The series path has been removed",
+		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
+		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "Η εκδήλωση έχει δημιουργηθεί",
 		"EVENTS_UPLOAD_STARTED": "Μια εκδήλωση ανέβηκε…",
 		"EVENTS_NOT_CREATED": "Δεν ήταν δυνατή η δημιουργία της εκδήλωσης",
@@ -182,8 +187,8 @@
 		"EVENT_DELETED": "Η εκδήλωση έχει διαγραφεί.",
 		"EVENT_WILL_BE_DELETED": "Η εκδήλωση έχει διαγραφεί",
 		"EVENTS_DELETED": "Οι εκδηλώσεις έχουν διαγραφεί.",
-		"EVENTS_NOT_DELETED": "Δεν ήταν δυνατή η διαγραφή της/των εκδήλωσης/εων.",
-		"EVENTS_NOT_DELETED_NOT_AUTHORIZED": "Η/Οι εκδήλωση/σεις δεν μπορεί/ουν να διαγραφεί/ουν, επειδή δεν έχετε τα δικαιώματα για να το πράξετε.",
+		"EVENTS_NOT_DELETED": "Δεν ήταν δυνατή η διαγραφή της\/των εκδήλωσης\/εων.",
+		"EVENTS_NOT_DELETED_NOT_AUTHORIZED": "Η\/Οι εκδήλωση\/σεις δεν μπορεί\/ουν να διαγραφεί\/ουν, επειδή δεν έχετε τα δικαιώματα για να το πράξετε.",
 		"SERIES_DELETED": "Η σειρά έχει διαγραφεί",
 		"SERIES_NOT_DELETED": "Δεν ήταν δυνατή η διαγραφή της σειράς",
 		"LOCATION_DELETED": "Η τοποθεσία έχει διαγραφεί",
@@ -194,7 +199,7 @@
 		"CONFLICT_ALREADY_ENDED": "Σφάλμα στον προγραμματισμό. Η εκδήλωση έχει ήδη λήξει.",
 		"CONFLICT_END_BEFORE_START": "Σφάλμα στον προγραμματισμό. Η προγραμματισμένη λήξη πρέπει να είναι μεταγενέστερη από την προγραμματισμένη έναρξη.",
 		"CONFLICT_IN_THE_PAST": "Ο προγραμματισμός δεν μπορεί να ενημερωθεί: δεν μπορείτε να προγραμματίσετε μια εκδήλωση στο παρελθόν.",
-		"INVALID_ACL_RULES": "Οι κανόνες πρέπει να περιέχουν έναν έγκυρο ρόλο και δικαίωμα(τα) ανάγνωσης ή/και εγγραφής.",
+		"INVALID_ACL_RULES": "Οι κανόνες πρέπει να περιέχουν έναν έγκυρο ρόλο και δικαίωμα(τα) ανάγνωσης ή\/και εγγραφής.",
 		"MISSING_ACL_RULES": "Απαιτείται τουλάχιστον ένας ρόλος με δικαιώματα ανάγνωσης και εγγραφής!",
 		"SAVED_ACL_RULES": "Οι κανόνες πρόσβασης έχουν αποθηκευτεί.",
 		"SERIES_THEME_REPROCESS_EXISTING_EVENTS": "Οι υπάρχουσες εκδηλώσεις σε αυτή τη σειρά θα πρέπει να επεξεργαστών ξάνα",
@@ -223,7 +228,18 @@
 			"NO_EVENTS_UPDATED": "Όλες οι ενημερώσεις απέτυχαν.",
 			"SOME_EVENTS_NOT_UPDATED": "Δεν ήταν δυνατή η ενημέρωση ορισμένων εκδηλώσεων."
 		},
-		"PROBLEM_ON_START": "A error occurred on start up. Please contact your Opencast admin"
+		"PROBLEM_ON_START": "An error occurred on start up. Please contact your Opencast admin",
+		"TOBIRA_OVERRIDE_NAME": "The title of the selected page will be overridden with the title of the series.",
+		"TOBIRA_NO_PATH_SEGMENT": "Page needs a path segment.",
+		"TOBIRA_NOT_MOUNTED": "Series could not be mounted in Tobira.",
+		"TOBIRA_PATH_SEGMENT_INVALID": "Path segment is invalid. A valid path segment is at least 2 characters long, does not contain any whitespace or control characters, none of the characters '<>\"[\\]^`{|}#%\/?]', and doesn't start with any of the characters '-+~@_!$&;:.,=*'()'.",
+		"TOBIRA_PATH_SEGMENT_UNIQUE": "The path segment of a page must be unique among all its sibling pages.",
+		"TOBIRA_PAGE_NOT_FOUND": "The page you tried to navigate to does not or no longer exist. Maybe try starting from the beginning.",
+		"TOBIRA_SERVER_ERROR": " Error talking to Tobira. Contact your system administrator and\/or try again later.",
+		"TOBIRA_COPIED_DIRECT_LINK": "Copied link to clipboard.",
+		"TOBIRA_FAILED_COPYING_DIRECT_LINK": "Couldn't copy link to clipboard.",
+		"TOBIRA_NOT_FOUND": "Tobira doesn't know about this series or event (yet). Try again in a few minutes or contact your system administrator.",
+		"TOBIRA_NOT_CONFIGURED": "Tobira is not configured (correctly)."
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Ενέργειες",
@@ -306,7 +322,7 @@
 				}
 			},
 			"EDIT": {
-				"DESCRIPTION": "Επεξεργαστείτε και / ή επιλέξτε τα πεδία μεταδεδομένων που θέλετε να ενημερώσετε. Δεν είναι δυνατή η επιλογή πεδίου εάν αυτό δεν έχει ως αποτέλεσμα αλλαγή τιμής για τουλάχιστον μια εκδήλωση ή εάν το πεδίο δεν είναι έγκυρο (π.χ. τα απαιτούμενα πεδία δεν μπορούν να είναι κενά). Τα επισημασμένα πεδία μεταδεδομένων έχουν αποκλίνουσες τιμές για τις επιλεγμένες εκδηλώσεις.",
+				"DESCRIPTION": "Επεξεργαστείτε και \/ ή επιλέξτε τα πεδία μεταδεδομένων που θέλετε να ενημερώσετε. Δεν είναι δυνατή η επιλογή πεδίου εάν αυτό δεν έχει ως αποτέλεσμα αλλαγή τιμής για τουλάχιστον μια εκδήλωση ή εάν το πεδίο δεν είναι έγκυρο (π.χ. τα απαιτούμενα πεδία δεν μπορούν να είναι κενά). Τα επισημασμένα πεδία μεταδεδομένων έχουν αποκλίνουσες τιμές για τις επιλεγμένες εκδηλώσεις.",
 				"TABLE": {
 					"CAPTION": "Μεταδεδομένα επιλεγμένων εκδηλώσεων",
 					"FIELDS": "Μεταδεδομένα",
@@ -659,7 +675,7 @@
 				"UPDATING_PREVIEWS": "Ενημέρωση προεπισκοπήσεων"
 			},
 			"DETAILS": {
-				"HEADER": "Λεπτομέρειες εκδήλωσης {{resourceId}}",
+				"HEADER": "Event details - {{name}}",
 				"TABS": {
 					"METADATA": "Μεταδεδομένα",
 					"EXTENDED-METADATA": "Μεταδεδομένα ΙΙ",
@@ -669,7 +685,8 @@
 					"WORKFLOWS": "Ροές εργασίας",
 					"ACCESS": "Πολιτική πρόσβασης",
 					"COMMENTS": "Σχόλια",
-					"STATISTICS": "Στατιστικά"
+					"STATISTICS": "Στατιστικά",
+					"TOBIRA": "Tobira"
 				},
 				"PUBLICATIONS": {
 					"CAPTION": "Δημοσιεύσεις",
@@ -892,7 +909,7 @@
 					"REASONS": {
 						"CUTTING": "Απαιτείται μοντάζ",
 						"REVIEW": "Απαιτείται προεπισκόπηση",
-						"ASYNC": "Ασύγχρονα κομμάτια εικόνας/ήχου",
+						"ASYNC": "Ασύγχρονα κομμάτια εικόνας\/ήχου",
 						"AUDIO_ISSUE": "Χαμένο ή ελλατωματικό κομμάτι ήχου",
 						"CANCELLED": "Canceled event",
 						"CONFLICTING_METADATA": "Αντικρουόμενα μετα-δεδομένα",
@@ -942,6 +959,13 @@
 					"LOCKED": {
 						"RUNNING": "Επεξεργασία μετα-δεδομένων δεν επιτρέπεται όταν λειτουργίες εκτελούνται σε μια εκδήλωση"
 					}
+				},
+				"TOBIRA": {
+					"HOMEPAGE": "(Homepage)",
+					"DIRECT_LINK": "Direct link to event",
+					"COPY_DIRECT_LINK": "Copy to clipboard",
+					"NOT_MOUNTED": "This event is currently not included the page structure, and can only be reached using the direct link above.",
+					"PAGES": "Pages in Tobira that contain this event"
 				},
 				"SCHEDULING": {
 					"CAPTION": "Κατάσταση συμμετοχής",
@@ -1122,7 +1146,10 @@
 					"HOMEPAGE": "Homepage",
 					"SELECTED_PAGE": "Series will be mounted under the following path",
 					"NO_PAGE_SELECTED": "No page selected. Series will not be mounted in Tobira.",
-					"PATH": "Path"
+					"NO_PAGE_SELECTED_EDIT": "No page selected. Series path will not be changed.",
+					"PATH": "Path",
+					"DIRECT_LINK": "A direct link will be available.",
+					"MOUNT_DISCLAIMER": "Series can only be mounted in empty pages"
 				},
 				"SUMMARY": {
 					"CAPTION": "Περίληψη"
@@ -1145,7 +1172,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Λεπτομέρειες σειράς - {{resourceId}}",
+				"HEADER": "Series details - {{name}}",
 				"TABS": {
 					"METADATA": "Μεταδεδομένα",
 					"EXTENDED_METADATA": "Μεταδεδομένα ΙΙ",
@@ -1205,7 +1232,12 @@
 					"DIRECT_LINK": "Direct link to series",
 					"COPY_DIRECT_LINK": "Copy to clipboard",
 					"NOT_MOUNTED": "This series is currently not included the page structure, and can only be reached using the direct link above.",
-					"PAGES": "Pages in Tobira that contain this series"
+					"PAGES": "Pages in Tobira that contain this series",
+					"SHOW_PAGES": "Show all pages",
+					"EDIT_PATH": "Edit path",
+					"REMOVE_PATH": "Remove path",
+					"MOUNT_SERIES": "Mount series",
+					"DESCRIPTION": "You may edit the path of pages containing this series if the page has no other content."
 				},
 				"EVENTS": {
 					"TITLE": "Τίτλος",
@@ -1246,7 +1278,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Λεπτομέρειες εκδήλωσης {{resourceId}}",
+				"HEADER": "Location details - {{name}}",
 				"TAB": {
 					"GENERAL": "Γενικά",
 					"CONFIGURATION": "Ρύθμιση παραμέτρων",
@@ -1303,7 +1335,7 @@
 			},
 			"DETAILS": {
 				"NEWCAPTION": "δημιουργία χρήστη",
-				"EDITCAPTION": "Στοιχεία χρήστη - {{username}}",
+				"EDITCAPTION": "User details - {{name}}",
 				"TABS": {
 					"USER": "Χρήστης",
 					"ROLES": "Ρόλοι",
@@ -2067,7 +2099,7 @@
 			"PUBLISHEDHOURS": "Δημοσιευμένες ώρες του βίντεο"
 		},
 		"DESCRIPTION": {
-			"RANDOM": "Αυτό εμφανίζει τυχαία δεδομένα ως επίδειξη. Μπορείτε να απενεργοποιήσετε αυτό το γράφημα διαγράφοντας τον ορισμό json του αντίστοιχου παροχέα στατιστικών στοιχείων από τον κατάλογο etc/providers",
+			"RANDOM": "Αυτό εμφανίζει τυχαία δεδομένα ως επίδειξη. Μπορείτε να απενεργοποιήσετε αυτό το γράφημα διαγράφοντας τον ορισμό json του αντίστοιχου παροχέα στατιστικών στοιχείων από τον κατάλογο etc\/providers",
 			"VIEWS_SUM": "Η επιλογή εμφανίζει το συνολικό αριθμό προβολών ανά μονάδα χρόνου.",
 			"VIEWS_AVG": "Αυτή η επιλογή εμφανίζει τον μέσο αριθμό ημερήσιων προβολών ανά μονάδα χρόνου.",
 			"PUBLISHEDHOURS": "Αυτή η επιλογή εμφανίζει τις δημοσιευμένες ώρες του βίντεο"
@@ -2075,12 +2107,12 @@
 	},
 	"dateFormats": {
 		"dateTime": {
-			"short": "{{dateTime, D/M/YYYY h:mm a}}",
+			"short": "{{dateTime, D\/M\/YYYY h:mm a}}",
 			"medium": "{{dateTime, D MMM YYYY h:mm:ss a}}",
 			"full": "{{dateTime, dddd, D MMMM YYYY h:mm:ss a z}}"
 		},
 		"date": {
-			"short": "{{date, D/M/YYYY}}",
+			"short": "{{date, D\/M\/YYYY}}",
 			"medium": "{{date, D MMM YYYY}}",
 			"full": "{{date, dddd, D MMMM YYYY}}"
 		},

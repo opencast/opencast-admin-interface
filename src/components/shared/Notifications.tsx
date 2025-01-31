@@ -8,26 +8,29 @@ import cn from "classnames";
 import {
 	NOTIFICATION_CONTEXT,
 	NOTIFICATION_CONTEXT_ACCESS,
+	NOTIFICATION_CONTEXT_TOBIRA,
 } from "../../configs/modalConfig";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { OurNotification, setHidden } from "../../slices/notificationSlice";
 
+type Context = "not_corner" | "tobira" | "above_table" | "other"
+
 /**
  * This component renders notifications about occurred errors, warnings and info
  */
-const Notifications : React.FC<{
-  context?: string,
-}> = ({
+const Notifications = ({
 	context,
+}: {
+	context: Context,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-const notifications = useAppSelector(state => getNotifications(state))
-const globalPosition = useAppSelector(state => getGlobalPositions(state))
+	const notifications = useAppSelector(state => getNotifications(state));
+	const globalPosition = useAppSelector(state => getGlobalPositions(state));
 
 	const closeNotification = (id: number) => {
-		dispatch(setHidden({id: id, isHidden: true}));
+		dispatch(setHidden({ id: id, isHidden: true}));
 	};
 
 	const renderNotification = (notification: OurNotification, key: number) => (
@@ -46,13 +49,17 @@ const globalPosition = useAppSelector(state => getGlobalPositions(state))
 		// if context is not_corner then render notification without consider global notification position
 		context === "not_corner" ? (
 			<ul>
-				{notifications.map(
-					(notification, key) =>
-						!notification.hidden &&
-						(notification.context === NOTIFICATION_CONTEXT ||
-							notification.context === NOTIFICATION_CONTEXT_ACCESS) &&
-						renderNotification(notification, key)
-				)}
+				{notifications.map((notification, key) => !notification.hidden && (
+					notification.context === NOTIFICATION_CONTEXT
+						|| notification.context === NOTIFICATION_CONTEXT_ACCESS
+						|| notification.context === NOTIFICATION_CONTEXT_TOBIRA
+				) && renderNotification(notification, key))}
+			</ul>
+		) : context === "tobira" ? (
+			<ul>
+				{notifications.map((notification, key) => !notification.hidden && (
+					notification.context === NOTIFICATION_CONTEXT_TOBIRA
+				) && renderNotification(notification, key))}
 			</ul>
 		) : context === "above_table" ? (
 			<ul>
