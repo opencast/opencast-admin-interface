@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import i18n from "../i18n/i18n";
@@ -24,6 +24,7 @@ import { Tooltip } from "./shared/Tooltip";
 import { HiTranslate } from "react-icons/hi";
 import { IconContext } from "react-icons";
 import ButtonLikeAnchor from "./shared/ButtonLikeAnchor";
+import { ModalHandle } from "./shared/modals/Modal";
 
 // References for detecting a click outside of the container of the dropdown menus
 const containerLang = React.createRef<HTMLDivElement>();
@@ -53,8 +54,8 @@ const Header = () => {
 	const [displayMenuUser, setMenuUser] = useState(false);
 	const [displayMenuNotify, setMenuNotify] = useState(false);
 	const [displayMenuHelp, setMenuHelp] = useState(false);
-	const [displayRegistrationModal, setRegistrationModal] = useState(false);
-	const [displayHotKeyCheatSheet, setHotKeyCheatSheet] = useState(false);
+	const registrationModalRef = useRef<ModalHandle>(null);
+	const hotKeyCheatSheetModalRef = useRef<ModalHandle>(null);
 
 	const healthStatus = useAppSelector(state => getHealthStatus(state));
 	const errorCounter = useAppSelector(state => getErrorCount(state));
@@ -70,11 +71,7 @@ const Header = () => {
 	};
 
 	const showRegistrationModal = () => {
-		setRegistrationModal(true);
-	};
-
-	const hideRegistrationModal = () => {
-		setRegistrationModal(false);
+		registrationModalRef.current?.open()
 	};
 
 	const redirectToServices = async () => {
@@ -86,15 +83,15 @@ const Header = () => {
 	};
 
 	const showHotKeyCheatSheet = () => {
-		setHotKeyCheatSheet(true);
-	};
-
-	const hideHotKeyCheatSheet = () => {
-		setHotKeyCheatSheet(false);
+		hotKeyCheatSheetModalRef.current?.open()
 	};
 
 	const toggleHotKeyCheatSheet = () => {
-		setHotKeyCheatSheet(!displayHotKeyCheatSheet);
+		if (hotKeyCheatSheetModalRef.current?.isOpen?.()) {
+			hotKeyCheatSheetModalRef.current?.close?.()
+		} else {
+			hotKeyCheatSheetModalRef.current?.open()
+		}
 	};
 
 	useHotkeys(
@@ -278,14 +275,10 @@ const Header = () => {
 			</header>
 
 			{/* Adopters Registration Modal */}
-			{displayRegistrationModal && (
-				<RegistrationModal close={hideRegistrationModal} />
-			)}
+			<RegistrationModal modalRef={registrationModalRef}/>
 
 			{/* Hotkey Cheat Sheet */}
-			{displayHotKeyCheatSheet && (
-				<HotKeyCheatSheet close={hideHotKeyCheatSheet} />
-			)}
+			<HotKeyCheatSheet modalRef={hotKeyCheatSheetModalRef}/>
 		</>
 	);
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
 import EmbeddingCodeModal from "./modals/EmbeddingCodeModal";
@@ -17,6 +17,7 @@ import {
 import { Event, deleteEvent } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
 import { openModal } from "../../../slices/eventDetailsSlice";
+import { Modal, ModalHandle } from "../../shared/modals/Modal";
 
 /**
  * This component renders the action cells of events in the table view
@@ -29,14 +30,14 @@ const EventActionCell = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const [displayDeleteConfirmation, setDeleteConfirmation] = useState(false);
-	const [displaySeriesDetailsModal, setSeriesDetailsModal] = useState(false);
-	const [displayEmbeddingCodeModal, setEmbeddingCodeModal] = useState(false);
+	const deleteConfirmationModalRef = useRef<ModalHandle>(null);
+	const seriesDetailsModalRef = useRef<ModalHandle>(null);
+	const embeddingCodeModalRef = useRef<ModalHandle>(null);
 
 	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
-		setDeleteConfirmation(false);
+		deleteConfirmationModalRef.current?.close?.()
 	};
 
 	const deletingEvent = (id: string) => {
@@ -44,19 +45,15 @@ const EventActionCell = ({
 	};
 
 	const hideEmbeddingCodeModal = () => {
-		setEmbeddingCodeModal(false);
+		embeddingCodeModalRef.current?.close?.();
 	};
 
 	const showEmbeddingCodeModal = () => {
-		setEmbeddingCodeModal(true);
+		embeddingCodeModalRef.current?.open();
 	};
 
 	const showSeriesDetailsModal = () => {
-		setSeriesDetailsModal(true);
-	};
-
-	const hideSeriesDetailsModal = () => {
-		setSeriesDetailsModal(false);
+		seriesDetailsModalRef.current?.open();
 	};
 
 	const onClickSeriesDetails = async () => {
@@ -89,11 +86,11 @@ const EventActionCell = ({
 
 	return (
 		<>
-			{!!row.series && displaySeriesDetailsModal && (
+			{!!row.series && (
 				<SeriesDetailsModal
-					handleClose={hideSeriesDetailsModal}
 					seriesId={row.series.id}
 					seriesTitle={row.series.title}
+					modalRef={seriesDetailsModalRef}
 				/>
 			)}
 
@@ -122,22 +119,21 @@ const EventActionCell = ({
 			{hasAccess("ROLE_UI_EVENTS_DELETE", user) && (
 				<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.DELETE")}>
 					<button
-						onClick={() => setDeleteConfirmation(true)}
+						onClick={() => deleteConfirmationModalRef.current?.open()}
 						className="button-like-anchor remove"
 					/>
 				</Tooltip>
 			)}
 
 			{/* Confirmation for deleting an event*/}
-			{displayDeleteConfirmation && (
-				<ConfirmModal
-					close={hideDeleteConfirmation}
-					resourceName={row.title}
-					resourceType="EVENT"
-					resourceId={row.id}
-					deleteMethod={deletingEvent}
-				/>
-			)}
+			<ConfirmModal
+				close={hideDeleteConfirmation}
+				resourceName={row.title}
+				resourceType="EVENT"
+				resourceId={row.id}
+				deleteMethod={deletingEvent}
+				modalRef={deleteConfirmationModalRef}
+			/>
 
 			{/* If the event has an preview then the editor can be opened and status if it needs to be cut is shown */}
 			{!!row.has_preview && hasAccess("ROLE_UI_EVENTS_EDITOR_VIEW", user) && (
@@ -209,9 +205,15 @@ const EventActionCell = ({
 				</Tooltip>
 			)}
 
-			{displayEmbeddingCodeModal && (
+			{/* Embedding Code Modal */}
+			<Modal
+				header={t("CONFIRMATIONS.ACTIONS.SHOW.EMBEDDING_CODE")}
+				classId="embedding-code"
+				ref={embeddingCodeModalRef}
+			>
+				{/* component that manages tabs of theme details modal*/}
 				<EmbeddingCodeModal close={hideEmbeddingCodeModal} eventId={row.id} />
-			)}
+			</Modal>
 		</>
 	);
 };
