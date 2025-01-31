@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "../base/variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -26,8 +29,8 @@
     margin-top: 5px;
     margin-bottom: 10px;
     background-color: #fff;
-    border-radius: $main-border-radius;
-    border: 1px solid darken(#388ed6, 10%);
+    border-radius: variables.$main-border-radius;
+    border: 1px solid color.adjust(#388ed6, $lightness: -10%);
 
     &.compact {
         height: 8px;
@@ -43,9 +46,9 @@
     color: #fff;
     text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.2);
     text-align: center;
-    background-color: $progress-bar-color;
+    background-color: variables.$progress-bar-color;
     background: linear-gradient(to bottom, #388ed6, #2b77b9);
-    border-right: 1px solid darken(#388ed6, 15%);
+    border-right: 1px solid color.adjust(#388ed6, $lightness: -15%);
     transition: width 600ms ease;
 
     &[aria-valuenow="1"],
