@@ -13,7 +13,6 @@ import EventDetailsWorkflowErrors from "../ModalTabsAndPages/EventDetailsWorkflo
 import EventDetailsWorkflowErrorDetails from "../ModalTabsAndPages/EventDetailsWorkflowErrorDetails";
 import EventDetailsAssetsTab from "../ModalTabsAndPages/EventDetailsAssetsTab";
 import EventDetailsSchedulingTab from "../ModalTabsAndPages/EventDetailsSchedulingTab";
-import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsExtendedMetadataTab";
 import DetailsMetadataTab from "../ModalTabsAndPages/DetailsMetadataTab";
 import {
 	getMetadata,
@@ -26,6 +25,7 @@ import {
 	getModalWorkflowTabHierarchy,
 	getModalPage,
 	getEventDetailsTobiraDataError,
+	getEventDetailsTobiraStatus,
 } from "../../../../selectors/eventDetailsSelectors";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import EventDetailsStatisticsTab from "../ModalTabsAndPages/EventDetailsStatisticsTab";
@@ -41,9 +41,12 @@ import {
 	fetchEventStatistics,
 	openModalTab,
 	fetchEventDetailsTobira,
+	fetchHasActiveTransactions,
 } from "../../../../slices/eventDetailsSlice";
-import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { addNotification, removeNotificationByKey, removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
+import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 export enum EventDetailsPage {
 	Metadata,
@@ -80,10 +83,37 @@ const EventDetails = ({
 
 	useEffect(() => {
 		dispatch(removeNotificationWizardForm());
-		dispatch(fetchMetadata(eventId)).then();
-		dispatch(fetchSchedulingInfo(eventId)).then();
-		dispatch(fetchEventStatistics(eventId)).then();
-		dispatch(fetchAssetUploadOptions()).then();
+		dispatch(fetchMetadata(eventId));
+		dispatch(fetchSchedulingInfo(eventId));
+		dispatch(fetchEventStatistics(eventId));
+		dispatch(fetchAssetUploadOptions());
+
+		dispatch(fetchHasActiveTransactions(eventId)).then((fetchTransactionResult) => {
+			const result = unwrapResult(fetchTransactionResult)
+			if (result.active !== undefined && result.active) {
+				dispatch(
+					addNotification({
+						type: "warning",
+						key: "ACTIVE_TRANSACTION",
+						duration: -1,
+						parameter: undefined,
+						context: NOTIFICATION_CONTEXT,
+						noDuplicates: true
+					})
+				)
+			}
+			if (result.active !== undefined && !result.active) {
+				dispatch(
+					removeNotificationByKey({
+						key: "ACTIVE_TRANSACTION",
+						context: NOTIFICATION_CONTEXT
+					})
+				)
+			}
+		});
+
+
+		dispatch(fetchEventDetailsTobira(eventId));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -98,6 +128,7 @@ const EventDetails = ({
 	const hasStatistics = useAppSelector(state => getHasStatistics(state));
 	const isLoadingStatistics = useAppSelector(state => isFetchingStatistics(state));
 	const captureAgents = useAppSelector(state => getRecordings(state));
+	const tobiraStatus = useAppSelector(state => getEventDetailsTobiraStatus(state));
 	const tobiraError = useAppSelector(state => getEventDetailsTobiraDataError(state));
 
 	const tabs = [
@@ -164,7 +195,7 @@ const EventDetails = ({
 			accessRole: "ROLE_UI_EVENTS_DETAILS_COMMENTS_VIEW",
 			name: "tobira",
 			page: EventDetailsPage.Tobira,
-			hidden: tobiraError?.message?.includes("503"),
+			hidden: tobiraStatus === "failed" && tobiraError?.message?.includes("503"),
 		},
 		{
 			tabNameTranslation: "EVENTS.EVENTS.DETAILS.TABS.STATISTICS",
@@ -178,9 +209,6 @@ const EventDetails = ({
 
 	const openTab = (tabNr: EventDetailsPage) => {
 		dispatch(removeNotificationWizardForm());
-		if (tabNr === EventDetailsPage.Tobira) {
-			dispatch(fetchEventDetailsTobira(eventId));
-		}
 		dispatch(openModalTab(tabNr, "entry", "entry"))
 	};
 
@@ -201,15 +229,15 @@ const EventDetails = ({
 			<div>
 				{page === EventDetailsPage.Metadata && !isLoadingMetadata && (
 					<DetailsMetadataTab
-						metadataFields={metadata}
 						resourceId={eventId}
-						header={tabs[page].bodyHeaderTranslation ?? ""}
+						metadata={[metadata]}
 						updateResource={updateMetadata}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
+						header={tabs[page].bodyHeaderTranslation ?? ""}
 					/>
 				)}
 				{page === EventDetailsPage.ExtendedMetadata && !isLoadingMetadata && (
-					<DetailsExtendedMetadataTab
+					<DetailsMetadataTab
 						resourceId={eventId}
 						metadata={extendedMetadata}
 						updateResource={updateExtendedMetadata}

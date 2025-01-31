@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import MainNav from "../shared/MainNav";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import cn from "classnames";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
@@ -131,7 +131,7 @@ const Servers = () => {
 
 			<MainView open={displayNavigation}>
 				{/* Include notifications component */}
-				<Notifications />
+				<Notifications context={"other"}/>
 
 				<div className="controls-container">
 					{/* Include filters component */}

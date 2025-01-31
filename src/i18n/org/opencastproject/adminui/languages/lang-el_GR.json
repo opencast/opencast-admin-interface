@@ -675,7 +675,7 @@
 				"UPDATING_PREVIEWS": "Ενημέρωση προεπισκοπήσεων"
 			},
 			"DETAILS": {
-				"HEADER": "Λεπτομέρειες εκδήλωσης {{resourceId}}",
+				"HEADER": "Event details - {{name}}",
 				"TABS": {
 					"METADATA": "Μεταδεδομένα",
 					"EXTENDED-METADATA": "Μεταδεδομένα ΙΙ",
@@ -1172,7 +1172,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Λεπτομέρειες σειράς - {{resourceId}}",
+				"HEADER": "Series details - {{name}}",
 				"TABS": {
 					"METADATA": "Μεταδεδομένα",
 					"EXTENDED_METADATA": "Μεταδεδομένα ΙΙ",
@@ -1278,7 +1278,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Λεπτομέρειες εκδήλωσης {{resourceId}}",
+				"HEADER": "Location details - {{name}}",
 				"TAB": {
 					"GENERAL": "Γενικά",
 					"CONFIGURATION": "Ρύθμιση παραμέτρων",
@@ -1335,7 +1335,7 @@
 			},
 			"DETAILS": {
 				"NEWCAPTION": "δημιουργία χρήστη",
-				"EDITCAPTION": "Στοιχεία χρήστη - {{username}}",
+				"EDITCAPTION": "User details - {{name}}",
 				"TABS": {
 					"USER": "Χρήστης",
 					"ROLES": "Ρόλοι",
