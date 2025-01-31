@@ -48,8 +48,7 @@ const NewMetadataPage = ({
 															</td>
 															{field.readOnly ? (
 																// non-editable field if readOnly is set or user doesn't have edit access rights
-																!!field.collection &&
-																field.collection.length !== 0 ? (
+																!!field.collection ? (
 																	<td>{getMetadataCollectionFieldName(field, field, t)}</td>
 																) : (
 																	<td>{field.value}</td>
