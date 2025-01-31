@@ -4,8 +4,7 @@ import axios from 'axios';
 import {
 	getURLParams,
 	prepareAccessPolicyRulesForPost,
-	prepareSeriesExtendedMetadataFieldsForPost,
-	prepareSeriesMetadataFieldsForPost,
+	prepareMetadataFieldsForPost,
 	transformMetadataCollection,
 } from "../utils/resourceUtils";
 import {
@@ -192,29 +191,21 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 	const { values, metadataInfo, extendedMetadata } = params
 
 	// prepare metadata provided by user
-	let metadataFields = prepareSeriesMetadataFieldsForPost(
-		metadataInfo.fields,
+	const metadata = prepareMetadataFieldsForPost(
+		[metadataInfo],
 		values
 	);
-	let extendedMetadataFields = prepareSeriesExtendedMetadataFieldsForPost(
+	const extendedMetadataCatalogs = prepareMetadataFieldsForPost(
 		extendedMetadata,
 		values
 	);
 
 	// metadata for post request
-	let metadata = [
-		{
-			flavor: metadataInfo.flavor,
-			title: metadataInfo.title,
-			fields: metadataFields,
-		},
-	];
-
-	for (const entry of extendedMetadataFields) {
+	for (const entry of extendedMetadataCatalogs) {
 		metadata.push(entry);
 	}
 
-	let access = prepareAccessPolicyRulesForPost(values.acls);
+	const access = prepareAccessPolicyRulesForPost(values.acls);
 
 	// Tobira
 	let tobira: any = {};
