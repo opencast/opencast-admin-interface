@@ -3,7 +3,6 @@ import { Formik } from "formik";
 import NewEventSummary from "./NewEventSummary";
 import NewAssetUploadPage from "../ModalTabsAndPages/NewAssetUploadPage";
 import NewMetadataExtendedPage from "../ModalTabsAndPages/NewMetadataExtendedPage";
-import NewMetadataPage from "../ModalTabsAndPages/NewMetadataPage";
 import NewAccessPage from "../ModalTabsAndPages/NewAccessPage";
 import NewProcessingPage from "../ModalTabsAndPages/NewProcessingPage";
 import NewSourcePage from "../ModalTabsAndPages/NewSourcePage";
@@ -21,6 +20,7 @@ import { getOrgProperties, getUserInformation } from "../../../../selectors/user
 import { MetadataCatalog, UploadAssetOption, postNewEvent } from "../../../../slices/eventSlice";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
 import { hasAccess } from "../../../../utils/utils";
+import NewMetadataCommonPage from "../ModalTabsAndPages/NewMetadataCommonPage";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
 
 /**
@@ -101,7 +101,7 @@ const NewEventWizard: React.FC<{
 	// Validation schema of current page
 	let currentValidationSchema;
 	if (page === 0 || page === 1) {
-		currentValidationSchema = MetadataSchema(metadataFields.fields);
+		currentValidationSchema = MetadataSchema(metadataFields);
 	} else {
 		currentValidationSchema = NewEventSchema[page];
 	}
@@ -166,7 +166,7 @@ const NewEventWizard: React.FC<{
 							/>
 							<div>
 								{page === 0 && (
-									<NewMetadataPage
+									<NewMetadataCommonPage
 										nextPage={nextPage}
 										formik={formik}
 										metadataFields={metadataFields}
@@ -244,9 +244,14 @@ const getInitialValues = (
 
 	// Transform metadata fields provided by backend (saved in redux)
 	initialValues = {...initialValues, ...getInitialMetadataFieldValues(
-		metadataFields,
-		extendedMetadata
+		metadataFields
 	)};
+
+	for (const catalog of extendedMetadata) {
+		initialValues = {...initialValues, ...getInitialMetadataFieldValues(
+			catalog
+		)};
+	}
 
 	// Update start date for uploads
 	if (sourceMetadata?.UPLOAD?.metadata?.[0]) {

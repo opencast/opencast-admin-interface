@@ -8,7 +8,6 @@ import {
 	getSeriesTobiraPageError,
 	getSeriesTobiraPageStatus,
 } from "../../../../selectors/seriesSeletctor";
-import NewMetadataPage from "../ModalTabsAndPages/NewMetadataPage";
 import NewMetadataExtendedPage from "../ModalTabsAndPages/NewMetadataExtendedPage";
 import NewAccessPage from "../ModalTabsAndPages/NewAccessPage";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
@@ -22,6 +21,7 @@ import NewTobiraPage from "../ModalTabsAndPages/NewTobiraPage";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
+import NewMetadataCommonPage from "../ModalTabsAndPages/NewMetadataCommonPage";
 
 /**
  * This component manages the pages of the new series wizard and the submission of values
@@ -92,7 +92,7 @@ const NewSeriesWizard: React.FC<{
 	// Validation schema of current page
 	let currentValidationSchema;
 	if (page === 0 || page === 1) {
-		currentValidationSchema = MetadataSchema(metadataFields.fields);
+		currentValidationSchema = MetadataSchema(metadataFields);
 	} else {
 		currentValidationSchema = NewSeriesSchema[page];
 	}
@@ -180,7 +180,7 @@ const NewSeriesWizard: React.FC<{
 							/>
 							<div>
 								{page === 0 && (
-									<NewMetadataPage
+									<NewMetadataCommonPage
 										nextPage={nextPage}
 										formik={formik}
 										metadataFields={metadataFields}
@@ -250,8 +250,13 @@ const getInitialValues = (
 	// Transform metadata fields provided by backend (saved in redux)
 	let metadataInitialValues = getInitialMetadataFieldValues(
 		metadataFields,
-		extendedMetadata
 	);
+
+	for (const catalog of extendedMetadata) {
+		metadataInitialValues = {...metadataInitialValues, ...getInitialMetadataFieldValues(
+			catalog
+		)};
+	}
 
 	initialValues = { ...initialValues, ...metadataInitialValues };
 

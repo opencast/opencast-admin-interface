@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "../../../node_modules/bourbon/core/bourbon/library/shade";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -64,10 +67,10 @@ $color-white:               #fff;
 
 
 // Primary color with light/medium/darker shades
-$prim-color:                   darken(#fff, 50%);
-$light-prim-color:             lighten($prim-color, 15%);
-$medium-prim-color:            darken($prim-color, 10%);
-$dark-prim-color:              darken($prim-color, 30%);
+$prim-color:                   color.adjust(#fff, $lightness: -50%);
+$light-prim-color:             color.adjust($prim-color, $lightness: 15%);
+$medium-prim-color:            color.adjust($prim-color, $lightness: -10%);
+$dark-prim-color:              color.adjust($prim-color, $lightness: -30%);
 
 $global-text-color:            $medium-prim-color;
 
@@ -86,15 +89,15 @@ $color-link-hover:              $dark-prim-color;
 
 // Highlights and Lowlights
 // ----------------------------------------
-$primary-color-green-light-3: lighten($primary-color-green, 24%);   // #92e0bb
-$primary-color-green-light-2: lighten($primary-color-green, 12%);   // #63d29e
-$primary-color-green-light-1: lighten($primary-color-green, 6%);    // #4bcc8f
+$primary-color-green-light-3: color.adjust($primary-color-green, $lightness: 24%);   // #92e0bb
+$primary-color-green-light-2: color.adjust($primary-color-green, $lightness: 12%);   // #63d29e
+$primary-color-green-light-1: color.adjust($primary-color-green, $lightness: 6%);    // #4bcc8f
 
-$primary-color-green-dark-1: darken($primary-color-green, 9%);      // #2d9d68
-$primary-color-green-dark-2: darken($primary-color-green, 15%);     // #268558
-$primary-color-green-dark-3: darken($primary-color-green, 20%);     // #20724b
+$primary-color-green-dark-1: color.adjust($primary-color-green, $lightness: -9%);      // #2d9d68
+$primary-color-green-dark-2: color.adjust($primary-color-green, $lightness: -15%);     // #268558
+$primary-color-green-dark-3: color.adjust($primary-color-green, $lightness: -20%);     // #20724b
 
-$table-highlight: lighten($light-prim-color, 28%);
+$table-highlight: color.adjust($light-prim-color, $lightness: 28%);
 
 // Border
 // ----------------------------------------
@@ -143,8 +146,8 @@ $modal-nav-bg-color:            #eeeff0;
 $modal-nav-border-color:        #d6d6d6;
 $modal-nav-link-color:          #646E75;
 $modal-nav-link-active-color:   $header-link-color;
-$subpage-navigation-link-color: lighten($header-link-color, 25%);
-$subpage-navigation-link-hover-color: lighten($header-link-color, 35%);
+$subpage-navigation-link-color: color.adjust($header-link-color, $lightness: 25%);
+$subpage-navigation-link-hover-color: color.adjust($header-link-color, $lightness: 35%);
 
 // Stats
 // ----------------------------------------
@@ -208,22 +211,22 @@ $img-path:                      "/src/img/";
 // Success (Green)
 $state-success-text:             #3c763d;
 $state-success-bg:               #dff0d8;
-$state-success-border:           darken(shade($state-success-bg, 1%), 3%);
+$state-success-border:           color.adjust(shade.shade($state-success-bg, 1%), $lightness: -3%);
 
 // Info (Blue)
-$state-info-text:                lighten(#31708f, 5%);
+$state-info-text:                color.adjust(#31708f, $lightness: 5%);
 $state-info-bg:                  #d9edf7;
-$state-info-border:              darken(shade($state-info-bg, 1%), 5%);
+$state-info-border:              color.adjust(shade.shade($state-info-bg, 1%), $lightness: -5%);
 
 // Warning (Yellow)
 $state-warning-text:             #8a6d3b;
 $state-warning-bg:               #fcf8e3;
-$state-warning-border:           darken(shade($state-warning-bg, 1%), 5%);
+$state-warning-border:           color.adjust(shade.shade($state-warning-bg, 1%), $lightness: -5%);
 
 // Danger (Red)
 $state-danger-text:              #a94442;
 $state-danger-bg:                #f2dede;
-$state-danger-border:            darken(shade($state-danger-bg, 1%), 3%);
+$state-danger-border:            color.adjust(shade.shade($state-danger-bg, 1%), $lightness: -3%);
 
 // Transition
 $alert-transition: color 300ms ease-in;
