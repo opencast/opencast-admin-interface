@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import cn from "classnames";
 import { FieldArray, FormikProps } from "formik";
 import { Field } from "../../../shared/Field";
 import Notifications from "../../../shared/Notifications";
@@ -19,6 +18,7 @@ import DropDown from "../../../shared/DropDown";
 import { filterRoles, getAclTemplateText } from "../../../../utils/aclUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
  * This component renders the access policy page in the new ACL wizard and in the ACL details modal
@@ -339,29 +339,17 @@ const AclAccessPage = <T extends RequiredFormProps>({
 			{/* Button for navigation to next page and previous page */}
 			{(!isEdit && !!nextPage && !!previousPage) && (
 				<>
-					<footer>
-						<button
-							type="submit"
-							className={cn("submit", {
-								active: formik.dirty && formik.isValid,
-								inactive: !(formik.dirty && formik.isValid),
-							})}
-							disabled={!(formik.dirty && formik.isValid)}
-							onClick={async () => {
+					<WizardNavigationButtons
+						formik={formik}
+						nextPage={
+							async () => {
 								if (await dispatch(checkAcls(formik.values.acls))) {
 									nextPage(formik.values);
 								}
-							}}
-						>
-							{t("WIZARD.NEXT_STEP")}
-						</button>
-						<button
-							className="cancel"
-							onClick={() => previousPage(formik.values)}
-						>
-							{t("WIZARD.BACK")}
-						</button>
-					</footer>
+							}
+						}
+						previousPage={previousPage}
+					/>
 
 					<div className="btm-spacer" />
 				</>

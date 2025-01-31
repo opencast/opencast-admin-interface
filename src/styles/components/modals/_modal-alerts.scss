@@ -1,3 +1,8 @@
+@use "../../../../node_modules/bourbon/core/bourbon/library/clearfix";
+@use "../../base/fontawesome/fa-variables";
+@use "../../base/variables";
+@use "../alerts";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -24,9 +29,9 @@
 @mixin warning-symbol($alert-type) {
     p, a, h1, h2, h3, h4, h5, h6 {
         &:first-child:before {
-            content: $fa-icon-warning-sign;
+            content: fa-variables.$fa-icon-warning-sign;
             font-family: FontAwesome;
-            font-size: $modal-alert-fa-size;
+            font-size: variables.$modal-alert-fa-size;
             color: '$state-${$alert-type}-text';
             margin-right: 5px;
         }
@@ -34,7 +39,7 @@
 }
 
 .modal-alert {
-    @include clearfix();
+    @include clearfix.clearfix();
     display: block;
     padding: 15px 25px;
     
@@ -51,20 +56,20 @@
     }
     
     &.info {
-        @include alert-variant($state-info-bg, $state-info-border, $state-info-text);
+        @include alerts.alert-variant(variables.$state-info-bg, variables.$state-info-border, variables.$state-info-text);
     }
     
     &.warning {
-        @include alert-variant($state-warning-bg, $state-warning-border, $state-warning-text);
+        @include alerts.alert-variant(variables.$state-warning-bg, variables.$state-warning-border, variables.$state-warning-text);
         @include warning-symbol(warning);
     }
     
     &.success {
-        @include alert-variant($state-success-bg, $state-success-border, $state-success-text);
+        @include alerts.alert-variant(variables.$state-success-bg, variables.$state-success-border, variables.$state-success-text);
     }
     
     &.danger {
-        @include alert-variant($state-danger-bg, $state-danger-border, $state-danger-text);
+        @include alerts.alert-variant(variables.$state-danger-bg, variables.$state-danger-border, variables.$state-danger-text);
         @include warning-symbol(danger);
     }
     

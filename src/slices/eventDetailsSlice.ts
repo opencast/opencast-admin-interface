@@ -10,10 +10,8 @@ import {
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
 import { fetchWorkflowDef, Workflow as WorkflowDefinitions } from "./workflowSlice";
 import {
-	getMetadata,
 	getExtendedMetadata,
 	getSchedulingSource,
-	getWorkflowDefinitions,
 	getWorkflows,
 	getStatistics,
 } from "../selectors/eventDetailsSelectors";
@@ -1603,13 +1601,12 @@ export const fetchEventStatisticsValueUpdate = createAppAsyncThunk('eventDetails
 export const updateMetadata = createAppAsyncThunk('eventDetails/updateMetadata', async (params: {
 	id: string,
 	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
+	catalog: MetadataCatalog
 }, { dispatch, getState }) => {
-	const { id, values } = params;
-
-	let metadataInfos = getMetadata(getState());
+	const { id, values, catalog } = params;
 
 	const { fields, data, headers } = transformMetadataForUpdate(
-		metadataInfos,
+		catalog,
 		values
 	);
 
@@ -1617,8 +1614,8 @@ export const updateMetadata = createAppAsyncThunk('eventDetails/updateMetadata',
 
 	// updated metadata in event details redux store
 	let eventMetadata = {
-		flavor: metadataInfos.flavor,
-		title: metadataInfos.title,
+		flavor: catalog.flavor,
+		title: catalog.title,
 		fields: fields,
 	};
 	dispatch(setEventMetadata(eventMetadata));
@@ -1806,7 +1803,7 @@ export const updateComment = createAppAsyncThunk('eventDetails/updateComment', a
 	data.append("text", commentText);
 	data.append("reason", commentReason);
 
-	const commentUpdated = await axios.post(
+	const commentUpdated = await axios.put(
 		`/admin-ng/event/${eventId}/comment/${commentId}`,
 		data.toString(),
 		headers
@@ -1839,19 +1836,6 @@ export const deleteCommentReply = createAppAsyncThunk('eventDetails/deleteCommen
 	await commentReplyDeleted.data;
 
 	return true;
-});
-
-export const updateWorkflow = createAppAsyncThunk('eventDetails/updateWorkflow', async (workflowId: string, { dispatch, getState }) => {
-	const state = getState();
-	const workflowDefinitions = getWorkflowDefinitions(state);
-	const workflowDef = workflowDefinitions.find((def) => def.id === workflowId);
-	await dispatch(
-		setEventWorkflow({
-			workflowId: workflowId,
-			description: workflowDef?.description,
-			configuration: workflowDef?.configuration_panel_json // previously `workflowDef.configuration`. Might cause error
-		})
-	);
 });
 
 export const saveWorkflowConfig = createAppAsyncThunk('eventDetails/saveWorkflowConfig', async (params: {
@@ -2564,13 +2548,6 @@ const eventDetailsSlice = createSlice({
 			})
 			.addCase(deleteComment.rejected, (state, action) => {
 				console.error(action.error);
-			})
-			.addCase(updateWorkflow.fulfilled, (state, action) => {
-				if ("workflowId" in state.workflows.workflow && !!state.workflows.workflow.workflowId) {
-					state.workflowConfiguration = state.workflows.workflow;
-				} else {
-					state.workflowConfiguration = state.baseWorkflow;
-				}
 			})
 			// fetch Tobira data
 			.addCase(fetchEventDetailsTobira.pending, (state) => {

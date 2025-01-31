@@ -8,6 +8,7 @@ import {
 	getSeriesDetailsTheme,
 	getSeriesDetailsThemeNames,
 	getSeriesDetailsTobiraDataError,
+	getSeriesDetailsTobiraStatus,
 	hasStatistics as seriesHasStatistics,
 } from "../../../../selectors/seriesDetailsSelectors";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
@@ -16,10 +17,10 @@ import SeriesDetailsAccessTab from "../ModalTabsAndPages/SeriesDetailsAccessTab"
 import SeriesDetailsThemeTab from "../ModalTabsAndPages/SeriesDetailsThemeTab";
 import SeriesDetailsStatisticTab from "../ModalTabsAndPages/SeriesDetailsStatisticTab";
 import SeriesDetailsFeedsTab from "../ModalTabsAndPages/SeriesDetailsFeedsTab";
-import DetailsMetadataTab from "../ModalTabsAndPages/DetailsMetadataTab";
-import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsExtendedMetadataTab";
+import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsMetadataTab";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
+	fetchSeriesDetailsTobira,
 	fetchSeriesStatistics,
 	setTobiraTabHierarchy,
 	updateExtendedSeriesMetadata,
@@ -48,10 +49,12 @@ const SeriesDetails = ({
 	const theme = useAppSelector(state => getSeriesDetailsTheme(state));
 	const themeNames = useAppSelector(state => getSeriesDetailsThemeNames(state));
 	const hasStatistics = useAppSelector(state => seriesHasStatistics(state));
+	const tobiraStatus = useAppSelector(state => getSeriesDetailsTobiraStatus(state));
 	const tobiraError = useAppSelector(state => getSeriesDetailsTobiraDataError(state));
 
 	useEffect(() => {
 		dispatch(fetchSeriesStatistics(seriesId));
+		dispatch(fetchSeriesDetailsTobira(seriesId));
 		dispatch(setTobiraTabHierarchy("main"));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -90,7 +93,7 @@ const SeriesDetails = ({
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.TOBIRA",
 			accessRole: "ROLE_UI_SERIES_DETAILS_TOBIRA_VIEW",
 			name: "tobira",
-			hidden: tobiraError?.message?.includes("503"),
+			hidden: tobiraStatus === "failed" && tobiraError?.message?.includes("503"),
 		},
 		{
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.STATISTICS",
@@ -127,12 +130,12 @@ const SeriesDetails = ({
 			{/* render modal content depending on current page */}
 			<div>
 				{page === 0 && (
-					<DetailsMetadataTab
-						metadataFields={metadataFields}
+					<DetailsExtendedMetadataTab
 						resourceId={seriesId}
-						header={tabs[page].tabNameTranslation}
+						metadata={[metadataFields]}
 						updateResource={updateSeriesMetadata}
 						editAccessRole="ROLE_UI_SERIES_DETAILS_METADATA_EDIT"
+						header={tabs[page].tabNameTranslation}
 					/>
 				)}
 				{page === 1 && (

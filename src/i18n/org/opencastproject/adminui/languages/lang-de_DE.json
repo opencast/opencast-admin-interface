@@ -118,7 +118,7 @@
 				"USER": "Der folgende Benutzer wird gelöscht",
 				"THEME": "Das folgende Branding wird gelöscht",
 				"LOCATION": "Folgender Standort wird entfernt",
-				"TOBIRA_PATH": "The series will be removed from the following path in Tobira:"
+				"TOBIRA_PATH": "Die Serie wird aus dem folgenden Pfad in Tobira entfernt:"
 			},
 			"NAME": "Name"
 		},
@@ -131,7 +131,7 @@
 		"WARNINGS": {
 			"SERIES_HAS_EVENTS": "Diese Serie enthält noch Videos. Das Löschen der Serie löscht nicht die Videos.",
 			"EVENT_WILL_BE_GONE": "Wenn Sie fortfahren, wird das Video unwiderruflich gelöscht.",
-			"UNSAVED_CHANGES": "You have unsaved changes. If you continue, those changes will be discarded. Are you sure that you want to continue?"
+			"UNSAVED_CHANGES": "Sie haben ungespeicherte Änderungen. Wenn Sie fortfahren, werden diese Änderungen verworfen. Sind Sie sicher, dass Sie fortfahren möchten?"
 		},
 		"ERRORS": {
 			"SERIES_HAS_EVENTS": "Diese Serie enthält Videos und kann daher nicht gelöscht werden."
@@ -169,10 +169,10 @@
 		"GROUP_NOT_DELETED": "Die Gruppe konnte nicht gelöscht werden",
 		"SERIES_ADDED": "Die Serie wurde angelegt",
 		"SERIES_NOT_SAVED": "Die Serie konnte nicht gespeichert werden",
-		"SERIES_PATH_UPDATED": "The series path has been updated",
-		"SERIES_PATH_REMOVED": "The series path has been removed",
-		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
-		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
+		"SERIES_PATH_UPDATED": "Der Serien-Pfad wurde aktualisiert",
+		"SERIES_PATH_REMOVED": "Der Serien-Pfad wurde entfernt",
+		"SERIES_PATH_NOT_UPDATED": "Der Serien-Pfad konnte nicht aktualisiert werden",
+		"SERIES_PATH_NOT_REMOVED": "Der Serien-Pfad konnte nicht entfernt werden",
 		"EVENTS_CREATED": "Das Video wurde angelegt",
 		"EVENTS_UPLOAD_STARTED": "Das Video wird hochgeladen… {{ progress }}%",
 		"EVENTS_NOT_CREATED": "Das Video konnte nicht angelegt werden",
@@ -228,18 +228,18 @@
 			"NO_EVENTS_UPDATED": "Alle Aktualisierungen schlugen fehl.",
 			"SOME_EVENTS_NOT_UPDATED": "Einige Videos konnten nicht aktualisiert werden."
 		},
-		"PROBLEM_ON_START": "An error occurred on start up. Please contact your Opencast admin",
-		"TOBIRA_OVERRIDE_NAME": "The title of the selected page will be overridden with the title of the series.",
-		"TOBIRA_NO_PATH_SEGMENT": "Page needs a path segment.",
-		"TOBIRA_NOT_MOUNTED": "Series could not be mounted in Tobira.",
-		"TOBIRA_PATH_SEGMENT_INVALID": "Path segment is invalid. A valid path segment is at least 2 characters long, does not contain any whitespace or control characters, none of the characters '<>\"[\\]^`{|}#%\/?]', and doesn't start with any of the characters '-+~@_!$&;:.,=*'()'.",
-		"TOBIRA_PATH_SEGMENT_UNIQUE": "The path segment of a page must be unique among all its sibling pages.",
-		"TOBIRA_PAGE_NOT_FOUND": "The page you tried to navigate to does not or no longer exist. Maybe try starting from the beginning.",
-		"TOBIRA_SERVER_ERROR": " Error talking to Tobira. Contact your system administrator and\/or try again later.",
-		"TOBIRA_COPIED_DIRECT_LINK": "Copied link to clipboard.",
-		"TOBIRA_FAILED_COPYING_DIRECT_LINK": "Couldn't copy link to clipboard.",
-		"TOBIRA_NOT_FOUND": "Tobira doesn't know about this series or event (yet). Try again in a few minutes or contact your system administrator.",
-		"TOBIRA_NOT_CONFIGURED": "Tobira is not configured (correctly)."
+		"PROBLEM_ON_START": "Beim Starten ist ein Fehler aufgetreten. Bitte kontaktieren Sie Ihren Opencast Admin",
+		"TOBIRA_OVERRIDE_NAME": "Der Titel der ausgewählten Seite wird mit dem Titel der Serie überschrieben.",
+		"TOBIRA_NO_PATH_SEGMENT": "Die Seite benötigt ein Pfadsegment.",
+		"TOBIRA_NOT_MOUNTED": "Die Serie konnte nicht in Tobira eingehängt werden.",
+		"TOBIRA_PATH_SEGMENT_INVALID": "Pfadsegment ist ungültig. Ein gültiges Pfadsegment ist mindestens 2 Zeichen lang, enthält keine Leerzeichen oder Kontrollzeichen, keines der Zeichen '<>\"[\\]^`{|}#%\/? ', und startet nicht mit einem der Zeichen '-+~@_! &;:. =*'()'.",
+		"TOBIRA_PATH_SEGMENT_UNIQUE": "Das Pfadsegment einer Seite muss in der gleichen Ebene eindeutig sein.",
+		"TOBIRA_PAGE_NOT_FOUND": "Die Seite, zu der Sie navigieren wollen, existiert nicht oder nicht mehr. Versuchen Sie es vielleicht nochmal von Anfang an.",
+		"TOBIRA_SERVER_ERROR": "Fehler bei der Kommunikation mit Tobira. Kontaktieren Sie Ihren Systemadministrator und\/oder versuchen Sie es später erneut.",
+		"TOBIRA_COPIED_DIRECT_LINK": "Link in die Zwischenablage kopiert.",
+		"TOBIRA_FAILED_COPYING_DIRECT_LINK": "Fehler beim Kopieren in die Zwischenablage.",
+		"TOBIRA_NOT_FOUND": "Tobira kennt diese Serie oder das Video (noch) nicht. Versuchen Sie es in ein paar Minuten noch einmal oder kontaktieren Sie Ihren Systemadministrator.",
+		"TOBIRA_NOT_CONFIGURED": "Tobira ist nicht (korrekt) konfiguriert."
 	},
 	"BULK_ACTIONS": {
 		"CAPTION": "Aktionen",
@@ -675,7 +675,7 @@
 				"UPDATING_PREVIEWS": "Vorschauen werden aktualisiert"
 			},
 			"DETAILS": {
-				"HEADER": "Video-Details - {{resourceId}}",
+				"HEADER": "Event details - {{name}}",
 				"TABS": {
 					"METADATA": "Metadaten",
 					"EXTENDED-METADATA": "Metadaten II",
@@ -961,11 +961,11 @@
 					}
 				},
 				"TOBIRA": {
-					"HOMEPAGE": "(Homepage)",
-					"DIRECT_LINK": "Direct link to event",
-					"COPY_DIRECT_LINK": "Copy to clipboard",
-					"NOT_MOUNTED": "This event is currently not included the page structure, and can only be reached using the direct link above.",
-					"PAGES": "Pages in Tobira that contain this event"
+					"HOMEPAGE": "(Startseite)",
+					"DIRECT_LINK": "Direkter Link zum Video",
+					"COPY_DIRECT_LINK": "In die Zwischenablage kopieren",
+					"NOT_MOUNTED": "Diese Serie ist derzeit nicht in der Seitenstruktur enthalten und kann nur über den oben genannten direkten Link erreicht werden.",
+					"PAGES": "Seiten im Videoportal, die dieses Video einbinden"
 				},
 				"SCHEDULING": {
 					"CAPTION": "Publikations-Status",
@@ -1136,7 +1136,7 @@
 				},
 				"TOBIRA": {
 					"CAPTION": "Tobira",
-					"DESCRIPTION": "Hier können Sie auswählen, wo die Serie im Videoportal erscheinen soll. Sie können nur einen Ort auswählen und dieser darf nicht belegt sein (fett markiert). Sie können auch neue Seiten anlegen. Diese werden aber nur dann im Videoportal erstellt, wenn sie auf dem Pfad zur ausgewählten Seite liegen.",
+					"DESCRIPTION": "Hier können Sie auswählen, wo die Serie im Videoportal erscheinen soll. Sie können hier nur eine Seite auswählen und diese muss zudem komplett leer sein (fett markiert).\nNeue Seiten werden nur dann effektiv erstellt, wenn Sie die Serie in diese neue Seite einfügen oder wenn Sie die Serie in eine Unterseite der erstellten Seite einfügen.",
 					"SELECT_PAGE": "Zielseite auswählen",
 					"PAGE_TITLE": "Titel der Unterseite",
 					"PATH_SEGMENT": "Pfadsegment",
@@ -1146,10 +1146,10 @@
 					"HOMEPAGE": "Startseite",
 					"SELECTED_PAGE": "Serie wird in folgendem Pfad eingebunden",
 					"NO_PAGE_SELECTED": "Keine Seite ausgewählt. Serie wird nicht im Videoportal eingebunden.",
-					"NO_PAGE_SELECTED_EDIT": "No page selected. Series path will not be changed.",
+					"NO_PAGE_SELECTED_EDIT": "Keine Seite ausgewählt. Der Serien-Pfad wird nicht geändert.",
 					"PATH": "Pfad",
-					"DIRECT_LINK": "A direct link will be available.",
-					"MOUNT_DISCLAIMER": "Series can only be mounted in empty pages"
+					"DIRECT_LINK": "Ein direkter Link wird zur Verfügung stehen.",
+					"MOUNT_DISCLAIMER": "Serien können nur in leere Seiten eingebunden werden"
 				},
 				"SUMMARY": {
 					"CAPTION": "Zusammenfassung"
@@ -1172,7 +1172,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Serien-Details - {{resourceId}}",
+				"HEADER": "Series details - {{name}}",
 				"TABS": {
 					"METADATA": "Metadaten",
 					"EXTENDED_METADATA": "Metadaten II",
@@ -1233,11 +1233,11 @@
 					"COPY_DIRECT_LINK": "In die Zwischenablage kopieren",
 					"NOT_MOUNTED": "Diese Serie ist derzeit nicht in der Seitenstruktur enthalten und kann nur über den oben genannten direkten Link erreicht werden.",
 					"PAGES": "Seiten im Videoportal, die diese Serie einbinden",
-					"SHOW_PAGES": "Show all pages",
-					"EDIT_PATH": "Edit path",
-					"REMOVE_PATH": "Remove path",
-					"MOUNT_SERIES": "Mount series",
-					"DESCRIPTION": "You may edit the path of pages containing this series if the page has no other content."
+					"SHOW_PAGES": "Alle Seiten anzeigen",
+					"EDIT_PATH": "Pfad bearbeiten",
+					"REMOVE_PATH": "Pfad entfernen",
+					"MOUNT_SERIES": "Serie einhängen",
+					"DESCRIPTION": "Sie können den Pfad der Seiten mit dieser Serie bearbeiten, wenn die entsprechende Seite keinen anderen Inhalt hat."
 				},
 				"EVENTS": {
 					"TITLE": "Titel",
@@ -1278,7 +1278,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Informationen zum Standort - {{resourceId}}",
+				"HEADER": "Location details - {{name}}",
 				"TAB": {
 					"GENERAL": "Allgemein",
 					"CONFIGURATION": "Konfiguration",
@@ -1335,7 +1335,7 @@
 			},
 			"DETAILS": {
 				"NEWCAPTION": "Anwender anlegen",
-				"EDITCAPTION": "Benutzer-Details - {{username}}",
+				"EDITCAPTION": "User details - {{name}}",
 				"TABS": {
 					"USER": "Benutzer",
 					"ROLES": "Rollen",
@@ -1421,7 +1421,7 @@
 				"CAPTION": "Zugriffsrechte",
 				"NAME": "Name",
 				"CREATED": "Erstellt",
-				"CREATOR": "Author",
+				"CREATOR": "Autor",
 				"IN_USE": "In Benutzung",
 				"ACTION": "Aktionen",
 				"TOOLTIP": {
@@ -1782,7 +1782,7 @@
 				"LABEL": "Mitwirkende"
 			},
 			"CREATOR": {
-				"LABEL": "Author"
+				"LABEL": "Autor"
 			},
 			"PUBLISHER": {
 				"LABEL": "Herausgeber"
@@ -1936,7 +1936,7 @@
 				"LABEL": "Beschreibung"
 			},
 			"CREATOR": {
-				"LABEL": "Author"
+				"LABEL": "Autor"
 			},
 			"CREATION_DATE": {
 				"LABEL": "Erstellt am"
@@ -2068,7 +2068,7 @@
 	},
 	"EDITABLE": {
 		"MULTI": {
-			"PLACEHOLDER": "Einen Wert mit Enter bestätigen um weitere Werte einzufügen"
+			"PLACEHOLDER": "Einen Wert mit Enter bestätigen, um weitere Werte einzufügen"
 		}
 	},
 	"STATISTICS": {
