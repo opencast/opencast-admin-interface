@@ -95,7 +95,7 @@ const LifeCyclePolicyGeneralTab = ({
 													return(
 														<tr>
 															<td>{key}</td>
-															<td>{value}</td>
+															<td>{value ?? ""}</td>
 														</tr>
 													)
 												})}
