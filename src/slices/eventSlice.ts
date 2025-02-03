@@ -232,6 +232,13 @@ export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, {
 	const state = getState();
 	let params: ReturnType<typeof getURLParams> & { getComments?: boolean } = getURLParams(state);
 
+	// Add a secondary filter to enforce order of events
+	// (Elasticsearch does not guarantee ordering)
+	params = {
+		...params,
+		sort: params.sort ? params.sort + ",uid:asc" : "uid:asc"
+	}
+
 	// Only if the notes column is enabled, fetch comment information for events
 	if (state.table.columns.find(column => column.label === "EVENTS.EVENTS.TABLE.ADMINUI_NOTES" && !column.deactivated)) {
 		params = {
