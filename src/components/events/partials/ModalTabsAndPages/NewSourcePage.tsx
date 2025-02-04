@@ -425,6 +425,7 @@ const Schedule = <T extends {
 									className="datepicker-custom-input"
 									portalId="root"
 									locale={currentLanguage?.dateLocale}
+									strictParsing
 								/>
 							</td>
 						</tr>
@@ -455,6 +456,7 @@ const Schedule = <T extends {
 											className="datepicker-custom-input"
 											portalId="root"
 											locale={currentLanguage?.dateLocale}
+											strictParsing
 										/>
 									</td>
 								</tr>
