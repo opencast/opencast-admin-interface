@@ -78,7 +78,7 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 			dispatch(addNotification({
 				type: "info",
 				key: "TOBIRA_COPIED_DIRECT_LINK",
-				duration: 3000,
+				duration: 3,
 				parameter: undefined,
 				context: NOTIFICATION_CONTEXT_TOBIRA,
 			}));
@@ -86,7 +86,7 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 			dispatch(addNotification({
 				type: "error",
 				key: "TOBIRA_FAILED_COPYING_DIRECT_LINK",
-				duration: 3000,
+				duration: 3,
 				parameter: undefined,
 				context: NOTIFICATION_CONTEXT_TOBIRA,
 			}));

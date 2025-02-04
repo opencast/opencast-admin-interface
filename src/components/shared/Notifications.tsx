@@ -52,7 +52,6 @@ const Notifications = ({
 				{notifications.map((notification, key) => !notification.hidden && (
 					notification.context === NOTIFICATION_CONTEXT
 						|| notification.context === NOTIFICATION_CONTEXT_ACCESS
-						|| notification.context === NOTIFICATION_CONTEXT_TOBIRA
 				) && renderNotification(notification, key))}
 			</ul>
 		) : context === NOTIFICATION_CONTEXT_TOBIRA ? (

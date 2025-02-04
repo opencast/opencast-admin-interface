@@ -57,7 +57,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 				dispatch(addNotification({
 					type: type,
 					key: key,
-					duration: 3000,
+					duration: -1,
 					parameter: undefined,
 					context: context,
 					noDuplicates: true,
