@@ -1,3 +1,7 @@
+@use "../../base/fontawesome/fa-mixins";
+@use "../../base/fontawesome/variables";
+@use "../../base/variables" as variables2;
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -21,7 +25,7 @@
 
 
 .df-select-title {
-    @include fa-icon($fa-var-sort, after, inline-block, 0, 0 0 0 5px, inherit, 11px);
+    @include fa-mixins.fa-icon(variables.$fa-var-sort, after, inline-block, 0, 0 0 0 5px, inherit, 11px);
 
     &:after {
         position: relative;
@@ -29,10 +33,10 @@
     }
 
     &.df-select-complete {
-        color: $bright-blue;
+        color: variables2.$bright-blue;
 
         &:after {
-            color: $light-prim-color;
+            color: variables2.$light-prim-color;
         }
     }
 
