@@ -349,11 +349,11 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 					</div>
 
 					<p style={{ margin: "12px 0", fontSize: 12 }}>
-						{(!!formik.values.selectedPage && isValid)
+						{(!!formik.values.selectedPage && formik.values.selectedPage?.path !== "" && isValid)
 							? <>
 								{t("EVENTS.SERIES.NEW.TOBIRA.SELECTED_PAGE")}:
 								<code className="tobira-path">
-									{formik.values.selectedPage.path}
+									{formik.values.selectedPage?.path}
 								</code>
 							</>
 							: (mode.edit && !mode.mount
