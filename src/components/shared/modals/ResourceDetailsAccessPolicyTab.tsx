@@ -4,6 +4,7 @@ import {
 	Acl,
 	Role,
 	fetchAclActions,
+	fetchAclDefaults,
 	fetchAclTemplates,
 	fetchRolesWithTarget,
 } from "../../../slices/aclSlice";
@@ -84,6 +85,7 @@ const ResourceDetailsAccessPolicyTab = ({
 
 	// list of possible additional actions
 	const [aclActions, setAclActions] = useState<{ id: string, value: string }[]>([]);
+
 
 	// shows, whether a resource has additional actions on top of normal read and write rights
 	const [hasActions, setHasActions] = useState(false);
@@ -417,16 +419,47 @@ export const AccessPolicyTable = <T extends AccessPolicyTabFormikProps>({
 
 	const user = useAppSelector(state => getUserInformation(state));
 
+	const [aclDefaults, setAclDefaults] = useState<{ [key: string]: string }>();
+
+	useEffect(() => {
+		async function fetchData() {
+			const responseDefaults = await fetchAclDefaults();
+			setAclDefaults(responseDefaults);
+		}
+
+		fetchData();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	const createPolicy = (role: string, withUser: boolean): TransformedAcl => {
 		let user = withUser ? {username: "", name: "", email: ""} : undefined
 
-		return {
+		let newRole: TransformedAcl = {
 			role: role,
-			read: false,
+			read: true,
 			write: false,
 			actions: [],
 			user: user,
 		};
+
+		// If config exists, set defaults according to config
+		if (aclDefaults) {
+			if (aclDefaults["read_enabled"] && aclDefaults["read_enabled"] === "true") {
+				newRole.read = true;
+			} else if (aclDefaults["read_enabled"] && aclDefaults["read_enabled"] === "false") {
+				newRole.read = false;
+			}
+			if (aclDefaults["write_enabled"] && aclDefaults["write_enabled"] === "true") {
+				newRole.write = true;
+			} else if (aclDefaults["write_enabled"] && aclDefaults["write_enabled"] === "false") {
+				newRole.write = false;
+			}
+			if (aclDefaults["default_actions"]) {
+				newRole.actions = newRole.actions.concat(aclDefaults["default_actions"].split(","))
+			}
+		}
+
+		return newRole;
 	};
 
 	return (
@@ -543,7 +576,8 @@ export const AccessPolicyTable = <T extends AccessPolicyTabFormikProps>({
 																		!hasAccess(
 																			editAccessRole,
 																			user
-																		)
+																		) ||
+																		(aclDefaults && aclDefaults["read_readonly"] !== "false")
 																	}
 																	className={`${
 																		transactions.read_only
@@ -567,7 +601,10 @@ export const AccessPolicyTable = <T extends AccessPolicyTabFormikProps>({
 																		!hasAccess(
 																			editAccessRole,
 																			user
-																		)
+																		) ||
+																		(aclDefaults
+																			&& aclDefaults["write_readonly"]
+																			&& aclDefaults["write_readonly"] === "true")
 																	}
 																	className={`${
 																		transactions.read_only
@@ -705,6 +742,18 @@ export const TemplateSelector = <T extends TemplateSelectorProps>({
 
 	const user = useAppSelector(state => getUserInformation(state));
 
+	const [aclDefaults, setAclDefaults] = useState<{ [key: string]: string }>();
+
+	useEffect(() => {
+		async function fetchData() {
+			const responseDefaults = await fetchAclDefaults();
+			setAclDefaults(responseDefaults);
+		}
+
+		fetchData();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	if (!hasAccess(editAccessRole, user)) {
 		return <></>;
 	}
@@ -744,6 +793,7 @@ export const TemplateSelector = <T extends TemplateSelectorProps>({
 													element.value,
 													formik,
 													dispatch,
+													aclDefaults,
 													defaultUser
 												)
 											}

@@ -61,6 +61,7 @@ export const handleTemplateChange = async <T extends { policies: TransformedAcl[
 	templateId: string,
 	formik: FormikProps<T>,
 	dispatch: AppDispatch,
+	aclDefaults: any,
 	defaultUser?: UserInfoState,
 ) => {
 	// fetch information about chosen template from backend
@@ -94,6 +95,16 @@ export const handleTemplateChange = async <T extends { policies: TransformedAcl[
 				email: defaultUser.user.email,
 			}
 		});
+	}
+
+	// If configured, keep roles that match the configured prefix
+	if (aclDefaults && aclDefaults["keep_on_template_switch_role_prefixes"]) {
+		const prefix = aclDefaults["keep_on_template_switch_role_prefixes"];
+		for (const policy of formik.values.policies) {
+			if (policy.role.startsWith(prefix) && !template.find((acl) => acl.role === policy.role)) {
+				template.push(policy)
+			}
+		}
 	}
 
 	formik.setFieldValue("policies", template);
