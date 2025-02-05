@@ -442,7 +442,7 @@ const FilterSwitch = ({
 						popperClassName="datepicker-custom"
 						className="datepicker-custom-input"
 						locale={getCurrentLanguageInformation()?.dateLocale}
-
+						strictParsing
 					/>
 				</div>
 			);
