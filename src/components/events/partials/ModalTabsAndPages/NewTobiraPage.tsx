@@ -194,18 +194,26 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 						}
 				};
 
-				formik.setFieldValue("selectedPage", newPage);
-
 				return newPage;
 			}
 			return {...p};
 		})
 	}));
 
+	// This will either highlight the selected page
+	// (first condition),
+	// or the page the series is currently mounted in,
+	// if no other page is selected (second condition).
+	// It is also used to disable the text input of the title field
+	// for newly added sub-pages.
+	const checkboxActive = (page: TobiraPage, key: number) => (
+		isValid && formik.values.selectedPage?.path === currentPage.children[key].path
+	) || (
+		page.path === formik.values.currentPath && !formik.values.selectedPage
+	)
+
 	return <>
 		<ModalContent>
-				{/* Notifications */}
-				<Notifications context="tobira" />
 				<p className="tab-description">{t("EVENTS.SERIES.NEW.TOBIRA.DESCRIPTION")}</p>
 				{!error && <>
 					<div className="obj-container padded">
@@ -238,7 +246,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 											{t("EVENTS.SERIES.NEW.TOBIRA.PATH_SEGMENT") /* Path segment */}
 										</th>
 										<th>
-											{t("EVENTS.SERIES.NEW.TOBIRA.SUBPAGES") /* Subpages */}
+											{t("EVENTS.SERIES.NEW.TOBIRA.SUBPAGES") /* Sub-pages */}
 										</th>
 										{editing && <th />}
 									</tr>
@@ -253,9 +261,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 											<td>
 												<input
 													type="checkbox"
-													checked={isValid && formik.values.selectedPage?.path
-														=== currentPage.children[key].path
-													}
+													checked={checkboxActive(page, key)}
 													disabled={!!page.blocks?.length}
 													onChange={() => page.blocks?.length || select(page)}
 												/>
@@ -265,7 +271,11 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 											{!!page.new
 												? <input
 													placeholder={t('EVENTS.SERIES.NEW.TOBIRA.PAGE_TITLE')}
-													value={page.title ?? ""}
+													disabled={checkboxActive(page, key)}
+													value={checkboxActive(page, key)
+														? t('EVENTS.SERIES.NEW.TOBIRA.TITLE_OF_SERIES')
+														: (page.title ?? "")
+													}
 													onChange={e => setPage(key, e, "title")}
 												/>
 												: <button
@@ -277,7 +287,10 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 													}
 													disabled={!!page.blocks?.length}
 													onClick={() => page.blocks?.length || select(page)}
-												>{page.title}</button>
+												>{checkboxActive(page, key) && formik.values.selectedPage
+													? t('EVENTS.SERIES.NEW.TOBIRA.TITLE_OF_SERIES')
+													: page.title
+												}</button>
 											}
 										</td>
 										<td>
@@ -331,14 +344,16 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 								</tbody>
 							</table>
 						</div>
+						{/* Notifications */}
+						<Notifications context={NOTIFICATION_CONTEXT_TOBIRA} />
 					</div>
 
 					<p style={{ margin: "12px 0", fontSize: 12 }}>
-						{(!!formik.values.selectedPage && isValid)
+						{(!!formik.values.selectedPage && formik.values.selectedPage?.path !== "" && isValid)
 							? <>
 								{t("EVENTS.SERIES.NEW.TOBIRA.SELECTED_PAGE")}:
 								<code className="tobira-path">
-									{formik.values.selectedPage.path}
+									{formik.values.selectedPage?.path}
 								</code>
 							</>
 							: (mode.edit && !mode.mount
