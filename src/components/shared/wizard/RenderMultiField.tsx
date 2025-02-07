@@ -53,7 +53,13 @@ const RenderMultiField = ({
 		}
 
 		if (newInputValue !== "") {
-			const splitArray = newInputValue.split(";").map(item => item.trim()).filter(Boolean);
+			let splitArray = [];
+			if (fieldInfo.delimiter) {
+				splitArray = newInputValue.split(fieldInfo.delimiter).map(item => item.trim()).filter(Boolean);
+			} else {
+				splitArray = [newInputValue];
+			}
+
 			for (const newInput of splitArray) {
 				// Flag if only values of collection are allowed or any value
 				if (onlyCollectionValues) {
