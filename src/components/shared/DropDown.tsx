@@ -4,21 +4,15 @@ import {
 	dropDownSpacingTheme,
 	dropDownStyle,
 } from "../../utils/componentStyles";
-import {
-	filterBySearch,
-	formatDropDownOptions,
-} from "../../utils/dropDownUtils";
 import Select, { GroupBase, Props, SelectInstance } from "react-select";
 import CreatableSelect from "react-select/creatable";
+import { isJson } from "../../utils/utils";
 
-/**
- * TODO: Ideally, we would remove "type", and just type the "options" array properly.
- * However, typing options is hard because
- *  - Creating reasonable generic typing is difficult, as different utility functions handle types for "options" differently
- *  - Creating typescript types for each "type" is moot atm, as a lot of them (i.e. capture agents) are not properly typed yet
- * I would suggest waiting with typing options until all of its inputs are properly typed
- */
-export type DropDownType = "language" | "isPartOf" | "license" | "captureAgent" | "aclRole" | "workflow" | "aclTemplate" | "newTheme" | "comment" | "theme" | "time" | "filter";
+export type DropDownOption = {
+	label: string,
+	value: string | number,
+	order?: number
+}
 
 /**
  * This component provides a bar chart for visualising (statistics) data
@@ -27,7 +21,6 @@ const DropDown = <T,>({
 	value,
 	text,
 	options,
-	type,
 	required,
 	handleChange,
 	placeholder,
@@ -39,11 +32,11 @@ const DropDown = <T,>({
 	disabled = false,
 	menuIsOpen = undefined,
 	handleMenuIsOpen = undefined,
+	customCSS,
 }: {
 	value: T
 	text: string,
-	options: any[],
-	type: DropDownType
+	options: DropDownOption[],
 	required: boolean,
 	handleChange: (option: {value: T, label: string} | null) => void
 	placeholder: string
@@ -55,6 +48,11 @@ const DropDown = <T,>({
 	disabled?: boolean,
 	menuIsOpen?: boolean,
 	handleMenuIsOpen?: (open: boolean) => void,
+	customCSS?: {
+		width?: number | string,
+		optionPaddingTop?: number,
+		optionLineHeight?: string
+	}
 }) => {
 	const { t } = useTranslation();
 
@@ -62,7 +60,7 @@ const DropDown = <T,>({
 
 	const [searchText, setSearch] = useState("");
 
-	const style = dropDownStyle(type);
+	const style = dropDownStyle(customCSS ?? {});
 
 	useEffect(() => {
 		// Ensure menu has focus when opened programmatically
@@ -77,6 +75,47 @@ const DropDown = <T,>({
 		}
 	}
 
+	const formatOptions = (
+		unformattedOptions: DropDownOption[],//any[],
+		filterText: string,
+		required: boolean,
+	) => {
+		// Translate?
+		unformattedOptions = unformattedOptions.map(option => ({...option, label: t(option.label)}))
+
+		// Filter
+		filterText = filterText.toLowerCase();
+		unformattedOptions = unformattedOptions.filter(option => option.label.toLowerCase().includes(filterText));
+
+		// Add "No value" option
+		if (!required) {
+			unformattedOptions.push({
+				value: "",
+				label: `-- ${t("SELECT_NO_OPTION_SELECTED")} --`,
+			});
+		}
+
+		// Sort
+		/**
+		 * This is used to determine whether any entry of the passed `unformattedOptions`
+		 * contains an `order` field, indicating that a custom ordering for that list
+		 * exists and the list therefore should not be ordered alphabetically.
+		 */
+		const hasCustomOrder = unformattedOptions.every((item) =>
+			isJson(item.label) && JSON.parse(item.label).order !== undefined);
+
+		if (hasCustomOrder) {
+			// Apply custom ordering.
+			unformattedOptions.sort((a, b) => JSON.parse(a.label).order - JSON.parse(b.label).order);
+		} else {
+			// Apply alphabetical ordering.
+			unformattedOptions.sort((a, b) => a.label.localeCompare(b.label))
+		}
+
+		return unformattedOptions;
+	};
+
+
   let commonProps: Props = {
 		tabIndex: tabIndex,
 		theme: (theme) => (dropDownSpacingTheme(theme)),
@@ -86,11 +125,10 @@ const DropDown = <T,>({
 		isSearchable: true,
 		value: { value: value, label: text === "" ? placeholder : text },
 		inputValue: searchText,
-		options: formatDropDownOptions(
-			filterBySearch(searchText.toLowerCase(), type, options, t),
-			type,
+		options: formatOptions(
+			options,
+			searchText,
 			required,
-			t
 		),
 		placeholder: placeholder,
 		onInputChange: (value: string) => setSearch(value),

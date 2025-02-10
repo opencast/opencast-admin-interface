@@ -19,7 +19,10 @@ const SeriesDetailsThemeTab = ({
 	seriesId,
 }: {
 	theme: string,
-	themeNames: unknown[]
+	themeNames: {
+		id: string;
+		value: string;
+	}[],
 	seriesId: string
 }) => {
 	const { t } = useTranslation();
@@ -64,8 +67,7 @@ const SeriesDetailsThemeTab = ({
 														<DropDown
 															value={formik.values.theme}
 															text={formik.values.theme}
-															options={themeNames}
-															type={"theme"}
+															options={themeNames.map(names => ({ label: names.value, value: names.id }))}
 															required={false}
 															handleChange={(element) => {
 																if (element) {
@@ -79,6 +81,7 @@ const SeriesDetailsThemeTab = ({
 																	user
 																)
 															}
+															customCSS={{ width: "100%" }}
 														/>
 													</div>
 												)}
