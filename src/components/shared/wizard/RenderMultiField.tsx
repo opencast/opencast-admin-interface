@@ -53,23 +53,32 @@ const RenderMultiField = ({
 		}
 
 		if (newInputValue !== "") {
-			// Flag if only values of collection are allowed or any value
-			if (onlyCollectionValues) {
-				// add input to formik field value if not already added and input in collection of possible values
-				if (
-					!fieldValue.find((e) => e === newInputValue) &&
-					fieldInfo.collection?.find((e) => e.value === newInputValue)
-				) {
-					fieldValue[fieldValue.length] = newInputValue;
-					form.setFieldValue(field.name, fieldValue);
-				}
+			let splitArray = [];
+			if (fieldInfo.delimiter) {
+				splitArray = newInputValue.split(fieldInfo.delimiter).map(item => item.trim()).filter(Boolean);
 			} else {
-				// add input to formik field value if not already added
-				if (!fieldValue.find((e) => e === newInputValue)) {
-					fieldValue[fieldValue.length] = newInputValue;
-					form.setFieldValue(field.name, fieldValue);
-				}
+				splitArray = [newInputValue];
 			}
+
+			for (const newInput of splitArray) {
+				// Flag if only values of collection are allowed or any value
+				if (onlyCollectionValues) {
+					// add input to formik field value if not already added and input in collection of possible values
+					if (
+						!fieldValue.find((e) => e === newInput) &&
+						fieldInfo.collection?.find((e) => e.value === newInput)
+					) {
+						fieldValue[fieldValue.length] = newInput;
+						form.setFieldValue(field.name, fieldValue);
+					}
+				} else {
+					// add input to formik field value if not already added
+					if (!fieldValue.find((e) => e === newInput)) {
+						fieldValue[fieldValue.length] = newInput;
+						form.setFieldValue(field.name, fieldValue);
+					}
+			}
+		}
 
 			// reset inputValue
 			setInputValue("");
