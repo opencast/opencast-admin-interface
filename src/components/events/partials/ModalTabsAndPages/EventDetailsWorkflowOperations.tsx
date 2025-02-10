@@ -11,6 +11,7 @@ import {
 } from "../../../../slices/eventDetailsSlice";
 import { useTranslation } from "react-i18next";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component manages the workflow operations for the workflows tab of the event details modal
@@ -52,93 +53,89 @@ const EventDetailsWorkflowOperations = ({
 	};
 
 	return (
-		<div className="modal-content">
-			{/* Hierarchy navigation */}
-			<EventDetailsTabHierarchyNavigation
-				openSubTab={openSubTab}
-				hierarchyDepth={1}
-				translationKey0={"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"}
-				subTabArgument0={"workflow-details"}
-				translationKey1={"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TITLE"}
-				subTabArgument1={"workflow-operations"}
-			/>
+		<ModalContentTable
+			modalContentChildren={
+				/* Hierarchy navigation */
+				<EventDetailsTabHierarchyNavigation
+					openSubTab={openSubTab}
+					hierarchyDepth={1}
+					translationKey0={"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"}
+					subTabArgument0={"workflow-details"}
+					translationKey1={"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TITLE"}
+					subTabArgument1={"workflow-operations"}
+				/>
+			}
+			modalBodyChildren={<Notifications context="not_corner" />}
+		>
+			{/* 'Workflow Operations' table */}
+			<div className="obj tbl-container">
+				<header>
+					{
+						t(
+							"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TITLE"
+						) /* Workflow Operations */
+					}
+				</header>
+				<div className="obj-container">
+					<table className="main-tbl">
+						<thead>
+							<tr>
+								<th>
+									{
+										t(
+											"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TABLE_HEADERS.STATUS"
+										) /* Status */
+									}
+								</th>
+								<th>
+									{
+										t(
+											"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TABLE_HEADERS.TITLE"
+										) /* Title */
+									}
+									<i />
+								</th>
+								<th>
+									{
+										t(
+											"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TABLE_HEADERS.DESCRIPTION"
+										) /* Description */
+									}
+									<i />
+								</th>
+								<th className="medium" />
+							</tr>
+						</thead>
+						<tbody>
+							{/* workflow operation details */}
+							{operations.entries.map((item, key) => (
+								<tr key={key}>
+									<td>{t(item.status)}</td>
+									<td>{item.title}</td>
+									<td>{item.description}</td>
 
-			<div className="modal-body">
-				{/* Notifications */}
-				<Notifications context="not_corner" />
-
-				{/* 'Workflow Operations' table */}
-				<div className="full-col">
-					<div className="obj tbl-container">
-						<header>
-							{
-								t(
-									"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TITLE"
-								) /* Workflow Operations */
-							}
-						</header>
-						<div className="obj-container">
-							<table className="main-tbl">
-								<thead>
-									<tr>
-										<th>
+									{/* link to 'Operation Details'  sub-Tab */}
+									<td>
+										<button
+											className="button-like-anchor details-link"
+											onClick={() =>
+												openSubTab("workflow-operation-details", key)
+											}
+										>
 											{
 												t(
-													"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TABLE_HEADERS.STATUS"
-												) /* Status */
+													"EVENTS.EVENTS.DETAILS.MEDIA.DETAILS"
+												) /* Details */
 											}
-										</th>
-										<th>
-											{
-												t(
-													"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TABLE_HEADERS.TITLE"
-												) /* Title */
-											}
-											<i />
-										</th>
-										<th>
-											{
-												t(
-													"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TABLE_HEADERS.DESCRIPTION"
-												) /* Description */
-											}
-											<i />
-										</th>
-										<th className="medium" />
-									</tr>
-								</thead>
-								<tbody>
-									{/* workflow operation details */}
-									{operations.entries.map((item, key) => (
-										<tr key={key}>
-											<td>{t(item.status)}</td>
-											<td>{item.title}</td>
-											<td>{item.description}</td>
-
-											{/* link to 'Operation Details'  sub-Tab */}
-											<td>
-												<button
-													className="button-like-anchor details-link"
-													onClick={() =>
-														openSubTab("workflow-operation-details", key)
-													}
-												>
-													{
-														t(
-															"EVENTS.EVENTS.DETAILS.MEDIA.DETAILS"
-														) /* Details */
-													}
-												</button>
-											</td>
-										</tr>
-									))}
-								</tbody>
-							</table>
-						</div>
-					</div>
+										</button>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
 				</div>
 			</div>
-		</div>
+		</ModalContentTable>
 	);
 };
 
