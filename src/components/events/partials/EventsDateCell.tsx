@@ -6,8 +6,8 @@ import { getFilters } from "../../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
 import { renderValidDate } from "../../../utils/dateUtils";
-import { Tooltip } from "../../shared/Tooltip";
 import { Event } from "../../../slices/eventSlice";
+import { IconButton } from "../../shared/IconButton";
 
 /**
  * This component renders the start date cells of events in the table view
@@ -43,14 +43,13 @@ const EventsDateCell = ({
 
 	return (
 		// Link template for start date of event
-		<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.START")}>
-			<button
-				className="button-like-anchor crosslink"
-				onClick={() => addFilter(row.date)}
-			>
-				{t("dateFormats.date.short", { date: renderValidDate(row.date) })}
-			</button>
-		</Tooltip>
+		<IconButton
+			callback={() => addFilter(row.date)}
+			iconClassname={"crosslink"}
+			tooltipText={"EVENTS.EVENTS.TABLE.TOOLTIP.START"}
+		>
+			{t("dateFormats.date.short", { date: renderValidDate(row.date) })}
+		</IconButton>
 	);
 };
 
