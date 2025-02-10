@@ -87,6 +87,7 @@ export type Event = {
 }
 
 export type MetadataField = {
+	delimiter?: string,
 	differentValues?: boolean,
 	collection?: { [key: string]: unknown }[],  // different for e.g. languages and presenters
 	id: string,
