@@ -1,12 +1,9 @@
 import React, { useRef } from "react";
-import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
-import { getUserInformation } from "../../../selectors/userInfoSelectors";
-import { hasAccess } from "../../../utils/utils";
-import { useAppDispatch, useAppSelector } from "../../../store";
+import { useAppDispatch } from "../../../store";
 import { Recording, deleteRecording } from "../../../slices/recordingSlice";
 import { fetchRecordingDetails } from "../../../slices/recordingDetailsSlice";
-import { Tooltip } from "../../shared/Tooltip";
+import ButtonLikeAnchor from "../../shared/ButtonLikeAnchor";
 import { ModalHandle } from "../../shared/modals/Modal";
 import RecordingDetailsModal from "./modal/RecordingDetailsModal";
 
@@ -18,13 +15,10 @@ const RecordingsActionCell = ({
 }: {
 	row: Recording
 }) => {
-	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const deleteConfirmationModalRef = useRef<ModalHandle>(null);
 	const recordingDetailsModalRef = useRef<ModalHandle>(null);
-
-	const user = useAppSelector(state => getUserInformation(state));
 
 	const hideDeleteConfirmation = () => {
 		deleteConfirmationModalRef.current?.close?.();
@@ -43,14 +37,12 @@ const RecordingsActionCell = ({
 	return (
 		<>
 			{/* view details location/recording */}
-			{hasAccess("ROLE_UI_LOCATIONS_DETAILS_VIEW", user) && (
-				<Tooltip title={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DETAILS")}>
-					<button
-						className="button-like-anchor more"
-						onClick={() => showRecordingDetails()}
-					/>
-				</Tooltip>
-			)}
+			<ButtonLikeAnchor
+				extraClassName="more"
+				onClick={() => showRecordingDetails()}
+				tooltipText="RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DETAILS"
+				editAccessRole="ROLE_UI_LOCATIONS_DETAILS_VIEW"
+			/>
 
 			<RecordingDetailsModal
 				recordingId={row.name}
@@ -58,14 +50,12 @@ const RecordingsActionCell = ({
 			/>
 
 			{/* delete location/recording */}
-			{hasAccess("ROLE_UI_LOCATIONS_DELETE", user) && (
-				<Tooltip title={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DELETE")}>
-					<button
-						className="button-like-anchor remove"
-						onClick={() => deleteConfirmationModalRef.current?.open()}
-					/>
-				</Tooltip>
-			)}
+			<ButtonLikeAnchor
+				extraClassName="remove"
+				onClick={() => deleteConfirmationModalRef.current?.open()}
+				tooltipText="RECORDINGS.RECORDINGS.TABLE.TOOLTIP.DELETE"
+				editAccessRole="ROLE_UI_LOCATIONS_DELETE"
+			/>
 
 			<ConfirmModal
 				close={hideDeleteConfirmation}

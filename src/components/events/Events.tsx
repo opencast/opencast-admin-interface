@@ -43,6 +43,7 @@ import {
 import { fetchSeries } from "../../slices/seriesSlice";
 import EventDetailsModal from "./partials/modals/EventDetailsModal";
 import { showModal } from "../../selectors/eventDetailsSelectors";
+import ButtonLikeAnchor from "../shared/ButtonLikeAnchor";
 import { Modal, ModalHandle } from "../shared/modals/Modal";
 
 // References for detecting a click outside of the container of the dropdown menu
@@ -284,31 +285,31 @@ const Events = () => {
 								<ul className="dropdown-ul">
 									{hasAccess("ROLE_UI_EVENTS_DELETE", user) && (
 										<li>
-											<button className="button-like-anchor" onClick={() => deleteModalRef.current?.open()}>
+											<ButtonLikeAnchor onClick={() => deleteModalRef.current?.open()}>
 												{t("BULK_ACTIONS.DELETE.EVENTS.CAPTION")}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 									)}
 									{hasAccess("ROLE_UI_TASKS_CREATE", user) && (
 										<li>
-											<button className="button-like-anchor" onClick={() => startTaskModalRef.current?.open()}>
+											<ButtonLikeAnchor onClick={() => startTaskModalRef.current?.open()}>
 												{t("BULK_ACTIONS.SCHEDULE_TASK.CAPTION")}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 									)}
 									{hasAccess("ROLE_UI_EVENTS_DETAILS_SCHEDULING_EDIT", user) &&
 										hasAccess("ROLE_UI_EVENTS_DETAILS_METADATA_EDIT", user) && (
 											<li>
-												<button className="button-like-anchor" onClick={() => editScheduledEventsModalRef.current?.open()}>
+												<ButtonLikeAnchor onClick={() => editScheduledEventsModalRef.current?.open()}>
 													{t("BULK_ACTIONS.EDIT_EVENTS.CAPTION")}
-												</button>
+												</ButtonLikeAnchor>
 											</li>
 										)}
 									{hasAccess("ROLE_UI_EVENTS_DETAILS_METADATA_EDIT", user) && (
 										<li>
-											<button className="button-like-anchor" onClick={() => editMetadataEventsModalRef.current?.open()}>
+											<ButtonLikeAnchor onClick={() => editMetadataEventsModalRef.current?.open()}>
 												{t("BULK_ACTIONS.EDIT_EVENTS_METADATA.CAPTION")}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 									)}
 								</ul>

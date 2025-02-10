@@ -32,6 +32,7 @@ import {
 	showActionsSeries,
 } from "../../slices/seriesSlice";
 import { fetchSeriesDetailsTobiraNew } from "../../slices/seriesSlice";
+import ButtonLikeAnchor from "../shared/ButtonLikeAnchor";
 import { Modal, ModalHandle } from "../shared/modals/Modal";
 
 // References for detecting a click outside of the container of the dropdown menu
@@ -211,9 +212,9 @@ const Series = () => {
 								<ul className="dropdown-ul">
 									{hasAccess("ROLE_UI_SERIES_DELETE", user) && (
 										<li>
-											<button className="button-like-anchor" onClick={() => deleteModalRef.current?.open()}>
+											<ButtonLikeAnchor onClick={() => deleteModalRef.current?.open()}>
 												{t("BULK_ACTIONS.DELETE.SERIES.CAPTION")}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 									)}
 								</ul>
