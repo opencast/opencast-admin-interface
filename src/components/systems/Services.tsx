@@ -20,7 +20,6 @@ import MainView from "../MainView";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchServers } from "../../slices/serverSlice";
 import { fetchJobs } from "../../slices/jobSlice";
@@ -34,7 +33,6 @@ const Services = () => {
 	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 
-	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 	const user = useAppSelector(state => getUserInformation(state));
 	const services = useAppSelector(state => getTotalServices(state));
 
@@ -69,9 +67,7 @@ const Services = () => {
 	};
 
 	useEffect(() => {
-		if ("services" !== currentFilterType) {
-			dispatch(fetchFilters("services"));
-		}
+		dispatch(fetchFilters("services"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));

@@ -22,7 +22,6 @@ import MainView from "../MainView";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { fetchAcls } from "../../slices/aclSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchUsers } from "../../slices/userSlice";
@@ -40,7 +39,6 @@ const Users: React.FC = () => {
 
   const users = useAppSelector(state => getTotalUsers(state));
   const user = useAppSelector(state => getUserInformation(state));
-  const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	const loadUsers = async () => {
 		// Fetching users from server
@@ -73,9 +71,7 @@ const Users: React.FC = () => {
 	};
 
 	useEffect(() => {
-		if ("users" !== currentFilterType) {
-			dispatch(fetchFilters("users"));
-		}
+		dispatch(fetchFilters("users"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));
