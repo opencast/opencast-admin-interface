@@ -11,6 +11,7 @@ import DeleteSeriesModal from "./partials/modals/DeleteSeriesModal";
 import { seriesTemplateMap } from "../../configs/tableConfigs/seriesTableMap";
 import {
 	loadEventsIntoTable,
+	loadLifeCyclePoliciesIntoTable,
 	loadSeriesIntoTable,
 } from "../../thunks/tableThunks";
 import { fetchFilters, fetchStats, editTextFilter } from "../../slices/tableFilterSlice";
@@ -32,6 +33,7 @@ import {
 	showActionsSeries,
 } from "../../slices/seriesSlice";
 import { fetchSeriesDetailsTobiraNew } from "../../slices/seriesSlice";
+import { fetchLifeCyclePolicies } from "../../slices/lifeCycleSlice";
 import { Modal, ModalHandle } from "../shared/modals/Modal";
 
 // References for detecting a click outside of the container of the dropdown menu
@@ -76,6 +78,14 @@ const Series = () => {
 
 		//load series into table
 		dispatch(loadSeriesIntoTable());
+	};
+
+	const loadLifeCyclePolicies = async () => {
+		// Fetching policies from server
+		await dispatch(fetchLifeCyclePolicies());
+
+		// Load policies into table
+		dispatch(loadLifeCyclePoliciesIntoTable());
 	};
 
 	useEffect(() => {
@@ -180,6 +190,15 @@ const Series = () => {
 							onClick={() => loadSeries()}
 						>
 							{t("EVENTS.EVENTS.NAVIGATION.SERIES")}
+						</Link>
+					)}
+					{hasAccess("ROLE_UI_LIFECYCLEPOLICIES_VIEW", user) && (
+						<Link
+							to="/events/lifeCyclePolicies"
+							className={cn({ active: false })}
+							onClick={() => loadLifeCyclePolicies()}
+						>
+							{t("LIFECYCLE.NAVIGATION.POLICIES")}
 						</Link>
 					)}
 				</nav>
