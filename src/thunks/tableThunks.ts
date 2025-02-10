@@ -429,7 +429,9 @@ export const goToPage = (pageNumber: number) => async (dispatch: AppDispatch, ge
 	const offset = getPageOffset(state);
 	const pages = getTablePages(state);
 
-	dispatch(setPageActive(pages[offset].number));
+	if (pages) {
+		dispatch(setPageActive(offset ? pages[offset].number : pageNumber));
+	}
 
 	// Get resources of page and load them into table
 	// eslint-disable-next-line default-case
