@@ -30,7 +30,7 @@ const initialState: ThemeDetailsState = {
 	details: {
 		bumperActive: false,
 		bumperFile: "",
-		creationDate: undefined,
+		creationDate: "",
 		creator: "",
 		default: false,
 		description: "",
@@ -52,7 +52,7 @@ const initialState: ThemeDetailsState = {
 };
 
 // fetch details of certain theme from server
-export const fetchThemeDetails = createAppAsyncThunk('themeDetails/fetchThemeDetails', async (id: number) => {
+export const fetchThemeDetails = createAppAsyncThunk('themeDetails/fetchThemeDetails', async (id: ThemeDetailsState["details"]["id"]) => {
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -61,14 +61,14 @@ export const fetchThemeDetails = createAppAsyncThunk('themeDetails/fetchThemeDet
 });
 
 // fetch usage of a certain theme
-export const fetchUsage = createAppAsyncThunk('themeDetails/fetchUsage', async (id: number) => {
+export const fetchUsage = createAppAsyncThunk('themeDetails/fetchUsage', async (id: ThemeDetailsState["details"]["id"]) => {
 	const res = await axios.get(`/admin-ng/themes/${id}/usage.json`);
 	return res.data;
 });
 
 // update a certain theme
 export const updateThemeDetails = createAppAsyncThunk('themeDetails/updateThemeDetails', async (params: {
-	id: number,
+	id: ThemeDetailsState["details"]["id"],
 	values: ThemeDetailsInitialValues
 }, {dispatch}) => {
 	const { values, id } = params
@@ -113,7 +113,7 @@ const themeDetailsSlice = createSlice({
 				state.details = {
 					bumperActive: false,
 					bumperFile: "",
-					creationDate: undefined,
+					creationDate: "",
 					creator: "",
 					default: false,
 					description: "",

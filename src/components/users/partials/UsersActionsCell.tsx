@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../shared/ConfirmModal";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
-import { UserResult, deleteUser } from "../../../slices/userSlice";
+import { User, deleteUser } from "../../../slices/userSlice";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchUserDetails } from "../../../slices/userDetailsSlice";
 import { Tooltip } from "../../shared/Tooltip";
@@ -16,7 +16,7 @@ import UserDetails from "./modal/UserDetails";
 const UsersActionCell = ({
 	row,
 }: {
-	row: UserResult
+	row: User
 }) => {
 	const { t } = useTranslation();
   const dispatch = useAppDispatch();

@@ -3,19 +3,19 @@ import axios from 'axios';
 import { buildGroupBody } from '../utils/resourceUtils';
 import { addNotification } from './notificationSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { Group } from './groupSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of details of a group
  */
-export type GroupDetailsState = {
+
+export type GroupDetails = Group & {
+	roles: string[],
+}
+
+export type GroupDetailsState = GroupDetails & {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
-  role: string,
-	roles: string[],
-	name: string,
-	description: string,
-	id: string,
-	users: {id: string, name: string}[],
 }
 
 export interface UpdateGroupDetailsState extends Omit<GroupDetailsState, 'roles'> {
@@ -35,8 +35,8 @@ const initialState: GroupDetailsState = {
 };
 
 // fetch details about certain group from server
-export const fetchGroupDetails = createAppAsyncThunk('groupDetails/fetchGroupDetails', async (groupName: string) => {
-	const res = await axios.get(`/admin-ng/groups/${groupName}`);
+export const fetchGroupDetails = createAppAsyncThunk('groupDetails/fetchGroupDetails', async (groupId: GroupDetails["id"]) => {
+	const res = await axios.get(`/admin-ng/groups/${groupId}`);
 	const response = await res.data;
 
 	let users: GroupDetailsState["users"] = [];
@@ -64,7 +64,7 @@ export const fetchGroupDetails = createAppAsyncThunk('groupDetails/fetchGroupDet
 // update details of a certain group
 export const updateGroupDetails = createAppAsyncThunk('groupDetails/updateGroupDetails', async (params: {
 	values: UpdateGroupDetailsState,
-	groupId: string
+	groupId: GroupDetails["id"]
 }, {dispatch}) => {
 	const { values, groupId } = params
 

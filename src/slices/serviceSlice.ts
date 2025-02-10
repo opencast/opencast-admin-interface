@@ -62,7 +62,7 @@ export const fetchServices = createAppAsyncThunk('services/fetchServices', async
 
 // restarts a service after initiated by user
 export const restartService = createAppAsyncThunk('services/fetchServices', async (params: {
-	host: string,
+	host: Service["hostname"],
 	serviceType: string
 }) => {
 	const { host, serviceType } = params
