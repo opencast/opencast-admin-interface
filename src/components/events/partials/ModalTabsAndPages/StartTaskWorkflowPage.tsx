@@ -126,8 +126,6 @@ const StartTaskWorkflowPage = <T extends RequiredFormProps>({
 				}}
 				customValidation={!(formik.values.workflow && formik.isValid)}
 			/>
-
-			<div className="btm-spacer" />
 		</>
 	);
 };

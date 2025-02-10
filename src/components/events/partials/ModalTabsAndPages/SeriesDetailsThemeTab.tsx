@@ -96,8 +96,6 @@ const SeriesDetailsThemeTab = ({
 												cancelTranslationString="CANCEL"
 												isLast
 											/>
-
-											<div className="btm-spacer" />
 										</>
 									)}
 								</div>
