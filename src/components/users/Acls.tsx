@@ -32,7 +32,7 @@ import { ModalHandle } from "../shared/modals/Modal";
 /**
  * This component renders the table view of acls
  */
-const Acls: React.FC = () => {
+const Acls = () => {
 	const { t } = useTranslation();
 	const [displayNavigation, setNavigation] = useState(false);
 	const newAclModalRef = useRef<ModalHandle>(null);
