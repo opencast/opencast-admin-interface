@@ -1,5 +1,4 @@
 @use "sass:color";
-@use "../../../node_modules/bourbon/core/bourbon/library/shade";
 
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
@@ -211,22 +210,22 @@ $img-path:                      "/src/img/";
 // Success (Green)
 $state-success-text:             #3c763d;
 $state-success-bg:               #dff0d8;
-$state-success-border:           color.adjust(shade.shade($state-success-bg, 1%), $lightness: -3%);
+$state-success-border:           rgb(211.8267110656, 233.0538934426, 203.0861065574); //Old bourbon code that calculated these values: color.adjust(shade.shade($state-success-bg, 1%), $lightness: -3%);
 
 // Info (Blue)
 $state-info-text:                color.adjust(#31708f, $lightness: 5%);
 $state-info-bg:                  #d9edf7;
-$state-info-border:              color.adjust(shade.shade($state-info-bg, 1%), $lightness: -5%);
+$state-info-border:              rgb(194.6022156398, 224.3725947867, 239.2577843602); //Old bourbon code that calculated these values: color.adjust(shade.shade($state-info-bg, 1%), $lightness: -5%);
 
 // Warning (Yellow)
 $state-warning-text:             #8a6d3b;
 $state-warning-bg:               #fcf8e3;
-$state-warning-border:           color.adjust(shade.shade($state-warning-bg, 1%), $lightness: -5%);
+$state-warning-border:           rgb(245.5470578374, 238.7655993294, 203.1629421626); //Old bourbon code that calculated these values: color.adjust(shade.shade($state-warning-bg, 1%), $lightness: -5%);
 
 // Danger (Red)
 $state-danger-text:              #a94442;
 $state-danger-bg:                #f2dede;
-$state-danger-border:            color.adjust(shade.shade($state-danger-bg, 1%), $lightness: -3%);
+$state-danger-border:            rgb(234.9211137441, 209.1388862559, 209.1388862559); //Old bourbon code that calculated these values: color.adjust(shade.shade($state-danger-bg, 1%), $lightness: -3%);
 
 // Transition
 $alert-transition: color 300ms ease-in;

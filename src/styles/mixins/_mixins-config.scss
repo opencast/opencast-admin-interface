@@ -23,7 +23,6 @@
 @use "sass:color";
 @use "button";
 @use "triangle-point";
-@use "../../../node_modules/bourbon/core/bourbon/library/border-radius";
 @use "../base/fontawesome/fa-mixins";
 @use "../base/fontawesome/variables" as variables2;
 @use "../base/variables";
@@ -57,7 +56,8 @@
     line-height: $height;
     background: linear-gradient(to bottom, #fff, #f3f5f6);
     border-bottom: 1px solid variables.$main-border-color;
-    @include border-radius.border-top-radius(variables.$main-border-radius);
+    border-top-left-radius: variables.$main-border-radius;
+    border-top-right-radius: variables.$main-border-radius;
     margin: 0;
     width: 100%;
     padding-left: 10px;
@@ -102,7 +102,8 @@
 
     header {
         background: linear-gradient(variables.$white, #f7f7f7);
-        @include border-radius.border-top-radius(variables.$main-border-radius);
+        border-top-left-radius: variables.$main-border-radius;
+        border-top-right-radius: variables.$main-border-radius;
         border-bottom: variables.$thin-border-stroke variables.$main-border-color;
         height: 30px;
 
@@ -115,7 +116,8 @@
     .footer-btn {
         background: linear-gradient(variables.$off-white, #f0f2f5);
         border-top: variables.$thin-border-stroke color.adjust(#f0f2f5, $lightness: -10%);
-        @include border-radius.border-bottom-radius(variables.$main-border-radius);
+        border-bottom-left-radius: variables.$main-border-radius;
+        border-bottom-right-radius: variables.$main-border-radius;
         display: block;
         line-height: 30px;
         text-align: center;

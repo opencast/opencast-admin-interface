@@ -27,7 +27,6 @@ $disable-warnings: true !default; // disables deprecation warnings
 
 // Imports
 @use "sass:meta";
-@use "../../node_modules/bourbon/core/bourbon";
 
 // Foundation
 // ----------------------------------------
@@ -37,6 +36,7 @@ $disable-warnings: true !default; // disables deprecation warnings
 
 // Mixins
 @use "mixins/_mixins-config";
+@use "mixins/mixins-bourbon";
 
 // Components
 @use "components/components-config";
@@ -46,7 +46,6 @@ $disable-warnings: true !default; // disables deprecation warnings
 
 // Extensions
 @use "extensions/extensions-config";
-@use "../../node_modules/bourbon/core/bourbon/library/clearfix";
 @use "base/fontawesome/fa-mixins";
 @use "base/fontawesome/variables" as variables2;
 @use "base/variables";
@@ -612,7 +611,7 @@ tr.info {
 }
 
 .video-player {
-  @include clearfix.clearfix();
+  @include mixins-bourbon.clearfix;
   width: 100%;
   margin: 0 auto;
   background: #1e1e1e;

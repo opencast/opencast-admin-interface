@@ -1,5 +1,4 @@
 @use "sass:color";
-@use "../../../../node_modules/bourbon/core/bourbon/library/border-radius";
 @use "../../base/variables";
 @use "../../mixins/button";
 
@@ -28,7 +27,8 @@
 .modal footer {
     width: 100%;
     height: 60px;
-    @include border-radius.border-bottom-radius(variables.$main-border-radius);
+    border-bottom-left-radius: variables.$main-border-radius;
+    border-bottom-right-radius: variables.$main-border-radius;
     background: color.adjust(variables.$body-background, $lightness: -3%);
     border-top: 1px solid variables.$main-border-color;
 
