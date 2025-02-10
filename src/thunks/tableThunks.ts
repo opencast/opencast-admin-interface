@@ -80,8 +80,8 @@ export const loadEventsIntoTable = (): AppThunk => async (dispatch, getState) =>
 		columns: events.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["events"],
+		reverse: table.reverse["events"],
 		totalItems: total,
 	};
 
@@ -90,8 +90,6 @@ export const loadEventsIntoTable = (): AppThunk => async (dispatch, getState) =>
 
 		tableData = {
 			...tableData,
-			sortBy: "date",
-			reverse: "DESC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -129,8 +127,8 @@ export const loadSeriesIntoTable = (): AppThunk => (dispatch, getState) => {
 		columns: series.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["series"],
+		reverse: table.reverse["series"],
 		totalItems: total,
 	};
 
@@ -139,8 +137,6 @@ export const loadSeriesIntoTable = (): AppThunk => (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "title",
-			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -160,8 +156,8 @@ export const loadRecordingsIntoTable = (): AppThunk => (dispatch, getState) => {
 		columns: recordings.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["recordings"],
+		reverse: table.reverse["recordings"],
 		rows: resource.map((obj) => {
 			return { ...obj, selected: false }
 		}),
@@ -173,8 +169,6 @@ export const loadRecordingsIntoTable = (): AppThunk => (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "status",
-			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -198,8 +192,8 @@ export const loadJobsIntoTable = (): AppThunk => (dispatch, getState) => {
 		columns: jobs.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["jobs"],
+		reverse: table.reverse["jobs"],
 		totalItems: total,
 	};
 
@@ -208,8 +202,6 @@ export const loadJobsIntoTable = (): AppThunk => (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "id",
-			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -232,8 +224,8 @@ export const loadServersIntoTable = (): AppThunk => (dispatch, getState) => {
 		columns: servers.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["servers"],
+		reverse: table.reverse["servers"],
 		totalItems: total,
 	};
 
@@ -242,8 +234,6 @@ export const loadServersIntoTable = (): AppThunk => (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "online",
-			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -267,8 +257,8 @@ export const loadServicesIntoTable = (): AppThunk => (dispatch, getState) => {
 		resource: "services",
 		columns: services.columns,
 		multiSelect: table.multiSelect,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["services"],
+		reverse: table.reverse["services"],
 	};
 
 	if (table.resource !== "services") {
@@ -276,8 +266,6 @@ export const loadServicesIntoTable = (): AppThunk => (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "status",
-			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -301,8 +289,8 @@ export const loadUsersIntoTable = (): AppThunk => (dispatch, getState) => {
 		columns: users.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["users"],
+		reverse: table.reverse["users"],
 		totalItems: total,
 	};
 
@@ -311,8 +299,6 @@ export const loadUsersIntoTable = (): AppThunk => (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "name",
-			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -335,8 +321,8 @@ export const loadGroupsIntoTable = (): AppThunk => (dispatch, getState) => {
 		columns: groups.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["groups"],
+		reverse: table.reverse["groups"],
 		totalItems: total,
 	};
 
@@ -345,8 +331,6 @@ export const loadGroupsIntoTable = (): AppThunk => (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "name",
-			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -369,8 +353,8 @@ export const loadAclsIntoTable = (): AppThunk => (dispatch, getState) => {
 		columns: acls.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["acls"],
+		reverse: table.reverse["acls"],
 		totalItems: total,
 	};
 
@@ -378,8 +362,6 @@ export const loadAclsIntoTable = (): AppThunk => (dispatch, getState) => {
 		const multiSelect = aclsTableConfig.multiSelect;
 		tableData = {
 			...tableData,
-			sortBy: "name",
-			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -402,8 +384,8 @@ export const loadThemesIntoTable = (): AppThunk => (dispatch, getState) => {
 		columns: themes.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["themes"],
+		reverse: table.reverse["themes"],
 		totalItems: total,
 	};
 
@@ -412,8 +394,6 @@ export const loadThemesIntoTable = (): AppThunk => (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "name",
-			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
