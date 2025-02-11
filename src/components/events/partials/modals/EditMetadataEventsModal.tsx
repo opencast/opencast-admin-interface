@@ -288,8 +288,6 @@ const EditMetadataEventsModal = ({
 								cancelTranslationString="CLOSE"
 								isLast
 							/>
-
-							<div className="btm-spacer" />
 						</>
 					)}
 				</Formik>

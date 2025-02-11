@@ -130,8 +130,6 @@ const NewProcessingPage = <T extends RequiredFormProps>({
 				nextPage={nextPage}
 				previousPage={() => previous()}
 			/>
-
-			<div className="btm-spacer" />
 		</>
 	);
 };

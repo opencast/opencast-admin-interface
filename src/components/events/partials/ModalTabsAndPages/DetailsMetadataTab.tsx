@@ -155,13 +155,12 @@ const DetailsMetadataTab = ({
 										isLast
 									/>
 
-											<div className="btm-spacer" />
-										</>
-									)}
-								</div>
+								</>
 							)}
-						</Formik>
-					))
+							</div>
+						)}
+					</Formik>
+				))
 			}
 		</ModalContentTable>
 	);

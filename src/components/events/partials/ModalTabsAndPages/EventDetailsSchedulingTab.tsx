@@ -471,8 +471,8 @@ const EventDetailsSchedulingTab = ({
 													</tr>
 												}
 
-											{/* inputs */}
-											<tr>
+										{/* inputs */}
+										<tr>
 												<td>
 													{t(
 														"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.INPUTS"
@@ -520,8 +520,6 @@ const EventDetailsSchedulingTab = ({
 											cancelTranslationString="CANCEL"
 											isLast
 										/>
-
-										<div className="btm-spacer" />
 									</>
 								)}
 							</div>

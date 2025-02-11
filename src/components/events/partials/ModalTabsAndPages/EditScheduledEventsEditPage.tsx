@@ -424,8 +424,6 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 					}
 				}
 			/>
-
-			<div className="btm-spacer" />
 		</>
 	);
 };
