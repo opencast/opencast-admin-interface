@@ -11,7 +11,7 @@ import { parseISO } from "date-fns";
 import { FieldProps } from "formik";
 import { MetadataField } from "../../../slices/eventSlice";
 import { renderValidDate } from "../../../utils/dateUtils";
-import Cron from "react-js-cron";
+import { Cron } from "react-js-cron";
 import 'react-js-cron/dist/styles.css'
 
 const childRef = React.createRef<HTMLDivElement>();
@@ -208,6 +208,7 @@ const EditableDateValue = ({
 			className="datepicker-custom-input"
 			wrapperClassName="datepicker-custom-wrapper"
 			locale={getCurrentLanguageInformation()?.dateLocale}
+			strictParsing
 		/>
 	</div>
 ) : (
@@ -412,6 +413,7 @@ const EditableSingleValueTime = ({
 				className="datepicker-custom-input"
 				wrapperClassName="datepicker-custom-wrapper"
 				locale={getCurrentLanguageInformation()?.dateLocale}
+				strictParsing
 			/>
 		</div>
 	) : (

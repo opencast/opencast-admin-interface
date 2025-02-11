@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { MetadataCatalog, UploadAssetOption, postNewEvent } from "../../../../slices/eventSlice";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import NewMetadataCommonPage from "../ModalTabsAndPages/NewMetadataCommonPage";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
 
@@ -37,6 +38,12 @@ const NewEventWizard: React.FC<{
 	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
+
+	useEffect(() => {
+		dispatch(removeNotificationWizardForm());
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	// Whether the ACL of a new event is initialized with the ACL of its series.
 	let initEventAclWithSeriesAcl = true
@@ -113,20 +120,24 @@ const NewEventWizard: React.FC<{
 		updatedPageCompleted[page] = true;
 		setPageCompleted(updatedPageCompleted);
 
-		if (steps[page + 1].hidden) {
-			setPage(page + 2);
-		} else {
-			setPage(page + 1);
+		let newPage = page;
+		do {
+			newPage = newPage + 1;
+		} while(steps[newPage] && steps[newPage].hidden);
+		if (steps[newPage]) {
+			setPage(newPage)
 		}
 	};
 
-	const previousPage = (values: typeof initialValues, twoPagesBack: boolean = false) => {
+	const previousPage = (values: typeof initialValues) => {
 		setSnapshot(values);
-		// if previous page is hidden or not always shown, than go back two pages
-		if (steps[page - 1].hidden || twoPagesBack) {
-			setPage(page - 2);
-		} else {
-			setPage(page - 1);
+
+		let newPage = page;
+		do {
+			newPage = newPage - 1;
+		} while(steps[newPage] && steps[newPage].hidden);
+		if (steps[newPage]) {
+			setPage(newPage)
 		}
 	};
 

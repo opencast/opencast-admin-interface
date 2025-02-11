@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import {
 	NOTIFICATION_CONTEXT,
 	NOTIFICATION_CONTEXT_ACCESS,
+	NOTIFICATION_CONTEXT_TOBIRA,
 } from "../configs/modalConfig";
 import {
 	ADMIN_NOTIFICATION_DURATION_ERROR,
@@ -183,12 +184,17 @@ const notificationSlice = createSlice({
 		},
 		removeNotificationWizardForm(state) {
 			state.notifications = state.notifications.filter(
-				(notification) => notification.context === NOTIFICATION_CONTEXT
+				(notification) => notification.context !== NOTIFICATION_CONTEXT
 			)
 		},
 		removeNotificationWizardAccess(state) {
 			state.notifications = state.notifications.filter(
 				(notification) => notification.context !== NOTIFICATION_CONTEXT_ACCESS
+			)
+		},
+		removeNotificationWizardTobira(state) {
+			state.notifications = state.notifications.filter(
+				(notification) => notification.context !== NOTIFICATION_CONTEXT_TOBIRA
 			)
 		},
 		setHidden(state, action: PayloadAction<{
@@ -215,6 +221,7 @@ export const {
 	removeNotificationByKey,
 	removeNotificationWizardForm,
 	removeNotificationWizardAccess,
+	removeNotificationWizardTobira,
 	setHidden,
 } = notificationSlice.actions;
 

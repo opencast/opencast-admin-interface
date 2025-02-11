@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import NewAccessPage from "../ModalTabsAndPages/NewAccessPage";
-import WizardStepperEvent from "../../../shared/wizard/WizardStepperEvent";
+import WizardStepper from "../../../shared/wizard/WizardStepper";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
@@ -111,7 +111,7 @@ const NewLifeCyclePolicyWizard = ({
 					return (
 						<>
 							{/* Stepper that shows each step of wizard as header */}
-							<WizardStepperEvent
+							<WizardStepper
 								steps={steps}
 								page={page}
 								setPage={setPage}

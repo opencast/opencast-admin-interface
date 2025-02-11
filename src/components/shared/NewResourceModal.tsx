@@ -12,13 +12,15 @@ import { Modal, ModalHandle } from "./modals/Modal";
 /**
  * This component renders the modal for adding new resources
  */
+export type NewResource = "events" | "series" | "user" | "group" | "acl" | "themes" | "lifecyclepolicy";
+
 const NewResourceModal = ({
 	handleClose,
 	resource,
 	modalRef
 }: {
 	handleClose: () => void,
-	resource: "events" | "series" | "user" | "group" | "acl" | "themes" | "lifecyclepolicy"
+	resource: NewResource
 	modalRef: React.RefObject<ModalHandle>
 }) => {
 	const { t } = useTranslation();

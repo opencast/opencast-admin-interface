@@ -126,7 +126,7 @@ const LifeCyclePolicyGeneralTab = ({
 				<>
 					<div className="modal-content">
 						<div className="modal-body">
-							<Notifications context="not-corner" />
+							<Notifications context="not_corner" />
 							<div className="full-col">
 								{/* <div className="obj tbl-list">
 									<header className="no-expand">{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.CAPTION")}</header> */}
