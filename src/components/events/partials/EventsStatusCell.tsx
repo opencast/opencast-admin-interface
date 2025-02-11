@@ -1,7 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../../../store";
-import { Tooltip } from "../../shared/Tooltip";
 import { Event } from "../../../slices/eventSlice";
 import {
 	fetchWorkflows,
@@ -9,6 +8,7 @@ import {
 } from "../../../slices/eventDetailsSlice";
 import { EventDetailsPage } from "./modals/EventDetails";
 import { hasScheduledStatus } from "../../../utils/eventDetailsUtils";
+import { IconButton } from "../../shared/IconButton";
 
 /**
  * This component renders the status cells of events in the table view
@@ -41,14 +41,13 @@ const EventsStatusCell = ({
 	};
 
 	return (
-		<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.STATUS")}>
-			<button
-				className="button-like-anchor crosslink"
-				onClick={() => openStatusModal()}
-			>
-				{t(row.displayable_status)}
-			</button>
-		</Tooltip>
+		<IconButton
+			callback={() => openStatusModal()}
+			iconClassname={"crosslink"}
+			tooltipText={"EVENTS.EVENTS.TABLE.TOOLTIP.STATUS"}
+		>
+			{t(row.displayable_status)}
+		</IconButton>
 	);
 };
 
