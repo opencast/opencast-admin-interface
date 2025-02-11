@@ -92,7 +92,7 @@ const Events = () => {
 			}
 		};
 
-		// Fetch events every minute
+		// Fetch events every five seconds
 		let fetchEventsInterval = setInterval(() => loadEvents(dispatch), 5000);
 
 		// Event listener for handle a click outside of dropdown menu
