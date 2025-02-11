@@ -30,7 +30,7 @@ const EventDetailsPublicationTab = ({
 		<>
 			<div className="modal-content">
 				<div className="modal-body">
-					<Notifications />
+					<Notifications context={"other"}/>
 					<div className="full-col">
 						<div className="obj list-obj">
 							<header>{t("EVENTS.EVENTS.DETAILS.PUBLICATIONS.CAPTION")}</header>
@@ -61,7 +61,7 @@ const EventDetailsPublicationTab = ({
 															)}
 														</span>
 														<div>
-															<span>{t(publication.name)}</span>
+															<span>{publication.label ? t(publication.label) : t(publication.name)}</span>
 															{publication.description && (
 																<p className="description">
 																	{publication.description}

@@ -225,8 +225,6 @@ const NewSourcePage = <T extends RequiredFormProps>({
 				}}
 				previousPage={previousPage}
 			/>
-
-			<div className="btm-spacer" />
 		</>
 	);
 };
@@ -429,6 +427,7 @@ const Schedule = <T extends {
 									className="datepicker-custom-input"
 									portalId="root"
 									locale={currentLanguage?.dateLocale}
+									strictParsing
 								/>
 							</td>
 						</tr>
@@ -459,6 +458,7 @@ const Schedule = <T extends {
 											className="datepicker-custom-input"
 											portalId="root"
 											locale={currentLanguage?.dateLocale}
+											strictParsing
 										/>
 									</td>
 								</tr>
