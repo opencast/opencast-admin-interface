@@ -226,8 +226,6 @@ const NewSourcePage = <T extends RequiredFormProps>({
 				}}
 				previousPage={previousPage}
 			/>
-
-			<div className="btm-spacer" />
 		</>
 	);
 };

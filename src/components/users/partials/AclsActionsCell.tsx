@@ -1,14 +1,12 @@
 import React, { useRef } from "react";
-import { useTranslation } from "react-i18next";
-import ConfirmModal from "../../shared/ConfirmModal";
 import { AclResult, deleteAcl } from "../../../slices/aclSlice";
-import { getUserInformation } from "../../../selectors/userInfoSelectors";
-import { hasAccess } from "../../../utils/utils";
-import { useAppDispatch, useAppSelector } from "../../../store";
+import { useAppDispatch } from "../../../store";
 import { fetchAclDetails } from "../../../slices/aclDetailsSlice";
-import { Tooltip } from "../../shared/Tooltip";
 import { Modal, ModalHandle } from "../../shared/modals/Modal";
 import AclDetails from "./modal/AclDetails";
+import { ActionCellDelete } from "../../shared/ActionCellDelete";
+import { IconButton } from "../../shared/IconButton";
+import { useTranslation } from "react-i18next";
 
 /**
  * This component renders the action cells of acls in the table view
@@ -21,18 +19,7 @@ const AclsActionsCell = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const deleteConfirmationModalRef = useRef<ModalHandle>(null);
 	const modalRef = useRef<ModalHandle>(null);
-
-	const user = useAppSelector(state => getUserInformation(state));
-
-	const hideDeleteConfirmation = () => {
-		deleteConfirmationModalRef.current?.close?.();
-	};
-
-	const deletingAcl = (id: number) => {
-		dispatch(deleteAcl(id));
-	};
 
 	const hideAclDetails = () => {
 		modalRef.current?.close?.()
@@ -44,17 +31,19 @@ const AclsActionsCell = ({
 		modalRef.current?.open()
 	};
 
+	const deletingAcl = (id: number) => {
+		dispatch(deleteAcl(id));
+	};
+
 	return (
 		<>
 			{/* edit/show ACL details */}
-			{hasAccess("ROLE_UI_ACLS_EDIT", user) && (
-				<Tooltip title={t("USERS.ACLS.TABLE.TOOLTIP.DETAILS")}>
-					<button
-						onClick={() => showAclDetails()}
-						className="button-like-anchor more"
-					/>
-				</Tooltip>
-			)}
+			<IconButton
+				callback={showAclDetails}
+				iconClassname={"more"}
+				editAccessRole={"ROLE_UI_ACLS_EDIT"}
+				tooltipText={"USERS.ACLS.TABLE.TOOLTIP.DETAILS"}
+			/>
 
 			{/* ACL details modal */}
 			<Modal
@@ -67,23 +56,13 @@ const AclsActionsCell = ({
 			</Modal>
 
 			{/* delete ACL */}
-			{hasAccess("ROLE_UI_ACLS_DELETE", user) && (
-				<Tooltip title={t("USERS.ACLS.TABLE.TOOLTIP.DETAILS")}>
-					<button
-						onClick={() => deleteConfirmationModalRef.current?.open()}
-						className="button-like-anchor remove"
-					/>
-				</Tooltip>
-			)}
-
-			{/* Confirmation for deleting an ACL */}
-			<ConfirmModal
-				close={hideDeleteConfirmation}
-				resourceName={row.name}
+			<ActionCellDelete
+				editAccessRole={"ROLE_UI_ACLS_DELETE"}
+				tooltipText={"USERS.ACLS.TABLE.TOOLTIP.DETAILS"}
 				resourceId={row.id}
-				resourceType="ACL"
+				resourceName={row.name}
+				resourceType={"ACL"}
 				deleteMethod={deletingAcl}
-				modalRef={deleteConfirmationModalRef}
 			/>
 		</>
 	);

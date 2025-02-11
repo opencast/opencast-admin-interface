@@ -121,8 +121,6 @@ const ThemeDetails = ({
 							createTranslationString={"SUBMIT"}
 							cancelTranslationString={"CANCEL"}
 						/>
-
-						<div className="btm-spacer" />
 					</div>
 				)}
 			</Formik>

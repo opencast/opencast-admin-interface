@@ -1,21 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
-import MainNav from "../shared/MainNav";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { Link, useLocation } from "react-router";
+import { useLocation } from "react-router";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
-import NewResourceModal from "../shared/NewResourceModal";
 import DeleteSeriesModal from "./partials/modals/DeleteSeriesModal";
 import { seriesTemplateMap } from "../../configs/tableConfigs/seriesTableMap";
 import {
-	loadEventsIntoTable,
 	loadSeriesIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchFilters, fetchStats, editTextFilter } from "../../slices/tableFilterSlice";
+import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
 import { getTotalSeries, isShowActions } from "../../selectors/seriesSeletctor";
-import { setOffset } from "../../slices/tableSlice";
 import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
@@ -24,7 +20,6 @@ import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { fetchEvents } from "../../slices/eventSlice";
 import {
 	fetchSeries,
 	fetchSeriesMetadata,
@@ -33,7 +28,9 @@ import {
 } from "../../slices/seriesSlice";
 import { fetchSeriesDetailsTobiraNew } from "../../slices/seriesSlice";
 import ButtonLikeAnchor from "../shared/ButtonLikeAnchor";
+import { eventsLinks, loadSeries } from "./partials/EventsNavigation";
 import { Modal, ModalHandle } from "../shared/modals/Modal";
+import { availableHotkeys } from "../../configs/hotkeysConfig";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef<HTMLDivElement>();
@@ -57,28 +54,6 @@ const Series = () => {
 	const series = useAppSelector(state => getTotalSeries(state));
 	const showActions = useAppSelector(state => isShowActions(state));
 
-	const loadEvents = () => {
-		// Reset the current page to first page
-		dispatch(setOffset(0));
-
-		// Fetching stats from server
-		dispatch(fetchStats());
-
-		// Fetching events from server
-		dispatch(fetchEvents());
-
-		// Load events into table
-		dispatch(loadEventsIntoTable());
-	};
-
-	const loadSeries = async () => {
-		//fetching series from server
-		await dispatch(fetchSeries());
-
-		//load series into table
-		dispatch(loadSeriesIntoTable());
-	};
-
 	useEffect(() => {
 		if ("series" !== currentFilterType) {
 			dispatch(fetchFilters("series"))
@@ -91,7 +66,7 @@ const Series = () => {
 		dispatch(showActionsSeries(false));
 
 		// Load events on mount
-		loadSeries().then((r) => console.info(r));
+		loadSeries(dispatch);
 
 		// Function for handling clicks outside of an dropdown menu
 		const handleClickOutside = (e: MouseEvent) => {
@@ -104,7 +79,7 @@ const Series = () => {
 		};
 
 		// Fetch series every minute
-		let fetchSeriesInterval = setInterval(loadSeries, 5000);
+		let fetchSeriesInterval = setInterval(() => loadSeries(dispatch), 5000);
 
 		// Event listener for handle a click outside of dropdown menu
 		window.addEventListener("mousedown", handleClickOutside);
@@ -116,25 +91,17 @@ const Series = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location.hash]);
 
-	const toggleNavigation = () => {
-		setNavigation(!displayNavigation);
-	};
-
 	const handleActionMenu = (e: React.MouseEvent) => {
 		e.preventDefault();
 		setActionMenu(!displayActionMenu);
 	};
 
-	const showNewSeriesModal = async () => {
+	const onNewSeriesModal = async () => {
 		await dispatch(fetchSeriesMetadata());
 		await dispatch(fetchSeriesThemes());
 		await dispatch(fetchSeriesDetailsTobiraNew("/"));
 
 		newSeriesModalRef.current?.open();
-	};
-
-	const hideNewSeriesModal = () => {
-		newSeriesModalRef.current?.close?.();
 	};
 
 	const hideDeleteModal = () => {
@@ -144,14 +111,22 @@ const Series = () => {
 	return (
 		<>
 			<Header />
-			<NavBar>
-				{/* Display modal for new series if add series button is clicked */}
-				<NewResourceModal
-					handleClose={hideNewSeriesModal}
-					resource={"series"}
-					modalRef={newSeriesModalRef}
-				/>
-
+			<NavBar
+				displayNavigation={displayNavigation}
+				setNavigation={setNavigation}
+				navAriaLabel={"EVENTS.EVENTS.NAVIGATION.LABEL"}
+				links={
+					eventsLinks
+				}
+				create={{
+					accessRole: "ROLE_UI_SERIES_CREATE",
+					onShowModal: onNewSeriesModal,
+					text: "EVENTS.EVENTS.ADD_SERIES",
+					resource: "series",
+					hotkeySequence: availableHotkeys.general.NEW_SERIES.sequence,
+					hotkeyDescription: availableHotkeys.general.NEW_SERIES.description,
+				}}
+			>
 				<Modal
 					header={t("BULK_ACTIONS.DELETE.SERIES.CAPTION")}
 					classId="delete-series-status-modal"
@@ -160,39 +135,6 @@ const Series = () => {
 				>
 					<DeleteSeriesModal close={hideDeleteModal} />
 				</Modal>
-
-				{/* Include Burger-button menu */}
-				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
-
-				<nav aria-label={t("EVENTS.EVENTS.NAVIGATION.LABEL")}>
-					{hasAccess("ROLE_UI_EVENTS_VIEW", user) && (
-						<Link
-							to="/events/events"
-							className={cn({ active: false })}
-							onClick={() => loadEvents()}
-						>
-							{t("EVENTS.EVENTS.NAVIGATION.EVENTS")}
-						</Link>
-					)}
-					{hasAccess("ROLE_UI_SERIES_VIEW", user) && (
-						<Link
-							to="/events/series"
-							className={cn({ active: true })}
-							onClick={() => loadSeries()}
-						>
-							{t("EVENTS.EVENTS.NAVIGATION.SERIES")}
-						</Link>
-					)}
-				</nav>
-
-				<div className="btn-group">
-					{hasAccess("ROLE_UI_SERIES_CREATE", user) && (
-						<button className="add" onClick={() => showNewSeriesModal()}>
-							<i className="fa fa-plus" />
-							<span>{t("EVENTS.EVENTS.ADD_SERIES")}</span>
-						</button>
-					)}
-				</div>
 			</NavBar>
 
 			<MainView open={displayNavigation}>
