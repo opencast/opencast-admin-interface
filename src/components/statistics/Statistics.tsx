@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import cn from "classnames";
 import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
 import Footer from "../Footer";
-import MainNav from "../shared/MainNav";
 import TimeSeriesStatistics from "../shared/TimeSeriesStatistics";
 import {
 	getStatistics,
@@ -16,9 +13,7 @@ import {
 } from "../../selectors/statisticsSelectors";
 import {
 	getOrgId,
-	getUserInformation,
 } from "../../selectors/userInfoSelectors";
-import { hasAccess } from "../../utils/utils";
 import { fetchUserInfo } from "../../slices/userInfoSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
@@ -33,7 +28,6 @@ const Statistics: React.FC = () => {
 	const [displayNavigation, setNavigation] = useState(false);
 
 	const organizationId = useAppSelector(state => getOrgId(state));
-	const user = useAppSelector(state => getUserInformation(state));
 	const statistics = useAppSelector(state => getStatistics(state));
 	const hasStatistics = useAppSelector(state => getHasStatistics(state));
 	const hasError = useAppSelector(state => hasStatisticsError(state));
@@ -52,10 +46,6 @@ const Statistics: React.FC = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const toggleNavigation = () => {
-		setNavigation(!displayNavigation);
-	};
-
 	/* generates file name for download-link for a statistic */
 	const statisticsCsvFileName = (statsTitle: string) => {
 		const sanitizedStatsTitle = statsTitle
@@ -71,24 +61,20 @@ const Statistics: React.FC = () => {
 	};
 
 	return (
-                <span>
+		<span>
 			<Header />
-			<NavBar>
-				{/* Include Burger-button menu */}
-				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
-
-				<nav>
-					{hasAccess("ROLE_UI_STATISTICS_ORGANIZATION_VIEW", user) && (
-						<Link
-							to="/statistics/organization"
-							className={cn({ active: true })}
-							onClick={() => {}}
-						>
-							{t("STATISTICS.NAVIGATION.ORGANIZATION")}
-						</Link>
-					)}
-				</nav>
-			</NavBar>
+			<NavBar
+					displayNavigation={displayNavigation}
+					setNavigation={setNavigation}
+					links={[
+						{
+							path: "/statistics/organization",
+							accessRole: "ROLE_UI_STATISTICS_ORGANIZATION_VIEW",
+							loadFn: () => {},
+							text: "STATISTICS.NAVIGATION.ORGANIZATION"
+						}
+					]}
+			/>
 
 			{/* main view of this page, displays statistics */}
 			<MainView open={displayNavigation}>
