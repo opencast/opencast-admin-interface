@@ -11,6 +11,8 @@ import { Modal, ModalHandle } from "./modals/Modal";
 /**
  * This component renders the modal for adding new resources
  */
+export type NewResource = "events" | "series" | "user" | "group" | "acl" | "themes";
+
 const NewResourceModal = ({
 	handleClose,
 	resource,

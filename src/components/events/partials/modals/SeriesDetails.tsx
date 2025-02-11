@@ -27,6 +27,7 @@ import {
 	updateSeriesMetadata,
 } from "../../../../slices/seriesDetailsSlice";
 import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
+import { removeNotificationWizardTobira } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the tabs of the series details modal
@@ -53,6 +54,7 @@ const SeriesDetails = ({
 	const tobiraError = useAppSelector(state => getSeriesDetailsTobiraDataError(state));
 
 	useEffect(() => {
+		dispatch(removeNotificationWizardTobira());
 		dispatch(fetchSeriesStatistics(seriesId));
 		dispatch(fetchSeriesDetailsTobira(seriesId));
 		dispatch(setTobiraTabHierarchy("main"));
