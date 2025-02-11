@@ -1,4 +1,4 @@
-import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice, unwrapResult } from '@reduxjs/toolkit'
 import { eventsTableConfig } from "../configs/tableConfigs/eventsTableConfig";
 import axios, { AxiosProgressEvent } from 'axios';
 import moment from "moment-timezone";
@@ -23,9 +23,10 @@ import {
 import { getAssetUploadOptions, getSchedulingEditedEvents } from '../selectors/eventSelectors';
 import { fetchSeriesOptions } from "./seriesSlice";
 import { AppDispatch } from '../store';
-import { fetchAssetUploadOptions } from '../thunks/assetsThunks';
+import { enrichPublications, fetchAssetUploadOptions } from '../thunks/assetsThunks';
 import { TransformedAcl } from './aclDetailsSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
+import { Publication } from './eventDetailsSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { FormikErrors } from 'formik';
 
@@ -73,13 +74,7 @@ export type Event = {
 	managedAcl: string,
 	needs_cutting: boolean,
 	presenters: string[],
-	publications: {
-		enabled: boolean,
-		hiding: boolean,
-		id: string,
-		name: string,
-		url: string,
-	}[],
+	publications: Publication[],
 	selected?: boolean,
 	series?: { id: string, title: string }
 	source: string,
@@ -92,6 +87,7 @@ export type Event = {
 }
 
 export type MetadataField = {
+	delimiter?: string,
 	differentValues?: boolean,
 	collection?: { [key: string]: unknown }[],  // different for e.g. languages and presenters
 	id: string,
@@ -233,7 +229,7 @@ const initialState: EventState = {
 };
 
 // fetch events from server
-export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, { getState }) => {
+export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, { dispatch, getState }) => {
 	const state = getState();
 	let params: ReturnType<typeof getURLParams> & { getComments?: boolean } = getURLParams(state);
 
@@ -257,16 +253,15 @@ export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, {
 			...response.results[i],
 			date: response.results[i].start_date,
 		};
-		// insert enabled and hiding property of publications, if result has publications
+		// insert enabled and hide property of publications, if result has publications
 		let result = response.results[i];
 		if (!!result.publications && result.publications.length > 0) {
-			let transformedPublications = [];
-			for (let j = 0; result.publications.length > j; j++) {
-				transformedPublications.push({
-					...result.publications[j],
-					enabled: true,
-					hiding: false,
-				});
+			let transformedPublications: Publication[] = [];
+			try {
+				const resultAction = await dispatch(enrichPublications({ publications: result.publications }));
+				transformedPublications = unwrapResult(resultAction);
+			} catch (rejectedValueOrSerializedError) {
+				console.error(rejectedValueOrSerializedError)
 			}
 			response.results[i] = {
 				...response.results[i],

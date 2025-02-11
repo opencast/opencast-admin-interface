@@ -21,6 +21,7 @@ import NewTobiraPage from "../ModalTabsAndPages/NewTobiraPage";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import NewMetadataCommonPage from "../ModalTabsAndPages/NewMetadataCommonPage";
 
 /**
@@ -39,6 +40,12 @@ const NewSeriesWizard: React.FC<{
 	const tobiraError = useAppSelector(state => getSeriesTobiraPageError(state));
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
+
+	useEffect(() => {
+		dispatch(removeNotificationWizardForm());
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const themesEnabled = (orgProperties['admin.themes.enabled'] || 'false').toLowerCase() === 'true';
 
@@ -112,10 +119,12 @@ const NewSeriesWizard: React.FC<{
 		updatedPageCompleted[page] = true;
 		setPageCompleted(updatedPageCompleted);
 
-		if (steps[page + 1].hidden) {
-			setPage(page + 2);
-		} else {
-			setPage(page + 1);
+		let newPage = page;
+		do {
+			newPage = newPage + 1;
+		} while(steps[newPage] && steps[newPage]!.hidden);
+		if (steps[newPage]) {
+			setPage(newPage)
 		}
 	};
 
@@ -129,11 +138,13 @@ const NewSeriesWizard: React.FC<{
 		twoPagesBack?: boolean
 	) => {
 		setSnapshot(values);
-		// if previous page is hidden or not always shown, then go back two pages
-		if (steps[page - 1].hidden || twoPagesBack) {
-			setPage(page - 2);
-		} else {
-			setPage(page - 1);
+
+		let newPage = page;
+		do {
+			newPage = newPage - 1;
+		} while(steps[newPage] && steps[newPage]!.hidden);
+		if (steps[newPage]) {
+			setPage(newPage)
 		}
 	};
 

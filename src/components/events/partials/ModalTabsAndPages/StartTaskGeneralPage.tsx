@@ -134,8 +134,6 @@ const StartTaskGeneralPage = <T extends RequiredFormProps>({
 				customValidation={!checkValidityStartTaskEventSelection(formik.values)}
 				isFirst
 			/>
-
-			<div className="btm-spacer" />
 		</>
 	);
 };

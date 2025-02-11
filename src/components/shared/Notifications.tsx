@@ -13,10 +13,16 @@ import {
 import { useAppDispatch, useAppSelector } from "../../store";
 import { OurNotification, setHidden } from "../../slices/notificationSlice";
 
+type Context = "not_corner" | "tobira" | "above_table" | "other"
+
 /**
  * This component renders notifications about occurred errors, warnings and info
  */
-const Notifications : React.FC<{ context?: string }> = ({ context }) => {
+const Notifications = ({
+	context,
+}: {
+	context: Context,
+}) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
@@ -46,10 +52,9 @@ const Notifications : React.FC<{ context?: string }> = ({ context }) => {
 				{notifications.map((notification, key) => !notification.hidden && (
 					notification.context === NOTIFICATION_CONTEXT
 						|| notification.context === NOTIFICATION_CONTEXT_ACCESS
-						|| notification.context === NOTIFICATION_CONTEXT_TOBIRA
 				) && renderNotification(notification, key))}
 			</ul>
-		) : context === "tobira" ? (
+		) : context === NOTIFICATION_CONTEXT_TOBIRA ? (
 			<ul>
 				{notifications.map((notification, key) => !notification.hidden && (
 					notification.context === NOTIFICATION_CONTEXT_TOBIRA
