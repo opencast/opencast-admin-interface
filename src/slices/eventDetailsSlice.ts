@@ -2506,6 +2506,7 @@ const eventDetailsSlice = createSlice({
 			>) => {
 				state.statusTobiraData = 'succeeded';
 				state.tobiraData = action.payload;
+				state.errorTobiraData = null;
 			})
 			.addCase(fetchEventDetailsTobira.rejected, (state, action) => {
 				state.statusTobiraData = 'failed';
