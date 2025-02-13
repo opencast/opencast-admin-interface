@@ -1,5 +1,5 @@
 import React from "react";
-import { getPolicies } from "../../../../selectors/eventDetailsSelectors";
+import { getPolicies, getPolicyTemplateId } from "../../../../selectors/eventDetailsSelectors";
 import ResourceDetailsAccessPolicyTab from "../../../shared/modals/ResourceDetailsAccessPolicyTab";
 import { useAppSelector } from "../../../../store";
 import {
@@ -26,6 +26,7 @@ const EventDetailsAccessPolicyTab = ({
 	const { t } = useTranslation();
 
 	const policies = useAppSelector(state => getPolicies(state));
+	const policyTemplateId = useAppSelector(state => getPolicyTemplateId(state));
 
 	return (
 		<ResourceDetailsAccessPolicyTab
@@ -33,6 +34,7 @@ const EventDetailsAccessPolicyTab = ({
 			header={header}
 			buttonText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.LABEL"}
 			policies={policies}
+			policyTemplateId={policyTemplateId}
 			fetchAccessPolicies={fetchAccessPolicies}
 			fetchHasActiveTransactions={fetchHasActiveTransactions}
 			saveNewAccessPolicies={saveAccessPolicies}

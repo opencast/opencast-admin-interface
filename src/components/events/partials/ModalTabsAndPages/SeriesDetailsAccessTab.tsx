@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import ResourceDetailsAccessPolicyTab from "../../../shared/modals/ResourceDetailsAccessPolicyTab";
-import { getSeriesDetailsAcl } from "../../../../selectors/seriesDetailsSelectors";
+import { getPolicyTemplateId, getSeriesDetailsAcl } from "../../../../selectors/seriesDetailsSelectors";
 import {
 	fetchSeriesDetailsAcls,
 	updateSeriesAccess,
@@ -27,6 +27,7 @@ const SeriesDetailsAccessTab = ({
 	const dispatch = useAppDispatch();
 
 	const policies = useAppSelector(state => getSeriesDetailsAcl(state));
+	const policyTemplateId = useAppSelector(state => getPolicyTemplateId(state));
 
 	useEffect(() => {
 		dispatch(removeNotificationWizardForm());
@@ -40,6 +41,7 @@ const SeriesDetailsAccessTab = ({
 			buttonText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.LABEL"}
 			descriptionText={t("EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION")}
 			policies={policies}
+			policyTemplateId={policyTemplateId}
 			fetchAccessPolicies={fetchSeriesDetailsAcls}
 			saveNewAccessPolicies={updateSeriesAccess}
 			policyTableHeaderText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.DETAILS"}

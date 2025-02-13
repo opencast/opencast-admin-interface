@@ -284,6 +284,7 @@ type EventDetailsState = {
 		channel: string,
 	},
 	policies: TransformedAcl[],
+	policyTemplateId: number,
 	comments: Comment[],
 	commentReasons: { [key: string]: string },
 	scheduling: {
@@ -519,6 +520,7 @@ const initialState: EventDetailsState = {
 		url: "",
 	},
 	policies: [],
+	policyTemplateId: 0,
 	comments: [],
 	commentReasons: {},
 	scheduling: {
@@ -865,14 +867,14 @@ export const fetchAccessPolicies = createAppAsyncThunk('eventDetails/fetchAccess
 	let accessPolicies = await policyData.data;
 
 	let policies: TransformedAcl[] = [];
+	let currentAclTemplateId = 0
 
-	if (accessPolicies === undefined || !accessPolicies.episode_access) {
-		return policies;
+	if (accessPolicies !== undefined && accessPolicies.episode_access) {
+		policies = accessPolicies.episode_access.acl
+		currentAclTemplateId = accessPolicies.episode_access.current_acl
 	}
 
-	policies = accessPolicies.episode_access.acl
-
-	return policies;
+	return { policies, currentAclTemplateId };
 });
 
 export const fetchComments = createAppAsyncThunk('eventDetails/fetchComments', async (eventId: string) => {
@@ -2099,11 +2101,13 @@ const eventDetailsSlice = createSlice({
 			.addCase(fetchAccessPolicies.pending, (state) => {
 				state.statusPolicies = 'loading';
 			})
-			.addCase(fetchAccessPolicies.fulfilled, (state, action: PayloadAction<
-				EventDetailsState["policies"]
-			>) => {
+			.addCase(fetchAccessPolicies.fulfilled, (state, action: PayloadAction<{
+				policies: EventDetailsState["policies"],
+				currentAclTemplateId: EventDetailsState["policyTemplateId"],
+			}>) => {
 				state.statusPolicies = 'succeeded';
-				state.policies = action.payload;
+				state.policies = action.payload.policies;
+				state.policyTemplateId = action.payload.currentAclTemplateId;
 			})
 			.addCase(fetchAccessPolicies.rejected, (state, action) => {
 				state.statusPolicies = 'failed';

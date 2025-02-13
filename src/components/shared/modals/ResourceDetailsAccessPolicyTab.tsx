@@ -40,6 +40,7 @@ const ResourceDetailsAccessPolicyTab = ({
 	resourceId,
 	header,
 	policies,
+	policyTemplateId,
 	fetchHasActiveTransactions,
 	fetchAccessPolicies,
 	saveNewAccessPolicies,
@@ -60,8 +61,9 @@ const ResourceDetailsAccessPolicyTab = ({
 	resourceId: string,
 	header: string,
 	policies: TransformedAcl[],
+	policyTemplateId: number,
 	fetchHasActiveTransactions?: AsyncThunk<any, string, any>
-	fetchAccessPolicies: AsyncThunk<TransformedAcl[], string, any>,
+	fetchAccessPolicies: AsyncThunk<any, string, any>,
 	saveNewAccessPolicies:  AsyncThunk<boolean, { id: string, policies: { acl: Acl } }, any>
 	descriptionText: string,
 	buttonText: string,
@@ -274,7 +276,7 @@ const ResourceDetailsAccessPolicyTab = ({
 								<Formik
 									initialValues={{
 										policies: policies.length > 0 ? [...policies] : [],
-										aclTemplate: "",
+										aclTemplate: policyTemplateId ? policyTemplateId.toString() : "",
 									}}
 									enableReinitialize
 									validate={(values) => validateFormik(values)}
