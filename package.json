@@ -5,6 +5,8 @@
   "private": true,
   "homepage": "/admin-ui",
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@hello-pangea/dnd": "^17.0.0",
     "@mui/material": "^6.4.2",
     "@mui/x-date-pickers": "^7.25.0",
@@ -38,7 +40,6 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^3.1.0",
     "reselect": "^5.1.1",
-    "styled-components": "^6.1.14",
     "yup": "^1.6.1"
   },
   "scripts": {
