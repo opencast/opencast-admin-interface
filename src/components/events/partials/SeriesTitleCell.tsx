@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { setSpecificEventFilter } from "../../../slices/tableFilterSlice";
 import { Link } from "react-router";
 import { useAppDispatch } from "../../../store";
@@ -19,9 +18,6 @@ const SeriesTitleCell = ({
 	const dispatch = useAppDispatch();
 
 	const redirectToEvents = async (seriesId: string) => {
-		// redirect to tables
-		await dispatch(loadEventsIntoTable());
-
 		// set the series filter value of events to series title
 		await dispatch(setSpecificEventFilter({filter: "series", filterValue: seriesId}));
 	};
