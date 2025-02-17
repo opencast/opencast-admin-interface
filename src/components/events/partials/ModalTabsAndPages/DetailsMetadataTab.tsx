@@ -157,7 +157,6 @@ const DetailsMetadataTab = ({
 												isLast
 											/>
 
-													<div className="btm-spacer" />
 												</>
 											)}
 										</div>

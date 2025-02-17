@@ -522,8 +522,6 @@ const EventDetailsSchedulingTab = ({
 													cancelTranslationString="CANCEL"
 													isLast
 												/>
-
-												<div className="btm-spacer" />
 											</>
 										)}
 									</div>

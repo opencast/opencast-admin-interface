@@ -142,8 +142,6 @@ const DeleteEventsModal = ({
 				nextTranslationString="WIZARD.DELETE"
 				previousTranslationString="CANCEL"
 			/>
-
-			<div className="btm-spacer" />
 		</>
 	);
 };
