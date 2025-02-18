@@ -2,37 +2,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
 import {
-	loadAclsIntoTable,
-	loadEventsIntoTable,
-	loadGroupsIntoTable,
-	loadJobsIntoTable,
-	loadRecordingsIntoTable,
-	loadSeriesIntoTable,
-	loadServersIntoTable,
-	loadServicesIntoTable,
-	loadThemesIntoTable,
-	loadUsersIntoTable,
-} from "../../thunks/tableThunks";
-import { fetchThemes } from "../../slices/themeSlice";
-import { fetchFilters, fetchStats } from "../../slices/tableFilterSlice";
-import { setOffset } from "../../slices/tableSlice";
-import {
 	getOrgProperties,
 	getUserInformation
 } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
-import { fetchServices } from "../../slices/serviceSlice";
-import { fetchGroups } from "../../slices/groupSlice";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
-import { fetchAcls } from "../../slices/aclSlice";
-import { useAppDispatch, useAppSelector } from "../../store";
-import { fetchRecordings } from "../../slices/recordingSlice";
-import { fetchUsers } from "../../slices/userSlice";
-import { fetchServers } from "../../slices/serverSlice";
-import { fetchSeries } from "../../slices/seriesSlice";
-import { fetchJobs } from "../../slices/jobSlice";
-import { fetchEvents } from "../../slices/eventSlice";
+import { useAppSelector } from "../../store";
 import { Tooltip } from "./Tooltip";
 
 /**
@@ -46,7 +22,6 @@ const MainNav = ({
 	toggleMenu: () => void,
 }) => {
 	const { t } = useTranslation();
-        const dispatch = useAppDispatch();
 	let navigate = useNavigate();
 
 	const user = useAppSelector(state => getUserInformation(state));
@@ -54,139 +29,6 @@ const MainNav = ({
 
 	const statisticsEnabled = (orgProperties['admin.statistics.enabled'] || 'false').toLowerCase() === 'true';
 	const themesEnabled = (orgProperties['admin.themes.enabled'] || 'false').toLowerCase() === 'true';
-
-	const loadEvents = () => {
-		dispatch(fetchFilters("events"));
-
-		// Reset the current page to first page
-		dispatch(setOffset(0));
-
-		// Fetching stats from server
-		dispatch(fetchStats());
-
-		// Fetching events from server
-		dispatch(fetchEvents());
-
-		// Load events into table
-		dispatch(loadEventsIntoTable());
-	};
-
-	const loadSeries = () => {
-		dispatch(fetchFilters("series"));
-
-		// Reset the current page to first page
-		dispatch(setOffset(0));
-
-		// Fetching series from server
-		dispatch(fetchSeries());
-
-		// Load series into table
-		dispatch(loadSeriesIntoTable());
-	};
-
-	const loadRecordings = () => {
-		dispatch(fetchFilters("recordings"));
-
-		// Reset the current page to first page
-		dispatch(setOffset(0));
-
-		// Fetching recordings from server
-		dispatch(fetchRecordings(undefined));
-
-		// Load recordings into table
-		dispatch(loadRecordingsIntoTable());
-	};
-
-	const loadJobs = () => {
-		dispatch(fetchFilters("jobs"));
-
-		// Reset the current page to first page
-		dispatch(setOffset(0));
-
-		// Fetching jobs from server
-		dispatch(fetchJobs());
-
-		// Load jobs into table
-		dispatch(loadJobsIntoTable());
-	};
-
-	const loadServers = () => {
-		dispatch(fetchFilters("servers"));
-
-		// Reset the current page to first page
-		dispatch(setOffset(0));
-
-		// Fetching servers from server
-		dispatch(fetchServers());
-
-		// Load servers into table
-		dispatch(loadServersIntoTable());
-	};
-
-	const loadServices = () => {
-		dispatch(fetchFilters("services"));
-
-		// Reset the current page to first page
-		dispatch(setOffset(0));
-
-		// Fetching services from server
-		dispatch(fetchServices());
-
-		// Load services into table
-		dispatch(loadServicesIntoTable());
-	};
-
-	const loadUsers = () => {
-		dispatch(fetchFilters("users"));
-
-		// Reset the current page to first page
-		dispatch(setOffset(0));
-
-		// Fetching users from server
-		dispatch(fetchUsers());
-
-		// Load users into table
-		dispatch(loadUsersIntoTable());
-	};
-
-	const loadGroups = () => {
-		dispatch(fetchFilters("groups"));
-
-		// Reset the current page to first page
-		dispatch(setOffset(0));
-
-		// Fetching groups from server
-		dispatch(fetchGroups());
-
-		// Load groups into table
-		dispatch(loadGroupsIntoTable());
-	};
-
-	const loadAcls = () => {
-		dispatch(fetchFilters("acls"));
-
-		// Reset the current page to first page
-		dispatch(setOffset(0));
-
-		// Fetching acls from server
-		dispatch(fetchAcls());
-
-		// Load acls into table
-		dispatch(loadAclsIntoTable());
-	};
-
-	const loadThemes = () => {
-		dispatch(fetchFilters("themes"));
-
-		// Reset the current page to first page
-		dispatch(setOffset(0));
-
-		// Fetching themes from server
-		dispatch(fetchThemes());
-
-		// Load themes into table
-		dispatch(loadThemesIntoTable());
-	};
 
 	useHotkeys(
     availableHotkeys.general.EVENT_VIEW.sequence,
@@ -223,14 +65,14 @@ const MainNav = ({
 							{/* todo: more than one href? how? roles? (see MainNav admin-ui-frontend)*/}
 							{hasAccess("ROLE_UI_NAV_RECORDINGS_VIEW", user) &&
 								(hasAccess("ROLE_UI_EVENTS_VIEW", user) ? (
-									<Link to="/events/events" onClick={() => loadEvents()}>
+									<Link to="/events/events">
 										<Tooltip title={t("NAV.EVENTS.TITLE")} placement={"right"}>
 											<i className="events" />
 										</Tooltip>
 									</Link>
 								) : (
 									hasAccess("ROLE_UI_SERIES_VIEW", user) && (
-										<Link to="/events/series" onClick={() => loadSeries()}>
+										<Link to="/events/series">
 											<Tooltip title={t("NAV.EVENTS.TITLE")} placement={"right"}>
 												<i className="events" />
 											</Tooltip>
@@ -241,7 +83,6 @@ const MainNav = ({
 								hasAccess("ROLE_UI_LOCATIONS_VIEW", user) && (
 									<Link
 										to="/recordings/recordings"
-										onClick={() => loadRecordings()}
 									>
 										<Tooltip title={t("NAV.CAPTUREAGENTS.TITLE")} placement={"right"}>
 											<i
@@ -252,20 +93,20 @@ const MainNav = ({
 								)}
 							{hasAccess("ROLE_UI_NAV_SYSTEMS_VIEW", user) &&
 								(hasAccess("ROLE_UI_JOBS_VIEW", user) ? (
-									<Link to="/systems/jobs" onClick={() => loadJobs()}>
+									<Link to="/systems/jobs">
 										<Tooltip  title={t("NAV.SYSTEMS.TITLE")} placement={"right"}>
 											<i className="systems" />
 										</Tooltip>
 									</Link>
 								) : hasAccess("ROLE_UI_SERVERS_VIEW", user) ? (
-									<Link to="/systems/servers" onClick={() => loadServers()}>
+									<Link to="/systems/servers">
 										<Tooltip title={t("NAV.SYSTEMS.TITLE")} placement={"right"}>
 											<i className="systems" />
 										</Tooltip>
 									</Link>
 								) : (
 									hasAccess("ROLE_UI_SERVICES_VIEW", user) && (
-										<Link to="/systems/services" onClick={() => loadServices()}>
+										<Link to="/systems/services">
 											<Tooltip title={t("NAV.SYSTEMS.TITLE")} placement={"right"}>
 												<i className="systems" />
 											</Tooltip>
@@ -274,20 +115,20 @@ const MainNav = ({
 								))}
 							{hasAccess("ROLE_UI_NAV_ORGANIZATION_VIEW", user) &&
 								(hasAccess("ROLE_UI_USERS_VIEW", user) ? (
-									<Link to="/users/users" onClick={() => loadUsers()}>
+									<Link to="/users/users">
 										<Tooltip title={t("NAV.USERS.TITLE")} placement={"right"}>
 											<i className="users" />
 										</Tooltip>
 									</Link>
 								) : hasAccess("ROLE_UI_GROUPS_VIEW", user) ? (
-									<Link to="/users/groups" onClick={() => loadGroups()}>
+									<Link to="/users/groups">
 										<Tooltip title={t("NAV.USERS.TITLE")} placement={"right"}>
 											<i className="users" />
 										</Tooltip>
 									</Link>
 								) : (
 									hasAccess("ROLE_UI_ACLS_VIEW", user) && (
-										<Link to="/users/acls" onClick={() => loadAcls()}>
+										<Link to="/users/acls">
 											<Tooltip title={t("NAV.USERS.TITLE")} placement={"right"}>
 												<i className="users" />
 											</Tooltip>
@@ -297,7 +138,7 @@ const MainNav = ({
 							{themesEnabled &&
 								hasAccess("ROLE_UI_NAV_CONFIGURATION_VIEW", user) &&
 								hasAccess("ROLE_UI_THEMES_VIEW", user) && (
-									<Link to="/configuration/themes" onClick={() => loadThemes()}>
+									<Link to="/configuration/themes">
 										<Tooltip title={t("NAV.CONFIGURATION.TITLE")} placement={"right"}>
 											<i className="configuration" />
 										</Tooltip>
