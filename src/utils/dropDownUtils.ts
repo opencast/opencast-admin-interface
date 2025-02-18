@@ -31,6 +31,10 @@ export const filterBySearch = (filterText: string, type: DropDownType, options: 
 		return options.filter((item) =>
 			t(item.label).toLowerCase().includes(filterText)
 		);
+	} else if (type === "policyAction") {
+			return options.filter((item) =>
+				t(item).toLowerCase().includes(filterText)
+			);
 	} else {
 		return options.filter((item) =>
 			item.value.toLowerCase().includes(filterText)
@@ -127,7 +131,14 @@ export const formatDropDownOptions = (
 				label: item.label,
 			});
 		}
-	} else {
+	} else if (type === "policyAction") {
+		for (const item of unformattedOptions) {
+			formattedOptions.push({
+				value: item,
+				label: item,
+			});
+		}
+	}else {
 		for (const item of unformattedOptions) {
 			formattedOptions.push({
 				value: item.value,
