@@ -4,7 +4,6 @@ import SeriesDetailsModal from "./modals/SeriesDetailsModal";
 import {
 	fetchSeriesDetailsThemeNames,
 	fetchSeriesDetailsAcls,
-	fetchSeriesDetailsFeeds,
 	fetchSeriesDetailsMetadata,
 	fetchSeriesDetailsTheme,
 	fetchSeriesDetailsTobira,
@@ -56,7 +55,6 @@ const SeriesActionsCell = ({
 	const showSeriesDetailsModal = async () => {
 		await dispatch(fetchSeriesDetailsMetadata(row.id));
 		await dispatch(fetchSeriesDetailsAcls(row.id));
-		await dispatch(fetchSeriesDetailsFeeds(row.id));
 		await dispatch(fetchSeriesDetailsTheme(row.id));
 		await dispatch(fetchSeriesDetailsThemeNames());
 		await dispatch(fetchSeriesDetailsTobira(row.id));
