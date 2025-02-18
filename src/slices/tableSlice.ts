@@ -10,6 +10,7 @@ import { AclResult } from './aclSlice';
 import { ThemeDetailsType } from './themeSlice';
 import { Series } from './seriesSlice';
 import { Event } from './eventSlice';
+import { LifeCyclePolicy } from './lifeCycleSlice';
 
 /*
 Overview of the structure of the data in arrays in state
@@ -59,16 +60,16 @@ export function isRowSelectable(row: Row) {
 	return false;
 }
 
-export function isEvent(row: Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | ThemeDetailsType): row is Event {
+export function isEvent(row: Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | ThemeDetailsType | LifeCyclePolicy): row is Event {
 	return (row as Event).event_status !== undefined;
 }
 
-export function isSeries(row: Row | Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | ThemeDetailsType): row is Series {
+export function isSeries(row: Row | Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | ThemeDetailsType | LifeCyclePolicy): row is Series {
 	return (row as Series).organizers !== undefined;
 }
 
 // TODO: Improve row typing. While this somewhat correctly reflects the current state of our code, it is rather annoying to work with.
-export type Row = { selected: boolean } & ( Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | ThemeDetailsType )
+export type Row = { selected: boolean } & ( Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | ThemeDetailsType | LifeCyclePolicy)
 
 type TableState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
