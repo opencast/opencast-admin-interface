@@ -34,6 +34,7 @@ import { fetchSeries } from "../../slices/seriesSlice";
 import { fetchJobs } from "../../slices/jobSlice";
 import { fetchEvents } from "../../slices/eventSlice";
 import { Tooltip } from "./Tooltip";
+import ButtonLikeAnchor from "./ButtonLikeAnchor";
 
 /**
  * This component renders the main navigation that opens when the burger button is clicked
@@ -212,11 +213,11 @@ const MainNav = ({
 	return (
 		<>
 			<div className="menu-top" >
-				<button className="button-like-anchor" onClick={() => toggleMenu()}>
+				<ButtonLikeAnchor onClick={() => toggleMenu()}>
 					<Tooltip title={t("HOTKEYS.DESCRIPTIONS.GENERAL.MAIN_MENU")} placement={"right"}>
 						<i className="fa fa-bars" />
 					</Tooltip>
-				</button>
+				</ButtonLikeAnchor>
 				{isOpen && (
 					<nav id="roll-up-menu">
 						<div id="nav-container">
