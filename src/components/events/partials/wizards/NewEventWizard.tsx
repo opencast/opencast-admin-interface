@@ -325,6 +325,8 @@ const getInitialValues = (
 		},
 	];
 
+	initialValues["locationHasInputs"] = false
+
 	return initialValues;
 };
 
