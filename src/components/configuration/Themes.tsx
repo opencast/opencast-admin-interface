@@ -14,6 +14,7 @@ import Footer from "../Footer";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchThemes } from "../../slices/themeSlice";
+import { reset } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of events
@@ -37,6 +38,9 @@ const Themes = () => {
 	};
 
 	useEffect(() => {
+		// Clear table of previous data
+		dispatch(reset());
+
 		if ("themes" !== currentFilterType) {
 			dispatch(fetchFilters("themes"));
 		}

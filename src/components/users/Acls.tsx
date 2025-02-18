@@ -17,6 +17,7 @@ import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchAcls } from "../../slices/aclSlice";
 import { loadAcls, usersLinks } from "./partials/UsersNavigation";
+import { reset } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of acls
@@ -30,6 +31,9 @@ const Acls = () => {
 	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	useEffect(() => {
+		// Clear table of previous data
+		dispatch(reset());
+
 		if ("acls" !== currentFilterType) {
 			dispatch(fetchFilters("acls"));
 		}

@@ -237,6 +237,7 @@ const tableSlice = createSlice({
 				}
 			})
 		},
+		reset: () => initialState,
 	},
 });
 
@@ -254,7 +255,8 @@ export const {
 	setTotalItems,
 	setOffset,
 	setDirectAccessiblePages,
-	setPageActive
+	setPageActive,
+	reset
 } = tableSlice.actions;
 
 // Export the slice reducer as the default export

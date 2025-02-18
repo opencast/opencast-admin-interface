@@ -15,6 +15,7 @@ import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchRecordings } from "../../slices/recordingSlice";
 import { AsyncThunk } from "@reduxjs/toolkit";
+import { reset } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of recordings
@@ -36,6 +37,9 @@ const Recordings = () => {
 	};
 
 	useEffect(() => {
+		// Clear table of previous data
+		dispatch(reset());
+
 		if ("recordings" !== currentFilterType) {
 			dispatch(fetchFilters("recordings"));
 		}

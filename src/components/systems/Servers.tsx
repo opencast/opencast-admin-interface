@@ -17,6 +17,7 @@ import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchServers } from "../../slices/serverSlice";
 import { loadServers, systemsLinks } from "./partials/SystemsNavigation";
+import { reset } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of servers
@@ -30,6 +31,9 @@ const Servers = () => {
 	const servers = useAppSelector(state => getTotalServers(state));
 
 	useEffect(() => {
+		// Clear table of previous data
+		dispatch(reset());
+
 		if ("servers" !== currentFilterType) {
 			dispatch(fetchFilters("servers"));
 		}
