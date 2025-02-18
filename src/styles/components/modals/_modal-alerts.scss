@@ -1,4 +1,4 @@
-@use "../../../../node_modules/bourbon/core/bourbon/library/clearfix";
+@use "../../mixins/mixins-bourbon";
 @use "../../base/fontawesome/fa-variables";
 @use "../../base/variables";
 @use "../alerts";
@@ -39,7 +39,7 @@
 }
 
 .modal-alert {
-    @include clearfix.clearfix();
+    @include mixins-bourbon.clearfix;
     display: block;
     padding: 15px 25px;
     

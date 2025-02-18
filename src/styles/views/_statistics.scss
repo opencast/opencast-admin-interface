@@ -1,4 +1,3 @@
-@use "../../../node_modules/bourbon/core/bourbon/library/border-radius";
 @use "../base/variables";
 
 .statistics header {
@@ -8,7 +7,8 @@
     line-height: 40px;
     background: linear-gradient(to bottom, #fbfbfb, #e8e8e8);
     border-bottom: 1px solid variables.$main-border-color;
-    @include border-radius.border-top-radius(variables.$main-border-radius);
+    border-top-left-radius: variables.$main-border-radius;
+    border-top-right-radius: variables.$main-border-radius;
     padding: 0 20px;
 }
 

@@ -1,5 +1,5 @@
 @use "sass:color";
-@use "../../../../node_modules/bourbon/core/bourbon/library/clearfix";
+@use "../../mixins/mixins-bourbon";
 @use "../../base/fontawesome/fa-mixins";
 @use "../../base/fontawesome/variables" as variables2;
 @use "../../base/variables";
@@ -45,7 +45,7 @@
 }
 
 .action-bar {
-    @include clearfix.clearfix();
+    @include mixins-bourbon.clearfix;
     border: 1px solid variables.$main-border-color;
     border-bottom: none;
     border-top-left-radius: variables.$main-border-radius;
