@@ -7,6 +7,7 @@ import {
 import { fetchSeriesStatisticsValueUpdate } from "../../../../slices/seriesDetailsSlice";
 import TimeSeriesStatistics from "../../../shared/TimeSeriesStatistics";
 import { useAppDispatch, useAppSelector } from "../../../../store";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 const SeriesDetailsStatisticTab = ({
 	seriesId,
@@ -35,57 +36,53 @@ const SeriesDetailsStatisticTab = ({
 	};
 
 	return (
-		<div className="modal-content">
-			<div className="modal-body">
-				<div className="full-col">
-					{hasError ? (
-						/* error message */
-						<div className="obj">
-							<header>{t(header) /* Statistics */}</header>
-							<div className="modal-alert danger">
-								{t("STATISTICS.NOT_AVAILABLE")}
-							</div>
-						</div>
-					) : (
-						/* iterates over the different available statistics */
-						statistics.map((stat, key) => (
-							<div className="obj" key={key}>
-								{/* title of statistic */}
-								<header className="no-expand">{t(stat.title)}</header>
-
-								{stat.providerType === "timeSeries" ? (
-									/* visualization of statistic for time series data */
-									<div className="obj-container">
-										<TimeSeriesStatistics
-											resourceId={seriesId}
-											statTitle={t(stat.title)}
-											providerId={stat.providerId}
-											fromDate={stat.from}
-											toDate={stat.to}
-											timeMode={stat.timeMode}
-											dataResolution={stat.dataResolution}
-											statDescription={stat.description}
-											onChange={fetchSeriesStatisticsValueUpdateWrapper}
-											exportUrl={stat.csvUrl}
-											exportFileName={statisticsCsvFileName}
-											totalValue={stat.totalValue}
-											sourceData={stat.values}
-											chartLabels={stat.labels}
-											chartOptions={stat.options}
-										/>
-									</div>
-								) : (
-									/* unsupported type message */
-									<div className="modal-alert danger">
-										{t("STATISTICS.UNSUPPORTED_TYPE")}
-									</div>
-								)}
-							</div>
-						))
-					)}
+		<ModalContentTable>
+			{hasError ? (
+				/* error message */
+				<div className="obj">
+					<header>{t(header) /* Statistics */}</header>
+					<div className="modal-alert danger">
+						{t("STATISTICS.NOT_AVAILABLE")}
+					</div>
 				</div>
-			</div>
-		</div>
+			) : (
+				/* iterates over the different available statistics */
+				statistics.map((stat, key) => (
+					<div className="obj" key={key}>
+						{/* title of statistic */}
+						<header className="no-expand">{t(stat.title)}</header>
+
+						{stat.providerType === "timeSeries" ? (
+							/* visualization of statistic for time series data */
+							<div className="obj-container">
+								<TimeSeriesStatistics
+									resourceId={seriesId}
+									statTitle={t(stat.title)}
+									providerId={stat.providerId}
+									fromDate={stat.from}
+									toDate={stat.to}
+									timeMode={stat.timeMode}
+									dataResolution={stat.dataResolution}
+									statDescription={stat.description}
+									onChange={fetchSeriesStatisticsValueUpdateWrapper}
+									exportUrl={stat.csvUrl}
+									exportFileName={statisticsCsvFileName}
+									totalValue={stat.totalValue}
+									sourceData={stat.values}
+									chartLabels={stat.labels}
+									chartOptions={stat.options}
+								/>
+							</div>
+						) : (
+							/* unsupported type message */
+							<div className="modal-alert danger">
+								{t("STATISTICS.UNSUPPORTED_TYPE")}
+							</div>
+						)}
+					</div>
+				))
+			)}
+		</ModalContentTable>
 	);
 };
 export default SeriesDetailsStatisticTab;

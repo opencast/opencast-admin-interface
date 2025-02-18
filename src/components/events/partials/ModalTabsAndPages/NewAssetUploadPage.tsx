@@ -5,6 +5,7 @@ import { getAssetUploadOptions } from "../../../../selectors/eventSelectors";
 import { translateOverrideFallback } from "../../../../utils/utils";
 import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component renders the asset upload page of the new event wizard
@@ -53,64 +54,60 @@ const NewAssetUploadPage = <T extends RequiredFormProps>({
 
 	return (
 		<>
-			<div className="modal-content">
-				<div className="modal-body">
-					<div className="full-col">
-						<div className="obj tbl-details">
-							<header>{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.SELECT_TYPE")}</header>
-							<div className="obj-container">
-								<table className="main-tbl">
-									<tbody>
-										{uploadAssets.length === 0 ? (
-											<tr>
-												<td>
-													{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.NO_OPTIONS")}
-												</td>
-											</tr>
-										) : (
-											uploadAssets.map((asset, key) => (
-												<tr key={key}>
-													<td>
-														{" "}
-														{translateOverrideFallback(asset, t)}
-													</td>
-													<td>
-														<div className="file-upload">
-															<input
-																id={asset.id}
-																className="blue-btn file-select-btn"
-																accept={asset.accept}
-																onChange={(e) => handleChange(e, asset.id)}
-																type="file"
-																tabIndex={0}
-															/>
-															{formik.values[asset.id] && (
-																<span className="ui-helper">
-																	{formik.values[asset.id].name.substr(0, 50)}
-																</span>
-															)}
-														</div>
-													</td>
-													{/*Button to remove asset*/}
-													<td className="fit">
-														<button
-															className="button-like-anchor remove"
-															onClick={() => {
-																formik.setFieldValue(asset.id, null);
-																(document.getElementById(asset.id) as HTMLInputElement).value = "";
-															}}
-														/>
-													</td>
-												</tr>
-											))
-										)}
-									</tbody>
-								</table>
-							</div>
-						</div>
+			<ModalContentTable>
+				<div className="obj tbl-details">
+					<header>{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.SELECT_TYPE")}</header>
+					<div className="obj-container">
+						<table className="main-tbl">
+							<tbody>
+								{uploadAssets.length === 0 ? (
+									<tr>
+										<td>
+											{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.NO_OPTIONS")}
+										</td>
+									</tr>
+								) : (
+									uploadAssets.map((asset, key) => (
+										<tr key={key}>
+											<td>
+												{" "}
+												{translateOverrideFallback(asset, t)}
+											</td>
+											<td>
+												<div className="file-upload">
+													<input
+														id={asset.id}
+														className="blue-btn file-select-btn"
+														accept={asset.accept}
+														onChange={(e) => handleChange(e, asset.id)}
+														type="file"
+														tabIndex={0}
+													/>
+													{formik.values[asset.id] && (
+														<span className="ui-helper">
+															{formik.values[asset.id].name.substr(0, 50)}
+														</span>
+													)}
+												</div>
+											</td>
+											{/*Button to remove asset*/}
+											<td className="fit">
+												<button
+													className="button-like-anchor remove"
+													onClick={() => {
+														formik.setFieldValue(asset.id, null);
+														(document.getElementById(asset.id) as HTMLInputElement).value = "";
+													}}
+												/>
+											</td>
+										</tr>
+									))
+								)}
+							</tbody>
+						</table>
 					</div>
 				</div>
-			</div>
+			</ModalContentTable>
 
 			{/* Button for navigation to next page */}
 			<WizardNavigationButtons
