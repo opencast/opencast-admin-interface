@@ -1,5 +1,5 @@
 import React from "react";
-import { getPolicies } from "../../../../selectors/eventDetailsSelectors";
+import { getPolicies, getPolicyTemplateId } from "../../../../selectors/eventDetailsSelectors";
 import ResourceDetailsAccessPolicyTab from "../../../shared/modals/ResourceDetailsAccessPolicyTab";
 import { useAppSelector } from "../../../../store";
 import {
@@ -26,6 +26,7 @@ const EventDetailsAccessPolicyTab = ({
 	const { t } = useTranslation();
 
 	const policies = useAppSelector(state => getPolicies(state));
+	const policyTemplateId = useAppSelector(state => getPolicyTemplateId(state));
 
 	return (
 		<ResourceDetailsAccessPolicyTab
@@ -33,11 +34,20 @@ const EventDetailsAccessPolicyTab = ({
 			header={header}
 			buttonText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.LABEL"}
 			policies={policies}
+			policyTemplateId={policyTemplateId}
 			fetchAccessPolicies={fetchAccessPolicies}
 			fetchHasActiveTransactions={fetchHasActiveTransactions}
 			saveNewAccessPolicies={saveAccessPolicies}
 			descriptionText={t("EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION")}
+			policyTableHeaderText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.DETAILS"}
+			policyTableRoleText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.ROLE"}
+			policyTableNewText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW"}
+			userPolicyTableHeaderText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.USERS"}
+			userPolicyTableRoleText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.USER"}
+			userPolicyTableNewText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW_USER"}
 			editAccessRole={"ROLE_UI_EVENTS_DETAILS_ACL_EDIT"}
+			viewUsersAccessRole={"ROLE_UI_EVENTS_DETAILS_ACL_USER_ROLES_VIEW"}
+			viewNonUsersAccessRole={"ROLE_UI_EVENTS_DETAILS_ACL_NONUSER_ROLES_VIEW"}
 			policyChanged={policyChanged}
 			setPolicyChanged={setPolicyChanged}
 		/>
