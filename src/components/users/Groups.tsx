@@ -13,7 +13,6 @@ import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
 import Footer from "../Footer";
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchGroups } from "../../slices/groupSlice";
 import { loadGroups, usersLinks } from "./partials/UsersNavigation";
@@ -27,12 +26,9 @@ const Groups = () => {
 	const [displayNavigation, setNavigation] = useState(false);
 
 	const groups = useAppSelector(state => getTotalGroups(state));
-	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	useEffect(() => {
-		if ("groups" !== currentFilterType) {
-			dispatch(fetchFilters("groups"));
-		}
+		dispatch(fetchFilters("groups"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));
