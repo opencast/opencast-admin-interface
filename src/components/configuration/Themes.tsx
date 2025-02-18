@@ -11,7 +11,6 @@ import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
 import Footer from "../Footer";
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchThemes } from "../../slices/themeSlice";
 
@@ -21,8 +20,6 @@ import { fetchThemes } from "../../slices/themeSlice";
 const Themes = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
-
-	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	const [displayNavigation, setNavigation] = useState(false);
 
@@ -37,9 +34,7 @@ const Themes = () => {
 	};
 
 	useEffect(() => {
-		if ("themes" !== currentFilterType) {
-			dispatch(fetchFilters("themes"));
-		}
+		dispatch(fetchFilters("themes"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));
