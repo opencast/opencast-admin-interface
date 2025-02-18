@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 import TableFilters from "../shared/TableFilters";
 import Stats from "../shared/Stats";
 import Table from "../shared/Table";
