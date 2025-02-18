@@ -109,7 +109,6 @@ const EventActionCell = ({
 			)}
 
 			{/* Delete an event */}
-			{/*TODO: needs to be checked if event is published */}
 			<ActionCellDelete
 				editAccessRole={"ROLE_UI_EVENTS_DELETE"}
 				tooltipText={"EVENTS.EVENTS.TABLE.TOOLTIP.DELETE"}

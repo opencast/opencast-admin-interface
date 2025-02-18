@@ -44,8 +44,8 @@ export const fetchAclDetails = createAppAsyncThunk('aclDetails/fetchAclDetails',
 	let transformedAcls: TransformedAcl[] = [];
 
 	// transform policies for further use
-  // TODO: Investigate why we do this and write down the reason here
-  // (or simplify the code if we don't actually need to transform)
+  // We do this in order to prepare the information for the acl tab in the details modals,
+	// because we render the information differently from how it is usually structured in an ACL
 	for (let i = 0; acl.ace.length > i; i++) {
 		if (transformedAcls.find((rule) => rule.role === acl.ace[i].role)) {
 			for (let j = 0; transformedAcls.length > j; j++) {
