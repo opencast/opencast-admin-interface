@@ -41,7 +41,7 @@ const EventDetailsCommentsTab = ({
 	const isSavingCommentReply = useAppSelector(state => getIsSavingCommentReply(state));
 
 	useEffect(() => {
-		dispatch(fetchComments(eventId)).then((r: any) => console.info(r));
+		dispatch(fetchComments(eventId));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

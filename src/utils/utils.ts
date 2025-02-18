@@ -69,35 +69,11 @@ export const transformToIdValueArray = (data: {[key: string | number]: string}) 
 };
 
 /*
- * transforms an object of form { id1: object1, id2: object2 }
- * to [
-   {
-      "id":id1,
-      "objectValue":value1,
-      "otherObjectValue":otherValue1
-   },
-   {
-      "id":id2,
-      "objectValue":value2,
-      "otherObjectValue":otherValue2
-   }
-]
- */
-export const transformToObjectArray = (data: {[key: string | number]: any}) => {
-	return Object.keys(data).map((key) => {
-		return {
-			id: key,
-			...data[key],
-		};
-	});
-};
-
-/*
  * iterates trough all attributes in an object and switches 'true'- and 'false'-Strings
  * to their corresponding boolean value. All other values stay the same.
  */
-export const parseBooleanInObject = (baseObject: {[key: string]: any}) => {
-	let parsedObject: {[key: string]: any} = {};
+export const parseBooleanInObject = (baseObject: {[key: string]: unknown}) => {
+	let parsedObject: {[key: string]: unknown} = {};
 
 	Object.keys(baseObject).forEach((config) => {
 		parsedObject[config] = parseValueForBooleanStrings(baseObject[config]);

@@ -35,7 +35,7 @@ const initialState: AclDetailsState = {
 };
 
 // fetch details about a certain acl from server
-export const fetchAclDetails = createAppAsyncThunk('aclDetails/fetchAclDetails', async (aclId: number) => {
+export const fetchAclDetails = createAppAsyncThunk('aclDetails/fetchAclDetails', async (aclId: AclDetailsState["id"]) => {
 	const res = await axios.get(`/admin-ng/acl/${aclId}`);
 
 	let aclDetails = res.data;

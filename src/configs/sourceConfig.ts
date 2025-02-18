@@ -1,3 +1,5 @@
+import { MetadataField } from "../slices/eventSlice";
+
 /* additional metadata that user should provide for new events
  * UPLOAD, SCHEDULE_SINGLE, SCHEDULE_MULTIPLE signal in which case the additional metadata is required/should be provided
  * A metadata field has following keys:
@@ -7,22 +9,12 @@
  * - type: indicates the type of metadata field (see metadata field provided by backend)
  * - readOnly: flag indicating if metadata field can be changed
  * - required: flag indicating if metadata field is required
- * - tabindex: tabindex of the metadata field
  */
-type Metadata = {
-	id: string,
-	label: string,
-	value: any,
-	type: string,
-	readOnly: boolean,
-	required: boolean,
-	tabindex: number,
-}
 
 type SourceType = {
-	UPLOAD?: { metadata: Metadata[] },
-	SCHEDULE_SINGLE?: { metadata: Metadata[] },
-	SCHEDULE_MULTIPLE?: { metadata: Metadata[] },
+	UPLOAD?: { metadata: MetadataField[] },
+	SCHEDULE_SINGLE?: { metadata: MetadataField[] },
+	SCHEDULE_MULTIPLE?: { metadata: MetadataField[] },
 }
 
 export const sourceMetadata: SourceType = {
@@ -35,7 +27,6 @@ export const sourceMetadata: SourceType = {
 				type: "date",
 				readOnly: false,
 				required: false,
-				tabindex: 7,
 			},
 		],
 	},
