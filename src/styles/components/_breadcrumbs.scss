@@ -1,3 +1,8 @@
+@use "sass:color";
+@use "../base/fontawesome/fa-mixins";
+@use "../base/fontawesome/variables" as variables2;
+@use "../base/variables";
+
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional
@@ -22,8 +27,8 @@
 
 .breadcrumb {
     $height: 35px;
-    background: lighten($modal-nav-bg-color, 4%);
-    border-bottom: 1px solid $modal-nav-border-color;
+    background: color.adjust(variables.$modal-nav-bg-color, $lightness: 4%);
+    border-bottom: 1px solid variables.$modal-nav-border-color;
     line-height: $height;
 
     &.active {
@@ -31,7 +36,7 @@
     }
 
     > button {
-        color: $modal-nav-link-color;
+        color: variables.$modal-nav-link-color;
         font-size: 12px;
         position: relative;
         margin-right: 30px;
@@ -42,14 +47,14 @@
         }
 
         &:hover {
-            color: $modal-nav-link-active-color;
+            color: variables.$modal-nav-link-active-color;
 
             &:before {
-                color: $modal-nav-link-color;
+                color: variables.$modal-nav-link-color;
             }
         }
 
-        @include fa-icon($fa-var-chevron-right, after, inline-block, 0, 0, inherit, 9px);
+        @include fa-mixins.fa-icon(variables2.$fa-var-chevron-right, after, inline-block, 0, 0, inherit, 9px);
 
         &:after {
             position: relative;
@@ -59,7 +64,7 @@
 
 
         &:last-child {
-            color: $modal-nav-link-active-color;
+            color: variables.$modal-nav-link-active-color;
             font-weight: 600;
         }
 

@@ -117,7 +117,8 @@
 				"GROUP": "Le groupe suivant sera supprimé",
 				"USER": "L’utilisateur suivant sera supprimée",
 				"THEME": "Le thème suivant sera supprimé",
-				"LOCATION": "L’emplacement suivant sera supprimé"
+				"LOCATION": "L’emplacement suivant sera supprimé",
+				"TOBIRA_PATH": "The series will be removed from the following path in Tobira:"
 			},
 			"NAME": "Nom"
 		},
@@ -169,7 +170,9 @@
 		"SERIES_ADDED": "La série a été créée",
 		"SERIES_NOT_SAVED": "La série n'a pas pu être enregistrée",
 		"SERIES_PATH_UPDATED": "The series path has been updated",
+		"SERIES_PATH_REMOVED": "The series path has been removed",
 		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
+		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "L'événement a été créé",
 		"EVENTS_UPLOAD_STARTED": "L’événement est en cours de téléchargement...",
 		"EVENTS_NOT_CREATED": "L'événement n'a pas pu être créé",
@@ -672,7 +675,7 @@
 				"UPDATING_PREVIEWS": "Actualisation des aperçus"
 			},
 			"DETAILS": {
-				"HEADER": "Détails de l'événement {{resourceId}}",
+				"HEADER": "Event details - {{name}}",
 				"TABS": {
 					"METADATA": "Métadonnées",
 					"EXTENDED-METADATA": "Métadonnées II",
@@ -1133,9 +1136,10 @@
 				},
 				"TOBIRA": {
 					"CAPTION": "Tobira",
-					"DESCRIPTION": "Here you can select where you want the series to show up in the Tobira video portal. You can only select one location here, and it needs to be empty (marked in bold). You can create new pages here, but note that they are only persisted if they are on the path to the selected page.",
+					"DESCRIPTION": "Here you can select where you want the series to show up in the Tobira video portal. You can only select one location here by clicking the name or the check mark next to it. The page needs to be empty (marked in bold). You can also create new pages here, but note that they are only persisted if they are on the path to the selected page. In order to select a new page or create sub pages for one, its path segment needs to have a valid value.",
 					"SELECT_PAGE": "Select a target page",
 					"PAGE_TITLE": "Subpage title",
+					"TITLE_OF_SERIES": "(Title of series)",
 					"PATH_SEGMENT": "Path segment",
 					"SUBPAGES": "Subpages",
 					"ADD_SUBPAGE": "Add subpage",
@@ -1143,6 +1147,7 @@
 					"HOMEPAGE": "Homepage",
 					"SELECTED_PAGE": "Series will be mounted under the following path",
 					"NO_PAGE_SELECTED": "No page selected. Series will not be mounted in Tobira.",
+					"NO_PAGE_SELECTED_EDIT": "No page selected. Series path will not be changed.",
 					"PATH": "Path",
 					"DIRECT_LINK": "A direct link will be available.",
 					"MOUNT_DISCLAIMER": "Series can only be mounted in empty pages"
@@ -1168,7 +1173,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Détails de la série - {{resourceId}}",
+				"HEADER": "Series details - {{name}}",
 				"TABS": {
 					"METADATA": "Métadonnées",
 					"EXTENDED_METADATA": "Métadonnées II",
@@ -1229,8 +1234,9 @@
 					"COPY_DIRECT_LINK": "Copy to clipboard",
 					"NOT_MOUNTED": "This series is currently not included the page structure, and can only be reached using the direct link above.",
 					"PAGES": "Pages in Tobira that contain this series",
-					"SHOW_PAGES": "Show all pages",
+					"DISCARD": "Discard",
 					"EDIT_PATH": "Edit path",
+					"REMOVE_PATH": "Remove path",
 					"MOUNT_SERIES": "Mount series",
 					"DESCRIPTION": "You may edit the path of pages containing this series if the page has no other content."
 				},
@@ -1273,7 +1279,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Détails de l'emplacement - {{resourceId}}",
+				"HEADER": "Location details - {{name}}",
 				"TAB": {
 					"GENERAL": "Général",
 					"CONFIGURATION": "Configuration",
@@ -1330,7 +1336,7 @@
 			},
 			"DETAILS": {
 				"NEWCAPTION": "Créer utilisateur",
-				"EDITCAPTION": "Détails de l'utilisateur - {{username}}",
+				"EDITCAPTION": "User details - {{name}}",
 				"TABS": {
 					"USER": "Utilisateur",
 					"ROLES": "Rôles",

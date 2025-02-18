@@ -10,10 +10,8 @@ import {
 import { NOTIFICATION_CONTEXT } from "../configs/modalConfig";
 import { fetchWorkflowDef, Workflow as WorkflowDefinitions } from "./workflowSlice";
 import {
-	getMetadata,
 	getExtendedMetadata,
 	getSchedulingSource,
-	getWorkflowDefinitions,
 	getWorkflows,
 	getStatistics,
 } from "../selectors/eventDetailsSelectors";
@@ -27,6 +25,7 @@ import { fetchRecordings } from "./recordingSlice";
 import { getRecordings } from "../selectors/recordingSelectors";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
+import { enrichPublications } from '../thunks/assetsThunks';
 import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
 import { Event } from "./eventSlice";
@@ -129,11 +128,11 @@ export type UploadAssetOption = {
 
 export type Publication = {
 	enabled: boolean,
-	hide?: string,
 	icon?: string,
 	id: string,
 	label?: string,
-	name: string,  // translation key
+	hide?: boolean,
+	name: string, // translation key
 	order: number,
 	url: string,
 	description?: string,
@@ -686,18 +685,6 @@ export const fetchAssets = createAppAsyncThunk('eventDetails/fetchAssets', async
 	uploadAssetOptions =
 		uploadAssetOptions.length > 0 ? uploadAssetOptions : undefined;
 
-	if (transactionsReadOnly) {
-		dispatch(
-			addNotification({
-				type: "warning",
-				key: "ACTIVE_TRANSACTION",
-				duration: -1,
-				parameter: undefined,
-				context: NOTIFICATION_CONTEXT
-			})
-		);
-	}
-
 	return { assets, transactionsReadOnly, uploadAssetOptions }
 });
 
@@ -924,66 +911,20 @@ export const fetchComments = createAppAsyncThunk('eventDetails/fetchComments', a
 	return { comments, commentReasons }
 });
 
-export const fetchEventPublications = createAppAsyncThunk('eventDetails/fetchEventPublications', async (eventId: string) => {
+export const fetchEventPublications = createAppAsyncThunk('eventDetails/fetchEventPublications', async (eventId: string, { dispatch }) => {
 	let data = await axios.get(`/admin-ng/event/${eventId}/publications.json`);
 
 	let publications: {
-		"start-date": string,
-		"end-date": string,
 		publications: {
 			id: string,
 			name: string,
 			url: string,
 		}[],
+		"start-date": string,
+		"end-date": string,
 	} = await data.data;
 
-	// get information about possible publication channels
-	data = await axios.get("/admin-ng/resources/PUBLICATION.CHANNELS.json");
-
-	let publicationChannels: { [key: string]: string } = await data.data;
-
-	let now = new Date();
-
-	let transformedPublications: Publication[] = [];
-
-	// fill publication objects with additional information
-	publications.publications.forEach((publication) => {
-		let transformedPublication: Publication = {
-			...publication,
-			enabled: false,
-			order: 0,
-		};
-
-		transformedPublication.enabled = !(
-			publication.id === "engage-live" &&
-			(now < new Date(publications["start-date"]) ||
-				now > new Date(publications["end-date"]))
-		);
-
-		if (publicationChannels[publication.id]) {
-			let channel = JSON.parse(publicationChannels[publication.id]);
-
-			if (channel.label) {
-				transformedPublication.label = channel.label;
-			}
-			if (channel.icon) {
-				transformedPublication.icon = channel.icon;
-			}
-			if (channel.hide) {
-				transformedPublication.hide = channel.hide;
-			}
-			if (channel.description) {
-				transformedPublication.description = channel.description;
-			}
-			if (channel.order) {
-				transformedPublication.order = channel.order;
-			}
-		}
-
-		transformedPublications.push(transformedPublication)
-	});
-
-	return transformedPublications;
+	return await dispatch(enrichPublications(publications)).unwrap();
 });
 
 // fetch Tobira data of certain series from server
@@ -1603,13 +1544,12 @@ export const fetchEventStatisticsValueUpdate = createAppAsyncThunk('eventDetails
 export const updateMetadata = createAppAsyncThunk('eventDetails/updateMetadata', async (params: {
 	id: string,
 	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
+	catalog: MetadataCatalog
 }, { dispatch, getState }) => {
-	const { id, values } = params;
-
-	let metadataInfos = getMetadata(getState());
+	const { id, values, catalog } = params;
 
 	const { fields, data, headers } = transformMetadataForUpdate(
-		metadataInfos,
+		catalog,
 		values
 	);
 
@@ -1617,8 +1557,8 @@ export const updateMetadata = createAppAsyncThunk('eventDetails/updateMetadata',
 
 	// updated metadata in event details redux store
 	let eventMetadata = {
-		flavor: metadataInfos.flavor,
-		title: metadataInfos.title,
+		flavor: catalog.flavor,
+		title: catalog.title,
 		fields: fields,
 	};
 	dispatch(setEventMetadata(eventMetadata));
@@ -1806,7 +1746,7 @@ export const updateComment = createAppAsyncThunk('eventDetails/updateComment', a
 	data.append("text", commentText);
 	data.append("reason", commentReason);
 
-	const commentUpdated = await axios.post(
+	const commentUpdated = await axios.put(
 		`/admin-ng/event/${eventId}/comment/${commentId}`,
 		data.toString(),
 		headers
@@ -1839,19 +1779,6 @@ export const deleteCommentReply = createAppAsyncThunk('eventDetails/deleteCommen
 	await commentReplyDeleted.data;
 
 	return true;
-});
-
-export const updateWorkflow = createAppAsyncThunk('eventDetails/updateWorkflow', async (workflowId: string, { dispatch, getState }) => {
-	const state = getState();
-	const workflowDefinitions = getWorkflowDefinitions(state);
-	const workflowDef = workflowDefinitions.find((def) => def.id === workflowId);
-	await dispatch(
-		setEventWorkflow({
-			workflowId: workflowId,
-			description: workflowDef?.description,
-			configuration: workflowDef?.configuration_panel_json // previously `workflowDef.configuration`. Might cause error
-		})
-	);
 });
 
 export const saveWorkflowConfig = createAppAsyncThunk('eventDetails/saveWorkflowConfig', async (params: {
@@ -2565,13 +2492,6 @@ const eventDetailsSlice = createSlice({
 			.addCase(deleteComment.rejected, (state, action) => {
 				console.error(action.error);
 			})
-			.addCase(updateWorkflow.fulfilled, (state, action) => {
-				if ("workflowId" in state.workflows.workflow && !!state.workflows.workflow.workflowId) {
-					state.workflowConfiguration = state.workflows.workflow;
-				} else {
-					state.workflowConfiguration = state.baseWorkflow;
-				}
-			})
 			// fetch Tobira data
 			.addCase(fetchEventDetailsTobira.pending, (state) => {
 				state.statusTobiraData = 'loading';
@@ -2581,6 +2501,7 @@ const eventDetailsSlice = createSlice({
 			>) => {
 				state.statusTobiraData = 'succeeded';
 				state.tobiraData = action.payload;
+				state.errorTobiraData = null;
 			})
 			.addCase(fetchEventDetailsTobira.rejected, (state, action) => {
 				state.statusTobiraData = 'failed';

@@ -678,7 +678,7 @@
 				"UPDATING_PREVIEWS": "Updating previews"
 			},
 			"DETAILS": {
-				"HEADER": "Event details - {{resourceId}}",
+				"HEADER": "Event details - {{name}}",
 				"TABS": {
 					"METADATA": "Metadata",
 					"EXTENDED-METADATA": "Metadata II",
@@ -1139,9 +1139,10 @@
 				},
 				"TOBIRA": {
 					"CAPTION": "Tobira",
-					"DESCRIPTION": "Here you can select where you want the series to show up in the Tobira video portal. You can only select one location here, and it needs to be empty (marked in bold). You can create new pages here, but note that they are only persisted if they are on the path to the selected page.",
+					"DESCRIPTION": "Here you can select where you want the series to show up in the Tobira video portal. You can only select one location here by clicking the name or the check mark next to it. The page needs to be empty (marked in bold). You can also create new pages here, but note that they are only persisted if they are on the path to the selected page. In order to select a new page or create sub pages for one, its path segment needs to have a valid value.",
 					"SELECT_PAGE": "Select a target page",
 					"PAGE_TITLE": "Subpage title",
+					"TITLE_OF_SERIES": "(Title of series)",
 					"PATH_SEGMENT": "Path segment",
 					"SUBPAGES": "Subpages",
 					"ADD_SUBPAGE": "Add subpage",
@@ -1175,7 +1176,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Series details - {{resourceId}}",
+				"HEADER": "Series details - {{name}}",
 				"TABS": {
 					"METADATA": "Metadata",
 					"EXTENDED_METADATA": "Metadata II",
@@ -1236,7 +1237,7 @@
 					"COPY_DIRECT_LINK": "Copy to clipboard",
 					"NOT_MOUNTED": "This series is currently not included the page structure, and can only be reached using the direct link above.",
 					"PAGES": "Pages in Tobira that contain this series",
-					"SHOW_PAGES": "Show all pages",
+					"DISCARD": "Discard",
 					"EDIT_PATH" : "Edit path",
 					"REMOVE_PATH" : "Remove path",
 					"MOUNT_SERIES": "Mount series",
@@ -1281,7 +1282,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Location details - {{resourceId}}",
+				"HEADER": "Location details - {{name}}",
 				"TAB": {
 					"GENERAL": "General",
 					"CONFIGURATION": "Configuration",
@@ -1338,7 +1339,7 @@
 			},
 			"DETAILS": {
 				"NEWCAPTION": "Create user",
-				"EDITCAPTION": "User details - {{username}}",
+				"EDITCAPTION": "User details - {{name}}",
 				"TABS": {
 					"USER": "User",
 					"ROLES": "Roles",

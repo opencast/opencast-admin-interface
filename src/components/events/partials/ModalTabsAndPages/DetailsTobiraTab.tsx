@@ -3,16 +3,18 @@ import Notifications from "../../../shared/Notifications";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { getSeriesDetailsTobiraData, getSeriesDetailsTobiraDataError, getTobiraTabHierarchy } from "../../../../selectors/seriesDetailsSelectors";
 import { addNotification } from "../../../../slices/notificationSlice";
-import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
+import { NOTIFICATION_CONTEXT_TOBIRA } from "../../../../configs/modalConfig";
 import { getEventDetailsTobiraData, getEventDetailsTobiraDataError } from "../../../../selectors/eventDetailsSelectors";
 import { Formik } from "formik";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
 import NewTobiraPage, { TobiraFormProps } from "./NewTobiraPage";
 import { fetchSeriesDetailsTobira, removeSeriesTobiraPath, setTobiraTabHierarchy, TobiraData, updateSeriesTobiraPath } from "../../../../slices/seriesDetailsSlice";
 import { fetchSeriesDetailsTobiraNew, TobiraPage } from "../../../../slices/seriesSlice";
 import ConfirmModal from "../../../shared/ConfirmModal";
 import { Tooltip } from "../../../shared/Tooltip";
+import { ModalHandle } from "../../../shared/modals/Modal";
+import { fetchEventDetailsTobira } from "../../../../slices/eventDetailsSlice";
 
 
 export type TobiraTabHierarchy = "main" | "edit-path";
@@ -29,6 +31,17 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 	const tabHierarchy = useAppSelector(state => getTobiraTabHierarchy(state));
+
+	useEffect(() => {
+		if (kind === "event") {
+			// Needed to dispatch the correct notification if the event is not found.
+			// While the data is also fetched in `EventDetails.tsx`, it's used there
+			// only to check the error status. The dispatched `NOT_FOUND` notification
+			// is removed when switching to another tab.
+			dispatch(fetchEventDetailsTobira(id));
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [id]);
 
 	const [initialValues, setInitialValues] = useState<TobiraFormProps>({
 		breadcrumbs: [],
@@ -57,7 +70,7 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 			blocks: [],
 		};
 
-		return [homepage, ...currentPage.ancestors, currentPage];
+		return [homepage, ...currentPage.ancestors];
 	}
 
 	const copyTobiraDirectLink = () => {
@@ -65,17 +78,17 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 			dispatch(addNotification({
 				type: "info",
 				key: "TOBIRA_COPIED_DIRECT_LINK",
-				duration: 3000,
+				duration: 3,
 				parameter: undefined,
-				context: NOTIFICATION_CONTEXT
+				context: NOTIFICATION_CONTEXT_TOBIRA,
 			}));
 		}, function () {
 			dispatch(addNotification({
 				type: "error",
 				key: "TOBIRA_FAILED_COPYING_DIRECT_LINK",
-				duration: 3000,
+				duration: 3,
 				parameter: undefined,
-				context: NOTIFICATION_CONTEXT
+				context: NOTIFICATION_CONTEXT_TOBIRA,
 			}));
 		});
 	}
@@ -104,12 +117,15 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 	const openSubTab = async (tabType: TobiraTabHierarchy, currentPage?: TobiraPage) => {
 		if (!!currentPage) {
 			const breadcrumbs = getBreadcrumbs(currentPage);
+			// Breadcrumbs always include at least the homepage, so the length is at least 1.
+			const hostPage = breadcrumbs[breadcrumbs.length - 1];
+
 			setInitialValues({
 				...initialValues,
 				currentPath: currentPage.path,
 				breadcrumbs,
 			});
-			await dispatch(fetchSeriesDetailsTobiraNew(currentPage.path));
+			await dispatch(fetchSeriesDetailsTobiraNew(hostPage.path));
 		} else {
 			await dispatch(fetchSeriesDetailsTobiraNew("/"));
 		}
@@ -122,8 +138,8 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 			{tabHierarchy === "edit-path" && <EventDetailsTabHierarchyNavigation
 				openSubTab={openSubTab}
 				hierarchyDepth={0}
-				translationKey0={"EVENTS.SERIES.DETAILS.TOBIRA.SHOW_PAGES"}
-				subTabArgument0={"main"}
+				translationKey0="EVENTS.SERIES.DETAILS.TOBIRA.DISCARD"
+				subTabArgument0="main"
 			/>}
 			{tabHierarchy === "main" && <div className="modal-body">
 				{/* Notifications */}
@@ -187,7 +203,7 @@ type TobiraTableProps = {
 
 const TobiraTable = ({ tobiraData, i18nKey, openSubTab, handleDelete }: TobiraTableProps) => {
 	const { t } = useTranslation();
-	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+	const deleteConfirmationModalRef = useRef<ModalHandle>(null);
 
 	return <div className="obj">
 		<header>{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.PAGES`)}</header>
@@ -230,7 +246,7 @@ const TobiraTable = ({ tobiraData, i18nKey, openSubTab, handleDelete }: TobiraTa
 							<Tooltip title={t("EVENTS.SERIES.DETAILS.TOBIRA.REMOVE_PATH")}>
 								<button
 									style={{ margin: 5 }}
-									onClick={() => setShowConfirmationModal(true)}
+									onClick={() => deleteConfirmationModalRef.current?.open()}
 									className="button-like-anchor remove pull-right"
 								/>
 							</Tooltip>
@@ -241,13 +257,14 @@ const TobiraTable = ({ tobiraData, i18nKey, openSubTab, handleDelete }: TobiraTa
 									onClick={() => openSubTab("edit-path", hostPage)}
 								/>
 							</Tooltip>
-							{showConfirmationModal && <ConfirmModal
-								close={() => setShowConfirmationModal(false)}
+							<ConfirmModal
+								close={() => deleteConfirmationModalRef.current?.close?.()}
 								resourceName={hostPage.path}
 								resourceId={null}
 								deleteMethod={() => handleDelete(hostPage)}
 								resourceType="TOBIRA_PATH"
-							/>}
+								modalRef={deleteConfirmationModalRef}
+							/>
 						</>}
 					</td>
 				</tr>)}

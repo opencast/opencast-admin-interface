@@ -6,8 +6,8 @@ import {
 	getSeriesExtendedMetadata,
 	getSeriesMetadata,
 	getSeriesTobiraPageError,
+	getSeriesTobiraPageStatus,
 } from "../../../../selectors/seriesSeletctor";
-import NewMetadataPage from "../ModalTabsAndPages/NewMetadataPage";
 import NewMetadataExtendedPage from "../ModalTabsAndPages/NewMetadataExtendedPage";
 import NewAccessPage from "../ModalTabsAndPages/NewAccessPage";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
@@ -15,12 +15,14 @@ import { initialFormValuesNewSeries } from "../../../../configs/modalConfig";
 import { MetadataSchema, NewSeriesSchema } from "../../../../utils/validate";
 import { getInitialMetadataFieldValues } from "../../../../utils/resourceUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { TobiraPage, postNewSeries } from "../../../../slices/seriesSlice";
+import { TobiraPage, fetchSeriesDetailsTobiraNew, postNewSeries } from "../../../../slices/seriesSlice";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
 import NewTobiraPage from "../ModalTabsAndPages/NewTobiraPage";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import NewMetadataCommonPage from "../ModalTabsAndPages/NewMetadataCommonPage";
 
 /**
  * This component manages the pages of the new series wizard and the submission of values
@@ -34,9 +36,16 @@ const NewSeriesWizard: React.FC<{
 
 	const metadataFields = useAppSelector(state => getSeriesMetadata(state));
 	const extendedMetadata = useAppSelector(state => getSeriesExtendedMetadata(state));
+	const tobiraStatus = useAppSelector(state => getSeriesTobiraPageStatus(state));
 	const tobiraError = useAppSelector(state => getSeriesTobiraPageError(state));
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
+
+	useEffect(() => {
+		dispatch(removeNotificationWizardForm());
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const themesEnabled = (orgProperties['admin.themes.enabled'] || 'false').toLowerCase() === 'true';
 
@@ -45,6 +54,13 @@ const NewSeriesWizard: React.FC<{
 	const [page, setPage] = useState(0);
 	const [snapshot, setSnapshot] = useState(initialValues);
 	const [pageCompleted, setPageCompleted] = useState<{ [key: number]: boolean }>({});
+
+	useEffect(() => {
+		// This should set off a web request that will intentionally fail, in order
+		// to check if tobira is available at all
+		dispatch(fetchSeriesDetailsTobiraNew(""));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	// Caption of steps used by Stepper
 	const steps = [
@@ -71,7 +87,7 @@ const NewSeriesWizard: React.FC<{
 		{
 			translation: "EVENTS.SERIES.NEW.TOBIRA.CAPTION",
 			name: "tobira",
-			hidden: !!tobiraError?.message?.includes("503"),
+			hidden: !!(tobiraStatus === "failed" && tobiraError?.message?.includes("503")),
 		},
 		{
 			translation: "EVENTS.SERIES.NEW.SUMMARY.CAPTION",
@@ -83,7 +99,7 @@ const NewSeriesWizard: React.FC<{
 	// Validation schema of current page
 	let currentValidationSchema;
 	if (page === 0 || page === 1) {
-		currentValidationSchema = MetadataSchema(metadataFields.fields);
+		currentValidationSchema = MetadataSchema(metadataFields);
 	} else {
 		currentValidationSchema = NewSeriesSchema[page];
 	}
@@ -103,10 +119,12 @@ const NewSeriesWizard: React.FC<{
 		updatedPageCompleted[page] = true;
 		setPageCompleted(updatedPageCompleted);
 
-		if (steps[page + 1].hidden) {
-			setPage(page + 2);
-		} else {
-			setPage(page + 1);
+		let newPage = page;
+		do {
+			newPage = newPage + 1;
+		} while(steps[newPage] && steps[newPage]!.hidden);
+		if (steps[newPage]) {
+			setPage(newPage)
 		}
 	};
 
@@ -120,11 +138,13 @@ const NewSeriesWizard: React.FC<{
 		twoPagesBack?: boolean
 	) => {
 		setSnapshot(values);
-		// if previous page is hidden or not always shown, then go back two pages
-		if (steps[page - 1].hidden || twoPagesBack) {
-			setPage(page - 2);
-		} else {
-			setPage(page - 1);
+
+		let newPage = page;
+		do {
+			newPage = newPage - 1;
+		} while(steps[newPage] && steps[newPage]!.hidden);
+		if (steps[newPage]) {
+			setPage(newPage)
 		}
 	};
 
@@ -171,7 +191,7 @@ const NewSeriesWizard: React.FC<{
 							/>
 							<div>
 								{page === 0 && (
-									<NewMetadataPage
+									<NewMetadataCommonPage
 										nextPage={nextPage}
 										formik={formik}
 										metadataFields={metadataFields}
@@ -239,8 +259,13 @@ const getInitialValues = (
 	// Transform metadata fields provided by backend (saved in redux)
 	let metadataInitialValues = getInitialMetadataFieldValues(
 		metadataFields,
-		extendedMetadata
 	);
+
+	for (const catalog of extendedMetadata) {
+		metadataInitialValues = {...metadataInitialValues, ...getInitialMetadataFieldValues(
+			catalog
+		)};
+	}
 
 	initialValues = { ...initialValues, ...metadataInitialValues };
 

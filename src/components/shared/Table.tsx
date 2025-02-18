@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
 import {
 	getPageOffset,
 	getTable,
@@ -35,27 +34,7 @@ import sortDownIcon from "../../img/tbl-sort-down.png";
 import Notifications from "./Notifications";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { TableColumn } from "../../configs/tableConfigs/aclsTableConfig";
-
-const SortIcon = styled.i`
-	float: right;
-	margin: 12px 0 0 5px;
-	top: auto;
-	left: auto;
-	width: 8px;
-	height: 13px;
-	background-image: url(${sortIcon});
-`;
-
-const SortActiveIcon = styled.i<{order: string}>`
-    float: right;
-    margin: 12px 0 0 5px;
-    top: auto;
-    left: auto;
-    width: 8px;
-    height: 13px;
-    background-image: url(${(props: { order: string }) =>
-			props.order === "ASC" ? sortUpIcon : sortDownIcon})};
-`;
+import { ModalHandle } from "./modals/Modal";
 
 const containerPageSize = React.createRef<HTMLButtonElement>();
 
@@ -101,7 +80,7 @@ const Table = ({
 
 	// State of dropdown menu
 	const [showPageSizes, setShowPageSizes] = useState(false);
-	const [displayEditTableViewModal, setEditTableViewModal] = useState(false);
+	const editTableViewModalRef = useRef<ModalHandle>(null);
 
 	useEffect(() => {
 		// Function for handling clicks outside of an open dropdown menu
@@ -154,11 +133,11 @@ const Table = ({
 	};
 
 	const showEditTableViewModal = async () => {
-		setEditTableViewModal(true);
+		editTableViewModalRef.current?.open()
 	};
 
 	const hideEditTableViewModal = () => {
-		setEditTableViewModal(false);
+		editTableViewModalRef.current?.close?.()
 	};
 
 	const tryToGetValueForKeyFromRowAsString = (row: Row, key: string) => {
@@ -189,11 +168,10 @@ const Table = ({
 			</div>
 
 			{/* Display modal for editing table view if table edit button is clicked */}
-			{ displayEditTableViewModal &&
-				<EditTableViewModal
-					handleClose={hideEditTableViewModal}
-				/>
-			}
+			<EditTableViewModal
+				close={hideEditTableViewModal}
+				modalRef={editTableViewModalRef}
+			/>
 
 			<div id="length-div" style={lengthDivStyle}></div>
 			<table className={"main-tbl highlight-hover"}>
@@ -224,11 +202,19 @@ const Table = ({
 								>
 									<span>
 										<span>{t(column.label)}</span>
-										{!!sortBy && column.name === sortBy ? (
-											<SortActiveIcon order={reverse} />
-										) : (
-											<SortIcon />
-										)}
+										<i style={{
+											float: "right",
+											margin: "12px 0 0 5px",
+											top: "auto",
+											left: "auto",
+											width: 8,
+											height: 13,
+											backgroundImage: `url(${column.name === sortBy
+												? reverse === "ASC"
+													? sortUpIcon
+													: sortDownIcon
+												: sortIcon})`,
+										}} />
 									</span>
 								</th>
 							) : (
