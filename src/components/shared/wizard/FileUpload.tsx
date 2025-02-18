@@ -103,8 +103,6 @@ const FileUpload = <T extends RequiredFormProps>({
 		if (e.target.files) {
 			setFile(e.target.files[0]);
 			upload(e.target.files[0]);
-			// formik.setFieldValue(fileId, e.target.files[0]);
-			// formik.setFieldValue(fileName, e.target.files[0].name);
 		}
 	};
 
