@@ -246,7 +246,6 @@ const TableFilters = ({
 												})
 											: []
 									}
-									type={"filter"}
 									required={true}
 									handleChange={(element) => handleChange("selectedFilter", element!.value)}
 									placeholder={
@@ -261,6 +260,7 @@ const TableFilters = ({
 									defaultOpen
 									autoFocus
 									openMenuOnFocus
+									customCSS={{ width: 200, optionPaddingTop: 5 }}
 								/>
 							)}
 
@@ -400,7 +400,6 @@ const FilterSwitch = ({
 								})
 								: []
 						}
-						type={"filter"}
 						required={true}
 						handleChange={(element) => handleChange("secondFilter", element!.value)}
 						placeholder={
@@ -417,6 +416,7 @@ const FilterSwitch = ({
 						openMenuOnFocus
 						menuIsOpen={openSecondFilterMenu}
 						handleMenuIsOpen={setOpenSecondFilterMenu}
+						customCSS={{ width: 200, optionPaddingTop: 5 }}
 					/>
 				</div>
 			);
