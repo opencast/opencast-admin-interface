@@ -15,7 +15,7 @@ import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchRecordings } from "../../slices/recordingSlice";
 import { AsyncThunk } from "@reduxjs/toolkit";
-import { reset } from "../../slices/tableSlice";
+import { resetTableContent } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of recordings
@@ -33,7 +33,7 @@ const Recordings = () => {
 		let allowLoadIntoTable = true;
 
 		// Clear table of previous data
-		dispatch(reset());
+		dispatch(resetTableContent());
 
 		if ("recordings" !== currentFilterType) {
 			dispatch(fetchFilters("recordings"));

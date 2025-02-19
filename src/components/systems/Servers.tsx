@@ -17,7 +17,7 @@ import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchServers } from "../../slices/serverSlice";
 import { systemsLinks } from "./partials/SystemsNavigation";
-import { reset } from "../../slices/tableSlice";
+import { resetTableContent } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of servers
@@ -35,7 +35,7 @@ const Servers = () => {
 		let allowLoadIntoTable = true;
 
 		// Clear table of previous data
-		dispatch(reset());
+		dispatch(resetTableContent());
 
 		if ("servers" !== currentFilterType) {
 			dispatch(fetchFilters("servers"));

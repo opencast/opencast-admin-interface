@@ -18,7 +18,7 @@ import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchUsers } from "../../slices/userSlice";
 import { usersLinks } from "./partials/UsersNavigation";
-import { reset } from "../../slices/tableSlice";
+import { resetTableContent } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of users
@@ -36,7 +36,7 @@ const Users = () => {
 		let allowLoadIntoTable = true;
 
 		// Clear table of previous data
-		dispatch(reset());
+		dispatch(resetTableContent());
 
 		if ("users" !== currentFilterType) {
 			dispatch(fetchFilters("users"));

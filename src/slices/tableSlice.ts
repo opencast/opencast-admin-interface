@@ -259,7 +259,12 @@ const tableSlice = createSlice({
 				}
 			})
 		},
-		reset: () => initialState,
+		resetTableContent: (state) => {
+			state.columns = initialState.columns;
+			state.pages = initialState.pages;
+			state.rows = initialState.rows;
+			state.pagination = initialState.pagination;
+		},
 	},
 });
 
@@ -278,7 +283,7 @@ export const {
 	setOffset,
 	setDirectAccessiblePages,
 	setPageActive,
-	reset
+	resetTableContent
 } = tableSlice.actions;
 
 // Export the slice reducer as the default export

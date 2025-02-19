@@ -17,7 +17,7 @@ import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchJobs } from "../../slices/jobSlice";
 import { systemsLinks } from "./partials/SystemsNavigation";
-import { reset } from "../../slices/tableSlice";
+import { resetTableContent } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of jobs
@@ -35,7 +35,7 @@ const Jobs = () => {
 		let allowLoadIntoTable = true;
 
 		// Clear table of previous data
-		dispatch(reset());
+		dispatch(resetTableContent());
 
 		if ("jobs" !== currentFilterType) {
 			dispatch(fetchFilters("jobs"));

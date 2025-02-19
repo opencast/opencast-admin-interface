@@ -17,7 +17,7 @@ import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchGroups } from "../../slices/groupSlice";
 import { usersLinks } from "./partials/UsersNavigation";
-import { reset } from "../../slices/tableSlice";
+import { resetTableContent } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of groups
@@ -35,7 +35,7 @@ const Groups = () => {
 		let allowLoadIntoTable = true;
 
 		// Clear table of previous data
-		dispatch(reset());
+		dispatch(resetTableContent());
 
 		if ("groups" !== currentFilterType) {
 			dispatch(fetchFilters("groups"));
