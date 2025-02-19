@@ -14,7 +14,7 @@ import { eventsTemplateMap } from "../../configs/tableConfigs/eventsTableMap";
 import {
 	loadEventsIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchFilters, editTextFilter, fetchStats } from "../../slices/tableFilterSlice";
+import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
 import {
 	getTotalEvents,
 	isFetchingAssetUploadOptions as getIsFetchingAssetUploadOptions,
@@ -88,9 +88,6 @@ const Events = () => {
 
 		// Load events on mount
 		const loadEvents = async () => {
-			// Fetching stats from server
-			dispatch(fetchStats());
-
 			// Fetching events from server
 			await dispatch(fetchEvents());
 
