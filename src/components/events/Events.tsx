@@ -14,7 +14,7 @@ import { eventsTemplateMap } from "../../configs/tableConfigs/eventsTableMap";
 import {
 	loadEventsIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
+import { fetchFilters, editTextFilter, fetchStats } from "../../slices/tableFilterSlice";
 import {
 	getTotalEvents,
 	isFetchingAssetUploadOptions as getIsFetchingAssetUploadOptions,
@@ -37,7 +37,7 @@ import {
 } from "../../slices/eventSlice";
 import EventDetailsModal from "./partials/modals/EventDetailsModal";
 import { showModal } from "../../selectors/eventDetailsSelectors";
-import { eventsLinks, loadEvents } from "./partials/EventsNavigation";
+import { eventsLinks } from "./partials/EventsNavigation";
 import { Modal, ModalHandle } from "../shared/modals/Modal";
 import { reset } from "../../slices/tableSlice";
 
@@ -70,6 +70,9 @@ const Events = () => {
 	let location = useLocation();
 
 	useEffect(() => {
+		// State variable for interrupting the load function
+		let allowLoadIntoTable = true;
+
 		// Clear redux of previous table data
 		dispatch(reset());
 
@@ -84,7 +87,20 @@ const Events = () => {
 		dispatch(setShowActions(false));
 
 		// Load events on mount
-		loadEvents(dispatch);
+		const loadEvents = async () => {
+			// Fetching stats from server
+			await dispatch(fetchStats());
+
+			// Fetching events from server
+			await dispatch(fetchEvents());
+
+			// Load events into table
+			if (allowLoadIntoTable) {
+				dispatch(loadEventsIntoTable());
+			}
+		}
+		// call the function
+		loadEvents();
 
 		// Function for handling clicks outside of an open dropdown menu
 		const handleClickOutside = (e: MouseEvent) => {
@@ -97,12 +113,13 @@ const Events = () => {
 		};
 
 		// Fetch events every five seconds
-		let fetchEventsInterval = setInterval(() => loadEvents(dispatch), 5000);
+		let fetchEventsInterval = setInterval(() => loadEvents(), 5000);
 
 		// Event listener for handle a click outside of dropdown menu
 		window.addEventListener("mousedown", handleClickOutside);
 
 		return () => {
+			allowLoadIntoTable = false;
 			window.removeEventListener("mousedown", handleClickOutside);
 			clearInterval(fetchEventsInterval);
 		};

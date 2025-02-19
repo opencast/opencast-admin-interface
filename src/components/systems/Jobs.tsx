@@ -16,7 +16,7 @@ import Footer from "../Footer";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchJobs } from "../../slices/jobSlice";
-import { loadJobs, systemsLinks } from "./partials/SystemsNavigation";
+import { systemsLinks } from "./partials/SystemsNavigation";
 import { reset } from "../../slices/tableSlice";
 
 /**
@@ -31,6 +31,9 @@ const Jobs = () => {
 	const jobs = useAppSelector(state => getTotalJobs(state));
 
 	useEffect(() => {
+		// State variable for interrupting the load function
+		let allowLoadIntoTable = true;
+
 		// Clear table of previous data
 		dispatch(reset());
 
@@ -42,12 +45,24 @@ const Jobs = () => {
 		dispatch(editTextFilter(""));
 
 		// Load jobs on mount
-		loadJobs(dispatch);
+		const loadJobs = async () => {
+			// Fetching jobs from server
+			await dispatch(fetchJobs());
+
+			// Load jobs into table
+			if (allowLoadIntoTable) {
+				dispatch(loadJobsIntoTable());
+			}
+		};
+		loadJobs();
 
 		// Fetch jobs every minute
-		let fetchJobInterval = setInterval(() => loadJobs(dispatch), 5000);
+		let fetchJobInterval = setInterval(() => loadJobs(), 5000);
 
-		return () => clearInterval(fetchJobInterval);
+		return () => {
+			allowLoadIntoTable = false;
+			clearInterval(fetchJobInterval);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

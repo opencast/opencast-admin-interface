@@ -8,20 +8,20 @@ import { loadEventsIntoTable, loadSeriesIntoTable } from "../../../thunks/tableT
  * Utility file for the navigation bar
  */
 
-export const loadEvents = (dispatch: AppDispatch) => {
+export const loadEvents = async(dispatch: AppDispatch) => {
 	// Fetching stats from server
-	dispatch(fetchStats());
+	await dispatch(fetchStats());
 
 	// Fetching events from server
-	dispatch(fetchEvents());
+	await dispatch(fetchEvents());
 
 	// Load events into table
 	dispatch(loadEventsIntoTable());
 };
 
-export const loadSeries = (dispatch: AppDispatch) => {
+export const loadSeries = async(dispatch: AppDispatch) => {
 	// fetching series from server
-	dispatch(fetchSeries());
+	await dispatch(fetchSeries());
 
 	// load series into table
 	dispatch(loadSeriesIntoTable());

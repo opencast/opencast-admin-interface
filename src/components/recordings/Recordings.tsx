@@ -37,6 +37,9 @@ const Recordings = () => {
 	};
 
 	useEffect(() => {
+		// State variable for interrupting the load function
+		let allowLoadIntoTable = true;
+
 		// Clear table of previous data
 		dispatch(reset());
 
@@ -48,7 +51,20 @@ const Recordings = () => {
 		dispatch(editTextFilter(""));
 
 		// Load recordings on mount
+		const loadRecordings = async () => {
+			// Fetching recordings from server
+			await dispatch(fetchRecordings(undefined));
+
+			// Load recordings into table
+			if (allowLoadIntoTable) {
+				dispatch(loadRecordingsIntoTable());
+			}
+		};
 		loadRecordings();
+
+		return () => {
+			allowLoadIntoTable = false;
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

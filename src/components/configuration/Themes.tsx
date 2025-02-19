@@ -38,6 +38,9 @@ const Themes = () => {
 	};
 
 	useEffect(() => {
+		// State variable for interrupting the load function
+		let allowLoadIntoTable = true;
+
 		// Clear table of previous data
 		dispatch(reset());
 
@@ -49,12 +52,24 @@ const Themes = () => {
 		dispatch(editTextFilter(""));
 
 		// Load themes on mount
+		const loadThemes = async () => {
+			// Fetching themes from server
+			await dispatch(fetchThemes());
+
+			// Load users into table
+			if (allowLoadIntoTable) {
+				dispatch(loadThemesIntoTable());
+			}
+		};
 		loadThemes();
 
 		// Fetch themes every minute
 		let fetchThemesInterval = setInterval(loadThemes, 5000);
 
-		return () => clearInterval(fetchThemesInterval);
+		return () => {
+			allowLoadIntoTable = false;
+			clearInterval(fetchThemesInterval);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

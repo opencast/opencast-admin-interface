@@ -16,7 +16,7 @@ import Footer from "../Footer";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchGroups } from "../../slices/groupSlice";
-import { loadGroups, usersLinks } from "./partials/UsersNavigation";
+import { usersLinks } from "./partials/UsersNavigation";
 import { reset } from "../../slices/tableSlice";
 
 /**
@@ -31,6 +31,9 @@ const Groups = () => {
 	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	useEffect(() => {
+		// State variable for interrupting the load function
+		let allowLoadIntoTable = true;
+
 		// Clear table of previous data
 		dispatch(reset());
 
@@ -42,12 +45,24 @@ const Groups = () => {
 		dispatch(editTextFilter(""));
 
 		// Load groups on mount
-		loadGroups(dispatch);
+		 const loadGroups = async () => {
+			// Fetching groups from server
+			await dispatch(fetchGroups());
+
+			// Load groups into table
+			if (allowLoadIntoTable) {
+				dispatch(loadGroupsIntoTable());
+			}
+		};
+		loadGroups();
 
 		// Fetch groups every minute
 		let fetchGroupsInterval = setInterval(loadGroups, 5000);
 
-		return () => clearInterval(fetchGroupsInterval);
+		return () => {
+			allowLoadIntoTable = false;
+			clearInterval(fetchGroupsInterval);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

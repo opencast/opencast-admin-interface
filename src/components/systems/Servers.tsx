@@ -16,7 +16,7 @@ import Footer from "../Footer";
 import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchServers } from "../../slices/serverSlice";
-import { loadServers, systemsLinks } from "./partials/SystemsNavigation";
+import { systemsLinks } from "./partials/SystemsNavigation";
 import { reset } from "../../slices/tableSlice";
 
 /**
@@ -31,6 +31,9 @@ const Servers = () => {
 	const servers = useAppSelector(state => getTotalServers(state));
 
 	useEffect(() => {
+		// State variable for interrupting the load function
+		let allowLoadIntoTable = true;
+
 		// Clear table of previous data
 		dispatch(reset());
 
@@ -42,12 +45,24 @@ const Servers = () => {
 		dispatch(editTextFilter(""));
 
 		// Load servers on mount
-		loadServers(dispatch);
+		const loadServers = async () => {
+			// Fetching servers from server
+			await dispatch(fetchServers());
+
+			// Load servers into table
+			if (allowLoadIntoTable) {
+				dispatch(loadServersIntoTable());
+			}
+		};
+		loadServers();
 
 		// Fetch servers every minute
-		let fetchServersInterval = setInterval(() => loadServers(dispatch), 5000);
+		let fetchServersInterval = setInterval(() => loadServers(), 5000);
 
-		return () => clearInterval(fetchServersInterval);
+		return () => {
+			allowLoadIntoTable = false;
+			clearInterval(fetchServersInterval);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
