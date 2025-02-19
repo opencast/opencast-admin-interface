@@ -70,7 +70,6 @@ const Statistics: React.FC = () => {
 						{
 							path: "/statistics/organization",
 							accessRole: "ROLE_UI_STATISTICS_ORGANIZATION_VIEW",
-							loadFn: () => {},
 							text: "STATISTICS.NAVIGATION.ORGANIZATION"
 						}
 					]}

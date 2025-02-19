@@ -29,14 +29,6 @@ const Themes = () => {
 
 	const themes = useAppSelector(state => getTotalThemes(state));
 
-	const loadThemes = async () => {
-		// Fetching themes from server
-		await dispatch(fetchThemes());
-
-		// Load users into table
-		dispatch(loadThemesIntoTable());
-	};
-
 	useEffect(() => {
 		// State variable for interrupting the load function
 		let allowLoadIntoTable = true;
@@ -83,7 +75,6 @@ const Themes = () => {
 					{
 						path: "/configuration/themes",
 						accessRole: "ROLE_UI_THEMES_VIEW",
-						loadFn: loadThemes,
 						text: "CONFIGURATION.NAVIGATION.THEMES"
 					},
 				]}

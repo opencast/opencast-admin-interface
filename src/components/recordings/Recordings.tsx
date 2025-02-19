@@ -28,14 +28,6 @@ const Recordings = () => {
 	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 	const recordings = useAppSelector(state => getTotalRecordings(state));
 
-	const loadRecordings = async () => {
-		// Fetching recordings from server
-		await dispatch(fetchRecordings(undefined));
-
-		// Load recordings into table
-		dispatch(loadRecordingsIntoTable());
-	};
-
 	useEffect(() => {
 		// State variable for interrupting the load function
 		let allowLoadIntoTable = true;
@@ -78,7 +70,6 @@ const Recordings = () => {
 					{
 						path: "/recordings/recordings",
 						accessRole: "ROLE_UI_LOCATIONS_VIEW",
-						loadFn: loadRecordings,
 						text: "RECORDINGS.NAVIGATION.LOCATIONS"
 					}
 				]}
