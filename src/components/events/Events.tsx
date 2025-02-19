@@ -89,7 +89,7 @@ const Events = () => {
 		// Load events on mount
 		const loadEvents = async () => {
 			// Fetching stats from server
-			await dispatch(fetchStats());
+			dispatch(fetchStats());
 
 			// Fetching events from server
 			await dispatch(fetchEvents());

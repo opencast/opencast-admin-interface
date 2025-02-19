@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Event } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import { enrichPublications } from "../../../thunks/assetsThunks";
+import { useAppDispatch } from "../../../store";
+import { Publication } from "../../../slices/eventDetailsSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 // References for detecting a click outside of the container of the popup listing publications of an event
 const containerPublications = React.createRef<HTMLDivElement>();
@@ -15,9 +19,36 @@ const PublishCell = ({
 	row: Event
 }) => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
 
+	const [publications, setPublications] = useState(row.publications);
 	// State of popup listing publications of an event
 	const [showPopup, setShowPopup] = useState(false);
+
+	useEffect(() => {
+		const fetchPublications = async() => {
+			if (!!row.publications && row.publications.length > 0) {
+				let transformedPublications: Publication[] = [];
+				try {
+					const resultAction = await dispatch(enrichPublications({ publications: row.publications }));
+					transformedPublications = unwrapResult(resultAction);
+				} catch (rejectedValueOrSerializedError) {
+					console.error(rejectedValueOrSerializedError)
+				}
+				setPublications(transformedPublications);
+			}
+		}
+		// TODO: Publications are not actually enriched the first time this component loads (row will still be undefined),
+		// so they are usually enriched after the first interval. It would be better if we could enrich as soon as row is
+		// not undefined anymore.
+		fetchPublications();
+
+		// Fetch every five seconds
+		let fetchEventsInterval = setInterval(() => fetchPublications(), 5000);
+
+		return () => clearInterval(fetchEventsInterval);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	useEffect(() => {
 		// Function for handling clicks outside of popup
@@ -38,23 +69,23 @@ const PublishCell = ({
 		};
 	}, []);
 
-	const onlyEngage = row.publications.length === 1
-		&& row.publications[0].enabled
-		&& !row.publications[0].hide
-		&& row.publications[0].id === 'engage-player';
+	const onlyEngage = publications.length === 1
+		&& publications[0].enabled
+		&& !publications[0].hide
+		&& publications[0].id === 'engage-player';
 
 	return (
 		<div className="popover-wrapper">
 			{onlyEngage && (
 				<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PLAYER")}>
-					<a href={row.publications[0].url} rel='noreferrer' target="_blank">
+					<a href={publications[0].url} rel='noreferrer' target="_blank">
 						<button className="button-like-anchor">
 							{t("YES")}
 						</button>
 					</a>
 				</Tooltip>
 			)}
-			{!onlyEngage && row.publications.length > 0 && (
+			{!onlyEngage && publications.length > 0 && (
 				<>
 					<button className="button-like-anchor popover-wrapper__trigger">
 						<span onClick={() => setShowPopup(!showPopup)}>{t("YES")}</span>
@@ -64,7 +95,7 @@ const PublishCell = ({
 							<div className="popover__header" />
 							<div className="popover__content">
 								{/* Show a list item for each publication of an event that isn't hidden*/}
-								{row.publications.map((publication, key) =>
+								{publications.map((publication, key) =>
 									!publication.hide ? (
 										// Check if publications is enabled and choose icon according
 										publication.enabled ? (
