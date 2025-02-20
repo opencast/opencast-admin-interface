@@ -26,6 +26,7 @@ const PublishCell = ({
 	const [showPopup, setShowPopup] = useState(false);
 
 	useEffect(() => {
+		// Enrich publications every time the row updates
 		const fetchPublications = async() => {
 			if (!!row.publications && row.publications.length > 0) {
 				let transformedPublications: Publication[] = [];
@@ -38,17 +39,8 @@ const PublishCell = ({
 				setPublications(transformedPublications);
 			}
 		}
-		// TODO: Publications are not actually enriched the first time this component loads (row will still be undefined),
-		// so they are usually enriched after the first interval. It would be better if we could enrich as soon as row is
-		// not undefined anymore.
 		fetchPublications();
-
-		// Fetch every five seconds
-		let fetchEventsInterval = setInterval(() => fetchPublications(), 5000);
-
-		return () => clearInterval(fetchEventsInterval);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [dispatch, row]);
 
 	useEffect(() => {
 		// Function for handling clicks outside of popup
