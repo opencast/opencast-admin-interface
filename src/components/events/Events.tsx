@@ -27,7 +27,6 @@ import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { fetchAssetUploadOptions } from "../../thunks/assetsThunks";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
@@ -50,7 +49,6 @@ const Events = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 	const displayEventDetailsModal = useAppSelector(state => showModal(state));
 
 	const [displayActionMenu, setActionMenu] = useState(false);
@@ -69,9 +67,7 @@ const Events = () => {
 	let location = useLocation();
 
 	useEffect(() => {
-		if ("events" !== currentFilterType) {
-			dispatch(fetchFilters("events"))
-		}
+		dispatch(fetchFilters("events"))
 
 		// Reset text filter
 		dispatch(editTextFilter(""));

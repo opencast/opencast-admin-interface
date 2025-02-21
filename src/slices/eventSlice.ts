@@ -231,7 +231,7 @@ const initialState: EventState = {
 // fetch events from server
 export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, { dispatch, getState }) => {
 	const state = getState();
-	let params: ReturnType<typeof getURLParams> & { getComments?: boolean } = getURLParams(state);
+	let params: ReturnType<typeof getURLParams> & { getComments?: boolean } = getURLParams(state, "events");
 
 	// Only if the notes column is enabled, fetch comment information for events
 	if (state.table.columns.find(column => column.label === "EVENTS.EVENTS.TABLE.ADMINUI_NOTES" && !column.deactivated)) {
