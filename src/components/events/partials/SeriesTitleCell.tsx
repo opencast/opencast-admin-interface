@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { setSpecificEventFilter } from "../../../slices/tableFilterSlice";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 import { useAppDispatch } from "../../../store";
 import { Tooltip } from "../../shared/Tooltip";
 import { Series } from "../../../slices/seriesSlice";
@@ -16,21 +16,22 @@ const SeriesTitleCell = ({
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
 	const redirectToEvents = async (seriesId: string) => {
 		// set the series filter value of events to series title
 		await dispatch(setSpecificEventFilter({filter: "series", filterValue: seriesId}));
+		navigate("/events/events");
 	};
 
 	return (
 		<Tooltip title={t("EVENTS.SERIES.TABLE.TOOLTIP.SERIES")}>
-			<Link
-				to="/events/events"
-				className="crosslink"
-				onClick={async () => await redirectToEvents(row.id)}
+			<button
+				className="button-like-anchor crosslink"
+				onClick={() =>  redirectToEvents(row.id)}
 			>
 				{row.title}
-			</Link>
+			</button>
 		</Tooltip>
 	);
 };
