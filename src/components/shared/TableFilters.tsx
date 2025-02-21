@@ -46,7 +46,7 @@ const TableFilters = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const filterMap = useAppSelector(state => getFilters(state));
+	const filterMap = useAppSelector(state => getFilters(state, resource));
 	const secondFilter = useAppSelector(state => getSecondFilter(state));
 	const selectedFilter = useAppSelector(state => getSelectedFilter(state));
 	const textFilter = useAppSelector(state => getTextFilter(state));

@@ -70,7 +70,7 @@ export function isSeries(row: Row | Event | Series | Recording | Server | Job | 
 // TODO: Improve row typing. While this somewhat correctly reflects the current state of our code, it is rather annoying to work with.
 export type Row = { selected: boolean } & ( Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | ThemeDetailsType )
 
-type TableState = {
+export type TableState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
 	multiSelect: boolean,
