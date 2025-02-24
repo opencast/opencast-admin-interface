@@ -19,7 +19,6 @@ export default [
             "max-len": "off",
             "no-extra-boolean-cast": "off",
             "no-tabs": "off",
-            "no-trailing-spaces": "off",
             "no-unused-expressions": "off",
             "no-var": "off",
             "object-curly-spacing": "off",
