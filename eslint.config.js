@@ -15,7 +15,6 @@ export default [
             "camelcase": "off",
             "comma-dangle": "off",
             "indent": "off",
-            "key-spacing": "off",
             "keyword-spacing": "off",
             "max-len": "off",
             "no-extra-boolean-cast": "off",

@@ -67,7 +67,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 		// Fetch data about series and schedule info of chosen events from backend
 		dispatch(fetchScheduling({
 			events: formik.values.events,
-			fetchNewScheduling:fetchEventInfos,
+			fetchNewScheduling: fetchEventInfos,
 			setFormikValue: formik.setFieldValue
 	}));
 		// eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1213,7 +1213,7 @@ if (endDate < now) {
 					addNotification({
 						type: "error",
 						key: "CONFLICT_DETECTED",
-						duration:-1,
+						duration: -1,
 						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					})
@@ -1244,7 +1244,7 @@ if (endDate < now) {
 					addNotification({
 						type: "error",
 						key: "CONFLICT_DETECTED",
-						duration:-1,
+						duration: -1,
 						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					})

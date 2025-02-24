@@ -363,7 +363,7 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
                 dispatch(
                     addNotification({
                         type: "warning",
-                        key:"SERIES_THEME_REPROCESS_EXISTING_EVENTS",
+                        key: "SERIES_THEME_REPROCESS_EXISTING_EVENTS",
                         duration: 10,
                         parameter: undefined,
                         context: NOTIFICATION_CONTEXT
@@ -399,7 +399,7 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
                 dispatch(
                     addNotification({
                         type: "warning",
-                        key:"SERIES_THEME_REPROCESS_EXISTING_EVENTS",
+                        key: "SERIES_THEME_REPROCESS_EXISTING_EVENTS",
                         duration: 10,
                         parameter: undefined,
                         context: NOTIFICATION_CONTEXT

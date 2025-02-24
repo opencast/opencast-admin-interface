@@ -401,7 +401,7 @@ export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata
 						dispatch(
 							addNotification({
 								type: "warning",
-								key:"BULK_ACTIONS.EDIT_EVENTS_METADATA.REQUEST_ERRORS.NOT_FOUND"
+								key: "BULK_ACTIONS.EDIT_EVENTS_METADATA.REQUEST_ERRORS.NOT_FOUND"
 							})
 						);
 					}
