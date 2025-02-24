@@ -476,8 +476,8 @@ export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTo
 			context: NOTIFICATION_CONTEXT_TOBIRA,
 		}));
 		throw error;
-	}}
-);
+	}
+});
 
 export const removeSeriesTobiraPath = createAppAsyncThunk('series/removeSeriesTobiraData', async (
 	params: Required<Pick<TobiraFormProps, 'currentPath'>> & { seriesId: string },
@@ -506,8 +506,8 @@ export const removeSeriesTobiraPath = createAppAsyncThunk('series/removeSeriesTo
 			context: NOTIFICATION_CONTEXT_TOBIRA,
 		}));
 		throw error;
-	}}
-);
+	}
+});
 
 // thunks for statistics
 export const fetchSeriesStatistics = createAppAsyncThunk('seriesDetails/fetchSeriesStatistics', async (seriesId: string, {getState}) => {

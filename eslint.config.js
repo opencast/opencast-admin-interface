@@ -12,7 +12,6 @@ export default [
         rules: {
             // TODO: We want to turn these on eventually
             "arrow-parens": "off",
-            "block-spacing": "off",
             "brace-style": "off",
             "camelcase": "off",
             "comma-dangle": "off",

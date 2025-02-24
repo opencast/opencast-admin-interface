@@ -93,7 +93,7 @@ const NavBar = ({
 
 			<nav aria-label={navAriaLabel && t(navAriaLabel)}>
 				{links.map((link) =>
-					{return (hasAccess(link.accessRole, user) && (
+					{ return (hasAccess(link.accessRole, user) && (
 						<Link
 							to={link.path}
 							className={cn({ active: location.pathname === link.path })}
@@ -107,7 +107,7 @@ const NavBar = ({
 						>
 							{t(link.text)}
 						</Link>
-					))}
+					)) }
 				)}
 			</nav>
 
