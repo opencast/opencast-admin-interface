@@ -160,20 +160,15 @@ const PasswordStrengthIndicator = ({
 	const setProgBar = (strength: number) => {
 		if (strength >= 90) {
 			return ["green", "USERS.USERS.DETAILS.STRENGTH.VERYSTRONG"]
-		}
-		else if (strength >= 70) {
+		} else if (strength >= 70) {
 			return ["#388ed6", "USERS.USERS.DETAILS.STRENGTH.STRONG"]
-		}
-		else if (strength >= 50) {
+		} else if (strength >= 50) {
 			return ["gold", "USERS.USERS.DETAILS.STRENGTH.GOOD"]
-		}
-		else if (strength >= 30) {
+		} else if (strength >= 30) {
 			return ["darkorange", "USERS.USERS.DETAILS.STRENGTH.WEAK"]
-		}
-		else if (strength > 1) {
+		} else if (strength > 1) {
 			return ["red", "USERS.USERS.DETAILS.STRENGTH.VERYWEAK"]
-		}
-		else if (strength <= 1){
+		} else if (strength <= 1){
 			return ["white", "USERS.USERS.DETAILS.STRENGTH.BAD"]
 		}
 
