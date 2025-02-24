@@ -168,7 +168,7 @@ const PasswordStrengthIndicator = ({
 			return ["darkorange", "USERS.USERS.DETAILS.STRENGTH.WEAK"]
 		} else if (strength > 1) {
 			return ["red", "USERS.USERS.DETAILS.STRENGTH.VERYWEAK"]
-		} else if (strength <= 1){
+		} else if (strength <= 1) {
 			return ["white", "USERS.USERS.DETAILS.STRENGTH.BAD"]
 		}
 

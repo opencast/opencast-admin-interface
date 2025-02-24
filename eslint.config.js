@@ -24,7 +24,6 @@ export default [
             "prefer-const": "off",
             "quotes": "off",
             "semi": "off",
-            "space-before-blocks": "off",
             "space-before-function-paren": "off",
             "space-in-parens": "off",
             "space-infix-ops": "off",
