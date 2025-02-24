@@ -10,7 +10,7 @@ import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButt
  * and for themes in the themes details modal.
  * Here, additional information, like name, for themes can be provided.
  */
-const GeneralPage = <T,>({
+const GeneralPage = <T, >({
 	formik,
 	nextPage,
 	isEdit,

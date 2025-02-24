@@ -14,7 +14,6 @@ export default [
             "arrow-parens": "off",
             "camelcase": "off",
             "comma-dangle": "off",
-            "comma-spacing": "off",
             "curly": "off",
             "eol-last": "off",
             "indent": "off",

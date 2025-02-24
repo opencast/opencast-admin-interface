@@ -7,7 +7,7 @@ import NewMetadataPage from "./NewMetadataPage";
 /**
  * This component renders the metadata page for new events and series in the wizards.
  */
-const NewMetadataCommonPage = <T,>({
+const NewMetadataCommonPage = <T, >({
 	formik,
 	nextPage,
 	metadataFields,

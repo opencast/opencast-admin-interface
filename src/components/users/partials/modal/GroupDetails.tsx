@@ -38,7 +38,7 @@ const GroupDetails: React.FC<{
 			}
 		}
 		setRoleNames(roleNames);
-	},[groupDetails.roles]);
+	}, [groupDetails.roles]);
 
 	const initialValues = {
 		...groupDetails,

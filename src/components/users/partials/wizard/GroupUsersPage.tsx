@@ -7,7 +7,7 @@ import { FormikProps } from "formik";
 /**
  * This component renders the user selection page of the new group wizard and group details wizard
  */
-const GroupUsersPage = <T,>({
+const GroupUsersPage = <T, >({
 	formik,
 	nextPage,
 	previousPage,

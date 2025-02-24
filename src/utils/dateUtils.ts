@@ -71,7 +71,7 @@ export const calculateDuration = (
 // sets the duration in the formik
 const setDuration = (
 	startDate: Date,
-	endDate: Date ,
+	endDate: Date,
 	setFieldValue: (field: string, value: string) => Promise<void | FormikErrors<any>>
 ) => {
 	const { durationHours, durationMinutes } = calculateDuration(

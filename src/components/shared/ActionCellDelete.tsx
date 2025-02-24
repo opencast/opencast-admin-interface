@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { IconButton } from "./IconButton";
 import { ModalHandle } from "./modals/Modal";
 
-export const ActionCellDelete = <T,>({
+export const ActionCellDelete = <T, >({
 	editAccessRole,
 	tooltipText,
 	resourceId,

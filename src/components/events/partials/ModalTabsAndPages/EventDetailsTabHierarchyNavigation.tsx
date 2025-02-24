@@ -9,7 +9,7 @@ import {
 /**
  * This component renders the navigation hierarchy for the workflow details sub-tabs of event details modal
  */
-const EventDetailsTabHierarchyNavigation = <T,>({
+const EventDetailsTabHierarchyNavigation = <T, >({
 	openSubTab,
 	hierarchyDepth,
 	translationKey0 = "",

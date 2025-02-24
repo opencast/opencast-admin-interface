@@ -2,7 +2,7 @@ import React from "react";
 import { FormikProps } from "formik";
 import NavigationButtons from "../NavigationButtons";
 
-const WizardNavigationButtons = <T,>({
+const WizardNavigationButtons = <T, >({
 	isFirst,
 	isLast,
 	noValidation, // Do not validate

@@ -82,7 +82,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 				}));
 			}
 		}
-	},[formik.values, t, uploadAssetsNonTrack, uploadAssetsOptionsNonTrack]);
+	}, [formik.values, t, uploadAssetsNonTrack, uploadAssetsOptionsNonTrack]);
 
 
 	// Get additional information about chosen workflow definition
