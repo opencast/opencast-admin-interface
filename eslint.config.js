@@ -24,7 +24,6 @@ export default [
             "prefer-const": "off",
             "quotes": "off",
             "semi": "off",
-            "space-unary-ops": "off",
             "spaced-comment": "off",
             "@typescript-eslint/await-thenable": "off",
             "@typescript-eslint/ban-ts-comment": "off",

@@ -403,7 +403,7 @@ const changeStartMultiple = (
 	setFieldValue("scheduleEndDate", endDate.toISOString());
 	setFieldValue("scheduleStartDate", startDate.toISOString());
 
-	if (!!checkConflicts && !! formikValues.captureAgent) {
+	if (!!checkConflicts && !!formikValues.captureAgent) {
 		checkConflicts(
 			eventId,
 			startDate,
