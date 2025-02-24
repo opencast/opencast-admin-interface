@@ -11,7 +11,6 @@ export default [
     {
         rules: {
             // TODO: We want to turn these on eventually
-            "array-bracket-spacing": "off",
             "arrow-parens": "off",
             "block-spacing": "off",
             "brace-style": "off",

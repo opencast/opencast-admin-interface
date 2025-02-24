@@ -129,7 +129,7 @@ const PasswordStrengthIndicator = ({
 		"987654321", "aa12345678", "abc123", "admin", "dragon", "Dragon", "google",
 		"iloveyou", "Iloveyou", "lovely", "Monkey", "mynoob", "password",
 		"password1", "password12", "password123", "princess", "qwerty", "qwerty123", "qwertyuiop",
-		"Qwertyuiop", "welcome", "zxcvbnm", "opencast" ];
+		"Qwertyuiop", "welcome", "zxcvbnm", "opencast"];
 
 	function testPassword(regex: RegExp) {
 		return !!password && regex.test(password);
@@ -181,7 +181,7 @@ const PasswordStrengthIndicator = ({
 	}
 
 	const strength = calcStrength(password);
-	const [ barColor, barText ] = setProgBar(strength);
+	const [barColor, barText] = setProgBar(strength);
 
 	const progressBarStyle = {
 		background: barColor,
