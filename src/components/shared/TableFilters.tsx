@@ -374,7 +374,6 @@ const FilterSwitch = ({
 		return null;
 	}
 
-	// eslint-disable-next-line default-case
 	switch (filter.type) {
 		case "select":
 			return (

@@ -434,7 +434,6 @@ export const goToPage = (pageNumber: number) => async (dispatch: AppDispatch, ge
 	}
 
 	// Get resources of page and load them into table
-	// eslint-disable-next-line default-case
 	switch (getResourceType(state)) {
 		case "events": {
 			await dispatch(fetchEvents());
@@ -503,7 +502,6 @@ export const updatePages = () => async (dispatch: AppDispatch, getState: () => R
 	dispatch(setPages(pages));
 
 	// Get resources of page and load them into table
-	// eslint-disable-next-line default-case
 	switch (getResourceType(state)) {
 		case "events": {
 			await dispatch(fetchEvents());
@@ -563,7 +561,6 @@ export const changeAllSelected = (selected: boolean): AppThunk => (dispatch, get
 	const state = getState();
 
 	if (selected) {
-		// eslint-disable-next-line default-case
 		switch (getResourceType(state)) {
 			case "events": {
 				dispatch(showEventsActions(true));
@@ -576,7 +573,6 @@ export const changeAllSelected = (selected: boolean): AppThunk => (dispatch, get
 		}
 		dispatch(selectAll());
 	} else {
-		// eslint-disable-next-line default-case
 		switch (getResourceType(state)) {
 			case "events": {
 				dispatch(showEventsActions(false));
@@ -597,7 +593,6 @@ export const changeColumnSelection = (updatedColumns: TableConfig["columns"]) =>
 ) => {
 	const state = getState();
 
-	// eslint-disable-next-line default-case
 	switch (getResourceType(state)) {
 		case "events": {
 			await dispatch(setEventColumns(updatedColumns));
@@ -676,7 +671,6 @@ export const changeRowSelection = (id: number | string, selected: boolean): AppT
 
 	const state = getState();
 
-	// eslint-disable-next-line default-case
 	switch (getResourceType(state)) {
 		case "events": {
 			if (getSelectedRows(state).length > 0) {

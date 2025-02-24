@@ -70,7 +70,6 @@ const EventDetailsPublicationTab = ({
 														</div>
 
 														{publication.enabled ? (
-															// eslint-disable-next-line jsx-a11y/anchor-has-content
 															<a className="play" href={publication.url} target="_blank" rel="noreferrer"/>
 														) : (
 															<span style={styleSpan}>

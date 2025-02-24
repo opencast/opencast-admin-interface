@@ -201,7 +201,6 @@ const TimeSeriesStatistics = ({
 				<div className="statistics-graph">
 					{/* download link for a statistic file */}
 					<div className="download">
-						{/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
 						<a
 							className="download-icon"
 							href={exportUrl}
@@ -255,7 +254,6 @@ const TimeSeriesStatistics = ({
 						formik.values.timeMode === "month") && (
 						/* year/month selection for statistic via previous and next buttons */
 						<span className="preset">
-							{/* eslint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/anchor-is-valid */}
 							<a
 								className="navigation prev"
 								onClick={() =>
@@ -273,7 +271,6 @@ const TimeSeriesStatistics = ({
 									formik.values.timeMode
 								)}
 							</div>
-							{/* eslint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/anchor-is-valid */}
 							<a
 								className="navigation next"
 								onClick={() =>
