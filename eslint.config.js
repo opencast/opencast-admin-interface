@@ -15,7 +15,6 @@ export default [
             "camelcase": "off",
             "comma-dangle": "off",
             "indent": "off",
-            // "jsx-quotes": "off",
             "key-spacing": "off",
             "keyword-spacing": "off",
             "max-len": "off",

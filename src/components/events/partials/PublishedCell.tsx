@@ -47,7 +47,7 @@ const PublishCell = ({
 		<div className="popover-wrapper">
 			{onlyEngage && (
 				<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PLAYER")}>
-					<a href={row.publications[0].url} rel='noreferrer' target="_blank">
+					<a href={row.publications[0].url} rel="noreferrer" target="_blank">
 						<button className="button-like-anchor">
 							{t("YES")}
 						</button>
@@ -72,7 +72,7 @@ const PublishCell = ({
 												href={publication.url}
 												className="popover__list-item"
 												target="_blank"
-												rel='noreferrer'
+												rel="noreferrer"
 												key={key}
 											>
 												<span>{publication.label ? t(publication.label) : t(publication.name)}</span>
