@@ -20,7 +20,6 @@ export default [
             "no-extra-boolean-cast": "off",
             "no-tabs": "off",
             "no-unused-expressions": "off",
-            "no-var": "off",
             "object-curly-spacing": "off",
             "prefer-const": "off",
             "quotes": "off",

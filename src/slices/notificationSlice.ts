@@ -105,7 +105,7 @@ export const addNotification = createAppAsyncThunk('notifications/addNotificatio
 		hidden: false,
 		context: context,
 	};
-	var dispatchedNotification;
+	let dispatchedNotification;
 	if (!id) {
 		dispatchedNotification = dispatch(createNotification({notification: notification, id: nextNotificationId++}));
 	} else {
