@@ -100,7 +100,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 						{/*Summary metadata*/}
 						<MetadataSummaryTable
 							metadataCatalogs={[metadataEvents]}
-							//@ts-ignore
+							//@ts-expect-error: Metadata not correctly typed
 							formikValues={formik.values}
 							header={"EVENTS.EVENTS.NEW.METADATA.CAPTION"}
 						/>
@@ -109,7 +109,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 						{!metaDataExtendedHidden && (
 							<MetadataSummaryTable
 								metadataCatalogs={extendedMetadata}
-								//@ts-ignore
+								//@ts-expect-error: Metadata not correctly typed
 								formikValues={formik.values}
 								header={"EVENTS.EVENTS.NEW.METADATA_EXTENDED.CAPTION"}
 							/>

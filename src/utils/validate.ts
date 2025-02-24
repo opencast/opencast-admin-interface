@@ -49,11 +49,11 @@ export function createMetadataSchema(
 	let validator = Yup[validationType as "string"]();
 	validations.forEach(validation => {
 		const { params, type } = validation;
-		// @ts-expect-error
+		// @ts-expect-error: Yup needs to fix their typing?
 		if (!validator[type]) {
 			return;
 		}
-		// @ts-expect-error
+		// @ts-expect-error: Yup needs to fix their typing?
 		validator = validator[type](...params);
 	});
 	schema[id] = validator;
