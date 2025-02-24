@@ -620,7 +620,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 
 	// Process bar notification
 	const config = {
-		onUploadProgress: function(progressEvent: AxiosProgressEvent) {
+		onUploadProgress: function (progressEvent: AxiosProgressEvent) {
 			const percentCompleted = progressEvent.total ? (progressEvent.loaded * 100) / progressEvent.total : undefined;
 			if (percentCompleted) {
 				dispatch(addNotification({
