@@ -421,7 +421,7 @@ export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetch
 		.catch(response => handleTobiraError(response, dispatch));
 
 	if (!res) {
-		throw Error;
+		throw new Error();
 	}
 
 	const data = res.data;

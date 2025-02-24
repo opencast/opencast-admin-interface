@@ -936,7 +936,7 @@ export const fetchEventDetailsTobira = createAppAsyncThunk('eventDetails/fetchEv
 		.catch(response => handleTobiraError(response, dispatch));
 
 	if (!res) {
-		throw Error;
+		throw new Error();
 	}
 
 	const data = res.data;
