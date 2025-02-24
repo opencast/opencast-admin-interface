@@ -83,6 +83,7 @@ const DetailsMetadataTab = ({
 							metadata.map((catalog, key) => (
 								// initialize form
 								<Formik
+									key={key}
 									enableReinitialize
 									initialValues={getInitialValues(catalog)}
 									onSubmit={(values) => handleSubmit(values, catalog)}

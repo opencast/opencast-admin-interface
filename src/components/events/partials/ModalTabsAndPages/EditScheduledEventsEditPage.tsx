@@ -243,7 +243,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 									)}
 										{
 											reduceGroupEvents(Object.values(groupBy(formik.values.editedEvents, i => i.weekday))).map((groupedEvent, key) => (
-												<div className="obj tbl-details">
+												<div key={key} className="obj tbl-details">
 													<header>{t("EVENTS.EVENTS.NEW.WEEKDAYSLONG." + groupedEvent.weekday)
 														+ " ("
 														+ t("BULK_ACTIONS.EDIT_EVENTS.EDIT.EVENTS")
