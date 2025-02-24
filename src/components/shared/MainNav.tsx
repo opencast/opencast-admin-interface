@@ -253,7 +253,7 @@ const MainNav = ({
 							{hasAccess("ROLE_UI_NAV_SYSTEMS_VIEW", user) &&
 								(hasAccess("ROLE_UI_JOBS_VIEW", user) ? (
 									<Link to="/systems/jobs" onClick={() => loadJobs()}>
-										<Tooltip  title={t("NAV.SYSTEMS.TITLE")} placement={"right"}>
+										<Tooltip title={t("NAV.SYSTEMS.TITLE")} placement={"right"}>
 											<i className="systems" />
 										</Tooltip>
 									</Link>

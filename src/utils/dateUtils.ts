@@ -19,7 +19,7 @@ export const relativeToAbsoluteDate = (relative: string, type: string, from: boo
 	if (from) {
 		absolute = localMoment.startOf(type as moment.unitOfTime.StartOf);
 	} else {
-		absolute = localMoment.endOf(type  as moment.unitOfTime.StartOf);
+		absolute = localMoment.endOf(type as moment.unitOfTime.StartOf);
 	}
 
 	absolute = absolute.add(relative, type as moment.unitOfTime.Base);

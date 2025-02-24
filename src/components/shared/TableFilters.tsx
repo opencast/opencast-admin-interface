@@ -147,7 +147,7 @@ const TableFilters = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [itemValue]);
 
-	const handleDatepicker = async (dates?:  [Date | undefined | null, Date | undefined | null]) => {
+	const handleDatepicker = async (dates?: [Date | undefined | null, Date | undefined | null]) => {
 		if (dates != null) {
 			let [start, end] = dates;
 

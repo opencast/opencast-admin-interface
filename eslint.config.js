@@ -18,7 +18,6 @@ export default [
             "keyword-spacing": "off",
             "max-len": "off",
             "no-extra-boolean-cast": "off",
-            "no-multi-spaces": "off",
             "no-tabs": "off",
             "no-trailing-spaces": "off",
             "no-unused-expressions": "off",

@@ -248,7 +248,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 														+ " ("
 														+ t("BULK_ACTIONS.EDIT_EVENTS.EDIT.EVENTS")
 														+ " "
-														+ formik.values.editedEvents.reduce((acc, cur) => cur.weekday === groupedEvent.weekday  ? ++acc : acc, 0)
+														+ formik.values.editedEvents.reduce((acc, cur) => cur.weekday === groupedEvent.weekday ? ++acc : acc, 0)
 														+ ")"}
 													</header>
 													<div className="obj-container">
