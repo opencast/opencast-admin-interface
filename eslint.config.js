@@ -27,7 +27,6 @@ export default [
             "spaced-comment": "off",
             "@typescript-eslint/await-thenable": "off",
             "@typescript-eslint/no-explicit-any": "off",
-            "@typescript-eslint/no-empty-object-type": "off",
             "@typescript-eslint/no-floating-promises": "off",
             "@typescript-eslint/no-for-in-array": "off",
             "@typescript-eslint/no-misused-promises": "off",

@@ -230,7 +230,7 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 
 	let jsonData: {
 		metadata: typeof metadata,
-		options: {},
+		options: unknown,
 		access: typeof access,
 		theme?: number,
 		tobira?: any
