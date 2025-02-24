@@ -212,7 +212,7 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 	if (values.selectedPage && values.breadcrumbs) {
 		let existingPages: any[] = [];
 		let newPages: any[] = [];
-		values.breadcrumbs.concat(values.selectedPage).forEach( function (page: TobiraPage) {
+		values.breadcrumbs.concat(values.selectedPage).forEach(function (page: TobiraPage) {
 			if (page.new) {
 				newPages.push({
 					name: page.title,
