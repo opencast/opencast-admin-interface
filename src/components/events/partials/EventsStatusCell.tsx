@@ -35,7 +35,7 @@ const EventsStatusCell = ({
 				}
 
 				// Show operations of last workflow
-				const lastWorkflow = workflows.entries[workflows.entries.length-1];
+				const lastWorkflow = workflows.entries[workflows.entries.length - 1];
 				dispatch(openModal(EventDetailsPage.Workflow, row, 'workflow-operations', 'entry', lastWorkflow.id));
 			});
 	};

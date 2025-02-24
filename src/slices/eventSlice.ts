@@ -552,7 +552,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	let assets: {
 		workflow: string,
 		options: UploadAssetOption[],
-	}= {
+	} = {
 		workflow: WORKFLOW_UPLOAD_ASSETS_NON_TRACK,
 		options: [],
 	};

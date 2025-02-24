@@ -195,7 +195,7 @@ const TableFilters = ({
 		return (
 			<span className="table-filter-blue-box">
 				{t(filter.label)}:
-				{filter.translatable? t(valueLabel) : valueLabel}
+				{filter.translatable ? t(valueLabel) : valueLabel}
 			</span>
 		);
 	};

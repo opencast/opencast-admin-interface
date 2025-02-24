@@ -124,7 +124,7 @@ const EventDetailsAssetsTab = ({
 					<button
 						key={key}
 						className={"button-like-anchor"}
-						style={tab.tabHierarchies.includes(assetsTabHierarchy) ? assetsTabActive: assetsTabInactive}
+						style={tab.tabHierarchies.includes(assetsTabHierarchy) ? assetsTabActive : assetsTabInactive}
 						onClick={tab.open}
 					>
 						{t(tab.tabNameTranslation)}

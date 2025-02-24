@@ -2395,7 +2395,7 @@ const eventDetailsSlice = createSlice({
 					time_in_queue: 0,
 				};
 				state.workflowOperationDetails = emptyOperationDetails;
-				state.errorWorkflowOperationDetails= action.error;
+				state.errorWorkflowOperationDetails = action.error;
 				// todo: probably needs a Notification to the user
 				console.error(action.error);
 			})
