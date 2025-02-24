@@ -23,7 +23,6 @@ export default [
             "object-curly-spacing": "off",
             "prefer-const": "off",
             "quotes": "off",
-            "react/no-unknown-property": "off",
             // "react-hooks/rules-of-hooks": "off",
             "semi": "off",
             "space-before-blocks": "off",

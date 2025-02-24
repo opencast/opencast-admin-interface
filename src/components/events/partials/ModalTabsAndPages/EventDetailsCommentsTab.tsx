@@ -172,8 +172,7 @@ const EventDetailsCommentsTab = ({
 												</button>
 											)}
 											<span
-												className="resolve"
-												ng-class="{ resolved : comment.resolvedStatus }"
+												className={comment.resolvedStatus ? "resolve resolved" : "resolve"}
 											>
 												{t("EVENTS.EVENTS.DETAILS.COMMENTS.RESOLVED")}
 											</span>
