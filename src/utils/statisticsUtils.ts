@@ -149,5 +149,5 @@ export const createDownloadUrl = (
 		to: moment(to).endOf("day").toJSON(),
 	});
 
-	return "/admin-ng/statistics/export.csv?" + csvUrlSearchParams;
+	return "/admin-ng/statistics/export.csv?" + csvUrlSearchParams.toString();
 };

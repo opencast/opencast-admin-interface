@@ -38,7 +38,6 @@ export default [
             "@typescript-eslint/no-unused-vars": "off",
             "@typescript-eslint/no-unsafe-return": "off",
             "@typescript-eslint/require-await": "off",
-            "@typescript-eslint/restrict-plus-operands": "off",
             "@typescript-eslint/unbound-method": "off",
         }
     }
