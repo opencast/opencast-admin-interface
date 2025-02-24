@@ -82,7 +82,9 @@ export const addNotification = createAppAsyncThunk('notifications/addNotificatio
 		}
 	}
 	// default durations are in seconds. duration needs to be in milliseconds
-	if (duration > 0) duration *= 1000;
+	if (duration > 0) {
+		duration *= 1000;
+	}
 
 	if (!context) {
 		context = "global";

@@ -16,7 +16,9 @@ export function createMetadataSchema(
 	config: { id: string; required: boolean; type: string; },
 ) {
 	const { id, required, type } = config;
-	if (!required) return schema;
+	if (!required) {
+		return schema;
+	}
 
 	let validationType: "string" | "array" | "date" = "string";
 	const validations: {

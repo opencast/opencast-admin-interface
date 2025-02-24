@@ -173,8 +173,12 @@ const TableFilters = ({
 					dispatch(loadResourceIntoTable());
 				}
 			}
-			if (start) setStartDate(start);
-			if (end) setEndDate(end);
+			if (start) {
+				setStartDate(start);
+			}
+			if (end) {
+				setEndDate(end);
+			}
 		}
 	}
 
