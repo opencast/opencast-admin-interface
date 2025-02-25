@@ -7,6 +7,7 @@ import {
 	fetchStats,
 	Stats as StatsType,
 	editTextFilter,
+	removeTextFilter,
 } from "../../slices/tableFilterSlice";
 import { loadEventsIntoTable } from "../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../store";
@@ -28,8 +29,10 @@ const Stats = () => {
 		let filterValue;
 		await stats.filters.forEach((f) => {
 			if (f.name.toLowerCase() === "textfilter") {
-				dispatch(editTextFilter(f.value))
+				dispatch(editTextFilter(f.value));
 				return;
+			} else {
+				dispatch(removeTextFilter());
 			}
 			let filter = filterMap.find(({ name }) => name === f.name);
 			filterValue = f.value;
