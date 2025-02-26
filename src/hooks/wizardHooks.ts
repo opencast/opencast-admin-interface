@@ -99,7 +99,7 @@ export const useSelectionChanges = <T extends RequiredFormProps>(
 };
 
 export const useClickOutsideField = (
-	childRef: React.RefObject<HTMLDivElement>,
+	childRef: React.RefObject<HTMLDivElement | null>,
 	isFirstField?: boolean,
 ) => {
 	// Indicator if currently edit mode is activated

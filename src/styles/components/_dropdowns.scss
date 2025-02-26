@@ -1,5 +1,4 @@
 @use "sass:color";
-@use "../../../node_modules/bourbon/core/bourbon/library/border-radius";
 @use "../base/variables";
 @use "../base/fontawesome/fa-mixins";
 
@@ -89,7 +88,8 @@
         transition: all 200ms;
         background: variables.$off-white;
         list-style: none;
-        @include border-radius.border-bottom-radius(variables.$main-border-radius);
+        border-bottom-left-radius: variables.$main-border-radius;
+        border-bottom-right-radius: variables.$main-border-radius;
         border: variables.$thin-border-stroke variables.$main-border-color;
         opacity: 1;
         pointer-events: auto;
@@ -125,7 +125,8 @@
             }
 
             &:last-child a {
-                @include border-radius.border-bottom-radius(variables.$main-border-radius);
+                border-bottom-left-radius: variables.$main-border-radius;
+                border-bottom-right-radius: variables.$main-border-radius;
             }
         }
 
@@ -168,7 +169,8 @@
             transition: all 200ms;
             background: variables.$off-white;
             list-style: none;
-            @include border-radius.border-bottom-radius(variables.$main-border-radius);
+            border-bottom-left-radius: variables.$main-border-radius;
+            border-bottom-right-radius: variables.$main-border-radius;
             border: variables.$thin-border-stroke variables.$main-border-color;
             opacity: 1;
             pointer-events: auto;
@@ -214,7 +216,8 @@
                 }
 
                 &:last-child a {
-                    @include border-radius.border-bottom-radius(variables.$main-border-radius);
+                    border-bottom-left-radius: variables.$main-border-radius;
+                    border-bottom-right-radius: variables.$main-border-radius;
                 }
             }
         }
@@ -224,21 +227,26 @@
     &.flipped {
 
         &.active {
-            @include border-radius.border-top-radius(0);
-            @include border-radius.border-bottom-radius(variables.$main-border-radius);
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-left-radius: variables.$main-border-radius;
+            border-bottom-right-radius: variables.$main-border-radius;
         }
 
         > ul {
             top: auto;
             bottom: 100%;
-            @include border-radius.border-top-radius(variables.$main-border-radius);
-            @include border-radius.border-bottom-radius(0);
+            border-top-left-radius: variables.$main-border-radius;
+            border-top-right-radius: variables.$main-border-radius;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
         }
     }
 
     // Active State
     &.active {
-        @include border-radius.border-bottom-radius(0);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
 
         &:after {
             transform: rotate(180deg);

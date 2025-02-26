@@ -15,7 +15,6 @@ import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
 import Footer from "../Footer";
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
 	fetchSeries,
@@ -39,17 +38,13 @@ const Series = () => {
 	const newSeriesModalRef = useRef<ModalHandle>(null);
 	const deleteModalRef = useRef<ModalHandle>(null);
 
-	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
-
 	let location = useLocation();
 
 	const series = useAppSelector(state => getTotalSeries(state));
 	const showActions = useAppSelector(state => isShowActions(state));
 
 	useEffect(() => {
-		if ("series" !== currentFilterType) {
-			dispatch(fetchFilters("series"))
-		}
+		dispatch(fetchFilters("series"))
 
 		// Reset text filer
 		dispatch(editTextFilter(""));
