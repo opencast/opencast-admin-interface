@@ -12,7 +12,7 @@ import { Modal, ModalHandle } from "./modals/Modal";
 const HotKeyCheatSheet = ({
 	modalRef,
 }: {
-	modalRef: React.RefObject<ModalHandle>
+	modalRef: React.RefObject<ModalHandle | null>
 }) => {
 	const { t } = useTranslation();
 	const { hotkeys } = useHotkeysContext();

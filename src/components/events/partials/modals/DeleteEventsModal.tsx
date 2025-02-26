@@ -4,8 +4,8 @@ import { getSelectedRows } from "../../../../selectors/tableSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { deleteMultipleEvent } from "../../../../slices/eventSlice";
 import { isEvent } from "../../../../slices/tableSlice";
-import ModalContentTable from "../../../shared/modals/ModalContentTable";
 import NavigationButtons from "../../../shared/NavigationButtons";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component manages the delete bulk action
@@ -72,10 +72,6 @@ const DeleteEventsModal = ({
 					<div className="modal-alert danger obj">
 						<p>{t("BULK_ACTIONS.DELETE_EVENTS_WARNING_LINE1")}</p>
 						<p>{t("BULK_ACTIONS.DELETE_EVENTS_WARNING_LINE2")}</p>
-					</div>
-					{/*todo: only show if scheduling Authorized*/}
-					<div>
-						<p>{t("BULK_ACTIONS.DELETE.EVENTS.UNAUTHORIZED")}</p>
 					</div>
 
 					<div className="full-col">

@@ -6,7 +6,8 @@ import {
 } from "../../../../selectors/seriesDetailsSelectors";
 import { fetchSeriesStatisticsValueUpdate } from "../../../../slices/seriesDetailsSlice";
 import TimeSeriesStatistics from "../../../shared/TimeSeriesStatistics";
-import { useAppDispatch, useAppSelector } from "../../../../store";
+import { useAppSelector } from "../../../../store";
+import { createChartOptions } from "../../../../utils/statisticsUtils";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 const SeriesDetailsStatisticTab = ({
@@ -17,15 +18,9 @@ const SeriesDetailsStatisticTab = ({
 	header: string,
 }) => {
 	const { t } = useTranslation();
-	const dispatch = useAppDispatch();
 
 	const statistics = useAppSelector(state => getStatistics(state));
 	const hasError = useAppSelector(state => hasStatisticsError(state));
-
-		// TODO: Get rid of the wrappers when modernizing redux is done
-		const fetchSeriesStatisticsValueUpdateWrapper = (seriesId: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any) => {
-			dispatch(fetchSeriesStatisticsValueUpdate({seriesId, providerId, from, to, dataResolution, timeMode}));
-		}
 
 	/* generates file name for download-link for a statistic */
 	const statisticsCsvFileName = (statsTitle: string) => {
@@ -64,13 +59,13 @@ const SeriesDetailsStatisticTab = ({
 									timeMode={stat.timeMode}
 									dataResolution={stat.dataResolution}
 									statDescription={stat.description}
-									onChange={fetchSeriesStatisticsValueUpdateWrapper}
+									onChange={fetchSeriesStatisticsValueUpdate}
 									exportUrl={stat.csvUrl}
 									exportFileName={statisticsCsvFileName}
 									totalValue={stat.totalValue}
 									sourceData={stat.values}
 									chartLabels={stat.labels}
-									chartOptions={stat.options}
+									chartOptions={createChartOptions(stat.timeMode, stat.dataResolution)}
 								/>
 							</div>
 						) : (

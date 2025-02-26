@@ -34,7 +34,7 @@ const TitleSlidePage = <T extends RequiredFormProps>({
 				<p className="tab-description">
 					{t("CONFIGURATION.THEMES.DETAILS.TITLE.DESCRIPTION")}
 				</p>
-				{/*todo: Notification*/}
+
 				<div className="obj">
 					<header>{t("CONFIGURATION.THEMES.DETAILS.TITLE.ACTIVE")}</header>
 					<div className="obj-container content-list padded">
