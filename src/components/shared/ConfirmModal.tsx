@@ -25,7 +25,7 @@ const ConfirmModal = <T,>({
 	showCautionMessage?: boolean,
 	deleteNotAllowedMessage?: string,
 	deleteWithCautionMessage?: string,
-	modalRef: React.RefObject<ModalHandle>
+	modalRef: React.RefObject<ModalHandle | null>
 }) => {
 	const { t } = useTranslation();
 
