@@ -20,7 +20,7 @@ const NewResourceModal = ({
 }: {
 	handleClose: () => void,
 	resource: "events" | "series" | "user" | "group" | "acl" | "themes"
-	modalRef: React.RefObject<ModalHandle>
+	modalRef: React.RefObject<ModalHandle | null>
 }) => {
 	const { t } = useTranslation();
 
