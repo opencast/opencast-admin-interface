@@ -15,7 +15,7 @@ const SeriesDetailsModal = ({
 }: {
 	seriesTitle: string
 	seriesId: string
-	modalRef: React.RefObject<ModalHandle>
+	modalRef: React.RefObject<ModalHandle | null>
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
