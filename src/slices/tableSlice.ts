@@ -263,7 +263,7 @@ const tableSlice = createSlice({
 			state.columns = initialState.columns;
 			state.pages = initialState.pages;
 			state.rows = initialState.rows;
-			state.pagination = initialState.pagination;
+			state.pagination.offset = initialState.pagination.offset;
 		},
 	},
 });
