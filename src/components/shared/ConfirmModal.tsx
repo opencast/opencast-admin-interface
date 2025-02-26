@@ -2,6 +2,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, ModalHandle } from "./modals/Modal";
 
+export type ResourceType = "EVENT" | "SERIES" | "LOCATION" | "USER" | "GROUP" | "ACL" | "THEME" | "TOBIRA_PATH";
+
 const ConfirmModal = <T,>({
 	close,
 	resourceType,
@@ -15,7 +17,7 @@ const ConfirmModal = <T,>({
 	modalRef,
 }: {
 	close: () => void,
-	resourceType: "EVENT" | "SERIES" | "LOCATION" | "USER" | "GROUP" | "ACL" | "THEME" | "TOBIRA_PATH",
+	resourceType: ResourceType,
 	resourceName: string,
 	resourceId: T,
 	deleteMethod: (id: T) => void,
@@ -23,7 +25,7 @@ const ConfirmModal = <T,>({
 	showCautionMessage?: boolean,
 	deleteNotAllowedMessage?: string,
 	deleteWithCautionMessage?: string,
-	modalRef: React.RefObject<ModalHandle>
+	modalRef: React.RefObject<ModalHandle | null>
 }) => {
 	const { t } = useTranslation();
 

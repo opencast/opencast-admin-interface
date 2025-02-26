@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
-import cn from "classnames";
 import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
 import Footer from "../Footer";
-import MainNav from "../shared/MainNav";
 import TimeSeriesStatistics from "../shared/TimeSeriesStatistics";
 import {
 	getStatistics,
@@ -16,15 +13,14 @@ import {
 } from "../../selectors/statisticsSelectors";
 import {
 	getOrgId,
-	getUserInformation,
 } from "../../selectors/userInfoSelectors";
-import { hasAccess } from "../../utils/utils";
 import { fetchUserInfo } from "../../slices/userInfoSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
 	fetchStatisticsPageStatistics,
 	fetchStatisticsPageStatisticsValueUpdate,
 } from "../../slices/statisticsSlice";
+import { createChartOptions } from "../../utils/statisticsUtils";
 
 const Statistics: React.FC = () => {
 	const { t } = useTranslation();
@@ -33,28 +29,20 @@ const Statistics: React.FC = () => {
 	const [displayNavigation, setNavigation] = useState(false);
 
 	const organizationId = useAppSelector(state => getOrgId(state));
-	const user = useAppSelector(state => getUserInformation(state));
 	const statistics = useAppSelector(state => getStatistics(state));
 	const hasStatistics = useAppSelector(state => getHasStatistics(state));
 	const hasError = useAppSelector(state => hasStatisticsError(state));
 	const isLoadingStatistics = useAppSelector(state => isFetchingStatistics(state));
 
-	// TODO: Get rid of the wrappers when modernizing redux is done
-	const fetchStatisticsPageStatisticsValueUpdateWrapper = (organizationId: any, providerId: any, from: any, to: any, dataResolution: any, timeMode: any) => {
-		dispatch(fetchStatisticsPageStatisticsValueUpdate({organizationId, providerId, from, to, dataResolution, timeMode}))
-	}
-
+	// fetch user information for organization id, then fetch statistics
 	useEffect(() => {
-		// fetch user information for organization id, then fetch statistics
-		dispatch(fetchUserInfo()).then(() => {
-			dispatch(fetchStatisticsPageStatistics(organizationId)).then();
-		})
+		dispatch(fetchUserInfo())
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	const toggleNavigation = () => {
-		setNavigation(!displayNavigation);
-	};
+	useEffect(() => {
+			dispatch(fetchStatisticsPageStatistics(organizationId)).then();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [organizationId]);
 
 	/* generates file name for download-link for a statistic */
 	const statisticsCsvFileName = (statsTitle: string) => {
@@ -71,24 +59,20 @@ const Statistics: React.FC = () => {
 	};
 
 	return (
-                <span>
+		<span>
 			<Header />
-			<NavBar>
-				{/* Include Burger-button menu */}
-				<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
-
-				<nav>
-					{hasAccess("ROLE_UI_STATISTICS_ORGANIZATION_VIEW", user) && (
-						<Link
-							to="/statistics/organization"
-							className={cn({ active: true })}
-							onClick={() => {}}
-						>
-							{t("STATISTICS.NAVIGATION.ORGANIZATION")}
-						</Link>
-					)}
-				</nav>
-			</NavBar>
+			<NavBar
+					displayNavigation={displayNavigation}
+					setNavigation={setNavigation}
+					links={[
+						{
+							path: "/statistics/organization",
+							accessRole: "ROLE_UI_STATISTICS_ORGANIZATION_VIEW",
+							loadFn: () => {},
+							text: "STATISTICS.NAVIGATION.ORGANIZATION"
+						}
+					]}
+			/>
 
 			{/* main view of this page, displays statistics */}
 			<MainView open={displayNavigation}>
@@ -128,13 +112,13 @@ const Statistics: React.FC = () => {
 												timeMode={stat.timeMode}
 												dataResolution={stat.dataResolution}
 												statDescription={stat.description}
-												onChange={fetchStatisticsPageStatisticsValueUpdateWrapper}
+												onChange={fetchStatisticsPageStatisticsValueUpdate}
 												exportUrl={stat.csvUrl}
 												exportFileName={statisticsCsvFileName}
 												totalValue={stat.totalValue}
 												sourceData={stat.values}
 												chartLabels={stat.labels}
-												chartOptions={stat.options}
+												chartOptions={createChartOptions(stat.timeMode, stat.dataResolution)}
 											/>
 										</div>
 									) : (

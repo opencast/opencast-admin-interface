@@ -87,6 +87,7 @@ export type Event = {
 }
 
 export type MetadataField = {
+	delimiter?: string,
 	differentValues?: boolean,
 	collection?: { [key: string]: unknown }[],  // different for e.g. languages and presenters
 	id: string,
@@ -171,7 +172,7 @@ type EventState = {
 	statusAssetUploadOptions: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAssetUploadOptions: SerializedError | null,
 	results: Event[],
-	columns: TableConfig["columns"],  // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],
 	total: number,
 	count: number,
 	offset: number,
@@ -182,7 +183,7 @@ type EventState = {
 	isFetchingAssetUploadOptions: boolean,
 	uploadAssetOptions: UploadOption[],
 	uploadSourceOptions: UploadOption[],
-	uploadAssetWorkflow: string | undefined,    // TODO: proper typing
+	uploadAssetWorkflow: string | undefined,
 	schedulingInfo: {
 		editedEvents: EditedEvents[],
 		seriesOptions: {
@@ -818,8 +819,6 @@ export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateSched
 						required: false,
 						type: "text",
 						value: eventChanges.changedTitle,
-						// todo: what is hashkey?
-						$$hashKey: "object:1588",
 					},
 					{
 						id: "isPartOf",
@@ -830,8 +829,6 @@ export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateSched
 						translatable: false,
 						type: "text",
 						value: eventChanges.changedSeries,
-						// todo: what is hashkey?
-						$$hashKey: "object:1589",
 					},
 				],
 			},

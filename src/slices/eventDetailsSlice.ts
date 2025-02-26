@@ -24,7 +24,7 @@ import { calculateDuration } from "../utils/dateUtils";
 import { fetchRecordings } from "./recordingSlice";
 import { getRecordings } from "../selectors/recordingSelectors";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
+import { DataResolution, Statistics, TimeMode, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 import { enrichPublications } from '../thunks/assetsThunks';
 import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog, UploadOption } from './eventSlice';
@@ -1281,9 +1281,6 @@ if (endDate < now) {
 });
 
 export const fetchWorkflows = createAppAsyncThunk('eventDetails/fetchWorkflows', async (eventId: string, { dispatch, getState }) => {
-	// todo: show notification if there are active transactions
-	// dispatch(addNotification('warning', 'ACTIVE_TRANSACTION', -1, null, NOTIFICATION_CONTEXT));
-
 	const data = await axios.get(`/admin-ng/event/${eventId}/workflows.json`);
 	const workflowsData = await data.data;
 	let workflows: Workflow;
@@ -1526,21 +1523,21 @@ export const fetchEventStatistics = createAppAsyncThunk('eventDetails/fetchEvent
 
 // TODO: Fix this after the modernization of statisticsThunks happened
 export const fetchEventStatisticsValueUpdate = createAppAsyncThunk('eventDetails/fetchEventStatisticsValueUpdate', async (params: {
-	eventId: string,
+	id: string,
 	providerId: string,
-	from: string,
-	to: string,
-	dataResolution: string[],
-	timeMode: any
+	from: string | Date,
+	to: string | Date,
+	dataResolution: DataResolution,
+	timeMode: TimeMode
 }, { getState }) => {
-	const { eventId, providerId, from, to, dataResolution, timeMode } = params;
+	const { id, providerId, from, to, dataResolution, timeMode } = params;
 	// get prior statistics
 	const state = getState();
 	const statistics = getStatistics(state);
 
 	return await (
 		fetchStatisticsValueUpdate(
-			eventId,
+			id,
 			"episode",
 			providerId,
 			from,
@@ -2333,8 +2330,6 @@ const eventDetailsSlice = createSlice({
 				};
 				state.workflows.workflow = emptyWorkflowData;
 				state.errorWorkflowDetails = action.error;
-				// todo: probably needs a Notification to the user
-				console.error(action.error);
 			})
 			// performWorkflowAction
 			.addCase(performWorkflowAction.pending, (state) => {
@@ -2377,8 +2372,6 @@ const eventDetailsSlice = createSlice({
 				state.statusWorkflowOperations = 'failed';
 				state.workflowOperations = { entries: [] };
 				state.errorWorkflowOperations = action.error;
-				// todo: probably needs a Notification to the user
-				console.error(action.error);
 			})
 			// fetchWorkflowOperationDetails
 			.addCase(fetchWorkflowOperationDetails.pending, (state) => {
@@ -2409,8 +2402,6 @@ const eventDetailsSlice = createSlice({
 				};
 				state.workflowOperationDetails = emptyOperationDetails;
 				state.errorWorkflowOperationDetails= action.error;
-				// todo: probably needs a Notification to the user
-				console.error(action.error);
 			})
 			// fetchWorkflowErrors
 			.addCase(fetchWorkflowErrors.pending, (state) => {
@@ -2426,8 +2417,6 @@ const eventDetailsSlice = createSlice({
 				state.statusWorkflowErrors = 'failed';
 				state.workflowErrors = { entries: [] };
 				state.errorWorkflowOperations = action.error;
-				// todo: probably needs a Notification to the user
-				console.error(action.error);
 			})
 			// fetchWorkflowErrorDetails
 			.addCase(fetchWorkflowErrorDetails.pending, (state) => {
@@ -2454,8 +2443,6 @@ const eventDetailsSlice = createSlice({
 					title: "",
 				};
 				state.errorWorkflowOperationDetails = action.error;
-				// todo: probably needs a Notification to the user
-				console.error(action.error);
 			})
 			// fetchEventStatistics
 			.addCase(fetchEventStatistics.pending, (state) => {
@@ -2479,7 +2466,7 @@ const eventDetailsSlice = createSlice({
 			})
 			//fetchEventStatisticsValueUpdate
 			.addCase(fetchEventStatisticsValueUpdate.pending, (state) => {
-				state.statusStatistics = 'loading';
+				state.statusStatisticsValue = 'loading';
 			})
 			.addCase(fetchEventStatisticsValueUpdate.fulfilled, (state, action: PayloadAction<
 				any
@@ -2514,6 +2501,7 @@ const eventDetailsSlice = createSlice({
 			>) => {
 				state.statusTobiraData = 'succeeded';
 				state.tobiraData = action.payload;
+				state.errorTobiraData = null;
 			})
 			.addCase(fetchEventDetailsTobira.rejected, (state, action) => {
 				state.statusTobiraData = 'failed';
