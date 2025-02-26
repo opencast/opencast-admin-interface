@@ -198,9 +198,9 @@ const TimeSeriesStatistics = ({
 				dataResolution: dataResolution,
 				// Typescript complains that the method "startOf" cannot take "custom" as a parameter, but in practice
 				// this does not seem to be a problem
-				//@ts-ignore
+				//@ts-expect-error: timeMode should be assignable here
 				fromDate: moment(fromDate).startOf(timeMode).format("YYYY-MM-DD"),
-				//@ts-ignore
+				//@ts-expect-error: timeMode should be assignable here
 				toDate: moment(toDate).endOf(timeMode).format("YYYY-MM-DD"),
 			}}
 			onSubmit={(values) => {}}
