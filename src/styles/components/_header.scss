@@ -1,6 +1,5 @@
 @use "sass:color";
-@use "../../../node_modules/bourbon/core/bourbon/library/border-radius";
-@use "../../../node_modules/bourbon/core/bourbon/library/clearfix";
+@use "../mixins/mixins-bourbon";
 @use "../base/fontawesome/fa-mixins";
 @use "../base/fontawesome/variables" as variables2;
 @use "../base/variables";
@@ -82,6 +81,16 @@
         &.active .dropdown-ul {
             opacity: 1;
             visibility: visible;
+        }
+
+        // Make anchor elements look like buttons when tab targeted
+        > a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 39px;
+            width: 28px;
+            margin-left: 12px;
         }
     }
 
@@ -266,7 +275,8 @@
         width: 80px;
         height: 42px;
         background: #243e55;
-        @include border-radius.border-top-radius(4px);
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
         border: variables.$thin-border-stroke color.adjust(#1e364b, $lightness: -3%);
         border-bottom: none;
         margin: 0 variables.$side-margin;
@@ -438,7 +448,7 @@
 // Example: https://gist.github.com/mattmischuk/b4dcb1e245f00b21c6a6
 
 .page-nav-container {
-    @include clearfix.clearfix();
+    @include mixins-bourbon.clearfix;
     width: 100%;
 
     .page-nav-bar {

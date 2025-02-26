@@ -13,7 +13,6 @@ import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
 import Footer from "../Footer";
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchAcls } from "../../slices/aclSlice";
 import { usersLinks } from "./partials/UsersNavigation";
@@ -28,7 +27,6 @@ const Acls = () => {
 
 	const dispatch = useAppDispatch();
 	const acls = useAppSelector(state => getTotalAcls(state));
-	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	useEffect(() => {
 		// State variable for interrupting the load function
@@ -37,9 +35,7 @@ const Acls = () => {
 		// Clear table of previous data
 		dispatch(resetTableContent());
 
-		if ("acls" !== currentFilterType) {
-			dispatch(fetchFilters("acls"));
-		}
+		dispatch(fetchFilters("acls"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));

@@ -13,8 +13,6 @@ import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
 import Footer from "../Footer";
-
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchUsers } from "../../slices/userSlice";
 import { usersLinks } from "./partials/UsersNavigation";
@@ -29,7 +27,6 @@ const Users = () => {
 	const [displayNavigation, setNavigation] = useState(false);
 
 	const users = useAppSelector(state => getTotalUsers(state));
-	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	useEffect(() => {
 		// State variable for interrupting the load function
@@ -38,9 +35,7 @@ const Users = () => {
 		// Clear table of previous data
 		dispatch(resetTableContent());
 
-		if ("users" !== currentFilterType) {
-			dispatch(fetchFilters("users"));
-		}
+		dispatch(fetchFilters("users"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));

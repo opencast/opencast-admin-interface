@@ -11,7 +11,6 @@ import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
 import Footer from "../Footer";
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchRecordings } from "../../slices/recordingSlice";
 import { AsyncThunk } from "@reduxjs/toolkit";
@@ -25,7 +24,6 @@ const Recordings = () => {
 	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 
-	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 	const recordings = useAppSelector(state => getTotalRecordings(state));
 
 	useEffect(() => {
@@ -35,9 +33,7 @@ const Recordings = () => {
 		// Clear table of previous data
 		dispatch(resetTableContent());
 
-		if ("recordings" !== currentFilterType) {
-			dispatch(fetchFilters("recordings"));
-		}
+		dispatch(fetchFilters("recordings"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));

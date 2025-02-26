@@ -13,7 +13,7 @@ const GroupDetailsModal = ({
 }: {
 	close: () => void,
 	groupName: string,
-	modalRef: React.RefObject<ModalHandle>
+	modalRef: React.RefObject<ModalHandle | null>
 }) => {
 	const { t } = useTranslation();
 

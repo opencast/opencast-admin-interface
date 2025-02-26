@@ -18,7 +18,6 @@ import MainView from "../MainView";
 import Footer from "../Footer";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
 	fetchSeries,
@@ -46,8 +45,7 @@ const Series = () => {
 	const newSeriesModalRef = useRef<ModalHandle>(null);
 	const deleteModalRef = useRef<ModalHandle>(null);
 
-	const user = useAppSelector(state => getUserInformation(state));
-	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
+  const user = useAppSelector(state => getUserInformation(state));
 
 	let location = useLocation();
 
@@ -61,9 +59,7 @@ const Series = () => {
 		// Clear table of previous data
 		dispatch(resetTableContent());
 
-		if ("series" !== currentFilterType) {
-			dispatch(fetchFilters("series"))
-		}
+		dispatch(fetchFilters("series"))
 
 		// Reset text filer
 		dispatch(editTextFilter(""));

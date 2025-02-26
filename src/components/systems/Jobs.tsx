@@ -13,7 +13,6 @@ import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
 import Footer from "../Footer";
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchJobs } from "../../slices/jobSlice";
 import { systemsLinks } from "./partials/SystemsNavigation";
@@ -27,7 +26,6 @@ const Jobs = () => {
 	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 
-	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 	const jobs = useAppSelector(state => getTotalJobs(state));
 
 	useEffect(() => {
@@ -37,9 +35,7 @@ const Jobs = () => {
 		// Clear table of previous data
 		dispatch(resetTableContent());
 
-		if ("jobs" !== currentFilterType) {
-			dispatch(fetchFilters("jobs"));
-		}
+		dispatch(fetchFilters("jobs"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));
