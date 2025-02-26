@@ -1,4 +1,4 @@
-@use "../../../node_modules/bourbon/core/bourbon/library/clearfix";
+@use "../mixins/mixins-bourbon";
 @use "../base/variables";
 
 /**
@@ -24,7 +24,7 @@
 
 
 .form-container {
-    @include clearfix.clearfix();
+    @include mixins-bourbon.clearfix;
     max-width: 100%;
     padding: 0;
     margin: 15px 0;
@@ -60,7 +60,7 @@
     }
 
     .row {
-        @include clearfix.clearfix();
+        @include mixins-bourbon.clearfix;
         display: block;
         width: 100%;
         margin: 15px 0;

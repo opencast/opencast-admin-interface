@@ -15,8 +15,8 @@ import {
 import { transformToIdValueArray } from "../utils/utils";
 import { NOTIFICATION_CONTEXT, NOTIFICATION_CONTEXT_TOBIRA } from "../configs/modalConfig";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 import { Ace, Acl } from './aclSlice';
+import { DataResolution, Statistics, TimeMode, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
 import { Series, TobiraPage } from './seriesSlice';
@@ -525,14 +525,14 @@ export const fetchSeriesStatistics = createAppAsyncThunk('seriesDetails/fetchSer
 });
 
 export const fetchSeriesStatisticsValueUpdate = createAppAsyncThunk('seriesDetails/fetchSeriesStatisticsValueUpdate', async (params: {
-	seriesId: Series["id"],
+	id: Series["id"],
 	providerId: string,
-	from: string,
-	to: string,
-	dataResolution: string[],
-	timeMode: any
+	from: string | Date,
+	to: string | Date,
+	dataResolution: DataResolution,
+	timeMode: TimeMode
 }, {getState}) => {
-	const {seriesId, providerId, from, to, dataResolution, timeMode } = params;
+	const {id, providerId, from, to, dataResolution, timeMode } = params;
 
 	// get prior statistics
 	const state = getState();
@@ -540,7 +540,7 @@ export const fetchSeriesStatisticsValueUpdate = createAppAsyncThunk('seriesDetai
 
 	return await (
 		fetchStatisticsValueUpdate(
-			seriesId,
+			id,
 			"series",
 			providerId,
 			from,

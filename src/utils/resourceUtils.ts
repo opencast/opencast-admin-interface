@@ -214,7 +214,6 @@ export const prepareMetadataFieldsForPost = (
 		let metadataFields: FieldValue[] = [];
 
 		// fill metadataField with field information send by server previously and values provided by user
-		// Todo: What is hashkey?
 		for (const [, info] of catalog.fields.entries()) {
 			let fieldValue: FieldValue = {
 				id: info.id,
@@ -231,12 +230,10 @@ export const prepareMetadataFieldsForPost = (
 			metadataFields = metadataFields.concat(fieldValue);
 		}
 
-		// Todo: What is hashkey?
 		const metadataCatalog = {
 			flavor: catalog.flavor,
 			title: catalog.title,
 			fields: metadataFields,
-			$$hashKey: "object:123",
 		};
 
 		preparedMetadataCatalogs.push(metadataCatalog);

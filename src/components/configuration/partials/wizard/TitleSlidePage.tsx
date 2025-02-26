@@ -36,7 +36,6 @@ const TitleSlidePage = <T extends RequiredFormProps>({
 							{t("CONFIGURATION.THEMES.DETAILS.TITLE.DESCRIPTION")}
 						</p>
 					</div>
-					{/*todo: Notification*/}
 					<div className="obj">
 						<header>{t("CONFIGURATION.THEMES.DETAILS.TITLE.ACTIVE")}</header>
 						<div className="obj-container content-list padded">

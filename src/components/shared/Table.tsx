@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { JSX, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
 import {
 	getPageOffset,
 	getTable,
@@ -36,27 +35,6 @@ import Notifications from "./Notifications";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { TableColumn } from "../../configs/tableConfigs/aclsTableConfig";
 import { ModalHandle } from "./modals/Modal";
-
-const SortIcon = styled.i`
-	float: right;
-	margin: 12px 0 0 5px;
-	top: auto;
-	left: auto;
-	width: 8px;
-	height: 13px;
-	background-image: url(${sortIcon});
-`;
-
-const SortActiveIcon = styled.i<{order: string}>`
-    float: right;
-    margin: 12px 0 0 5px;
-    top: auto;
-    left: auto;
-    width: 8px;
-    height: 13px;
-    background-image: url(${(props: { order: string }) =>
-			props.order === "ASC" ? sortUpIcon : sortDownIcon})};
-`;
 
 const containerPageSize = React.createRef<HTMLButtonElement>();
 
@@ -224,11 +202,19 @@ const Table = ({
 								>
 									<span>
 										<span>{t(column.label)}</span>
-										{!!sortBy && column.name === sortBy ? (
-											<SortActiveIcon order={reverse} />
-										) : (
-											<SortIcon />
-										)}
+										<i style={{
+											float: "right",
+											margin: "12px 0 0 5px",
+											top: "auto",
+											left: "auto",
+											width: 8,
+											height: 13,
+											backgroundImage: `url(${column.name === sortBy
+												? reverse === "ASC"
+													? sortUpIcon
+													: sortDownIcon
+												: sortIcon})`,
+										}} />
 									</span>
 								</th>
 							) : (
