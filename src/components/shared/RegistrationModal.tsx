@@ -21,7 +21,7 @@ import { Modal, ModalHandle } from "./modals/Modal";
 const RegistrationModal = ({
 	modalRef
 }: {
-	modalRef: React.RefObject<ModalHandle>
+	modalRef: React.RefObject<ModalHandle | null>
 }) => {
 	const { t } = useTranslation();
 

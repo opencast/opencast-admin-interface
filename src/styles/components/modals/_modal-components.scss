@@ -1,10 +1,9 @@
 @use "sass:color";
-@use "../../../../node_modules/bourbon/core/bourbon/library/border-radius";
-@use "../../../../node_modules/bourbon/core/bourbon/library/clearfix";
 @use "../../base/fontawesome/fa-mixins";
 @use "../../base/fontawesome/variables" as variables2;
 @use "../../base/variables";
 @use "../../mixins/button";
+@use "../../mixins/mixins-bourbon";
 
 /**
  * Licensed to The Apereo Foundation under one or more contributor license
@@ -140,7 +139,8 @@
         .add-comment {
             background: variables.$off-white;
             border-top: variables.$thin-border-stroke #e9e9e9;
-            @include border-radius.border-bottom-radius(variables.$main-border-radius);
+            border-bottom-left-radius: variables.$main-border-radius;
+            border-bottom-right-radius: variables.$main-border-radius;
             height: 191px;
             padding: 3%;
             display: flex;
@@ -341,11 +341,11 @@
     // ----------------------------------------
 
     .file-upload {
-        @include clearfix.clearfix();
+        @include mixins-bourbon.clearfix;
     }
 
     .upload-file-info {
-        @include clearfix.clearfix();
+        @include mixins-bourbon.clearfix;
         color: variables.$medium-prim-color;
         font-size: 10px;
         font-weight: variables.$weight-semibold;
@@ -462,7 +462,7 @@
     }
 
     .list-row {
-        @include clearfix.clearfix();
+        @include mixins-bourbon.clearfix;
         padding: 15px 0;
         border-bottom: 1px solid variables.$main-border-color;
 
@@ -481,7 +481,7 @@
     }
 
     .list-sub-row {
-        @include clearfix.clearfix();
+        @include mixins-bourbon.clearfix;
         padding: 5px 0;
 
         &:last-child {
@@ -512,7 +512,7 @@
     // ----------------------------------------
 
     .video-container {
-        @include clearfix.clearfix();
+        @include mixins-bourbon.clearfix;
         position: relative;
 
         .video-wrapper {

@@ -21,7 +21,7 @@ const NewResourceModal = ({
 }: {
 	handleClose: () => void,
 	resource: NewResource
-	modalRef: React.RefObject<ModalHandle>
+	modalRef: React.RefObject<ModalHandle | null>
 }) => {
 	const { t } = useTranslation();
 
