@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { UserResult } from "../../../slices/userSlice";
+import { User } from "../../../slices/userSlice";
 
 /**
  * This component renders the roles cells of users in the table view
@@ -8,7 +8,7 @@ import { UserResult } from "../../../slices/userSlice";
 const UsersRolesCell = ({
 	row
 }: {
-	row: UserResult
+	row: User
 }) => {
 	const { t } = useTranslation();
 

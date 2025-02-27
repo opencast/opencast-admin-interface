@@ -6,32 +6,36 @@ import { buildUserBody, getURLParams } from "../utils/resourceUtils";
 import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { Role } from './aclSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of users
  */
-export type UserResult = {
+export type UserRole = {
+	name: string
+	type: string
+}
+
+export type User = {
 	email?: string,
 	manageable: boolean,
 	name: string,
 	provider: string,
-	roles: { name: string, type: string }[],
+	roles: UserRole[],
 	username: string,
 }
 
 export type NewUser = {
-	email: string,
-	name: string,
+	email?: string,
+	name?: string,
 	password: string,
-	roles: Role[],
+	roles?: UserRole[],
 	username: string,
 }
 
 type UsersState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
-	results: UserResult[],
+	results: User[],
 	columns: TableConfig["columns"],
 	total: number,
 	count: number,

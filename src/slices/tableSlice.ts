@@ -4,7 +4,7 @@ import { Server } from './serverSlice';
 import { Recording } from './recordingSlice';
 import { Job } from './jobSlice';
 import { Service } from './serviceSlice';
-import { UserResult } from './userSlice';
+import { User } from './userSlice';
 import { Group } from './groupSlice';
 import { AclResult } from './aclSlice';
 import { ThemeDetailsType } from './themeSlice';
@@ -59,22 +59,24 @@ export function isRowSelectable(row: Row) {
 	return false;
 }
 
-export function isEvent(row: Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | ThemeDetailsType): row is Event {
+export function isEvent(row: Event | Series | Recording | Server | Job | Service | User | Group | AclResult | ThemeDetailsType): row is Event {
 	return (row as Event).event_status !== undefined;
 }
 
-export function isSeries(row: Row | Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | ThemeDetailsType): row is Series {
+export function isSeries(row: Row | Event | Series | Recording | Server | Job | Service | User | Group | AclResult | ThemeDetailsType): row is Series {
 	return (row as Series).organizers !== undefined;
 }
 
 // TODO: Improve row typing. While this somewhat correctly reflects the current state of our code, it is rather annoying to work with.
-export type Row = { selected: boolean } & ( Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | ThemeDetailsType )
+export type Row = { selected: boolean } & ( Event | Series | Recording | Server | Job | Service | User | Group | AclResult | ThemeDetailsType )
+
+export type Resource = "events" | "series" | "recordings" | "jobs" | "servers" | "services" | "users" | "groups" | "acls" | "themes"
 
 export type TableState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
 	multiSelect: boolean,
-	resource: string,
+	resource: Resource,
 	pages: Page[],
 	columns: TableConfig["columns"],
 	sortBy: { [key: string]: string },  // Key is resource, value is actual sorting parameter
@@ -90,7 +92,7 @@ const initialState: TableState = {
 	status: 'uninitialized',
 	error: null,
 	multiSelect: false,
-	resource: "",
+	resource: "events",
 	pages: [],
 	columns: [],
 	sortBy: {

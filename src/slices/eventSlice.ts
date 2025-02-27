@@ -287,7 +287,7 @@ export const fetchEventMetadata = createAppAsyncThunk('events/fetchEventMetadata
 });
 
 // get merged metadata for provided event ids
-export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', async (ids: string[]) => {
+export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', async (ids: Event["id"][]) => {
 	let formData = new URLSearchParams();
 	formData.append("eventIds", JSON.stringify(ids));
 
@@ -462,7 +462,6 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 					id: smetadata.id,
 					value: values[smetadata.id],
 					type: smetadata.type,
-					tabindex: smetadata.tabindex,
 				});
 			}
 		}
@@ -638,7 +637,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 });
 
 // delete event with provided id
-export const deleteEvent = createAppAsyncThunk('events/deleteEvent', async (id: string, { dispatch }) => {
+export const deleteEvent = createAppAsyncThunk('events/deleteEvent', async (id: Event["id"], { dispatch }) => {
 	// API call for deleting an event
 	axios
 		.delete(`/admin-ng/event/${id}`)

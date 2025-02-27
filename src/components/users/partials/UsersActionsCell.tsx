@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { UserResult, deleteUser } from "../../../slices/userSlice";
+import { User, deleteUser } from "../../../slices/userSlice";
 import { useAppDispatch } from "../../../store";
 import { fetchUserDetails } from "../../../slices/userDetailsSlice";
 import { Modal, ModalHandle } from "../../shared/modals/Modal";
@@ -14,7 +14,7 @@ import { IconButton } from "../../shared/IconButton";
 const UsersActionCell = ({
 	row,
 }: {
-	row: UserResult
+	row: User
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
