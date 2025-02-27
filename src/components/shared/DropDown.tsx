@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	dropDownSpacingTheme,
 	dropDownStyle,
 } from "../../utils/componentStyles";
 import {
-	filterBySearch,
 	formatDropDownOptions,
 } from "../../utils/dropDownUtils";
-import Select, { GroupBase, Props, SelectInstance } from "react-select";
+import Select, { createFilter, GroupBase, MenuListProps, Props, SelectInstance } from "react-select";
 import CreatableSelect from "react-select/creatable";
+import { FixedSizeList, ListChildComponentProps } from "react-window";
+
 
 /**
  * TODO: Ideally, we would remove "type", and just type the "options" array properly.
@@ -60,7 +61,6 @@ const DropDown = <T,>({
 
 	const selectRef = React.useRef<SelectInstance<any, boolean, GroupBase<any>>>(null);
 
-	const [searchText, setSearch] = useState("");
 
 	const style = dropDownStyle(type);
 
@@ -85,15 +85,13 @@ const DropDown = <T,>({
 		autoFocus: autoFocus,
 		isSearchable: true,
 		value: { value: value, label: text === "" ? placeholder : text },
-		inputValue: searchText,
 		options: formatDropDownOptions(
-			filterBySearch(searchText.toLowerCase(), type, options, t),
+			options,
 			type,
 			required,
 			t
 		),
 		placeholder: placeholder,
-		onInputChange: (value: string) => setSearch(value),
 		onChange: (element) => handleChange(element as {value: T, label: string}),
 		menuIsOpen: menuIsOpen,
 		onMenuOpen: () => openMenu(true),
@@ -101,6 +99,14 @@ const DropDown = <T,>({
 		isDisabled: disabled,
 		openMenuOnFocus: openMenuOnFocus,
 	};
+
+	if (type === "aclRole") {
+		// @ts-ignore Typing problem in library
+		commonProps.components = { MenuList }
+		commonProps.filterOption = createFilter({
+			ignoreAccents: false, // To improve performance on filtering
+		})
+	}
 
 	return creatable ? (
 		<CreatableSelect
@@ -117,3 +123,33 @@ const DropDown = <T,>({
 };
 
 export default DropDown;
+
+type OptionType = {
+	label: string
+	value: string
+}
+
+/**
+ * Use react-window to improve performance for Dropdowns with many options
+ */
+const MenuList = (props: MenuListProps<OptionType, false, GroupBase<OptionType>>) => {
+	// TODO: make itemHeight dynamic
+	const itemHeight = 35
+	const { options, children, maxHeight, getValue } = props
+	const [value] = getValue()
+	const initialOffset = options.indexOf(value) * itemHeight
+
+	return Array.isArray(children) ? (
+		<div style={{ paddingTop: 4 }}>
+			<FixedSizeList
+				height={maxHeight}
+				itemCount={children.length}
+				itemSize={itemHeight}
+				initialScrollOffset={initialOffset}
+				width="100%"
+			>
+				{({ index, style }: ListChildComponentProps) => <div style={{ ...style }}>{children[index]}</div>}
+			</FixedSizeList>
+		</div>
+	) : null
+}
