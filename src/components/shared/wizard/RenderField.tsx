@@ -178,11 +178,12 @@ const EditableDateValue = ({
 	setEditMode: (e: boolean) => void
 	showCheck?: boolean,
 	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
-}) => editMode ? (
+}) => 
+	editMode ? (
 	<div>
 		<DatePicker
 			autoFocus
-			selected={typeof field.value === "string" ? parseISO(field.value) : field.value}
+			selected={!isNaN(Date.parse(field.value)) ? new Date(field.value) : null}
 			onChange={(value) => setFieldValue(field.name, value)}
 			onClickOutside={() => setEditMode(false)}
 			showTimeInput

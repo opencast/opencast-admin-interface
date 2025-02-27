@@ -68,6 +68,7 @@ const TableFilters = ({
 		// Clear state
 		setStartDate(undefined);
 		setEndDate(undefined);
+		setFilterSelector(false);
 
 		dispatch(removeTextFilter());
 		dispatch(removeSelectedFilter());
