@@ -61,8 +61,8 @@ export const fetchServers = createAppAsyncThunk('servers/fetchServers', async (_
 
 // change maintenance status of a server/host
 export const setServerMaintenance = createAppAsyncThunk('servers/setServerMaintenance', async (params: {
-	host: string,
-	maintenance: boolean
+	host: Server["hostname"],
+	maintenance: Server["maintenance"]
 }) => {
 	const { host, maintenance } = params;
 	let data = new URLSearchParams();
