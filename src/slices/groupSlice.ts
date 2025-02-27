@@ -84,7 +84,7 @@ export const postNewGroup = createAppAsyncThunk('groups/postNewGroup', async (va
 		});
 });
 
-export const deleteGroup = createAppAsyncThunk('groups/deleteGroup', async (id: string, {dispatch}) => {
+export const deleteGroup = createAppAsyncThunk('groups/deleteGroup', async (id: Group["id"], {dispatch}) => {
 	// API call for deleting a group
 	axios
 		.delete(`/admin-ng/groups/${id}`)

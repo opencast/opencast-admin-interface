@@ -1,5 +1,5 @@
 @use "sass:color";
-@use "../../../node_modules/bourbon/core/bourbon/library/clearfix";
+@use "../mixins/mixins-bourbon";
 @use "../base/fontawesome/fa-mixins";
 @use "../base/fontawesome/variables" as variables2;
 @use "../base/variables";
@@ -99,7 +99,7 @@ body {
         // ## (End)
 
         .filters-container {
-            @include clearfix.clearfix();
+            @include mixins-bourbon.clearfix;
             float: right;
             position: relative;
 

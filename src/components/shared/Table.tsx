@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { JSX, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
 import {
 	getPageOffset,
 	getTable,
@@ -36,27 +35,6 @@ import Notifications from "./Notifications";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { TableColumn } from "../../configs/tableConfigs/aclsTableConfig";
 import { ModalHandle } from "./modals/Modal";
-
-const SortIcon = styled.i`
-	float: right;
-	margin: 12px 0 0 5px;
-	top: auto;
-	left: auto;
-	width: 8px;
-	height: 13px;
-	background-image: url(${sortIcon});
-`;
-
-const SortActiveIcon = styled.i<{order: string}>`
-    float: right;
-    margin: 12px 0 0 5px;
-    top: auto;
-    left: auto;
-    width: 8px;
-    height: 13px;
-    background-image: url(${(props: { order: string }) =>
-			props.order === "ASC" ? sortUpIcon : sortDownIcon})};
-`;
 
 const containerPageSize = React.createRef<HTMLButtonElement>();
 
@@ -106,9 +84,9 @@ const Table = ({
 
 	useEffect(() => {
 		// Function for handling clicks outside of an open dropdown menu
-		const handleClickOutside = (e: any) => {
+		const handleClickOutside = (e: MouseEvent) => {
 			if (
-				e && containerPageSize.current && !containerPageSize.current.contains(e.target)
+				e && containerPageSize.current && !containerPageSize.current.contains(e.target as Node)
 			) {
 				setShowPageSizes(false);
 			}
@@ -224,11 +202,19 @@ const Table = ({
 								>
 									<span>
 										<span>{t(column.label)}</span>
-										{!!sortBy && column.name === sortBy ? (
-											<SortActiveIcon order={reverse} />
-										) : (
-											<SortIcon />
-										)}
+										<i style={{
+											float: "right",
+											margin: "12px 0 0 5px",
+											top: "auto",
+											left: "auto",
+											width: 8,
+											height: 13,
+											backgroundImage: `url(${column.name === sortBy
+												? reverse === "ASC"
+													? sortUpIcon
+													: sortDownIcon
+												: sortIcon})`,
+										}} />
 									</span>
 								</th>
 							) : (
@@ -409,7 +395,7 @@ const getDirectAccessiblePages = (pages: Page[], pagination: Pagination) => {
 };
 
 // Apply a column template and render corresponding components
-const ColumnTemplate = ({ row, column, templateMap }: {row: Row, column: TableColumn, templateMap: any}) => {
+const ColumnTemplate = ({ row, column, templateMap }: {row: Row, column: TableColumn, templateMap: TemplateMap}) => {
 	if (!column.template) {
 		return <></>;
 	}
