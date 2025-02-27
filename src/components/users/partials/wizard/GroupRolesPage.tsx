@@ -3,6 +3,7 @@ import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButt
 import SelectContainer from "../../../shared/wizard/SelectContainer";
 import { fetchRolesWithTarget } from "../../../../slices/aclSlice";
 import { FormikProps } from "formik";
+import ModalContent from "../../../shared/modals/ModalContent";
 
 /**
  * This component renders the role selection page of the new group wizard and group details modal
@@ -45,23 +46,21 @@ const GroupRolesPage = <T,>({
 
 	return (
 		<>
-			<div className="modal-content">
-				<div className="modal-body">
-					<div className="form-container">
-						{/*Select container for roles*/}
-						{!loading && (
-							<SelectContainer
-								resource={{
-									searchable: true,
-									label: "USERS.GROUPS.DETAILS.ROLES",
-									items: roles,
-								}}
-								formikField="roles"
-							/>
-						)}
-					</div>
+			<ModalContent>
+				<div className="form-container">
+					{/*Select container for roles*/}
+					{!loading && (
+						<SelectContainer
+							resource={{
+								searchable: true,
+								label: "USERS.GROUPS.DETAILS.ROLES",
+								items: roles,
+							}}
+							formikField="roles"
+						/>
+					)}
 				</div>
-			</div>
+			</ModalContent>
 
 			{/* Button for navigation to next page */}
 			{!isEdit && (
