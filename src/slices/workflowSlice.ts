@@ -83,12 +83,12 @@ export const fetchWorkflowDef = createAppAsyncThunk('workflow/fetchWorkflowDef',
 	const res = await axios.get("/admin-ng/event/new/processing?", { params: urlParams });
 	let workflows = res.data.workflows;
 
-	workflows = workflows.map((workflow: any) => {
+	workflows = workflows.map((workflow: Workflow) => {
 		if (workflow.configuration_panel_json.length > 0) {
 			return {
 				...workflow,
 				configuration_panel_json: JSON.parse(
-					workflow.configuration_panel_json
+					workflow.configuration_panel_json as string
 				),
 			};
 		} else {

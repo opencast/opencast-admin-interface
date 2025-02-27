@@ -3,20 +3,16 @@ import axios from 'axios';
 import { addNotification } from './notificationSlice';
 import { buildUserBody } from "../utils/resourceUtils";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { UserRole } from './userSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of details of a user
  */
-export type UserDetailsRole = {
-	name: string,
-	type: string,
-}
-
 export type UpdateUser = {
-	email: string,
-	name: string,
-	password: string,
-	roles: UserDetailsRole[],
+	email?: string,
+	name?: string,
+	password?: string,
+	roles?: UserRole[],
 	username: string,
 }
 
@@ -24,7 +20,7 @@ export type UserDetailsState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
 	provider: string,
-	roles: UserDetailsRole[],
+	roles: UserRole[],
 	name: string,
 	username: string,
 	email: string,
@@ -44,7 +40,7 @@ const initialState: UserDetailsState = {
 };
 
 // fetch details about certain user from server
-export const fetchUserDetails = createAppAsyncThunk('userDetails/fetchUserDetails', async (username: string) => {
+export const fetchUserDetails = createAppAsyncThunk('userDetails/fetchUserDetails', async (username: UserDetailsState["name"]) => {
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -55,7 +51,7 @@ export const fetchUserDetails = createAppAsyncThunk('userDetails/fetchUserDetail
 // update existing user with changed values
 export const updateUserDetails = createAppAsyncThunk('userDetails/updateUserDetails', async (params: {
 	values: UpdateUser,
-	username: string
+	username: UserDetailsState["name"]
 }, {dispatch}) => {
 	const { username, values } = params
 

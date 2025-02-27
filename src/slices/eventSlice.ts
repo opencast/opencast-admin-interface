@@ -170,7 +170,7 @@ type EventState = {
 	statusAssetUploadOptions: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAssetUploadOptions: SerializedError | null,
 	results: Event[],
-	columns: TableConfig["columns"],  // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],
 	total: number,
 	count: number,
 	offset: number,
@@ -180,7 +180,7 @@ type EventState = {
 	extendedMetadata: MetadataCatalog[],
 	isFetchingAssetUploadOptions: boolean,
 	uploadAssetOptions: UploadAssetOption[],
-	uploadAssetWorkflow: string | undefined,  // TODO: proper typing
+	uploadAssetWorkflow: string | undefined,
 	schedulingInfo: {
 		editedEvents: EditedEvents[],
 		seriesOptions: {
@@ -302,7 +302,7 @@ export const fetchEventMetadata = createAppAsyncThunk('events/fetchEventMetadata
 });
 
 // get merged metadata for provided event ids
-export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', async (ids: string[]) => {
+export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', async (ids: Event["id"][]) => {
 	let formData = new URLSearchParams();
 	formData.append("eventIds", JSON.stringify(ids));
 
@@ -477,7 +477,6 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 					id: smetadata.id,
 					value: values[smetadata.id],
 					type: smetadata.type,
-					tabindex: smetadata.tabindex,
 				});
 			}
 		}
@@ -653,7 +652,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 });
 
 // delete event with provided id
-export const deleteEvent = createAppAsyncThunk('events/deleteEvent', async (id: string, { dispatch }) => {
+export const deleteEvent = createAppAsyncThunk('events/deleteEvent', async (id: Event["id"], { dispatch }) => {
 	// API call for deleting an event
 	axios
 		.delete(`/admin-ng/event/${id}`)
@@ -816,8 +815,6 @@ export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateSched
 						required: false,
 						type: "text",
 						value: eventChanges.changedTitle,
-						// todo: what is hashkey?
-						$$hashKey: "object:1588",
 					},
 					{
 						id: "isPartOf",
@@ -828,8 +825,6 @@ export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateSched
 						translatable: false,
 						type: "text",
 						value: eventChanges.changedSeries,
-						// todo: what is hashkey?
-						$$hashKey: "object:1589",
 					},
 				],
 			},
