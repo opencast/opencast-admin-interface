@@ -246,8 +246,14 @@ function transformResponse(data: {
 			});
 			filters[key].options = filterArr;
 		}
-	} catch (e: any) {
-		console.error(e.message);
+	} catch (e) {
+		let errorMessage;
+		if (e instanceof Error) {
+			errorMessage = e.message
+		} else {
+			errorMessage = String(e);
+		}
+		console.error(errorMessage);
 	}
 
 	return { filters: filters };
