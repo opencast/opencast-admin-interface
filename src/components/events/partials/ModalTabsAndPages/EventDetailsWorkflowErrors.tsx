@@ -34,7 +34,7 @@ const EventDetailsWorkflowErrors = ({
 	const errors = useAppSelector(state => getWorkflowErrors(state));
 	const isFetching = useAppSelector(state => isFetchingWorkflowErrors(state));
 
-	const severityColor = (severity: "FAILURE" | "INFO" | "WARNING" | string) => {
+	const severityColor = (severity: string) => {
 		switch (severity.toUpperCase()) {
 			case "FAILURE":
 				return "red";

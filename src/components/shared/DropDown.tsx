@@ -23,7 +23,7 @@ export type DropDownType = "language" | "isPartOf" | "license" | "captureAgent" 
 /**
  * This component provides a bar chart for visualising (statistics) data
  */
-const DropDown = <T,>({
+const DropDown = <T, >({
 	value,
 	text,
 	options,

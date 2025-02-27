@@ -107,7 +107,7 @@ export const fetchStats = createAppAsyncThunk('tableFilters/fetchStats', async (
 	let stats = [];
 
 	// fetch for each status the corresponding count of events having this status
-	for (let i in statsResponse) {
+	for (const [i, _] of statsResponse.entries()) {
 		let filter = [];
 		for (let j in statsResponse[i].filters) {
 			let value = statsResponse[i].filters[j].value;

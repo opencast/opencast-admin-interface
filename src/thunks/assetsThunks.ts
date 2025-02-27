@@ -119,7 +119,7 @@ export const enrichPublications = createAppAsyncThunk('assets/enrichPublications
 		combinedPublications.push(newPublication);
 	});
 
-	combinedPublications = combinedPublications.sort(({order: a}, {order:b}) => a - b);
+	combinedPublications = combinedPublications.sort(({order: a}, {order: b}) => a - b);
 
 	return combinedPublications;
 });

@@ -363,7 +363,7 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
                 dispatch(
                     addNotification({
                         type: "warning",
-                        key:"SERIES_THEME_REPROCESS_EXISTING_EVENTS",
+                        key: "SERIES_THEME_REPROCESS_EXISTING_EVENTS",
                         duration: 10,
                         parameter: undefined,
                         context: NOTIFICATION_CONTEXT
@@ -399,7 +399,7 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
                 dispatch(
                     addNotification({
                         type: "warning",
-                        key:"SERIES_THEME_REPROCESS_EXISTING_EVENTS",
+                        key: "SERIES_THEME_REPROCESS_EXISTING_EVENTS",
                         duration: 10,
                         parameter: undefined,
                         context: NOTIFICATION_CONTEXT
@@ -421,7 +421,7 @@ export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetch
 		.catch(response => handleTobiraError(response, dispatch));
 
 	if (!res) {
-		throw Error;
+		throw new Error();
 	}
 
 	const data = res.data;
@@ -476,8 +476,8 @@ export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTo
 			context: NOTIFICATION_CONTEXT_TOBIRA,
 		}));
 		throw error;
-	}}
-);
+	}
+});
 
 export const removeSeriesTobiraPath = createAppAsyncThunk('series/removeSeriesTobiraData', async (
 	params: Required<Pick<TobiraFormProps, 'currentPath'>> & { seriesId: Series["id"] },
@@ -506,8 +506,8 @@ export const removeSeriesTobiraPath = createAppAsyncThunk('series/removeSeriesTo
 			context: NOTIFICATION_CONTEXT_TOBIRA,
 		}));
 		throw error;
-	}}
-);
+	}
+});
 
 // thunks for statistics
 export const fetchSeriesStatistics = createAppAsyncThunk('seriesDetails/fetchSeriesStatistics', async (seriesId: Series["id"], {getState}) => {

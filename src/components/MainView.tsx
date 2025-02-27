@@ -4,7 +4,7 @@ import { styleNavClosed, styleNavOpen } from "../utils/componentsUtils";
 /**
  * Component that renders the main view
  */
-const MainView: React.FC<{ open: Boolean, children: React.ReactNode }> = ({ open, children }) => {
+const MainView: React.FC<{ open: boolean, children: React.ReactNode }> = ({ open, children }) => {
 	return (
 		<main
 			className="main-view"
