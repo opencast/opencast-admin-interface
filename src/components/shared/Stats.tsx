@@ -18,7 +18,7 @@ const Stats = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const filterMap = useAppSelector(state => getFilters(state));
+	const filterMap = useAppSelector(state => getFilters(state, "events"));
 	const stats = useAppSelector(state => getStats(state));
 
 	// Filter with value of clicked status
