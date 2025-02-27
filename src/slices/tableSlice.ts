@@ -72,7 +72,7 @@ export type Row = { selected: boolean } & ( Event | Series | Recording | Server 
 
 export type Resource = "events" | "series" | "recordings" | "jobs" | "servers" | "services" | "users" | "groups" | "acls" | "themes"
 
-type TableState = {
+export type TableState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
 	multiSelect: boolean,
@@ -261,6 +261,12 @@ const tableSlice = createSlice({
 				}
 			})
 		},
+		resetTableContent: (state) => {
+			state.columns = initialState.columns;
+			state.pages = initialState.pages;
+			state.rows = initialState.rows;
+			state.pagination.offset = initialState.pagination.offset;
+		},
 	},
 });
 
@@ -278,7 +284,8 @@ export const {
 	setTotalItems,
 	setOffset,
 	setDirectAccessiblePages,
-	setPageActive
+	setPageActive,
+	resetTableContent
 } = tableSlice.actions;
 
 // Export the slice reducer as the default export

@@ -1,8 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 import { setSpecificEventFilter } from "../../../slices/tableFilterSlice";
-import { loadEventsIntoTable } from "../../../thunks/tableThunks";
 import { useAppDispatch } from "../../../store";
 import { Tooltip } from "../../shared/Tooltip";
 import { Recording } from "../../../slices/recordingSlice";
@@ -17,24 +16,22 @@ const RecordingsNameCell = ({
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
 	const redirectToEvents = async (locationName: string) => {
-		// redirect to tables
-		await dispatch(loadEventsIntoTable());
-
 		// set the location filter value of events to location name
 		await dispatch(setSpecificEventFilter({ filter: "location", filterValue: locationName }));
+		navigate("/events/events");
 	};
 
 	return (
 		<Tooltip title={t("RECORDINGS.RECORDINGS.TABLE.TOOLTIP.NAME")}>
-			<Link
-				to="/events/events"
-				className="crosslink"
-				onClick={async () => await redirectToEvents(row.name)}
+			<button
+				className="button-like-anchor crosslink"
+				onClick={() => redirectToEvents(row.name)}
 			>
 				{row.name}
-			</Link>
+			</button>
 		</Tooltip>
 	);
 };

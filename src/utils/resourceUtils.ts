@@ -2,8 +2,8 @@ import { getFilters, getTextFilter } from "../selectors/tableFilterSelectors";
 import {
 	getPageLimit,
 	getPageOffset,
-	getTableDirection,
-	getTableSorting,
+	getTableDirectionForResource,
+	getTableSortingForResource,
 } from "../selectors/tableSelectors";
 import { TransformedAcl } from "../slices/aclDetailsSlice";
 import { Acl } from "../slices/aclSlice";
@@ -16,6 +16,7 @@ import { MetadataCatalog, MetadataField } from "../slices/eventSlice";
 import { initialFormValuesNewGroup } from '../configs/modalConfig';
 import { UpdateUser } from '../slices/userDetailsSlice';
 import { TFunction } from 'i18next';
+import { TableState } from "../slices/tableSlice";
 
 /**
  * This file contains methods that are needed in more than one resource thunk
@@ -32,7 +33,8 @@ export const getHttpHeaders = () => {
 
 // prepare URL params for getting resources
 export const getURLParams = (
-	state: RootState
+	state: RootState,
+	resource: TableState["resource"],
 ) => {
 	// get filter map from state
 	let filters = [];
@@ -69,10 +71,12 @@ export const getURLParams = (
 		};
 	}
 
-	if (!!getTableSorting(state)) {
+	if (!!getTableSortingForResource(state, resource)) {
 		params = {
 			...params,
-			sort: getTableSorting(state) + ":" + getTableDirection(state),
+			sort: getTableSortingForResource(state, resource)
+				+ ":"
+				+ getTableDirectionForResource(state, resource),
 		};
 	}
 
