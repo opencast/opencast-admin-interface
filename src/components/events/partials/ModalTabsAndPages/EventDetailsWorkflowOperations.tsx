@@ -11,6 +11,7 @@ import {
 } from "../../../../slices/eventDetailsSlice";
 import { useTranslation } from "react-i18next";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 
 /**
  * This component manages the workflow operations for the workflows tab of the event details modal
@@ -117,8 +118,8 @@ const EventDetailsWorkflowOperations = ({
 
 											{/* link to 'Operation Details'  sub-Tab */}
 											<td>
-												<button
-													className="button-like-anchor details-link"
+												<ButtonLikeAnchor
+													extraClassName="details-link"
 													onClick={() =>
 														openSubTab("workflow-operation-details", key)
 													}
@@ -128,7 +129,7 @@ const EventDetailsWorkflowOperations = ({
 															"EVENTS.EVENTS.DETAILS.MEDIA.DETAILS"
 														) /* Details */
 													}
-												</button>
+												</ButtonLikeAnchor>
 											</td>
 										</tr>
 									))}
