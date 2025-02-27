@@ -13,7 +13,6 @@ import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
 import Footer from "../Footer";
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchServers } from "../../slices/serverSlice";
 import { loadServers, systemsLinks } from "./partials/SystemsNavigation";
@@ -26,13 +25,10 @@ const Servers = () => {
 	const dispatch = useAppDispatch();
 	const [displayNavigation, setNavigation] = useState(false);
 
-	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 	const servers = useAppSelector(state => getTotalServers(state));
 
 	useEffect(() => {
-		if ("servers" !== currentFilterType) {
-			dispatch(fetchFilters("servers"));
-		}
+		dispatch(fetchFilters("servers"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));

@@ -69,7 +69,7 @@ export const getURLParams = (
 		};
 	}
 
-	if (getTableSorting(state) !== "") {
+	if (!!getTableSorting(state)) {
 		params = {
 			...params,
 			sort: getTableSorting(state) + ":" + getTableDirection(state),
@@ -84,10 +84,10 @@ export const buildUserBody = (values: NewUser | UpdateUser) => {
 	let data = new URLSearchParams();
 	// fill form data with user inputs
 	data.append("username", values.username);
-	data.append("name", values.name);
-	data.append("email", values.email);
-	data.append("password", values.password);
-	data.append("roles", JSON.stringify(values.roles));
+	values.name && data.append("name", values.name);
+	values.email && data.append("email", values.email);
+	values.password && data.append("password", values.password);
+	values.roles && data.append("roles", JSON.stringify(values.roles));
 
 	return data;
 };
@@ -208,20 +208,17 @@ export const prepareMetadataFieldsForPost = (
 			id: string,
 			type: string,
 			value: unknown,
-			tabindex: number,
 			$$hashKey?: string,
 			translatable?: boolean,
 		}
 		let metadataFields: FieldValue[] = [];
 
 		// fill metadataField with field information send by server previously and values provided by user
-		// Todo: What is hashkey?
-		for (const [i, info] of catalog.fields.entries()) {
+		for (const [, info] of catalog.fields.entries()) {
 			let fieldValue: FieldValue = {
 				id: info.id,
 				type: info.type,
 				value: values[catalogPrefix + info.id],
-				tabindex: i + 1,
 				$$hashKey: "object:123",
 			};
 			if (!!info.translatable) {
@@ -233,12 +230,10 @@ export const prepareMetadataFieldsForPost = (
 			metadataFields = metadataFields.concat(fieldValue);
 		}
 
-		// Todo: What is hashkey?
 		const metadataCatalog = {
 			flavor: catalog.flavor,
 			title: catalog.title,
 			fields: metadataFields,
-			$$hashKey: "object:123",
 		};
 
 		preparedMetadataCatalogs.push(metadataCatalog);
