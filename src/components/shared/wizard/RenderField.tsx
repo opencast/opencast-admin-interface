@@ -28,16 +28,30 @@ const RenderField = ({
 }) => {
 	const { t } = useTranslation();
 
+	// TODO: Figure out how to type a ref that could have multiple types
+	const editableRef = useRef<any>(null);
+	const [focused, setFocused] = useState(false);
+	const onFocus = () => setFocused(true);
+	const onBlur = () => setFocused(false);
+
 	return (
-		// Render editable field depending on type of metadata field
-		// (types: see metadata.json retrieved from backend)
-		<>
+		<div
+			onClick={() => {
+				if(editableRef.current) {
+					editableRef.current.focus && editableRef.current.focus()
+					editableRef.current.setFocus && editableRef.current.setFocus() // For DatePicker
+				}
+			}}
+			style={{display: "flex", justifyContent: "space-between"}}
+		>
 			{metadataField.type === "time" && (
 				<EditableSingleValueTime
 					field={field}
 					form={form}
-					showCheck={showCheck}
 					isFirstField={isFirstField}
+					onFocus={onFocus}
+					onBlur={onBlur}
+					ref={editableRef}
 				/>
 			)}
 			{metadataField.type === "text" &&
@@ -48,8 +62,10 @@ const RenderField = ({
 						field={field}
 						form={form}
 						text={getMetadataCollectionFieldName(metadataField, field, t)}
-						showCheck={showCheck}
 						isFirstField={isFirstField}
+						focused={focused}
+						setFocused={setFocused}
+						ref={editableRef}
 					/>
 				)}
 			{metadataField.type === "ordered_text" && (
@@ -58,8 +74,10 @@ const RenderField = ({
 					field={field}
 					form={form}
 					text={getMetadataCollectionFieldName(metadataField, field, t)}
-					showCheck={showCheck}
 					isFirstField={isFirstField}
+					focused={focused}
+					setFocused={setFocused}
+					ref={editableRef}
 				/>
 			)}
 			{metadataField.type === "text" &&
@@ -68,127 +86,120 @@ const RenderField = ({
 				) && (
 					<EditableSingleValue
 						field={field}
-						form={form}
-						showCheck={showCheck}
 						isFirstField={isFirstField}
+						onFocus={onFocus}
+						onBlur={onBlur}
+						ref={editableRef}
 					/>
 				)}
 			{metadataField.type === "text_long" && (
 				<EditableSingleValueTextArea
 					field={field}
-					form={form}
-					showCheck={showCheck}
 					isFirstField={isFirstField}
+					onFocus={onFocus}
+					onBlur={onBlur}
+					ref={editableRef}
 				/>
 			)}
 			{metadataField.type === "date" && (
 				<EditableDateValue
 					field={field}
 					form={form}
-					showCheck={showCheck}
 					isFirstField={isFirstField}
+					onFocus={onFocus}
+					onBlur={onBlur}
+					ref={editableRef}
 				/>
 			)}
 			{metadataField.type === "boolean" && (
 				<EditableBooleanValue
 					field={field}
-					form={form}
-					showCheck={showCheck}
 					isFirstField={isFirstField}
+					onFocus={onFocus}
+					onBlur={onBlur}
+					ref={editableRef}
 				/>
 			)}
-		</>
+			<div style={{display: "flex", justifyContent: "flex-end"}}>
+				{!focused && showCheck && (
+					<i
+						className={cn("saved fa fa-check", {
+							active: form.initialValues[field.name] !== field.value,
+						})}
+					/>
+				)}
+				{!focused && <i className="edit fa fa-pencil-square" />}
+			</div>
+		</div>
 	);
 };
 
 // Renders editable field for a boolean value
 const EditableBooleanValue = ({
 	field,
-	form: { initialValues },
-	showCheck,
 	isFirstField,
+	onFocus,
+	onBlur,
+	ref,
 }: {
 	field: FieldProps["field"]
-	form: FieldProps["form"]
-	showCheck?: boolean,
 	isFirstField?: boolean,
+	onFocus: () => void
+	onBlur: () => void
+	ref: React.RefObject<HTMLInputElement>
 }) => {
 	return (
-		<div>
-			<input
-				type="checkbox"
-				checked={field.value}
-				autoFocus={isFirstField}
-				{...field}
-			/>
-			<i className="edit fa fa-pencil-square" />
-			{showCheck && (
-				<i
-					className={cn("saved fa fa-check", {
-						active: initialValues[field.name] !== field.value,
-					})}
-				/>
-			)}
-		</div>
+		<input
+			{...field}
+			ref={ref}
+			type="checkbox"
+			checked={field.value}
+			autoFocus={isFirstField}
+			onFocus={onFocus}
+			onBlur={onBlur}
+		/>
 	);
 };
 
 // Renders editable field for a data value
 const EditableDateValue = ({
 	field,
-	form: { setFieldValue, initialValues },
-	showCheck,
+	form: { setFieldValue },
 	isFirstField,
+	onFocus,
+	onBlur,
+	ref,
 }: {
 	field: FieldProps["field"]
 	form: FieldProps["form"]
-	showCheck?: boolean,
 	isFirstField?: boolean,
+	onFocus: () => void
+	onBlur: () => void
+	ref: React.RefObject<DatePicker>
 }) => {
-
-	const datePickerRef = useRef<DatePicker>(null);
-	const [focused, setFocused] = useState(false);
-	const onFocus = () => setFocused(true);
-	const onBlur = () => setFocused(false);
-
 	return (
-		<div
-			onClick={() => datePickerRef.current?.setFocus()}
-			style={{display: "flex", justifyContent: "space-between"}}
-		>
-			{/* For some reason onclick events are bubbling up from the datepicker which we do not want.
-				Therefore we wrap it.*/}
-			<div onClick={(e) => { e.stopPropagation() }}>
-				<DatePicker
-					ref={datePickerRef}
-					selected={!isNaN(Date.parse(field.value)) ? new Date(field.value) : null}
-					onChange={(value) => setFieldValue(field.name, value)}
-					showTimeInput
-					showYearDropdown
-					showMonthDropdown
-					yearDropdownItemNumber={2}
-					dateFormat="Pp"
-					popperPlacement="bottom-start"
-					popperClassName="datepicker-custom"
-					className="datepicker-custom-input"
-					wrapperClassName="datepicker-custom-wrapper"
-					locale={getCurrentLanguageInformation()?.dateLocale}
-					strictParsing
-					onFocus={onFocus}
-					onBlur={onBlur}
-					autoFocus={isFirstField}
-				/>
-			</div>
-			<div style={{display: "flex", justifyContent: "flex-end"}}>
-				{!focused && showCheck && (
-					<i
-						className={cn("saved fa fa-check", {
-							active: initialValues[field.name] !== field.value,
-						})}
-					/>
-				)}
-				{!focused && <i className="edit fa fa-pencil-square" />}
-			</div>
+		// For some reason onclick events are bubbling up from the datepicker which we do not want.
+		// Therefore we wrap it.
+		<div onClick={(e) => { e.stopPropagation() }}>
+			<DatePicker
+				ref={ref}
+				selected={!isNaN(Date.parse(field.value)) ? new Date(field.value) : null}
+				onChange={(value) => setFieldValue(field.name, value)}
+				showTimeInput
+				showYearDropdown
+				showMonthDropdown
+				yearDropdownItemNumber={2}
+				dateFormat="Pp"
+				popperPlacement="bottom-start"
+				popperClassName="datepicker-custom"
+				className="datepicker-custom-input"
+				wrapperClassName="datepicker-custom-wrapper"
+				locale={getCurrentLanguageInformation()?.dateLocale}
+				strictParsing
+				onFocus={onFocus}
+				onBlur={onBlur}
+				autoFocus={isFirstField}
+			/>
 		</div>
 	);
 };
@@ -198,104 +209,83 @@ const EditableSingleSelect = ({
 	field,
 	metadataField,
 	text,
-	form: { setFieldValue, initialValues },
-	showCheck,
+	form: { setFieldValue },
 	isFirstField,
+	focused,
+	setFocused,
+	ref,
 }: {
 	field: FieldProps["field"]
 	metadataField: MetadataField
 	text: string
 	form: FieldProps["form"]
-	showCheck?: boolean,
 	isFirstField?: boolean,
+	focused: boolean,
+	setFocused: (open: boolean) => void
+	ref: React.RefObject<SelectInstance<any, boolean, GroupBase<any>>>
 }) => {
 	const { t } = useTranslation();
 
-	const dropdownRef = useRef<SelectInstance<any, boolean, GroupBase<any>>>(null);
-	const [focused, setFocused] = useState(false);
-
 	return (
-		<div
-			onClick={() => dropdownRef.current?.focus()}
-			style={{display: "flex", justifyContent: "space-between"}}
-		>
-			<DropDown
-				ref={dropdownRef}
-				value={field.value}
-				text={text}
-				options={metadataField.collection ? metadataField.collection : []}
-				type={metadataField.id as DropDownType}
-				required={metadataField.required}
-				handleChange={(element) => element && setFieldValue(field.name, element.value)}
-				placeholder={focused
-					? `-- ${t("SELECT_NO_OPTION_SELECTED")} --`
-					: `${t("SELECT_NO_OPTION_SELECTED")}`
-				}
-				isMetadataStyle={focused ? false : true}
-				handleMenuIsOpen={(open: boolean) => setFocused(open)}
-				openMenuOnFocus
-				autoFocus={isFirstField}
-			/>
-			<div style={{display: "flex", justifyContent: "flex-end"}}>
-				{!focused && showCheck && (
-					<i
-						className={cn("saved fa fa-check", {
-							active: initialValues[field.name] !== field.value,
-						})}
-					/>
-				)}
-				{!focused && <i className="edit fa fa-pencil-square" />}
-			</div>
-		</div>
+		<DropDown
+			ref={ref}
+			value={field.value}
+			text={text}
+			options={metadataField.collection ? metadataField.collection : []}
+			type={metadataField.id as DropDownType}
+			required={metadataField.required}
+			handleChange={(element) => element && setFieldValue(field.name, element.value)}
+			placeholder={focused
+				? `-- ${t("SELECT_NO_OPTION_SELECTED")} --`
+				: `${t("SELECT_NO_OPTION_SELECTED")}`
+			}
+			isMetadataStyle={focused ? false : true}
+			handleMenuIsOpen={(open: boolean) => setFocused(open)}
+			openMenuOnFocus
+			autoFocus={isFirstField}
+		/>
 	);
 };
 
 // Renders editable text area
 const EditableSingleValueTextArea = ({
 	field,
-	form: { initialValues },
-	showCheck,
 	isFirstField,
+	onFocus,
+	onBlur,
+	ref,
 }: {
 	field: FieldProps["field"]
-	form: FieldProps["form"]
-	showCheck?: boolean,
 	isFirstField?: boolean,
+	onFocus: () => void
+	onBlur: () => void
+	ref: React.RefObject<HTMLTextAreaElement>
 }) => {
-
-	const textAreaRef = useRef<HTMLTextAreaElement>(null);
-	const [focused, setFocused] = useState(false);
-	const onFocus = () => setFocused(true);
-	const onBlur = () => setFocused(false);
 
 	const [value, setValue] = useState("");
 	useEffect(() => {
-    if (textAreaRef && textAreaRef.current) {
-      // We need to reset the height momentarily to get the correct scrollHeight for the textarea
-      textAreaRef.current.style.height = "0px";
-      const scrollHeight = textAreaRef.current.scrollHeight;
+		if (ref && ref.current) {
+			// We need to reset the height momentarily to get the correct scrollHeight for the textarea
+			ref.current.style.height = "0px";
+			const scrollHeight = ref.current.scrollHeight;
 
-      // We then set the height directly, outside of the render loop
-      // Trying to set this with state or a ref will product an incorrect value.
+			// We then set the height directly, outside of the render loop
+			// Trying to set this with state or a ref will product an incorrect value.
 			console.log("Scrollheight: " + scrollHeight)
-      textAreaRef.current.style.height = scrollHeight + 5 + "px";
-    }
-  }, [textAreaRef, value]);
+			ref.current.style.height = scrollHeight + 5 + "px";
+		}
+	}, [ref, value]);
 
 	const handleChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const val = evt.target?.value;
+		const val = evt.target?.value;
 
-    setValue(val);
-  };
+		setValue(val);
+	};
 
 	return (
-		<div
-			onClick={() => textAreaRef.current?.focus()}
-			style={{display: "flex", justifyContent: "space-between"}}
-		>
 			<textarea
 				{...field}
-				ref={textAreaRef}
+				ref={ref}
 				autoFocus={isFirstField}
 				className="single-value-textarea"
 				onChange={handleChange}
@@ -304,90 +294,58 @@ const EditableSingleValueTextArea = ({
 				onFocus={onFocus}
 				onBlur={onBlur}
 			/>
-			<div style={{display: "flex", justifyContent: "flex-end"}}>
-				{!focused && showCheck && (
-					<i
-						className={cn("saved fa fa-check", {
-							active: initialValues[field.name] !== field.value,
-						})}
-					/>
-				)}
-				{!focused && <i className="edit fa fa-pencil-square" />}
-			</div>
-		</div>
 	);
 };
 
 // Renders editable input for single value
 const EditableSingleValue = ({
 	field,
-	form: { initialValues },
-	showCheck,
 	isFirstField,
+	onFocus,
+	onBlur,
+	ref,
 }: {
 	field: FieldProps["field"]
-	form: FieldProps["form"]
-	showCheck?: boolean,
 	isFirstField?: boolean,
+	onFocus: () => void
+	onBlur: () => void
+	ref: React.RefObject<HTMLInputElement | null>
 }) => {
-
-	const inputRef = useRef<HTMLInputElement>(null);
-	const [focused, setFocused] = useState(false);
-	const onFocus = () => setFocused(true);
-	const onBlur = () => setFocused(false);
-
 	return (
-		<div
-			onClick={() => inputRef.current?.focus()}
-			style={{display: "flex", justifyContent: "space-between"}}
-		>
-			<input
-				{...field}
-				ref={inputRef}
-				className="single-value"
-				autoFocus={isFirstField}
-				type="text"
-				onFocus={onFocus}
-				onBlur={onBlur}
-			/>
-			<div style={{display: "flex", justifyContent: "flex-end"}}>
-				{!focused && showCheck && (
-					<i
-						className={cn("saved fa fa-check", {
-							active: initialValues[field.name] !== field.value,
-						})}
-					/>
-				)}
-				{!focused && <i className="edit fa fa-pencil-square" />}
-			</div>
-		</div>
+		<input
+			{...field}
+			ref={ref}
+			className="single-value"
+			autoFocus={isFirstField}
+			type="text"
+			onFocus={onFocus}
+			onBlur={onBlur}
+		/>
 	)
 };
 
 // Renders editable field for time value
 const EditableSingleValueTime = ({
 	field,
-	form: { setFieldValue, initialValues },
-	showCheck,
+	form: { setFieldValue },
 	isFirstField,
+	onFocus,
+	onBlur,
+	ref,
 }: {
 	field: FieldProps["field"]
 	form: FieldProps["form"]
-	showCheck?: boolean,
 	isFirstField?: boolean,
+	onFocus: () => void
+	onBlur: () => void
+	ref: React.RefObject<DatePicker>
 }) => {
-	const datePickerRef = useRef<DatePicker>(null);
-	const [focused, setFocused] = useState(false);
-	const onFocus = () => setFocused(true);
-	const onBlur = () => setFocused(false);
-
 	return (
-		<div
-			onClick={() => datePickerRef.current?.setFocus()}
-			style={{display: "flex", justifyContent: "space-between"}}
-		>
+		// For some reason onclick events are bubbling up from the datepicker which we do not want.
+		// Therefore we wrap it.
+		<div onClick={(e) => { e.stopPropagation() }}>
 			<DatePicker
-				ref={datePickerRef}
+				ref={ref}
 				selected={typeof field.value === "string" ? parseISO(field.value) : field.value}
 				onChange={(value) => setFieldValue(field.name, value)}
 				showTimeSelect
@@ -403,16 +361,6 @@ const EditableSingleValueTime = ({
 				onBlur={onBlur}
 				autoFocus={isFirstField}
 			/>
-			<div style={{display: "flex", justifyContent: "flex-end"}}>
-				{!focused && showCheck && (
-					<i
-						className={cn("saved fa fa-check", {
-							active: initialValues[field.name] !== field.value,
-						})}
-					/>
-				)}
-				{!focused && <i className="edit fa fa-pencil-square" />}
-			</div>
 		</div>
 	);
 };
