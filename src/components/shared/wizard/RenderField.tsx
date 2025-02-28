@@ -1,18 +1,15 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import cn from "classnames";
-import { useClickOutsideField } from "../../../hooks/wizardHooks";
 import { getMetadataCollectionFieldName } from "../../../utils/resourceUtils";
 import { getCurrentLanguageInformation } from "../../../utils/utils";
 import DropDown, { DropDownType } from "../DropDown";
-import RenderDate from "../RenderDate";
 import { parseISO } from "date-fns";
 import { FieldProps } from "formik";
 import { MetadataField } from "../../../slices/eventSlice";
-import { renderValidDate } from "../../../utils/dateUtils";
+import { GroupBase, SelectInstance } from "react-select";
 
-const childRef = React.createRef<HTMLDivElement>();
 /**
  * This component renders an editable field for single values depending on the type of the corresponding metadata
  */
@@ -31,20 +28,6 @@ const RenderField = ({
 }) => {
 	const { t } = useTranslation();
 
-	// Indicator if currently edit mode is activated
-	const {editMode, setEditMode} = useClickOutsideField(childRef, isFirstField);
-
-	// Handle key down event and check if pressed key leads to leaving edit mode
-	const handleKeyDown = (event: React.KeyboardEvent, type: MetadataField["type"]) => {
-		const { key } = event;
-		// keys pressable for leaving edit mode
-		const keys = ["Escape", "Tab", "Enter"];
-
-		if (type !== "textarea" && keys.indexOf(key) > -1) {
-			setEditMode(false);
-		}
-	};
-
 	return (
 		// Render editable field depending on type of metadata field
 		// (types: see metadata.json retrieved from backend)
@@ -52,12 +35,9 @@ const RenderField = ({
 			{metadataField.type === "time" && (
 				<EditableSingleValueTime
 					field={field}
-					text={field.value}
-					editMode={editMode}
-					setEditMode={setEditMode}
 					form={form}
 					showCheck={showCheck}
-					handleKeyDown={handleKeyDown}
+					isFirstField={isFirstField}
 				/>
 			)}
 			{metadataField.type === "text" &&
@@ -68,10 +48,8 @@ const RenderField = ({
 						field={field}
 						form={form}
 						text={getMetadataCollectionFieldName(metadataField, field, t)}
-						editMode={editMode}
-						setEditMode={setEditMode}
 						showCheck={showCheck}
-						handleKeyDown={handleKeyDown}
+						isFirstField={isFirstField}
 					/>
 				)}
 			{metadataField.type === "ordered_text" && (
@@ -80,10 +58,8 @@ const RenderField = ({
 					field={field}
 					form={form}
 					text={getMetadataCollectionFieldName(metadataField, field, t)}
-					editMode={editMode}
-					setEditMode={setEditMode}
 					showCheck={showCheck}
-					handleKeyDown={handleKeyDown}
+					isFirstField={isFirstField}
 				/>
 			)}
 			{metadataField.type === "text" &&
@@ -93,33 +69,24 @@ const RenderField = ({
 					<EditableSingleValue
 						field={field}
 						form={form}
-						text={field.value}
-						editMode={editMode}
-						setEditMode={setEditMode}
 						showCheck={showCheck}
-						handleKeyDown={handleKeyDown}
+						isFirstField={isFirstField}
 					/>
 				)}
 			{metadataField.type === "text_long" && (
 				<EditableSingleValueTextArea
 					field={field}
-					text={field.value}
 					form={form}
-					editMode={editMode}
-					setEditMode={setEditMode}
 					showCheck={showCheck}
-					handleKeyDown={handleKeyDown}
+					isFirstField={isFirstField}
 				/>
 			)}
 			{metadataField.type === "date" && (
 				<EditableDateValue
 					field={field}
-					text={field.value}
 					form={form}
-					editMode={editMode}
-					setEditMode={setEditMode}
 					showCheck={showCheck}
-					handleKeyDown={handleKeyDown}
+					isFirstField={isFirstField}
 				/>
 			)}
 			{metadataField.type === "boolean" && (
@@ -127,7 +94,7 @@ const RenderField = ({
 					field={field}
 					form={form}
 					showCheck={showCheck}
-					handleKeyDown={handleKeyDown}
+					isFirstField={isFirstField}
 				/>
 			)}
 		</>
@@ -137,18 +104,23 @@ const RenderField = ({
 // Renders editable field for a boolean value
 const EditableBooleanValue = ({
 	field,
-	handleKeyDown,
 	form: { initialValues },
 	showCheck,
+	isFirstField,
 }: {
 	field: FieldProps["field"]
-	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
 	form: FieldProps["form"]
 	showCheck?: boolean,
+	isFirstField?: boolean,
 }) => {
 	return (
-		<div onKeyDown={(e) => handleKeyDown(e, "input")} ref={childRef}>
-			<input type="checkbox" checked={field.value} {...field} />
+		<div>
+			<input
+				type="checkbox"
+				checked={field.value}
+				autoFocus={isFirstField}
+				{...field}
+			/>
 			<i className="edit fa fa-pencil-square" />
 			{showCheck && (
 				<i
@@ -164,113 +136,115 @@ const EditableBooleanValue = ({
 // Renders editable field for a data value
 const EditableDateValue = ({
 	field,
-	text,
-	form: { setFieldValue, initialValues },
-	editMode,
-	setEditMode,
-	showCheck,
-	handleKeyDown
-}: {
-	field: FieldProps["field"]
-	text: string
-	form: FieldProps["form"]
-	editMode: boolean | undefined
-	setEditMode: (e: boolean) => void
-	showCheck?: boolean,
-	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
-}) => 
-	editMode ? (
-	<div>
-		<DatePicker
-			autoFocus
-			selected={!isNaN(Date.parse(field.value)) ? new Date(field.value) : null}
-			onChange={(value) => setFieldValue(field.name, value)}
-			onClickOutside={() => setEditMode(false)}
-			showTimeInput
-			showYearDropdown
-			showMonthDropdown
-			yearDropdownItemNumber={2}
-			dateFormat="Pp"
-			popperPlacement="bottom-start"
-			popperClassName="datepicker-custom"
-			className="datepicker-custom-input"
-			wrapperClassName="datepicker-custom-wrapper"
-			locale={getCurrentLanguageInformation()?.dateLocale}
-			strictParsing
-		/>
-	</div>
-) : (
-	<div onClick={() => setEditMode(true)} className="show-edit">
-		<span className="editable preserve-newlines">
-			<RenderDate date={text} />
-		</span>
-		<div>
-			<i className="edit fa fa-pencil-square" />
-			{showCheck && (
-				<i
-					className={cn("saved fa fa-check", {
-						active: initialValues[field.name] !== field.value,
-					})}
-				/>
-			)}
-		</div>
-	</div>
-);
-
-// renders editable field for selecting value via dropdown
-const EditableSingleSelect = ({
-	field,
-	metadataField,
-	text,
-	editMode,
-	setEditMode,
-	handleKeyDown,
 	form: { setFieldValue, initialValues },
 	showCheck,
+	isFirstField,
 }: {
 	field: FieldProps["field"]
-	metadataField: MetadataField
-	text: string
-	editMode: boolean | undefined
-	setEditMode: (e: boolean) => void
-	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
 	form: FieldProps["form"]
 	showCheck?: boolean,
+	isFirstField?: boolean,
 }) => {
-	const { t } = useTranslation();
 
-	return editMode ? (
+	const datePickerRef = useRef<DatePicker>(null);
+	const [focused, setFocused] = useState(false);
+	const onFocus = () => setFocused(true);
+	const onBlur = () => setFocused(false);
+
+	return (
 		<div
-			onBlur={() => setEditMode(false)}
-			onKeyDown={(e) => handleKeyDown(e, "select")}
-			ref={childRef}
+			onClick={() => datePickerRef.current?.setFocus()}
+			style={{display: "flex", justifyContent: "space-between"}}
 		>
-			<DropDown
-				value={field.value}
-				text={text}
-				options={metadataField.collection ? metadataField.collection : []}
-				type={metadataField.id as DropDownType}
-				required={metadataField.required}
-				handleChange={(element) => element && setFieldValue(field.name, element.value)}
-				placeholder={`-- ${t("SELECT_NO_OPTION_SELECTED")} --`}
-				autoFocus={true}
-				defaultOpen={true}
-			/>
-		</div>
-	) : (
-		<div onClick={() => setEditMode(true)} className="show-edit">
-			<span className="editable preserve-newlines">
-				{text || t("SELECT_NO_OPTION_SELECTED")}
-			</span>
-			<div>
-				<i className="edit fa fa-pencil-square" />
-				{showCheck && (
+			{/* For some reason onclick events are bubbling up from the datepicker which we do not want.
+				Therefore we wrap it.*/}
+			<div onClick={(e) => { e.stopPropagation() }}>
+				<DatePicker
+					ref={datePickerRef}
+					selected={!isNaN(Date.parse(field.value)) ? new Date(field.value) : null}
+					onChange={(value) => setFieldValue(field.name, value)}
+					showTimeInput
+					showYearDropdown
+					showMonthDropdown
+					yearDropdownItemNumber={2}
+					dateFormat="Pp"
+					popperPlacement="bottom-start"
+					popperClassName="datepicker-custom"
+					className="datepicker-custom-input"
+					wrapperClassName="datepicker-custom-wrapper"
+					locale={getCurrentLanguageInformation()?.dateLocale}
+					strictParsing
+					onFocus={onFocus}
+					onBlur={onBlur}
+					autoFocus={isFirstField}
+				/>
+			</div>
+			<div style={{display: "flex", justifyContent: "flex-end"}}>
+				{!focused && showCheck && (
 					<i
 						className={cn("saved fa fa-check", {
 							active: initialValues[field.name] !== field.value,
 						})}
 					/>
 				)}
+				{!focused && <i className="edit fa fa-pencil-square" />}
+			</div>
+		</div>
+	);
+};
+
+// renders editable field for selecting value via dropdown
+const EditableSingleSelect = ({
+	field,
+	metadataField,
+	text,
+	form: { setFieldValue, initialValues },
+	showCheck,
+	isFirstField,
+}: {
+	field: FieldProps["field"]
+	metadataField: MetadataField
+	text: string
+	form: FieldProps["form"]
+	showCheck?: boolean,
+	isFirstField?: boolean,
+}) => {
+	const { t } = useTranslation();
+
+	const dropdownRef = useRef<SelectInstance<any, boolean, GroupBase<any>>>(null);
+	const [focused, setFocused] = useState(false);
+
+	return (
+		<div
+			onClick={() => dropdownRef.current?.focus()}
+			style={{display: "flex", justifyContent: "space-between"}}
+		>
+			<DropDown
+				ref={dropdownRef}
+				value={field.value}
+				text={text}
+				options={metadataField.collection ? metadataField.collection : []}
+				type={metadataField.id as DropDownType}
+				required={metadataField.required}
+				handleChange={(element) => element && setFieldValue(field.name, element.value)}
+				placeholder={focused
+					? `-- ${t("SELECT_NO_OPTION_SELECTED")} --`
+					: `${t("SELECT_NO_OPTION_SELECTED")}`
+				}
+				isMetadataStyle={focused ? false : true}
+				handleMenuIsOpen={(open: boolean) => setFocused(open)}
+				openMenuOnFocus
+				autoFocus={isFirstField}
+			/>
+			<div style={{display: "flex", justifyContent: "flex-end"}}>
+				{!focused && showCheck && (
+					<i
+						className={cn("saved fa fa-check", {
+							active: initialValues[field.name] !== field.value,
+						})}
+					/>
+				)}
+				{!focused && <i className="edit fa fa-pencil-square" />}
 			</div>
 		</div>
 	);
@@ -279,45 +253,66 @@ const EditableSingleSelect = ({
 // Renders editable text area
 const EditableSingleValueTextArea = ({
 	field,
-	text,
-	editMode,
-	setEditMode,
-	handleKeyDown,
 	form: { initialValues },
 	showCheck,
+	isFirstField,
 }: {
 	field: FieldProps["field"]
-	text: string
-	editMode: boolean | undefined
-	setEditMode: (e: boolean) => void
-	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
 	form: FieldProps["form"]
 	showCheck?: boolean,
+	isFirstField?: boolean,
 }) => {
-	return editMode ? (
+
+	const textAreaRef = useRef<HTMLTextAreaElement>(null);
+	const [focused, setFocused] = useState(false);
+	const onFocus = () => setFocused(true);
+	const onBlur = () => setFocused(false);
+
+	const [value, setValue] = useState("");
+	useEffect(() => {
+    if (textAreaRef && textAreaRef.current) {
+      // We need to reset the height momentarily to get the correct scrollHeight for the textarea
+      textAreaRef.current.style.height = "0px";
+      const scrollHeight = textAreaRef.current.scrollHeight;
+
+      // We then set the height directly, outside of the render loop
+      // Trying to set this with state or a ref will product an incorrect value.
+			console.log("Scrollheight: " + scrollHeight)
+      textAreaRef.current.style.height = scrollHeight + 5 + "px";
+    }
+  }, [textAreaRef, value]);
+
+	const handleChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const val = evt.target?.value;
+
+    setValue(val);
+  };
+
+	return (
 		<div
-			onBlur={() => setEditMode(false)}
-			onKeyDown={(e) => handleKeyDown(e, "textarea")}
-			ref={childRef}
+			onClick={() => textAreaRef.current?.focus()}
+			style={{display: "flex", justifyContent: "space-between"}}
 		>
 			<textarea
 				{...field}
-				autoFocus={true}
-				className="editable vertical-resize"
+				ref={textAreaRef}
+				autoFocus={isFirstField}
+				className="single-value-textarea"
+				onChange={handleChange}
+				value={value}
+				rows={1}
+				onFocus={onFocus}
+				onBlur={onBlur}
 			/>
-		</div>
-	) : (
-		<div onClick={() => setEditMode(true)} className="show-edit">
-			<span className="editable preserve-newlines">{text || ""}</span>
-			<div>
-				<i className="edit fa fa-pencil-square" />
-				{showCheck && (
+			<div style={{display: "flex", justifyContent: "flex-end"}}>
+				{!focused && showCheck && (
 					<i
 						className={cn("saved fa fa-check", {
 							active: initialValues[field.name] !== field.value,
 						})}
 					/>
 				)}
+				{!focused && <i className="edit fa fa-pencil-square" />}
 			</div>
 		</div>
 	);
@@ -327,74 +322,76 @@ const EditableSingleValueTextArea = ({
 const EditableSingleValue = ({
 	field,
 	form: { initialValues },
-	text,
-	editMode,
-	setEditMode,
-	handleKeyDown,
 	showCheck,
+	isFirstField,
 }: {
 	field: FieldProps["field"]
 	form: FieldProps["form"]
-	text: string
-	editMode: boolean | undefined
-	setEditMode: (e: boolean) => void
-	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
 	showCheck?: boolean,
+	isFirstField?: boolean,
 }) => {
-	return editMode ? (
+
+	const inputRef = useRef<HTMLInputElement>(null);
+	const [focused, setFocused] = useState(false);
+	const onFocus = () => setFocused(true);
+	const onBlur = () => setFocused(false);
+
+	return (
 		<div
-			onBlur={() => setEditMode(false)}
-			onKeyDown={(e) => handleKeyDown(e, "input")}
-			ref={childRef}
+			onClick={() => inputRef.current?.focus()}
+			style={{display: "flex", justifyContent: "space-between"}}
 		>
-			<input {...field} autoFocus={true} type="text" />
-		</div>
-	) : (
-		<div onClick={() => setEditMode(true)} className="show-edit">
-			<span className="editable preserve-newlines">{text || ""}</span>
-			<div>
-				<i className="edit fa fa-pencil-square" />
-				{showCheck && (
+			<input
+				{...field}
+				ref={inputRef}
+				className="single-value"
+				autoFocus={isFirstField}
+				type="text"
+				onFocus={onFocus}
+				onBlur={onBlur}
+			/>
+			<div style={{display: "flex", justifyContent: "flex-end"}}>
+				{!focused && showCheck && (
 					<i
 						className={cn("saved fa fa-check", {
 							active: initialValues[field.name] !== field.value,
 						})}
 					/>
 				)}
+				{!focused && <i className="edit fa fa-pencil-square" />}
 			</div>
 		</div>
-	);
+	)
 };
 
 // Renders editable field for time value
 const EditableSingleValueTime = ({
 	field,
-	text,
 	form: { setFieldValue, initialValues },
-	editMode,
-	setEditMode,
 	showCheck,
-	handleKeyDown,
+	isFirstField,
 }: {
 	field: FieldProps["field"]
-	text: string
 	form: FieldProps["form"]
-	editMode: boolean | undefined
-	setEditMode: (e: boolean) => void
 	showCheck?: boolean,
-	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
+	isFirstField?: boolean,
 }) => {
-	const { t } = useTranslation();
+	const datePickerRef = useRef<DatePicker>(null);
+	const [focused, setFocused] = useState(false);
+	const onFocus = () => setFocused(true);
+	const onBlur = () => setFocused(false);
 
-	return editMode ? (
-		<div>
+	return (
+		<div
+			onClick={() => datePickerRef.current?.setFocus()}
+			style={{display: "flex", justifyContent: "space-between"}}
+		>
 			<DatePicker
-				autoFocus
+				ref={datePickerRef}
 				selected={typeof field.value === "string" ? parseISO(field.value) : field.value}
 				onChange={(value) => setFieldValue(field.name, value)}
-				onClickOutside={() => setEditMode(false)}
 				showTimeSelect
-      			showTimeSelectOnly
+				showTimeSelectOnly
 				dateFormat="p"
 				popperPlacement="bottom-start"
 				popperClassName="datepicker-custom"
@@ -402,22 +399,19 @@ const EditableSingleValueTime = ({
 				wrapperClassName="datepicker-custom-wrapper"
 				locale={getCurrentLanguageInformation()?.dateLocale}
 				strictParsing
+				onFocus={onFocus}
+				onBlur={onBlur}
+				autoFocus={isFirstField}
 			/>
-		</div>
-	) : (
-		<div onClick={() => setEditMode(true)} className="show-edit">
-			<span className="editable preserve-newlines">
-				{t("dateFormats.dateTime.short", { dateTime: renderValidDate(text) }) || ""}
-			</span>
-			<div>
-				<i className="edit fa fa-pencil-square" />
-				{showCheck && (
+			<div style={{display: "flex", justifyContent: "flex-end"}}>
+				{!focused && showCheck && (
 					<i
 						className={cn("saved fa fa-check", {
 							active: initialValues[field.name] !== field.value,
 						})}
 					/>
 				)}
+				{!focused && <i className="edit fa fa-pencil-square" />}
 			</div>
 		</div>
 	);
