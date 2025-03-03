@@ -125,7 +125,6 @@ const Series = () => {
 				<Modal
 					header={t("BULK_ACTIONS.DELETE.SERIES.CAPTION")}
 					classId="delete-series-status-modal"
-					className="modal active modal-open"
 					ref={deleteModalRef}
 				>
 					<DeleteSeriesModal close={hideDeleteModal} />
