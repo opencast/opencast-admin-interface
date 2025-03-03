@@ -12,22 +12,22 @@ import { MetadataField } from "../slices/eventSlice";
  */
 
 type SourceType = {
-	UPLOAD?: { metadata: MetadataField[] },
-	SCHEDULE_SINGLE?: { metadata: MetadataField[] },
-	SCHEDULE_MULTIPLE?: { metadata: MetadataField[] },
+  UPLOAD?: { metadata: MetadataField[] },
+  SCHEDULE_SINGLE?: { metadata: MetadataField[] },
+  SCHEDULE_MULTIPLE?: { metadata: MetadataField[] },
 }
 
 export const sourceMetadata: SourceType = {
-	UPLOAD: {
-		metadata: [
-			{
-				id: "startDate",
-				label: "EVENTS.EVENTS.DETAILS.METADATA.START_DATE",
-				value: new Date(Date.now()).toISOString(),
-				type: "date",
-				readOnly: false,
-				required: false,
-			},
-		],
-	},
+  UPLOAD: {
+    metadata: [
+      {
+        id: "startDate",
+        label: "EVENTS.EVENTS.DETAILS.METADATA.START_DATE",
+        value: new Date(Date.now()).toISOString(),
+        type: "date",
+        readOnly: false,
+        required: false,
+      },
+    ],
+  },
 };

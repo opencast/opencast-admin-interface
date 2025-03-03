@@ -11,39 +11,39 @@ import { TableConfig } from "./aclsTableConfig";
  * - is multi select possible?
  */
 export const seriesTableConfig: TableConfig = {
-	columns: [
-		{
-			template: "SeriesTitleCell",
-			name: "title",
-			label: "EVENTS.SERIES.TABLE.TITLE",
-			sortable: true,
-		},
-		{
-			template: "SeriesCreatorsCell",
-			name: "organizers",
-			label: "EVENTS.SERIES.TABLE.ORGANIZERS",
-			sortable: true,
-		},
-		{
-			template: "SeriesContributorsCell",
-			name: "contributors",
-			label: "EVENTS.SERIES.TABLE.CONTRIBUTORS",
-			sortable: true,
-		},
-		{
-			template: "SeriesDateTimeCell",
-			name: "createdDateTime",
-			label: "EVENTS.SERIES.TABLE.CREATED",
-			sortable: true,
-		},
-		{
-			template: "SeriesActionsCell",
-			name: "actions",
-			label: "EVENTS.SERIES.TABLE.ACTION",
-		},
-	],
-	caption: "EVENTS.SERIES.TABLE.CAPTION",
-	resource: "series",
-	category: "events",
-	multiSelect: true,
+  columns: [
+    {
+      template: "SeriesTitleCell",
+      name: "title",
+      label: "EVENTS.SERIES.TABLE.TITLE",
+      sortable: true,
+    },
+    {
+      template: "SeriesCreatorsCell",
+      name: "organizers",
+      label: "EVENTS.SERIES.TABLE.ORGANIZERS",
+      sortable: true,
+    },
+    {
+      template: "SeriesContributorsCell",
+      name: "contributors",
+      label: "EVENTS.SERIES.TABLE.CONTRIBUTORS",
+      sortable: true,
+    },
+    {
+      template: "SeriesDateTimeCell",
+      name: "createdDateTime",
+      label: "EVENTS.SERIES.TABLE.CREATED",
+      sortable: true,
+    },
+    {
+      template: "SeriesActionsCell",
+      name: "actions",
+      label: "EVENTS.SERIES.TABLE.ACTION",
+    },
+  ],
+  caption: "EVENTS.SERIES.TABLE.CAPTION",
+  resource: "series",
+  category: "events",
+  multiSelect: true,
 };

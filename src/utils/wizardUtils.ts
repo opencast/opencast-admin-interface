@@ -1,33 +1,33 @@
 // Base style for Stepper component
 export const stepperStyle = {
-	root: {
-		background: "#eeeff0",
-		height: "100px",
-		padding: "24px",
-	},
+  root: {
+    background: "#eeeff0",
+    height: "100px",
+    padding: "24px",
+  },
 };
 
 // Properly align multi-line wizard step labels
 export const stepLabelStyle = {
-	root: {
-		alignSelf: "flex-start",
-	}
+  root: {
+    alignSelf: "flex-start",
+  }
 };
 
 // Style of icons used in Stepper
 export const stepIcon = {
-	root: {
-		height: 22,
-		alignItems: "center",
-	},
-	circle: {
-		color: "#92a0ab",
-		width: "20px",
-		height: "20px",
-	},
-	circleActive: {
-		transform: "scale(1.3)"
-	},
+  root: {
+    height: 22,
+    alignItems: "center",
+  },
+  circle: {
+    color: "#92a0ab",
+    width: "20px",
+    height: "20px",
+  },
+  circleActive: {
+    transform: "scale(1.3)"
+  },
 };
 
 /* This method checks if the summary page is reachable.
@@ -37,18 +37,18 @@ export const stepIcon = {
  */
 
 export const isSummaryReachable = (
-	key: number,
-	steps: {
-		name: string,
-		hidden?: boolean,
-	}[],
-	completed: Record<number, boolean>,
+  key: number,
+  steps: {
+    name: string,
+    hidden?: boolean,
+  }[],
+  completed: Record<number, boolean>,
 ) => {
-	if (steps[key].name === "summary") {
-		const visibleSteps = steps.filter((step) => !step.hidden);
+  if (steps[key].name === "summary") {
+    const visibleSteps = steps.filter((step) => !step.hidden);
 
-		return Object.keys(completed).length >= visibleSteps.length - 2;
-	}
+    return Object.keys(completed).length >= visibleSteps.length - 2;
+  }
 
-	return true;
+  return true;
 };

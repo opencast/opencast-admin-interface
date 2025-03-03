@@ -6,9 +6,9 @@
    "description":"Private Theme of Entwine",
    "name":"Theme Entwine Private",
    "creator":{
-  	"username":"admin",
-  	"email":"",
-  	"name":"Admin User"
+      "username":"admin",
+      "email":"",
+      "name":"Admin User"
    },
    "bumperActive":true,
    "bumperFile":"uuid1",

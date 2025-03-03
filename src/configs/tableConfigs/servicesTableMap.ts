@@ -8,7 +8,7 @@ import ServicesActionCell from "../../components/systems/partials/ServicesAction
  * uses template map.
  */
 export const servicesTemplateMap = {
-	MeanRunTimeCell: MeanRunTimeCell,
-	MeanQueueTimeCell: MeanQueueTimeCell,
-	ServicesActionsCell: ServicesActionCell,
+  MeanRunTimeCell: MeanRunTimeCell,
+  MeanQueueTimeCell: MeanQueueTimeCell,
+  ServicesActionsCell: ServicesActionCell,
 };

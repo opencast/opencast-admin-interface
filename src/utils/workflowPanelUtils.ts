@@ -2,36 +2,36 @@ import { Workflow, FieldSetField } from "../slices/workflowSlice";
 
 // fill values with default configuration of chosen workflow
 export const setDefaultConfig = (workflowDefinitions: Workflow[], workflowId: string) => {
-	let defaultConfiguration: { [key: string]: unknown } = {};
+  let defaultConfiguration: { [key: string]: unknown } = {};
 
-	// find configuration panel information about chosen workflow
-	let configPanel = workflowDefinitions.find(
-		(workflow) => workflow.id === workflowId
-	)?.configuration_panel_json;
+  // find configuration panel information about chosen workflow
+  let configPanel = workflowDefinitions.find(
+    (workflow) => workflow.id === workflowId
+  )?.configuration_panel_json;
 
-	// only set default values if there is an configuration panel
-	if (Array.isArray(configPanel) && configPanel.length > 0) {
-		// iterate through all config options and set their defaults
-		configPanel.forEach((configOption) => {
-			if (configOption.fieldset) {
-				defaultConfiguration = fillDefaultConfig(
-					configOption.fieldset,
-					defaultConfiguration
-				);
-			}
-		});
-	}
+  // only set default values if there is an configuration panel
+  if (Array.isArray(configPanel) && configPanel.length > 0) {
+    // iterate through all config options and set their defaults
+    configPanel.forEach((configOption) => {
+      if (configOption.fieldset) {
+        defaultConfiguration = fillDefaultConfig(
+          configOption.fieldset,
+          defaultConfiguration
+        );
+      }
+    });
+  }
 
-	return defaultConfiguration;
+  return defaultConfiguration;
 };
 
 // fills default configuration with values
 const fillDefaultConfig = (
-	fieldset: FieldSetField[],
-	defaultConfiguration: { [key: string]: unknown }
+  fieldset: FieldSetField[],
+  defaultConfiguration: { [key: string]: unknown }
 ) => {
-	// iteration through each input field
-	fieldset.forEach((field) => {
+  // iteration through each input field
+  fieldset.forEach((field) => {
 
     // set only the checked input of radio button as default value
     if (field.type === "radio" && field.checked) {
@@ -47,14 +47,14 @@ const fillDefaultConfig = (
       defaultConfiguration[field.name] = field.value;
     }
 
-		// if an input has further configuration then go through fillDefaultConfig again
-		if (field.fieldset) {
-			defaultConfiguration = fillDefaultConfig(
-				field.fieldset,
-				defaultConfiguration
-			);
-		}
-	});
+    // if an input has further configuration then go through fillDefaultConfig again
+    if (field.fieldset) {
+      defaultConfiguration = fillDefaultConfig(
+        field.fieldset,
+        defaultConfiguration
+      );
+    }
+  });
 
-	return defaultConfiguration;
+  return defaultConfiguration;
 };

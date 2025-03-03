@@ -18,10 +18,10 @@ export const getTableSorting = (state: RootState) => state.table.sortBy[state.ta
 export const getTableDirection = (state: RootState) => state.table.reverse[state.table.resource];
 export const getTable = (state: RootState) => state.table;
 export const getDeactivatedColumns = (state: RootState) =>
-	state.table.columns.filter((column) => column.deactivated);
+  state.table.columns.filter((column) => column.deactivated);
 export const getActivatedColumns = (state: RootState) =>
-	state.table.columns.filter((column) => !column.deactivated);
+  state.table.columns.filter((column) => !column.deactivated);
 
 export const getSelectedRows = createSelector(getTableRows, (rows) =>
-	rows.filter((row) => row.selected)
+  rows.filter((row) => row.selected)
 );

@@ -6,57 +6,57 @@ import { FilterData } from './tableFilterSlice'
  */
 
 export type FilterProfile = {
-	name: string,
-	description: string,
-	resource: string,
-	filterMap: FilterData[]
+  name: string,
+  description: string,
+  resource: string,
+  filterMap: FilterData[]
 }
 
 type TableFilterProfilesState = {
-	profiles: FilterProfile[]
+  profiles: FilterProfile[]
 }
 
 // Initial state of filter profiles in redux store
 const initialState: TableFilterProfilesState = {
-	profiles: []
+  profiles: []
 };
 
 const tableFilterProfileSlice = createSlice({
-	name: 'tableFilterProfiles',
-	initialState,
-	reducers: {
-		createFilterProfile(state, action: PayloadAction<
-			FilterProfile
-		>) {
-			const filterProfile = action.payload;
-			state.profiles = state.profiles.concat(filterProfile)
-		},
-		editFilterProfile(state, action: PayloadAction<
-			FilterProfile
-		>) {
-			const updatedFilterProfile = action.payload;
-			state.profiles = state.profiles.map((filterProfile) => {
-				if (filterProfile.name === updatedFilterProfile.name) {
-					return updatedFilterProfile;
-				}
-				return filterProfile;
-			})
-		},
-		removeFilterProfile(state, action: PayloadAction<
-			FilterProfile
-		>) {
-			const filterProfileToRemove = action.payload;
-			state.profiles = state.profiles.filter(
-									(filterProfile) => filterProfile.name !== filterProfileToRemove.name
-								)
-		}
-	},
+  name: 'tableFilterProfiles',
+  initialState,
+  reducers: {
+    createFilterProfile(state, action: PayloadAction<
+      FilterProfile
+    >) {
+      const filterProfile = action.payload;
+      state.profiles = state.profiles.concat(filterProfile)
+    },
+    editFilterProfile(state, action: PayloadAction<
+      FilterProfile
+    >) {
+      const updatedFilterProfile = action.payload;
+      state.profiles = state.profiles.map((filterProfile) => {
+        if (filterProfile.name === updatedFilterProfile.name) {
+          return updatedFilterProfile;
+        }
+        return filterProfile;
+      })
+    },
+    removeFilterProfile(state, action: PayloadAction<
+      FilterProfile
+    >) {
+      const filterProfileToRemove = action.payload;
+      state.profiles = state.profiles.filter(
+                  (filterProfile) => filterProfile.name !== filterProfileToRemove.name
+                )
+    }
+  },
 });
 
 export const {
-	createFilterProfile,
-	editFilterProfile,
-	removeFilterProfile,
+  createFilterProfile,
+  editFilterProfile,
+  removeFilterProfile,
 } = tableFilterProfileSlice.actions;
 
 // Export the slice reducer as the default export

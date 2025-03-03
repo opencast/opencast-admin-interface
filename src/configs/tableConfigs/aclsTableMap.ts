@@ -6,5 +6,5 @@ import AclsActionsCell from "../../components/users/partials/AclsActionsCell";
  * uses template map.
  */
 export const aclsTemplateMap = {
-	AclsActionsCell: AclsActionsCell,
+  AclsActionsCell: AclsActionsCell,
 };

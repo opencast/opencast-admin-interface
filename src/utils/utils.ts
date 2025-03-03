@@ -9,50 +9,50 @@ import { UploadAssetOption } from "../slices/eventSlice";
  */
 
 export const getTimezoneOffset = () => {
-	let d = new Date();
-	let offset = d.getTimezoneOffset() * -1;
+  let d = new Date();
+  let offset = d.getTimezoneOffset() * -1;
 
-	return offset / 60;
+  return offset / 60;
 };
 
 export const getTimezoneString = (offset: number) => {
-	return "UTC" + (offset < 0 ? "-" : "+") + offset;
+  return "UTC" + (offset < 0 ? "-" : "+") + offset;
 };
 
 export const getCurrentLanguageInformation = () => {
-	// Get code, flag, name and date locale of the current language
-	let currentLang = languages.find(({ code }) => code === i18n.language);
-	if (typeof currentLang === "undefined") {
-		// If detected language code, like "de-CH", isn't part of translations try 2-digit language code
-		currentLang = languages.find(({ code }) => code === i18n.language.split("-")[0]);
-		if (typeof currentLang === "undefined") {
-			currentLang = languages.find(({ code }) => code === "en-US");
-		}
-	}
+  // Get code, flag, name and date locale of the current language
+  let currentLang = languages.find(({ code }) => code === i18n.language);
+  if (typeof currentLang === "undefined") {
+    // If detected language code, like "de-CH", isn't part of translations try 2-digit language code
+    currentLang = languages.find(({ code }) => code === i18n.language.split("-")[0]);
+    if (typeof currentLang === "undefined") {
+      currentLang = languages.find(({ code }) => code === "en-US");
+    }
+  }
 
-	return currentLang;
+  return currentLang;
 };
 
 // fills an array from 00 to number of elements specified
 export const initArray = (numberOfElements: number) => {
-	let i,
-		result = [];
-	for (i = 0; i < numberOfElements; i++) {
-		result.push({
-			index: i,
-			value: makeTwoDigits(i),
-		});
-	}
-	return result;
+  let i,
+    result = [];
+  for (i = 0; i < numberOfElements; i++) {
+    result.push({
+      index: i,
+      value: makeTwoDigits(i),
+    });
+  }
+  return result;
 };
 
 // insert leading 0 for numbers smaller 10
 export const makeTwoDigits = (number: number) => {
-	if (number < 10) {
-		return "0" + number;
-	} else {
-		return "" + number;
-	}
+  if (number < 10) {
+    return "0" + number;
+  } else {
+    return "" + number;
+  }
 };
 
 /*
@@ -60,12 +60,12 @@ export const makeTwoDigits = (number: number) => {
  * to [{id: id1, value: value1},{id: id2, value: value2}]
  */
 export const transformToIdValueArray = (data: {[key: string | number]: string}) => {
-	return Object.keys(data).map((key) => {
-		return {
-			id: key,
-			value: data[key],
-		};
-	});
+  return Object.keys(data).map((key) => {
+    return {
+      id: key,
+      value: data[key],
+    };
+  });
 };
 
 /*
@@ -73,13 +73,13 @@ export const transformToIdValueArray = (data: {[key: string | number]: string}) 
  * to their corresponding boolean value. All other values stay the same.
  */
 export const parseBooleanInObject = (baseObject: {[key: string]: unknown}) => {
-	let parsedObject: {[key: string]: unknown} = {};
+  let parsedObject: {[key: string]: unknown} = {};
 
-	Object.keys(baseObject).forEach((config) => {
-		parsedObject[config] = parseValueForBooleanStrings(baseObject[config]);
-	});
+  Object.keys(baseObject).forEach((config) => {
+    parsedObject[config] = parseValueForBooleanStrings(baseObject[config]);
+  });
 
-	return parsedObject;
+  return parsedObject;
 };
 
 /*
@@ -87,32 +87,32 @@ export const parseBooleanInObject = (baseObject: {[key: string]: unknown}) => {
  * to their corresponding boolean value. All other kinds of values stay the same.
  */
 export const parseValueForBooleanStrings = (value: unknown) => {
-	let parsedValue = value;
-	if (parsedValue === "true") {
-		parsedValue = true;
-	} else if (parsedValue === "false") {
-		parsedValue = false;
-	}
+  let parsedValue = value;
+  if (parsedValue === "true") {
+    parsedValue = true;
+  } else if (parsedValue === "false") {
+    parsedValue = false;
+  }
 
-	return parsedValue;
+  return parsedValue;
 };
 
 /*
  * checks if a user is admin or has the required role to access an ui element
  */
 export const hasAccess = (role: string, userInfo: UserInfoState) => {
-	return !!(userInfo.isAdmin || userInfo.roles.includes(role));
+  return !!(userInfo.isAdmin || userInfo.roles.includes(role));
 };
 
 // checks, if a String is proper JSON
 export const isJson = (text: string) => {
-	try {
-		const json = JSON.parse(text);
-		const type = Object.prototype.toString.call(json);
-		return type === "[object Object]" || type === "[object Array]";
-	} catch (e) {
-		return false;
-	}
+  try {
+    const json = JSON.parse(text);
+    const type = Object.prototype.toString.call(json);
+    return type === "[object Object]" || type === "[object Array]";
+  } catch (e) {
+    return false;
+  }
 };
 
 /**
@@ -125,23 +125,23 @@ export const isJson = (text: string) => {
  * suffix further specifies the asset value if necessary, e.g. "SHORT" for "displayOverride.SHORT"
  */
 export const translateOverrideFallback = (asset: UploadAssetOption, t: TFunction, suffix?: "SHORT" | "DETAIL") => {
-	let result = undefined;
-	const sub = !!suffix ? `.${suffix}` as const : "" as const;
-	const translatable = asset["title"] + sub;
+  let result = undefined;
+  const sub = !!suffix ? `.${suffix}` as const : "" as const;
+  const translatable = asset["title"] + sub;
 
-	if (asset[`displayOverride${sub}` as const]) {
-		result = asset[`displayOverride${sub}` as const];
+  if (asset[`displayOverride${sub}` as const]) {
+    result = asset[`displayOverride${sub}` as const];
 
-	} else if (i18n.exists(translatable)) {
-		result = t(translatable);
+  } else if (i18n.exists(translatable)) {
+    result = t(translatable);
 
-	} else if (asset[`displayFallback${sub}` as const]) {
-		result = asset[`displayFallback${sub}` as const];
+  } else if (asset[`displayFallback${sub}` as const]) {
+    result = asset[`displayFallback${sub}` as const];
 
-	} else {
-		// no translate, override, or fallback, use what is given
-		result = translatable;
-	}
+  } else {
+    // no translate, override, or fallback, use what is given
+    result = translatable;
+  }
 
-	return result;
+  return result;
 }
