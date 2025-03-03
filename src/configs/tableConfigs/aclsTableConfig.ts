@@ -1,18 +1,18 @@
 export type TableConfig = {
-	columns: TableColumn[],
-	caption: string,
-	resource: string,
-	category: string,
-	multiSelect: boolean,
+  columns: TableColumn[],
+  caption: string,
+  resource: string,
+  category: string,
+  multiSelect: boolean,
 }
 
 export type TableColumn = {
-	name: string,
-	label: string,
-	template?: string,
-	sortable?: boolean,
-	translate?: boolean,
-	deactivated?: boolean,
+  name: string,
+  label: string,
+  template?: string,
+  sortable?: boolean,
+  translate?: boolean,
+  deactivated?: boolean,
 }
 
 /**
@@ -26,20 +26,20 @@ export type TableColumn = {
  * - is multi select possible?
  */
 export const aclsTableConfig: TableConfig = {
-	columns: [
-		{
-			name: "name",
-			label: "USERS.ACLS.TABLE.NAME",
-			sortable: true,
-		},
-		{
-			template: "AclsActionsCell",
-			name: "actions",
-			label: "USERS.ACLS.TABLE.ACTION",
-		},
-	],
-	caption: "USERS.ACLS.TABLE.CAPTION",
-	resource: "acls",
-	category: "users",
-	multiSelect: false,
+  columns: [
+    {
+      name: "name",
+      label: "USERS.ACLS.TABLE.NAME",
+      sortable: true,
+    },
+    {
+      template: "AclsActionsCell",
+      name: "actions",
+      label: "USERS.ACLS.TABLE.ACTION",
+    },
+  ],
+  caption: "USERS.ACLS.TABLE.CAPTION",
+  resource: "acls",
+  category: "users",
+  multiSelect: false,
 };

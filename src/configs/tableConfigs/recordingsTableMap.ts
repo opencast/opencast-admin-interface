@@ -8,8 +8,8 @@ import RecordingsUpdateCell from "../../components/recordings/partials/Recording
  * This helps to render different templates of cells more dynamically
  */
 export const recordingsTemplateMap = {
-	RecordingsActionCell: RecordingsActionCell,
-	RecordingsNameCell: RecordingsNameCell,
-	RecordingsStatusCell: RecordingsStatusCell,
-	RecordingsUpdateCell: RecordingsUpdateCell,
+  RecordingsActionCell: RecordingsActionCell,
+  RecordingsNameCell: RecordingsNameCell,
+  RecordingsStatusCell: RecordingsStatusCell,
+  RecordingsUpdateCell: RecordingsUpdateCell,
 };

@@ -9,22 +9,22 @@ export const getSeriesDetailsAcl = (state: RootState) => state.seriesDetails.acl
 export const getSeriesDetailsFeeds = (state: RootState) => state.seriesDetails.feeds;
 export const getSeriesDetailsTheme = (state: RootState) => state.seriesDetails.theme;
 export const getSeriesDetailsThemeNames = (state: RootState) =>
-	state.seriesDetails.themeNames;
+  state.seriesDetails.themeNames;
 
 export const getSeriesDetailsTobiraData = (state: RootState) =>
-	state.seriesDetails.tobiraData;
+  state.seriesDetails.tobiraData;
 export const getSeriesDetailsTobiraStatus = (state: RootState) =>
-	state.seriesDetails.statusTobiraData;
+  state.seriesDetails.statusTobiraData;
 export const getSeriesDetailsTobiraDataError = (state: RootState) =>
-	state.seriesDetails.errorTobiraData;
+  state.seriesDetails.errorTobiraData;
 export const getTobiraTabHierarchy = (state: RootState) =>
-	state.seriesDetails.tobiraTab;
+  state.seriesDetails.tobiraTab;
 
 /* selectors for statistics */
 export const hasStatistics = (state: RootState) =>
-	state.seriesDetails.statistics.length > 0;
+  state.seriesDetails.statistics.length > 0;
 export const getStatistics = (state: RootState) => state.seriesDetails.statistics;
 export const hasStatisticsError = (state: RootState) =>
-	state.seriesDetails.hasStatisticsError;
+  state.seriesDetails.hasStatisticsError;
 export const isFetchingStatistics = (state: RootState) =>
-	state.seriesDetails.fetchingStatisticsInProgress;
+  state.seriesDetails.fetchingStatisticsInProgress;

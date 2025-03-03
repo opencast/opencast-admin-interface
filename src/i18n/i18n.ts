@@ -27,48 +27,48 @@ import zhTWTrans from "./org/opencastproject/adminui/languages/lang-zh_TW.json";
 // Assignment of language code to translation file
 // !!! If translation file of a new language is added, please add assignment here, too !!!
 const resources = {
-	"en-US": { translation: enUSTrans },
-	"en-GB": { translation: enGBTrans },
-	da: { translation: daDKTrans },
-	de: { translation: deDETrans },
-	el: { translation: elGRTrans },
-	es: { translation: esESTrans },
-	fr: { translation: frFRTrans },
-	gl: { translation: glESTrans },
-	he: { translation: heILTrans },
-	it: { translation: itITTrans },
-	nl: { translation: nlNLTrans },
-	pl: { translation: plPLTrans },
-	sl: { translation: slSITrans },
-	sv: { translation: svSETrans },
-	tr: { translation: trTRTrans },
-	"zh-CN": { translation: zhCNTrans },
-	"zh-TW": { translation: zhTWTrans },
+  "en-US": { translation: enUSTrans },
+  "en-GB": { translation: enGBTrans },
+  da: { translation: daDKTrans },
+  de: { translation: deDETrans },
+  el: { translation: elGRTrans },
+  es: { translation: esESTrans },
+  fr: { translation: frFRTrans },
+  gl: { translation: glESTrans },
+  he: { translation: heILTrans },
+  it: { translation: itITTrans },
+  nl: { translation: nlNLTrans },
+  pl: { translation: plPLTrans },
+  sl: { translation: slSITrans },
+  sv: { translation: svSETrans },
+  tr: { translation: trTRTrans },
+  "zh-CN": { translation: zhCNTrans },
+  "zh-TW": { translation: zhTWTrans },
 } as const;
 
 // Configuration of i18next
 i18n
-	.use(HttpBackend)
-	.use(LanguageDetector)
-	.use(initReactI18next)
-	.init<HttpBackendOptions>({
-		resources,
-		fallbackLng: "en-US",
-		debug: true,
+  .use(HttpBackend)
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init<HttpBackendOptions>({
+    resources,
+    fallbackLng: "en-US",
+    debug: true,
 
-		interpolation: {
-			escapeValue: false,
-			format: function (value, format, lng) {
-				if (value instanceof Date) {
-					return moment(value).format(format);
-				}
+    interpolation: {
+      escapeValue: false,
+      format: function (value, format, lng) {
+        if (value instanceof Date) {
+          return moment(value).format(format);
+        }
 
-				return value;
-			},
-		},
-		react: {
-			useSuspense: false,
-		},
-	});
+        return value;
+      },
+    },
+    react: {
+      useSuspense: false,
+    },
+  });
 
 export default i18n;

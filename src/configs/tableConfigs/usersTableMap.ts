@@ -7,6 +7,6 @@ import UsersRolesCell from "../../components/users/partials/UsersRolesCell";
  * uses template map.
  */
 export const usersTemplateMap = {
-	UsersActionsCell: UsersActionCell,
-	UsersRolesCell: UsersRolesCell,
+  UsersActionsCell: UsersActionCell,
+  UsersRolesCell: UsersRolesCell,
 };

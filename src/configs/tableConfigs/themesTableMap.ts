@@ -6,5 +6,5 @@ import ThemesActionsCell from "../../components/configuration/partials/ThemesAct
  * uses template map.
  */
 export const themesTemplateMap = {
-	ThemesActionsCell: ThemesActionsCell,
+  ThemesActionsCell: ThemesActionsCell,
 };

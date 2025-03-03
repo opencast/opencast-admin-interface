@@ -11,30 +11,30 @@ import { TableConfig } from "./aclsTableConfig";
  * - is multi select possible?
  */
 export const groupsTableConfig: TableConfig = {
-	columns: [
-		{
-			name: "name",
-			label: "USERS.GROUPS.TABLE.NAME",
-			sortable: true,
-		},
-		{
-			name: "description",
-			label: "USERS.GROUPS.TABLE.DESCRIPTION",
-			sortable: true,
-		},
-		{
-			name: "role",
-			label: "USERS.GROUPS.TABLE.ROLE",
-			sortable: true,
-		},
-		{
-			template: "GroupsActionsCell",
-			name: "actions",
-			label: "USERS.USERS.TABLE.ACTION",
-		},
-	],
-	caption: "USERS.GROUPS.TABLE.CAPTION",
-	resource: "groups",
-	category: "users",
-	multiSelect: false,
+  columns: [
+    {
+      name: "name",
+      label: "USERS.GROUPS.TABLE.NAME",
+      sortable: true,
+    },
+    {
+      name: "description",
+      label: "USERS.GROUPS.TABLE.DESCRIPTION",
+      sortable: true,
+    },
+    {
+      name: "role",
+      label: "USERS.GROUPS.TABLE.ROLE",
+      sortable: true,
+    },
+    {
+      template: "GroupsActionsCell",
+      name: "actions",
+      label: "USERS.USERS.TABLE.ACTION",
+    },
+  ],
+  caption: "USERS.GROUPS.TABLE.CAPTION",
+  resource: "groups",
+  category: "users",
+  multiSelect: false,
 };

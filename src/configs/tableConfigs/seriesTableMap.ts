@@ -9,9 +9,9 @@ import SeriesActionsCell from "../../components/events/partials/SeriesActionsCel
  * This helps to render different templates of cells more dynamically
  */
 export const seriesTemplateMap = {
-	SeriesTitleCell: SeriesTitleCell,
-	SeriesCreatorsCell: SeriesCreatorsCell,
-	SeriesContributorsCell: SeriesContributorsCell,
-	SeriesDateTimeCell: SeriesDateTimeCell,
-	SeriesActionsCell: SeriesActionsCell,
+  SeriesTitleCell: SeriesTitleCell,
+  SeriesCreatorsCell: SeriesCreatorsCell,
+  SeriesContributorsCell: SeriesContributorsCell,
+  SeriesDateTimeCell: SeriesDateTimeCell,
+  SeriesActionsCell: SeriesActionsCell,
 };
