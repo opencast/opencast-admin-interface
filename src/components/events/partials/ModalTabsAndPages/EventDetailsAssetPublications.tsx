@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchAssetPublicationDetails, setModalAssetsTabHierarchy } from "../../../../slices/eventDetailsSlice";
 import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 
 /**
  * This component manages the publications sub-tab for assets tab of event details modal
@@ -86,8 +87,8 @@ const EventDetailsAssetPublications = ({
 														: null}
 												</td>
 												<td>
-													<button
-														className="button-like-anchor details-link"
+													<ButtonLikeAnchor
+														extraClassName="details-link"
 														onClick={() =>
 															openSubTab("publication-details", item.id)
 														}
@@ -97,7 +98,7 @@ const EventDetailsAssetPublications = ({
 																"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
 															) /* Details */
 														}
-													</button>
+													</ButtonLikeAnchor>
 												</td>
 											</tr>
 										))}

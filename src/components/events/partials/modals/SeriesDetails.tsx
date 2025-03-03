@@ -27,6 +27,7 @@ import {
 	updateSeriesMetadata,
 } from "../../../../slices/seriesDetailsSlice";
 import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { removeNotificationWizardTobira } from "../../../../slices/notificationSlice";
 
 /**
@@ -114,18 +115,18 @@ const SeriesDetails = ({
 			{/* navigation for navigating between tabs */}
 			<nav className="modal-nav" id="modal-nav">
 				{tabs.map((tab, index) => !tab.hidden && hasAccess(tab.accessRole, user) && (
-					<button
+					<ButtonLikeAnchor
 						key={tab.name}
-						className={"button-like-anchor " + cn({ active: page === index })}
+						extraClassName={cn({ active: page === index })}
 						onClick={() => openTab(index)}
 					>
 						{t(tab.tabNameTranslation)}
-					</button>
+					</ButtonLikeAnchor>
 				))}
 				{feeds.length > 0 && (
-					<button className={"button-like-anchor " + cn({ active: page === 6 })} onClick={() => openTab(6)}>
+					<ButtonLikeAnchor extraClassName={cn({ active: page === 6 })} onClick={() => openTab(6)}>
 						{"Feeds"}
-					</button>
+					</ButtonLikeAnchor>
 				)}
 			</nav>
 
