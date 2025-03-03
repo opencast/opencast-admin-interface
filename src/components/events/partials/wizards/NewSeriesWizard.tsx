@@ -23,6 +23,7 @@ import { UserInfoState } from "../../../../slices/userInfoSlice";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import NewMetadataCommonPage from "../ModalTabsAndPages/NewMetadataCommonPage";
+import { hasAccess } from "../../../../utils/utils";
 
 /**
  * This component manages the pages of the new series wizard and the submission of values
@@ -87,7 +88,7 @@ const NewSeriesWizard: React.FC<{
 		{
 			translation: "EVENTS.SERIES.NEW.TOBIRA.CAPTION",
 			name: "tobira",
-			hidden: !!(tobiraStatus === "failed" && tobiraError?.message?.includes("503")),
+			hidden: !hasAccess("ROLE_UI_SERIES_DETAILS_TOBIRA_EDIT", user) || !!(tobiraStatus === "failed" && tobiraError?.message?.includes("503")),
 		},
 		{
 			translation: "EVENTS.SERIES.NEW.SUMMARY.CAPTION",
