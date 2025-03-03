@@ -1,8 +1,9 @@
 import { fetchEvents } from "../../../slices/eventSlice";
+import { fetchLifeCyclePolicies } from "../../../slices/lifeCycleSlice";
 import { fetchSeries } from "../../../slices/seriesSlice";
 import { fetchStats } from "../../../slices/tableFilterSlice";
 import { AppDispatch } from "../../../store";
-import { loadEventsIntoTable, loadSeriesIntoTable } from "../../../thunks/tableThunks";
+import { loadEventsIntoTable, loadLifeCyclePoliciesIntoTable, loadSeriesIntoTable } from "../../../thunks/tableThunks";
 
 /**
  * Utility file for the navigation bar
@@ -27,6 +28,14 @@ export const loadSeries = (dispatch: AppDispatch) => {
 	dispatch(loadSeriesIntoTable());
 };
 
+export const loadLifeCyclePolicies = (dispatch: AppDispatch) => {
+	// Fetching policies from server
+	dispatch(fetchLifeCyclePolicies());
+
+	// Load policies into table
+	dispatch(loadLifeCyclePoliciesIntoTable());
+};
+
 export const eventsLinks = [
 	{
 		path: "/events/events",
@@ -39,5 +48,11 @@ export const eventsLinks = [
 		accessRole: "ROLE_UI_SERIES_VIEW",
 		loadFn: loadSeries,
 		text: "EVENTS.EVENTS.NAVIGATION.SERIES"
+	},
+	{
+		path: "/events/lifeCyclePolicies",
+		accessRole: "ROLE_UI_LIFECYCLEPOLICIES_VIEW",
+		loadFn: loadLifeCyclePolicies,
+		text: "LIFECYCLE.NAVIGATION.POLICIES"
 	}
 ];

@@ -18,7 +18,7 @@ import CreatableSelect from "react-select/creatable";
  *  - Creating typescript types for each "type" is moot atm, as a lot of them (i.e. capture agents) are not properly typed yet
  * I would suggest waiting with typing options until all of its inputs are properly typed
  */
-export type DropDownType = "language" | "isPartOf" | "license" | "captureAgent" | "aclRole" | "workflow" | "aclTemplate" | "newTheme" | "comment" | "theme" | "time" | "filter";
+export type DropDownType = "language" | "isPartOf" | "license" | "captureAgent" | "aclRole" | "workflow" | "aclTemplate" | "newTheme" | "comment" | "theme" | "time" | "filter" | "policyAction";
 
 /**
  * This component provides a bar chart for visualising (statistics) data
