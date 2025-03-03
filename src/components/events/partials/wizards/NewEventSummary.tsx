@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	getAssetUploadOptions,
@@ -56,30 +56,34 @@ const NewEventSummary = <T extends RequiredFormProps>({
 	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
 	const workflowDef = useAppSelector(state => getWorkflowDef(state));
 
+	// upload asset that user has provided
+	const [uploadAssetsNonTrack, setUploadAssetsNonTrack] = useState<{
+		name: string,
+		translate?: string,
+		value: any,
+	}[]>([]);
+
 	// Get upload assets that are not of type track
 	const uploadAssetsOptionsNonTrack = uploadAssetOptions.filter(
 		(asset) => asset.type !== "track"
 	);
 
-	// upload asset that user has provided
-	let uploadAssetsNonTrack: {
-		name: string,
-		translate?: string,
-		value: any,
-	}[] = [];
-	for (let i = 0; uploadAssetsOptionsNonTrack.length > i; i++) {
-		let fieldValue = formik.values[uploadAssetsOptionsNonTrack[i].id];
-		if (!!fieldValue) {
-			const displayOverride = uploadAssetsOptionsNonTrack[i].displayOverride
-			uploadAssetsNonTrack = uploadAssetsNonTrack.concat({
-				name: uploadAssetsOptionsNonTrack[i].id,
-				translate: !!displayOverride
-					? t(displayOverride)
-					: translateOverrideFallback(uploadAssetsOptionsNonTrack[i], t),
-				value: fieldValue,
-			});
+	useEffect(() => {
+		for (let i = 0; uploadAssetsOptionsNonTrack.length > i; i++) {
+			let fieldValue = formik.values[uploadAssetsOptionsNonTrack[i].id];
+			if (!!fieldValue) {
+				const displayOverride = uploadAssetsOptionsNonTrack[i].displayOverride
+				setUploadAssetsNonTrack(uploadAssetsNonTrack.concat({
+					name: uploadAssetsOptionsNonTrack[i].id,
+					translate: !!displayOverride
+						? t(displayOverride)
+						: translateOverrideFallback(uploadAssetsOptionsNonTrack[i], t),
+					value: fieldValue,
+				}));
+			}
 		}
-	}
+	}, [formik.values, t, uploadAssetsNonTrack, uploadAssetsOptionsNonTrack]);
+
 
 	// Get additional information about chosen workflow definition
 	const workflowDefinition = workflowDef.find(
@@ -96,7 +100,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 						{/*Summary metadata*/}
 						<MetadataSummaryTable
 							metadataCatalogs={[metadataEvents]}
-							//@ts-ignore
+							//@ts-expect-error: Metadata not correctly typed
 							formikValues={formik.values}
 							header={"EVENTS.EVENTS.NEW.METADATA.CAPTION"}
 						/>
@@ -105,7 +109,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 						{!metaDataExtendedHidden && (
 							<MetadataSummaryTable
 								metadataCatalogs={extendedMetadata}
-								//@ts-ignore
+								//@ts-expect-error: Metadata not correctly typed
 								formikValues={formik.values}
 								header={"EVENTS.EVENTS.NEW.METADATA_EXTENDED.CAPTION"}
 							/>

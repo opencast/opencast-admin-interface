@@ -148,7 +148,7 @@ const TableFilters = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [itemValue]);
 
-	const handleDatepicker = async (dates?:  [Date | undefined | null, Date | undefined | null]) => {
+	const handleDatepicker = async (dates?: [Date | undefined | null, Date | undefined | null]) => {
 		if (dates != null) {
 			let [start, end] = dates;
 
@@ -174,8 +174,12 @@ const TableFilters = ({
 					dispatch(loadResourceIntoTable());
 				}
 			}
-			if (start) setStartDate(start);
-			if (end) setEndDate(end);
+			if (start) {
+				setStartDate(start);
+			}
+			if (end) {
+				setEndDate(end);
+			}
 		}
 	}
 
@@ -192,7 +196,7 @@ const TableFilters = ({
 		return (
 			<span className="table-filter-blue-box">
 				{t(filter.label)}:
-				{filter.translatable? t(valueLabel) : valueLabel}
+				{filter.translatable ? t(valueLabel) : valueLabel}
 			</span>
 		);
 	};
@@ -375,7 +379,6 @@ const FilterSwitch = ({
 		return null;
 	}
 
-	// eslint-disable-next-line default-case
 	switch (filter.type) {
 		case "select":
 			return (

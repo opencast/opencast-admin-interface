@@ -67,7 +67,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 		// Fetch data about series and schedule info of chosen events from backend
 		dispatch(fetchScheduling({
 			events: formik.values.events,
-			fetchNewScheduling:fetchEventInfos,
+			fetchNewScheduling: fetchEventInfos,
 			setFormikValue: formik.setFieldValue
 	}));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -77,7 +77,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 	 * For a given matrix of events, return an array of events where the events
 	 * have been grouped by their value
 	 */
-	const reduceGroupEvents = (events: EditedEvents[][] ) => {
+	const reduceGroupEvents = (events: EditedEvents[][]) => {
 		const reducedEvents: EditedEvents[] = [];
 		Object.entries(events).forEach(([_, value]) => {
 			reducedEvents.push(reduceGroupedEvent(value));
@@ -243,12 +243,12 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 									)}
 										{
 											reduceGroupEvents(Object.values(groupBy(formik.values.editedEvents, i => i.weekday))).map((groupedEvent, key) => (
-												<div className="obj tbl-details">
+												<div key={key} className="obj tbl-details">
 													<header>{t("EVENTS.EVENTS.NEW.WEEKDAYSLONG." + groupedEvent.weekday)
 														+ " ("
 														+ t("BULK_ACTIONS.EDIT_EVENTS.EDIT.EVENTS")
 														+ " "
-														+ formik.values.editedEvents.reduce((acc, cur) => cur.weekday === groupedEvent.weekday  ? ++acc : acc, 0)
+														+ formik.values.editedEvents.reduce((acc, cur) => cur.weekday === groupedEvent.weekday ? ++acc : acc, 0)
 														+ ")"}
 													</header>
 													<div className="obj-container">
@@ -276,7 +276,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																			minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
 																			callbackHour={(value: string) => {
 																				for (const [i, entry] of formik.values.editedEvents.entries()) {
-																					if (entry.weekday === groupedEvent.weekday ) {
+																					if (entry.weekday === groupedEvent.weekday) {
 																						formik.setFieldValue(
 																							`editedEvents.${i}.changedStartTimeHour`,
 																							value
@@ -286,7 +286,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																			}}
 																			callbackMinute={(value: string) => {
 																				for (const [i, entry] of formik.values.editedEvents.entries()) {
-																					if (entry.weekday === groupedEvent.weekday ) {
+																					if (entry.weekday === groupedEvent.weekday) {
 																						formik.setFieldValue(
 																							`editedEvents.${i}.changedStartTimeMinutes`,
 																							value
@@ -304,7 +304,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																			minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
 																			callbackHour={(value: string) => {
 																				for (const [i, entry] of formik.values.editedEvents.entries()) {
-																					if (entry.weekday === groupedEvent.weekday ) {
+																					if (entry.weekday === groupedEvent.weekday) {
 																						formik.setFieldValue(
 																							`editedEvents.${i}.changedEndTimeHour`,
 																							value
@@ -314,7 +314,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																			}}
 																			callbackMinute={(value: string) => {
 																				for (const [i, entry] of formik.values.editedEvents.entries()) {
-																					if (entry.weekday === groupedEvent.weekday ) {
+																					if (entry.weekday === groupedEvent.weekday) {
 																						formik.setFieldValue(
 																							`editedEvents.${i}.changedEndTimeMinutes`,
 																							value
@@ -335,7 +335,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																					)} --`}
 																			callback={(value: string) => {
 																				for (const [i, entry] of formik.values.editedEvents.entries()) {
-																					if (entry.weekday === groupedEvent.weekday ) {
+																					if (entry.weekday === groupedEvent.weekday) {
 																						formik.setFieldValue(
 																							`editedEvents.${i}.changedLocation`,
 																							value
@@ -367,7 +367,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																							name={groupedEvent.weekday}
 																							onChange={(element) => {
 																								for (const [i, value] of formik.values.editedEvents.entries()) {
-																									if (value.weekday === groupedEvent.weekday ) {
+																									if (value.weekday === groupedEvent.weekday) {
 																										formik.setFieldValue(
 																											`editedEvents.${i}.changedWeekday`,
 																											element.target.value

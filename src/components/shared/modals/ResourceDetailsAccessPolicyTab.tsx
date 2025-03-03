@@ -50,7 +50,7 @@ const ResourceDetailsAccessPolicyTab = ({
 	policies: TransformedAcl[],
 	fetchHasActiveTransactions?: AsyncThunk<any, string, any>
 	fetchAccessPolicies: AsyncThunk<TransformedAcl[], string, any>,
-	saveNewAccessPolicies:  AsyncThunk<boolean, { id: string, policies: { acl: Acl } }, any>
+	saveNewAccessPolicies: AsyncThunk<boolean, { id: string, policies: { acl: Acl } }, any>
 	descriptionText: string,
 	buttonText: string,
 	editAccessRole: string,

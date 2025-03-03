@@ -219,7 +219,7 @@ const EventDetails = ({
 				{tabs.map((tab, index) => !tab.hidden && hasAccess(tab.accessRole, user) && (
 					<button
 						key={tab.name}
-						className={"button-like-anchor " + cn({ active: page === index })}
+						className={"button-like-anchor " + cn({ active: page === tab.page })}
 						onClick={() => openTab(index)}
 					>
 						{t(tab.tabNameTranslation)}
@@ -245,13 +245,13 @@ const EventDetails = ({
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
 					/>
 				)}
-				{page === 2 && <EventDetailsPublicationTab eventId={eventId} />}
+				{page === EventDetailsPage.Publication && <EventDetailsPublicationTab eventId={eventId} />}
 				{page === EventDetailsPage.Assets && (
 					<EventDetailsAssetsTab
 						eventId={eventId}
 					/>
 				)}
-				{page === 4 && !isLoadingScheduling && (
+				{page === EventDetailsPage.Scheduling && !isLoadingScheduling && (
 					<EventDetailsSchedulingTab eventId={eventId} />
 				)}
 				{page === EventDetailsPage.Workflow &&
