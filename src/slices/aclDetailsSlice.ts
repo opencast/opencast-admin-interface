@@ -13,6 +13,11 @@ export type TransformedAcl = {
 	role: string,
 	read: boolean,
 	write: boolean
+	user?: {
+		username: string,
+		name: string,
+		email?: string,
+	}
 }
 
 type AclDetailsState = {
@@ -123,13 +128,13 @@ export const fetchAclDetails = createAppAsyncThunk('aclDetails/fetchAclDetails',
 export const updateAclDetails = createAppAsyncThunk('aclDetails/updateAclDetails', async (params: {
 	values: {
 		name: string,
-		acls: TransformedAcl[],
+		policies: TransformedAcl[],
 	},
 	aclId: number,
 }, {dispatch}) => {
 	const { values, aclId } = params
 	// transform ACLs back to structure used by backend
-	let acls = prepareAccessPolicyRulesForPost(values.acls);
+	let acls = prepareAccessPolicyRulesForPost(values.policies);
 
 	// set params for request body
 	let data = new URLSearchParams();

@@ -8,7 +8,6 @@ import {
 } from "../selectors/seriesDetailsSelectors";
 import { addNotification } from "./notificationSlice";
 import {
-	createPolicy,
 	transformMetadataCollection,
 	transformMetadataForUpdate,
 } from "../utils/resourceUtils";
@@ -60,6 +59,7 @@ type SeriesDetailsState = {
 	extendedMetadata: MetadataCatalog[],
 	feeds: Feed[],
 	acl: TransformedAcl[],
+	policyTemplateId: number,
 	theme: string,
 	themeNames: { id: string, value: string }[],
 	fetchingStatisticsInProgress: boolean,
@@ -95,6 +95,7 @@ const initialState: SeriesDetailsState = {
 	extendedMetadata: [],
 	feeds: [],
 	acl: [],
+	policyTemplateId: 0,
 	theme: "",
 	themeNames: [],
 	fetchingStatisticsInProgress: false,
@@ -150,26 +151,7 @@ export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSe
 		);
 	}
 
-	let seriesAcls: TransformedAcl[] = [];
-	if (!!response.series_access) {
-		const json = JSON.parse(response.series_access.acl).acl.ace;
-		let policies: { [key: string]: TransformedAcl } = {};
-		let policyRoles: string[] = [];
-		json.forEach((policy: Ace) => {
-			if (!policies[policy.role]) {
-				policies[policy.role] = createPolicy(policy.role);
-				policyRoles.push(policy.role);
-			}
-			if (policy.action === "read" || policy.action === "write") {
-				policies[policy.role][policy.action] = policy.allow;
-			} else if (policy.allow === true) { //|| policy.allow === "true") {
-				policies[policy.role].actions.push(policy.action);
-			}
-		});
-		seriesAcls = policyRoles.map((role) => policies[role]);
-	}
-
-	return seriesAcls;
+	return { acl: response.series_access.acl, current_acl: response.series_access.current_acl };
 });
 
 // fetch feeds of certain series from server
@@ -613,12 +595,14 @@ const seriesDetailsSlice = createSlice({
 			.addCase(fetchSeriesDetailsAcls.pending, (state) => {
 				state.statusAcl = 'loading';
 			})
-			.addCase(fetchSeriesDetailsAcls.fulfilled, (state, action: PayloadAction<
-				SeriesDetailsState["acl"]
-			>) => {
+			.addCase(fetchSeriesDetailsAcls.fulfilled, (state, action: PayloadAction<{
+				acl: SeriesDetailsState["acl"],
+				current_acl: SeriesDetailsState["policyTemplateId"]
+			}>) => {
 				state.statusAcl = 'succeeded';
 				const seriesDetailsAcls = action.payload;
-				state.acl = seriesDetailsAcls;
+				state.acl = seriesDetailsAcls.acl;
+				state.policyTemplateId = seriesDetailsAcls.current_acl;
 			})
 			.addCase(fetchSeriesDetailsAcls.rejected, (state, action) => {
 				state.statusAcl = 'failed';

@@ -106,7 +106,7 @@ const NewSeriesWizard: React.FC<{
 
 	const nextPage = (
 		values: {
-			acls: TransformedAcl[];
+			policies: TransformedAcl[];
 			theme: string;
 			breadcrumbs: TobiraPage[];
 			selectedPage?: TobiraPage;
@@ -130,7 +130,7 @@ const NewSeriesWizard: React.FC<{
 
 	const previousPage = (
 		values: {
-			acls: TransformedAcl[];
+			policies: TransformedAcl[];
 			theme: string;
 			breadcrumbs: TobiraPage[];
 			selectedPage?: TobiraPage;
@@ -152,7 +152,7 @@ const NewSeriesWizard: React.FC<{
 		values:
 			{
 				[key: string]: any;
-				acls: TransformedAcl[];
+				policies: TransformedAcl[];
 				theme: string;
 			}
 	) => {
@@ -215,6 +215,8 @@ const NewSeriesWizard: React.FC<{
 										// @ts-expect-error TS(7006):
 										formik={formik}
 										editAccessRole="ROLE_UI_SERIES_DETAILS_ACL_EDIT"
+										viewUsersAccessRole="ROLE_UI_SERIES_DETAILS_ACL_USER_ROLES_VIEW"
+										viewNonUsersAccessRole="ROLE_UI_SERIES_DETAILS_ACL_NONUSER_ROLES_VIEW"
 										initEventAclWithSeriesAcl={false}
 									/>
 								)}
@@ -269,7 +271,7 @@ const getInitialValues = (
 
 	initialValues = { ...initialValues, ...metadataInitialValues };
 
-	initialValues["acls"] = [
+	initialValues["policies"] = [
 		{
 			role: user.userRole,
 			read: true,
