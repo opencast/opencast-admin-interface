@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchAssetAttachmentDetails, setModalAssetsTabHierarchy } from "../../../../slices/eventDetailsSlice";
 import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component manages the attachments sub-tab for assets tab of event details modal
@@ -31,91 +32,86 @@ const EventDetailsAssetAttachments = ({
 	};
 
 	return (
-		<div className="modal-content">
-			<div className="modal-body">
-				{/* Notifications */}
-				<Notifications context="not_corner" />
-
-				{/* table with list of attachments */}
-				<div className="full-col">
-					<div className="obj tbl-container operations-tbl">
-						<header>
-							{
-								t(
-									"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.CAPTION"
-								) /* Attachments */
-							}
-						</header>
-						<div className="obj-container">
-							<table cellPadding="0" cellSpacing="0" className="main-tbl">
-								<thead>
-									<tr>
-										<th>
-											{
-												t(
-													"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.ID"
-												) /* ID */
-											}
-										</th>
-										<th>
-											{
-												t(
-													"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.TYPE"
-												) /* Type */
-											}
-										</th>
-										<th>
-											{
-												t(
-													"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.MIMETYPE"
-												) /* Mimetype */
-											}
-										</th>
-										<th>
-											{
-												t(
-													"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.TAGS"
-												) /* Tags */
-											}
-										</th>
-										<th className="medium" />
+		<ModalContentTable
+			modalBodyChildren={<Notifications context="not_corner" />}
+		>
+			{/* table with list of attachments */}
+			<div className="obj tbl-container operations-tbl">
+				<header>
+					{
+						t(
+							"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.CAPTION"
+						) /* Attachments */
+					}
+				</header>
+				<div className="obj-container">
+					<table cellPadding="0" cellSpacing="0" className="main-tbl">
+						<thead>
+							<tr>
+								<th>
+									{
+										t(
+											"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.ID"
+										) /* ID */
+									}
+								</th>
+								<th>
+									{
+										t(
+											"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.TYPE"
+										) /* Type */
+									}
+								</th>
+								<th>
+									{
+										t(
+											"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.MIMETYPE"
+										) /* Mimetype */
+									}
+								</th>
+								<th>
+									{
+										t(
+											"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.TAGS"
+										) /* Tags */
+									}
+								</th>
+								<th className="medium" />
+							</tr>
+						</thead>
+						<tbody>
+							{isFetching ||
+								attachments.map((item, key) => (
+									<tr key={key}>
+										<td>{item.id}</td>
+										<td>{item.type}</td>
+										<td>{item.mimetype}</td>
+										<td>
+											{!!item.tags && item.tags.length > 0
+												? item.tags.join(", ")
+												: null}
+										</td>
+										<td>
+											<button
+												className="button-like-anchor details-link"
+												onClick={() =>
+													openSubTab("attachment-details", item.id)
+												}
+											>
+												{
+													t(
+														"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
+													) /* Details */
+												}
+											</button>
+										</td>
 									</tr>
-								</thead>
-								<tbody>
-									{isFetching ||
-										attachments.map((item, key) => (
-											<tr key={key}>
-												<td>{item.id}</td>
-												<td>{item.type}</td>
-												<td>{item.mimetype}</td>
-												<td>
-													{!!item.tags && item.tags.length > 0
-														? item.tags.join(", ")
-														: null}
-												</td>
-												<td>
-													<button
-														className="button-like-anchor details-link"
-														onClick={() =>
-															openSubTab("attachment-details", item.id)
-														}
-													>
-														{
-															t(
-																"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
-															) /* Details */
-														}
-													</button>
-												</td>
-											</tr>
-										))}
-								</tbody>
-							</table>
-						</div>
-					</div>
+								))}
+						</tbody>
+					</table>
 				</div>
 			</div>
-		</div>
+		</ModalContentTable>
 	);
 };
 
