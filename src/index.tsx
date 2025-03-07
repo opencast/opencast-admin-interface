@@ -26,29 +26,29 @@ import { getCurrentLanguageInformation } from "./utils/utils";
 const persistor = persistStore(store);
 
 const theme = createTheme({
-	zIndex: {
-		modal: 2147483550,
-	}
+  zIndex: {
+    modal: 2147483550,
+  }
 })
 
 const container = document.getElementById("root");
 if (!container) {
-	throw new Error("Failed to find the root element");
+  throw new Error("Failed to find the root element");
 }
 const root = ReactDOMClient.createRoot(container);
 
 root.render(
-	<React.StrictMode>
-		<Provider store={store}>
-			<PersistGate loading={<div>loading...</div>} persistor={persistor}>
-				<ThemeProvider theme={theme}>
-					<LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={getCurrentLanguageInformation()?.dateLocale}> {/*locale={getCurrentLanguageInformation()?.dateLocale}> */}
-						<HotkeysProvider>
-							<App />
-						</HotkeysProvider>
-					</LocalizationProvider>
-				</ThemeProvider>
-			</PersistGate>
-		</Provider>
-	</React.StrictMode>,
+  <React.StrictMode>
+    <Provider store={store}>
+      <PersistGate loading={<div>loading...</div>} persistor={persistor}>
+        <ThemeProvider theme={theme}>
+          <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={getCurrentLanguageInformation()?.dateLocale}> {/*locale={getCurrentLanguageInformation()?.dateLocale}> */}
+            <HotkeysProvider>
+              <App />
+            </HotkeysProvider>
+          </LocalizationProvider>
+        </ThemeProvider>
+      </PersistGate>
+    </Provider>
+  </React.StrictMode>,
 );

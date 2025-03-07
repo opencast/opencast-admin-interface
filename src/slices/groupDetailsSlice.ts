@@ -10,12 +10,12 @@ import { Group } from './groupSlice';
  */
 
 export type GroupDetails = Group & {
-	roles: string[],
+  roles: string[],
 }
 
 export type GroupDetailsState = GroupDetails & {
-	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
-	error: SerializedError | null,
+  status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+  error: SerializedError | null,
 }
 
 export interface UpdateGroupDetailsState extends Omit<GroupDetailsState, 'roles'> {
@@ -24,108 +24,108 @@ export interface UpdateGroupDetailsState extends Omit<GroupDetailsState, 'roles'
 
 // initial redux state
 const initialState: GroupDetailsState = {
-	status: 'uninitialized',
-	error: null,
-	role: "",
-	roles: [],
-	name: "",
-	description: "",
-	id: "",
-	users: [],
+  status: 'uninitialized',
+  error: null,
+  role: "",
+  roles: [],
+  name: "",
+  description: "",
+  id: "",
+  users: [],
 };
 
 // fetch details about certain group from server
 export const fetchGroupDetails = createAppAsyncThunk('groupDetails/fetchGroupDetails', async (groupId: GroupDetails["id"]) => {
-	const res = await axios.get(`/admin-ng/groups/${groupId}`);
-	const response = await res.data;
+  const res = await axios.get(`/admin-ng/groups/${groupId}`);
+  const response = await res.data;
 
-	let users: GroupDetailsState["users"] = [];
-	if (response.users.length > 0) {
-		users = response.users.map((user: { username: string, name: string }) => {
-			return {
-				id: user.username,
-				name: user.name,
-			};
-		});
-	}
+  let users: GroupDetailsState["users"] = [];
+  if (response.users.length > 0) {
+    users = response.users.map((user: { username: string, name: string }) => {
+      return {
+        id: user.username,
+        name: user.name,
+      };
+    });
+  }
 
-	const groupDetails = {
-		role: response.role,
-		roles: response.roles,
-		name: response.name,
-		description: response.description,
-		id: response.id,
-		users: users,
-	};
+  const groupDetails = {
+    role: response.role,
+    roles: response.roles,
+    name: response.name,
+    description: response.description,
+    id: response.id,
+    users: users,
+  };
 
-	return groupDetails;
+  return groupDetails;
 });
 
 // update details of a certain group
 export const updateGroupDetails = createAppAsyncThunk('groupDetails/updateGroupDetails', async (params: {
-	values: UpdateGroupDetailsState,
-	groupId: GroupDetails["id"]
+  values: UpdateGroupDetailsState,
+  groupId: GroupDetails["id"]
 }, {dispatch}) => {
-	const { values, groupId } = params
+  const { values, groupId } = params
 
-	// get URL params used for put request
-	let data = buildGroupBody(values);
+  // get URL params used for put request
+  let data = buildGroupBody(values);
 
-	// PUT request
-	axios
-		.put(`/admin-ng/groups/${groupId}`, data)
-		.then((response) => {
-			console.info(response);
-			dispatch(addNotification({type: "success", key: "GROUP_UPDATED"}));
-		})
-		.catch((response) => {
-			console.error(response);
-			if (response.status === 409) {
-				dispatch(addNotification({type: "error", key: "GROUP_CONFLICT"}));
-			} else {
-				dispatch(addNotification({type: "error", key: "GROUP_NOT_SAVED"}));
-			}
-		});
+  // PUT request
+  axios
+    .put(`/admin-ng/groups/${groupId}`, data)
+    .then((response) => {
+      console.info(response);
+      dispatch(addNotification({type: "success", key: "GROUP_UPDATED"}));
+    })
+    .catch((response) => {
+      console.error(response);
+      if (response.status === 409) {
+        dispatch(addNotification({type: "error", key: "GROUP_CONFLICT"}));
+      } else {
+        dispatch(addNotification({type: "error", key: "GROUP_NOT_SAVED"}));
+      }
+    });
 });
 
 const groupDetailsSlice = createSlice({
-	name: 'groupDetails',
-	initialState,
-	reducers: {},
-	// These are used for thunks
-	extraReducers: builder => {
-		builder
-			.addCase(fetchGroupDetails.pending, (state) => {
-				state.status = 'loading';
-			})
-			.addCase(fetchGroupDetails.fulfilled, (state, action: PayloadAction<{
-				role: GroupDetailsState["role"],
-				roles: GroupDetailsState["roles"],
-				name: GroupDetailsState["name"],
-				description: GroupDetailsState["description"],
-				id: GroupDetailsState["id"],
-				users: GroupDetailsState["users"],
-			}>) => {
-				state.status = 'succeeded';
-				const groupDetails = action.payload;
-				state.role = groupDetails.role;
-				state.roles = groupDetails.roles;
-				state.name = groupDetails.name;
-				state.description = groupDetails.description;
-				state.id = groupDetails.id;
-				state.users = groupDetails.users;
-			})
-			.addCase(fetchGroupDetails.rejected, (state, action) => {
-				state.status = 'failed';
-				state.role = "";
-				state.roles = [];
-				state.name = "";
-				state.description = "";
-				state.id = "";
-				state.users = [];
-				state.error = action.error;
-			});
-	}
+  name: 'groupDetails',
+  initialState,
+  reducers: {},
+  // These are used for thunks
+  extraReducers: builder => {
+    builder
+      .addCase(fetchGroupDetails.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchGroupDetails.fulfilled, (state, action: PayloadAction<{
+        role: GroupDetailsState["role"],
+        roles: GroupDetailsState["roles"],
+        name: GroupDetailsState["name"],
+        description: GroupDetailsState["description"],
+        id: GroupDetailsState["id"],
+        users: GroupDetailsState["users"],
+      }>) => {
+        state.status = 'succeeded';
+        const groupDetails = action.payload;
+        state.role = groupDetails.role;
+        state.roles = groupDetails.roles;
+        state.name = groupDetails.name;
+        state.description = groupDetails.description;
+        state.id = groupDetails.id;
+        state.users = groupDetails.users;
+      })
+      .addCase(fetchGroupDetails.rejected, (state, action) => {
+        state.status = 'failed';
+        state.role = "";
+        state.roles = [];
+        state.name = "";
+        state.description = "";
+        state.id = "";
+        state.users = [];
+        state.error = action.error;
+      });
+  }
 });
 
 // export const {} = groupDetailsSlice.actions;

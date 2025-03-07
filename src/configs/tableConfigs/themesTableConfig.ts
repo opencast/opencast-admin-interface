@@ -11,35 +11,35 @@ import { TableConfig } from "./aclsTableConfig";
  * - is multi select possible?
  */
 export const themesTableConfig: TableConfig = {
-	columns: [
-		{
-			name: "name",
-			label: "CONFIGURATION.THEMES.TABLE.NAME",
-			sortable: true,
-		},
-		{
-			name: "description",
-			label: "CONFIGURATION.THEMES.TABLE.DESCRIPTION",
-			sortable: true,
-		},
-		{
-			name: "creator",
-			label: "CONFIGURATION.THEMES.TABLE.CREATOR",
-			sortable: true,
-		},
-		{
-			name: "creation_date",
-			label: "CONFIGURATION.THEMES.TABLE.CREATED",
-			sortable: true,
-		},
-		{
-			template: "ThemesActionsCell",
-			name: "actions",
-			label: "CONFIGURATION.THEMES.TABLE.ACTION",
-		},
-	],
-	caption: "CONFIGURATION.THEMES.TABLE.CAPTION",
-	resource: "themes",
-	category: "configuration",
-	multiSelect: false,
+  columns: [
+    {
+      name: "name",
+      label: "CONFIGURATION.THEMES.TABLE.NAME",
+      sortable: true,
+    },
+    {
+      name: "description",
+      label: "CONFIGURATION.THEMES.TABLE.DESCRIPTION",
+      sortable: true,
+    },
+    {
+      name: "creator",
+      label: "CONFIGURATION.THEMES.TABLE.CREATOR",
+      sortable: true,
+    },
+    {
+      name: "creation_date",
+      label: "CONFIGURATION.THEMES.TABLE.CREATED",
+      sortable: true,
+    },
+    {
+      template: "ThemesActionsCell",
+      name: "actions",
+      label: "CONFIGURATION.THEMES.TABLE.ACTION",
+    },
+  ],
+  caption: "CONFIGURATION.THEMES.TABLE.CAPTION",
+  resource: "themes",
+  category: "configuration",
+  multiSelect: false,
 };

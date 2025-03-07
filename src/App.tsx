@@ -17,59 +17,59 @@ import { useAppDispatch } from "./store";
 import { fetchOcVersion, fetchUserInfo } from "./slices/userInfoSlice";
 
 function App() {
-	const dispatch = useAppDispatch();
-	useEffect(() => {
-		// Load information about current user on mount
-		dispatch(fetchUserInfo());
-		// Load information about current opencast version on mount
-		dispatch(fetchOcVersion());
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    // Load information about current user on mount
+    dispatch(fetchUserInfo());
+    // Load information about current opencast version on mount
+    dispatch(fetchOcVersion());
 
-		// Add event listener for back button to check if we are still logged in
-		window.addEventListener("popstate", function(event) {
-			dispatch(fetchUserInfo());
-		});
+    // Add event listener for back button to check if we are still logged in
+    window.addEventListener("popstate", function(event) {
+      dispatch(fetchUserInfo());
+    });
 
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-	return (
-		<HashRouter>
-			<Routes>
-				<Route path={"/"} element={<Events />} />
+  return (
+    <HashRouter>
+      <Routes>
+        <Route path={"/"} element={<Events />} />
 
-				<Route path={"/events/events"} element={<Events />} />
+        <Route path={"/events/events"} element={<Events />} />
 
-				<Route path={"/events/series"} element={<Series />} />
+        <Route path={"/events/series"} element={<Series />} />
 
-				<Route path={"/recordings/recordings"} element={<Recordings />} />
+        <Route path={"/recordings/recordings"} element={<Recordings />} />
 
-				<Route path={"/systems/jobs"} element={<Jobs />} />
+        <Route path={"/systems/jobs"} element={<Jobs />} />
 
-				<Route path={"/systems/servers"} element={<Servers />} />
+        <Route path={"/systems/servers"} element={<Servers />} />
 
-				<Route path={"/systems/services"} element={<Services />} />
+        <Route path={"/systems/services"} element={<Services />} />
 
-				<Route path={"/users/users"} element={<Users />} />
+        <Route path={"/users/users"} element={<Users />} />
 
-				<Route path={"/users/groups"} element={<Groups />} />
+        <Route path={"/users/groups"} element={<Groups />} />
 
-				<Route path={"/users/acls"} element={<Acls />} />
+        <Route path={"/users/acls"} element={<Acls />} />
 
-				<Route path={"/configuration/themes"} element={<Themes />} />
+        <Route path={"/configuration/themes"} element={<Themes />} />
 
-				<Route path={"/statistics/organization"} element={<Statistics />} />
+        <Route path={"/statistics/organization"} element={<Statistics />} />
 
-				<Route path={"/about/imprint"} element={<About />} />
+        <Route path={"/about/imprint"} element={<About />} />
 
-				<Route path={"/about/privacy"} element={<About />} />
+        <Route path={"/about/privacy"} element={<About />} />
 
-				<Route
-					path={"*"}
-					element={<Navigate to={"/events/events"} replace />}
-				/>
-			</Routes>
-		</HashRouter>
-	);
+        <Route
+          path={"*"}
+          element={<Navigate to={"/events/events"} replace />}
+        />
+      </Routes>
+    </HashRouter>
+  );
 }
 
 export default App;

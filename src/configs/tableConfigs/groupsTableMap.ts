@@ -6,5 +6,5 @@ import GroupsActionsCell from "../../components/users/partials/GroupsActionsCell
  * uses template map.
  */
 export const groupsTemplateMap = {
-	GroupsActionsCell: GroupsActionsCell,
+  GroupsActionsCell: GroupsActionsCell,
 };

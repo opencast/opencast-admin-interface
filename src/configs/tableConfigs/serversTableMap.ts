@@ -7,6 +7,6 @@ import ServersMaintenanceCell from "../../components/systems/partials/ServersMai
  * uses template map.
  */
 export const serversTemplateMap = {
-	ServersStatusCell: ServersStatusCell,
-	ServersMaintenanceCell: ServersMaintenanceCell,
+  ServersStatusCell: ServersStatusCell,
+  ServersMaintenanceCell: ServersMaintenanceCell,
 };

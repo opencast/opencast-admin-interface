@@ -15,15 +15,15 @@ import EventsNotesCell from "../../components/events/partials/EventsNotesCell";
  * This helps to render different templates of cells more dynamically
  */
 export const eventsTemplateMap = {
-	EventActionsCell: EventActionCell,
-	EventsDateCell: EventsDateCell,
-	EventsStartCell: EventsStartCell,
-	EventsEndCell: EventsEndCell,
-	EventsLocationCell: EventsLocationCell,
-	EventsPresentersCell: EventsPresentersCell,
-	EventsSeriesCell: EventsSeriesCell,
-	EventsStatusCell: EventsStatusCell,
-	EventsTechnicalDateCell: EventsTechnicalDateCell,
-	PublishedCell: PublishedCell,
-	EventsNotesCell: EventsNotesCell,
+  EventActionsCell: EventActionCell,
+  EventsDateCell: EventsDateCell,
+  EventsStartCell: EventsStartCell,
+  EventsEndCell: EventsEndCell,
+  EventsLocationCell: EventsLocationCell,
+  EventsPresentersCell: EventsPresentersCell,
+  EventsSeriesCell: EventsSeriesCell,
+  EventsStatusCell: EventsStatusCell,
+  EventsTechnicalDateCell: EventsTechnicalDateCell,
+  PublishedCell: PublishedCell,
+  EventsNotesCell: EventsNotesCell,
 };
