@@ -97,7 +97,7 @@ const NavBar = ({
 						<Link
 							key={index}
 							to={link.path}
-							className={cn({ active: location.pathname === link.path })}
+							className={cn({ active: location.pathname === link.path || (location.pathname === "/" && link.path === "/events/events") })}
 							onClick={() => {
 								if (location.pathname !== link.path) {
 									// Reset the current page to first page
