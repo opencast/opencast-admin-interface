@@ -1,6 +1,7 @@
 import { FormikProps } from "formik";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 
 /**
  * This component renders the effective role tab of the user details modal
@@ -44,7 +45,7 @@ const UserEffectiveRolesTab = <T extends RequiredFormProps>({
 
 					{/* list  all roles a user got */}
 					<div className="search-container">
-						<button className="button-like-anchor clear" onClick={() => clearSearchField()} />
+						<ButtonLikeAnchor extraClassName="clear" onClick={() => clearSearchField()} />
 						<input
 							type="text"
 							id="search_effective"
