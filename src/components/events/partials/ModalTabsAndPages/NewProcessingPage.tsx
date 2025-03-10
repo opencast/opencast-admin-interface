@@ -7,6 +7,7 @@ import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchWorkflowDef } from "../../../../slices/workflowSlice";
 import { FormikProps } from "formik";
+import { formatWorkflowsForDropdown } from "../../../../utils/dropDownUtils";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
@@ -86,8 +87,7 @@ const NewProcessingPage = <T extends RequiredFormProps>({
 														formik.values.processingWorkflow === workflow.id
 												)?.title ?? ""
 											}
-											options={workflowDef}
-											type={"workflow"}
+											options={formatWorkflowsForDropdown(workflowDef)}
 											required={true}
 											handleChange={(element) => {
 												if (element) {
@@ -97,6 +97,7 @@ const NewProcessingPage = <T extends RequiredFormProps>({
 											placeholder={t(
 												"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW"
 											)}
+											customCSS={{width: "100%"}}
 										/>
 									</div>
 								) : (
@@ -133,8 +134,6 @@ const NewProcessingPage = <T extends RequiredFormProps>({
 				nextPage={nextPage}
 				previousPage={() => previous()}
 			/>
-
-			<div className="btm-spacer" />
 		</>
 	);
 };

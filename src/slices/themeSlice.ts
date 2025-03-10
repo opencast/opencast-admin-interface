@@ -12,7 +12,7 @@ import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 export type ThemeDetailsType = {
 	bumperActive: boolean,
 	bumperFile: string,
-	creationDate: any,
+	creationDate: string,
 	creator: string,
 	default: boolean,
 	description: string,
@@ -65,7 +65,7 @@ const initialState: ThemeState = {
 // fetch themes from server
 export const fetchThemes = createAppAsyncThunk('theme/fetchThemes', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state);
+	let params = getURLParams(state, "themes");
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -119,7 +119,7 @@ export const postNewTheme = createAppAsyncThunk('theme/postNewTheme', async (val
 });
 
 // delete theme with provided id
-export const deleteTheme = createAppAsyncThunk('theme/deleteTheme', async (id: number, {dispatch}) => {
+export const deleteTheme = createAppAsyncThunk('theme/deleteTheme', async (id: ThemeDetailsType["id"], {dispatch}) => {
 	axios
 		.delete(`/admin-ng/themes/${id}`)
 		.then((res) => {

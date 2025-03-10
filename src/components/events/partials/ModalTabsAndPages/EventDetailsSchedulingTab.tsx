@@ -305,6 +305,7 @@ const EventDetailsSchedulingTab = ({
 																	className="datepicker-custom-input"
 																	portalId="root"
 																	locale={currentLanguage?.dateLocale}
+																	strictParsing
 																/>
 															) : (
 																<>
@@ -537,8 +538,6 @@ const EventDetailsSchedulingTab = ({
 													cancelTranslationString="CANCEL"
 													isLast
 												/>
-
-												<div className="btm-spacer" />
 											</>
 										)}
 									</div>

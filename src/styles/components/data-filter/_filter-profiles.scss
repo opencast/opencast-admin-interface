@@ -1,5 +1,4 @@
 @use "sass:color";
-@use "../../../../node_modules/bourbon/core/bourbon/library/border-radius";
 @use "../../base/fontawesome/fa-mixins";
 @use "../../base/fontawesome/variables" as variables2;
 @use "../../base/variables";
@@ -219,7 +218,8 @@
             width: 100%;
             float: right;
             padding: 5px;
-            @include border-radius.border-bottom-radius(variables.$main-border-radius);
+            border-bottom-left-radius: variables.$main-border-radius;
+            border-bottom-right-radius: variables.$main-border-radius;
             background: color.adjust(variables.$body-background, $lightness: -3%);
             border-top: 1px solid variables.$main-border-color;
         }

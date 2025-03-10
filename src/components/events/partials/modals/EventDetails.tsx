@@ -43,7 +43,7 @@ import {
 	fetchEventDetailsTobira,
 	fetchHasActiveTransactions,
 } from "../../../../slices/eventDetailsSlice";
-import { addNotification, removeNotificationByKey, removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import { addNotification, removeNotificationByKey, removeNotificationWizardForm, removeNotificationWizardTobira } from "../../../../slices/notificationSlice";
 import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
 import { FormikProps } from "formik";
 import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
@@ -86,6 +86,7 @@ const EventDetails = ({
 
 	useEffect(() => {
 		dispatch(removeNotificationWizardForm());
+		dispatch(removeNotificationWizardTobira());
 		dispatch(fetchMetadata(eventId));
 		dispatch(fetchSchedulingInfo(eventId));
 		dispatch(fetchEventStatistics(eventId));

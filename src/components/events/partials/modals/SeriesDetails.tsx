@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import {
 	getSeriesDetailsExtendedMetadata,
-	getSeriesDetailsFeeds,
 	getSeriesDetailsMetadata,
 	getSeriesDetailsTheme,
 	getSeriesDetailsThemeNames,
@@ -16,7 +15,6 @@ import { hasAccess } from "../../../../utils/utils";
 import SeriesDetailsAccessTab from "../ModalTabsAndPages/SeriesDetailsAccessTab";
 import SeriesDetailsThemeTab from "../ModalTabsAndPages/SeriesDetailsThemeTab";
 import SeriesDetailsStatisticTab from "../ModalTabsAndPages/SeriesDetailsStatisticTab";
-import SeriesDetailsFeedsTab from "../ModalTabsAndPages/SeriesDetailsFeedsTab";
 import DetailsExtendedMetadataTab from "../ModalTabsAndPages/DetailsMetadataTab";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import {
@@ -27,6 +25,7 @@ import {
 	updateSeriesMetadata,
 } from "../../../../slices/seriesDetailsSlice";
 import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
+import { removeNotificationWizardTobira } from "../../../../slices/notificationSlice";
 
 /**
  * This component manages the tabs of the series details modal
@@ -44,7 +43,6 @@ const SeriesDetails = ({
 	const dispatch = useAppDispatch();
 
 	const extendedMetadata = useAppSelector(state => getSeriesDetailsExtendedMetadata(state));
-	const feeds = useAppSelector(state => getSeriesDetailsFeeds(state));
 	const metadataFields = useAppSelector(state => getSeriesDetailsMetadata(state));
 	const theme = useAppSelector(state => getSeriesDetailsTheme(state));
 	const themeNames = useAppSelector(state => getSeriesDetailsThemeNames(state));
@@ -53,6 +51,7 @@ const SeriesDetails = ({
 	const tobiraError = useAppSelector(state => getSeriesDetailsTobiraDataError(state));
 
 	useEffect(() => {
+		dispatch(removeNotificationWizardTobira());
 		dispatch(fetchSeriesStatistics(seriesId));
 		dispatch(fetchSeriesDetailsTobira(seriesId));
 		dispatch(setTobiraTabHierarchy("main"));
@@ -120,11 +119,6 @@ const SeriesDetails = ({
 						{t(tab.tabNameTranslation)}
 					</button>
 				))}
-				{feeds.length > 0 && (
-					<button className={"button-like-anchor " + cn({ active: page === 6 })} onClick={() => openTab(6)}>
-						{"Feeds"}
-					</button>
-				)}
 			</nav>
 
 			{/* render modal content depending on current page */}
@@ -173,7 +167,6 @@ const SeriesDetails = ({
 						header={tabs[page].tabNameTranslation}
 					/>
 				)}
-				{page === 6 && <SeriesDetailsFeedsTab feeds={feeds} />}
 			</div>
 		</>
 	);

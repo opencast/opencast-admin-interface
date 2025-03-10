@@ -23,6 +23,7 @@ import { UserInfoState } from "../../../../slices/userInfoSlice";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import NewMetadataCommonPage from "../ModalTabsAndPages/NewMetadataCommonPage";
+import { hasAccess } from "../../../../utils/utils";
 
 /**
  * This component manages the pages of the new series wizard and the submission of values
@@ -87,7 +88,7 @@ const NewSeriesWizard: React.FC<{
 		{
 			translation: "EVENTS.SERIES.NEW.TOBIRA.CAPTION",
 			name: "tobira",
-			hidden: !!(tobiraStatus === "failed" && tobiraError?.message?.includes("503")),
+			hidden: !hasAccess("ROLE_UI_SERIES_DETAILS_TOBIRA_EDIT", user) || !!(tobiraStatus === "failed" && tobiraError?.message?.includes("503")),
 		},
 		{
 			translation: "EVENTS.SERIES.NEW.SUMMARY.CAPTION",
@@ -119,10 +120,12 @@ const NewSeriesWizard: React.FC<{
 		updatedPageCompleted[page] = true;
 		setPageCompleted(updatedPageCompleted);
 
-		if (steps[page + 1].hidden) {
-			setPage(page + 2);
-		} else {
-			setPage(page + 1);
+		let newPage = page;
+		do {
+			newPage = newPage + 1;
+		} while(steps[newPage] && steps[newPage]!.hidden);
+		if (steps[newPage]) {
+			setPage(newPage)
 		}
 	};
 
@@ -136,11 +139,13 @@ const NewSeriesWizard: React.FC<{
 		twoPagesBack?: boolean
 	) => {
 		setSnapshot(values);
-		// if previous page is hidden or not always shown, then go back two pages
-		if (steps[page - 1].hidden || twoPagesBack) {
-			setPage(page - 2);
-		} else {
-			setPage(page - 1);
+
+		let newPage = page;
+		do {
+			newPage = newPage - 1;
+		} while(steps[newPage] && steps[newPage]!.hidden);
+		if (steps[newPage]) {
+			setPage(newPage)
 		}
 	};
 
