@@ -5,6 +5,7 @@ import FileUpload from "../../../shared/wizard/FileUpload";
 import { FormikProps } from "formik";
 import { Field } from "../../../shared/Field";
 import Notifications from "../../../shared/Notifications";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component renders the bumper/trailer (depending on isTrailer flag) page for new themes in the new themes wizard
@@ -33,79 +34,75 @@ const BumperPage = <T extends RequiredFormProps>({
 
 	return (
 		<>
-			<div className="modal-content">
-				<div className="modal-body">
-					<div className="full-col">
-						<p className="tab-description">
-							{t(
-								!isTrailer
-									? "CONFIGURATION.THEMES.DETAILS.BUMPER.DESCRIPTION"
-									: "CONFIGURATION.THEMES.DETAILS.TRAILER.DESCRIPTION"
-							)}
-						</p>
-						{/* notifications */}
-						<Notifications context="not_corner" />
-						<div className="obj">
-							<header>
-								{t(
-									!isTrailer
-										? "CONFIGURATION.THEMES.DETAILS.BUMPER.ACTIVE"
-										: "CONFIGURATION.THEMES.DETAILS.TRAILER.ACTIVE"
-								)}
-							</header>
-							<div className="obj-container content-list padded">
-								<div className="list-row">
-									<div className="header-column">
-										<label className="large">
-											{t(
-												!isTrailer
-													? "CONFIGURATION.THEMES.DETAILS.BUMPER.ENABLE"
-													: "CONFIGURATION.THEMES.DETAILS.TRAILER.ENABLE"
-											)}
-										</label>
-									</div>
-									{/* Checkbox for activating bumper/trailer */}
-									<div className="content-column">
-										<div className="content-container">
-											<Field
-												id="bumper-toggle"
-												type="checkbox"
-												name={!isTrailer ? "bumperActive" : "trailerActive"}
-											/>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						{/* if checkbox is checked, then render object for uploading files */}
-						{((!isTrailer && formik.values.bumperActive) ||
-							(isTrailer && formik.values.trailerActive)) && (
-							<div className="obj">
-								<header>
+			<ModalContentTable>
+				<p className="tab-description">
+					{t(
+						!isTrailer
+							? "CONFIGURATION.THEMES.DETAILS.BUMPER.DESCRIPTION"
+							: "CONFIGURATION.THEMES.DETAILS.TRAILER.DESCRIPTION"
+					)}
+				</p>
+				{/* notifications */}
+				<Notifications context="not_corner" />
+				<div className="obj">
+					<header>
+						{t(
+							!isTrailer
+								? "CONFIGURATION.THEMES.DETAILS.BUMPER.ACTIVE"
+								: "CONFIGURATION.THEMES.DETAILS.TRAILER.ACTIVE"
+						)}
+					</header>
+					<div className="obj-container content-list padded">
+						<div className="list-row">
+							<div className="header-column">
+								<label className="large">
 									{t(
 										!isTrailer
-											? "CONFIGURATION.THEMES.DETAILS.BUMPER.SELECT"
-											: "CONFIGURATION.THEMES.DETAILS.TRAILER.SELECT"
+											? "CONFIGURATION.THEMES.DETAILS.BUMPER.ENABLE"
+											: "CONFIGURATION.THEMES.DETAILS.TRAILER.ENABLE"
 									)}
-								</header>
-								<div className="obj-container padded">
-									{/* Upload file for bumper/trailer */}
-									<FileUpload
-										acceptableTypes="video/*"
-										fileId={!isTrailer ? "bumperFile" : "trailerFile"}
-										fileName={!isTrailer ? "bumperFileName" : "trailerFileName"}
-										formik={formik}
-										buttonKey="CONFIGURATION.THEMES.DETAILS.BUMPER.UPLOAD_BUTTON"
-										labelKey="CONFIGURATION.THEMES.DETAILS.BUMPER.UPLOAD_LABEL"
-										isEdit={isEdit}
+								</label>
+							</div>
+							{/* Checkbox for activating bumper/trailer */}
+							<div className="content-column">
+								<div className="content-container">
+									<Field
+										id="bumper-toggle"
+										type="checkbox"
+										name={!isTrailer ? "bumperActive" : "trailerActive"}
 									/>
 								</div>
 							</div>
-						)}
+						</div>
 					</div>
 				</div>
-			</div>
+
+				{/* if checkbox is checked, then render object for uploading files */}
+				{((!isTrailer && formik.values.bumperActive) ||
+					(isTrailer && formik.values.trailerActive)) && (
+					<div className="obj">
+						<header>
+							{t(
+								!isTrailer
+									? "CONFIGURATION.THEMES.DETAILS.BUMPER.SELECT"
+									: "CONFIGURATION.THEMES.DETAILS.TRAILER.SELECT"
+							)}
+						</header>
+						<div className="obj-container padded">
+							{/* Upload file for bumper/trailer */}
+							<FileUpload
+								acceptableTypes="video/*"
+								fileId={!isTrailer ? "bumperFile" : "trailerFile"}
+								fileName={!isTrailer ? "bumperFileName" : "trailerFileName"}
+								formik={formik}
+								buttonKey="CONFIGURATION.THEMES.DETAILS.BUMPER.UPLOAD_BUTTON"
+								labelKey="CONFIGURATION.THEMES.DETAILS.BUMPER.UPLOAD_LABEL"
+								isEdit={isEdit}
+							/>
+						</div>
+					</div>
+				)}
+			</ModalContentTable>
 
 			{/* Show navigation buttons only if page is used for a new theme*/}
 			{!isEdit && (

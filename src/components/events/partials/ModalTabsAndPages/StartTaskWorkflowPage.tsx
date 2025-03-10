@@ -9,6 +9,7 @@ import { fetchWorkflowDef } from "../../../../slices/workflowSlice";
 import { FormikProps } from "formik";
 import { formatWorkflowsForDropdown } from "../../../../utils/dropDownUtils";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component renders the workflow selection for start task bulk action
@@ -60,59 +61,55 @@ const StartTaskWorkflowPage = <T extends RequiredFormProps>({
 
 	return (
 		<>
-			<div className="modal-content">
-				<div className="modal-body">
-					<div className="full-col">
-						{/* Workflow definition Selection*/}
-						<div className="obj list-obj">
-							<header>{t("BULK_ACTIONS.SCHEDULE_TASK.TASKS.SELECT")}</header>
-							<div className="obj-container">
-								{workflowDef.length > 0 && (
-									<div className="editable">
-										<DropDown
-											value={formik.values.workflow}
-											text={
-												workflowDef.find(
-													(workflowDef) =>
-														workflowDef.id === formik.values.workflow
-												)?.title ?? ""
-											}
-											options={formatWorkflowsForDropdown(workflowDef)}
-											required={true}
-											handleChange={(element) => {
-												if (element) {
-													setDefaultValues(element.value)
-												}
-											}}
-											placeholder={t(
-												"EVENTS.EVENTS.DETAILS.PUBLICATIONS.SELECT_WORKFLOW"
-											)}
-											tabIndex={99}
-											customCSS={{width: "100%"}}
-										/>
-									</div>
-								)}
-								{formik.values.workflow && (
-									<>
-										{/* Configuration panel of selected workflow */}
-										<div
-											id="new-event-workflow-configuration"
-											className="checkbox-container obj-container"
-										>
-											<RenderWorkflowConfig
-												displayDescription
-												workflowId={formik.values.workflow}
-												// @ts-expect-error TS(7006):
-												formik={formik}
-											/>
-										</div>
-									</>
-								)}
+			<ModalContentTable>
+				{/* Workflow definition Selection*/}
+				<div className="obj list-obj">
+					<header>{t("BULK_ACTIONS.SCHEDULE_TASK.TASKS.SELECT")}</header>
+					<div className="obj-container">
+						{workflowDef.length > 0 && (
+							<div className="editable">
+								<DropDown
+									value={formik.values.workflow}
+									text={
+										workflowDef.find(
+											(workflowDef) =>
+												workflowDef.id === formik.values.workflow
+										)?.title ?? ""
+									}
+									options={formatWorkflowsForDropdown(workflowDef)}
+									required={true}
+									handleChange={(element) => {
+										if (element) {
+											setDefaultValues(element.value)
+										}
+									}}
+									placeholder={t(
+										"EVENTS.EVENTS.DETAILS.PUBLICATIONS.SELECT_WORKFLOW"
+									)}
+									tabIndex={99}
+									customCSS={{width: "100%"}}
+								/>
 							</div>
-						</div>
+						)}
+						{formik.values.workflow && (
+							<>
+								{/* Configuration panel of selected workflow */}
+								<div
+									id="new-event-workflow-configuration"
+									className="checkbox-container obj-container"
+								>
+									<RenderWorkflowConfig
+										displayDescription
+										workflowId={formik.values.workflow}
+										// @ts-expect-error TS(7006):
+										formik={formik}
+									/>
+								</div>
+							</>
+						)}
 					</div>
 				</div>
-			</div>
+			</ModalContentTable>
 
 			{/* Button for navigation to next page and previous page */}
 			<WizardNavigationButtons
