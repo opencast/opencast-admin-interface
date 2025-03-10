@@ -26,6 +26,7 @@ import { TransformedAcl } from "../../../slices/aclDetailsSlice";
 import { AsyncThunk, unwrapResult } from "@reduxjs/toolkit";
 import { SaveEditFooter } from "../SaveEditFooter";
 import { UserInfoState } from "../../../slices/userInfoSlice";
+import { formatAclRolesForDropdown, formatAclTemplatesForDropdown } from "../../../utils/dropDownUtils";
 
 
 /**
@@ -537,12 +538,16 @@ export const AccessPolicyTable = <T extends AccessPolicyTabFormikProps>({
 																		text={createPolicyLabel(policy)}
 																		options={
 																			roles.length > 0
-																				? rolesFilteredbyPolicies
-																				: []
+																				? formatAclRolesForDropdown(filterRoles(
+																					roles,
+																					formik.values
+																						.policies
+																				))
+																			: []
 																		}
-																		type={"aclRole"}
 																		required={true}
 																		creatable={true}
+																		improvePerformanceExperimental={true}
 																		handleChange={(element) => {
 																			if (element) {
 																				const matchingRole = roles.find(role => role.name === element.value)
@@ -786,8 +791,7 @@ export const TemplateSelector = <T extends TemplateSelectorProps>({
 											aclTemplates,
 											formik.values.aclTemplate
 										)}
-										options={aclTemplates}
-										type={"aclTemplate"}
+										options={!!aclTemplates ? formatAclTemplatesForDropdown(aclTemplates) : []}
 										required={true}
 										handleChange={(element) => {
 											if (element) {

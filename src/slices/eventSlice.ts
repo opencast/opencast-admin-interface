@@ -89,7 +89,13 @@ export type Event = {
 export type MetadataField = {
 	delimiter?: string,
 	differentValues?: boolean,
-	collection?: { [key: string]: unknown }[],  // different for e.g. languages and presenters
+	collection?: {
+		name: string,
+		value: string,
+		label?: string,
+		order?: number,
+		selectable?: boolean,
+	 }[],
 	id: string,
 	label: string,
 	readOnly: boolean,
@@ -231,10 +237,17 @@ const initialState: EventState = {
 // fetch events from server
 export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, { dispatch, getState }) => {
 	const state = getState();
-	let params: ReturnType<typeof getURLParams> & { getComments?: boolean } = getURLParams(state);
+	let params: ReturnType<typeof getURLParams> & { getComments?: boolean } = getURLParams(state, "events");
+
+	// Add a secondary filter to enforce order of events
+	// (Elasticsearch does not guarantee ordering)
+	params = {
+		...params,
+		sort: params.sort ? params.sort + ",uid:asc" : "uid:asc"
+	}
 
 	// Only if the notes column is enabled, fetch comment information for events
-	if (state.table.columns.find(column => column.label === "EVENTS.EVENTS.TABLE.ADMINUI_NOTES" && !column.deactivated)) {
+	if (state.events.columns.find(column => column.label === "EVENTS.EVENTS.TABLE.ADMINUI_NOTES" && !column.deactivated)) {
 		params = {
 			...params,
 			getComments: true
@@ -302,7 +315,7 @@ export const fetchEventMetadata = createAppAsyncThunk('events/fetchEventMetadata
 });
 
 // get merged metadata for provided event ids
-export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', async (ids: string[]) => {
+export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', async (ids: Event["id"][]) => {
 	let formData = new URLSearchParams();
 	formData.append("eventIds", JSON.stringify(ids));
 
@@ -477,7 +490,6 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 					id: smetadata.id,
 					value: values[smetadata.id],
 					type: smetadata.type,
-					tabindex: smetadata.tabindex,
 				});
 			}
 		}
@@ -653,7 +665,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 });
 
 // delete event with provided id
-export const deleteEvent = createAppAsyncThunk('events/deleteEvent', async (id: string, { dispatch }) => {
+export const deleteEvent = createAppAsyncThunk('events/deleteEvent', async (id: Event["id"], { dispatch }) => {
 	// API call for deleting an event
 	axios
 		.delete(`/admin-ng/event/${id}`)

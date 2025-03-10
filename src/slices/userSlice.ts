@@ -6,32 +6,36 @@ import { buildUserBody, getURLParams } from "../utils/resourceUtils";
 import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { Role } from './aclSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of users
  */
-export type UserResult = {
+export type UserRole = {
+	name: string
+	type: string
+}
+
+export type User = {
 	email?: string,
 	manageable: boolean,
 	name: string,
 	provider: string,
-	roles: { name: string, type: string }[],
+	roles: UserRole[],
 	username: string,
 }
 
 export type NewUser = {
-	email: string,
-	name: string,
+	email?: string,
+	name?: string,
 	password: string,
-	roles: Role[],
+	roles?: UserRole[],
 	username: string,
 }
 
 type UsersState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
-	results: UserResult[],
+	results: User[],
 	columns: TableConfig["columns"],
 	total: number,
 	count: number,
@@ -60,7 +64,7 @@ const initialState: UsersState = {
 // fetch users from server
 export const fetchUsers = createAppAsyncThunk('users/fetchUsers', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state);
+	let params = getURLParams(state, "users");
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -71,7 +75,7 @@ export const fetchUsers = createAppAsyncThunk('users/fetchUsers', async (_, { ge
 // For a each role in a list of roles, get user information if available
 export const fetchUsersForTemplate = async (roles: string[]) => {
 	const res = await axios.get("/admin-ng/users/usersforroles.json", { params: { roles: JSON.stringify(roles) } });
-	return res.data as { [key: string]: UserResult };
+	return res.data as { [key: string]: User };
 };
 
 // new user to backend
