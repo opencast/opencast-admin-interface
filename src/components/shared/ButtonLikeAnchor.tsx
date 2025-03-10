@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSX } from "react";
 import { useTranslation } from "react-i18next";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { useAppSelector } from "../../store";
