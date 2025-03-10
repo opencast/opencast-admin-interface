@@ -171,7 +171,6 @@ const Events = () => {
 				<Modal
 					header={t("BULK_ACTIONS.DELETE.EVENTS.CAPTION")}
 					classId="delete-events-status-modal"
-					className="modal active modal-open"
 					ref={deleteModalRef}
 				>
 					<DeleteEventsModal close={hideDeleteModal} />

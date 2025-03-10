@@ -38,7 +38,7 @@ export const getURLParams = (
 ) => {
 	// get filter map from state
 	let filters = [];
-	let filterMap = getFilters(state);
+	let filterMap = getFilters(state, resource);
 	let textFilter = getTextFilter(state);
 
 	// check if textFilter has value and transform for use as URL param
