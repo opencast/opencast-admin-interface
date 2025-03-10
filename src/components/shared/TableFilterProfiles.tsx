@@ -38,7 +38,7 @@ const TableFiltersProfiles = ({
 	const dispatch = useAppDispatch();
 
 	const profiles = useAppSelector(state => getFilterProfiles(state));
-	const filterMap = useAppSelector(state => getFilters(state));
+	const filterMap = useAppSelector(state => getFilters(state, resource));
 
 	// State for switching between list of profiles and saving/editing dialog
 	const [settingsMode, setSettingsMode] = useState(true);

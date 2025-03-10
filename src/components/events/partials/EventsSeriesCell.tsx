@@ -17,7 +17,7 @@ const EventsSeriesCell = ({
 }) => {
 	const dispatch = useAppDispatch();
 
-	const filterMap = useAppSelector(state => getFilters(state));
+	const filterMap = useAppSelector(state => getFilters(state, "events"));
 
 	// Filter with value of current cell
 	const addFilter = async (seriesId: string) => {
