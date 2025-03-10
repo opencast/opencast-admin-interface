@@ -79,7 +79,7 @@ const EventDetails = ({
 	close?: () => void,
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,
-	formikRef: React.RefObject<FormikProps<any>>
+	formikRef: React.RefObject<FormikProps<any> | null>
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();

@@ -40,7 +40,7 @@ const DetailsMetadataTab = ({
 		catalog: MetadataCatalog;
 	}, any> //(id: string, values: { [key: string]: any }, catalog: MetadataCatalog) => void,
 	editAccessRole: string,
-	formikRef?: React.RefObject<FormikProps<InitialValues>>
+	formikRef?: React.RefObject<FormikProps<InitialValues> | null>
 	header?: string
 }) => {
 	const { t } = useTranslation();

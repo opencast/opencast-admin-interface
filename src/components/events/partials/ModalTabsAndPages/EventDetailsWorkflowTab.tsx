@@ -46,7 +46,7 @@ const EventDetailsWorkflowTab = ({
 	formikRef,
 }: {
 	eventId: string,
-	formikRef?: React.RefObject<FormikProps<InitialValues>>
+	formikRef?: React.RefObject<FormikProps<InitialValues> | null>
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
