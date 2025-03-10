@@ -172,7 +172,7 @@ const TableFilters = ({
 
 	// Workaround for entering a date range by only entering one date
 	// (e.g. 01/01/2025 results in a range of 01/01/2025 - 01/01/2025)
-	const handleDatePickerOnKeyDown = async(keyEvent: React.KeyboardEvent<HTMLElement>) => {
+	const handleDatePickerOnKeyDown = async (keyEvent: React.KeyboardEvent<HTMLElement>) => {
 		if (keyEvent.key === "Enter") {
 			let end = endDate ?? (startDate ? new Date(startDate) : undefined);
 			end?.setHours(23);
@@ -186,7 +186,7 @@ const TableFilters = ({
 		}
 	}
 
-	const submitDateFilter = async(start: Date | undefined | null, end: Date | undefined | null) => {
+	const submitDateFilter = async (start: Date | undefined | null, end: Date | undefined | null) => {
 		if (start && end && moment(start).isValid() && moment(end).isValid()) {
 			let filter = filterMap.find(({ name }) => name === selectedFilter);
 			if (filter) {

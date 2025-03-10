@@ -76,7 +76,7 @@ const DropDown = <T, >({
 	}
 
 	const formatOptions = (
-		unformattedOptions: DropDownOption[],//any[],
+		unformattedOptions: DropDownOption[],
 		filterText: string,
 		required: boolean,
 	) => {

@@ -13,7 +13,7 @@ const MeanQueueTimeCell = ({
 
 	return (
 		<span>
-			{ moment.utc(moment.duration(row.meanQueueTime* 1000).asMilliseconds()).format("HH:mm:ss") }
+			{ moment.utc(moment.duration(row.meanQueueTime * 1000).asMilliseconds()).format("HH:mm:ss") }
 		</span>
 	);
 };

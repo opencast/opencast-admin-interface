@@ -96,7 +96,7 @@ export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', asy
 	let oldData = getState().tableFilters.data
 
 	for (const oldFilter of oldData) {
-		var foundIndex = filtersList.findIndex(x => x.name === oldFilter.name && x.resource === oldFilter.resource);
+		const foundIndex = filtersList.findIndex(x => x.name === oldFilter.name && x.resource === oldFilter.resource);
 		if (foundIndex >= 0) {
 			filtersList[foundIndex].value = oldFilter.value;
 		}
