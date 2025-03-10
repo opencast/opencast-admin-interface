@@ -89,7 +89,13 @@ export type Event = {
 export type MetadataField = {
 	delimiter?: string,
 	differentValues?: boolean,
-	collection?: { [key: string]: unknown }[],  // different for e.g. languages and presenters
+	collection?: {
+		name: string,
+		value: string,
+		label?: string,
+		order?: number,
+		selectable?: boolean,
+	 }[],
 	id: string,
 	label: string,
 	readOnly: boolean,
@@ -231,10 +237,17 @@ const initialState: EventState = {
 // fetch events from server
 export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, { dispatch, getState }) => {
 	const state = getState();
-	let params: ReturnType<typeof getURLParams> & { getComments?: boolean } = getURLParams(state);
+	let params: ReturnType<typeof getURLParams> & { getComments?: boolean } = getURLParams(state, "events");
+
+	// Add a secondary filter to enforce order of events
+	// (Elasticsearch does not guarantee ordering)
+	params = {
+		...params,
+		sort: params.sort ? params.sort + ",uid:asc" : "uid:asc"
+	}
 
 	// Only if the notes column is enabled, fetch comment information for events
-	if (state.table.columns.find(column => column.label === "EVENTS.EVENTS.TABLE.ADMINUI_NOTES" && !column.deactivated)) {
+	if (state.events.columns.find(column => column.label === "EVENTS.EVENTS.TABLE.ADMINUI_NOTES" && !column.deactivated)) {
 		params = {
 			...params,
 			getComments: true

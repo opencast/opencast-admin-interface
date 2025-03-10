@@ -16,6 +16,7 @@ import { MetadataCatalog, MetadataField } from "../slices/eventSlice";
 import { initialFormValuesNewGroup } from '../configs/modalConfig';
 import { UpdateUser } from '../slices/userDetailsSlice';
 import { TFunction } from 'i18next';
+import { TableState } from "../slices/tableSlice";
 
 /**
  * This file contains methods that are needed in more than one resource thunk
@@ -32,11 +33,12 @@ export const getHttpHeaders = () => {
 
 // prepare URL params for getting resources
 export const getURLParams = (
-	state: RootState
+	state: RootState,
+	resource: TableState["resource"],
 ) => {
 	// get filter map from state
 	let filters = [];
-	let filterMap = getFilters(state);
+	let filterMap = getFilters(state, resource);
 	let textFilter = getTextFilter(state);
 
 	// check if textFilter has value and transform for use as URL param
@@ -69,7 +71,7 @@ export const getURLParams = (
 		};
 	}
 
-	if (getTableSorting(state) !== "") {
+	if (!!getTableSorting(state)) {
 		params = {
 			...params,
 			sort: getTableSorting(state) + ":" + getTableDirection(state),

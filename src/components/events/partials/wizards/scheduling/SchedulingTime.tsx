@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import DropDown from "../../../../shared/DropDown";
 import { hours, minutes } from "../../../../../configs/modalConfig";
+import { formatTimeForDropdown } from "../../../../../utils/dropDownUtils";
 
 const SchedulingTime = ({
 	hour,
@@ -35,8 +36,7 @@ const SchedulingTime = ({
 				<DropDown
 					value={hour}
 					text={hour}
-					options={hours}
-					type={"time"}
+					options={formatTimeForDropdown(hours)}
 					required={true}
 					handleChange={(element) => {
 						if (element) {
@@ -46,14 +46,14 @@ const SchedulingTime = ({
 					}}
 					placeholder={t(hourPlaceholder)}
 					disabled={disabled}
+					customCSS={{width: 70}}
 				/>
 
 				{/* drop-down for minute */}
 				<DropDown
 					value={minute}
 					text={minute}
-					options={minutes}
-					type={"time"}
+					options={formatTimeForDropdown(minutes)}
 					required={true}
 					handleChange={(element) => {
 						if (element) {
@@ -62,6 +62,7 @@ const SchedulingTime = ({
 					}}
 					placeholder={t(minutePlaceholder)}
 					disabled={disabled}
+					customCSS={{width: 70}}
 				/>
 			</td>
 		</tr>

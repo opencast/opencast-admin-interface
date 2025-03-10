@@ -75,13 +75,13 @@ export const loadEventsIntoTable = (): AppThunk => async (dispatch, getState) =>
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
 	let tableData = {
-		resource: "events",
+		resource: "events" as const,
 		rows: resource,
 		columns: events.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["events"],
+		reverse: table.reverse["events"],
 		totalItems: total,
 	};
 
@@ -90,8 +90,6 @@ export const loadEventsIntoTable = (): AppThunk => async (dispatch, getState) =>
 
 		tableData = {
 			...tableData,
-			sortBy: "date",
-			reverse: "DESC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -124,13 +122,13 @@ export const loadSeriesIntoTable = (): AppThunk => (dispatch, getState) => {
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
 	let tableData = {
-		resource: "series",
+		resource: "series" as const,
 		rows: resource,
 		columns: series.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["series"],
+		reverse: table.reverse["series"],
 		totalItems: total,
 	};
 
@@ -139,8 +137,6 @@ export const loadSeriesIntoTable = (): AppThunk => (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "createdDateTime",
-			reverse: "DESC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -156,12 +152,12 @@ export const loadRecordingsIntoTable = (): AppThunk => (dispatch, getState) => {
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
 	let tableData = {
-		resource: "recordings",
+		resource: "recordings" as const,
 		columns: recordings.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["recordings"],
+		reverse: table.reverse["recordings"],
 		rows: resource.map((obj) => {
 			return { ...obj, selected: false }
 		}),
@@ -173,8 +169,6 @@ export const loadRecordingsIntoTable = (): AppThunk => (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "status",
-			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -191,15 +185,15 @@ export const loadJobsIntoTable = (): AppThunk => (dispatch, getState) => {
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
 	let tableData = {
-		resource: "jobs",
+		resource: "jobs" as const,
 		rows: resource.map((obj) => {
 			return { ...obj, selected: false }
 		}),
 		columns: jobs.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["jobs"],
+		reverse: table.reverse["jobs"],
 		totalItems: total,
 	};
 
@@ -208,8 +202,6 @@ export const loadJobsIntoTable = (): AppThunk => (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "id",
-			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -225,15 +217,15 @@ export const loadServersIntoTable = (): AppThunk => (dispatch, getState) => {
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
 	let tableData = {
-		resource: "servers",
+		resource: "servers" as const,
 		rows: resource.map((obj) => {
 			return { ...obj, selected: false }
 		}),
 		columns: servers.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["servers"],
+		reverse: table.reverse["servers"],
 		totalItems: total,
 	};
 
@@ -242,8 +234,6 @@ export const loadServersIntoTable = (): AppThunk => (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "online",
-			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -264,11 +254,11 @@ export const loadServicesIntoTable = (): AppThunk => (dispatch, getState) => {
 		}),
 		pages: pages,
 		totalItems: total,
-		resource: "services",
+		resource: "services" as const,
 		columns: services.columns,
 		multiSelect: table.multiSelect,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["services"],
+		reverse: table.reverse["services"],
 	};
 
 	if (table.resource !== "services") {
@@ -276,8 +266,6 @@ export const loadServicesIntoTable = (): AppThunk => (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "status",
-			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -294,15 +282,15 @@ export const loadUsersIntoTable = (): AppThunk => (dispatch, getState) => {
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
 	let tableData = {
-		resource: "users",
+		resource: "users" as const,
 		rows: resource.map((obj) => {
 			return { ...obj, selected: false }
 		}),
 		columns: users.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["users"],
+		reverse: table.reverse["users"],
 		totalItems: total,
 	};
 
@@ -311,8 +299,6 @@ export const loadUsersIntoTable = (): AppThunk => (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "name",
-			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -328,15 +314,15 @@ export const loadGroupsIntoTable = (): AppThunk => (dispatch, getState) => {
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
 	let tableData = {
-		resource: "groups",
+		resource: "groups" as const,
 		rows: resource.map((obj) => {
 			return { ...obj, selected: false }
 		}),
 		columns: groups.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["groups"],
+		reverse: table.reverse["groups"],
 		totalItems: total,
 	};
 
@@ -345,8 +331,6 @@ export const loadGroupsIntoTable = (): AppThunk => (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "name",
-			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -362,15 +346,15 @@ export const loadAclsIntoTable = (): AppThunk => (dispatch, getState) => {
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
 	let tableData = {
-		resource: "acls",
+		resource: "acls" as const,
 		rows: resource.map((obj) => {
 			return { ...obj, selected: false }
 		}),
 		columns: acls.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["acls"],
+		reverse: table.reverse["acls"],
 		totalItems: total,
 	};
 
@@ -378,8 +362,6 @@ export const loadAclsIntoTable = (): AppThunk => (dispatch, getState) => {
 		const multiSelect = aclsTableConfig.multiSelect;
 		tableData = {
 			...tableData,
-			sortBy: "name",
-			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}
@@ -395,15 +377,15 @@ export const loadThemesIntoTable = (): AppThunk => (dispatch, getState) => {
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
 	let tableData = {
-		resource: "themes",
+		resource: "themes" as const,
 		rows: resource.map((obj) => {
 			return { ...obj, selected: false }
 		}),
 		columns: themes.columns,
 		multiSelect: table.multiSelect,
 		pages: pages,
-		sortBy: table.sortBy,
-		reverse: table.reverse,
+		sortBy: table.sortBy["themes"],
+		reverse: table.reverse["themes"],
 		totalItems: total,
 	};
 
@@ -412,8 +394,6 @@ export const loadThemesIntoTable = (): AppThunk => (dispatch, getState) => {
 
 		tableData = {
 			...tableData,
-			sortBy: "name",
-			reverse: "ASC",
 			multiSelect: multiSelect,
 		};
 	}

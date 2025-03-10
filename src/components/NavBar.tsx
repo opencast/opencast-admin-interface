@@ -92,11 +92,12 @@ const NavBar = ({
 			<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
 
 			<nav aria-label={navAriaLabel && t(navAriaLabel)}>
-				{links.map((link) => {
+				{links.map((link, index) => {
 					return (hasAccess(link.accessRole, user) && (
 						<Link
+							key={index}
 							to={link.path}
-							className={cn({ active: location.pathname === link.path })}
+							className={cn({ active: location.pathname === link.path || (location.pathname === "/" && link.path === "/events/events") })}
 							onClick={() => {
 								if (location.pathname !== link.path) {
 									// Reset the current page to first page
