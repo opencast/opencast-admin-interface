@@ -59,8 +59,7 @@ const NewThemePage = <T extends RequiredFormProps>({
 													text={
 														getName(formik.values.theme) ?? ""
 													}
-													options={seriesThemes}
-													type={"newTheme"}
+													options={seriesThemes.map(theme => ({ label: theme.name, value: theme.id}))}
 													required={false}
 													handleChange={(element) => {
 														if (element) {
@@ -68,6 +67,7 @@ const NewThemePage = <T extends RequiredFormProps>({
 														}
 													}}
 													placeholder={t("EVENTS.SERIES.NEW.THEME.LABEL")}
+													customCSS={{ width: "100%" }}
 												/>
 											</div>
 										</p>

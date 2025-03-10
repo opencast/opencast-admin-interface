@@ -21,6 +21,7 @@ import { fetchSeriesDetailsAcls } from "../../../../slices/seriesDetailsSlice";
 import { getSeriesDetailsAcl } from "../../../../selectors/seriesDetailsSelectors";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
+import { formatAclRolesForDropdown, formatAclTemplatesForDropdown } from "../../../../utils/dropDownUtils";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
@@ -147,8 +148,7 @@ const NewAccessPage = <T extends RequiredFormProps>({
 																		aclTemplates,
 																		formik.values.aclTemplate
 																	)}
-																	options={aclTemplates}
-																	type={"aclTemplate"}
+																	options={formatAclTemplatesForDropdown(aclTemplates)}
 																	required={true}
 																	handleChange={(element) => {
 																		if (element) {
@@ -159,6 +159,7 @@ const NewAccessPage = <T extends RequiredFormProps>({
 																		"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.LABEL"
 																	)}
 																	autoFocus={true}
+																	customCSS={{ width: 200, optionPaddingTop: 5 }}
 																/>
 															</div>
 														</td>
@@ -234,11 +235,12 @@ const NewAccessPage = <T extends RequiredFormProps>({
 																					<DropDown
 																						value={policy.role}
 																						text={policy.role}
-																						options={filterRoles(
-																							roles,
-																							formik.values.acls
+																						options={formatAclRolesForDropdown(
+																							filterRoles(
+																								roles,
+																								formik.values.acls
+																							)
 																						)}
-																						type={"aclRole"}
 																						required={true}
 																						handleChange={(element) => {
 																							if (element) {
@@ -257,6 +259,7 @@ const NewAccessPage = <T extends RequiredFormProps>({
 																								user
 																							)
 																						}
+																						customCSS={{ width: 360, optionPaddingTop: 5 }}
 																					/>
 																				</td>
 																				{/* Checkboxes for  policy.read and policy.write*/}

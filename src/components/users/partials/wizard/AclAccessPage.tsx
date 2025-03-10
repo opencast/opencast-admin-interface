@@ -18,8 +18,9 @@ import DropDown from "../../../shared/DropDown";
 import { filterRoles, getAclTemplateText } from "../../../../utils/aclUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
-import ModalContentTable from "../../../shared/modals/ModalContentTable";
+import { formatAclRolesForDropdown, formatAclTemplatesForDropdown } from "../../../../utils/dropDownUtils";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component renders the access policy page in the new ACL wizard and in the ACL details modal
@@ -120,9 +121,8 @@ const AclAccessPage = <T extends RequiredFormProps>({
 																			formik.values.aclTemplate
 																		)}
 																		options={
-																			!!aclTemplates ? aclTemplates : []
+																			!!aclTemplates ? formatAclTemplatesForDropdown(aclTemplates) : []
 																		}
-																		type={"aclTemplate"}
 																		required={true}
 																		handleChange={(element) => {
 																			if (element) {
@@ -133,6 +133,7 @@ const AclAccessPage = <T extends RequiredFormProps>({
 																			"USERS.ACLS.NEW.ACCESS.ACCESS_POLICY.LABEL"
 																		)}
 																		autoFocus={true}
+																		customCSS={{ width: 200, optionPaddingTop: 5 }}
 																	/>
 																</div>
 															</td>
@@ -207,13 +208,12 @@ const AclAccessPage = <T extends RequiredFormProps>({
 																						text={acl.role}
 																						options={
 																							!!roles && roles.length > 0
-																								? filterRoles(
+																								? formatAclRolesForDropdown(filterRoles(
 																										roles,
 																										formik.values.acls
-																									)
+																									))
 																								: []
 																						}
-																						type={"aclRole"}
 																						required={true}
 																						handleChange={(element) => {
 																							if (element) {
@@ -227,6 +227,7 @@ const AclAccessPage = <T extends RequiredFormProps>({
 																							"USERS.ACLS.NEW.ACCESS.ROLES.LABEL"
 																						)}
 																						disabled={!isAccess}
+																						customCSS={{ width: 360, optionPaddingTop: 5 }}
 																					/>
 																				</td>
 																				<td className="fit text-center">

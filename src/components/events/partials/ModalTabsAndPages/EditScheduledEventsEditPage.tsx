@@ -21,10 +21,10 @@ import {
 } from "../../../../slices/eventSlice";
 import { Recording } from "../../../../slices/recordingSlice";
 import lodash, { groupBy } from "lodash";
-import ModalContentTable from "../../../shared/modals/ModalContentTable";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import SchedulingTime from "../wizards/scheduling/SchedulingTime";
 import SchedulingLocation from "../wizards/scheduling/SchedulingLocation";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component renders the edit page for scheduled events of the corresponding bulk action
@@ -217,8 +217,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 															text={
 																formik.values.editedEvents.length > 0 ? findSeriesName(seriesOptions, formik.values.editedEvents) : ""
 															}
-															options={seriesOptions}
-															type={"isPartOf"}
+															options={seriesOptions.map((option) => ({ label: option.name, value: option.value }) )}
 															required={false}
 															handleChange={(element) => {
 																if (element) {

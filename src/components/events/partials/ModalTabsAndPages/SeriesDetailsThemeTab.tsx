@@ -8,8 +8,8 @@ import { hasAccess } from "../../../../utils/utils";
 import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { updateSeriesTheme } from "../../../../slices/seriesDetailsSlice";
-import ModalContentTable from "../../../shared/modals/ModalContentTable";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component renders the tab for editing the theme of a certain series
@@ -20,7 +20,10 @@ const SeriesDetailsThemeTab = ({
 	seriesId,
 }: {
 	theme: string,
-	themeNames: unknown[]
+	themeNames: {
+		id: string;
+		value: string;
+	}[],
 	seriesId: string
 }) => {
 	const { t } = useTranslation();
@@ -63,8 +66,7 @@ const SeriesDetailsThemeTab = ({
 												<DropDown
 													value={formik.values.theme}
 													text={formik.values.theme}
-													options={themeNames}
-													type={"theme"}
+													options={themeNames.map(names => ({ label: names.value, value: names.id }))}
 													required={false}
 													handleChange={(element) => {
 														if (element) {
@@ -78,6 +80,7 @@ const SeriesDetailsThemeTab = ({
 															user
 														)
 													}
+													customCSS={{ width: "100%" }}
 												/>
 											</div>
 										)}
