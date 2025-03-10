@@ -9,6 +9,7 @@ import { getLifeCyclePolicyActions, getLifeCyclePolicyTargetTypes, getLifeCycleP
 import DropDown from "../../../shared/DropDown";
 import { getEventMetadata } from "../../../../selectors/eventSelectors";
 import { fetchEventMetadata } from "../../../../slices/eventSlice";
+import { formatPolicyActionsForDropdown } from "../../../../utils/dropDownUtils";
 
 /**
  * This component renders the metadata page for new events and series in the wizards.
@@ -444,8 +445,7 @@ const DropdownField = ({
 		<DropDown
 			value={field.value}
 			text={value}
-			options={values ? values : []}
-			type={"policyAction"}
+			options={values ? formatPolicyActionsForDropdown(values) : []}
 			required={true}
 			handleChange={(element) => {
 				setFieldValue(clearFieldName, undefined)

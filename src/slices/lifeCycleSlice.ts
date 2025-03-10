@@ -65,7 +65,7 @@ const initialState: LifeCycleState = {
 
 export const fetchLifeCyclePolicies = createAppAsyncThunk('lifeCycle/fetchLifeCyclePolicies', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state);
+	let params = getURLParams(state, "lifeCyclePolicies");
 	const res = await axios.get("/api/lifecyclemanagement/policies", { params: params });
 	return res.data;
 });

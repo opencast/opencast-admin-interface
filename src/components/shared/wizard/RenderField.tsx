@@ -5,7 +5,7 @@ import cn from "classnames";
 import { useClickOutsideField } from "../../../hooks/wizardHooks";
 import { getMetadataCollectionFieldName } from "../../../utils/resourceUtils";
 import { getCurrentLanguageInformation } from "../../../utils/utils";
-import DropDown, { DropDownType } from "../DropDown";
+import DropDown from "../DropDown";
 import RenderDate from "../RenderDate";
 import { parseISO } from "date-fns";
 import { FieldProps } from "formik";
@@ -191,11 +191,12 @@ const EditableDateValue = ({
 	setEditMode: (e: boolean) => void
 	showCheck?: boolean,
 	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
-}) => editMode ? (
+}) => 
+	editMode ? (
 	<div>
 		<DatePicker
 			autoFocus
-			selected={typeof field.value === "string" ? parseISO(field.value) : field.value}
+			selected={!isNaN(Date.parse(field.value)) ? new Date(field.value) : null}
 			onChange={(value) => setFieldValue(field.name, value)}
 			onClickOutside={() => setEditMode(false)}
 			showTimeInput
@@ -241,7 +242,7 @@ const EditableSingleSelect = ({
 	showCheck,
 }: {
 	field: FieldProps["field"]
-	metadataField: { type: string, collection: { [key: string]: unknown }[], required: boolean, id: string }, //MetadataField
+	metadataField: { type: string, collection: { [key: string]: any }[], required: boolean, id: string }, //MetadataField
 	text: string
 	editMode: boolean | undefined
 	setEditMode: (e: boolean) => void
@@ -260,8 +261,10 @@ const EditableSingleSelect = ({
 			<DropDown
 				value={field.value}
 				text={text}
-				options={metadataField.collection ? metadataField.collection : []}
-				type={metadataField.id as DropDownType}
+				options={metadataField.collection ?
+					metadataField.collection.map(item => ({ label: item.label ?? item.name, value: item.value, order: item.order }))
+					: []
+				}
 				required={metadataField.required}
 				handleChange={(element) => element && setFieldValue(field.name, element.value)}
 				placeholder={`-- ${t("SELECT_NO_OPTION_SELECTED")} --`}

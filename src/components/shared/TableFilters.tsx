@@ -46,7 +46,7 @@ const TableFilters = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const filterMap = useAppSelector(state => getFilters(state));
+	const filterMap = useAppSelector(state => getFilters(state, resource));
 	const secondFilter = useAppSelector(state => getSecondFilter(state));
 	const selectedFilter = useAppSelector(state => getSelectedFilter(state));
 	const textFilter = useAppSelector(state => getTextFilter(state));
@@ -68,6 +68,7 @@ const TableFilters = ({
 		// Clear state
 		setStartDate(undefined);
 		setEndDate(undefined);
+		setFilterSelector(false);
 
 		dispatch(removeTextFilter());
 		dispatch(removeSelectedFilter());
@@ -158,23 +159,44 @@ const TableFilters = ({
 			end?.setMinutes(59);
 			end?.setSeconds(59);
 
-			if (start && end && moment(start).isValid() && moment(end).isValid()) {
-				let filter = filterMap.find(({ name }) => name === selectedFilter);
-				if (filter) {
-					dispatch(editFilterValue({
-						filterName: filter.name,
-						value: start.toISOString() + "/" + end.toISOString()
-					}));
-					setFilterSelector(false);
-					dispatch(removeSelectedFilter());
-					// Reload of resource after going to very first page.
-					dispatch(goToPage(0))
-					await dispatch(loadResource());
-					dispatch(loadResourceIntoTable());
-				}
-			}
+			submitDateFilter(start, end);
+
 			if (start) setStartDate(start);
 			if (end) setEndDate(end);
+		}
+	}
+
+	// Workaround for entering a date range by only entering one date
+	// (e.g. 01/01/2025 results in a range of 01/01/2025 - 01/01/2025)
+	const handleDatePickerOnKeyDown = async(keyEvent: React.KeyboardEvent<HTMLElement>) => {
+		if (keyEvent.key === "Enter") {
+			let end = endDate ?? (startDate ? new Date(startDate) : undefined);
+			end?.setHours(23);
+			end?.setMinutes(59);
+			end?.setSeconds(59);
+
+			submitDateFilter(
+				startDate,
+				end
+			)
+		}
+	}
+
+	const submitDateFilter = async(start: Date | undefined | null, end: Date | undefined | null) => {
+		if (start && end && moment(start).isValid() && moment(end).isValid()) {
+			let filter = filterMap.find(({ name }) => name === selectedFilter);
+			if (filter) {
+				dispatch(editFilterValue({
+					filterName: filter.name,
+					value: start.toISOString() + "/" + end.toISOString()
+				}));
+				setFilterSelector(false);
+				dispatch(removeSelectedFilter());
+				// Reload of resource after going to very first page.
+				dispatch(goToPage(0))
+				await dispatch(loadResource());
+				dispatch(loadResourceIntoTable());
+			}
 		}
 	}
 
@@ -246,7 +268,6 @@ const TableFilters = ({
 												})
 											: []
 									}
-									type={"filter"}
 									required={true}
 									handleChange={(element) => handleChange("selectedFilter", element!.value)}
 									placeholder={
@@ -261,6 +282,7 @@ const TableFilters = ({
 									defaultOpen
 									autoFocus
 									openMenuOnFocus
+									customCSS={{ width: 200, optionPaddingTop: 5 }}
 								/>
 							)}
 
@@ -274,6 +296,7 @@ const TableFilters = ({
 										startDate={startDate}
 										endDate={endDate}
 										handleDate={handleDatepicker}
+										handleDatePickerOnKeyDown={handleDatePickerOnKeyDown}
 										handleChange={handleChange}
 										openSecondFilterMenu={openSecondFilterMenu}
 										setOpenSecondFilterMenu={setOpenSecondFilterMenu}
@@ -352,6 +375,7 @@ const TableFilters = ({
 const FilterSwitch = ({
 	filter,
 	handleChange,
+	handleDatePickerOnKeyDown,
 	startDate,
 	endDate,
 	handleDate,
@@ -361,6 +385,7 @@ const FilterSwitch = ({
 } : {
 	filter: FilterData | undefined,
 	handleChange: (name: string, value: string) => void,
+	handleDatePickerOnKeyDown: (keyEvent: React.KeyboardEvent<HTMLElement>) => void,
 	startDate: Date | undefined,
 	endDate: Date | undefined,
 	handleDate: (dates: [Date | undefined | null, Date | undefined | null]) => void,
@@ -400,7 +425,6 @@ const FilterSwitch = ({
 								})
 								: []
 						}
-						type={"filter"}
 						required={true}
 						handleChange={(element) => handleChange("secondFilter", element!.value)}
 						placeholder={
@@ -417,6 +441,7 @@ const FilterSwitch = ({
 						openMenuOnFocus
 						menuIsOpen={openSecondFilterMenu}
 						handleMenuIsOpen={setOpenSecondFilterMenu}
+						customCSS={{ width: 200, optionPaddingTop: 5 }}
 					/>
 				</div>
 			);
@@ -428,6 +453,7 @@ const FilterSwitch = ({
 						autoFocus
 						selected={startDate}
 						onChange={(dates) => handleDate(dates)}
+						onKeyDown={(key) => handleDatePickerOnKeyDown(key)}
 						startDate={startDate}
 						endDate={endDate}
 						selectsRange
