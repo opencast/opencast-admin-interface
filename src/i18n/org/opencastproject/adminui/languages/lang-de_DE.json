@@ -675,7 +675,7 @@
 				"UPDATING_PREVIEWS": "Vorschauen werden aktualisiert"
 			},
 			"DETAILS": {
-				"HEADER": "Event details - {{name}}",
+				"HEADER": "Videodetails - {{name}}",
 				"TABS": {
 					"METADATA": "Metadaten",
 					"EXTENDED-METADATA": "Metadaten II",
@@ -1136,10 +1136,10 @@
 				},
 				"TOBIRA": {
 					"CAPTION": "Tobira",
-					"DESCRIPTION": "Here you can select where you want the series to show up in the Tobira video portal. You can only select one location here by clicking the name or the check mark next to it. The page needs to be empty (marked in bold). You can also create new pages here, but note that they are only persisted if they are on the path to the selected page. In order to select a new page or create sub pages for one, its path segment needs to have a valid value.",
+					"DESCRIPTION": "Hier können Sie auswählen, wo die Serie im Videoportal erscheinen soll. Sie können hier nur eine Seite auswählen und diese muss zudem komplett leer sein (fett markiert). Um eine Seite auszuwählen, klicken Sie den Namen oder das Kästchen neben dem Namen.\nNeue Seiten werden nur dann effektiv erstellt, wenn Sie die Serie in diese neue Seite einfügen oder wenn die Serie in eine Unterseite der erstellten Seite eingefügt wird. Um eine neue Seite auszuwählen oder Unterseiten zu erstellen, müssen alle Pfadsegmente einen gültigen Wert haben.",
 					"SELECT_PAGE": "Zielseite auswählen",
 					"PAGE_TITLE": "Titel der Unterseite",
-					"TITLE_OF_SERIES": "(Title of series)",
+					"TITLE_OF_SERIES": "(Serientitel)",
 					"PATH_SEGMENT": "Pfadsegment",
 					"SUBPAGES": "Unterseiten",
 					"ADD_SUBPAGE": "Unterseite hinzufügen",
@@ -1173,7 +1173,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Series details - {{name}}",
+				"HEADER": "Seriendetails - {{name}}",
 				"TABS": {
 					"METADATA": "Metadaten",
 					"EXTENDED_METADATA": "Metadaten II",
@@ -1234,7 +1234,7 @@
 					"COPY_DIRECT_LINK": "In die Zwischenablage kopieren",
 					"NOT_MOUNTED": "Diese Serie ist derzeit nicht in der Seitenstruktur enthalten und kann nur über den oben genannten direkten Link erreicht werden.",
 					"PAGES": "Seiten im Videoportal, die diese Serie einbinden",
-					"DISCARD": "Discard",
+					"DISCARD": "Änderungen verwerfen",
 					"EDIT_PATH": "Pfad bearbeiten",
 					"REMOVE_PATH": "Pfad entfernen",
 					"MOUNT_SERIES": "Serie einhängen",
@@ -1279,7 +1279,7 @@
 				}
 			},
 			"DETAILS": {
-				"HEADER": "Location details - {{name}}",
+				"HEADER": "Informationen zum Standort - {{name}}",
 				"TAB": {
 					"GENERAL": "Allgemein",
 					"CONFIGURATION": "Konfiguration",

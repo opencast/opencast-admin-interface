@@ -1,5 +1,4 @@
 @use "sass:color";
-@use "../../../node_modules/bourbon/core/bourbon/library/border-radius";
 @use "../base/fontawesome/fa-mixins";
 @use "../base/fontawesome/variables" as variables2;
 @use "../base/variables";
@@ -529,7 +528,8 @@
 
             .sub-tbl tr:last-child > td {
                 border-bottom: 1px solid variables.$main-border-color;
-                @include border-radius.border-bottom-radius(0);
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
             }
         }
 

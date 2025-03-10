@@ -1,4 +1,3 @@
-import { createSelector } from "reselect";
 import { RootState } from "../store";
 
 /**
@@ -11,7 +10,5 @@ export const getTextFilter = (state: RootState) => state.tableFilters.textFilter
 export const getSelectedFilter = (state: RootState) => state.tableFilters.selectedFilter;
 export const getSecondFilter = (state: RootState) => state.tableFilters.secondFilter;
 export const getCurrentFilterResource = (state: RootState) => state.tableFilters.currentResource;
-export const getFilters =
-	createSelector(getAllFilters, getCurrentFilterResource, (data, resource) =>
-		data.filter(obj => obj.resource === resource)
-	)
+export const getFilters = (state: RootState, resource: string) =>
+	state.tableFilters.data.filter(obj => obj.resource === resource);

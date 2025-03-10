@@ -41,7 +41,7 @@ const EventDetailsCommentsTab = ({
 	const isSavingCommentReply = useAppSelector(state => getIsSavingCommentReply(state));
 
 	useEffect(() => {
-		dispatch(fetchComments(eventId)).then((r: any) => console.info(r));
+		dispatch(fetchComments(eventId));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -246,8 +246,7 @@ const EventDetailsCommentsTab = ({
 											<DropDown
 												value={commentReason}
 												text={t(commentReason)}
-												options={Object.entries(commentReasons)}
-												type={"comment"}
+												options={Object.entries(commentReasons).map(([key, value]) => ({ label: value, value: key }))}
 												required={true}
 												handleChange={(element) => {
 													if (element) {
@@ -257,6 +256,7 @@ const EventDetailsCommentsTab = ({
 												placeholder={t(
 													"EVENTS.EVENTS.DETAILS.COMMENTS.SELECTPLACEHOLDER"
 												)}
+												customCSS={{width: 200, optionPaddingTop: 5, optionLineHeight: "105%"}}
 											/>
 										</div>
 
