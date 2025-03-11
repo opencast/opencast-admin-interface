@@ -218,8 +218,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																	text={
 																		formik.values.editedEvents.length > 0 ? findSeriesName(seriesOptions, formik.values.editedEvents) : ""
 																	}
-																	options={seriesOptions}
-																	type={"isPartOf"}
+																	options={seriesOptions.map((option) => ({ label: option.name, value: option.value }) )}
 																	required={false}
 																	handleChange={(element) => {
 																		if (element) {

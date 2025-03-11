@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import cn from "classnames";
 import { getMetadataCollectionFieldName } from "../../../utils/resourceUtils";
 import { getCurrentLanguageInformation } from "../../../utils/utils";
-import DropDown, { DropDownType } from "../DropDown";
+import DropDown from "../DropDown";
 import { parseISO } from "date-fns";
 import { FieldProps } from "formik";
 import { MetadataField } from "../../../slices/eventSlice";
@@ -212,15 +212,16 @@ const EditableSingleSelect = ({
 			ref={ref}
 			value={field.value}
 			text={text}
-			options={metadataField.collection ? metadataField.collection : []}
-			type={metadataField.id as DropDownType}
+			options={metadataField.collection
+				? metadataField.collection.map(item => ({ label: item.label ?? item.name, value: item.value, order: item.order }))
+				: []}
 			required={metadataField.required}
 			handleChange={(element) => element && setFieldValue(field.name, element.value)}
 			placeholder={focused
 				? `-- ${t("SELECT_NO_OPTION_SELECTED")} --`
 				: `${t("SELECT_NO_OPTION_SELECTED")}`
 			}
-			isMetadataStyle={focused ? false : true}
+			customCSS={{ isMetadataStyle: focused ? false : true }}
 			handleMenuIsOpen={(open: boolean) => setFocused(open)}
 			openMenuOnFocus
 			autoFocus={isFirstField}
