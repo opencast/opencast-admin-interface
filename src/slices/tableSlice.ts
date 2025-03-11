@@ -70,7 +70,7 @@ export function isSeries(row: Row | Event | Series | Recording | Server | Job | 
 // TODO: Improve row typing. While this somewhat correctly reflects the current state of our code, it is rather annoying to work with.
 export type Row = { selected: boolean } & ( Event | Series | Recording | Server | Job | Service | User | Group | AclResult | ThemeDetailsType )
 
-export type Resource = "events" | "series" | "recordings" | "jobs" | "servers" | "services" | "users" | "groups" | "acls" | "themes"
+export type Resource = "" | "events" | "series" | "recordings" | "jobs" | "servers" | "services" | "users" | "groups" | "acls" | "themes"
 
 export type TableState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
@@ -92,7 +92,7 @@ const initialState: TableState = {
 	status: 'uninitialized',
 	error: null,
 	multiSelect: false,
-	resource: "events",
+	resource: "",
 	pages: [],
 	columns: [],
 	sortBy: {
