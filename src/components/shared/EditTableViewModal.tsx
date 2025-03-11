@@ -106,7 +106,7 @@ const EditTableViewModalContent = ({
 	const clearData = () => {
 		setActiveColumns(originalActiveColumns);
 		setDeactivatedColumns(originalDeactivatedColumns);
-		close();
+		handleClose();
 	};
 
 	// Reset columns to how they were before the user made any changes ever
