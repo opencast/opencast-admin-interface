@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import cn from "classnames";
@@ -9,6 +9,7 @@ import { parseISO } from "date-fns";
 import { FieldProps } from "formik";
 import { MetadataField } from "../../../slices/eventSlice";
 import { GroupBase, SelectInstance } from "react-select";
+import TextareaAutosize from 'react-textarea-autosize';
 
 /**
  * This component renders an editable field for single values depending on the type of the corresponding metadata
@@ -37,11 +38,13 @@ const RenderField = ({
 	return (
 		<div
 			onClick={() => {
-				if(editableRef.current) {
+				if (editableRef.current) {
 					editableRef.current.focus && editableRef.current.focus()
 					editableRef.current.setFocus && editableRef.current.setFocus() // For DatePicker
 				}
 			}}
+			onFocus={onFocus}
+			onBlur={onBlur}
 			style={{display: "flex", justifyContent: "space-between"}}
 		>
 			{metadataField.type === "time" && (
@@ -49,8 +52,6 @@ const RenderField = ({
 					field={field}
 					form={form}
 					isFirstField={isFirstField}
-					onFocus={onFocus}
-					onBlur={onBlur}
 					ref={editableRef}
 				/>
 			)}
@@ -87,8 +88,6 @@ const RenderField = ({
 					<EditableSingleValue
 						field={field}
 						isFirstField={isFirstField}
-						onFocus={onFocus}
-						onBlur={onBlur}
 						ref={editableRef}
 					/>
 				)}
@@ -96,8 +95,6 @@ const RenderField = ({
 				<EditableSingleValueTextArea
 					field={field}
 					isFirstField={isFirstField}
-					onFocus={onFocus}
-					onBlur={onBlur}
 					ref={editableRef}
 				/>
 			)}
@@ -106,8 +103,6 @@ const RenderField = ({
 					field={field}
 					form={form}
 					isFirstField={isFirstField}
-					onFocus={onFocus}
-					onBlur={onBlur}
 					ref={editableRef}
 				/>
 			)}
@@ -115,8 +110,6 @@ const RenderField = ({
 				<EditableBooleanValue
 					field={field}
 					isFirstField={isFirstField}
-					onFocus={onFocus}
-					onBlur={onBlur}
 					ref={editableRef}
 				/>
 			)}
@@ -138,14 +131,10 @@ const RenderField = ({
 const EditableBooleanValue = ({
 	field,
 	isFirstField,
-	onFocus,
-	onBlur,
 	ref,
 }: {
 	field: FieldProps["field"]
 	isFirstField?: boolean,
-	onFocus: () => void
-	onBlur: () => void
 	ref: React.RefObject<HTMLInputElement>
 }) => {
 	return (
@@ -155,8 +144,6 @@ const EditableBooleanValue = ({
 			type="checkbox"
 			checked={field.value}
 			autoFocus={isFirstField}
-			onFocus={onFocus}
-			onBlur={onBlur}
 		/>
 	);
 };
@@ -166,15 +153,11 @@ const EditableDateValue = ({
 	field,
 	form: { setFieldValue },
 	isFirstField,
-	onFocus,
-	onBlur,
 	ref,
 }: {
 	field: FieldProps["field"]
 	form: FieldProps["form"]
 	isFirstField?: boolean,
-	onFocus: () => void
-	onBlur: () => void
 	ref: React.RefObject<DatePicker>
 }) => {
 	return (
@@ -196,8 +179,6 @@ const EditableDateValue = ({
 				wrapperClassName="datepicker-custom-wrapper"
 				locale={getCurrentLanguageInformation()?.dateLocale}
 				strictParsing
-				onFocus={onFocus}
-				onBlur={onBlur}
 				autoFocus={isFirstField}
 			/>
 		</div>
@@ -251,49 +232,21 @@ const EditableSingleSelect = ({
 const EditableSingleValueTextArea = ({
 	field,
 	isFirstField,
-	onFocus,
-	onBlur,
 	ref,
 }: {
 	field: FieldProps["field"]
 	isFirstField?: boolean,
-	onFocus: () => void
-	onBlur: () => void
 	ref: React.RefObject<HTMLTextAreaElement>
 }) => {
-
-	const [value, setValue] = useState("");
-	useEffect(() => {
-		if (ref && ref.current) {
-			// We need to reset the height momentarily to get the correct scrollHeight for the textarea
-			ref.current.style.height = "0px";
-			const scrollHeight = ref.current.scrollHeight;
-
-			// We then set the height directly, outside of the render loop
-			// Trying to set this with state or a ref will product an incorrect value.
-			console.log("Scrollheight: " + scrollHeight)
-			ref.current.style.height = scrollHeight + 5 + "px";
-		}
-	}, [ref, value]);
-
-	const handleChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
-		const val = evt.target?.value;
-
-		setValue(val);
-	};
-
 	return (
-			<textarea
-				{...field}
-				ref={ref}
-				autoFocus={isFirstField}
-				className="single-value-textarea"
-				onChange={handleChange}
-				value={value}
-				rows={1}
-				onFocus={onFocus}
-				onBlur={onBlur}
-			/>
+		// Maybe replace TextareaAutosize with css "field-sizing: content" once all
+		// major browsers support that.
+		<TextareaAutosize
+			{...field}
+			ref={ref}
+			autoFocus={isFirstField}
+			className="single-value-textarea"
+		/>
 	);
 };
 
@@ -301,14 +254,10 @@ const EditableSingleValueTextArea = ({
 const EditableSingleValue = ({
 	field,
 	isFirstField,
-	onFocus,
-	onBlur,
 	ref,
 }: {
 	field: FieldProps["field"]
 	isFirstField?: boolean,
-	onFocus: () => void
-	onBlur: () => void
 	ref: React.RefObject<HTMLInputElement | null>
 }) => {
 	return (
@@ -318,8 +267,11 @@ const EditableSingleValue = ({
 			className="single-value"
 			autoFocus={isFirstField}
 			type="text"
-			onFocus={onFocus}
-			onBlur={onBlur}
+			onKeyDown={(event) => {
+				if (event.key === "Enter") {
+					ref.current?.blur();
+				}
+			}}
 		/>
 	)
 };
@@ -329,15 +281,11 @@ const EditableSingleValueTime = ({
 	field,
 	form: { setFieldValue },
 	isFirstField,
-	onFocus,
-	onBlur,
 	ref,
 }: {
 	field: FieldProps["field"]
 	form: FieldProps["form"]
 	isFirstField?: boolean,
-	onFocus: () => void
-	onBlur: () => void
 	ref: React.RefObject<DatePicker>
 }) => {
 	return (
@@ -357,8 +305,6 @@ const EditableSingleValueTime = ({
 				wrapperClassName="datepicker-custom-wrapper"
 				locale={getCurrentLanguageInformation()?.dateLocale}
 				strictParsing
-				onFocus={onFocus}
-				onBlur={onBlur}
 				autoFocus={isFirstField}
 			/>
 		</div>
