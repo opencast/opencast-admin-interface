@@ -26,7 +26,7 @@ import { TransformedAcl } from "../../../slices/aclDetailsSlice";
 import { AsyncThunk, unwrapResult } from "@reduxjs/toolkit";
 import { SaveEditFooter } from "../SaveEditFooter";
 import { UserInfoState } from "../../../slices/userInfoSlice";
-import { formatAclRolesForDropdown, formatAclTemplatesForDropdown } from "../../../utils/dropDownUtils";
+import { formatAclTemplatesForDropdown } from "../../../utils/dropDownUtils";
 
 
 /**
@@ -538,12 +538,8 @@ export const AccessPolicyTable = <T extends AccessPolicyTabFormikProps>({
 																		text={createPolicyLabel(policy)}
 																		options={
 																			roles.length > 0
-																				? formatAclRolesForDropdown(filterRoles(
-																					roles,
-																					formik.values
-																						.policies
-																				))
-																			: []
+																				? formatAclRolesForDropdown(rolesFilteredbyPolicies)
+																				: []
 																		}
 																		required={true}
 																		creatable={true}
@@ -824,9 +820,13 @@ export const TemplateSelector = <T extends TemplateSelectorProps>({
 	)
 }
 
-export const createPolicyLabel = (policy: TransformedAcl) => {
+export const formatAclRolesForDropdown = (roles: Role[]) => {
+	return roles.map(role => ({ label: createPolicyLabel(role) ?? role.name, value: role.name }));
+};
+
+export const createPolicyLabel = (policy: Role | TransformedAcl) => {
 	if (policy.user) {
-		if (policy.user.email !== undefined && policy.user.email !== "") {
+		if (policy.user.email !== undefined && policy.user.email !== "" && policy.user.email !== null) {
 			return policy.user.name + " <" + policy.user.email + ">"
 		}
 		if (policy.user.name) {
@@ -835,8 +835,11 @@ export const createPolicyLabel = (policy: TransformedAcl) => {
 		if (policy.user.username) {
 			return policy.user.username
 		}
-		return policy.role
+	}
+
+	if ("name" in policy) {
+		return policy.name;
 	} else {
-		return policy.role
+		return policy.role;
 	}
 }
