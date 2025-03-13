@@ -7,6 +7,7 @@ import {
 import Select, { GroupBase, Props, SelectInstance } from "react-select";
 import CreatableSelect from "react-select/creatable";
 import { isJson } from "../../utils/utils";
+import { ParseKeys } from "i18next";
 
 export type DropDownOption = {
 	label: string,
@@ -81,7 +82,7 @@ const DropDown = <T,>({
 		required: boolean,
 	) => {
 		// Translate?
-		unformattedOptions = unformattedOptions.map(option => ({...option, label: t(option.label)}))
+		unformattedOptions = unformattedOptions.map(option => ({...option, label: t(option.label as ParseKeys)}))
 
 		// Filter
 		filterText = filterText.toLowerCase();

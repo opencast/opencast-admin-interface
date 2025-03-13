@@ -1,6 +1,6 @@
 import languages from "../i18n/languages";
 import i18n from "../i18n/i18n";
-import { TFunction } from "i18next";
+import { ParseKeys, TFunction } from "i18next";
 import { UserInfoState } from "../slices/userInfoSlice";
 import { UploadAssetOption } from "../slices/eventSlice";
 
@@ -133,7 +133,7 @@ export const translateOverrideFallback = (asset: UploadAssetOption, t: TFunction
 		result = asset[`displayOverride${sub}` as const];
 
 	} else if (i18n.exists(translatable)) {
-		result = t(translatable);
+		result = t(translatable as ParseKeys);
 
 	} else if (asset[`displayFallback${sub}` as const]) {
 		result = asset[`displayFallback${sub}` as const];

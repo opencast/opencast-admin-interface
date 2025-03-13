@@ -6,6 +6,7 @@ import { getSchedulingSeriesOptions } from "../../../../selectors/eventSelectors
 import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
 import { EditedEvents } from "../../../../slices/eventSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the summary page of the edit scheduled bulk action
@@ -13,6 +14,16 @@ import { EditedEvents } from "../../../../slices/eventSlice";
 interface RequiredFormProps {
 	editedEvents: EditedEvents[],
 	changedEvents: string[],
+}
+
+type Change = {
+	eventId: string,
+	title: string,
+	changes: {
+		type: ParseKeys,
+		previous: string,
+		next: string
+	}[]
 }
 
 const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
@@ -25,7 +36,7 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 	const { t } = useTranslation();
 
 	// Changes applied to events
-	const [changes, setChanges] = useState<{eventId: string, title: string, changes: { type: string, previous: string, next: string }[]}[]>([]);
+	const [changes, setChanges] = useState<Change[]>([]);
 
 	const seriesOptions = useAppSelector(state => getSchedulingSeriesOptions(state));
 
@@ -36,11 +47,11 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 	}, []);
 
 	const checkForChanges = () => {
-		let changed: {eventId: string, title: string, changes: { type: string, previous: string, next: string }[]}[] = [];
+		let changed: Change[] = [];
 
 		// Loop through each event selected for editing and compare original values and changed values
 		for (const event of formik.values.editedEvents) {
-			let eventChanges : {eventId: string, title: string, changes: { type: string, previous: string, next: string }[]}= {
+			let eventChanges: Change = {
 				eventId: event.eventId,
 				title: event.title,
 				changes: [],
@@ -110,8 +121,8 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 			if (isChanged(event.weekday, event.changedWeekday)) {
 				eventChanges.changes.push({
 					type: "EVENTS.EVENTS.TABLE.WEEKDAY",
-					previous: t("EVENTS.EVENTS.NEW.WEEKDAYSLONG." + event.weekday),
-					next: t("EVENTS.EVENTS.NEW.WEEKDAYSLONG." + event.changedWeekday),
+					previous: t(`EVENTS.EVENTS.NEW.WEEKDAYSLONG.${event.weekday}`),
+					next: t(`EVENTS.EVENTS.NEW.WEEKDAYSLONG.${event.changedWeekday}`),
 				});
 			}
 

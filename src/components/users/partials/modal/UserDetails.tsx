@@ -9,6 +9,7 @@ import ModalNavigation from "../../../shared/modals/ModalNavigation";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { UpdateUser, updateUserDetails } from "../../../../slices/userDetailsSlice";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the user details
@@ -31,7 +32,11 @@ const UserDetails: React.FC<{
 	};
 
 	// information about tabs
-	const tabs = [
+	const tabs: {
+		tabTranslation: ParseKeys
+		accessRole: string
+		name: string
+	}[] = [
 		{
 			tabTranslation: "USERS.USERS.DETAILS.TABS.USER",
 			accessRole: "ROLE_UI_USERS_EDIT",

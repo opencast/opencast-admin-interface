@@ -5,6 +5,7 @@ import CapabilitiesDetailsTab from "../wizards/CapabilitiesDetailsTab";
 import { getRecordingDetails } from "../../../../selectors/recordingDetailsSelectors";
 import ModalNavigation from "../../../shared/modals/ModalNavigation";
 import { useAppSelector } from "../../../../store";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the recording details
@@ -15,7 +16,11 @@ const RecordingsDetails: React.FC = () => {
 	const agent = useAppSelector(state => getRecordingDetails(state));
 
 	// information about tabs
-	const tabs = [
+	const tabs: {
+		tabTranslation: ParseKeys
+		accessRole: string
+		name: string
+	}[] = [
 		{
 			tabTranslation: "RECORDINGS.RECORDINGS.DETAILS.TAB.GENERAL",
 			accessRole: "ROLE_UI_LOCATIONS_DETAILS_GENERAL_VIEW",

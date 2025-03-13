@@ -15,6 +15,7 @@ import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
 import { Event } from "../../../../slices/eventSlice";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the table overview of selected events in edit scheduled events bulk action
@@ -119,7 +120,7 @@ const EditScheduledEventsGeneralPage = <T extends RequiredFormProps>({
 												<td className="nowrap">
 													{event.series ? event.series.title : ""}
 												</td>
-												<td className="nowrap">{t(event.event_status)}</td>
+												<td className="nowrap">{t(event.event_status as ParseKeys)}</td>
 											</tr>
 										))}
 									</tbody>

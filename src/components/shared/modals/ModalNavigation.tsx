@@ -4,6 +4,7 @@ import cn from "classnames";
 import { getUserInformation } from "../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../utils/utils";
 import { useAppSelector } from "../../../store";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the navigation in details modals
@@ -15,7 +16,7 @@ const ModalNavigation = ({
 }: {
 	tabInformation: {
 		accessRole: string,
-		tabTranslation: string
+		tabTranslation: ParseKeys
 	}[],
 	page: number,
 	openTab: (key: number) => unknown,

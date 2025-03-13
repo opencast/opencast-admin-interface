@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../configs/hotkeysConfig";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the modal for displaying series details
@@ -13,7 +14,7 @@ const DetailsModal = ({
 	children
 }: PropsWithChildren<{
 	handleClose: () => void
-	prefix: string
+	prefix: ParseKeys
 	title: string
 }>) => {
 	const { t } = useTranslation();

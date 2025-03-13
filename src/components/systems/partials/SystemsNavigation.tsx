@@ -1,3 +1,4 @@
+import { ParseKeys } from "i18next";
 import { fetchJobs } from "../../../slices/jobSlice";
 import { fetchServers } from "../../../slices/serverSlice";
 import { fetchServices } from "../../../slices/serviceSlice";
@@ -32,7 +33,12 @@ export const loadServices = async (dispatch: AppDispatch) => {
 	dispatch(loadServicesIntoTable());
 };
 
-export const systemsLinks = [
+export const systemsLinks: {
+	path: string
+	accessRole: string
+	loadFn: (dispatch: AppDispatch) => Promise<void>
+	text: ParseKeys
+}[] = [
 	{
 		path: "/systems/jobs",
 		accessRole: "ROLE_UI_JOBS_VIEW",

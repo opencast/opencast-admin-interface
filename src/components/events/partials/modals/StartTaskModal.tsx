@@ -11,6 +11,7 @@ import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { checkValidityStartTaskEventSelection } from "../../../../utils/bulkActionUtils";
 import { useAppDispatch } from "../../../../store";
 import { Event } from "../../../../slices/eventSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the task start bulk action
@@ -34,7 +35,10 @@ const StartTaskModal = ({
 		setPageCompleted,
 	} = usePageFunctions(0, initialValues);
 
-	const steps = [
+	const steps: {
+		translation: ParseKeys
+		name: string
+	}[] = [
 		{
 			translation: "BULK_ACTIONS.SCHEDULE_TASK.GENERAL.CAPTION",
 			name: "general",

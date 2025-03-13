@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
+import { ParseKeys } from "i18next";
 
 const NavigationButtons = ({
 	isFirst,
@@ -18,8 +19,8 @@ const NavigationButtons = ({
 	submitClassName?: string,
 	nextPage?: () => unknown,
 	previousPage?: () => unknown,
-	nextTranslationString?: string,
-	previousTranslationString?: string,
+	nextTranslationString?: ParseKeys,
+	previousTranslationString?: ParseKeys,
 }) => {
 
 	const { t } = useTranslation();

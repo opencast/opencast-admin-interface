@@ -11,6 +11,7 @@ import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { NewThemeSchema } from "../../../../utils/validate";
 import { useAppDispatch } from "../../../../store";
 import { postNewTheme, ThemeDetailsInitialValues } from "../../../../slices/themeSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the new theme wizard and the submission of values
@@ -34,7 +35,10 @@ const NewThemeWizard: React.FC<{
 	 } = usePageFunctions(0, initialValues);
 
 	// Caption of steps used by Stepper
-	const steps = [
+	const steps: {
+		name: string
+		translation: ParseKeys
+	}[] = [
 		{
 			name: "generalForm",
 			translation: "CONFIGURATION.THEMES.DETAILS.GENERAL.CAPTION",

@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { TransformedAcl } from "../../../../../slices/aclDetailsSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the access table containing access rules provided by user before in wizard summary pages
@@ -10,7 +11,7 @@ const AccessSummaryTable = ({
 	header
 }: {
 	policies: TransformedAcl[]
-	header: string
+	header: ParseKeys
 }) => {
 	const { t } = useTranslation();
 

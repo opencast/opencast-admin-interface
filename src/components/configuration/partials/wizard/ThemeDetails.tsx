@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { updateThemeDetails } from "../../../../slices/themeDetailsSlice";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { ThemeDetailsInitialValues } from "../../../../slices/themeSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the theme details
@@ -41,7 +42,12 @@ const ThemeDetails = ({
 	};
 
 	// information about tabs
-	const tabs = [
+	const tabs: {
+		name: string
+		tabTranslation: ParseKeys
+		translation: ParseKeys
+		accessRole: string
+	}[] = [
 		{
 			name: "generalForm",
 			tabTranslation: "CONFIGURATION.THEMES.DETAILS.GENERAL.CAPTION",

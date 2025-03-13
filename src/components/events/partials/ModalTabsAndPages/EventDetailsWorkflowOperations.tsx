@@ -11,6 +11,7 @@ import {
 } from "../../../../slices/eventDetailsSlice";
 import { useTranslation } from "react-i18next";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the workflow operations for the workflows tab of the event details modal
@@ -111,7 +112,7 @@ const EventDetailsWorkflowOperations = ({
 									{/* workflow operation details */}
 									{operations.entries.map((item, key) => (
 										<tr key={key}>
-											<td>{t(item.status)}</td>
+											<td>{t(item.status as ParseKeys)}</td>
 											<td>{item.title}</td>
 											<td>{item.description}</td>
 

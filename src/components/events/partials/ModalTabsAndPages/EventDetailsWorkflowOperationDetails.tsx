@@ -11,6 +11,7 @@ import { renderValidDate } from "../../../../utils/dateUtils";
 import { useTranslation } from "react-i18next";
 import { setModalWorkflowTabHierarchy } from "../../../../slices/eventDetailsSlice";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the workflow operation details for the workflows tab of the event details modal
@@ -87,7 +88,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 													) /* State */
 												}
 											</td>
-											<td>{t(operationDetails.state)}</td>
+											<td>{t(operationDetails.state as ParseKeys)}</td>
 										</tr>
 										<tr>
 											<td>

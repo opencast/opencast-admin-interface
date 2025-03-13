@@ -28,6 +28,7 @@ import { TransformedAcl } from "../../../slices/aclDetailsSlice";
 import { AsyncThunk, unwrapResult } from "@reduxjs/toolkit";
 import { SaveEditFooter } from "../SaveEditFooter";
 import { formatAclRolesForDropdown, formatAclTemplatesForDropdown } from "../../../utils/dropDownUtils";
+import { ParseKeys } from "i18next";
 
 
 /**
@@ -47,13 +48,13 @@ const ResourceDetailsAccessPolicyTab = ({
 	setPolicyChanged,
 }: {
 	resourceId: string,
-	header: string,
+	header: ParseKeys,
 	policies: TransformedAcl[],
 	fetchHasActiveTransactions?: AsyncThunk<any, string, any>
 	fetchAccessPolicies: AsyncThunk<TransformedAcl[], string, any>,
 	saveNewAccessPolicies:  AsyncThunk<boolean, { id: string, policies: { acl: Acl } }, any>
 	descriptionText: string,
-	buttonText: string,
+	buttonText: ParseKeys,
 	editAccessRole: string,
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,

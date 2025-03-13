@@ -31,6 +31,7 @@ import EventDetailsAssetMedia from "./EventDetailsAssetMedia";
 import EventDetailsAssetMediaDetails from "./EventDetailsAssetMediaDetails";
 import EventDetailsAssetPublications from "./EventDetailsAssetPublications";
 import EventDetailsAssetPublicationDetails from "./EventDetailsAssetPublicationDetails";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the main assets tab of event details modal
@@ -51,7 +52,11 @@ const EventDetailsAssetsTab = ({
 	const transactionsReadOnly = useAppSelector(state => isTransactionReadOnly(state));
 	const isFetchingAssetUploadOptions = useAppSelector(state => getIsFetchingAssetUploadOptions(state));
 
-	const assetsTabs = [
+	const assetsTabs: {
+		tabNameTranslation: ParseKeys
+		tabHierarchies: string[]
+		open: () => void
+	}[] = [
 		{
 			tabNameTranslation: "EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.TITLE",
 			tabHierarchies: ["asset-attachments", "attachment-details"],

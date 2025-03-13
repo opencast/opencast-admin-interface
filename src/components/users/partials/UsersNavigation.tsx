@@ -1,3 +1,4 @@
+import { ParseKeys } from "i18next";
 import { fetchAcls } from "../../../slices/aclSlice";
 import { fetchGroups } from "../../../slices/groupSlice";
 import { fetchUsers } from "../../../slices/userSlice";
@@ -32,7 +33,12 @@ export const loadGroups = async (dispatch: AppDispatch) => {
 	dispatch(loadGroupsIntoTable());
 };
 
-export const usersLinks = [
+export const usersLinks: {
+	path: string
+	accessRole: string
+	loadFn: (dispatch: AppDispatch) => Promise<void>
+	text: ParseKeys
+}[] = [
 	{
 		path: "/users/users",
 		accessRole: "ROLE_UI_USERS_VIEW",

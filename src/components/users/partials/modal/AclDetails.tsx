@@ -9,6 +9,7 @@ import { checkAcls } from "../../../../slices/aclSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { TransformedAcl, updateAclDetails } from "../../../../slices/aclDetailsSlice";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the acl details modal
@@ -32,7 +33,11 @@ const AclDetails = ({
 	};
 
 	// information about tabs
-	const tabs = [
+	const tabs: {
+		tabTranslation: ParseKeys,
+		accessRole: string,
+		name: string,
+	}[] = [
 		{
 			tabTranslation: "USERS.ACLS.DETAILS.TABS.METADATA",
 			accessRole: "ROLE_UI_ACLS_EDIT",

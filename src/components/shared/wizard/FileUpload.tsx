@@ -5,6 +5,7 @@ import { NOTIFICATION_CONTEXT } from "../../../configs/modalConfig";
 import { useAppDispatch } from "../../../store";
 import { addNotification } from "../../../slices/notificationSlice";
 import { FormikProps } from "formik";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders a custom file upload button in wizards.
@@ -23,9 +24,9 @@ const FileUpload = <T extends RequiredFormProps>({
 	formik,
 	isEdit,
 }: {
-	descriptionKey?: string,
-	labelKey: string,
-	buttonKey: string,
+	descriptionKey?: ParseKeys,
+	labelKey: ParseKeys,
+	buttonKey: ParseKeys,
 	acceptableTypes: string,
 	fileId: string,
 	fileName: string,
