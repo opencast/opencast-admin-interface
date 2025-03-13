@@ -281,7 +281,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 												/>
 												: <ButtonLikeAnchor
 													extraClassName={
-															(!page.blocks?.length
+														(!page.blocks?.length
 															? "tobira-selectable"
 															: "tobira-button-disabled"
 														)
