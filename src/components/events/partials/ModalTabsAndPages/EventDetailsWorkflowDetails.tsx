@@ -17,6 +17,7 @@ import { removeNotificationWizardForm } from "../../../../slices/notificationSli
 import { renderValidDate } from "../../../../utils/dateUtils";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 
 /**
  * This component manages the workflow details for the workflows tab of the event details modal
@@ -224,8 +225,8 @@ const EventDetailsWorkflowDetails = ({
 													) /* Operations */
 												}
 											</span>
-											<button
-												className="button-like-anchor details-link"
+											<ButtonLikeAnchor
+												extraClassName="details-link"
 												onClick={() => openSubTab("workflow-operations")}
 											>
 												{
@@ -233,7 +234,7 @@ const EventDetailsWorkflowDetails = ({
 														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
 													) /* Details */
 												}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 										<li>
 											<span>
@@ -243,8 +244,8 @@ const EventDetailsWorkflowDetails = ({
 													) /* Errors & Warnings */
 												}
 											</span>
-											<button
-												className="button-like-anchor details-link"
+											<ButtonLikeAnchor
+												extraClassName="details-link"
 												onClick={() => openSubTab("errors-and-warnings")}
 											>
 												{
@@ -252,7 +253,7 @@ const EventDetailsWorkflowDetails = ({
 														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
 													) /* Details */
 												}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 									</ul>
 								</div>
@@ -320,13 +321,13 @@ const EventDetailsWorkflowDetails = ({
 													) /* Operations */
 												}
 											</span>
-											<button className="button-like-anchor details-link">
+											<ButtonLikeAnchor extraClassName="details-link">
 												{
 													t(
 														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
 													) /* Details */
 												}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 										<li>
 											<span>
@@ -336,13 +337,13 @@ const EventDetailsWorkflowDetails = ({
 													) /* Errors & Warnings */
 												}
 											</span>
-											<button className="button-like-anchor details-link">
+											<ButtonLikeAnchor extraClassName="details-link">
 												{
 													t(
 														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
 													) /* Details */
 												}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 									</ul>
 								</div>

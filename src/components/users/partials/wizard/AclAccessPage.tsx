@@ -18,6 +18,7 @@ import DropDown from "../../../shared/DropDown";
 import { filterRoles, getAclTemplateText } from "../../../../utils/aclUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { formatAclRolesForDropdown, formatAclTemplatesForDropdown } from "../../../../utils/dropDownUtils";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
@@ -278,9 +279,9 @@ const AclAccessPage = <T extends RequiredFormProps>({
 																						{/*Remove policy*/}
 																						{isAccess && (
 																							<td>
-																								<button
+																								<ButtonLikeAnchor
 																									onClick={() => remove(index)}
-																									className="button-like-anchor remove"
+																									extraClassName="remove"
 																								/>
 																							</td>
 																						)}
@@ -300,7 +301,7 @@ const AclAccessPage = <T extends RequiredFormProps>({
 																				<tr>
 																					{/*Add additional policy row*/}
 																					<td colSpan={5}>
-																						<button
+																						<ButtonLikeAnchor
 																							onClick={() => {
 																								push({
 																									role: "",
@@ -310,14 +311,13 @@ const AclAccessPage = <T extends RequiredFormProps>({
 																								});
 																								dispatch(checkAcls(formik.values.acls));
 																							}}
-                                              className="button-like-anchor"
 																						>
 																							{" "}
 																							+{" "}
 																							{t(
 																								"USERS.ACLS.NEW.ACCESS.ACCESS_POLICY.NEW"
 																							)}
-																						</button>
+																						</ButtonLikeAnchor>
 																					</td>
 																				</tr>
 																			)}
