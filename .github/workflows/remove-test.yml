@@ -5,6 +5,9 @@ on:
     types:
       - closed
 
+env:
+  PR_NUMBER: ${{ github.event.pull_request.number }}
+
 jobs:
   delete_directory:
     runs-on: ubuntu-latest
