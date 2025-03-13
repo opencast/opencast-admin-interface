@@ -4,6 +4,7 @@ import Notifications from "../../../shared/Notifications";
 import { getPublications } from "../../../../selectors/eventDetailsSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchEventPublications } from "../../../../slices/eventDetailsSlice";
+import { ParseKeys } from "i18next";
 
 const EventDetailsPublicationTab = ({
 	eventId,
@@ -61,7 +62,7 @@ const EventDetailsPublicationTab = ({
 															)}
 														</span>
 														<div>
-															<span>{publication.label ? t(publication.label) : t(publication.name)}</span>
+															<span>{publication.label ? t(publication.label as ParseKeys) : t(publication.name as ParseKeys)}</span>
 															{publication.description && (
 																<p className="description">
 																	{publication.description}

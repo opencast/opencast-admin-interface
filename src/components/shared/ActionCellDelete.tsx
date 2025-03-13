@@ -2,6 +2,7 @@ import ConfirmModal, { ResourceType } from "./ConfirmModal";
 import { useRef } from "react";
 import { IconButton } from "./IconButton";
 import { ModalHandle } from "./modals/Modal";
+import { ParseKeys } from "i18next";
 
 export const ActionCellDelete = <T,>({
 	editAccessRole,
@@ -16,15 +17,15 @@ export const ActionCellDelete = <T,>({
 	deleteWithCautionMessage,
 }: {
 	editAccessRole: string
-	tooltipText: string
+	tooltipText: ParseKeys
 	resourceId: T
 	resourceName: string
 	resourceType: ResourceType
 	deleteMethod: (id: T) => void
 	deleteAllowed?: boolean,
 	showCautionMessage?: boolean,
-	deleteNotAllowedMessage?: string,
-	deleteWithCautionMessage?: string,
+	deleteNotAllowedMessage?: ParseKeys,
+	deleteWithCautionMessage?: ParseKeys,
 }) => {
 	const deleteConfirmationModalRef = useRef<ModalHandle>(null);
 
