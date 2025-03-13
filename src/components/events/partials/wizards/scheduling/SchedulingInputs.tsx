@@ -22,7 +22,7 @@ const SchedulingInputs = ({
 							type="checkbox"
 							value={input.id}
 						/>
-						{t(input.value)}
+						{t(input.value, input.id)}
 					</label>
 				)
 			)}
