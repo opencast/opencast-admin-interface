@@ -79,7 +79,7 @@ const PublishCell = ({
 												<span>{publication.label ? t(publication.label) : t(publication.name)}</span>
 											</a>
 										) : (
-											<ButtonLikeAnchor key={key} extraClassName="button-like-anchor popover__list-item">
+											<ButtonLikeAnchor key={key} extraClassName="popover__list-item">
 												<span>{publication.label ? t(publication.label) : t(publication.name)}</span>
 											</ButtonLikeAnchor>
 										)
