@@ -161,7 +161,7 @@ const Table = ({
 						<ButtonLikeAnchor
 							onClick={() => showEditTableViewModal()}
 						>
-								{t("TABLE_EDIT")}
+							{t("TABLE_EDIT")}
 						</ButtonLikeAnchor>
 					</li>
 				</ul>
