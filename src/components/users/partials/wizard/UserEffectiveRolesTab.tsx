@@ -1,6 +1,7 @@
 import { FormikProps } from "formik";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import ModalContent from "../../../shared/modals/ModalContent";
 
 /**
  * This component renders the effective role tab of the user details modal
@@ -36,35 +37,33 @@ const UserEffectiveRolesTab = <T extends RequiredFormProps>({
 	};
 
 	return (
-		<div className="modal-content">
-			<div className="modal-body">
-				<div className="form-container multi-select-container">
-					<label>{t("USERS.USERS.DETAILS.TABS.EFFECTIVEROLES")}</label>
-					<p>{t("USERS.USERS.DETAILS.DESCRIPTION.EFFECTIVEROLES")}</p>
+		<ModalContent>
+			<div className="form-container multi-select-container">
+				<label>{t("USERS.USERS.DETAILS.TABS.EFFECTIVEROLES")}</label>
+				<p>{t("USERS.USERS.DETAILS.DESCRIPTION.EFFECTIVEROLES")}</p>
 
-					{/* list  all roles a user got */}
-					<div className="search-container">
-						<button className="button-like-anchor clear" onClick={() => clearSearchField()} />
-						<input
-							type="text"
-							id="search_effective"
-							className="search"
-							value={searchField}
-							onChange={(e) => handleChangeSearch(e.target.value)}
-							placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
-						/>
-					</div>
-
-					<select multiple style={{ height: "26em" }}>
-						{items.map((item, key) => (
-							<option key={key} value={item.name}>
-								{item.name}
-							</option>
-						))}
-					</select>
+				{/* list  all roles a user got */}
+				<div className="search-container">
+					<button className="button-like-anchor clear" onClick={() => clearSearchField()} />
+					<input
+						type="text"
+						id="search_effective"
+						className="search"
+						value={searchField}
+						onChange={(e) => handleChangeSearch(e.target.value)}
+						placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
+					/>
 				</div>
+
+				<select multiple style={{ height: "26em" }}>
+					{items.map((item, key) => (
+						<option key={key} value={item.name}>
+							{item.name}
+						</option>
+					))}
+				</select>
 			</div>
-		</div>
+		</ModalContent>
 	);
 };
 

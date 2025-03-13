@@ -9,6 +9,7 @@ import { fetchWorkflowDef } from "../../../../slices/workflowSlice";
 import { FormikProps } from "formik";
 import { formatWorkflowsForDropdown } from "../../../../utils/dropDownUtils";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component renders the processing page for new events in the new event wizard.
@@ -68,65 +69,61 @@ const NewProcessingPage = <T extends RequiredFormProps>({
 
 	return (
 		<>
-			<div className="modal-content">
-				<div className="modal-body">
-					<div className="full-col">
-						{/* Workflow definition Selection*/}
-						<div className="obj quick-actions">
-							<header className="no-expand">
-								{t("EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW")}
-							</header>
-							<div className="obj-container padded">
-								{workflowDef.length > 0 ? (
-									<div className="editable">
-										<DropDown
-											value={formik.values.processingWorkflow}
-											text={
-												workflowDef.find(
-													(workflow) =>
-														formik.values.processingWorkflow === workflow.id
-												)?.title ?? ""
-											}
-											options={formatWorkflowsForDropdown(workflowDef)}
-											required={true}
-											handleChange={(element) => {
-												if (element) {
-													setDefaultValues(element.value)
-												}
-											}}
-											placeholder={t(
-												"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW"
-											)}
-											customCSS={{width: "100%"}}
-										/>
-									</div>
-								) : (
-									<span>
-										{t("EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW_EMPTY")}
-									</span>
-								)}
+			<ModalContentTable>
+				{/* Workflow definition Selection*/}
+				<div className="obj quick-actions">
+					<header className="no-expand">
+						{t("EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW")}
+					</header>
+					<div className="obj-container padded">
+						{workflowDef.length > 0 ? (
+							<div className="editable">
+								<DropDown
+									value={formik.values.processingWorkflow}
+									text={
+										workflowDef.find(
+											(workflow) =>
+												formik.values.processingWorkflow === workflow.id
+										)?.title ?? ""
+									}
+									options={formatWorkflowsForDropdown(workflowDef)}
+									required={true}
+									handleChange={(element) => {
+										if (element) {
+											setDefaultValues(element.value)
+										}
+									}}
+									placeholder={t(
+										"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW"
+									)}
+									customCSS={{width: "100%"}}
+								/>
+							</div>
+						) : (
+							<span>
+								{t("EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW_EMPTY")}
+							</span>
+						)}
 
-								{/* Configuration panel of selected workflow */}
-								<div className="collapsible-box">
-									<div
-										id="new-event-workflow-configuration"
-										className="checkbox-container obj-container"
-									>
-										{formik.values.processingWorkflow ? (
-											<RenderWorkflowConfig
-												displayDescription
-												workflowId={formik.values.processingWorkflow}
-												// @ts-expect-error TS(7006):
-												formik={formik}
-											/>
-										) : null}
-									</div>
-								</div>
+						{/* Configuration panel of selected workflow */}
+						<div className="collapsible-box">
+							<div
+								id="new-event-workflow-configuration"
+								className="checkbox-container obj-container"
+							>
+								{formik.values.processingWorkflow ? (
+									<RenderWorkflowConfig
+										displayDescription
+										workflowId={formik.values.processingWorkflow}
+										// @ts-expect-error TS(7006):
+										formik={formik}
+									/>
+								) : null}
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</ModalContentTable>
 
 			{/* Button for navigation to next page and previous page */}
 			<WizardNavigationButtons
