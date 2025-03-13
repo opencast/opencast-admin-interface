@@ -54,8 +54,7 @@ export const Modal = forwardRef<ModalHandle, PropsWithChildren<ModalProps>>(({
 
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
-		// TODO: Figure out what typescripts problem is
-		//@ts-ignore
+		//@ts-expect-error: TODO: Figure out what typescripts problem is
 		() => ref?.current.close?.(),
 		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
 		[ref],
@@ -72,7 +71,7 @@ export const Modal = forwardRef<ModalHandle, PropsWithChildren<ModalProps>>(({
 					<header>
 						<button
 							className="button-like-anchor fa fa-times close-modal"
-							//@ts-ignore
+							//@ts-expect-error: TODO: Figure out what typescripts problem is
 							onClick={() => ref?.current.close?.()}
 							tabIndex={0}
 						/>

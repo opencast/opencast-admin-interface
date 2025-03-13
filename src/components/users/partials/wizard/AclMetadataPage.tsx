@@ -7,7 +7,7 @@ import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButt
 /**
  * This component renders the metadata page in the new ACL wizard and in the ACL details modal
  */
-const AclMetadataPage = <T,>({
+const AclMetadataPage = <T, >({
 	formik,
 	nextPage,
 	isEdit

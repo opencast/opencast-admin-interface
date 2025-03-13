@@ -414,7 +414,7 @@ export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata
 						dispatch(
 							addNotification({
 								type: "warning",
-								key:"BULK_ACTIONS.EDIT_EVENTS_METADATA.REQUEST_ERRORS.NOT_FOUND"
+								key: "BULK_ACTIONS.EDIT_EVENTS_METADATA.REQUEST_ERRORS.NOT_FOUND"
 							})
 						);
 					}
@@ -564,7 +564,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	let assets: {
 		workflow: string,
 		options: UploadAssetOption[],
-	}= {
+	} = {
 		workflow: WORKFLOW_UPLOAD_ASSETS_NON_TRACK,
 		options: [],
 	};
@@ -631,9 +631,9 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	);
 
 	// Process bar notification
-	var config = {
-		onUploadProgress: function(progressEvent: AxiosProgressEvent) {
-			var percentCompleted = progressEvent.total ? (progressEvent.loaded * 100) / progressEvent.total : undefined;
+	const config = {
+		onUploadProgress: function (progressEvent: AxiosProgressEvent) {
+			const percentCompleted = progressEvent.total ? (progressEvent.loaded * 100) / progressEvent.total : undefined;
 			if (percentCompleted) {
 				dispatch(addNotification({
 					id: -42000,

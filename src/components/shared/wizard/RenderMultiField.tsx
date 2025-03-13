@@ -145,10 +145,10 @@ const EditMultiSelect = ({
 	// onBlur does not get called if a component unmounts for some reason
 	// Instead, we achieve the same effect with useEffect
 	const textRef = useRef(inputValue);
-	React.useEffect( () => {
+	React.useEffect(() => {
 		textRef.current = inputValue;
 	}, [inputValue])
-	React.useEffect( () => {
+	React.useEffect(() => {
 		return () => handleBlur(textRef.current)
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])

@@ -16,7 +16,9 @@ export function createMetadataSchema(
 	config: { id: string; required: boolean; type: string; },
 ) {
 	const { id, required, type } = config;
-	if (!required) return schema;
+	if (!required) {
+		return schema;
+	}
 
 	let validationType: "string" | "array" | "date" = "string";
 	const validations: {
@@ -47,11 +49,11 @@ export function createMetadataSchema(
 	let validator = Yup[validationType as "string"]();
 	validations.forEach(validation => {
 		const { params, type } = validation;
-		// @ts-expect-error
+		// @ts-expect-error: Yup needs to fix their typing?
 		if (!validator[type]) {
 			return;
 		}
-		// @ts-expect-error
+		// @ts-expect-error: Yup needs to fix their typing?
 		validator = validator[type](...params);
 	});
 	schema[id] = validator;
@@ -65,7 +67,7 @@ export const MetadataSchema = (catalog: MetadataCatalog) => {
 	const schema = catalog.fields.reduce(createMetadataSchema, {});
 	const schemaKeyReplace: { [key: string]: any} = {};
 	for (const [key, value] of Object.entries(schema)) {
-		schemaKeyReplace[catalog.flavor +  "_" + key] = value
+		schemaKeyReplace[catalog.flavor + "_" + key] = value
 	}
 	const validateSchema = Yup.object().shape(schemaKeyReplace);
 
