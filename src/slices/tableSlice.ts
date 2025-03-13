@@ -72,6 +72,8 @@ export type Row = { selected: boolean } & ( Event | Series | Recording | Server 
 
 export type Resource = "" | "events" | "series" | "recordings" | "jobs" | "servers" | "services" | "users" | "groups" | "acls" | "themes"
 
+export type ReverseOptions = "ASC" | "DESC"
+
 export type TableState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
@@ -79,9 +81,9 @@ export type TableState = {
 	resource: Resource,
 	pages: Page[],
 	columns: TableConfig["columns"],
-	sortBy: { [key: string]: string },  // Key is resource, value is actual sorting parameter
+	sortBy: { [key in Resource]: string },  // Key is resource, value is actual sorting parameter
 	predicate: string,
-	reverse: { [key: string]: string },  // Key is resource, value is actual sorting parameter
+	reverse: { [key in Resource]: ReverseOptions },  // Key is resource, value is actual sorting parameter
 	rows: Row[],
 	maxLabel: string,
 	pagination: Pagination,
@@ -118,7 +120,7 @@ const initialState: TableState = {
 		users: "ASC",
 		groups: "ASC",
 		acls: "ASC",
-		theme: "ASC",
+		themes: "ASC",
 	},
 	rows: [],
 	maxLabel: "",
@@ -140,8 +142,8 @@ const tableSlice = createSlice({
 			resource: TableState["resource"],
 			pages: TableState["pages"],
 			rows: TableState["rows"],
-			sortBy: TableState["sortBy"][0],
-			reverse: TableState["reverse"][0],
+			sortBy: TableState["sortBy"][Resource],
+			reverse: TableState["reverse"][Resource],
 			totalItems: TableState["pagination"]["totalItems"],
 		}>) {
 			state.multiSelect = action.payload.multiSelect;
@@ -192,12 +194,12 @@ const tableSlice = createSlice({
 			})
 		},
 		reverseTable(state, action: PayloadAction<
-			TableState["reverse"][0]
+			TableState["reverse"][Resource]
 		>) {
 			state.reverse[state.resource] = action.payload;
 		},
 		setSortBy(state, action: PayloadAction<
-			TableState["sortBy"][0]
+			TableState["sortBy"][Resource]
 		>) {
 			state.sortBy[state.resource] = action.payload;
 		},

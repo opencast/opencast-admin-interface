@@ -17,6 +17,7 @@ import {
 	updatePageSize,
 	Page,
 	Pagination,
+	ReverseOptions,
 } from "../../slices/tableSlice";
 import {
 	changeAllSelected,
@@ -124,7 +125,7 @@ const Table = ({
 
 	const sortByColumn = (colName: string) => {
 		dispatch(setSortBy(colName));
-		let direction = "ASC";
+		let direction: ReverseOptions = "ASC";
 		if (reverse && reverse === "ASC") {
 			direction = "DESC";
 		}
