@@ -105,7 +105,7 @@ const EmbeddingCodeModal = ({
 				</ButtonLikeAnchor>
 				<ButtonLikeAnchor
 					id="380x214"
-					extraClassName="embedSizeButton size_380x214 button-like-anchor"
+					extraClassName="embedSizeButton size_380x214"
 					onClick={(e) => updateTextArea(e)}
 				>
 					<span className="span-embedded-code">380x214</span>
