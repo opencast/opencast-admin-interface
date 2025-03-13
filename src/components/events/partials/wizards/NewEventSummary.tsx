@@ -34,7 +34,7 @@ interface RequiredFormProps {
 	repeatOn: string[]
 	deviceInputs?: string[]
 	configuration: { [key: string]: string }
-	acls: TransformedAcl[]
+	policies: TransformedAcl[]
 	[key: string]: unknown,  // Metadata fields
 }
 
@@ -294,7 +294,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 
 						{/*Summary access configuration*/}
 						<AccessSummaryTable
-							policies={formik.values.acls}
+							policies={formik.values.policies}
 							header={"EVENTS.EVENTS.NEW.ACCESS.CAPTION"}
 						/>
 					</div>

@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	dropDownSpacingTheme,
 	dropDownStyle,
 } from "../../utils/componentStyles";
-import Select, { GroupBase, Props, SelectInstance } from "react-select";
+import Select, { createFilter, GroupBase, MenuListProps, Props, SelectInstance } from "react-select";
 import CreatableSelect from "react-select/creatable";
+import { FixedSizeList, ListChildComponentProps } from "react-window";
 import { isJson } from "../../utils/utils";
 
 export type DropDownOption = {
@@ -33,6 +34,7 @@ const DropDown = <T,>({
 	menuIsOpen = undefined,
 	handleMenuIsOpen = undefined,
 	customCSS,
+	improvePerformanceExperimental = false,
 }: {
 	value: T
 	text: string,
@@ -52,13 +54,12 @@ const DropDown = <T,>({
 		width?: number | string,
 		optionPaddingTop?: number,
 		optionLineHeight?: string
-	}
+	},
+	improvePerformanceExperimental?: boolean,
 }) => {
 	const { t } = useTranslation();
 
 	const selectRef = React.useRef<SelectInstance<any, boolean, GroupBase<any>>>(null);
-
-	const [searchText, setSearch] = useState("");
 
 	const style = dropDownStyle(customCSS ?? {});
 
@@ -77,15 +78,10 @@ const DropDown = <T,>({
 
 	const formatOptions = (
 		unformattedOptions: DropDownOption[],//any[],
-		filterText: string,
 		required: boolean,
 	) => {
 		// Translate?
-		unformattedOptions = unformattedOptions.map(option => ({...option, label: t(option.label)}))
-
-		// Filter
-		filterText = filterText.toLowerCase();
-		unformattedOptions = unformattedOptions.filter(option => option.label.toLowerCase().includes(filterText));
+		unformattedOptions = unformattedOptions.map(option => ({...option, label: t(option.label)}));
 
 		// Add "No value" option
 		if (!required) {
@@ -124,14 +120,11 @@ const DropDown = <T,>({
 		autoFocus: autoFocus,
 		isSearchable: true,
 		value: { value: value, label: text === "" ? placeholder : text },
-		inputValue: searchText,
 		options: formatOptions(
 			options,
-			searchText,
 			required,
 		),
 		placeholder: placeholder,
-		onInputChange: (value: string) => setSearch(value),
 		onChange: (element) => handleChange(element as {value: T, label: string}),
 		menuIsOpen: menuIsOpen,
 		onMenuOpen: () => openMenu(true),
@@ -139,6 +132,14 @@ const DropDown = <T,>({
 		isDisabled: disabled,
 		openMenuOnFocus: openMenuOnFocus,
 	};
+
+	if (improvePerformanceExperimental) {
+		// @ts-ignore Typing problem in library
+		commonProps.components = { MenuList }
+		commonProps.filterOption = createFilter({
+			ignoreAccents: false, // To improve performance on filtering
+		})
+	}
 
 	return creatable ? (
 		<CreatableSelect
@@ -155,3 +156,33 @@ const DropDown = <T,>({
 };
 
 export default DropDown;
+
+type OptionType = {
+	label: string
+	value: string
+}
+
+/**
+ * Use react-window to improve performance for Dropdowns with many options
+ */
+const MenuList = (props: MenuListProps<OptionType, false, GroupBase<OptionType>>) => {
+	// TODO: make itemHeight dynamic
+	const itemHeight = 35
+	const { options, children, maxHeight, getValue } = props
+	const [value] = getValue()
+	const initialOffset = options.indexOf(value) * itemHeight
+
+	return Array.isArray(children) ? (
+		<div style={{ paddingTop: 4 }}>
+			<FixedSizeList
+				height={maxHeight}
+				itemCount={children.length}
+				itemSize={itemHeight}
+				initialScrollOffset={initialOffset}
+				width="100%"
+			>
+				{({ index, style }: ListChildComponentProps) => <div style={{ ...style }}>{children[index]}</div>}
+			</FixedSizeList>
+		</div>
+	) : null
+}
