@@ -17,6 +17,10 @@ import { AsyncThunk } from "@reduxjs/toolkit";
 import RenderDate from "../../../shared/RenderDate";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
+type InitialValues = {
+	[key: string]: string | string[];
+}
+
 /**
  * This component renders metadata details of a certain event or series
  */
@@ -25,6 +29,7 @@ const DetailsMetadataTab = ({
 	metadata,
 	updateResource,
 	editAccessRole,
+	formikRef,
 	header,
 }: {
 	resourceId: string,
@@ -35,6 +40,7 @@ const DetailsMetadataTab = ({
 		catalog: MetadataCatalog;
 	}, any> //(id: string, values: { [key: string]: any }, catalog: MetadataCatalog) => void,
 	editAccessRole: string,
+	formikRef?: React.RefObject<FormikProps<InitialValues> | null>
 	header?: string
 }) => {
 	const { t } = useTranslation();
@@ -82,10 +88,11 @@ const DetailsMetadataTab = ({
 							metadata.length > 0 &&
 							metadata.map((catalog, key) => (
 								// initialize form
-								<Formik
+								<Formik<InitialValues>
 									enableReinitialize
 									initialValues={getInitialValues(catalog)}
 									onSubmit={(values) => handleSubmit(values, catalog)}
+									innerRef={formikRef}
 								>
 									{(formik) => (
 										/* Render table for each metadata catalog */
