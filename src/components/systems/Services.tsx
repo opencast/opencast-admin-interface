@@ -15,7 +15,8 @@ import MainView from "../MainView";
 import Footer from "../Footer";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchServices } from "../../slices/serviceSlice";
-import { loadServices, systemsLinks } from "./partials/SystemsNavigation";
+import { systemsLinks } from "./partials/SystemsNavigation";
+import { resetTableProperties } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of services
@@ -28,18 +29,36 @@ const Services = () => {
 	const services = useAppSelector(state => getTotalServices(state));
 
 	useEffect(() => {
+		// State variable for interrupting the load function
+		let allowLoadIntoTable = true;
+
+		// Clear table of previous data
+		dispatch(resetTableProperties());
+
 		dispatch(fetchFilters("services"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));
 
 		// Load services on mount
-		loadServices(dispatch);
+		const loadServices = async () => {
+			// Fetching services from server
+			await dispatch(fetchServices());
+
+			// Load services into table
+			if (allowLoadIntoTable) {
+				dispatch(loadServicesIntoTable());
+			}
+		};
+		loadServices();
 
 		// Fetch services every minute
-		let fetchServicesInterval = setInterval(() => loadServices(dispatch), 5000);
+		let fetchServicesInterval = setInterval(() => loadServices(), 5000);
 
-		return () => clearInterval(fetchServicesInterval);
+		return () => {
+			allowLoadIntoTable = false;
+			clearInterval(fetchServicesInterval);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

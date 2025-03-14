@@ -15,7 +15,8 @@ import MainView from "../MainView";
 import Footer from "../Footer";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchUsers } from "../../slices/userSlice";
-import { loadUsers, usersLinks } from "./partials/UsersNavigation";
+import { usersLinks } from "./partials/UsersNavigation";
+import { resetTableProperties } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of users
@@ -28,18 +29,36 @@ const Users = () => {
 	const users = useAppSelector(state => getTotalUsers(state));
 
 	useEffect(() => {
+		// State variable for interrupting the load function
+		let allowLoadIntoTable = true;
+
+		// Clear table of previous data
+		dispatch(resetTableProperties());
+
 		dispatch(fetchFilters("users"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));
 
 		// Load users on mount
-		loadUsers(dispatch);
+		const loadUsers = async () => {
+			// Fetching users from server
+			await dispatch(fetchUsers());
+
+			// Load users into table
+			if (allowLoadIntoTable) {
+				dispatch(loadUsersIntoTable());
+			}
+		};
+		loadUsers();
 
 		// Fetch users every minute
 		let fetchUsersInterval = setInterval(loadUsers, 5000);
 
-		return () => clearInterval(fetchUsersInterval);
+		return () => {
+			allowLoadIntoTable = false;
+			clearInterval(fetchUsersInterval);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
