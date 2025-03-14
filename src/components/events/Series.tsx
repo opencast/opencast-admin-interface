@@ -29,7 +29,7 @@ import { fetchSeriesDetailsTobiraNew } from "../../slices/seriesSlice";
 import { eventsLinks } from "./partials/EventsNavigation";
 import { Modal, ModalHandle } from "../shared/modals/Modal";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
-import { resetTableContent } from "../../slices/tableSlice";
+import { resetTableProperties } from "../../slices/tableSlice";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef<HTMLDivElement>();
@@ -57,7 +57,7 @@ const Series = () => {
 		let allowLoadIntoTable = true;
 
 		// Clear table of previous data
-		dispatch(resetTableContent());
+		dispatch(resetTableProperties());
 
 		dispatch(fetchFilters("series"))
 

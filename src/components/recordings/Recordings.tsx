@@ -14,7 +14,7 @@ import Footer from "../Footer";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchRecordings } from "../../slices/recordingSlice";
 import { AsyncThunk } from "@reduxjs/toolkit";
-import { resetTableContent } from "../../slices/tableSlice";
+import { resetTableProperties } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of recordings
@@ -31,7 +31,7 @@ const Recordings = () => {
 		let allowLoadIntoTable = true;
 
 		// Clear table of previous data
-		dispatch(resetTableContent());
+		dispatch(resetTableProperties());
 
 		dispatch(fetchFilters("recordings"));
 

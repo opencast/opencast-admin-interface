@@ -38,7 +38,7 @@ import EventDetailsModal from "./partials/modals/EventDetailsModal";
 import { showModal } from "../../selectors/eventDetailsSelectors";
 import { eventsLinks } from "./partials/EventsNavigation";
 import { Modal, ModalHandle } from "../shared/modals/Modal";
-import { resetTableContent } from "../../slices/tableSlice";
+import { resetTableProperties } from "../../slices/tableSlice";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef<HTMLDivElement>();
@@ -72,7 +72,7 @@ const Events = () => {
 		let allowLoadIntoTable = true;
 
 		// Clear redux of previous table data
-		dispatch(resetTableContent());
+		dispatch(resetTableProperties());
 
 		dispatch(fetchFilters("events"))
 

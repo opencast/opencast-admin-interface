@@ -13,7 +13,7 @@ import MainView from "../MainView";
 import Footer from "../Footer";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchThemes } from "../../slices/themeSlice";
-import { resetTableContent } from "../../slices/tableSlice";
+import { resetTableProperties } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of events
@@ -31,7 +31,7 @@ const Themes = () => {
 		let allowLoadIntoTable = true;
 
 		// Clear table of previous data
-		dispatch(resetTableContent());
+		dispatch(resetTableProperties());
 
 		dispatch(fetchFilters("themes"));
 

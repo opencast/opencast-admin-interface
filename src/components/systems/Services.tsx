@@ -16,7 +16,7 @@ import Footer from "../Footer";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchServices } from "../../slices/serviceSlice";
 import { systemsLinks } from "./partials/SystemsNavigation";
-import { resetTableContent } from "../../slices/tableSlice";
+import { resetTableProperties } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of services
@@ -33,7 +33,7 @@ const Services = () => {
 		let allowLoadIntoTable = true;
 
 		// Clear table of previous data
-		dispatch(resetTableContent());
+		dispatch(resetTableProperties());
 
 		dispatch(fetchFilters("services"));
 

@@ -16,7 +16,7 @@ import Footer from "../Footer";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchGroups } from "../../slices/groupSlice";
 import { usersLinks } from "./partials/UsersNavigation";
-import { resetTableContent } from "../../slices/tableSlice";
+import { resetTableProperties } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of groups
@@ -33,7 +33,7 @@ const Groups = () => {
 		let allowLoadIntoTable = true;
 
 		// Clear table of previous data
-		dispatch(resetTableContent());
+		dispatch(resetTableProperties());
 
 		dispatch(fetchFilters("groups"));
 

@@ -16,7 +16,7 @@ import Footer from "../Footer";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchUsers } from "../../slices/userSlice";
 import { usersLinks } from "./partials/UsersNavigation";
-import { resetTableContent } from "../../slices/tableSlice";
+import { resetTableProperties } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of users
@@ -33,7 +33,7 @@ const Users = () => {
 		let allowLoadIntoTable = true;
 
 		// Clear table of previous data
-		dispatch(resetTableContent());
+		dispatch(resetTableProperties());
 
 		dispatch(fetchFilters("users"));
 
