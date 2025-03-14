@@ -26,7 +26,7 @@ const PublishCell = ({
 	const [showPopup, setShowPopup] = useState(false);
 
 	useEffect(() => {
-		// Enrich publications every time the row updates
+		// Enrich publications
 		const fetchPublications = async() => {
 			if (!!row.publications && row.publications.length > 0) {
 				let transformedPublications: Publication[] = [];
@@ -39,8 +39,15 @@ const PublishCell = ({
 				setPublications(transformedPublications);
 			}
 		}
+
+		// Reset publications. This is to immediately update the table on page switch.
+		setPublications(row.publications);
+		// Enrich publications. It is ok if this is not immediate.
 		fetchPublications();
-	}, [dispatch, row]);
+	// Only update if the publications have actually changed by fake deep checking with JSON.stringify
+	// This should be acceptable for our simple and small publication objects
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [dispatch, JSON.stringify(row.publications)]);
 
 	useEffect(() => {
 		// Function for handling clicks outside of popup
