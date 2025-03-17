@@ -325,6 +325,7 @@ const getInitialValues = (
 			read: true,
 			write: true,
 			actions: [],
+			user: user.user,
 		},
 	];
 
