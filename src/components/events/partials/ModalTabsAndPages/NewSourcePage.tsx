@@ -42,7 +42,6 @@ import { parseISO } from "date-fns";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { checkConflicts, UploadAssetsTrack } from "../../../../slices/eventSlice";
 import SchedulingTime from "../wizards/scheduling/SchedulingTime";
-import SchedulingEndDateDisplay from "../wizards/scheduling/SchedulingEndDateDisplay";
 import SchedulingLocation from "../wizards/scheduling/SchedulingLocation";
 import SchedulingInputs from "../wizards/scheduling/SchedulingInputs";
 import SchedulingConflicts from "../wizards/scheduling/SchedulingConflicts";
@@ -601,16 +600,14 @@ const Schedule = <T extends {
 									);
 								}
 							}}
+							date={
+								formik.values.sourceMode === "SCHEDULE_SINGLE" &&
+								(new Date(formik.values.scheduleEndDate).getDate() !==
+								new Date(formik.values.scheduleStartDate).getDate())
+								? formik.values.scheduleEndDate
+								: undefined
+							}
 						/>
-
-						{/* display end date if on different day to start date, only if this is current source mode */}
-						{formik.values.sourceMode === "SCHEDULE_SINGLE" &&
-							formik.values.scheduleEndDate.toString() !==
-								formik.values.scheduleStartDate.toString() && (
-									<SchedulingEndDateDisplay
-										scheduleEndDate={formik.values.scheduleEndDate}
-									/>
-							)}
 
 						<SchedulingLocation
 								location={formik.values.location}

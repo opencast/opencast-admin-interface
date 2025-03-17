@@ -47,7 +47,6 @@ import { Recording } from "../../../../slices/recordingSlice";
 import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import SchedulingTime from "../wizards/scheduling/SchedulingTime";
-import SchedulingEndDateDisplay from "../wizards/scheduling/SchedulingEndDateDisplay";
 import SchedulingLocation from "../wizards/scheduling/SchedulingLocation";
 import SchedulingInputs from "../wizards/scheduling/SchedulingInputs";
 import SchedulingConflicts from "../wizards/scheduling/SchedulingConflicts";
@@ -410,16 +409,15 @@ const EventDetailsSchedulingTab = ({
 																	checkConflictsWrapper
 																)
 															}}
+															date={
+																hasAccessRole &&
+																(new Date(formik.values.scheduleEndDate).getDate() !==
+																new Date(formik.values.scheduleStartDate).getDate())
+																? formik.values.scheduleEndDate
+																: undefined
+															}
 														/>
 													)}
-													{hasAccessRole &&
-														formik.values.scheduleEndDate.toString() !==
-															formik.values.scheduleStartDate.toString() && (
-																<SchedulingEndDateDisplay
-																	scheduleEndDate={formik.values.scheduleEndDate}
-																/>
-														)
-													}
 													{!hasAccessRole && (
 													<tr>
 														<td>
