@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Role, fetchRolesWithTarget } from "../../../../slices/aclSlice";
 import SelectContainer from "../../../shared/wizard/SelectContainer";
 import { FormikProps } from "formik";
+import { NotificationComponent } from "../../../shared/Notifications";
 
 /**
  * This component renders the role selection tab of the new user wizard and the user details modal
@@ -35,6 +36,15 @@ const UserRolesTab = <T extends RequiredFormProps>({
 	return (
 		<div className="modal-content">
 			<div className="modal-body">
+			{!formik.values.manageable && (
+				<NotificationComponent
+					notification={{
+						type: "warning",
+						message: "NOTIFICATIONS.USER_NOT_MANAGEABLE",
+						id: 0,
+					}}
+				/>
+			)}
 				<div className="form-container">
 					{/*Select container for roles*/}
 					{!loading && (

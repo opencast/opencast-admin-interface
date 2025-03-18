@@ -12,6 +12,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 import { isSeries } from "../../../../slices/tableSlice";
 import NavigationButtons from "../../../shared/NavigationButtons";
+import { NotificationComponent } from "../../../shared/Notifications";
 
 /**
  * This component manges the delete series bulk action
@@ -128,16 +129,23 @@ const DeleteSeriesModal = ({
 		<>
 			<div className="modal-content">
 				<div className="modal-body">
-					<div className="modal-alert danger obj">
-						<p>{t("BULK_ACTIONS.DELETE_SERIES_WARNING_LINE1")}</p>
-						<p>{t("BULK_ACTIONS.DELETE_SERIES_WARNING_LINE2")}</p>
-					</div>
+					<NotificationComponent
+						notification={{
+							type: "error",
+							message: "BULK_ACTIONS.DELETE_SERIES_WARNING_LINE1",
+							id: 0,
+						}}
+					/>
 
 					{/* Only show if series not allowed to be deleted */}
 					{!isAllowed() && (
-						<div className="alert sticky warning">
-							<p>{t("BULK_ACTIONS.DELETE.SERIES.CANNOT_DELETE")}</p>
-						</div>
+						<NotificationComponent
+							notification={{
+								type: "warning",
+								message: "BULK_ACTIONS.DELETE.SERIES.CANNOT_DELETE",
+								id: 0,
+							}}
+						/>
 					)}
 
 					<div className="full-col">

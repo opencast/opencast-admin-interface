@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { Field } from "../../../shared/Field";
 import { FormikProps } from "formik";
+import { NotificationComponent } from "../../../shared/Notifications";
 
 /**
  * This component renders the general user information tab in the users details modal.
@@ -39,9 +40,13 @@ const EditUserGeneralTab = <T extends RequiredFormProps>({
 			<div className="modal-body">
 				<div className="form-container">
 					{!formik.values.manageable && (
-						<div className="modal-alert warning">
-							<p>{t("NOTIFICATIONS.USER_NOT_MANAGEABLE")}</p>
-						</div>
+						<NotificationComponent
+							notification={{
+								type: "warning",
+								message: "NOTIFICATIONS.USER_NOT_MANAGEABLE",
+								id: 0,
+							}}
+						/>
 					)}
 					<div className="row" style={editStyle}>
 						<label>

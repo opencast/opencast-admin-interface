@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, ModalHandle } from "./modals/Modal";
+import { NotificationComponent } from "./Notifications";
 
 export type ResourceType = "EVENT" | "SERIES" | "LOCATION" | "USER" | "GROUP" | "ACL" | "THEME" | "TOBIRA_PATH";
 
@@ -47,9 +48,13 @@ const ConfirmModal = <T,>({
 			{deleteAllowed ? (
 				<div>
 					{showCautionMessage && (
-						<div className="modal-alert warning">
-							<p>{t(deleteWithCautionMessage)}</p>
-						</div>
+						<NotificationComponent
+							notification={{
+								type: "warning",
+								message: deleteWithCautionMessage,
+								id: 0,
+							}}
+						/>
 					)}
 
 					<div>
@@ -84,9 +89,13 @@ const ConfirmModal = <T,>({
 				</div>
 			) : (
 				<div>
-					<div className="modal-alert danger">
-						<p>{t(deleteNotAllowedMessage)}</p>
-					</div>
+					<NotificationComponent
+						notification={{
+							type: "error",
+							message: deleteNotAllowedMessage,
+							id: 0,
+						}}
+					/>
 					<div className="btn-container">
 						<button
 							className="cancel-btn close-modal"
