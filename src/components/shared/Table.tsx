@@ -37,6 +37,7 @@ import Notifications from "./Notifications";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { TableColumn } from "../../configs/tableConfigs/aclsTableConfig";
 import { ModalHandle } from "./modals/Modal";
+import { ParseKeys } from "i18next";
 
 const containerPageSize = React.createRef<HTMLButtonElement>();
 
@@ -267,7 +268,7 @@ const Table = ({
 									  column.translate &&
 									  !column.deactivated ? (
 										//Show only if column not template, translate, not deactivated
-										<td key={key}>{t(tryToGetValueForKeyFromRowAsString(row, column.name))}</td>
+										<td key={key}>{t(tryToGetValueForKeyFromRowAsString(row, column.name) as ParseKeys)}</td>
 									) : !!column.template &&
 									  !column.deactivated &&
 									  !!templateMap[column.template] ? (
