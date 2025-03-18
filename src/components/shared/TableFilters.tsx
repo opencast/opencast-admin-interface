@@ -142,6 +142,12 @@ const TableFilters = ({
 	};
 
 	useEffect(() => {
+		// Reset filter selection to ensure filter selection is closed on mount/reload
+		dispatch(removeSelectedFilter());
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	useEffect(() => {
 		// Call to apply filter changes with 500MS debounce!
 		let applyFilterChangesDebouncedTimeoutId = setTimeout(applyFilterChangesDebounced, 500);
 
