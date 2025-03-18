@@ -1,6 +1,7 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
+	getMultiSelect,
 	getPageOffset,
 	getTable,
 	getTableDirection,
@@ -60,6 +61,7 @@ const Table = ({
 	const rows = useAppSelector(state => getTableRows(state));
 	const sortBy = useAppSelector(state => getTableSorting(state));
 	const reverse = useAppSelector(state => getTableDirection(state));
+	const multiSelect = useAppSelector(state => getMultiSelect(state));
 
 	// Size options for pagination
 	const sizeOptions = [10, 20, 50, 100, 1000];
@@ -179,7 +181,7 @@ const Table = ({
 				<thead>
 					<tr>
 						{/* Only show if multiple selection is possible */}
-						{table.multiSelect ? (
+						{multiSelect ? (
 							<th className="small">
 								{/*Checkbox to select all rows*/}
 								<input
@@ -245,7 +247,7 @@ const Table = ({
 							<tr key={key}>
 								{/* Show if multi selection is possible */}
 								{/* Checkbox for selection of row */}
-								{table.multiSelect && "id" in row && (
+								{multiSelect && "id" in row && (
 									<td>
 										<input
 											type="checkbox"

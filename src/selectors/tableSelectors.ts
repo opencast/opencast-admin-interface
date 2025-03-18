@@ -16,6 +16,7 @@ export const getNumberDirectAccessiblePages = (state: RootState) => state.table.
 export const getResourceType = (state: RootState) => state.table.resource;
 export const getTableSorting = (state: RootState) => state.table.sortBy[state.table.resource];
 export const getTableDirection = (state: RootState) => state.table.reverse[state.table.resource];
+export const getMultiSelect = (state: RootState) => state.table.multiSelect[state.table.resource];
 export const getTable = (state: RootState) => state.table;
 export const getDeactivatedColumns = (state: RootState) =>
 	state.table.columns.filter((column) => column.deactivated);
