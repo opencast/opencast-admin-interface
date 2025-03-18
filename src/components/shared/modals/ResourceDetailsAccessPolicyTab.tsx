@@ -543,7 +543,6 @@ export const AccessPolicyTable = <T extends AccessPolicyTabFormikProps>({
 																		}
 																		required={true}
 																		creatable={true}
-																		improvePerformanceExperimental={true}
 																		handleChange={(element) => {
 																			if (element) {
 																				const matchingRole = roles.find(role => role.name === element.value)
