@@ -5,6 +5,10 @@ on:
     types:
       - closed
 
+concurrency:
+  group: pull-request-page
+  cancel-in-progress: false
+
 env:
   PR_NUMBER: ${{ github.event.pull_request.number }}
 
