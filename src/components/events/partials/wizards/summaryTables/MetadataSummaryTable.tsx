@@ -4,6 +4,7 @@ import { getMetadataCollectionFieldName } from "../../../../../utils/resourceUti
 import { MetadataCatalog } from "../../../../../slices/eventSlice";
 import { isEmpty } from "lodash";
 import { isEmptyArray } from "formik";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the metadata table containing access rules provided by user before in wizard summary pages
@@ -15,7 +16,7 @@ const MetadataSummaryTable = ({
 }: {
 	metadataCatalogs: MetadataCatalog[],
 	formikValues: { [key: string]: string | string[] | boolean | Date },
-	header: string,
+	header: ParseKeys,
 }) => {
 	const { t } = useTranslation();
 
@@ -78,7 +79,7 @@ const MetadataSummaryTable = ({
 							{/*Insert row for each metadata entry user has provided*/}
 							{catalog.map((entry, key) => (
 								<tr key={key}>
-									<td>{t(entry.label)}</td>
+									<td>{t(entry.label as ParseKeys)}</td>
 									<td>
 										{Array.isArray(entry.value)
 											? entry.value.join(", ")

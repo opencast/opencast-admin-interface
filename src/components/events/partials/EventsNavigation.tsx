@@ -1,3 +1,4 @@
+import { ParseKeys } from "i18next";
 import { fetchEvents } from "../../../slices/eventSlice";
 import { fetchSeries } from "../../../slices/seriesSlice";
 import { fetchStats } from "../../../slices/tableFilterSlice";
@@ -27,7 +28,12 @@ export const loadSeries = (dispatch: AppDispatch) => {
 	dispatch(loadSeriesIntoTable());
 };
 
-export const eventsLinks = [
+export const eventsLinks: {
+	path: string,
+	accessRole: string,
+	loadFn: (dispatch: AppDispatch) => void,
+	text: ParseKeys
+}[] = [
 	{
 		path: "/events/events",
 		accessRole: "ROLE_UI_EVENTS_VIEW",

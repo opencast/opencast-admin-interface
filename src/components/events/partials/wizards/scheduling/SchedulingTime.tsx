@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import DropDown from "../../../../shared/DropDown";
 import { hours, minutes } from "../../../../../configs/modalConfig";
 import { formatTimeForDropdown } from "../../../../../utils/dropDownUtils";
+import { ParseKeys } from "i18next";
 
 const SchedulingTime = ({
 	hour,
@@ -17,9 +18,9 @@ const SchedulingTime = ({
 	hour: string,
 	minute: string,
 	disabled: boolean
-	title: string
-	hourPlaceholder: string
-	minutePlaceholder: string
+	title: ParseKeys
+	hourPlaceholder: ParseKeys
+	minutePlaceholder: ParseKeys
 	callbackHour: (value: string) => void
 	callbackMinute: (value: string) => void
 }) => {
