@@ -30,6 +30,7 @@ import { getCurrentLanguageInformation } from "../../utils/utils";
 import { Tooltip } from "./Tooltip";
 import DropDown from "./DropDown";
 import { AsyncThunk } from "@reduxjs/toolkit";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the table filters in the upper right corner of the table
@@ -214,14 +215,14 @@ const TableFilters = ({
 			?.label || filter.value;
 		return (
 			<span className="table-filter-blue-box">
-				{t(filter.label)}:
-				{filter.translatable? t(valueLabel) : valueLabel}
+				{t(filter.label as ParseKeys)}:
+				{filter.translatable? t(valueLabel as ParseKeys) : valueLabel}
 			</span>
 		);
 	};
 
 	const getSelectedFilterText = () => {
-		return filter?.label ? t(filter.label) : selectedFilter;
+		return filter?.label ? t(filter.label as ParseKeys) : selectedFilter;
 	}
 
 	return (
@@ -261,11 +262,11 @@ const TableFilters = ({
 											? filterMap.filter(
 													(filter) => filter.name !== "presentersBibliographic"
 												)
-												.sort((a, b) => t(a.label).localeCompare(t(b.label))) // Sort alphabetically
+												.sort((a, b) => t(a.label as ParseKeys).localeCompare(t(b.label as ParseKeys))) // Sort alphabetically
 												.map(filter => {
 													return {
 														value: filter.name,
-														label: t(filter.label).substr(0, 40),
+														label: t(filter.label as ParseKeys).substr(0, 40),
 													};
 												})
 											: []
@@ -314,7 +315,7 @@ const TableFilters = ({
 											// Use different representation of name and value depending on type of filter
 											filter.type === "period" ? (
 												<span className="table-filter-blue-box">
-													{t(filter.label)}:
+													{t(filter.label as ParseKeys)}:
 													{t("dateFormats.date.short", {
 														date: renderValidDate(filter.value.split("/")[0]),
 													})}
@@ -421,7 +422,7 @@ const FilterSwitch = ({
 									} else {
 										return {
 											...option,
-											label: t(option.label).substr(0, 40),
+											label: t(option.label as ParseKeys).substr(0, 40),
 										}
 									}
 								})

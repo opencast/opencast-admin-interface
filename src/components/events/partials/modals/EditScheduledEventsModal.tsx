@@ -21,6 +21,7 @@ import {
 } from "../../../../slices/eventSlice";
 import { fetchRecordings } from "../../../../slices/recordingSlice";
 import { Event } from "../../../../slices/eventSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the edit scheduled bulk action
@@ -57,7 +58,10 @@ const EditScheduledEventsModal = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const steps = [
+	const steps: {
+		translation: ParseKeys
+		name: string
+	}[] = [
 		{
 			translation: "BULK_ACTIONS.EDIT_EVENTS.GENERAL.CAPTION",
 			name: "general",

@@ -19,6 +19,7 @@ export const getTableSorting = (state: RootState) => state.table.sortBy[state.ta
 export const getTableSortingForResource = (state: RootState, resource: TableState["resource"]) => state.table.sortBy[resource];
 export const getTableDirection = (state: RootState) => state.table.reverse[state.table.resource];
 export const getTableDirectionForResource = (state: RootState, resource: TableState["resource"]) => state.table.reverse[resource];
+export const getMultiSelect = (state: RootState) => state.table.multiSelect[state.table.resource];
 export const getTable = (state: RootState) => state.table;
 export const getDeactivatedColumns = (state: RootState) =>
 	state.table.columns.filter((column) => column.deactivated);

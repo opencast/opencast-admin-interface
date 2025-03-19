@@ -1,5 +1,19 @@
+import { ParseKeys } from "i18next";
+
 // states contains the different states and their configurations of the adapter registration modal
-export const states = {
+export const states: {
+	[key in "information" | "form" | "save" | "update" | "delete_submit" | "delete" | "summary" | "thank_you" | "error" | "skip" | "legal_info"]: {
+		nextState: { [key: number]: string }
+		buttons: {
+			submit: boolean,
+			back: boolean,
+			skip: boolean,
+			close: boolean,
+			delete?: boolean,
+			submitButtonText?: ParseKeys
+		}
+	}
+} = {
 	information: {
 		nextState: {
 			0: "close",
@@ -42,7 +56,6 @@ export const states = {
 			back: false,
 			skip: false,
 			close: false,
-			submitButtonText: "",
 		},
 	},
 	update: {
@@ -55,7 +68,6 @@ export const states = {
 			back: false,
 			skip: false,
 			close: false,
-			submitButtonText: "",
 		},
 	},
 	delete_submit: {
@@ -82,7 +94,6 @@ export const states = {
 			back: false,
 			skip: false,
 			close: false,
-			submitButtonText: "",
 		},
 	},
 	summary: {
@@ -109,7 +120,6 @@ export const states = {
 			back: false,
 			skip: false,
 			close: true,
-			submitButtonText: "",
 		},
 	},
 	error: {
@@ -122,7 +132,6 @@ export const states = {
 			back: false,
 			skip: false,
 			close: true,
-			submitButtonText: "",
 		},
 	},
 	skip: {
@@ -135,7 +144,6 @@ export const states = {
 			back: false,
 			skip: false,
 			close: true,
-			submitButtonText: "",
 		},
 	},
 	legal_info: {
@@ -149,12 +157,14 @@ export const states = {
 			back: true,
 			skip: false,
 			close: true,
-			submitButtonText: "",
 		},
 	},
 };
 
-export const systemTypes = [
+export const systemTypes: {
+	value: string,
+	name: ParseKeys,
+}[] = [
 	{
 		value: "production",
 		name: "ADOPTER_REGISTRATION.MODAL.FORM_STATE.SYSTEM_TYPE_PRODUCTION",

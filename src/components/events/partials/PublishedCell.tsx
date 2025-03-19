@@ -6,6 +6,7 @@ import { enrichPublications } from "../../../thunks/assetsThunks";
 import { useAppDispatch } from "../../../store";
 import { Publication } from "../../../slices/eventDetailsSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
+import { ParseKeys } from "i18next";
 
 // References for detecting a click outside of the container of the popup listing publications of an event
 const containerPublications = React.createRef<HTMLDivElement>();
@@ -105,11 +106,11 @@ const PublishCell = ({
 												rel='noreferrer'
 												key={key}
 											>
-												<span>{publication.label ? t(publication.label) : t(publication.name)}</span>
+												<span>{publication.label? t(publication.label as ParseKeys) : t(publication.name as ParseKeys)}</span>
 											</a>
 										) : (
 											<button key={key} className="button-like-anchor popover__list-item">
-												<span>{publication.label ? t(publication.label) : t(publication.name)}</span>
+												<span>{publication.label ? t(publication.label as ParseKeys) : t(publication.name as ParseKeys)}</span>
 											</button>
 										)
 									) : null

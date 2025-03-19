@@ -10,6 +10,7 @@ import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { NewGroupSchema } from "../../../../utils/validate";
 import { useAppDispatch } from "../../../../store";
 import { postNewGroup } from "../../../../slices/groupSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the new group wizard
@@ -34,7 +35,10 @@ const NewGroupWizard: React.FC<{
 	} = usePageFunctions(0, initialValues);
 
 	// Caption of steps used by Stepper
-	const steps = [
+	const steps: {
+		translation: ParseKeys
+		name: string
+	}[] = [
 		{
 			translation: "USERS.GROUPS.DETAILS.TABS.METADATA",
 			name: "metadata",

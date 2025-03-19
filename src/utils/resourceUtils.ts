@@ -15,7 +15,7 @@ import { RootState } from "../store";
 import { MetadataCatalog, MetadataField } from "../slices/eventSlice";
 import { initialFormValuesNewGroup } from '../configs/modalConfig';
 import { UpdateUser } from '../slices/userDetailsSlice';
-import { TFunction } from 'i18next';
+import { ParseKeys, TFunction } from 'i18next';
 import { TableState } from "../slices/tableSlice";
 
 /**
@@ -258,7 +258,7 @@ export const getMetadataCollectionFieldName = (metadataField: { collection?: { [
 				return t(JSON.parse(collectionField.name as string).label);
 			}
 
-			return collectionField ? t(collectionField.name as string) : "";
+			return collectionField ? t(collectionField.name as ParseKeys) : "";
 		}
 
 		return "";

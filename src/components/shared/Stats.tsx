@@ -12,6 +12,7 @@ import {
 import { loadEventsIntoTable } from "../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchEvents } from "../../slices/eventSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the status bar of the event view and filters depending on these
@@ -70,11 +71,11 @@ const Stats = () => {
 							{/* Show the description of the status, if defined,
 								else show name of filter and its value*/}
 							{!!st.description ? (
-								<span>{t(st.description)}</span>
+								<span>{t(st.description as ParseKeys)}</span>
 							) : (
 								st.filters.map((filter, key) => (
 									<span key={key}>
-										{t(filter.filter)}: {t(filter.value)}
+										{t(filter.filter as ParseKeys)}: {t(filter.value as ParseKeys)}
 									</span>
 								))
 							)}

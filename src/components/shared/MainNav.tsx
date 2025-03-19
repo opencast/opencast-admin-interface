@@ -10,6 +10,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { useAppSelector } from "../../store";
 import { Tooltip } from "./Tooltip";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the main navigation that opens when the burger button is clicked
@@ -195,7 +196,7 @@ const MainNavLink = ({
 	className,
 }: {
 	path: string
-	tooltipTitle: string
+	tooltipTitle: ParseKeys
 	className: string
 }) => {
 	const { t } = useTranslation();

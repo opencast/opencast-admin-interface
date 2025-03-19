@@ -1,7 +1,13 @@
+import { ParseKeys } from "i18next";
+
 /**
  * Utility file for the navigation bar
  */
-export const systemsLinks = [
+export const systemsLinks: {
+	path: string
+	accessRole: string
+	text: ParseKeys
+}[] = [
 	{
 		path: "/systems/jobs",
 		accessRole: "ROLE_UI_JOBS_VIEW",

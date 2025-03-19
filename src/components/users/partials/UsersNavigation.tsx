@@ -1,7 +1,13 @@
+import { ParseKeys } from "i18next";
+
 /**
  * Utility file for the navigation bar
  */
-export const usersLinks = [
+export const usersLinks: {
+	path: string
+	accessRole: string
+	text: ParseKeys
+}[] = [
 	{
 		path: "/users/users",
 		accessRole: "ROLE_UI_USERS_VIEW",

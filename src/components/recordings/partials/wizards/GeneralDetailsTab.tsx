@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { RecordingDetails } from "../../../../slices/recordingDetailsSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders details about a recording/capture agent
@@ -38,7 +39,7 @@ const GeneralDetailsTab: React.FC<{
 									</tr>
 									<tr>
 										<td>{t("RECORDINGS.RECORDINGS.DETAILS.GENERAL.STATUS")}</td>
-										<td>{t(agent.status)}</td>
+										<td>{t(agent.status as ParseKeys)}</td>
 									</tr>
 									<tr>
 										<td>{t("RECORDINGS.RECORDINGS.DETAILS.GENERAL.UPDATE")}</td>

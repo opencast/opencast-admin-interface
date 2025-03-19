@@ -1,7 +1,13 @@
+import { ParseKeys } from "i18next";
+
 /**
  * Utility file for the navigation bar
  */
-export const eventsLinks = [
+export const eventsLinks: {
+	path: string,
+	accessRole: string,
+	text: ParseKeys
+}[] = [
 	{
 		path: "/events/events",
 		accessRole: "ROLE_UI_EVENTS_VIEW",
