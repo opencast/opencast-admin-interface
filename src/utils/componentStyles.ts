@@ -1,25 +1,18 @@
 /* this file contains syles as javascript objects for syled components */
 
 import { StylesConfig, Theme } from "react-select";
-import { DropDownType } from "../components/shared/DropDown";
 
 // colors
 const colorDropDownMain = "#aaa";
 const colorDropDownNormalFocus = "#5897fb";
 const colorDropDownDarkerFocus = "#2a62bc";
 
-
-export function dropDownStyle(type: DropDownType): StylesConfig {
-	const width =
-		type === "theme" || type === "newTheme" || type === "workflow"
-			? "100%"
-			: type === "time"
-			? 70
-			: type === "aclRole"
-			? 360
-			: type === "aclTemplate" || type === "comment" || type === "filter"
-			? 200
-			: 250;
+export function dropDownStyle(customCss: {
+	width?: number | string,
+	optionPaddingTop?: number,
+	optionLineHeight?: string,
+}): StylesConfig {
+	const width = customCss.width ?? 250;
 
 	return {
 		container: (provided, state) => ({
@@ -102,14 +95,8 @@ export function dropDownStyle(type: DropDownType): StylesConfig {
 		}),
 		option: (provided, state) => ({
 			...provided,
-			paddingTop:
-				type === "aclRole" || type === "aclTemplate" || type === "comment" || type === "filter"
-					? 5
-					: 0,
-			paddingBottom:
-				type === "aclRole" || type === "aclTemplate" || type === "comment" || type === "filter"
-					? 5
-					: 0,
+			paddingTop: customCss.optionPaddingTop ?? 0,
+			paddingBottom: customCss.optionPaddingTop ?? 0,
 			backgroundColor: state.isSelected
 				? colorDropDownDarkerFocus
 				: state.isFocused
@@ -118,7 +105,7 @@ export function dropDownStyle(type: DropDownType): StylesConfig {
 			color: state.isFocused || state.isSelected ? "white" : provided.color,
 			cursor: "pointer",
 			overflowWrap: "normal",
-			lineHeight: type === "comment" ? "105%" : "inherit",
+			lineHeight: customCss.optionLineHeight ?? "inherit", //type === "comment" ? "105%" : "inherit",
 		}),
 		singleValue: (provided, state) => ({
 			...provided,

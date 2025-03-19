@@ -10,6 +10,7 @@ import { setOffset } from "../slices/tableSlice";
 import NewResourceModal, { NewResource } from "./shared/NewResourceModal";
 import { useHotkeys } from "react-hotkeys-hook";
 import { ModalHandle } from "./shared/modals/Modal";
+import { ParseKeys } from "i18next";
 
 /**
  * Component that renders the nav bar
@@ -18,18 +19,18 @@ type LinkType = {
 	path: string
 	accessRole: string
 	loadFn: (dispatch: AppDispatch) => void
-	text: string
+	text: ParseKeys
 }
 
 type CreateType = {
 	accessRole: string
 	onShowModal?: () => Promise<void>
 	onHideModal?: () => void
-	text: string
+	text: ParseKeys
 	isDisplay?: boolean
 	resource: NewResource
 	hotkeySequence?: string[]
-	hotkeyDescription?: string
+	hotkeyDescription?: ParseKeys
 }
 
 const NavBar = ({
@@ -41,7 +42,7 @@ const NavBar = ({
 	create,
 } : {
 	children?: React.ReactNode
-	navAriaLabel?: string
+	navAriaLabel?: ParseKeys
 	displayNavigation: boolean
 	setNavigation: React.Dispatch<React.SetStateAction<boolean>>
 	links: LinkType[]
@@ -73,7 +74,7 @@ const NavBar = ({
 	useHotkeys(
 		(create && create.hotkeySequence) ?? [],
 		() => showNewResourceModal(),
-		{ description: t((create && create.hotkeyDescription) ?? "") ?? undefined },
+		{ description: create && create.hotkeyDescription ? t(create.hotkeyDescription) : undefined },
 		[showNewResourceModal]
 	);
 
@@ -92,11 +93,12 @@ const NavBar = ({
 			<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
 
 			<nav aria-label={navAriaLabel && t(navAriaLabel)}>
-				{links.map((link) =>
+				{links.map((link, index) =>
 					{return (hasAccess(link.accessRole, user) && (
 						<Link
+							key={index}
 							to={link.path}
-							className={cn({ active: location.pathname === link.path })}
+							className={cn({ active: location.pathname === link.path || (location.pathname === "/" && link.path === "/events/events") })}
 							onClick={() => {
 								if (location.pathname !== link.path) {
 									// Reset the current page to first page

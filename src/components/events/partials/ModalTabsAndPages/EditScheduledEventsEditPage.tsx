@@ -218,8 +218,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																	text={
 																		formik.values.editedEvents.length > 0 ? findSeriesName(seriesOptions, formik.values.editedEvents) : ""
 																	}
-																	options={seriesOptions}
-																	type={"isPartOf"}
+																	options={seriesOptions.map((option) => ({ label: option.name, value: option.value }) )}
 																	required={false}
 																	handleChange={(element) => {
 																		if (element) {
@@ -244,7 +243,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 										{
 											reduceGroupEvents(Object.values(groupBy(formik.values.editedEvents, i => i.weekday))).map((groupedEvent, key) => (
 												<div className="obj tbl-details">
-													<header>{t("EVENTS.EVENTS.NEW.WEEKDAYSLONG." + groupedEvent.weekday)
+													<header>{t(`EVENTS.EVENTS.NEW.WEEKDAYSLONG.${groupedEvent.weekday}`)
 														+ " ("
 														+ t("BULK_ACTIONS.EDIT_EVENTS.EDIT.EVENTS")
 														+ " "
@@ -273,7 +272,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																			disabled={false}
 																			title={"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_TIME"}
 																			hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
-																			minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+																			minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"}
 																			callbackHour={(value: string) => {
 																				for (const [i, entry] of formik.values.editedEvents.entries()) {
 																					if (entry.weekday === groupedEvent.weekday ) {
@@ -301,7 +300,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																			disabled={false}
 																			title={"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.END_TIME"}
 																			hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
-																			minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+																			minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"}
 																			callbackHour={(value: string) => {
 																				for (const [i, entry] of formik.values.editedEvents.entries()) {
 																					if (entry.weekday === groupedEvent.weekday ) {
@@ -330,9 +329,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																			inputDevices={inputDevices}
 																			disabled={false}
 																			title={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"}
-																			placeholder={`-- ${t(
-																						"SELECT_NO_OPTION_SELECTED"
-																					)} --`}
+																			placeholder={"SELECT_NO_OPTION_SELECTED"}
 																			callback={(value: string) => {
 																				for (const [i, entry] of formik.values.editedEvents.entries()) {
 																					if (entry.weekday === groupedEvent.weekday ) {

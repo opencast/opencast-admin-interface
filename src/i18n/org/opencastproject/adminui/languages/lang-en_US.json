@@ -19,6 +19,7 @@
 	"LOGOUT": "Logout",
 	"RESET": "Reset",
 	"SELECT_NO_OPTION_SELECTED": "No option selected",
+	"SELECT_NO_OPTION_SELECTED_DASHED": "-- No option selected --",
 	"SELECT_NO_OPTIONS_AVAILABLE": "No options available",
 	"SELECT_NO_MATCHING_RESULTS": "No matching results.",
 	"YES": "Yes",
