@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import cn from "classnames";
 import Notifications from "../../../shared/Notifications";
 import {
 	Role,
@@ -20,7 +19,9 @@ import { filterRoles, getAclTemplateText } from "../../../../utils/aclUtils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchSeriesDetailsAcls } from "../../../../slices/seriesDetailsSlice";
 import { getSeriesDetailsAcl } from "../../../../selectors/seriesDetailsSelectors";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
+import { formatAclRolesForDropdown, formatAclTemplatesForDropdown } from "../../../../utils/dropDownUtils";
 
 /**
  * This component renders the access page for new events and series in the wizards.
@@ -148,8 +149,7 @@ const NewAccessPage = <T extends RequiredFormProps>({
 																				aclTemplates,
 																				formik.values.aclTemplate
 																			)}
-																			options={aclTemplates}
-																			type={"aclTemplate"}
+																			options={formatAclTemplatesForDropdown(aclTemplates)}
 																			required={true}
 																			handleChange={(element) => {
 																				if (element) {
@@ -160,6 +160,7 @@ const NewAccessPage = <T extends RequiredFormProps>({
 																				"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.LABEL"
 																			)}
 																			autoFocus={true}
+																			customCSS={{ width: 200, optionPaddingTop: 5 }}
 																		/>
 																	</div>
 																</td>
@@ -235,11 +236,12 @@ const NewAccessPage = <T extends RequiredFormProps>({
 																							<DropDown
 																								value={policy.role}
 																								text={policy.role}
-																								options={filterRoles(
-																									roles,
-																									formik.values.acls
+																								options={formatAclRolesForDropdown(
+																									filterRoles(
+																										roles,
+																										formik.values.acls
+																									)
 																								)}
-																								type={"aclRole"}
 																								required={true}
 																								handleChange={(element) => {
 																									if (element) {
@@ -258,6 +260,7 @@ const NewAccessPage = <T extends RequiredFormProps>({
 																										user
 																									)
 																								}
+																								customCSS={{ width: 360, optionPaddingTop: 5 }}
 																							/>
 																						</td>
 																						{/* Checkboxes for  policy.read and policy.write*/}
@@ -310,7 +313,6 @@ const NewAccessPage = <T extends RequiredFormProps>({
 																			</tr>
 																		)}
 
-																		{/*Todo: show only if user has role ROLE_UI_SERIES_DETAILS_ACL_EDIT */}
 																		{hasAccess(editAccessRole, user) && (
 																			<tr>
 																				{/*Add additional policy row*/}
@@ -351,33 +353,15 @@ const NewAccessPage = <T extends RequiredFormProps>({
 				</div>
 			</div>
 			{/* Button for navigation to next page and previous page */}
-			<footer>
-				<button
-					type="submit"
-					className={cn("submit", {
-						active: formik.dirty && formik.isValid,
-						inactive: !(formik.dirty && formik.isValid),
-					})}
-					disabled={!(formik.dirty && formik.isValid)}
-					onClick={async () => {
-						if (await dispatch(checkAcls(formik.values.acls))) {
-							nextPage(formik.values);
-						}
-					}}
-					tabIndex={100}
-				>
-					{t("WIZARD.NEXT_STEP")}
-				</button>
-				<button
-					className="cancel"
-					onClick={() => previousPage(formik.values, false)}
-					tabIndex={101}
-				>
-					{t("WIZARD.BACK")}
-				</button>
-			</footer>
-
-			<div className="btm-spacer" />
+			<WizardNavigationButtons
+				formik={formik}
+				nextPage={async () => {
+					if (await dispatch(checkAcls(formik.values.acls))) {
+						nextPage(formik.values);
+					}
+				}}
+				previousPage={previousPage}
+			/>
 		</>
 	);
 };

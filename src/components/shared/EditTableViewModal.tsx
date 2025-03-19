@@ -8,15 +8,48 @@ import {
 	getResourceType,
 } from "../../selectors/tableSelectors";
 import { DragDropContext, Droppable, OnDragEndResponder, Draggable as Draggablee } from "@hello-pangea/dnd";
-import { availableHotkeys } from "../../configs/hotkeysConfig";
-import { useHotkeys } from "react-hotkeys-hook";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { TableColumn } from "../../configs/tableConfigs/aclsTableConfig";
+import { aclsTableConfig, TableColumn } from "../../configs/tableConfigs/aclsTableConfig";
+import { eventsTableConfig } from "../../configs/tableConfigs/eventsTableConfig";
+import { seriesTableConfig } from "../../configs/tableConfigs/seriesTableConfig";
+import { recordingsTableConfig } from "../../configs/tableConfigs/recordingsTableConfig";
+import { jobsTableConfig } from "../../configs/tableConfigs/jobsTableConfig";
+import { serversTableConfig } from "../../configs/tableConfigs/serversTableConfig";
+import { servicesTableConfig } from "../../configs/tableConfigs/servicesTableConfig";
+import { usersTableConfig } from "../../configs/tableConfigs/usersTableConfig";
+import { groupsTableConfig } from "../../configs/tableConfigs/groupsTableConfig";
+import { themesTableConfig } from "../../configs/tableConfigs/themesTableConfig";
+import { Modal, ModalHandle } from "./modals/Modal";
+import { Resource } from "../../slices/tableSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the modal for editing which columns are shown in the table
  */
 const EditTableViewModal = ({
+	close,
+	modalRef,
+}: {
+	close: () => void,
+	modalRef: React.RefObject<ModalHandle | null>
+}) => {
+	const { t } = useTranslation();
+
+	return (
+		<Modal
+			header={t("PREFERENCES.TABLE.CAPTION")}
+			classId="edit-table-view-modal"
+			className="modal active modal-animation"
+			ref={modalRef}
+		>
+			<EditTableViewModalContent
+				handleClose={close}
+			/>
+		</Modal>
+	);
+};
+
+const EditTableViewModalContent = ({
 	handleClose,
 }: {
 	handleClose: () => void,
@@ -45,15 +78,9 @@ const EditTableViewModal = ({
 		}
 	}, [activeColumns, deactivatedColumns, isColsLoaded]);
 
-	useHotkeys(
-		availableHotkeys.general.CLOSE_MODAL.sequence,
-		() => handleClose(),
-		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
-		[handleClose],
-  	);
-
 	// closes this modal
 	const close = () => {
+		clearData();
 		handleClose();
 	};
 
@@ -81,8 +108,34 @@ const EditTableViewModal = ({
 	const clearData = () => {
 		setActiveColumns(originalActiveColumns);
 		setDeactivatedColumns(originalDeactivatedColumns);
-		close();
+		handleClose();
 	};
+
+	// Reset columns to how they were before the user made any changes ever
+	const resetToInitialConfig = () => {
+		const initialConfig = getConfigByResource(resource);
+		setActiveColumns(initialConfig?.columns.filter((column) => !column.deactivated) ?? []);
+		setDeactivatedColumns(initialConfig?.columns.filter((column) => column.deactivated) ?? []);
+	}
+
+	const getConfigByResource = (resource: Resource) => {
+		switch (resource) {
+			case "events": return eventsTableConfig;
+			case "series": return seriesTableConfig;
+			case "recordings": return recordingsTableConfig;
+			case "jobs": return jobsTableConfig;
+			case "servers": return serversTableConfig;
+			case "services": return servicesTableConfig;
+			case "users": return usersTableConfig;
+			case "groups": return groupsTableConfig;
+			case "acls": return aclsTableConfig;
+			case "themes": return themesTableConfig;
+			default: {
+				console.warn("Resource of type " + resource + " is undefined for tableConfigs.")
+				return undefined;
+			}
+		}
+	}
 
 	// change column order based on where column was dragged and dropped
 	const onDragEnd: OnDragEndResponder = (result) => {
@@ -95,168 +148,153 @@ const EditTableViewModal = ({
 		setActiveColumns((columns) => arrayMoveImmutable(columns, result.source.index, destination.index));
 	}
 
-	const getTranslationForSubheading = (resource: string) => {
-		const resourceLC = resource.toLowerCase();
-		if (resourceLC === "events" || resourceLC === "series") {
-			return "EVENTS." + resource.toUpperCase() + ".TABLE.CAPTION"
+	const getTranslationForSubheading = (resource: Resource): ParseKeys | undefined => {
+		const resourceUC: Uppercase<Resource> = resource.toUpperCase() as Uppercase<Resource>;
+		if (resourceUC === "EVENTS" || resourceUC === "SERIES") {
+			return `EVENTS.${resourceUC}.TABLE.CAPTION`
 		}
-		if (resourceLC === "recordings") {
-			return resource.toUpperCase() + "." + resource.toUpperCase() + ".TABLE.CAPTION"
+		if (resourceUC === "RECORDINGS") {
+			return `${resourceUC}.${resourceUC}.TABLE.CAPTION`
 		}
-		if (resourceLC === "jobs" || resourceLC === "servers" || resourceLC === "services") {
-			return "SYSTEMS." + resource.toUpperCase() + ".TABLE.CAPTION"
+		if (resourceUC === "JOBS" || resourceUC === "SERVERS" || resourceUC === "SERVICES") {
+			return `SYSTEMS.${resourceUC}.TABLE.CAPTION`
 		}
-		if (resourceLC === "users" || resourceLC === "groups" || resourceLC === "acls") {
-			return "USERS." + resource.toUpperCase() + ".TABLE.CAPTION"
+		if (resourceUC === "USERS" || resourceUC === "GROUPS" || resourceUC === "ACLS") {
+			return `USERS.${resourceUC}.TABLE.CAPTION`
 		}
-		if (resourceLC === "themes") {
-			return "CONFIGURATION." + resource.toUpperCase() + ".TABLE.CAPTION"
+		if (resourceUC === "THEMES") {
+			return `CONFIGURATION.${resourceUC}.TABLE.CAPTION`
 		}
-		return ""
 	}
 
 	return (
 		<>
-			<div className="modal-animation modal-overlay" />
-			<section
-				className="modal active modal-animation"
-				id="edit-table-view-modal"
-			>
-				<header>
-					<button
-						className="button-like-anchor fa fa-times close-modal"
-						onClick={() => {
-							clearData();
-							close();
-						}}
-					/>
-					<h2>{t("PREFERENCES.TABLE.CAPTION") /* Edit Table View */}</h2>
-				</header>
+			<div className="modal-content">
+				<div className="modal-body">
+					<div className="tab-description for-header">
+						<p>
+							{t("PREFERENCES.TABLE.SUBHEADING", {
+								tableName: t(getTranslationForSubheading(resource)!),
+							})}
+						</p>
+					</div>
 
-				<div className="modal-content">
-					<div className="modal-body">
-						<div className="tab-description for-header">
-							<p>
-								{t("PREFERENCES.TABLE.SUBHEADING", {
-									tableName: t(getTranslationForSubheading(resource)),
-								})}
-							</p>
+					<div className="row">
+						<div className="col">
+							<div className="obj drag-available-column">
+								<header>
+									<h2>
+										{
+											t(
+												"PREFERENCES.TABLE.AVAILABLE_COLUMNS"
+											) /* Available Columns */
+										}
+									</h2>
+								</header>
+								<ul className="drag-drop-items">
+									{deactivatedCols.map((column, key) =>
+										column ? (
+											<li className="drag-item" key={key}>
+												<div className="title">{t(column.label)}</div>
+												<button
+													className="button-like-anchor move-item add"
+													onClick={() => changeColumn(column, false)}
+												>
+													<span className="sr-only">{t("PREFERENCES.TABLE.ADD_COLUMN")}</span>
+												</button>
+											</li>
+										) : null
+									)}
+								</ul>
+							</div>
 						</div>
 
-						<div className="row">
-							<div className="col">
-								<div className="obj drag-available-column">
-									<header>
-										<h2>
-											{
-												t(
-													"PREFERENCES.TABLE.AVAILABLE_COLUMNS"
-												) /* Available Columns */
-											}
-										</h2>
-									</header>
-									<ul className="drag-drop-items">
-										{deactivatedCols.map((column, key) =>
-											column ? (
-												<li className="drag-item" key={key}>
-													<div className="title">{t(column.label)}</div>
-													<button
-														className="button-like-anchor move-item add"
-														onClick={() => changeColumn(column, false)}
+						<div className="col">
+							<div className="obj drag-selected-column">
+								<header>
+									<h2>
+										{
+											t(
+												"PREFERENCES.TABLE.SELECTED_COLUMNS"
+											) /* Selected Columns */
+										}
+									</h2>
+								</header>
+								<ul className="drag-drop-items">
+									<li>
+										<DragDropContext
+											onDragEnd={onDragEnd}
+										>
+											<Droppable droppableId="droppable">
+												{(provided, snapshot) => (
+													<div
+														{...provided.droppableProps}
+														ref={provided.innerRef}
+														// style={}
 													>
-														<span className="sr-only">{t("PREFERENCES.TABLE.ADD_COLUMN")}</span>
-													</button>
-												</li>
-											) : null
-										)}
-									</ul>
-								</div>
-							</div>
-
-							<div className="col">
-								<div className="obj drag-selected-column">
-									<header>
-										<h2>
-											{
-												t(
-													"PREFERENCES.TABLE.SELECTED_COLUMNS"
-												) /* Selected Columns */
-											}
-										</h2>
-									</header>
-									<ul className="drag-drop-items">
-										<li>
-											<DragDropContext
-												onDragEnd={onDragEnd}
-											>
-												<Droppable droppableId="droppable">
-													{(provided, snapshot) => (
-														<div
-															{...provided.droppableProps}
-															ref={provided.innerRef}
-															// style={}
-														>
-															{activeCols.filter(col => col).map((column, key) =>
-																(
-																	<Draggablee key={column.name} draggableId={column.name} index={key}>
-																		{(provided, snapshot) => (
-																			<div
-																				ref={provided.innerRef}
-																				{...provided.draggableProps}
-																				{...provided.dragHandleProps}
-																				style={{...provided.draggableProps.style}}
-																				className="drag-item"
-																			>
-																				<div className="title">
-																					{t(column.label)}
-																				</div>
-																				<button
-																					className="button-like-anchor move-item remove"
-																					onClick={() => changeColumn(column, true)}
-																				>
-																					<span className="sr-only">{t("PREFERENCES.TABLE.REMOVE_COLUMN")}</span>
-																				</button>
+														{activeCols.filter(col => col).map((column, key) =>
+															(
+																<Draggablee key={column.name} draggableId={column.name} index={key}>
+																	{(provided, snapshot) => (
+																		<div
+																			ref={provided.innerRef}
+																			{...provided.draggableProps}
+																			{...provided.dragHandleProps}
+																			style={{...provided.draggableProps.style}}
+																			className="drag-item"
+																		>
+																			<div className="title">
+																				{t(column.label)}
 																			</div>
-																		)}
-																	</Draggablee>
-																)
-															)}
-															{provided.placeholder}
-														</div>
-													)}
-												</Droppable>
-											</DragDropContext>
+																			<button
+																				className="button-like-anchor move-item remove"
+																				onClick={() => changeColumn(column, true)}
+																			>
+																				<span className="sr-only">{t("PREFERENCES.TABLE.REMOVE_COLUMN")}</span>
+																			</button>
+																		</div>
+																	)}
+																</Draggablee>
+															)
+														)}
+														{provided.placeholder}
+													</div>
+												)}
+											</Droppable>
+										</DragDropContext>
 
-										</li>
-									</ul>
-								</div>
+									</li>
+								</ul>
 							</div>
-						</div>
-
-						<div className="tab-description for-footer">
-							<p>
-								{/* The order and selection will be saved automatically.
-														Press "Reset" to restore the default view. */}
-								{t("PREFERENCES.TABLE.FOOTER_TEXT", {
-									resetTranslation: t("RESET"),
-								})}
-							</p>
 						</div>
 					</div>
-				</div>
 
-				<footer>
-					{/* Render buttons for updating table data */}
-						<button onClick={() => clearData()} className="cancel active">
-							{t("CANCEL") /*Cancel*/}
-						</button>
-						<button onClick={() => save()} className="submit active">
-							{t("SAVE") /* Save As Default */}
-						</button>
-				</footer>
-			</section>
+					<div className="tab-description for-footer">
+						<p>
+							{/* The order and selection will be saved automatically.
+													Press "Reset" to restore the default view. */}
+							{t("PREFERENCES.TABLE.FOOTER_TEXT", {
+								resetTranslation: t("RESET"),
+							})}
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<footer>
+				{/* Render buttons for updating table data */}
+					<button onClick={() => clearData()} className="cancel active">
+						{t("CANCEL") /*Cancel*/}
+					</button>
+					<button onClick={() => save()} className="submit active">
+						{t("SAVE") /* Save As Default */}
+					</button>
+					<button onClick={() => resetToInitialConfig()} className="cancel active">
+						{t("RESET") /* Reset saved setting */}
+					</button>
+			</footer>
 		</>
 	);
-};
+}
 
 export default EditTableViewModal;

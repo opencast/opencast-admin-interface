@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import SeriesDetails from "./SeriesDetails";
-import DetailsModal from "../../../shared/modals/DetailsModal";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { useAppDispatch } from "../../../../store";
+import { Modal, ModalHandle } from "../../../shared/modals/Modal";
 
 /**
  * This component renders the modal for displaying series details
  */
 const SeriesDetailsModal = ({
-	handleClose,
 	seriesTitle,
-	seriesId
+	seriesId,
+	modalRef,
 }: {
-	handleClose: () => void
 	seriesTitle: string
 	seriesId: string
+	modalRef: React.RefObject<ModalHandle | null>
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -31,22 +31,24 @@ const SeriesDetailsModal = ({
 		if (!policyChanged || confirmUnsaved()) {
 			setPolicyChanged(false);
 			dispatch(removeNotificationWizardForm());
-			handleClose();
+			return true;
 		}
+		return false;
 	};
 
 	return (
-		<DetailsModal
-			handleClose={close}
-			prefix={"EVENTS.SERIES.DETAILS.HEADER"}
-			title={seriesTitle}
+		<Modal
+			closeCallback={close}
+			header={t("EVENTS.SERIES.DETAILS.HEADER", { name: seriesTitle })}
+			classId="details-modal"
+			ref={modalRef}
 		>
-				<SeriesDetails
-					seriesId={seriesId}
-					policyChanged={policyChanged}
-					setPolicyChanged={(value) => setPolicyChanged(value)}
-				/>
-		</DetailsModal>
+			<SeriesDetails
+				seriesId={seriesId}
+				policyChanged={policyChanged}
+				setPolicyChanged={(value) => setPolicyChanged(value)}
+			/>
+		</Modal>
 	);
 };
 

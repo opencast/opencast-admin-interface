@@ -1,15 +1,24 @@
 import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
-import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
+import { aclsTableConfig, TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { Server } from './serverSlice';
 import { Recording } from './recordingSlice';
 import { Job } from './jobSlice';
 import { Service } from './serviceSlice';
-import { UserResult } from './userSlice';
+import { User } from './userSlice';
 import { Group } from './groupSlice';
 import { AclResult } from './aclSlice';
 import { ThemeDetailsType } from './themeSlice';
 import { Series } from './seriesSlice';
 import { Event } from './eventSlice';
+import { eventsTableConfig } from '../configs/tableConfigs/eventsTableConfig';
+import { seriesTableConfig } from '../configs/tableConfigs/seriesTableConfig';
+import { recordingsTableConfig } from '../configs/tableConfigs/recordingsTableConfig';
+import { jobsTableConfig } from '../configs/tableConfigs/jobsTableConfig';
+import { serversTableConfig } from '../configs/tableConfigs/serversTableConfig';
+import { servicesTableConfig } from '../configs/tableConfigs/servicesTableConfig';
+import { usersTableConfig } from '../configs/tableConfigs/usersTableConfig';
+import { groupsTableConfig } from '../configs/tableConfigs/groupsTableConfig';
+import { themesTableConfig } from '../configs/tableConfigs/themesTableConfig';
 
 /*
 Overview of the structure of the data in arrays in state
@@ -59,27 +68,31 @@ export function isRowSelectable(row: Row) {
 	return false;
 }
 
-export function isEvent(row: Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | ThemeDetailsType): row is Event {
+export function isEvent(row: Event | Series | Recording | Server | Job | Service | User | Group | AclResult | ThemeDetailsType): row is Event {
 	return (row as Event).event_status !== undefined;
 }
 
-export function isSeries(row: Row | Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | ThemeDetailsType): row is Series {
+export function isSeries(row: Row | Event | Series | Recording | Server | Job | Service | User | Group | AclResult | ThemeDetailsType): row is Series {
 	return (row as Series).organizers !== undefined;
 }
 
 // TODO: Improve row typing. While this somewhat correctly reflects the current state of our code, it is rather annoying to work with.
-export type Row = { selected: boolean } & ( Event | Series | Recording | Server | Job | Service | UserResult | Group | AclResult | ThemeDetailsType )
+export type Row = { selected: boolean } & ( Event | Series | Recording | Server | Job | Service | User | Group | AclResult | ThemeDetailsType )
 
-type TableState = {
+export type Resource = "events" | "series" | "recordings" | "jobs" | "servers" | "services" | "users" | "groups" | "acls" | "themes"
+
+export type ReverseOptions = "ASC" | "DESC"
+
+export type TableState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
-	multiSelect: boolean,
-	resource: string,
+	multiSelect: { [key in Resource]: boolean },
+	resource: Resource,
 	pages: Page[],
 	columns: TableConfig["columns"],
-	sortBy: string,
+	sortBy: { [key in Resource]: string },  // Key is resource, value is actual sorting parameter
 	predicate: string,
-	reverse: string,
+	reverse: { [key in Resource]: ReverseOptions },  // Key is resource, value is actual sorting parameter
 	rows: Row[],
 	maxLabel: string,
 	pagination: Pagination,
@@ -89,13 +102,46 @@ type TableState = {
 const initialState: TableState = {
 	status: 'uninitialized',
 	error: null,
-	multiSelect: false,
-	resource: "",
+	multiSelect: {
+		events: eventsTableConfig.multiSelect,
+		series: seriesTableConfig.multiSelect,
+		recordings: recordingsTableConfig.multiSelect,
+		jobs: jobsTableConfig.multiSelect,
+		servers: serversTableConfig.multiSelect,
+		services: servicesTableConfig.multiSelect,
+		users: usersTableConfig.multiSelect,
+		groups: groupsTableConfig.multiSelect,
+		acls: aclsTableConfig.multiSelect,
+		themes: themesTableConfig.multiSelect,
+	},
+	resource: "events",
 	pages: [],
 	columns: [],
-	sortBy: "date",
+	sortBy: {
+		events: "date",
+		series: "createdDateTime",
+		recordings: "status",
+		jobs: "id",
+		servers: "online",
+		services: "status",
+		users: "name",
+		groups: "name",
+		acls: "name",
+		themes: "name",
+	},
 	predicate: "",
-	reverse: "DESC",
+	reverse: {
+		events: "DESC",
+		series: "DESC",
+		recordings: "ASC",
+		jobs: "ASC",
+		servers: "ASC",
+		services: "ASC",
+		users: "ASC",
+		groups: "ASC",
+		acls: "ASC",
+		themes: "ASC",
+	},
 	rows: [],
 	maxLabel: "",
 	pagination: {
@@ -111,22 +157,22 @@ const tableSlice = createSlice({
 	initialState,
 	reducers: {
 		loadResourceIntoTable(state, action: PayloadAction<{
-			multiSelect: TableState["multiSelect"],
+			multiSelect: TableState["multiSelect"][Resource],
 			columns: TableConfig["columns"],
 			resource: TableState["resource"],
 			pages: TableState["pages"],
 			rows: TableState["rows"],
-			sortBy: TableState["sortBy"],
-			reverse: TableState["reverse"],
+			sortBy: TableState["sortBy"][Resource],
+			reverse: TableState["reverse"][Resource],
 			totalItems: TableState["pagination"]["totalItems"],
 		}>) {
-			state.multiSelect = action.payload.multiSelect;
+			state.multiSelect[action.payload.resource] = action.payload.multiSelect;
 			state.columns = action.payload.columns;
 			state.resource = action.payload.resource;
 			state.pages = action.payload.pages;
 			state.rows = action.payload.rows;
-			state.sortBy = action.payload.sortBy;
-			state.reverse = action.payload.reverse;
+			state.sortBy[action.payload.resource] = action.payload.sortBy;
+			state.reverse[action.payload.resource] = action.payload.reverse;
 			state.pagination = {
 				...state.pagination,
 				totalItems: action.payload.totalItems,
@@ -168,14 +214,14 @@ const tableSlice = createSlice({
 			})
 		},
 		reverseTable(state, action: PayloadAction<
-			TableState["reverse"]
+			TableState["reverse"][Resource]
 		>) {
-			state.reverse = action.payload;
+			state.reverse[state.resource] = action.payload;
 		},
 		setSortBy(state, action: PayloadAction<
-			TableState["sortBy"]
+			TableState["sortBy"][Resource]
 		>) {
-			state.sortBy = action.payload;
+			state.sortBy[state.resource] = action.payload;
 		},
 		createPage(state, action: PayloadAction<
 			Page

@@ -1,3 +1,5 @@
+import { ParseKeys } from "i18next";
+
 export type TableConfig = {
 	columns: TableColumn[],
 	caption: string,
@@ -8,7 +10,7 @@ export type TableConfig = {
 
 export type TableColumn = {
 	name: string,
-	label: string,
+	label: ParseKeys,
 	template?: string,
 	sortable?: boolean,
 	translate?: boolean,

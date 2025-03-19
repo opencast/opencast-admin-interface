@@ -5,6 +5,7 @@ import { TobiraPage } from "../slices/seriesSlice";
 import { initArray } from "../utils/utils";
 import { EditedEvents, Event, UploadAssetsTrack } from "../slices/eventSlice";
 import { Role } from "../slices/aclSlice";
+import { ParseKeys } from "i18next";
 
 // Context for notifications shown in modals
 export const NOTIFICATION_CONTEXT = "modal-form";
@@ -25,7 +26,7 @@ export const initialFormValuesNewEvents: {
 	scheduleDurationMinutes: string,
 	scheduleEndHour: string,
 	scheduleEndMinute: string,
-	repeatOn: string[],
+	repeatOn: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[],
 	location: string,
 	deviceInputs: string[],
 	processingWorkflow: string,
@@ -58,7 +59,10 @@ export const hours = initArray(24);
 export const minutes = initArray(60);
 
 // sorted weekdays and their translation key
-export const weekdays = [
+export const weekdays: {
+	name: "MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU"
+	label: ParseKeys
+}[] = [
 	{
 		name: "MO",
 		label: "EVENTS.EVENTS.NEW.WEEKDAYS.MO",
@@ -100,7 +104,7 @@ export const initialFormValuesNewSeries: {
 
 	breadcrumbs: TobiraPage[],
 	selectedPage?: TobiraPage,
-	[key: string]: any,  // Metadata fields that are getting added later
+	[key: string]: unknown,  // Metadata fields that are getting added later
 } = {
 	acls: [
 		{

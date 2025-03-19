@@ -2,12 +2,13 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import RenderWorkflowConfig from "../wizards/RenderWorkflowConfig";
 import { getWorkflowDef } from "../../../../selectors/workflowSelectors";
-import cn from "classnames";
 import { setDefaultConfig } from "../../../../utils/workflowPanelUtils";
 import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchWorkflowDef } from "../../../../slices/workflowSlice";
 import { FormikProps } from "formik";
+import { formatWorkflowsForDropdown } from "../../../../utils/dropDownUtils";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
  * This component renders the workflow selection for start task bulk action
@@ -76,8 +77,7 @@ const StartTaskWorkflowPage = <T extends RequiredFormProps>({
 														workflowDef.id === formik.values.workflow
 												)?.title ?? ""
 											}
-											options={workflowDef}
-											type={"workflow"}
+											options={formatWorkflowsForDropdown(workflowDef)}
 											required={true}
 											handleChange={(element) => {
 												if (element) {
@@ -88,6 +88,7 @@ const StartTaskWorkflowPage = <T extends RequiredFormProps>({
 												"EVENTS.EVENTS.DETAILS.PUBLICATIONS.SELECT_WORKFLOW"
 											)}
 											tabIndex={99}
+											customCSS={{width: "100%"}}
 										/>
 									</div>
 								)}
@@ -114,37 +115,18 @@ const StartTaskWorkflowPage = <T extends RequiredFormProps>({
 			</div>
 
 			{/* Button for navigation to next page and previous page */}
-			<footer>
-				<button
-					type="submit"
-					className={cn("submit", {
-						active: formik.values.workflow && formik.isValid,
-						inactive: !(formik.values.workflow && formik.isValid),
-					})}
-					disabled={!(formik.values.workflow && formik.isValid)}
-					onClick={() => {
-						nextPage(formik.values);
-					}}
-					tabIndex={100}
-				>
-					{t("WIZARD.NEXT_STEP")}
-				</button>
-				<button
-					className="cancel"
-					onClick={() => {
-						previousPage(formik.values);
-						if (!formik.isValid) {
-							// set page as not filled out
-							setPageCompleted([]);
-						}
-					}}
-					tabIndex={101}
-				>
-					{t("WIZARD.BACK")}
-				</button>
-			</footer>
-
-			<div className="btm-spacer" />
+			<WizardNavigationButtons
+				formik={formik}
+				nextPage={nextPage}
+				previousPage={() => {
+					previousPage(formik.values);
+					if (!formik.isValid) {
+						// set page as not filled out
+						setPageCompleted([]);
+					}
+				}}
+				customValidation={!(formik.values.workflow && formik.isValid)}
+			/>
 		</>
 	);
 };

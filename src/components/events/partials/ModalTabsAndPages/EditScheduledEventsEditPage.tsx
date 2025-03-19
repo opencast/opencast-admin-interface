@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import cn from "classnames";
 import { FieldArray, FormikProps } from "formik";
 import Notifications from "../../../shared/Notifications";
 import { getTimezoneOffset, hasAccess } from "../../../../utils/utils";
@@ -22,6 +21,7 @@ import {
 } from "../../../../slices/eventSlice";
 import { Recording } from "../../../../slices/recordingSlice";
 import lodash, { groupBy } from "lodash";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import SchedulingTime from "../wizards/scheduling/SchedulingTime";
 import SchedulingLocation from "../wizards/scheduling/SchedulingLocation";
 
@@ -218,8 +218,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																	text={
 																		formik.values.editedEvents.length > 0 ? findSeriesName(seriesOptions, formik.values.editedEvents) : ""
 																	}
-																	options={seriesOptions}
-																	type={"isPartOf"}
+																	options={seriesOptions.map((option) => ({ label: option.name, value: option.value }) )}
 																	required={false}
 																	handleChange={(element) => {
 																		if (element) {
@@ -244,7 +243,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 										{
 											reduceGroupEvents(Object.values(groupBy(formik.values.editedEvents, i => i.weekday))).map((groupedEvent, key) => (
 												<div className="obj tbl-details">
-													<header>{t("EVENTS.EVENTS.NEW.WEEKDAYSLONG." + groupedEvent.weekday)
+													<header>{t(`EVENTS.EVENTS.NEW.WEEKDAYSLONG.${groupedEvent.weekday}`)
 														+ " ("
 														+ t("BULK_ACTIONS.EDIT_EVENTS.EDIT.EVENTS")
 														+ " "
@@ -273,7 +272,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																			disabled={false}
 																			title={"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_TIME"}
 																			hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
-																			minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+																			minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"}
 																			callbackHour={(value: string) => {
 																				for (const [i, entry] of formik.values.editedEvents.entries()) {
 																					if (entry.weekday === groupedEvent.weekday ) {
@@ -301,7 +300,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																			disabled={false}
 																			title={"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.END_TIME"}
 																			hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
-																			minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+																			minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"}
 																			callbackHour={(value: string) => {
 																				for (const [i, entry] of formik.values.editedEvents.entries()) {
 																					if (entry.weekday === groupedEvent.weekday ) {
@@ -330,9 +329,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 																			inputDevices={inputDevices}
 																			disabled={false}
 																			title={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"}
-																			placeholder={`-- ${t(
-																						"SELECT_NO_OPTION_SELECTED"
-																					)} --`}
+																			placeholder={"SELECT_NO_OPTION_SELECTED"}
 																			callback={(value: string) => {
 																				for (const [i, entry] of formik.values.editedEvents.entries()) {
 																					if (entry.weekday === groupedEvent.weekday ) {
@@ -401,15 +398,10 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 			</div>
 
 			{/* Navigation buttons */}
-			<footer>
-				<button
-					type="submit"
-					className={cn("submit", {
-						active: formik.dirty && formik.isValid,
-						inactive: !(formik.dirty && formik.isValid),
-					})}
-					disabled={!(formik.dirty && formik.isValid)}
-					onClick={async () => {
+			<WizardNavigationButtons
+				formik={formik}
+				nextPage={
+					async () => {
 						dispatch(removeNotificationWizardForm());
 						if (
 							await checkSchedulingConflicts(
@@ -420,26 +412,18 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 						) {
 							nextPage(formik.values);
 						}
-					}}
-				>
-					{t("WIZARD.NEXT_STEP")}
-				</button>
-
-				<button
-					className="cancel"
-					onClick={() => {
+					}
+				}
+				previousPage={
+					() => {
 						previousPage(formik.values);
 						if (!formik.isValid) {
 							// set page as not filled out
 							setPageCompleted([]);
 						}
-					}}
-				>
-					{t("WIZARD.BACK")}
-				</button>
-			</footer>
-
-			<div className="btm-spacer" />
+					}
+				}
+			/>
 		</>
 	);
 };

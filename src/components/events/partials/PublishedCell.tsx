@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Event } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import { ParseKeys } from "i18next";
 
 // References for detecting a click outside of the container of the popup listing publications of an event
 const containerPublications = React.createRef<HTMLDivElement>();
@@ -40,7 +41,7 @@ const PublishCell = ({
 
 	const onlyEngage = row.publications.length === 1
 		&& row.publications[0].enabled
-		&& !row.publications[0].hiding
+		&& !row.publications[0].hide
 		&& row.publications[0].id === 'engage-player';
 
 	return (
@@ -65,7 +66,7 @@ const PublishCell = ({
 							<div className="popover__content">
 								{/* Show a list item for each publication of an event that isn't hidden*/}
 								{row.publications.map((publication, key) =>
-									!publication.hiding ? (
+									!publication.hide ? (
 										// Check if publications is enabled and choose icon according
 										publication.enabled ? (
 											<a
@@ -75,11 +76,11 @@ const PublishCell = ({
 												rel='noreferrer'
 												key={key}
 											>
-												<span>{t(publication.name)}</span>
+												<span>{publication.label? t(publication.label as ParseKeys) : t(publication.name as ParseKeys)}</span>
 											</a>
 										) : (
 											<button key={key} className="button-like-anchor popover__list-item">
-												<span>{t(publication.name)}</span>
+												<span>{publication.label ? t(publication.label as ParseKeys) : t(publication.name as ParseKeys)}</span>
 											</button>
 										)
 									) : null

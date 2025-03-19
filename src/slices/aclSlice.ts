@@ -69,7 +69,7 @@ const initialState: AclsState = {
 
 export const fetchAcls = createAppAsyncThunk('acls/fetchAcls', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state);
+	let params = getURLParams(state, "acls");
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -96,6 +96,15 @@ export const fetchAclActions = async () => {
 	const actions = transformToIdValueArray(response);
 
 	return actions;
+};
+
+// fetch defaults for the access policy tab in the details views
+export const fetchAclDefaults = async () => {
+	let data = await axios.get("/admin-ng/resources/ACL.DEFAULTS.json");
+
+	const response = await data.data;
+
+	return response;
 };
 
 // fetch all policies of an certain acl template

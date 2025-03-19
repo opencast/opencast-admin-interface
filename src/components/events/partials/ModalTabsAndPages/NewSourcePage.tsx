@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import cn from "classnames";
 import Notifications from "../../../shared/Notifications";
 import DatePicker from "react-datepicker";
 import {
@@ -40,12 +39,14 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { Recording, fetchRecordings } from "../../../../slices/recordingSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { parseISO } from "date-fns";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { checkConflicts, UploadAssetsTrack } from "../../../../slices/eventSlice";
 import SchedulingTime from "../wizards/scheduling/SchedulingTime";
 import SchedulingEndDateDisplay from "../wizards/scheduling/SchedulingEndDateDisplay";
 import SchedulingLocation from "../wizards/scheduling/SchedulingLocation";
 import SchedulingInputs from "../wizards/scheduling/SchedulingInputs";
 import SchedulingConflicts from "../wizards/scheduling/SchedulingConflicts";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the source page for new events in the new event wizard.
@@ -210,39 +211,21 @@ const NewSourcePage = <T extends RequiredFormProps>({
 			</div>
 
 			{/* Button for navigation to next page and previous page */}
-			<footer>
-				<button
-					type="submit"
-					className={cn("submit", {
-						active: formik.dirty && formik.isValid,
-						inactive: !(formik.dirty && formik.isValid),
-					})}
-					disabled={!(formik.dirty && formik.isValid)}
-					onClick={async () => {
-						removeOldNotifications();
-						const noConflicts = await dispatch(checkConflicts(formik.values));
-						if (Array.isArray(noConflicts)) {
-							setConflicts(noConflicts);
-						}
-						if ((typeof noConflicts == "boolean" && noConflicts)
-							|| (Array.isArray(noConflicts) && noConflicts.length === 0)) {
-							nextPage(formik.values);
-						}
-					}}
-					tabIndex={100}
-				>
-					{t("WIZARD.NEXT_STEP")}
-				</button>
-				<button
-					className="cancel"
-					onClick={() => previousPage(formik.values, false)}
-					tabIndex={101}
-				>
-					{t("WIZARD.BACK")}
-				</button>
-			</footer>
-
-			<div className="btm-spacer" />
+			<WizardNavigationButtons
+				formik={formik}
+				nextPage={async () => {
+					removeOldNotifications();
+					const noConflicts = await dispatch(checkConflicts(formik.values));
+					if (Array.isArray(noConflicts)) {
+						setConflicts(noConflicts);
+					}
+					if ((typeof noConflicts == "boolean" && noConflicts)
+						|| (Array.isArray(noConflicts) && noConflicts.length === 0)) {
+						nextPage(formik.values);
+					}
+				}}
+				previousPage={previousPage}
+			/>
 		</>
 	);
 };
@@ -343,7 +326,7 @@ const Upload = <T extends RequiredFormPropsUpload>({
 							{sourceMetadata.UPLOAD && sourceMetadata.UPLOAD.metadata.map((field, key) => (
 								<tr key={key}>
 									<td>
-										<span>{t(field.label)}</span>
+										<span>{t(field.label as ParseKeys)}</span>
 										{field.required && <i className="required">*</i>}
 									</td>
 									<td className="editable">
@@ -445,6 +428,7 @@ const Schedule = <T extends {
 									className="datepicker-custom-input"
 									portalId="root"
 									locale={currentLanguage?.dateLocale}
+									strictParsing
 								/>
 							</td>
 						</tr>
@@ -475,6 +459,7 @@ const Schedule = <T extends {
 											className="datepicker-custom-input"
 											portalId="root"
 											locale={currentLanguage?.dateLocale}
+											strictParsing
 										/>
 									</td>
 								</tr>
@@ -508,7 +493,7 @@ const Schedule = <T extends {
 							disabled={false}
 							title={"EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.START_TIME"}
 							hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
-							minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+							minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"}
 							callbackHour={(value: string) => {
 								if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
 									changeStartHourMultiple(
@@ -547,7 +532,7 @@ const Schedule = <T extends {
 							disabled={false}
 							title={"EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.DURATION"}
 							hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
-							minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+							minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"}
 							callbackHour={(value: string) => {
 								if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
 									changeDurationHourMultiple(
@@ -586,7 +571,7 @@ const Schedule = <T extends {
 							disabled={false}
 							title={"EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.END_TIME"}
 							hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
-							minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+							minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"}
 							callbackHour={(value: string) => {
 								if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
 									changeEndHourMultiple(

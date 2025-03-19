@@ -34,7 +34,7 @@ const initialState: RecordingDetailsState = {
 };
 
 // fetch details of certain recording from server
-export const fetchRecordingDetails = createAppAsyncThunk('recordingDetails/fetchRecordingDetails', async (name: string) => {
+export const fetchRecordingDetails = createAppAsyncThunk('recordingDetails/fetchRecordingDetails', async (name: RecordingDetails["name"]) => {
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.

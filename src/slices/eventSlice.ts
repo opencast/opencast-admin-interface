@@ -1,11 +1,10 @@
-import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice, unwrapResult } from '@reduxjs/toolkit'
 import { eventsTableConfig } from "../configs/tableConfigs/eventsTableConfig";
 import axios, { AxiosProgressEvent } from 'axios';
 import moment from "moment-timezone";
 import {
 	getURLParams,
 	prepareAccessPolicyRulesForPost,
-	prepareExtendedMetadataFieldsForPost,
 	prepareMetadataFieldsForPost,
 	transformMetadataCollection,
 	transformMetadataFields,
@@ -24,9 +23,10 @@ import {
 import { getAssetUploadOptions, getSchedulingEditedEvents } from '../selectors/eventSelectors';
 import { fetchSeriesOptions } from "./seriesSlice";
 import { AppDispatch } from '../store';
-import { fetchAssetUploadOptions } from '../thunks/assetsThunks';
+import { enrichPublications, fetchAssetUploadOptions } from '../thunks/assetsThunks';
 import { TransformedAcl } from './aclDetailsSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
+import { Publication } from './eventDetailsSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { FormikErrors } from 'formik';
 
@@ -74,13 +74,7 @@ export type Event = {
 	managedAcl: string,
 	needs_cutting: boolean,
 	presenters: string[],
-	publications: {
-		enabled: boolean,
-		hiding: boolean,
-		id: string,
-		name: string,
-		url: string,
-	}[],
+	publications: Publication[],
 	selected?: boolean,
 	series?: { id: string, title: string }
 	source: string,
@@ -93,8 +87,15 @@ export type Event = {
 }
 
 export type MetadataField = {
+	delimiter?: string,
 	differentValues?: boolean,
-	collection?: { [key: string]: unknown }[],  // different for e.g. languages and presenters
+	collection?: {
+		name: string,
+		value: string,
+		label?: string,
+		order?: number,
+		selectable?: boolean,
+	 }[],
 	id: string,
 	label: string,
 	readOnly: boolean,
@@ -121,7 +122,7 @@ export type EditedEvents = {
 	changedStartTimeHour: string,
 	changedStartTimeMinutes: string,
 	changedTitle: string,
-	changedWeekday: string,
+	changedWeekday: "MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU",
 	deviceInputs: string,
 	endTimeHour: string,
 	endTimeMinutes: string,
@@ -131,7 +132,7 @@ export type EditedEvents = {
 	startTimeHour: string,
 	startTimeMinutes: string,
 	title: string,
-	weekday: string,
+	weekday: "MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU",
 }
 
 export type UploadAssetOption = {
@@ -175,7 +176,7 @@ type EventState = {
 	statusAssetUploadOptions: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAssetUploadOptions: SerializedError | null,
 	results: Event[],
-	columns: TableConfig["columns"],  // TODO: proper typing, derive from `initialColumns`
+	columns: TableConfig["columns"],
 	total: number,
 	count: number,
 	offset: number,
@@ -185,7 +186,7 @@ type EventState = {
 	extendedMetadata: MetadataCatalog[],
 	isFetchingAssetUploadOptions: boolean,
 	uploadAssetOptions: UploadAssetOption[],
-	uploadAssetWorkflow: string | undefined,  // TODO: proper typing
+	uploadAssetWorkflow: string | undefined,
 	schedulingInfo: {
 		editedEvents: EditedEvents[],
 		seriesOptions: {
@@ -234,12 +235,19 @@ const initialState: EventState = {
 };
 
 // fetch events from server
-export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, { getState }) => {
+export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, { dispatch, getState }) => {
 	const state = getState();
-	let params: ReturnType<typeof getURLParams> & { getComments?: boolean } = getURLParams(state);
+	let params: ReturnType<typeof getURLParams> & { getComments?: boolean } = getURLParams(state, "events");
+
+	// Add a secondary filter to enforce order of events
+	// (Elasticsearch does not guarantee ordering)
+	params = {
+		...params,
+		sort: params.sort ? params.sort + ",uid:asc" : "uid:asc"
+	}
 
 	// Only if the notes column is enabled, fetch comment information for events
-	if (state.table.columns.find(column => column.label === "EVENTS.EVENTS.TABLE.ADMINUI_NOTES" && !column.deactivated)) {
+	if (state.events.columns.find(column => column.label === "EVENTS.EVENTS.TABLE.ADMINUI_NOTES" && !column.deactivated)) {
 		params = {
 			...params,
 			getComments: true
@@ -258,16 +266,15 @@ export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, {
 			...response.results[i],
 			date: response.results[i].start_date,
 		};
-		// insert enabled and hiding property of publications, if result has publications
+		// insert enabled and hide property of publications, if result has publications
 		let result = response.results[i];
 		if (!!result.publications && result.publications.length > 0) {
-			let transformedPublications = [];
-			for (let j = 0; result.publications.length > j; j++) {
-				transformedPublications.push({
-					...result.publications[j],
-					enabled: true,
-					hiding: false,
-				});
+			let transformedPublications: Publication[] = [];
+			try {
+				const resultAction = await dispatch(enrichPublications({ publications: result.publications }));
+				transformedPublications = unwrapResult(resultAction);
+			} catch (rejectedValueOrSerializedError) {
+				console.error(rejectedValueOrSerializedError)
 			}
 			response.results[i] = {
 				...response.results[i],
@@ -308,7 +315,7 @@ export const fetchEventMetadata = createAppAsyncThunk('events/fetchEventMetadata
 });
 
 // get merged metadata for provided event ids
-export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', async (ids: string[]) => {
+export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', async (ids: Event["id"][]) => {
 	let formData = new URLSearchParams();
 	formData.append("eventIds", JSON.stringify(ids));
 
@@ -462,8 +469,11 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	} | undefined = undefined;
 
 	// prepare metadata provided by user
-	let metadataFields = prepareMetadataFieldsForPost(metadataInfo.fields, values);
-	let extendedMetadataFields = prepareExtendedMetadataFieldsForPost(
+	let metadata = prepareMetadataFieldsForPost(
+		[metadataInfo],
+		values
+	);
+	const extendedMetadataCatalogs = prepareMetadataFieldsForPost(
 		extendedMetadata,
 		values
 	);
@@ -475,25 +485,15 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 			type: values.sourceMode,
 		};
 		if (sourceMetadata.UPLOAD) {
-			for (const metadata of sourceMetadata.UPLOAD.metadata) {
-				metadataFields = metadataFields.concat({
-					id: metadata.id,
-					value: values[metadata.id],
-					type: metadata.type,
-					tabindex: metadata.tabindex,
+			for (const smetadata of sourceMetadata.UPLOAD.metadata) {
+				metadata[0].fields = metadata[0].fields.concat({
+					id: smetadata.id,
+					value: values[smetadata.id],
+					type: smetadata.type,
 				});
 			}
 		}
 	}
-
-	// metadata for post request
-	let metadata = [
-		{
-			flavor: metadataInfo.flavor,
-			title: metadataInfo.title,
-			fields: metadataFields,
-		},
-	];
 
 	// transform date data for post request if source mode is SCHEDULE_*
 	if (
@@ -612,7 +612,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 		configurationPrepared[config] = String(values.configuration[config]);
 	});
 
-	for (const entry of extendedMetadataFields) {
+	for (const entry of extendedMetadataCatalogs) {
 		metadata.push(entry);
 	}
 
@@ -665,7 +665,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 });
 
 // delete event with provided id
-export const deleteEvent = createAppAsyncThunk('events/deleteEvent', async (id: string, { dispatch }) => {
+export const deleteEvent = createAppAsyncThunk('events/deleteEvent', async (id: Event["id"], { dispatch }) => {
 	// API call for deleting an event
 	axios
 		.delete(`/admin-ng/event/${id}`)
@@ -828,8 +828,6 @@ export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateSched
 						required: false,
 						type: "text",
 						value: eventChanges.changedTitle,
-						// todo: what is hashkey?
-						$$hashKey: "object:1588",
 					},
 					{
 						id: "isPartOf",
@@ -840,8 +838,6 @@ export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateSched
 						translatable: false,
 						type: "text",
 						value: eventChanges.changedSeries,
-						// todo: what is hashkey?
-						$$hashKey: "object:1589",
 					},
 				],
 			},

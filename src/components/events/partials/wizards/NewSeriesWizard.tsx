@@ -8,7 +8,6 @@ import {
 	getSeriesTobiraPageError,
 	getSeriesTobiraPageStatus,
 } from "../../../../selectors/seriesSeletctor";
-import NewMetadataPage from "../ModalTabsAndPages/NewMetadataPage";
 import NewMetadataExtendedPage from "../ModalTabsAndPages/NewMetadataExtendedPage";
 import NewAccessPage from "../ModalTabsAndPages/NewAccessPage";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
@@ -22,6 +21,10 @@ import NewTobiraPage from "../ModalTabsAndPages/NewTobiraPage";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
+import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
+import NewMetadataCommonPage from "../ModalTabsAndPages/NewMetadataCommonPage";
+import { hasAccess } from "../../../../utils/utils";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the new series wizard and the submission of values
@@ -40,6 +43,12 @@ const NewSeriesWizard: React.FC<{
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
 
+	useEffect(() => {
+		dispatch(removeNotificationWizardForm());
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	const themesEnabled = (orgProperties['admin.themes.enabled'] || 'false').toLowerCase() === 'true';
 
 	const initialValues = getInitialValues(metadataFields, extendedMetadata, user);
@@ -56,7 +65,11 @@ const NewSeriesWizard: React.FC<{
 	}, []);
 
 	// Caption of steps used by Stepper
-	const steps = [
+	const steps: {
+		translation: ParseKeys,
+		name: string,
+		hidden: boolean,
+	}[] = [
 		{
 			translation: "EVENTS.SERIES.NEW.METADATA.CAPTION",
 			name: "metadata",
@@ -80,7 +93,7 @@ const NewSeriesWizard: React.FC<{
 		{
 			translation: "EVENTS.SERIES.NEW.TOBIRA.CAPTION",
 			name: "tobira",
-			hidden: !!(tobiraStatus === "failed" && tobiraError?.message?.includes("503")),
+			hidden: !hasAccess("ROLE_UI_SERIES_DETAILS_TOBIRA_EDIT", user) || !!(tobiraStatus === "failed" && tobiraError?.message?.includes("503")),
 		},
 		{
 			translation: "EVENTS.SERIES.NEW.SUMMARY.CAPTION",
@@ -92,7 +105,7 @@ const NewSeriesWizard: React.FC<{
 	// Validation schema of current page
 	let currentValidationSchema;
 	if (page === 0 || page === 1) {
-		currentValidationSchema = MetadataSchema(metadataFields.fields);
+		currentValidationSchema = MetadataSchema(metadataFields);
 	} else {
 		currentValidationSchema = NewSeriesSchema[page];
 	}
@@ -112,10 +125,12 @@ const NewSeriesWizard: React.FC<{
 		updatedPageCompleted[page] = true;
 		setPageCompleted(updatedPageCompleted);
 
-		if (steps[page + 1].hidden) {
-			setPage(page + 2);
-		} else {
-			setPage(page + 1);
+		let newPage = page;
+		do {
+			newPage = newPage + 1;
+		} while(steps[newPage] && steps[newPage]!.hidden);
+		if (steps[newPage]) {
+			setPage(newPage)
 		}
 	};
 
@@ -129,11 +144,13 @@ const NewSeriesWizard: React.FC<{
 		twoPagesBack?: boolean
 	) => {
 		setSnapshot(values);
-		// if previous page is hidden or not always shown, then go back two pages
-		if (steps[page - 1].hidden || twoPagesBack) {
-			setPage(page - 2);
-		} else {
-			setPage(page - 1);
+
+		let newPage = page;
+		do {
+			newPage = newPage - 1;
+		} while(steps[newPage] && steps[newPage]!.hidden);
+		if (steps[newPage]) {
+			setPage(newPage)
 		}
 	};
 
@@ -180,7 +197,7 @@ const NewSeriesWizard: React.FC<{
 							/>
 							<div>
 								{page === 0 && (
-									<NewMetadataPage
+									<NewMetadataCommonPage
 										nextPage={nextPage}
 										formik={formik}
 										metadataFields={metadataFields}
@@ -248,8 +265,13 @@ const getInitialValues = (
 	// Transform metadata fields provided by backend (saved in redux)
 	let metadataInitialValues = getInitialMetadataFieldValues(
 		metadataFields,
-		extendedMetadata
 	);
+
+	for (const catalog of extendedMetadata) {
+		metadataInitialValues = {...metadataInitialValues, ...getInitialMetadataFieldValues(
+			catalog
+		)};
+	}
 
 	initialValues = { ...initialValues, ...metadataInitialValues };
 

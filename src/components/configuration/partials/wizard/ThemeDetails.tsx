@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import cn from "classnames";
 import { Formik } from "formik";
 import GeneralPage from "./GeneralPage";
 import BumperPage from "./BumperPage";
@@ -15,7 +13,9 @@ import ModalNavigation from "../../../shared/modals/ModalNavigation";
 import { NewThemeSchema } from "../../../../utils/validate";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { updateThemeDetails } from "../../../../slices/themeDetailsSlice";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { ThemeDetailsInitialValues } from "../../../../slices/themeSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the theme details
@@ -25,7 +25,6 @@ const ThemeDetails = ({
 }: {
 	close: () => void,
 }) => {
-	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const [page, setPage] = useState(0);
@@ -43,7 +42,12 @@ const ThemeDetails = ({
 	};
 
 	// information about tabs
-	const tabs = [
+	const tabs: {
+		name: string
+		tabTranslation: ParseKeys
+		translation: ParseKeys
+		accessRole: string
+	}[] = [
 		{
 			name: "generalForm",
 			tabTranslation: "CONFIGURATION.THEMES.DETAILS.GENERAL.CAPTION",
@@ -116,23 +120,13 @@ const ThemeDetails = ({
 						{page === 4 && <WatermarkPage formik={formik} isEdit />}
 						{page === 5 && <UsagePage themeUsage={themeUsage} />}
 						{/* submit and cancel button */}
-						<footer>
-							<button
-								className={cn("submit", {
-									active: formik.dirty && formik.isValid,
-									inactive: !(formik.dirty && formik.isValid),
-								})}
-								disabled={!(formik.dirty && formik.isValid)}
-								onClick={() => formik.handleSubmit()}
-							>
-								{t("SUBMIT")}
-							</button>
-							<button className="cancel" onClick={() => close()}>
-								{t("CANCEL")}
-							</button>
-						</footer>
-
-						<div className="btm-spacer" />
+						<WizardNavigationButtons
+							isLast
+							formik={formik}
+							previousPage={() => close()}
+							createTranslationString={"SUBMIT"}
+							cancelTranslationString={"CANCEL"}
+						/>
 					</div>
 				)}
 			</Formik>

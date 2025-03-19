@@ -2,13 +2,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Formik, FormikProps } from "formik";
 import _ from "lodash";
-import cn from "classnames";
 import Notifications from "../../../shared/Notifications";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
 import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { updateSeriesTheme } from "../../../../slices/seriesDetailsSlice";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
  * This component renders the tab for editing the theme of a certain series
@@ -19,7 +19,10 @@ const SeriesDetailsThemeTab = ({
 	seriesId,
 }: {
 	theme: string,
-	themeNames: unknown[]
+	themeNames: {
+		id: string;
+		value: string;
+	}[],
 	seriesId: string
 }) => {
 	const { t } = useTranslation();
@@ -64,8 +67,7 @@ const SeriesDetailsThemeTab = ({
 														<DropDown
 															value={formik.values.theme}
 															text={formik.values.theme}
-															options={themeNames}
-															type={"theme"}
+															options={themeNames.map(names => ({ label: names.value, value: names.id }))}
 															required={false}
 															handleChange={(element) => {
 																if (element) {
@@ -79,6 +81,7 @@ const SeriesDetailsThemeTab = ({
 																	user
 																)
 															}
+															customCSS={{ width: "100%" }}
 														/>
 													</div>
 												)}
@@ -88,27 +91,14 @@ const SeriesDetailsThemeTab = ({
 									{formik.dirty && (
 										<>
 											{/* Render buttons for updating theme */}
-											<footer>
-												<button
-													type="submit"
-													onClick={() => formik.handleSubmit()}
-													disabled={!checkValidity(formik)}
-													className={cn("submit", {
-														active: checkValidity(formik),
-														inactive: !checkValidity(formik),
-													})}
-												>
-													{t("SAVE")}
-												</button>
-												<button
-													onClick={() => formik.resetForm()}
-													className="cancel"
-												>
-													{t("CANCEL")}
-												</button>
-											</footer>
-
-											<div className="btm-spacer" />
+											<WizardNavigationButtons
+												formik={formik}
+												customValidation={!checkValidity(formik)}
+												previousPage={() => formik.resetForm()}
+												createTranslationString="SAVE"
+												cancelTranslationString="CANCEL"
+												isLast
+											/>
 										</>
 									)}
 								</div>

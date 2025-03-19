@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import cn from "classnames";
 import _ from "lodash";
 import DatePicker from "react-datepicker";
 import { Formik, FormikErrors, FormikProps } from "formik";
@@ -46,11 +45,13 @@ import {
 } from "../../../../slices/notificationSlice";
 import { Recording } from "../../../../slices/recordingSlice";
 import { useTranslation } from "react-i18next";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import SchedulingTime from "../wizards/scheduling/SchedulingTime";
 import SchedulingEndDateDisplay from "../wizards/scheduling/SchedulingEndDateDisplay";
 import SchedulingLocation from "../wizards/scheduling/SchedulingLocation";
 import SchedulingInputs from "../wizards/scheduling/SchedulingInputs";
 import SchedulingConflicts from "../wizards/scheduling/SchedulingConflicts";
+import { ParseKeys } from "i18next";
 
 /**../wizards/scheduling/SchedulingTime
  * This component manages the main assets tab of event details modal
@@ -119,6 +120,12 @@ const EventDetailsSchedulingTab = ({
 			return [];
 		}
 	};
+
+	const getInputForAgent = (deviceId: Recording["id"], input: string) => {
+		const inputs = getInputs(deviceId);
+		const value = inputs.find((agent) => agent.id === input)?.value;
+		return value ? t(value as ParseKeys) : "";
+	}
 
 	// changes the inputs in the formik
 	const changeInputs = (deviceId: Recording["id"], setFieldValue: (field: string, value: any) => Promise<void | FormikErrors<any>>) => {
@@ -289,6 +296,7 @@ const EventDetailsSchedulingTab = ({
 																	className="datepicker-custom-input"
 																	portalId="root"
 																	locale={currentLanguage?.dateLocale}
+																	strictParsing
 																/>
 															) : (
 																<>
@@ -308,7 +316,7 @@ const EventDetailsSchedulingTab = ({
 															disabled={!accessAllowed(formik.values.captureAgent)}
 															title={"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_TIME"}
 															hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
-															minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+															minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"}
 															callbackHour={(value: string) => {
 																changeStartHour(
 																	value,
@@ -491,11 +499,7 @@ const EventDetailsSchedulingTab = ({
 																		/>
 																	: formik.values.inputs.map((input, key) => (
 																			<span key={key}>
-																				{t(
-																					getInputs(formik.values.captureAgent).find(
-																						(agent) => agent.id === input
-																					)?.value ?? ""
-																				)}
+																				{getInputForAgent(formik.values.captureAgent, input)}
 																				<br />
 																			</span>
 																		)))}
@@ -509,31 +513,18 @@ const EventDetailsSchedulingTab = ({
 										{formik.dirty && (
 											<>
 												{/* Render buttons for updating scheduling */}
-												<footer>
-													<button
-														type="submit"
-														onClick={() => formik.handleSubmit()}
-														disabled={!checkValidity(formik)}
-														className={cn("submit", {
-															active: checkValidity(formik),
-															inactive: !checkValidity(formik),
-														})}
-													>
-														{t("SAVE") /* Save */}
-													</button>
-													<button
-														className="cancel"
-														onClick={() => {
-															formik.resetForm({
-																values: getInitialValues(),
-															});
-														}}
-													>
-														{t("CANCEL") /* Cancel */}
-													</button>
-												</footer>
-
-												<div className="btm-spacer" />
+												<WizardNavigationButtons
+													formik={formik}
+													customValidation={!checkValidity(formik)}
+													previousPage={() => {
+														formik.resetForm({
+															values: getInitialValues(),
+														});
+													}}
+													createTranslationString="SAVE"
+													cancelTranslationString="CANCEL"
+													isLast
+												/>
 											</>
 										)}
 									</div>

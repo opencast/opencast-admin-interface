@@ -14,6 +14,8 @@ import {
 import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
 import { Event } from "../../../../slices/eventSlice";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the table overview of selected events in edit scheduled events bulk action
@@ -118,7 +120,7 @@ const EditScheduledEventsGeneralPage = <T extends RequiredFormProps>({
 												<td className="nowrap">
 													{event.series ? event.series.title : ""}
 												</td>
-												<td className="nowrap">{t(event.event_status)}</td>
+												<td className="nowrap">{t(event.event_status as ParseKeys)}</td>
 											</tr>
 										))}
 									</tbody>
@@ -130,32 +132,17 @@ const EditScheduledEventsGeneralPage = <T extends RequiredFormProps>({
 			</div>
 
 			{/* Button for navigation to next page */}
-			<footer>
-				<button
-					type="submit"
-					className={cn("submit", {
-						active: checkValidityUpdateScheduleEventSelection(
-							formik.values,
-							user
-						),
-						inactive: !checkValidityUpdateScheduleEventSelection(
-							formik.values,
-							user
-						),
-					})}
-					disabled={
-						!checkValidityUpdateScheduleEventSelection(formik.values, user)
-					}
-					onClick={() => {
-						nextPage(formik.values);
-					}}
-					tabIndex={100}
-				>
-					{t("WIZARD.NEXT_STEP")}
-				</button>
-			</footer>
-
-			<div className="btm-spacer" />
+			<WizardNavigationButtons
+				formik={formik}
+				nextPage={nextPage}
+				customValidation={
+					!checkValidityUpdateScheduleEventSelection(
+						formik.values,
+						user
+					)
+				}
+				isFirst
+			/>
 		</>
 	);
 };

@@ -6,10 +6,13 @@ import {
 	resetFilterValues,
 	fetchStats,
 	Stats as StatsType,
+	editTextFilter,
+	removeTextFilter,
 } from "../../slices/tableFilterSlice";
 import { loadEventsIntoTable } from "../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchEvents } from "../../slices/eventSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the status bar of the event view and filters depending on these
@@ -18,7 +21,7 @@ const Stats = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const filterMap = useAppSelector(state => getFilters(state));
+	const filterMap = useAppSelector(state => getFilters(state, "events"));
 	const stats = useAppSelector(state => getStats(state));
 
 	// Filter with value of clicked status
@@ -26,6 +29,12 @@ const Stats = () => {
 		dispatch(resetFilterValues());
 		let filterValue;
 		await stats.filters.forEach((f) => {
+			if (f.name.toLowerCase() === "textfilter") {
+				dispatch(editTextFilter(f.value));
+				return;
+			} else {
+				dispatch(removeTextFilter());
+			}
 			let filter = filterMap.find(({ name }) => name === f.name);
 			filterValue = f.value;
 			if (!!filter) {
@@ -58,11 +67,11 @@ const Stats = () => {
 							{/* Show the description of the status, if defined,
 								else show name of filter and its value*/}
 							{!!st.description ? (
-								<span>{t(st.description)}</span>
+								<span>{t(st.description as ParseKeys)}</span>
 							) : (
 								st.filters.map((filter, key) => (
 									<span key={key}>
-										{t(filter.filter)}: {t(filter.value)}
+										{t(filter.filter as ParseKeys)}: {t(filter.value as ParseKeys)}
 									</span>
 								))
 							)}

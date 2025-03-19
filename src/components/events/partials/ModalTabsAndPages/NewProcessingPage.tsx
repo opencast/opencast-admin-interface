@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import cn from "classnames";
 import { getWorkflowDef } from "../../../../selectors/workflowSelectors";
 import RenderWorkflowConfig from "../wizards/RenderWorkflowConfig";
 import { setDefaultConfig } from "../../../../utils/workflowPanelUtils";
@@ -8,6 +7,8 @@ import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchWorkflowDef } from "../../../../slices/workflowSlice";
 import { FormikProps } from "formik";
+import { formatWorkflowsForDropdown } from "../../../../utils/dropDownUtils";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 
 /**
  * This component renders the processing page for new events in the new event wizard.
@@ -86,8 +87,7 @@ const NewProcessingPage = <T extends RequiredFormProps>({
 														formik.values.processingWorkflow === workflow.id
 												)?.title ?? ""
 											}
-											options={workflowDef}
-											type={"workflow"}
+											options={formatWorkflowsForDropdown(workflowDef)}
 											required={true}
 											handleChange={(element) => {
 												if (element) {
@@ -97,6 +97,7 @@ const NewProcessingPage = <T extends RequiredFormProps>({
 											placeholder={t(
 												"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW"
 											)}
+											customCSS={{width: "100%"}}
 										/>
 									</div>
 								) : (
@@ -128,27 +129,11 @@ const NewProcessingPage = <T extends RequiredFormProps>({
 			</div>
 
 			{/* Button for navigation to next page and previous page */}
-			<footer>
-				<button
-					type="submit"
-					className={cn("submit", {
-						active: formik.values.processingWorkflow && formik.isValid,
-						inactive: !(formik.values.processingWorkflow && formik.isValid),
-					})}
-					disabled={!(formik.values.processingWorkflow && formik.isValid)}
-					onClick={() => {
-						nextPage(formik.values);
-					}}
-					tabIndex={100}
-				>
-					{t("WIZARD.NEXT_STEP")}
-				</button>
-				<button className="cancel" onClick={() => previous()} tabIndex={101}>
-					{t("WIZARD.BACK")}
-				</button>
-			</footer>
-
-			<div className="btm-spacer" />
+			<WizardNavigationButtons
+				formik={formik}
+				nextPage={nextPage}
+				previousPage={() => previous()}
+			/>
 		</>
 	);
 };

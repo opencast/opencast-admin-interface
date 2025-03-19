@@ -3,7 +3,6 @@ import axios from 'axios';
 import _ from "lodash";
 import {
 	getSeriesDetailsExtendedMetadata,
-	getSeriesDetailsMetadata,
 	getSeriesDetailsThemeNames,
 	getStatistics,
 } from "../selectors/seriesDetailsSelectors";
@@ -16,11 +15,11 @@ import {
 import { transformToIdValueArray } from "../utils/utils";
 import { NOTIFICATION_CONTEXT, NOTIFICATION_CONTEXT_TOBIRA } from "../configs/modalConfig";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { Statistics, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
-import { Ace } from './aclSlice';
+import { Ace, Acl } from './aclSlice';
+import { DataResolution, Statistics, TimeMode, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
-import { TobiraPage } from './seriesSlice';
+import { Series, TobiraPage } from './seriesSlice';
 import { TobiraTabHierarchy } from '../components/events/partials/ModalTabsAndPages/DetailsTobiraTab';
 import { TobiraFormProps } from '../components/events/partials/ModalTabsAndPages/NewTobiraPage';
 import { handleTobiraError } from './shared/tobiraErrors';
@@ -29,12 +28,6 @@ import { handleTobiraError } from './shared/tobiraErrors';
 /**
  * This file contains redux reducer for actions affecting the state of a series
  */
-export type Feed = {
-	link: string,
-	type: string,
-	version: string,
-}
-
 export type TobiraData = {
 	baseURL: string,
 	hostPages: TobiraPage[],
@@ -45,8 +38,6 @@ type SeriesDetailsState = {
 	errorMetadata: SerializedError | null,
 	statusAcl: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorAcl: SerializedError | null,
-	statusFeeds: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
-	errorFeeds: SerializedError | null,
 	statusTheme: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorTheme: SerializedError | null,
 	statusThemeNames: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
@@ -59,7 +50,6 @@ type SeriesDetailsState = {
 	errorTobiraData: SerializedError | null,
   	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
-	feeds: Feed[],
 	acl: TransformedAcl[],
 	theme: string,
 	themeNames: { id: string, value: string }[],
@@ -76,8 +66,6 @@ const initialState: SeriesDetailsState = {
 	errorMetadata: null,
 	statusAcl: 'uninitialized',
 	errorAcl: null,
-	statusFeeds: 'uninitialized',
-	errorFeeds: null,
 	statusTheme: 'uninitialized',
 	errorTheme: null,
 	statusThemeNames: 'uninitialized',
@@ -94,7 +82,6 @@ const initialState: SeriesDetailsState = {
 		fields: [],
 	},
 	extendedMetadata: [],
-	feeds: [],
 	acl: [],
 	theme: "",
 	themeNames: [],
@@ -109,7 +96,7 @@ const initialState: SeriesDetailsState = {
 };
 
 // fetch metadata of certain series from server
-export const fetchSeriesDetailsMetadata = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsMetadata', async (id: string, { rejectWithValue }) => {
+export const fetchSeriesDetailsMetadata = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsMetadata', async (id: Series["id"], { rejectWithValue }) => {
 	const res = await axios.get(`/admin-ng/series/${id}/metadata.json`);
 	const metadataResponse = res.data;
 
@@ -134,7 +121,7 @@ export const fetchSeriesDetailsMetadata = createAppAsyncThunk('seriesDetails/fet
 });
 
 // fetch acls of certain series from server
-export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsAcls', async (id: string, {dispatch}) => {
+export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsAcls', async (id: Series["id"], {dispatch}) => {
 	const res = await axios.get(`/admin-ng/series/${id}/access.json`);
 	const response = res.data;
 
@@ -145,7 +132,8 @@ export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSe
 				key: "SERIES_ACL_LOCKED",
 				duration: -1,
 				parameter: undefined,
-				context: NOTIFICATION_CONTEXT
+				context: NOTIFICATION_CONTEXT,
+				noDuplicates: true
 			})
 		);
 	}
@@ -172,47 +160,8 @@ export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSe
 	return seriesAcls;
 });
 
-// fetch feeds of certain series from server
-export const fetchSeriesDetailsFeeds = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsFeeds', async (id: string) => {
-	const res = await axios.get("/admin-ng/feeds/feeds");
-	const feedsResponse = res.data;
-
-	let seriesFeeds: any[] = [];
-	for (let i = 0; i < feedsResponse.length; i++) {
-		if (feedsResponse[i].name === "Series") {
-			let pattern =
-				feedsResponse[i].identifier.split("/series")[0] +
-				feedsResponse[i].pattern;
-			let uidLink = pattern.split("<series_id>")[0] + id;
-			let typeLink = uidLink.split("<type>");
-			let versionLink = typeLink[1].split("<version>");
-			seriesFeeds = [
-				{
-					type: "atom",
-					version: "0.3",
-					link:
-						typeLink[0] + "atom" + versionLink[0] + "0.3" + versionLink[1],
-				},
-				{
-					type: "atom",
-					version: "1.0",
-					link:
-						typeLink[0] + "atom" + versionLink[0] + "1.0" + versionLink[1],
-				},
-				{
-					type: "rss",
-					version: "2.0",
-					link: typeLink[0] + "rss" + versionLink[0] + "2.0" + versionLink[1],
-				},
-			];
-		}
-	}
-
-	return seriesFeeds;
-});
-
 // fetch theme of certain series from server
-export const fetchSeriesDetailsTheme = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsTheme', async (id: string) => {
+export const fetchSeriesDetailsTheme = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsTheme', async (id: Series["id"]) => {
 	const res = await axios.get(`/admin-ng/series/${id}/theme.json`);
 	const themeResponse = res.data;
 
@@ -240,14 +189,14 @@ export const fetchSeriesDetailsThemeNames = createAppAsyncThunk('seriesDetails/f
 
 // update series with new metadata
 export const updateSeriesMetadata = createAppAsyncThunk('seriesDetails/updateSeriesMetadata', async (params: {
-	id: string,
+	id: Series["id"],
 	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
+	catalog: MetadataCatalog,
 }, {dispatch, getState}) => {
-	const { id, values } = params;
-	let metadataInfos = getSeriesDetailsMetadata(getState());
+	const { id, values, catalog } = params;
 
 	const { fields, data, headers } = transformMetadataForUpdate(
-		metadataInfos,
+		catalog,
 		values
 	);
 
@@ -255,8 +204,8 @@ export const updateSeriesMetadata = createAppAsyncThunk('seriesDetails/updateSer
 
 	// updated metadata in series details redux store
 	let seriesMetadata = {
-		flavor: metadataInfos.flavor,
-		title: metadataInfos.title,
+		flavor: catalog.flavor,
+		title: catalog.title,
 		fields: fields,
 	};
 	dispatch(setSeriesDetailsMetadata(seriesMetadata));
@@ -264,7 +213,7 @@ export const updateSeriesMetadata = createAppAsyncThunk('seriesDetails/updateSer
 
 // update series with new metadata
 export const updateExtendedSeriesMetadata = createAppAsyncThunk('seriesDetails/updateExtendedSeriesMetadata', async (params: {
-	id: string,
+	id: Series["id"],
 	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
 	catalog: MetadataCatalog,
 }, {dispatch, getState}) => {
@@ -302,8 +251,8 @@ export const updateExtendedSeriesMetadata = createAppAsyncThunk('seriesDetails/u
 });
 
 export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSeriesAccess', async (params: {
-	id: string,
-	policies: { acl: { ace: Ace[] } }
+	id: Series["id"],
+	policies: { acl: Acl }
 }, {dispatch}) => {
 	const { id, policies } = params;
 
@@ -348,7 +297,7 @@ export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSerie
 
 export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeriesTheme', async (params: {
 	id: string,
-	values: { theme: string},
+	values: { theme: SeriesDetailsState["theme"] },
 }, {dispatch, getState}) => {
 	const { id, values } = params;
 
@@ -414,7 +363,7 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
 
 // fetch Tobira data of certain series from server
 export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetchSeriesDetailsTobira', async (
-	id: string,
+	id: Series["id"],
 	{ dispatch }
 ) => {
 	const res = await axios.get(`/admin-ng/series/${id}/tobira/pages`)
@@ -429,7 +378,7 @@ export const fetchSeriesDetailsTobira = createAppAsyncThunk('seriesDetails/fetch
 });
 
 export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTobiraData', async (
-	params: TobiraFormProps & { seriesId: string },
+	params: TobiraFormProps & { seriesId: Series["id"] },
 	{ dispatch },
 ) => {
 	const tobiraParams = new URLSearchParams();
@@ -480,7 +429,7 @@ export const updateSeriesTobiraPath = createAppAsyncThunk('series/updateSeriesTo
 );
 
 export const removeSeriesTobiraPath = createAppAsyncThunk('series/removeSeriesTobiraData', async (
-	params: Required<Pick<TobiraFormProps, 'currentPath'>> & { seriesId: string },
+	params: Required<Pick<TobiraFormProps, 'currentPath'>> & { seriesId: Series["id"] },
 	{ dispatch },
 ) => {
 	const path = encodeURIComponent(params.currentPath);
@@ -510,7 +459,7 @@ export const removeSeriesTobiraPath = createAppAsyncThunk('series/removeSeriesTo
 );
 
 // thunks for statistics
-export const fetchSeriesStatistics = createAppAsyncThunk('seriesDetails/fetchSeriesStatistics', async (seriesId: string, {getState}) => {
+export const fetchSeriesStatistics = createAppAsyncThunk('seriesDetails/fetchSeriesStatistics', async (seriesId: Series["id"], {getState}) => {
 	// get prior statistics
 	const state = getState();
 	const statistics = getStatistics(state);
@@ -525,14 +474,14 @@ export const fetchSeriesStatistics = createAppAsyncThunk('seriesDetails/fetchSer
 });
 
 export const fetchSeriesStatisticsValueUpdate = createAppAsyncThunk('seriesDetails/fetchSeriesStatisticsValueUpdate', async (params: {
-	seriesId: string,
+	id: Series["id"],
 	providerId: string,
-	from: string,
-	to: string,
-	dataResolution: string[],
-	timeMode: any
+	from: string | Date,
+	to: string | Date,
+	dataResolution: DataResolution,
+	timeMode: TimeMode
 }, {getState}) => {
-	const {seriesId, providerId, from, to, dataResolution, timeMode } = params;
+	const {id, providerId, from, to, dataResolution, timeMode } = params;
 
 	// get prior statistics
 	const state = getState();
@@ -540,7 +489,7 @@ export const fetchSeriesStatisticsValueUpdate = createAppAsyncThunk('seriesDetai
 
 	return await (
 		fetchStatisticsValueUpdate(
-			seriesId,
+			id,
 			"series",
 			providerId,
 			from,
@@ -623,20 +572,6 @@ const seriesDetailsSlice = createSlice({
 			.addCase(fetchSeriesDetailsAcls.rejected, (state, action) => {
 				state.statusAcl = 'failed';
 				state.errorAcl = action.error;
-			})
-			.addCase(fetchSeriesDetailsFeeds.pending, (state) => {
-				state.statusFeeds = 'loading';
-			})
-			.addCase(fetchSeriesDetailsFeeds.fulfilled, (state, action: PayloadAction<
-				SeriesDetailsState["feeds"]
-			>) => {
-				state.statusFeeds = 'succeeded';
-				const seriesDetailsFeeds = action.payload;
-				state.feeds = seriesDetailsFeeds;
-			})
-			.addCase(fetchSeriesDetailsFeeds.rejected, (state, action) => {
-				state.statusFeeds = 'failed';
-				state.errorFeeds = action.error;
 			})
 			.addCase(fetchSeriesDetailsTheme.pending, (state) => {
 				state.statusTheme = 'loading';

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { JSX, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
 import {
+	getMultiSelect,
 	getPageOffset,
 	getTable,
 	getTableDirection,
@@ -18,6 +18,7 @@ import {
 	updatePageSize,
 	Page,
 	Pagination,
+	ReverseOptions,
 } from "../../slices/tableSlice";
 import {
 	changeAllSelected,
@@ -35,27 +36,8 @@ import sortDownIcon from "../../img/tbl-sort-down.png";
 import Notifications from "./Notifications";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { TableColumn } from "../../configs/tableConfigs/aclsTableConfig";
-
-const SortIcon = styled.i`
-	float: right;
-	margin: 12px 0 0 5px;
-	top: auto;
-	left: auto;
-	width: 8px;
-	height: 13px;
-	background-image: url(${sortIcon});
-`;
-
-const SortActiveIcon = styled.i<{order: string}>`
-    float: right;
-    margin: 12px 0 0 5px;
-    top: auto;
-    left: auto;
-    width: 8px;
-    height: 13px;
-    background-image: url(${(props: { order: string }) =>
-			props.order === "ASC" ? sortUpIcon : sortDownIcon})};
-`;
+import { ModalHandle } from "./modals/Modal";
+import { ParseKeys } from "i18next";
 
 const containerPageSize = React.createRef<HTMLButtonElement>();
 
@@ -80,6 +62,7 @@ const Table = ({
 	const rows = useAppSelector(state => getTableRows(state));
 	const sortBy = useAppSelector(state => getTableSorting(state));
 	const reverse = useAppSelector(state => getTableDirection(state));
+	const multiSelect = useAppSelector(state => getMultiSelect(state));
 
 	// Size options for pagination
 	const sizeOptions = [10, 20, 50, 100, 1000];
@@ -101,13 +84,13 @@ const Table = ({
 
 	// State of dropdown menu
 	const [showPageSizes, setShowPageSizes] = useState(false);
-	const [displayEditTableViewModal, setEditTableViewModal] = useState(false);
+	const editTableViewModalRef = useRef<ModalHandle>(null);
 
 	useEffect(() => {
 		// Function for handling clicks outside of an open dropdown menu
-		const handleClickOutside = (e: any) => {
+		const handleClickOutside = (e: MouseEvent) => {
 			if (
-				e && containerPageSize.current && !containerPageSize.current.contains(e.target)
+				e && containerPageSize.current && !containerPageSize.current.contains(e.target as Node)
 			) {
 				setShowPageSizes(false);
 			}
@@ -145,7 +128,7 @@ const Table = ({
 
 	const sortByColumn = (colName: string) => {
 		dispatch(setSortBy(colName));
-		let direction = "ASC";
+		let direction: ReverseOptions = "ASC";
 		if (reverse && reverse === "ASC") {
 			direction = "DESC";
 		}
@@ -154,11 +137,11 @@ const Table = ({
 	};
 
 	const showEditTableViewModal = async () => {
-		setEditTableViewModal(true);
+		editTableViewModalRef.current?.open()
 	};
 
 	const hideEditTableViewModal = () => {
-		setEditTableViewModal(false);
+		editTableViewModalRef.current?.close?.()
 	};
 
 	const tryToGetValueForKeyFromRowAsString = (row: Row, key: string) => {
@@ -189,18 +172,17 @@ const Table = ({
 			</div>
 
 			{/* Display modal for editing table view if table edit button is clicked */}
-			{ displayEditTableViewModal &&
-				<EditTableViewModal
-					handleClose={hideEditTableViewModal}
-				/>
-			}
+			<EditTableViewModal
+				close={hideEditTableViewModal}
+				modalRef={editTableViewModalRef}
+			/>
 
 			<div id="length-div" style={lengthDivStyle}></div>
 			<table className={"main-tbl highlight-hover"}>
 				<thead>
 					<tr>
 						{/* Only show if multiple selection is possible */}
-						{table.multiSelect ? (
+						{multiSelect ? (
 							<th className="small">
 								{/*Checkbox to select all rows*/}
 								<input
@@ -224,11 +206,19 @@ const Table = ({
 								>
 									<span>
 										<span>{t(column.label)}</span>
-										{!!sortBy && column.name === sortBy ? (
-											<SortActiveIcon order={reverse} />
-										) : (
-											<SortIcon />
-										)}
+										<i style={{
+											float: "right",
+											margin: "12px 0 0 5px",
+											top: "auto",
+											left: "auto",
+											width: 8,
+											height: 13,
+											backgroundImage: `url(${column.name === sortBy
+												? reverse === "ASC"
+													? sortUpIcon
+													: sortDownIcon
+												: sortIcon})`,
+										}} />
 									</span>
 								</th>
 							) : (
@@ -258,7 +248,7 @@ const Table = ({
 							<tr key={key}>
 								{/* Show if multi selection is possible */}
 								{/* Checkbox for selection of row */}
-								{table.multiSelect && "id" in row && (
+								{multiSelect && "id" in row && (
 									<td>
 										<input
 											type="checkbox"
@@ -278,7 +268,7 @@ const Table = ({
 									  column.translate &&
 									  !column.deactivated ? (
 										//Show only if column not template, translate, not deactivated
-										<td key={key}>{t(tryToGetValueForKeyFromRowAsString(row, column.name))}</td>
+										<td key={key}>{t(tryToGetValueForKeyFromRowAsString(row, column.name) as ParseKeys)}</td>
 									) : !!column.template &&
 									  !column.deactivated &&
 									  !!templateMap[column.template] ? (
@@ -409,7 +399,7 @@ const getDirectAccessiblePages = (pages: Page[], pagination: Pagination) => {
 };
 
 // Apply a column template and render corresponding components
-const ColumnTemplate = ({ row, column, templateMap }: {row: Row, column: TableColumn, templateMap: any}) => {
+const ColumnTemplate = ({ row, column, templateMap }: {row: Row, column: TableColumn, templateMap: TemplateMap}) => {
 	if (!column.template) {
 		return <></>;
 	}

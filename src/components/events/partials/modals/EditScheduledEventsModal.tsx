@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
-import { useTranslation } from "react-i18next";
 import { initialFormValuesEditScheduledEvents } from "../../../../configs/modalConfig";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
 import EditScheduledEventsGeneralPage from "../ModalTabsAndPages/EditScheduledEventsGeneralPage";
@@ -21,9 +20,8 @@ import {
 	Conflict,
 } from "../../../../slices/eventSlice";
 import { fetchRecordings } from "../../../../slices/recordingSlice";
-import { useHotkeys } from "react-hotkeys-hook";
-import { availableHotkeys } from "../../../../configs/hotkeysConfig";
 import { Event } from "../../../../slices/eventSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the edit scheduled bulk action
@@ -33,7 +31,6 @@ const EditScheduledEventsModal = ({
 }: {
 	close: () => void
 }) => {
-	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const inputDevices = useAppSelector(state => getRecordings(state));
@@ -55,20 +52,16 @@ const EditScheduledEventsModal = ({
 
 	const user = useAppSelector(state => getUserInformation(state));
 
-	useHotkeys(
-		availableHotkeys.general.CLOSE_MODAL.sequence,
-		() => close(),
-		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
-		[close],
-  	);
-
 	useEffect(() => {
 		// Load recordings that can be used for input
 		dispatch(fetchRecordings("inputs"));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const steps = [
+	const steps: {
+		translation: ParseKeys
+		name: string
+	}[] = [
 		{
 			translation: "BULK_ACTIONS.EDIT_EVENTS.GENERAL.CAPTION",
 			name: "general",
@@ -125,67 +118,59 @@ const EditScheduledEventsModal = ({
 
 	return (
 		<>
-			<div className="modal-animation modal-overlay" />
-			<section className="modal wizard modal-animation">
-				<header>
-					<button className="button-like-anchor fa fa-times close-modal" onClick={() => close()} />
-					<h2>{t("BULK_ACTIONS.EDIT_EVENTS.CAPTION")}</h2>
-				</header>
+			{/* Initialize overall form */}
+			<Formik
+				initialValues={snapshot}
+				validate={(values) => validateFormik(values)}
+				onSubmit={(values) => handleSubmit(values)}
+			>
+				{/* Render wizard pages depending on current value of page variable */}
+				{(formik) => {
+					// eslint-disable-next-line react-hooks/rules-of-hooks
+					useEffect(() => {
+						formik.validateForm().then();
+						// eslint-disable-next-line react-hooks/exhaustive-deps
+					}, [page]);
 
-				{/* Initialize overall form */}
-				<Formik
-					initialValues={snapshot}
-					validate={(values) => validateFormik(values)}
-					onSubmit={(values) => handleSubmit(values)}
-				>
-					{/* Render wizard pages depending on current value of page variable */}
-					{(formik) => {
-						// eslint-disable-next-line react-hooks/rules-of-hooks
-						useEffect(() => {
-							formik.validateForm().then();
-							// eslint-disable-next-line react-hooks/exhaustive-deps
-						}, [page]);
-
-						return (
-							<>
-								{/* Stepper that shows each step of wizard as header */}
-								<WizardStepper
-									steps={steps}
-									page={page}
-									setPage={setPage}
-									completed={pageCompleted}
-									setCompleted={setPageCompleted}
-									formik={formik}
-								/>
-								<div>
-									{page === 0 && (
-										<EditScheduledEventsGeneralPage
-											formik={formik}
-											nextPage={nextPage}
-										/>
-									)}
-									{page === 1 && (
-										<EditScheduledEventsEditPage
-											formik={formik}
-											nextPage={nextPage}
-											previousPage={previousPage}
-											conflictState={{ conflicts, setConflicts }}
-											inputDevices={filterDevicesForAccess(user, inputDevices)}
-											setPageCompleted={setPageCompleted}
-										/>
-									)}
-									{page === 2 && (
-										<EditScheduledEventsSummaryPage
-											formik={formik}
-											previousPage={previousPage}
-										/>
-									)}
-								</div>
-							</>
-						);
-					}}
-				</Formik>
-			</section>
+					return (
+						<>
+							{/* Stepper that shows each step of wizard as header */}
+							<WizardStepper
+								steps={steps}
+								page={page}
+								setPage={setPage}
+								completed={pageCompleted}
+								setCompleted={setPageCompleted}
+								formik={formik}
+							/>
+							<div>
+								{page === 0 && (
+									<EditScheduledEventsGeneralPage
+										formik={formik}
+										nextPage={nextPage}
+									/>
+								)}
+								{page === 1 && (
+									<EditScheduledEventsEditPage
+										formik={formik}
+										nextPage={nextPage}
+										previousPage={previousPage}
+										conflictState={{ conflicts, setConflicts }}
+										inputDevices={filterDevicesForAccess(user, inputDevices)}
+										setPageCompleted={setPageCompleted}
+									/>
+								)}
+								{page === 2 && (
+									<EditScheduledEventsSummaryPage
+										formik={formik}
+										previousPage={previousPage}
+									/>
+								)}
+							</div>
+						</>
+					);
+				}}
+			</Formik>
 		</>
 	);
 };

@@ -4,13 +4,11 @@ import axios from 'axios';
 import {
 	getURLParams,
 	prepareAccessPolicyRulesForPost,
-	prepareSeriesExtendedMetadataFieldsForPost,
-	prepareSeriesMetadataFieldsForPost,
+	prepareMetadataFieldsForPost,
 	transformMetadataCollection,
 } from "../utils/resourceUtils";
 import {
 	transformToIdValueArray,
-	transformToObjectArray,
 } from "../utils/utils";
 import { addNotification } from './notificationSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
@@ -124,7 +122,7 @@ const initialState: SeriesState = {
 // fetch series from server
 export const fetchSeries = createAppAsyncThunk('series/fetchSeries', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state);
+	let params = getURLParams(state, "series");
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -163,8 +161,14 @@ export const fetchSeriesMetadata = createAppAsyncThunk('series/fetchSeriesMetada
 // fetch series themes from server
 export const fetchSeriesThemes = createAppAsyncThunk('series/fetchSeriesThemes', async () => {
 	let res = await axios.get("/admin-ng/series/new/themes");
-	const data = await res.data;
-	const themes = transformToObjectArray(data);
+	const data = await res.data as { [key: string]: { name: string, description: string } };
+	// Transform object of objects to array of objects
+	const themes = Object.keys(data).map((key) => {
+		return {
+			id: key,
+			...data[key],
+		};
+	});
 	return themes;
 });
 
@@ -192,29 +196,21 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 	const { values, metadataInfo, extendedMetadata } = params
 
 	// prepare metadata provided by user
-	let metadataFields = prepareSeriesMetadataFieldsForPost(
-		metadataInfo.fields,
+	const metadata = prepareMetadataFieldsForPost(
+		[metadataInfo],
 		values
 	);
-	let extendedMetadataFields = prepareSeriesExtendedMetadataFieldsForPost(
+	const extendedMetadataCatalogs = prepareMetadataFieldsForPost(
 		extendedMetadata,
 		values
 	);
 
 	// metadata for post request
-	let metadata = [
-		{
-			flavor: metadataInfo.flavor,
-			title: metadataInfo.title,
-			fields: metadataFields,
-		},
-	];
-
-	for (const entry of extendedMetadataFields) {
+	for (const entry of extendedMetadataCatalogs) {
 		metadata.push(entry);
 	}
 
-	let access = prepareAccessPolicyRulesForPost(values.acls);
+	const access = prepareAccessPolicyRulesForPost(values.acls);
 
 	// Tobira
 	let tobira: any = {};
@@ -278,7 +274,7 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 });
 
 // check for events of the series and if deleting the series if it has events is allowed
-export const checkForEventsDeleteSeriesModal = createAppAsyncThunk('series/checkForEventsDeleteSeriesModal', async (id: string, {dispatch}) => {
+export const checkForEventsDeleteSeriesModal = createAppAsyncThunk('series/checkForEventsDeleteSeriesModal', async (id: Series["id"], {dispatch}) => {
 	const hasEventsRequest = await axios.get(
 		`/admin-ng/series/${id}/hasEvents.json`
 	);
@@ -298,7 +294,7 @@ export const checkForEventsDeleteSeriesModal = createAppAsyncThunk('series/check
 });
 
 // delete series with provided id
-export const deleteSeries = createAppAsyncThunk('series/deleteSeries', async (id: string, {dispatch}) => {
+export const deleteSeries = createAppAsyncThunk('series/deleteSeries', async (id: Series["id"], {dispatch}) => {
 	// API call for deleting a series
 	axios
 		.delete(`/admin-ng/series/${id}`)
@@ -377,7 +373,7 @@ export const fetchSeriesOptions = async () => {
 };
 
 // Check if a series has events
-export const hasEvents = async (seriesId: string) => {
+export const hasEvents = async (seriesId: Series["id"]) => {
 	let data = await axios.get(`/admin-ng/series/${seriesId}/hasEvents.json`);
 
 	return (await data.data).hasEvents;
