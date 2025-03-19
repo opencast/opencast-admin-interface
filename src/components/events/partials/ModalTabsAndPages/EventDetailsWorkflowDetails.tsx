@@ -17,6 +17,7 @@ import { removeNotificationWizardForm } from "../../../../slices/notificationSli
 import { renderValidDate } from "../../../../utils/dateUtils";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import { ParseKeys } from "i18next";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
@@ -54,302 +55,302 @@ const EventDetailsWorkflowDetails = ({
 		<ModalContentTable
 			modalContentChildren={
 				/* Hierarchy navigation */
-				<EventDetailsTabHierarchyNavigation
-					openSubTab={openSubTab}
-					hierarchyDepth={0}
-					translationKey0={"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"}
-					subTabArgument0={"workflow-details"}
-				/>
+			<EventDetailsTabHierarchyNavigation
+				openSubTab={openSubTab}
+				hierarchyDepth={0}
+				translationKey0={"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"}
+				subTabArgument0={"workflow-details"}
+			/>
 			}
 		>
-			{/* Notifications */}
-			<Notifications context="not_corner" />
+					{/* Notifications */}
+					<Notifications context="not_corner" />
 
-			{/* the contained view is only displayed, if the data has been fetched */}
-			{isFetching || (
-				<>
-					{/* 'Workflow Details' table */}
-					<div className="obj tbl-details">
-						<header>
-							{
-								t(
-									"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"
-								) /* Workflow Details */
-							}
-						</header>
-						<div className="obj-container">
-							<table className="main-tbl vertical-headers">
-								<tbody>
-									<tr>
-										<td>
-											{
-												t(
-													"EVENTS.EVENTS.DETAILS.WORKFLOWS.TITLE"
-												) /* Title */
-											}
-										</td>
-										<td>{workflowData.title}</td>
-									</tr>
-									{workflowData.description && (
-										<tr>
-											<td>
-												{
-													t(
-														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DESCRIPTION"
-													) /* Description */
-												}
-											</td>
-											<td>{workflowData.description}</td>
-										</tr>
-									)}
-									<tr>
-										<td>
-											{
-												t(
-													"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTER"
-												) /* Submitter*/
-											}
-										</td>
-										<td>
-											{ workflowData.creator }
-										</td>
-									</tr>
-									<tr>
-										<td>
-											{
-												t(
-													"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTED"
-												) /* Submitted */
-											}
-										</td>
-										<td>
-											{t("dateFormats.dateTime.medium", {
-												dateTime: renderValidDate(workflowData.submittedAt),
-											})}
-										</td>
-									</tr>
-									<tr>
-										<td>
-											{
-												t(
-													"EVENTS.EVENTS.DETAILS.WORKFLOWS.STATUS"
-												) /* Status */
-											}
-										</td>
-										<td>{t(workflowData.status)}</td>
-									</tr>
-									{workflowData.status !==
-										"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.RUNNING" && (
-										<tr>
-											<td>
-												{
-													t(
-														"EVENTS.EVENTS.DETAILS.WORKFLOWS.EXECUTION_TIME"
-													) /* Execution time */
-												}
-											</td>
-											<td>{formatDuration(workflowData.executionTime)}</td>
-										</tr>
-									)}
-									{user.isAdmin && (
-										<>
+					{/* the contained view is only displayed, if the data has been fetched */}
+					{isFetching || (
+						<>
+							{/* 'Workflow Details' table */}
+							<div className="obj tbl-details">
+								<header>
+									{
+										t(
+											"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"
+										) /* Workflow Details */
+									}
+								</header>
+								<div className="obj-container">
+									<table className="main-tbl vertical-headers">
+										<tbody>
 											<tr>
 												<td>
-													{t("EVENTS.EVENTS.DETAILS.WORKFLOWS.ID") /* ID */}
+													{
+														t(
+															"EVENTS.EVENTS.DETAILS.WORKFLOWS.TITLE"
+														) /* Title */
+													}
 												</td>
-												<td>{workflowData.wiid}</td>
+												<td>{workflowData.title}</td>
+											</tr>
+											{workflowData.description && (
+												<tr>
+													<td>
+														{
+															t(
+																"EVENTS.EVENTS.DETAILS.WORKFLOWS.DESCRIPTION"
+															) /* Description */
+														}
+													</td>
+													<td>{workflowData.description}</td>
+												</tr>
+											)}
+											<tr>
+												<td>
+													{
+														t(
+															"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTER"
+														) /* Submitter*/
+													}
+												</td>
+												<td>
+													{ workflowData.creator }
+												</td>
 											</tr>
 											<tr>
 												<td>
 													{
 														t(
-															"EVENTS.EVENTS.DETAILS.WORKFLOWS.WDID"
-														) /* Workflow definition */
+															"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTED"
+														) /* Submitted */
 													}
 												</td>
-												<td>{workflowData.wdid}</td>
+												<td>
+													{t("dateFormats.dateTime.medium", {
+														dateTime: renderValidDate(workflowData.submittedAt),
+													})}
+												</td>
 											</tr>
-										</>
-									)}
-								</tbody>
-							</table>
-						</div>
-					</div>
-
-					{/* 'Workflow configuration' table */}
-					{user.isAdmin && (
-						<div className="obj tbl-details">
-							<header>
-								{
-									t(
-										"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.CONFIGURATION"
-									) /* Workflow configuration */
-								}
-							</header>
-							<div className="obj-container">
-								<table className="main-tbl">
-									<tbody>
-										{workflowData && workflowData.configuration &&
-											Object.entries(workflowData.configuration).map(
-											([confKey, confValue], key) => (
-												<tr key={key}>
-													<td>{confKey}</td>
-													<td>{confValue as string}</td>
+											<tr>
+												<td>
+													{
+														t(
+															"EVENTS.EVENTS.DETAILS.WORKFLOWS.STATUS"
+														) /* Status */
+													}
+												</td>
+												<td>{t(workflowData.status as ParseKeys)}</td>
+											</tr>
+											{workflowData.status !==
+												"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.RUNNING" && (
+												<tr>
+													<td>
+														{
+															t(
+																"EVENTS.EVENTS.DETAILS.WORKFLOWS.EXECUTION_TIME"
+															) /* Execution time */
+														}
+													</td>
+													<td>{formatDuration(workflowData.executionTime)}</td>
 												</tr>
-											)
-										)}
-									</tbody>
-								</table>
+											)}
+											{user.isAdmin && (
+												<>
+													<tr>
+														<td>
+															{t("EVENTS.EVENTS.DETAILS.WORKFLOWS.ID") /* ID */}
+														</td>
+														<td>{workflowData.wiid}</td>
+													</tr>
+													<tr>
+														<td>
+															{
+																t(
+																	"EVENTS.EVENTS.DETAILS.WORKFLOWS.WDID"
+																) /* Workflow definition */
+															}
+														</td>
+														<td>{workflowData.wdid}</td>
+													</tr>
+												</>
+											)}
+										</tbody>
+									</table>
+								</div>
 							</div>
-						</div>
+
+							{/* 'Workflow configuration' table */}
+							{user.isAdmin && (
+								<div className="obj tbl-details">
+									<header>
+										{
+											t(
+												"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.CONFIGURATION"
+											) /* Workflow configuration */
+										}
+									</header>
+									<div className="obj-container">
+										<table className="main-tbl">
+											<tbody>
+												{workflowData && workflowData.configuration &&
+                          Object.entries(workflowData.configuration).map(
+													([confKey, confValue], key) => (
+														<tr key={key}>
+															<td>{confKey}</td>
+															<td>{confValue as string}</td>
+														</tr>
+													)
+												)}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							)}
+
+							{/* 'More Information' table */}
+							<div className="obj tbl-container more-info-actions">
+								<header>
+									{
+										t(
+											"EVENTS.EVENTS.DETAILS.WORKFLOWS.MORE_INFO"
+										) /* More Information */
+									}
+								</header>
+
+								{/* links to 'Operations' or 'Errors & Warnings' sub-Tabs */}
+								<div className="obj-container">
+									<ul>
+										<li>
+											<span>
+												{
+													t(
+														"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.DETAILS_LINK"
+													) /* Operations */
+												}
+											</span>
+											<button
+												className="button-like-anchor details-link"
+												onClick={() => openSubTab("workflow-operations")}
+											>
+												{
+													t(
+														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
+													) /* Details */
+												}
+											</button>
+										</li>
+										<li>
+											<span>
+												{
+													t(
+														"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.TITLE"
+													) /* Errors & Warnings */
+												}
+											</span>
+											<button
+												className="button-like-anchor details-link"
+												onClick={() => openSubTab("errors-and-warnings")}
+											>
+												{
+													t(
+														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
+													) /* Details */
+												}
+											</button>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</>
 					)}
 
-					{/* 'More Information' table */}
-					<div className="obj tbl-container more-info-actions">
-						<header>
-							{
-								t(
-									"EVENTS.EVENTS.DETAILS.WORKFLOWS.MORE_INFO"
-								) /* More Information */
-							}
-						</header>
-
-						{/* links to 'Operations' or 'Errors & Warnings' sub-Tabs */}
-						<div className="obj-container">
-							<ul>
-								<li>
-									<span>
-										{
-											t(
-												"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.DETAILS_LINK"
-											) /* Operations */
-										}
-									</span>
-									<button
-										className="button-like-anchor details-link"
-										onClick={() => openSubTab("workflow-operations")}
-									>
-										{
-											t(
-												"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
-											) /* Details */
-										}
-									</button>
-								</li>
-								<li>
-									<span>
-										{
-											t(
-												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.TITLE"
-											) /* Errors & Warnings */
-										}
-									</span>
-									<button
-										className="button-like-anchor details-link"
-										onClick={() => openSubTab("errors-and-warnings")}
-									>
-										{
-											t(
-												"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
-											) /* Details */
-										}
-									</button>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</>
-			)}
-
-			{/* empty view for displaying, while the data is being fetched */}
-			{isFetching && (
-				<>
-					{/* 'Workflow Details' table */}
-					<div className="obj tbl-details">
-						<header>
-							{
-								t(
-									"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"
-								) /* Workflow Details */
-							}
-						</header>
-						<div className="obj-container">
-							<table className="main-tbl vertical-headers">
-								<tbody>
-									<tr />
-								</tbody>
-							</table>
-						</div>
-					</div>
-
-					{/* 'Workflow configuration' table */}
-					{user.isAdmin && (
-						<div className="obj tbl-details">
-							<header>
-								{
-									t(
-										"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.CONFIGURATION"
-									) /* Workflow configuration */
-								}
-							</header>
-							<div className="obj-container">
-								<table className="main-tbl">
-									<tbody>
-										<tr />
-									</tbody>
-								</table>
+					{/* empty view for displaying, while the data is being fetched */}
+					{isFetching && (
+						<>
+							{/* 'Workflow Details' table */}
+							<div className="obj tbl-details">
+								<header>
+									{
+										t(
+											"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"
+										) /* Workflow Details */
+									}
+								</header>
+								<div className="obj-container">
+									<table className="main-tbl vertical-headers">
+										<tbody>
+											<tr />
+										</tbody>
+									</table>
+								</div>
 							</div>
-						</div>
-					)}
 
-					{/* 'More Information' table */}
-					<div className="obj tbl-container more-info-actions">
-						<header>
-							{
-								t(
-									"EVENTS.EVENTS.DETAILS.WORKFLOWS.MORE_INFO"
-								) /* More Information */
-							}
-						</header>
-						<div className="obj-container">
-							<ul>
-								<li>
-									<span>
+							{/* 'Workflow configuration' table */}
+							{user.isAdmin && (
+								<div className="obj tbl-details">
+									<header>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.DETAILS_LINK"
-											) /* Operations */
+												"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.CONFIGURATION"
+											) /* Workflow configuration */
 										}
-									</span>
-									<button className="button-like-anchor details-link">
-										{
-											t(
-												"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
-											) /* Details */
-										}
-									</button>
-								</li>
-								<li>
-									<span>
-										{
-											t(
-												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.TITLE"
-											) /* Errors & Warnings */
-										}
-									</span>
-									<button className="button-like-anchor details-link">
-										{
-											t(
-												"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
-											) /* Details */
-										}
-									</button>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</>
-			)}
+									</header>
+									<div className="obj-container">
+										<table className="main-tbl">
+											<tbody>
+												<tr />
+											</tbody>
+										</table>
+									</div>
+								</div>
+							)}
+
+							{/* 'More Information' table */}
+							<div className="obj tbl-container more-info-actions">
+								<header>
+									{
+										t(
+											"EVENTS.EVENTS.DETAILS.WORKFLOWS.MORE_INFO"
+										) /* More Information */
+									}
+								</header>
+								<div className="obj-container">
+									<ul>
+										<li>
+											<span>
+												{
+													t(
+														"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.DETAILS_LINK"
+													) /* Operations */
+												}
+											</span>
+											<button className="button-like-anchor details-link">
+												{
+													t(
+														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
+													) /* Details */
+												}
+											</button>
+										</li>
+										<li>
+											<span>
+												{
+													t(
+														"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.TITLE"
+													) /* Errors & Warnings */
+												}
+											</span>
+											<button className="button-like-anchor details-link">
+												{
+													t(
+														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
+													) /* Details */
+												}
+											</button>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</>
+					)}
 		</ModalContentTable>
 	);
 };

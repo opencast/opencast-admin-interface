@@ -14,9 +14,10 @@ import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils"
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
 import { AsyncThunk } from "@reduxjs/toolkit";
-import ModalContentTable from "../../../shared/modals/ModalContentTable";
 import RenderDate from "../../../shared/RenderDate";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { ParseKeys } from "i18next";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component renders metadata details of a certain event or series
@@ -36,7 +37,7 @@ const DetailsMetadataTab = ({
 		catalog: MetadataCatalog;
 	}, any> //(id: string, values: { [key: string]: any }, catalog: MetadataCatalog) => void,
 	editAccessRole: string,
-	header?: string
+	header?: ParseKeys
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -89,7 +90,7 @@ const DetailsMetadataTab = ({
 								/* Render table for each metadata catalog */
 								<div className="obj tbl-details" key={key}>
 									<header>
-										<span>{t(header ? header : catalog.title)}</span>
+										<span>{t(header ? header : catalog.title as ParseKeys)}</span>
 									</header>
 									<div className="obj-container">
 										<table className="main-tbl">
@@ -99,7 +100,7 @@ const DetailsMetadataTab = ({
 													catalog.fields.map((field, index) => (
 														<tr key={index}>
 															<td>
-																<span>{t(field.label)}</span>
+																<span>{t(field.label as ParseKeys)}</span>
 																{field.required && (
 																	<i className="required">*</i>
 																)}
@@ -155,12 +156,12 @@ const DetailsMetadataTab = ({
 										isLast
 									/>
 
-								</>
+										</>
+									)}
+								</div>
 							)}
-							</div>
-						)}
-					</Formik>
-				))
+						</Formik>
+					))
 			}
 		</ModalContentTable>
 	);

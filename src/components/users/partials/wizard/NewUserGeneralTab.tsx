@@ -5,6 +5,7 @@ import Notifications from "../../../shared/Notifications";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import ModalContent from "../../../shared/modals/ModalContent";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the general user information tab for new users in the new users wizard.
@@ -156,7 +157,7 @@ const PasswordStrengthIndicator = ({
 		return Math.round(strength);
 	}
 
-	const setProgBar = (strength: number) => {
+	const setProgBar = (strength: number): [string | undefined, ParseKeys | undefined] => {
 		if (strength >= 90) {
 			return ["green", "USERS.USERS.DETAILS.STRENGTH.VERYSTRONG"]
 		}
@@ -176,7 +177,7 @@ const PasswordStrengthIndicator = ({
 			return ["white", "USERS.USERS.DETAILS.STRENGTH.BAD"]
 		}
 
-		return ["", ""];
+		return [undefined, undefined];
 	}
 
 	const strength = calcStrength(password);
@@ -192,7 +193,7 @@ const PasswordStrengthIndicator = ({
 			<div className="progress pw-strength">
 				<div id="bar" className="progress-bar" style={progressBarStyle}></div>
 			</div>
-			<label id="pw" style={{textAlign: "left"}}>{t(barText)}</label>
+			<label id="pw" style={{textAlign: "left"}}>{barText ? t(barText) : undefined}</label>
 		</div>
 	);
 }

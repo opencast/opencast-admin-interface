@@ -15,6 +15,7 @@ import {
 } from "../../utils/adopterRegistrationUtils";
 import ModalContent from "./modals/ModalContent";
 import { Modal, ModalHandle } from "./modals/Modal";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the adopter registration modal. This modal has various states.
@@ -689,7 +690,7 @@ const RegistrationModalContent = () => {
 										onClick={() => formik.handleSubmit()}
 										className={cn("submit")}
 									>
-										{t(states[state].buttons.submitButtonText)}
+										{t(states[state].buttons.submitButtonText as ParseKeys)}
 									</button>
 								: state === "form" ?
 									<button
@@ -705,7 +706,7 @@ const RegistrationModalContent = () => {
 											),
 										})}
 									>
-										{t(states[state].buttons.submitButtonText)}
+										{t(states[state].buttons.submitButtonText as ParseKeys)}
 									</button>
 								:
 									// continue button or confirm button (depending on state)
@@ -713,7 +714,7 @@ const RegistrationModalContent = () => {
 										className="continue-registration"
 										onClick={() => onClickContinue()}
 									>
-										{t(states[state].buttons.submitButtonText)}
+										{t(states[state].buttons.submitButtonText as ParseKeys)}
 									</button>
 								}
 							</div>

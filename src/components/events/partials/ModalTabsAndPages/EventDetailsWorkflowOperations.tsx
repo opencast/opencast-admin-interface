@@ -11,6 +11,7 @@ import {
 } from "../../../../slices/eventDetailsSlice";
 import { useTranslation } from "react-i18next";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
+import { ParseKeys } from "i18next";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
@@ -56,14 +57,14 @@ const EventDetailsWorkflowOperations = ({
 		<ModalContentTable
 			modalContentChildren={
 				/* Hierarchy navigation */
-				<EventDetailsTabHierarchyNavigation
-					openSubTab={openSubTab}
-					hierarchyDepth={1}
-					translationKey0={"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"}
-					subTabArgument0={"workflow-details"}
-					translationKey1={"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TITLE"}
-					subTabArgument1={"workflow-operations"}
-				/>
+			<EventDetailsTabHierarchyNavigation
+				openSubTab={openSubTab}
+				hierarchyDepth={1}
+				translationKey0={"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"}
+				subTabArgument0={"workflow-details"}
+				translationKey1={"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TITLE"}
+				subTabArgument1={"workflow-operations"}
+			/>
 			}
 			modalBodyChildren={<Notifications context="not_corner" />}
 		>
@@ -110,7 +111,7 @@ const EventDetailsWorkflowOperations = ({
 							{/* workflow operation details */}
 							{operations.entries.map((item, key) => (
 								<tr key={key}>
-									<td>{t(item.status)}</td>
+									<td>{t(item.status as ParseKeys)}</td>
 									<td>{item.title}</td>
 									<td>{item.description}</td>
 

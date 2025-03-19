@@ -11,6 +11,7 @@ import { renderValidDate } from "../../../../utils/dateUtils";
 import { useTranslation } from "react-i18next";
 import { setModalWorkflowTabHierarchy } from "../../../../slices/eventDetailsSlice";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
+import { ParseKeys } from "i18next";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
@@ -32,7 +33,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 		<ModalContentTable
 			modalContentChildren={
 				/* Hierarchy navigation */
-				<EventDetailsTabHierarchyNavigation
+			<EventDetailsTabHierarchyNavigation
 				openSubTab={openSubTab}
 				hierarchyDepth={2}
 				translationKey0={"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"}
@@ -86,7 +87,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 											) /* State */
 										}
 									</td>
-									<td>{t(operationDetails.state)}</td>
+									<td>{t(operationDetails.state as ParseKeys)}</td>
 								</tr>
 								<tr>
 									<td>

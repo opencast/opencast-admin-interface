@@ -30,6 +30,7 @@ import { Tooltip } from "../../../shared/Tooltip";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
 import { formatWorkflowsForDropdown } from "../../../../utils/dropDownUtils";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the workflows tab of the event details modal
@@ -197,7 +198,7 @@ const EventDetailsWorkflowTab = ({
 																	dateTime: renderValidDate(item.submitted),
 																})}
 															</td>
-															<td>{t(item.status)}</td>
+															<td>{t(item.status as ParseKeys)}</td>
 															{isRoleWorkflowEdit && (
 																<td>
 																	{item.status ===

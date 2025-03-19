@@ -4,8 +4,9 @@ import { Field } from "../../../shared/Field";
 import RenderField from "../../../shared/wizard/RenderField";
 import RenderMultiField from "../../../shared/wizard/RenderMultiField";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
-import ModalContentTable from "../../../shared/modals/ModalContentTable";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
+import { ParseKeys } from "i18next";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component renders the metadata page for new events and series in the wizards.
@@ -15,7 +16,7 @@ const NewMetadataPage = ({
 	header
 }: {
 	metadataCatalogs: MetadataCatalog [],
-	header?: string
+	header?: ParseKeys
 }) => {
 	const { t } = useTranslation();
 
@@ -29,7 +30,7 @@ const NewMetadataPage = ({
 					<div className="obj tbl-list">
 						{/* <header className="no-expand">{t(header)}</header> */}
 						<header>
-							<span>{t(header ? header : catalog.title)}</span>
+							<span>{t(header ? header : catalog.title as ParseKeys)}</span>
 						</header>
 						{/* Table view containing input fields for metadata */}
 						<div className="obj-container">
@@ -40,7 +41,7 @@ const NewMetadataPage = ({
 										catalog.fields.map((field, key) => (
 											<tr key={key}>
 												<td>
-													<span>{t(field.label)}</span>
+													<span>{t(field.label as ParseKeys)}</span>
 													{field.required && (
 														<i className="required">*</i>
 													)}

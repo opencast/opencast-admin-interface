@@ -14,8 +14,9 @@ import {
 	Event,
 } from "../../../../slices/eventSlice";
 import { useAppSelector } from "../../../../store";
-import ModalContent from "../../../shared/modals/ModalContent";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { ParseKeys } from "i18next";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component renders the table overview of selected events in start task bulk action
@@ -53,7 +54,7 @@ const StartTaskGeneralPage = <T extends RequiredFormProps>({
 
 	return (
 		<>
-			<ModalContent modalContentClassName="modal-content active">
+			<ModalContentTable>
 				<div className="row">
 					{/* Show only if task not startable */}
 					{!isTaskStartable(selectedEvents) && (
@@ -116,7 +117,7 @@ const StartTaskGeneralPage = <T extends RequiredFormProps>({
 											<td className="nowrap">
 												{event.series ? event.series.title : ""}
 											</td>
-											<td className="nowrap">{t(event.event_status)}</td>
+											<td className="nowrap">{t(event.event_status as ParseKeys)}</td>
 										</tr>
 									))}
 								</tbody>
@@ -124,7 +125,7 @@ const StartTaskGeneralPage = <T extends RequiredFormProps>({
 						</div>
 					</div>
 				</div>
-			</ModalContent>
+			</ModalContentTable>
 
 			{/* Button for navigation to next page and previous page */}
 			<WizardNavigationButtons

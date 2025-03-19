@@ -3,8 +3,9 @@ import { useTranslation } from "react-i18next";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { useHotkeysContext } from "react-hotkeys-hook";
 import { Hotkey } from "react-hotkeys-hook/dist/types";
-import ModalContentTable from "./modals/ModalContentTable";
 import { Modal, ModalHandle } from "./modals/Modal";
+import { ParseKeys } from "i18next";
+import ModalContentTable from "./modals/ModalContentTable";
 
 /**
  * This component renders the hotkey cheat sheet showing all available hotkeys
@@ -41,7 +42,7 @@ const HotKeyCheatSheet = ({
 				{Object.keys(availableHotkeys).map((hotkeyGroup, key) => (
 					<div className="obj tbl-list" key={key}>
 						<header>
-							{t("HOTKEYS.GROUPS." + hotkeyGroup.toUpperCase())}
+							{t(`HOTKEYS.GROUPS.${hotkeyGroup.toUpperCase()}` as ParseKeys)}
 						</header>
 						<table className="main-tbl">
 							<tbody>

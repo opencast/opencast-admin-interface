@@ -14,6 +14,7 @@ import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
+import { ParseKeys } from "i18next";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
@@ -32,7 +33,7 @@ interface RequiredFormProps {
 	scheduleEndMinute: string
 	scheduleDurationHours: string
 	scheduleDurationMinutes: string
-	repeatOn: string[]
+	repeatOn: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[]
 	deviceInputs?: string[]
 	configuration: { [key: string]: string }
 	acls: TransformedAcl[]
@@ -71,7 +72,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 	for (let i = 0; uploadAssetsOptionsNonTrack.length > i; i++) {
 		let fieldValue = formik.values[uploadAssetsOptionsNonTrack[i].id];
 		if (!!fieldValue) {
-			const displayOverride = uploadAssetsOptionsNonTrack[i].displayOverride
+			const displayOverride = uploadAssetsOptionsNonTrack[i].displayOverride as ParseKeys
 			uploadAssetsNonTrack = uploadAssetsNonTrack.concat({
 				name: uploadAssetsOptionsNonTrack[i].id,
 				translate: !!displayOverride
@@ -92,23 +93,23 @@ const NewEventSummary = <T extends RequiredFormProps>({
 	return (
 		<>
 			<ModalContentTable>
-						{/*Summary metadata*/}
-						<MetadataSummaryTable
-							metadataCatalogs={[metadataEvents]}
-							//@ts-ignore
-							formikValues={formik.values}
-							header={"EVENTS.EVENTS.NEW.METADATA.CAPTION"}
-						/>
+				{/*Summary metadata*/}
+				<MetadataSummaryTable
+					metadataCatalogs={[metadataEvents]}
+					//@ts-ignore
+					formikValues={formik.values}
+					header={"EVENTS.EVENTS.NEW.METADATA.CAPTION"}
+				/>
 
-						{/*Summary metadata extended*/}
-						{!metaDataExtendedHidden && (
-							<MetadataSummaryTable
-								metadataCatalogs={extendedMetadata}
-								//@ts-ignore
-								formikValues={formik.values}
-								header={"EVENTS.EVENTS.NEW.METADATA_EXTENDED.CAPTION"}
-							/>
-						)}
+				{/*Summary metadata extended*/}
+				{!metaDataExtendedHidden && (
+					<MetadataSummaryTable
+						metadataCatalogs={extendedMetadata}
+						//@ts-ignore
+						formikValues={formik.values}
+						header={"EVENTS.EVENTS.NEW.METADATA_EXTENDED.CAPTION"}
+					/>
+				)}
 
 				{/*Summary upload assets*/}
 				{/*Show only if asset upload page is not hidden, the sourceMode is UPLOAD and the there
@@ -186,7 +187,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 										</td>
 										<td>
 											{t("dateFormats.date.short", {
-												date: formik.values.scheduleStartDate,
+												date: renderValidDate(formik.values.scheduleStartDate),
 											})}
 										</td>
 									</tr>
@@ -206,7 +207,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 											</td>
 											<td>
 												{t("dateFormats.date.short", {
-													date: formik.values.scheduleEndDate,
+													date: renderValidDate(formik.values.scheduleEndDate),
 												})}
 											</td>
 										</tr>
@@ -230,7 +231,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 											<td>
 												{formik.values.repeatOn
 													.map((day) =>
-														t("EVENTS.EVENTS.NEW.WEEKDAYSLONG." + day)
+														t(`EVENTS.EVENTS.NEW.WEEKDAYSLONG.${day}`)
 													)
 													.join(", ")}
 											</td>

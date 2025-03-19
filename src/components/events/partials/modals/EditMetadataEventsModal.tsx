@@ -18,8 +18,9 @@ import {
 } from "../../../../slices/eventSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { isEvent } from "../../../../slices/tableSlice";
-import ModalContent from "../../../shared/modals/ModalContent";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { ParseKeys } from "i18next";
+import ModalContent from "../../../shared/modals/ModalContent";
 
 /**
  * This component manges the edit metadata bulk action
@@ -238,7 +239,7 @@ const EditMetadataEventsModal = ({
 																	/>
 																</td>
 																<td>
-																	<span>{t(metadata.label)}</span>
+																	<span>{t(metadata.label as ParseKeys)}</span>
 																	{metadata.required && (
 																		<i className="required">*</i>
 																	)}

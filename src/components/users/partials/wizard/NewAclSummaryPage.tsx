@@ -25,7 +25,7 @@ const NewAclSummaryPage = <T extends RequiredFormProps>({
 			<ModalContentTable>
 				<Notifications context={"other"}/>
 				<div className="obj tbl-list">
-					<header className="no-expand">{t("")}</header>
+					<header className="no-expand">{""}</header>
 					<div className="obj-container">
 						<table className="main-tbl">
 							<tr>
