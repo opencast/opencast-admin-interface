@@ -9,6 +9,7 @@ import ModalNavigation from "../../../shared/modals/ModalNavigation";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { UpdateGroupDetailsState, updateGroupDetails } from "../../../../slices/groupDetailsSlice";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the group details
@@ -46,7 +47,11 @@ const GroupDetails: React.FC<{
 	};
 
 	// information about tabs
-	const tabs = [
+	const tabs: {
+		tabTranslation: ParseKeys
+		accessRole: string
+		name: string
+	}[] = [
 		{
 			tabTranslation: "USERS.GROUPS.DETAILS.TABS.GROUP",
 			accessRole: "ROLE_UI_GROUPS_EDIT",

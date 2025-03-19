@@ -18,6 +18,7 @@ import type { ChartOptions } from 'chart.js';
 import { AsyncThunk } from "@reduxjs/toolkit";
 import { useAppDispatch } from "../../store";
 import { DataResolution, TimeMode } from "../../slices/statisticsSlice";
+import { ParseKeys } from "i18next";
 
 
 /**
@@ -251,7 +252,7 @@ const TimeSeriesStatistics = ({
 										)
 									}
 								/>
-								{t("STATISTICS.TIME_MODES." + mode.translation)}
+								{t(`STATISTICS.TIME_MODES.${mode.translation}` as ParseKeys)}
 							</label>
 						))}
 					</div>
@@ -374,7 +375,7 @@ const TimeSeriesStatistics = ({
 										<option value="" hidden />
 										{availableCustomDataResolutions.map((option, key) => (
 											<option value={option.value} key={key}>
-												{t("STATISTICS.TIME_GRANULARITIES." + option.label)}
+												{t(`STATISTICS.TIME_GRANULARITIES.${option.label}` as ParseKeys)}
 											</option>
 										))}
 									</Field>
@@ -392,7 +393,7 @@ const TimeSeriesStatistics = ({
 					/>
 
 					{/* statistic description */}
-					<p>{t(statDescription)}</p>
+					<p>{t(statDescription as ParseKeys)}</p>
 				</div>
 			)}
 		</Formik>

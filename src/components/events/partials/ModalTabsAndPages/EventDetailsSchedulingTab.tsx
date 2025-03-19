@@ -51,6 +51,7 @@ import SchedulingEndDateDisplay from "../wizards/scheduling/SchedulingEndDateDis
 import SchedulingLocation from "../wizards/scheduling/SchedulingLocation";
 import SchedulingInputs from "../wizards/scheduling/SchedulingInputs";
 import SchedulingConflicts from "../wizards/scheduling/SchedulingConflicts";
+import { ParseKeys } from "i18next";
 
 /**../wizards/scheduling/SchedulingTime
  * This component manages the main assets tab of event details modal
@@ -119,6 +120,12 @@ const EventDetailsSchedulingTab = ({
 			return [];
 		}
 	};
+
+	const getInputForAgent = (deviceId: Recording["id"], input: string) => {
+		const inputs = getInputs(deviceId);
+		const value = inputs.find((agent) => agent.id === input)?.value;
+		return value ? t(value as ParseKeys) : "";
+	}
 
 	// changes the inputs in the formik
 	const changeInputs = (deviceId: Recording["id"], setFieldValue: (field: string, value: any) => Promise<void | FormikErrors<any>>) => {
@@ -309,7 +316,7 @@ const EventDetailsSchedulingTab = ({
 															disabled={!accessAllowed(formik.values.captureAgent)}
 															title={"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_TIME"}
 															hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
-															minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+															minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"}
 															callbackHour={(value: string) => {
 																changeStartHour(
 																	value,
@@ -492,11 +499,7 @@ const EventDetailsSchedulingTab = ({
 																		/>
 																	: formik.values.inputs.map((input, key) => (
 																			<span key={key}>
-																				{t(
-																					getInputs(formik.values.captureAgent).find(
-																						(agent) => agent.id === input
-																					)?.value ?? ""
-																				)}
+																				{getInputForAgent(formik.values.captureAgent, input)}
 																				<br />
 																			</span>
 																		)))}

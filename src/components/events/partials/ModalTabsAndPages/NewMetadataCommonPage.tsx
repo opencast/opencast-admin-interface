@@ -3,6 +3,7 @@ import { FormikProps } from "formik";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
 import NewMetadataPage from "./NewMetadataPage";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the metadata page for new events and series in the wizards.
@@ -16,7 +17,7 @@ const NewMetadataCommonPage = <T, >({
 	formik: FormikProps<T>,
 	nextPage: (values: T) => void,
 	metadataFields: MetadataCatalog,
-	header: string
+	header: ParseKeys
 }) => {
 
 	return (

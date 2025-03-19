@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, ModalHandle } from "./modals/Modal";
+import { ParseKeys } from "i18next";
 
 export type ResourceType = "EVENT" | "SERIES" | "LOCATION" | "USER" | "GROUP" | "ACL" | "THEME" | "TOBIRA_PATH";
 
@@ -12,8 +13,8 @@ const ConfirmModal = <T, >({
 	deleteMethod,
 	deleteAllowed = true,
 	showCautionMessage = false,
-	deleteNotAllowedMessage = "",
-	deleteWithCautionMessage = "",
+	deleteNotAllowedMessage,
+	deleteWithCautionMessage,
 	modalRef,
 }: {
 	close: () => void,
@@ -23,8 +24,8 @@ const ConfirmModal = <T, >({
 	deleteMethod: (id: T) => void,
 	deleteAllowed?: boolean,
 	showCautionMessage?: boolean,
-	deleteNotAllowedMessage?: string,
-	deleteWithCautionMessage?: string,
+	deleteNotAllowedMessage?: ParseKeys,
+	deleteWithCautionMessage?: ParseKeys,
 	modalRef: React.RefObject<ModalHandle | null>
 }) => {
 	const { t } = useTranslation();
@@ -48,14 +49,14 @@ const ConfirmModal = <T, >({
 				<div>
 					{showCautionMessage && (
 						<div className="modal-alert warning">
-							<p>{t(deleteWithCautionMessage)}</p>
+							<p>{deleteWithCautionMessage ? t(deleteWithCautionMessage) : undefined}</p>
 						</div>
 					)}
 
 					<div>
 						<p>
 							<span style={{ padding: "0px 4px"}}>
-								{t("CONFIRMATIONS.METADATA.NOTICE." + resourceType)}
+								{t(`CONFIRMATIONS.METADATA.NOTICE.${resourceType}`)}
 							</span>
 						</p>
 						<p className="delete">{resourceName}</p>
@@ -85,7 +86,7 @@ const ConfirmModal = <T, >({
 			) : (
 				<div>
 					<div className="modal-alert danger">
-						<p>{t(deleteNotAllowedMessage)}</p>
+						<p>{deleteNotAllowedMessage ? t(deleteNotAllowedMessage) : undefined}</p>
 					</div>
 					<div className="btn-container">
 						<button

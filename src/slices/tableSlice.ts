@@ -1,5 +1,5 @@
 import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
-import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
+import { aclsTableConfig, TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { Server } from './serverSlice';
 import { Recording } from './recordingSlice';
 import { Job } from './jobSlice';
@@ -10,6 +10,15 @@ import { AclResult } from './aclSlice';
 import { ThemeDetailsType } from './themeSlice';
 import { Series } from './seriesSlice';
 import { Event } from './eventSlice';
+import { eventsTableConfig } from '../configs/tableConfigs/eventsTableConfig';
+import { seriesTableConfig } from '../configs/tableConfigs/seriesTableConfig';
+import { recordingsTableConfig } from '../configs/tableConfigs/recordingsTableConfig';
+import { jobsTableConfig } from '../configs/tableConfigs/jobsTableConfig';
+import { serversTableConfig } from '../configs/tableConfigs/serversTableConfig';
+import { servicesTableConfig } from '../configs/tableConfigs/servicesTableConfig';
+import { usersTableConfig } from '../configs/tableConfigs/usersTableConfig';
+import { groupsTableConfig } from '../configs/tableConfigs/groupsTableConfig';
+import { themesTableConfig } from '../configs/tableConfigs/themesTableConfig';
 
 /*
 Overview of the structure of the data in arrays in state
@@ -72,16 +81,18 @@ export type Row = { selected: boolean } & (Event | Series | Recording | Server |
 
 export type Resource = "events" | "series" | "recordings" | "jobs" | "servers" | "services" | "users" | "groups" | "acls" | "themes"
 
+export type ReverseOptions = "ASC" | "DESC"
+
 export type TableState = {
 	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	error: SerializedError | null,
-	multiSelect: boolean,
+	multiSelect: { [key in Resource]: boolean },
 	resource: Resource,
 	pages: Page[],
 	columns: TableConfig["columns"],
-	sortBy: { [key: string]: string },  // Key is resource, value is actual sorting parameter
+	sortBy: { [key in Resource]: string },  // Key is resource, value is actual sorting parameter
 	predicate: string,
-	reverse: { [key: string]: string },  // Key is resource, value is actual sorting parameter
+	reverse: { [key in Resource]: ReverseOptions },  // Key is resource, value is actual sorting parameter
 	rows: Row[],
 	maxLabel: string,
 	pagination: Pagination,
@@ -91,7 +102,18 @@ export type TableState = {
 const initialState: TableState = {
 	status: 'uninitialized',
 	error: null,
-	multiSelect: false,
+	multiSelect: {
+		events: eventsTableConfig.multiSelect,
+		series: seriesTableConfig.multiSelect,
+		recordings: recordingsTableConfig.multiSelect,
+		jobs: jobsTableConfig.multiSelect,
+		servers: serversTableConfig.multiSelect,
+		services: servicesTableConfig.multiSelect,
+		users: usersTableConfig.multiSelect,
+		groups: groupsTableConfig.multiSelect,
+		acls: aclsTableConfig.multiSelect,
+		themes: themesTableConfig.multiSelect,
+	},
 	resource: "events",
 	pages: [],
 	columns: [],
@@ -118,7 +140,7 @@ const initialState: TableState = {
 		users: "ASC",
 		groups: "ASC",
 		acls: "ASC",
-		theme: "ASC",
+		themes: "ASC",
 	},
 	rows: [],
 	maxLabel: "",
@@ -135,16 +157,16 @@ const tableSlice = createSlice({
 	initialState,
 	reducers: {
 		loadResourceIntoTable(state, action: PayloadAction<{
-			multiSelect: TableState["multiSelect"],
+			multiSelect: TableState["multiSelect"][Resource],
 			columns: TableConfig["columns"],
 			resource: TableState["resource"],
 			pages: TableState["pages"],
 			rows: TableState["rows"],
-			sortBy: TableState["sortBy"][0],
-			reverse: TableState["reverse"][0],
+			sortBy: TableState["sortBy"][Resource],
+			reverse: TableState["reverse"][Resource],
 			totalItems: TableState["pagination"]["totalItems"],
 		}>) {
-			state.multiSelect = action.payload.multiSelect;
+			state.multiSelect[action.payload.resource] = action.payload.multiSelect;
 			state.columns = action.payload.columns;
 			state.resource = action.payload.resource;
 			state.pages = action.payload.pages;
@@ -192,12 +214,12 @@ const tableSlice = createSlice({
 			})
 		},
 		reverseTable(state, action: PayloadAction<
-			TableState["reverse"][0]
+			TableState["reverse"][Resource]
 		>) {
 			state.reverse[state.resource] = action.payload;
 		},
 		setSortBy(state, action: PayloadAction<
-			TableState["sortBy"][0]
+			TableState["sortBy"][Resource]
 		>) {
 			state.sortBy[state.resource] = action.payload;
 		},

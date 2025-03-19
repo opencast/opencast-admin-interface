@@ -1,6 +1,7 @@
 import React from "react";
 import { FormikProps } from "formik";
 import NavigationButtons from "../NavigationButtons";
+import { ParseKeys } from "i18next";
 
 const WizardNavigationButtons = <T, >({
 	isFirst,
@@ -22,8 +23,8 @@ const WizardNavigationButtons = <T, >({
 	nextPage?: (values: T) => void,
 	previousPage?: (values: T) => void,
 	submitPage?: () => void,
-	createTranslationString?: string,
-	cancelTranslationString?: string,
+	createTranslationString?: ParseKeys,
+	cancelTranslationString?: ParseKeys,
 }) => {
 
 	const disabled = noValidation
