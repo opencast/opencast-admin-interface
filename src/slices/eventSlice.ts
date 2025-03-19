@@ -122,7 +122,7 @@ export type EditedEvents = {
 	changedStartTimeHour: string,
 	changedStartTimeMinutes: string,
 	changedTitle: string,
-	changedWeekday: string,
+	changedWeekday: "MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU",
 	deviceInputs: string,
 	endTimeHour: string,
 	endTimeMinutes: string,
@@ -132,7 +132,7 @@ export type EditedEvents = {
 	startTimeHour: string,
 	startTimeMinutes: string,
 	title: string,
-	weekday: string,
+	weekday: "MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU",
 }
 
 export type UploadAssetOption = {

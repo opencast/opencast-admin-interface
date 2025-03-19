@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, ModalHandle } from "./modals/Modal";
 import { NotificationComponent } from "./Notifications";
+import { ParseKeys } from "i18next";
 
 export type ResourceType = "EVENT" | "SERIES" | "LOCATION" | "USER" | "GROUP" | "ACL" | "THEME" | "TOBIRA_PATH";
 
@@ -12,9 +13,8 @@ const ConfirmModal = <T,>({
 	resourceId,
 	deleteMethod,
 	deleteAllowed = true,
-	showCautionMessage = false,
-	deleteNotAllowedMessage = "",
-	deleteWithCautionMessage = "",
+	deleteNotAllowedMessage,
+	deleteWithCautionMessage,
 	modalRef,
 }: {
 	close: () => void,
@@ -23,9 +23,8 @@ const ConfirmModal = <T,>({
 	resourceId: T,
 	deleteMethod: (id: T) => void,
 	deleteAllowed?: boolean,
-	showCautionMessage?: boolean,
-	deleteNotAllowedMessage?: string,
-	deleteWithCautionMessage?: string,
+	deleteNotAllowedMessage?: ParseKeys,
+	deleteWithCautionMessage?: ParseKeys,
 	modalRef: React.RefObject<ModalHandle | null>
 }) => {
 	const { t } = useTranslation();
@@ -47,7 +46,7 @@ const ConfirmModal = <T,>({
 		>
 			{deleteAllowed ? (
 				<div>
-					{showCautionMessage && (
+					{deleteWithCautionMessage && (
 						<NotificationComponent
 							notification={{
 								type: "warning",
@@ -60,7 +59,7 @@ const ConfirmModal = <T,>({
 					<div>
 						<p>
 							<span style={{ padding: "0px 4px"}}>
-								{t("CONFIRMATIONS.METADATA.NOTICE." + resourceType)}
+								{t(`CONFIRMATIONS.METADATA.NOTICE.${resourceType}`)}
 							</span>
 						</p>
 						<p className="delete">{resourceName}</p>
@@ -89,13 +88,15 @@ const ConfirmModal = <T,>({
 				</div>
 			) : (
 				<div>
-					<NotificationComponent
-						notification={{
-							type: "error",
-							message: deleteNotAllowedMessage,
-							id: 0,
-						}}
-					/>
+					{deleteNotAllowedMessage && (
+						<NotificationComponent
+							notification={{
+								type: "error",
+								message: deleteNotAllowedMessage,
+								id: 0,
+							}}
+						/>
+					)}
 					<div className="btn-container">
 						<button
 							className="cancel-btn close-modal"
