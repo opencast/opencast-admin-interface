@@ -48,6 +48,7 @@ import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
 import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 import { unwrapResult } from "@reduxjs/toolkit";
+import { ParseKeys } from "i18next";
 
 export enum EventDetailsPage {
 	Metadata,
@@ -133,7 +134,14 @@ const EventDetails = ({
 	const tobiraStatus = useAppSelector(state => getEventDetailsTobiraStatus(state));
 	const tobiraError = useAppSelector(state => getEventDetailsTobiraDataError(state));
 
-	const tabs = [
+	const tabs: {
+		tabNameTranslation: ParseKeys,
+		bodyHeaderTranslation?: ParseKeys,
+		accessRole: string,
+		name: string,
+		page: EventDetailsPage,
+		hidden?: boolean,
+	}[] = [
 		{
 			tabNameTranslation: "EVENTS.EVENTS.DETAILS.TABS.METADATA",
 			bodyHeaderTranslation: "EVENTS.EVENTS.DETAILS.METADATA.CAPTION",
@@ -235,7 +243,7 @@ const EventDetails = ({
 						metadata={[metadata]}
 						updateResource={updateMetadata}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
-						header={tabs[page].bodyHeaderTranslation ?? ""}
+						header={tabs[page].bodyHeaderTranslation}
 					/>
 				)}
 				{page === EventDetailsPage.ExtendedMetadata && !isLoadingMetadata && (
@@ -285,7 +293,7 @@ const EventDetails = ({
 				{page === EventDetailsPage.AccessPolicy && (
 					<EventDetailsAccessPolicyTab
 						eventId={eventId}
-						header={tabs[page].bodyHeaderTranslation ?? ""}
+						header={tabs[page].bodyHeaderTranslation ?? "EVENTS.EVENTS.DETAILS.TABS.ACCESS"}
 						policyChanged={policyChanged}
 						setPolicyChanged={setPolicyChanged}
 					/>
@@ -293,7 +301,7 @@ const EventDetails = ({
 				{page === EventDetailsPage.Comments && (
 					<EventDetailsCommentsTab
 						eventId={eventId}
-						header={tabs[page].bodyHeaderTranslation ?? ""}
+						header={tabs[page].bodyHeaderTranslation ?? "EVENTS.EVENTS.DETAILS.COMMENTS.CAPTION"}
 					/>
 				)}
 				{page === EventDetailsPage.Tobira && (
@@ -305,7 +313,7 @@ const EventDetails = ({
 				{page === EventDetailsPage.Statistics && !isLoadingStatistics && (
 					<EventDetailsStatisticsTab
 						eventId={eventId}
-						header={tabs[page].bodyHeaderTranslation ?? ""}
+						header={tabs[page].bodyHeaderTranslation ?? "EVENTS.EVENTS.DETAILS.STATISTICS.CAPTION"}
 					/>
 				)}
 			</div>

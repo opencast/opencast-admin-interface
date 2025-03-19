@@ -21,6 +21,8 @@ import { usersTableConfig } from "../../configs/tableConfigs/usersTableConfig";
 import { groupsTableConfig } from "../../configs/tableConfigs/groupsTableConfig";
 import { themesTableConfig } from "../../configs/tableConfigs/themesTableConfig";
 import { Modal, ModalHandle } from "./modals/Modal";
+import { Resource } from "../../slices/tableSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the modal for editing which columns are shown in the table
@@ -107,7 +109,7 @@ const EditTableViewModalContent = ({
 	const clearData = () => {
 		setActiveColumns(originalActiveColumns);
 		setDeactivatedColumns(originalDeactivatedColumns);
-		close();
+		handleClose();
 	};
 
 	// Reset columns to how they were before the user made any changes ever
@@ -117,7 +119,7 @@ const EditTableViewModalContent = ({
 		setDeactivatedColumns(initialConfig?.columns.filter((column) => column.deactivated) ?? []);
 	}
 
-	const getConfigByResource = (resource: string) => {
+	const getConfigByResource = (resource: Resource) => {
 		switch (resource) {
 			case "events": return eventsTableConfig;
 			case "series": return seriesTableConfig;
@@ -147,24 +149,23 @@ const EditTableViewModalContent = ({
 		setActiveColumns((columns) => arrayMoveImmutable(columns, result.source.index, destination.index));
 	}
 
-	const getTranslationForSubheading = (resource: string) => {
-		const resourceLC = resource.toLowerCase();
-		if (resourceLC === "events" || resourceLC === "series") {
-			return "EVENTS." + resource.toUpperCase() + ".TABLE.CAPTION"
+	const getTranslationForSubheading = (resource: Resource): ParseKeys | undefined => {
+		const resourceUC: Uppercase<Resource> = resource.toUpperCase() as Uppercase<Resource>;
+		if (resourceUC === "EVENTS" || resourceUC === "SERIES") {
+			return `EVENTS.${resourceUC}.TABLE.CAPTION`
 		}
-		if (resourceLC === "recordings") {
-			return resource.toUpperCase() + "." + resource.toUpperCase() + ".TABLE.CAPTION"
+		if (resourceUC === "RECORDINGS") {
+			return `${resourceUC}.${resourceUC}.TABLE.CAPTION`
 		}
-		if (resourceLC === "jobs" || resourceLC === "servers" || resourceLC === "services") {
-			return "SYSTEMS." + resource.toUpperCase() + ".TABLE.CAPTION"
+		if (resourceUC === "JOBS" || resourceUC === "SERVERS" || resourceUC === "SERVICES") {
+			return `SYSTEMS.${resourceUC}.TABLE.CAPTION`
 		}
-		if (resourceLC === "users" || resourceLC === "groups" || resourceLC === "acls") {
-			return "USERS." + resource.toUpperCase() + ".TABLE.CAPTION"
+		if (resourceUC === "USERS" || resourceUC === "GROUPS" || resourceUC === "ACLS") {
+			return `USERS.${resourceUC}.TABLE.CAPTION`
 		}
-		if (resourceLC === "themes") {
-			return "CONFIGURATION." + resource.toUpperCase() + ".TABLE.CAPTION"
+		if (resourceUC === "THEMES") {
+			return `CONFIGURATION.${resourceUC}.TABLE.CAPTION`
 		}
-		return ""
 	}
 
 	return (
@@ -174,7 +175,7 @@ const EditTableViewModalContent = ({
 					<div className="tab-description for-header">
 						<p>
 							{t("PREFERENCES.TABLE.SUBHEADING", {
-								tableName: t(getTranslationForSubheading(resource)),
+								tableName: t(getTranslationForSubheading(resource)!),
 							})}
 						</p>
 					</div>

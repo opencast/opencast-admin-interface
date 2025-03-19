@@ -47,6 +47,7 @@ import SchedulingEndDateDisplay from "../wizards/scheduling/SchedulingEndDateDis
 import SchedulingLocation from "../wizards/scheduling/SchedulingLocation";
 import SchedulingInputs from "../wizards/scheduling/SchedulingInputs";
 import SchedulingConflicts from "../wizards/scheduling/SchedulingConflicts";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the source page for new events in the new event wizard.
@@ -326,7 +327,7 @@ const Upload = <T extends RequiredFormPropsUpload>({
 							{sourceMetadata.UPLOAD && sourceMetadata.UPLOAD.metadata.map((field, key) => (
 								<tr key={key}>
 									<td>
-										<span>{t(field.label)}</span>
+										<span>{t(field.label as ParseKeys)}</span>
 										{field.required && <i className="required">*</i>}
 									</td>
 									<td className="editable">
@@ -493,7 +494,7 @@ const Schedule = <T extends {
 							disabled={false}
 							title={"EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.START_TIME"}
 							hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
-							minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+							minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"}
 							callbackHour={(value: string) => {
 								if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
 									changeStartHourMultiple(
@@ -532,7 +533,7 @@ const Schedule = <T extends {
 							disabled={false}
 							title={"EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.DURATION"}
 							hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
-							minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+							minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"}
 							callbackHour={(value: string) => {
 								if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
 									changeDurationHourMultiple(
@@ -571,7 +572,7 @@ const Schedule = <T extends {
 							disabled={false}
 							title={"EVENTS.EVENTS.NEW.SOURCE.DATE_TIME.END_TIME"}
 							hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
-							minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTES"}
+							minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"}
 							callbackHour={(value: string) => {
 								if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
 									changeEndHourMultiple(

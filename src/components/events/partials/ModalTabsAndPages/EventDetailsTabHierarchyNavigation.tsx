@@ -6,6 +6,7 @@ import {
 	style_nav_hierarchy_inactive,
 } from "../../../../utils/eventDetailsUtils";
 import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the navigation hierarchy for the workflow details sub-tabs of event details modal
@@ -13,20 +14,20 @@ import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 const EventDetailsTabHierarchyNavigation = <T,>({
 	openSubTab,
 	hierarchyDepth,
-	translationKey0 = "",
+	translationKey0,
 	subTabArgument0,
-	translationKey1 = "",
+	translationKey1,
 	subTabArgument1,
-	translationKey2 = "",
+	translationKey2,
 	subTabArgument2,
 }: {
 	openSubTab: (tabType: T) => void,
 	hierarchyDepth: number,
-	translationKey0: string,
+	translationKey0: ParseKeys,
 	subTabArgument0: T,
-	translationKey1?: string,
+	translationKey1?: ParseKeys,
 	subTabArgument1?: T,
-	translationKey2?: string,
+	translationKey2?: ParseKeys,
 	subTabArgument2?: T,
 }) => {
 	const { t } = useTranslation();
@@ -58,7 +59,7 @@ const EventDetailsTabHierarchyNavigation = <T,>({
 					}
 					onClick={() => openSubTab(subTabArgument1)}
 				>
-					{t(translationKey1)}
+					{translationKey1 && t(translationKey1)}
 					{hierarchyDepth > 1 && (
 						<span style={style_nav_hierarchy_inactive}> </span>
 					)}
@@ -70,7 +71,7 @@ const EventDetailsTabHierarchyNavigation = <T,>({
 					style={style_nav_hierarchy}
 					onClick={() => openSubTab(subTabArgument2)}
 				>
-					{t(translationKey2)}
+					{translationKey2 && t(translationKey2)}
 				</ButtonLikeAnchor>
 			)}
 		</nav>

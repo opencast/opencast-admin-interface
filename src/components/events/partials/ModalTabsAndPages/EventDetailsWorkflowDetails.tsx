@@ -18,6 +18,7 @@ import { renderValidDate } from "../../../../utils/dateUtils";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
 import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the workflow details for the workflows tab of the event details modal
@@ -136,7 +137,7 @@ const EventDetailsWorkflowDetails = ({
 														) /* Status */
 													}
 												</td>
-												<td>{t(workflowData.status)}</td>
+												<td>{t(workflowData.status as ParseKeys)}</td>
 											</tr>
 											{workflowData.status !==
 												"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.RUNNING" && (

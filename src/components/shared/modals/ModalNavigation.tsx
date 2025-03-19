@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import ButtonLikeAnchor from "../ButtonLikeAnchor";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the navigation in details modals
@@ -13,7 +14,7 @@ const ModalNavigation = ({
 }: {
 	tabInformation: {
 		accessRole: string,
-		tabTranslation: string
+		tabTranslation: ParseKeys
 	}[],
 	page: number,
 	openTab: (key: number) => unknown,

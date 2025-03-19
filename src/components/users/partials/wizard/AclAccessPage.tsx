@@ -162,7 +162,7 @@ const AclAccessPage = <T extends RequiredFormProps>({
 
 											<div className="obj-container">
 												<div className="obj tbl-list">
-													<header>{t("")}</header>
+													<header>{""}</header>
 													<div className="obj-container">
 														<table className="main-tbl">
 															<thead>

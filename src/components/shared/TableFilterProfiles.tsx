@@ -17,6 +17,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { AsyncThunk } from "@reduxjs/toolkit";
 import ButtonLikeAnchor from "./ButtonLikeAnchor";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the table filter profiles in the upper right corner when clicked on settings icon of the
@@ -165,7 +166,7 @@ const TableFiltersProfiles = ({
 										<li key={key}>
 											<ButtonLikeAnchor
 												onClick={() => chooseFilterProfile(profile.filterMap)}
-												tooltipText={profile.description}
+												tooltipText={profile.description as ParseKeys}
 											>
 												{profile.name.substr(0, 70)}
 											</ButtonLikeAnchor>

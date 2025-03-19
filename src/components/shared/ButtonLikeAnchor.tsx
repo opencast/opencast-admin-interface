@@ -5,11 +5,12 @@ import { useAppSelector } from "../../store";
 import { hasAccess } from "../../utils/utils"
 import { Tooltip } from "./Tooltip";
 import cn from "classnames";
+import { ParseKeys } from "i18next";
 
 type ButtonLikeAnchorProps = JSX.IntrinsicElements["button"] & {
 	extraClassName?: string
 	editAccessRole?: string
-	tooltipText?: string
+	tooltipText?: ParseKeys
 }
 
 const ButtonLikeAnchor = React.forwardRef<HTMLButtonElement, ButtonLikeAnchorProps>(({

@@ -1,6 +1,7 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
+	getMultiSelect,
 	getPageOffset,
 	getTable,
 	getTableDirection,
@@ -17,6 +18,7 @@ import {
 	updatePageSize,
 	Page,
 	Pagination,
+	ReverseOptions,
 } from "../../slices/tableSlice";
 import {
 	changeAllSelected,
@@ -36,6 +38,7 @@ import { useAppDispatch, useAppSelector } from "../../store";
 import { TableColumn } from "../../configs/tableConfigs/aclsTableConfig";
 import ButtonLikeAnchor from "./ButtonLikeAnchor";
 import { ModalHandle } from "./modals/Modal";
+import { ParseKeys } from "i18next";
 
 const containerPageSize = React.createRef<HTMLButtonElement>();
 
@@ -60,6 +63,7 @@ const Table = ({
 	const rows = useAppSelector(state => getTableRows(state));
 	const sortBy = useAppSelector(state => getTableSorting(state));
 	const reverse = useAppSelector(state => getTableDirection(state));
+	const multiSelect = useAppSelector(state => getMultiSelect(state));
 
 	// Size options for pagination
 	const sizeOptions = [10, 20, 50, 100, 1000];
@@ -125,7 +129,7 @@ const Table = ({
 
 	const sortByColumn = (colName: string) => {
 		dispatch(setSortBy(colName));
-		let direction = "ASC";
+		let direction: ReverseOptions = "ASC";
 		if (reverse && reverse === "ASC") {
 			direction = "DESC";
 		}
@@ -178,7 +182,7 @@ const Table = ({
 				<thead>
 					<tr>
 						{/* Only show if multiple selection is possible */}
-						{table.multiSelect ? (
+						{multiSelect ? (
 							<th className="small">
 								{/*Checkbox to select all rows*/}
 								<input
@@ -244,7 +248,7 @@ const Table = ({
 							<tr key={key}>
 								{/* Show if multi selection is possible */}
 								{/* Checkbox for selection of row */}
-								{table.multiSelect && "id" in row && (
+								{multiSelect && "id" in row && (
 									<td>
 										<input
 											type="checkbox"
@@ -264,7 +268,7 @@ const Table = ({
 									  column.translate &&
 									  !column.deactivated ? (
 										//Show only if column not template, translate, not deactivated
-										<td key={key}>{t(tryToGetValueForKeyFromRowAsString(row, column.name))}</td>
+										<td key={key}>{t(tryToGetValueForKeyFromRowAsString(row, column.name) as ParseKeys)}</td>
 									) : !!column.template &&
 									  !column.deactivated &&
 									  !!templateMap[column.template] ? (

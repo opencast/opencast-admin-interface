@@ -22,6 +22,7 @@ import {
 import { renderValidDate } from "../../../../utils/dateUtils";
 import { useTranslation } from "react-i18next";
 import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the comment tab of the event details modal
@@ -31,7 +32,7 @@ const EventDetailsCommentsTab = ({
 	header,
 }: {
 	eventId: string,
-	header: string,
+	header: ParseKeys,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -141,7 +142,7 @@ const EventDetailsCommentsTab = ({
 												<strong>
 													{t("EVENTS.EVENTS.DETAILS.COMMENTS.REASON")}
 												</strong>
-												:{" " + t(comment.reason) || ""}
+												:{" " + t(comment.reason as ParseKeys) || ""}
 											</span>
 
 											{/* comment text */}
@@ -196,7 +197,7 @@ const EventDetailsCommentsTab = ({
 															<strong>
 																{t("EVENTS.EVENTS.DETAILS.COMMENTS.REASON")}
 															</strong>
-															:{" " + t(comment.reason) || ""}
+															:{" " + t(comment.reason as ParseKeys) || ""}
 														</span>
 														<p>
 															<span>@{comment.author.name}</span> {reply.text}
@@ -246,7 +247,7 @@ const EventDetailsCommentsTab = ({
 										<div className="editable">
 											<DropDown
 												value={commentReason}
-												text={t(commentReason)}
+												text={t(commentReason as ParseKeys)}
 												options={Object.entries(commentReasons).map(([key, value]) => ({ label: value, value: key }))}
 												required={true}
 												handleChange={(element) => {
