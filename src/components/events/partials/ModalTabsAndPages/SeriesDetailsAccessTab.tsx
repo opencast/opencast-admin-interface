@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import ResourceDetailsAccessPolicyTab from "../../../shared/modals/ResourceDetailsAccessPolicyTab";
 import { getPolicyTemplateId, getSeriesDetailsAcl } from "../../../../selectors/seriesDetailsSelectors";
 import {
@@ -8,6 +7,7 @@ import {
 } from "../../../../slices/seriesDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the access policy tab of the series details modal
@@ -19,11 +19,10 @@ const SeriesDetailsAccessTab = ({
 	setPolicyChanged,
 }: {
 	seriesId: string,
-	header: string,
+	header: ParseKeys,
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,
 }) => {
-	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const policies = useAppSelector(state => getSeriesDetailsAcl(state));
@@ -39,7 +38,7 @@ const SeriesDetailsAccessTab = ({
 			resourceId={seriesId}
 			header={header}
 			buttonText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.LABEL"}
-			descriptionText={t("EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION")}
+			descriptionText={"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION"}
 			policies={policies}
 			policyTemplateId={policyTemplateId}
 			fetchAccessPolicies={fetchSeriesDetailsAcls}

@@ -14,6 +14,7 @@ import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the summary page for new events in the new event wizard.
@@ -31,7 +32,7 @@ interface RequiredFormProps {
 	scheduleEndMinute: string
 	scheduleDurationHours: string
 	scheduleDurationMinutes: string
-	repeatOn: string[]
+	repeatOn: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[]
 	deviceInputs?: string[]
 	configuration: { [key: string]: string }
 	policies: TransformedAcl[]
@@ -70,7 +71,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 	for (let i = 0; uploadAssetsOptionsNonTrack.length > i; i++) {
 		let fieldValue = formik.values[uploadAssetsOptionsNonTrack[i].id];
 		if (!!fieldValue) {
-			const displayOverride = uploadAssetsOptionsNonTrack[i].displayOverride
+			const displayOverride = uploadAssetsOptionsNonTrack[i].displayOverride as ParseKeys
 			uploadAssetsNonTrack = uploadAssetsNonTrack.concat({
 				name: uploadAssetsOptionsNonTrack[i].id,
 				translate: !!displayOverride
@@ -231,7 +232,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 													<td>
 														{formik.values.repeatOn
 															.map((day) =>
-																t("EVENTS.EVENTS.NEW.WEEKDAYSLONG." + day)
+																t(`EVENTS.EVENTS.NEW.WEEKDAYSLONG.${day}`)
 															)
 															.join(", ")}
 													</td>

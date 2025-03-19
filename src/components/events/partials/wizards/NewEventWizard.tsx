@@ -23,6 +23,7 @@ import { hasAccess } from "../../../../utils/utils";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import NewMetadataCommonPage from "../ModalTabsAndPages/NewMetadataCommonPage";
 import WizardStepper from "../../../shared/wizard/WizardStepper";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the new event wizard and the submission of values
@@ -65,7 +66,11 @@ const NewEventWizard: React.FC<{
 	const [pageCompleted, setPageCompleted] = useState<{ [key: number]: boolean }>({});
 
 	// Caption of steps used by Stepper
-	const steps = [
+	const steps: {
+		translation: ParseKeys,
+		name: string,
+		hidden: boolean,
+	}[] = [
 		{
 			translation: "EVENTS.EVENTS.NEW.METADATA.CAPTION",
 			name: "metadata",

@@ -7,7 +7,7 @@ import {
 	fetchHasActiveTransactions,
 	saveAccessPolicies,
 } from "../../../../slices/eventDetailsSlice";
-import { useTranslation } from "react-i18next";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the access policy tab of the event details modal
@@ -19,12 +19,10 @@ const EventDetailsAccessPolicyTab = ({
 	setPolicyChanged,
 }: {
 	eventId: string,
-	header: string,
+	header: ParseKeys,
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,
 }) => {
-	const { t } = useTranslation();
-
 	const policies = useAppSelector(state => getPolicies(state));
 	const policyTemplateId = useAppSelector(state => getPolicyTemplateId(state));
 
@@ -38,7 +36,7 @@ const EventDetailsAccessPolicyTab = ({
 			fetchAccessPolicies={fetchAccessPolicies}
 			fetchHasActiveTransactions={fetchHasActiveTransactions}
 			saveNewAccessPolicies={saveAccessPolicies}
-			descriptionText={t("EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION")}
+			descriptionText={"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION"}
 			policyTableHeaderText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.DETAILS"}
 			policyTableRoleText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.ROLE"}
 			policyTableNewText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW"}

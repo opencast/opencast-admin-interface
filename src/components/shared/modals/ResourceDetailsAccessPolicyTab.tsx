@@ -27,6 +27,7 @@ import { AsyncThunk, unwrapResult } from "@reduxjs/toolkit";
 import { SaveEditFooter } from "../SaveEditFooter";
 import { UserInfoState } from "../../../slices/userInfoSlice";
 import { formatAclTemplatesForDropdown } from "../../../utils/dropDownUtils";
+import { ParseKeys } from "i18next";
 
 
 /**
@@ -60,20 +61,20 @@ const ResourceDetailsAccessPolicyTab = ({
 	setPolicyChanged,
 }: {
 	resourceId: string,
-	header: string,
+	header: ParseKeys,
 	policies: TransformedAcl[],
 	policyTemplateId: number,
 	fetchHasActiveTransactions?: AsyncThunk<any, string, any>
 	fetchAccessPolicies: AsyncThunk<any, string, any>,
 	saveNewAccessPolicies:  AsyncThunk<boolean, { id: string, policies: { acl: Acl } }, any>
-	descriptionText: string,
-	buttonText: string,
-	policyTableHeaderText: string,
-	policyTableRoleText: string,
-	policyTableNewText: string,
-	userPolicyTableHeaderText: string,
-	userPolicyTableRoleText: string,
-	userPolicyTableNewText: string,
+	descriptionText: ParseKeys,
+	buttonText: ParseKeys,
+	policyTableHeaderText: ParseKeys,
+	policyTableRoleText: ParseKeys,
+	policyTableNewText: ParseKeys,
+	userPolicyTableHeaderText: ParseKeys,
+	userPolicyTableRoleText: ParseKeys,
+	userPolicyTableNewText: ParseKeys,
 	editAccessRole: string,
 	viewUsersAccessRole: string,
 	viewNonUsersAccessRole: string,
@@ -408,9 +409,9 @@ export const AccessPolicyTable = <T extends AccessPolicyTabFormikProps>({
 	isUserTable: boolean
 	policiesFiltered: TransformedAcl[]
 	rolesFilteredbyPolicies: Role[]
-	header: string
-	firstColumnHeader: string
-	createLabel: string,
+	header?: ParseKeys
+	firstColumnHeader: ParseKeys
+	createLabel: ParseKeys,
 	formik: FormikProps<T>,
 	hasActions: boolean
 	transactions: { read_only: boolean }
@@ -471,7 +472,7 @@ export const AccessPolicyTable = <T extends AccessPolicyTabFormikProps>({
 			<div className="obj-container">
 				<div className="obj tbl-list">
 					<header>
-						{t(header)}
+						{header ? t(header) : undefined}
 					</header>
 
 					<div className="obj-container">
@@ -731,10 +732,10 @@ export const TemplateSelector = <T extends TemplateSelectorProps>({
 }: {
 	formik: FormikProps<T>
 	editAccessRole: string
-	titleText: string
-	descriptionText: string
-	buttonText: string
-	emptyText: string
+	titleText: ParseKeys
+	descriptionText: ParseKeys
+	buttonText: ParseKeys
+	emptyText: ParseKeys
 	transactions: { read_only: boolean }
 	aclTemplates: AclTemplate[]
 	defaultUser?: UserInfoState
