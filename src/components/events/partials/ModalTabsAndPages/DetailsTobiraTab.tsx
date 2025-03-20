@@ -13,6 +13,7 @@ import { fetchSeriesDetailsTobira, removeSeriesTobiraPath, setTobiraTabHierarchy
 import { fetchSeriesDetailsTobiraNew, TobiraPage } from "../../../../slices/seriesSlice";
 import ConfirmModal from "../../../shared/ConfirmModal";
 import { Tooltip } from "../../../shared/Tooltip";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { ModalHandle } from "../../../shared/modals/Modal";
 import { fetchEventDetailsTobira } from "../../../../slices/eventDetailsSlice";
 
@@ -213,9 +214,9 @@ const TobiraTable = ({ tobiraData, i18nKey, openSubTab, handleDelete }: TobiraTa
 					<td className="tobira-not-mounted">
 						{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.NOT_MOUNTED`)}
 						{i18nKey === "SERIES" && <Tooltip title={t("EVENTS.SERIES.DETAILS.TOBIRA.MOUNT_SERIES")}>
-							<button
+							<ButtonLikeAnchor
 								style={{ margin: 5 }}
-								className="button-like-anchor edit fa fa-pencil-square pull-right"
+								extraClassName="edit fa fa-pencil-square pull-right"
 								onClick={() => openSubTab("edit-path")}
 								/>
 						</Tooltip>}
@@ -243,20 +244,18 @@ const TobiraTable = ({ tobiraData, i18nKey, openSubTab, handleDelete }: TobiraTa
 							</span>
 						</a>
 						{i18nKey === "SERIES" && hostPage.blocks?.length === 1 && <>
-							<Tooltip title={t("EVENTS.SERIES.DETAILS.TOBIRA.REMOVE_PATH")}>
-								<button
-									style={{ margin: 5 }}
-									onClick={() => deleteConfirmationModalRef.current?.open()}
-									className="button-like-anchor remove pull-right"
-								/>
-							</Tooltip>
-							<Tooltip title={t("EVENTS.SERIES.DETAILS.TOBIRA.EDIT_PATH")}>
-								<button
-									style={{ margin: 5 }}
-									className="button-like-anchor edit fa fa-pencil-square pull-right"
-									onClick={() => openSubTab("edit-path", hostPage)}
-								/>
-							</Tooltip>
+							<ButtonLikeAnchor
+								style={{ margin: 5 }}
+								onClick={() => deleteConfirmationModalRef.current?.open()}
+								extraClassName="remove pull-right"
+								tooltipText="EVENTS.SERIES.DETAILS.TOBIRA.REMOVE_PATH"
+							/>
+							<ButtonLikeAnchor
+								style={{ margin: 5 }}
+								extraClassName="edit fa fa-pencil-square pull-right"
+								onClick={() => openSubTab("edit-path", hostPage)}
+								tooltipText="EVENTS.SERIES.DETAILS.TOBIRA.EDIT_PATH"
+							/>
 							<ConfirmModal
 								close={() => deleteConfirmationModalRef.current?.close?.()}
 								resourceName={hostPage.path}

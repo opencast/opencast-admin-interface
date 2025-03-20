@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../store";
 import { getUserInformation } from "../../selectors/userInfoSelectors";
 import { ParseKeys } from "i18next";
+import ButtonLikeAnchor from "./ButtonLikeAnchor";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef<HTMLDivElement>();
@@ -85,9 +86,9 @@ const Action = ({
 		!!handleOnClick &&
 		accessRole.every((accessRole) => hasAccess(accessRole, user)) && (
 			<li>
-				<button className="button-like-anchor" onClick={handleOnClick}>
+				<ButtonLikeAnchor onClick={handleOnClick}>
 					{t(text)}
-				</button>
+				</ButtonLikeAnchor>
 			</li>
 		)
 	)

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { useField } from "formik";
+import ButtonLikeAnchor from "../ButtonLikeAnchor";
 import { ParseKeys } from "i18next";
 
 type Item = {
@@ -194,7 +195,7 @@ const SelectContainer = ({
 						{resource.searchable && (
 							<div className="search-container">
 								{/* search bar */}
-								<button className="button-like-anchor clear" onClick={() => clearSearchField()} />
+								<ButtonLikeAnchor extraClassName="clear" onClick={() => clearSearchField()} />
 								<input
 									type="text"
 									id="search"
