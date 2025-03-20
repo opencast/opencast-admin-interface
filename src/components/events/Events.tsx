@@ -36,8 +36,9 @@ import {
 } from "../../slices/eventSlice";
 import EventDetailsModal from "./partials/modals/EventDetailsModal";
 import { showModal } from "../../selectors/eventDetailsSelectors";
-import { eventsLinks, loadEvents } from "./partials/EventsNavigation";
+import { eventsLinks } from "./partials/EventsNavigation";
 import { Modal, ModalHandle } from "../shared/modals/Modal";
+import { resetTableProperties } from "../../slices/tableSlice";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef<HTMLDivElement>();
@@ -67,6 +68,12 @@ const Events = () => {
 	let location = useLocation();
 
 	useEffect(() => {
+		// State variable for interrupting the load function
+		let allowLoadIntoTable = true;
+
+		// Clear redux of previous table data
+		dispatch(resetTableProperties());
+
 		dispatch(fetchFilters("events"))
 
 		// Reset text filter
@@ -76,7 +83,17 @@ const Events = () => {
 		dispatch(setShowActions(false));
 
 		// Load events on mount
-		loadEvents(dispatch);
+		const loadEvents = async () => {
+			// Fetching events from server
+			await dispatch(fetchEvents());
+
+			// Load events into table
+			if (allowLoadIntoTable) {
+				dispatch(loadEventsIntoTable());
+			}
+		}
+		// call the function
+		loadEvents();
 
 		// Function for handling clicks outside of an open dropdown menu
 		const handleClickOutside = (e: MouseEvent) => {
@@ -89,12 +106,13 @@ const Events = () => {
 		};
 
 		// Fetch events every five seconds
-		let fetchEventsInterval = setInterval(() => loadEvents(dispatch), 5000);
+		let fetchEventsInterval = setInterval(() => loadEvents(), 5000);
 
 		// Event listener for handle a click outside of dropdown menu
 		window.addEventListener("mousedown", handleClickOutside);
 
 		return () => {
+			allowLoadIntoTable = false;
 			window.removeEventListener("mousedown", handleClickOutside);
 			clearInterval(fetchEventsInterval);
 		};

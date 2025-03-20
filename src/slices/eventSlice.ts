@@ -1,4 +1,4 @@
-import { PayloadAction, SerializedError, createSlice, unwrapResult } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import { eventsTableConfig } from "../configs/tableConfigs/eventsTableConfig";
 import axios, { AxiosProgressEvent } from 'axios';
 import moment from "moment-timezone";
@@ -23,7 +23,7 @@ import {
 import { getAssetUploadOptions, getSchedulingEditedEvents, getSourceUploadOptions } from '../selectors/eventSelectors';
 import { fetchSeriesOptions } from "./seriesSlice";
 import { AppDispatch } from '../store';
-import { enrichPublications, fetchAssetUploadOptions } from '../thunks/assetsThunks';
+import { fetchAssetUploadOptions } from '../thunks/assetsThunks';
 import { TransformedAcl } from './aclDetailsSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { Publication } from './eventDetailsSlice';
@@ -270,21 +270,6 @@ export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, {
 			...response.results[i],
 			date: response.results[i].start_date,
 		};
-		// insert enabled and hide property of publications, if result has publications
-		let result = response.results[i];
-		if (!!result.publications && result.publications.length > 0) {
-			let transformedPublications: Publication[] = [];
-			try {
-				const resultAction = await dispatch(enrichPublications({ publications: result.publications }));
-				transformedPublications = unwrapResult(resultAction);
-			} catch (rejectedValueOrSerializedError) {
-				console.error(rejectedValueOrSerializedError)
-			}
-			response.results[i] = {
-				...response.results[i],
-				publications: transformedPublications,
-			};
-		}
 	}
 	const events = response;
 
