@@ -21,6 +21,7 @@ import {
 } from "../../../../slices/eventDetailsSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
 import { useTranslation } from "react-i18next";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { ParseKeys } from "i18next";
 
 /**
@@ -152,25 +153,25 @@ const EventDetailsCommentsTab = ({
 												"ROLE_UI_EVENTS_DETAILS_COMMENTS_DELETE",
 												user
 											) && (
-												<button
+												<ButtonLikeAnchor
 													onClick={() => deleteComment(comment)}
-													className="button-like-anchor delete"
+													extraClassName="delete"
 												>
 													{t("EVENTS.EVENTS.DETAILS.COMMENTS.DELETE")}
-												</button>
+												</ButtonLikeAnchor>
 											)}
 											{hasAccess(
 												"ROLE_UI_EVENTS_DETAILS_COMMENTS_REPLY",
 												user
 											) && (
-												<button
+												<ButtonLikeAnchor
 													onClick={
 														() => replyTo(comment, key) /* enters reply mode */
 													}
-													className="button-like-anchor reply"
+													extraClassName="reply"
 												>
 													{t("EVENTS.EVENTS.DETAILS.COMMENTS.REPLY")}
-												</button>
+												</ButtonLikeAnchor>
 											)}
 											<span
 												className="resolve"
@@ -207,15 +208,15 @@ const EventDetailsCommentsTab = ({
 															"ROLE_UI_EVENTS_DETAILS_COMMENTS_DELETE",
 															user
 														) && (
-															<button
+															<ButtonLikeAnchor
 																onClick={() =>
 																	deleteReply(comment, reply)
 																}
-																className="button-like-anchor delete"
+																extraClassName="delete"
 															>
 																<i className="fa fa-times-circle" />
 																{t("EVENTS.EVENTS.DETAILS.COMMENTS.DELETE")}
-															</button>
+															</ButtonLikeAnchor>
 														)}
 													</div>
 												))

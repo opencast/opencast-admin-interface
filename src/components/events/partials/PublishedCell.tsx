@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Event } from "../../../slices/eventSlice";
 import { Tooltip } from "../../shared/Tooltip";
+import ButtonLikeAnchor from "../../shared/ButtonLikeAnchor";
 import { enrichPublications } from "../../../thunks/assetsThunks";
 import { useAppDispatch } from "../../../store";
 import { Publication } from "../../../slices/eventDetailsSlice";
@@ -79,17 +80,17 @@ const PublishCell = ({
 			{onlyEngage && (
 				<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PLAYER")}>
 					<a href={publications[0].url} rel='noreferrer' target="_blank">
-						<button className="button-like-anchor">
+						<ButtonLikeAnchor>
 							{t("YES")}
-						</button>
+						</ButtonLikeAnchor>
 					</a>
 				</Tooltip>
 			)}
 			{!onlyEngage && publications.length > 0 && (
 				<>
-					<button className="button-like-anchor popover-wrapper__trigger">
+					<ButtonLikeAnchor extraClassName="popover-wrapper__trigger">
 						<span onClick={() => setShowPopup(!showPopup)}>{t("YES")}</span>
-					</button>
+					</ButtonLikeAnchor>
 					{showPopup && (
 						<div className="js-popover popover" ref={containerPublications}>
 							<div className="popover__header" />
@@ -109,9 +110,9 @@ const PublishCell = ({
 												<span>{publication.label? t(publication.label as ParseKeys) : t(publication.name as ParseKeys)}</span>
 											</a>
 										) : (
-											<button key={key} className="button-like-anchor popover__list-item">
+											<ButtonLikeAnchor key={key} extraClassName="popover__list-item">
 												<span>{publication.label ? t(publication.label as ParseKeys) : t(publication.name as ParseKeys)}</span>
-											</button>
+											</ButtonLikeAnchor>
 										)
 									) : null
 								)}
