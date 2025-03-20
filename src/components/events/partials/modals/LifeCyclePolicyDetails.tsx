@@ -6,6 +6,7 @@ import LifeCyclePolicyDetailsAccessTab from "../ModalTabsAndPages/LifeCyclePolic
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { fetchLifeCyclePolicyActions, fetchLifeCyclePolicyTargetTypes, fetchLifeCyclePolicyTimings } from "../../../../slices/lifeCycleDetailsSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the tabs of the series details modal
@@ -28,7 +29,11 @@ const LifeCyclePolicyDetails = () => {
 	const [policyChanged, setPolicyChanged] = useState(false);
 
 	// information about tabs
-	const tabs = [
+	const tabs: {
+		tabTranslation: ParseKeys,
+		accessRole: string,
+		name: string,
+	}[] = [
 		{
 			tabTranslation: "LIFECYCLE.POLICIES.DETAILS.TAB.GENERAL",
 			accessRole: "ROLE_UI_LIFECYCLEPOLICIES_DETAILS_GENERAL_VIEW",
@@ -55,7 +60,7 @@ const LifeCyclePolicyDetails = () => {
 				{page === 1 &&
 					<LifeCyclePolicyDetailsAccessTab
 						seriesId={policy.id}
-						header={tabs[page].name}
+						header={tabs[page].tabTranslation}
 						policyChanged={policyChanged}
 						setPolicyChanged={setPolicyChanged}
 					/>

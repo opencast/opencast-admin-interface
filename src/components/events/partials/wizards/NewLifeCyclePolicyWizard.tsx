@@ -11,6 +11,7 @@ import NewLifeCyclePolicySummary from "./NewLifeCyclePolicySummary";
 import { LifeCyclePolicySchema } from "../../../../utils/validate";
 import { initialFormValuesNewLifeCyclePolicy } from "../../../../configs/modalConfig";
 import { parseTargetFiltersForSubmit } from "../../../../utils/lifeCycleUtils";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the new event wizard and the submission of values
@@ -31,7 +32,11 @@ const NewLifeCyclePolicyWizard = ({
 	const [pageCompleted, setPageCompleted] = useState<{ [key: number]: boolean }>({});
 
 	// Caption of steps used by Stepper
-	const steps = [
+	const steps: {
+		translation: ParseKeys,
+		name: string,
+		hidden: boolean,
+	}[] = [
 		{
 			translation: "LIFECYCLE.POLICIES.NEW.GENERAL.CAPTION",
 			name: "general",

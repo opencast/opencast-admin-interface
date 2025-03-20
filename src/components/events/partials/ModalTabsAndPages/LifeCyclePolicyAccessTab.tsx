@@ -5,6 +5,7 @@ import { removeNotificationWizardForm } from "../../../../slices/notificationSli
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { getLifeCyclePolicyDetailsAcl } from "../../../../selectors/lifeCycleDetailsSelectors";
 import { fetchLifeCyclePolicyDetailsAcls, updateLifeCyclePolicyAccess } from "../../../../slices/lifeCycleDetailsSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the access policy tab of the series details modal
@@ -16,7 +17,7 @@ const LifeCyclePolicyDetailsAccessTab = ({
 	setPolicyChanged,
 }: {
 	seriesId: string,
-	header: string,
+	header: ParseKeys,
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,
 }) => {

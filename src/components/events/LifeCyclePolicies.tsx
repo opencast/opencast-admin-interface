@@ -9,7 +9,6 @@ import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
 import Footer from "../Footer";
-import { getCurrentFilterResource } from "../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { AsyncThunk } from "@reduxjs/toolkit";
 import { getTotalLifeCyclePolicies } from "../../selectors/lifeCycleSelectors";
@@ -18,7 +17,8 @@ import { lifeCyclePoliciesTemplateMap } from "../../configs/tableConfigs/lifeCyc
 import { fetchLifeCyclePolicyActions, fetchLifeCyclePolicyTargetTypes, fetchLifeCyclePolicyTimings } from "../../slices/lifeCycleDetailsSlice";
 import { ModalHandle } from "../shared/modals/Modal";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
-import { eventsLinks, loadLifeCyclePolicies } from "./partials/EventsNavigation";
+import { eventsLinks } from "./partials/EventsNavigation";
+import { resetTableProperties } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of policies
@@ -30,23 +30,38 @@ const LifeCyclePolicies = () => {
 	const newPolicyModalRef = useRef<ModalHandle>(null);
 
 	const policiesTotal = useAppSelector(state => getTotalLifeCyclePolicies(state));
-	const currentFilterType = useAppSelector(state => getCurrentFilterResource(state));
 
 	useEffect(() => {
-		if ("lifeCyclePolicies" !== currentFilterType) {
-			dispatch(fetchFilters("lifeCyclePolicies"));
-		}
+		// State variable for interrupting the load function
+		let allowLoadIntoTable = true;
+
+		// Clear table of previous data
+		dispatch(resetTableProperties());
+
+		dispatch(fetchFilters("lifeCyclePolicies"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));
 
 		// Load policies on mount
-		loadLifeCyclePolicies(dispatch);
+		const loadLifeCyclePolicies = async () => {
+			// Fetching policies from server
+			await dispatch(fetchLifeCyclePolicies());
+
+			// Load policies into table
+			if (allowLoadIntoTable) {
+				dispatch(loadLifeCyclePoliciesIntoTable());
+			}
+		};
+		loadLifeCyclePolicies();
 
 		// Fetch policies repeatedly
 		let fetchInterval = setInterval(loadLifeCyclePolicies, 5000);
 
-		return () => clearInterval(fetchInterval);
+		return () => {
+			allowLoadIntoTable = false;
+			clearInterval(fetchInterval);
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

@@ -33,10 +33,10 @@ const NewResourceModal = ({
 		switch(resource) {
 			case "events": return t("EVENTS.EVENTS.NEW.CAPTION");
 			case "series": return t("EVENTS.SERIES.NEW.CAPTION");
-			case "themes": return t("CONFIGURATION.THEMES.NEW.CAPTION");
+			case "themes": return t("CONFIGURATION.THEMES.DETAILS.NEWCAPTION");
 			case "acl": return t("USERS.ACLS.NEW.CAPTION");
 			case "group": return t("USERS.GROUPS.NEW.CAPTION");
-			case "user": return t("USERS.USERS.NEW.CAPTION");
+			case "user": return t("USERS.USERS.DETAILS.NEWCAPTION");
 			case "lifecyclepolicy": return t("LIFECYCLE.POLICIES.NEW.CAPTION");
 		}
 	}
