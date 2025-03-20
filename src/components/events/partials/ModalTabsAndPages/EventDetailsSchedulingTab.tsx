@@ -51,6 +51,7 @@ import SchedulingLocation from "../wizards/scheduling/SchedulingLocation";
 import SchedulingInputs from "../wizards/scheduling/SchedulingInputs";
 import SchedulingConflicts from "../wizards/scheduling/SchedulingConflicts";
 import { ParseKeys } from "i18next";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**../wizards/scheduling/SchedulingTime
  * This component manages the main assets tab of event details modal
@@ -219,320 +220,315 @@ const EventDetailsSchedulingTab = ({
 	};
 
 	return (
-		<div className="modal-content">
-			<div className="modal-body">
-				{/* Notifications */}
-				<Notifications context="not_corner" />
+		<ModalContentTable
+			modalBodyChildren={<Notifications context="not_corner" />}
+		>
+			{
+				<SchedulingConflicts
+					conflicts={conflicts}
+				/>
+			}
 
-				<div className="full-col">
-					{
-						<SchedulingConflicts
-							conflicts={conflicts}
-						/>
-					}
+			{
+				/* Scheduling configuration */
+				hasSchedulingProperties && (
+				/* Initialize form */
+					<Formik
+						enableReinitialize
+						initialValues={getInitialValues()}
+						onSubmit={(values) => submitForm(values).then((r) => {})}
+					>
+						{(formik) => (
+							<div className="obj tbl-details">
+								<header>
+									<span>
+										{
+											t(
+												"EVENTS.EVENTS.DETAILS.SCHEDULING.CAPTION"
+											) /* Scheduling configuration */
+										}
+									</span>
+								</header>
+								<div className="obj-container">
+									<table className="main-tbl">
+										<tbody>
+											{/* time zone */}
+											<tr>
+												<td>
+													{t(
+														"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.TIMEZONE"
+													)}
+												</td>
+												<td>{tz}</td>
+											</tr>
 
-					{
-						/* Scheduling configuration */
-						hasSchedulingProperties && (
-						/* Initialize form */
-							<Formik
-								enableReinitialize
-								initialValues={getInitialValues()}
-								onSubmit={(values) => submitForm(values).then((r) => {})}
-							>
-								{(formik) => (
-									<div className="obj tbl-details">
-										<header>
-											<span>
-												{
-													t(
-														"EVENTS.EVENTS.DETAILS.SCHEDULING.CAPTION"
-													) /* Scheduling configuration */
-												}
-											</span>
-										</header>
-										<div className="obj-container">
-											<table className="main-tbl">
-												<tbody>
-													{/* time zone */}
-													<tr>
-														<td>
-															{t(
-																"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.TIMEZONE"
-															)}
-														</td>
-														<td>{tz}</td>
-													</tr>
-
-													{/* start date */}
-													<tr>
-														<td>
-															{t(
-																"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_DATE"
-															)}
-														</td>
-														<td>
-															{hasAccessRole &&
-															accessAllowed(formik.values.captureAgent) ? (
-																/* date picker for start date */
-																<DatePicker
-																	name="scheduleStartDate"
-																	selected={new Date(formik.values.scheduleStartDate)}
-																	onChange={(value: Date | null) =>
-																		value && changeStartDate(
-																			value,
-																			formik.values,
-																			formik.setFieldValue,
-																			eventId,
-																			checkConflictsWrapper
-																		)
-																	}
-																	showYearDropdown
-																	showMonthDropdown
-																	yearDropdownItemNumber={2}
-																	dateFormat="P"
-																	popperClassName="datepicker-custom"
-																	className="datepicker-custom-input"
-																	portalId="root"
-																	locale={currentLanguage?.dateLocale}
-																	strictParsing
-																/>
-															) : (
-																<>
-																	{sourceStartDate.toLocaleDateString(
-																		currentLanguage ? currentLanguage.dateLocale.code : undefined
-																	)}
-																</>
-															)}
-														</td>
-													</tr>
-
-													{/* start time */}
-													{hasAccessRole && (
-														<SchedulingTime
-															hour={formik.values.scheduleStartHour}
-															minute={formik.values.scheduleStartMinute}
-															disabled={!accessAllowed(formik.values.captureAgent)}
-															title={"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_TIME"}
-															hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
-															minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"}
-															callbackHour={(value: string) => {
-																changeStartHour(
-																	value,
-																	formik.values,
-																	formik.setFieldValue,
-																	eventId,
-																	checkConflictsWrapper
-																)
-															}}
-															callbackMinute={(value: string) => {
-																changeStartMinute(
-																	value,
-																	formik.values,
-																	formik.setFieldValue,
-																	eventId,
-																	checkConflictsWrapper
-																)
-															}}
-														/>
+											{/* start date */}
+											<tr>
+												<td>
+													{t(
+														"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_DATE"
 													)}
-													{!hasAccessRole && (
-													<tr>
-														<td>
-															{t("EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_TIME")}
-														</td>
-														<td>
-															{source.start.hour ? makeTwoDigits(source.start.hour) : ""}:
-															{source.start.minute ? makeTwoDigits(source.start.minute) : ""}
-														</td>
-													</tr>
-													)}
-													{/* duration */}
-													{hasAccessRole && (
-														<SchedulingTime
-															hour={formik.values.scheduleDurationHours}
-															minute={formik.values.scheduleDurationMinutes}
-															disabled={!accessAllowed(formik.values.captureAgent)}
-															title={"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.DURATION"}
-															hourPlaceholder={"WIZARD.DURATION.HOURS"}
-															minutePlaceholder={"WIZARD.DURATION.MINUTES"}
-															callbackHour={(value: string) => {
-																changeDurationHour(
+												</td>
+												<td>
+													{hasAccessRole &&
+													accessAllowed(formik.values.captureAgent) ? (
+														/* date picker for start date */
+														<DatePicker
+															name="scheduleStartDate"
+															selected={new Date(formik.values.scheduleStartDate)}
+															onChange={(value: Date | null) =>
+																value && changeStartDate(
 																	value,
 																	formik.values,
 																	formik.setFieldValue,
 																	eventId,
 																	checkConflictsWrapper
 																)
-															}}
-															callbackMinute={(value: string) => {
-																changeDurationMinute(
-																	value,
-																	formik.values,
-																	formik.setFieldValue,
-																	eventId,
-																	checkConflictsWrapper
-																)
-															}}
-														/>
-													)}
-													{!hasAccessRole && (
-													<tr>
-														<td>
-															{t(
-																"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.DURATION"
-															)}
-														</td>
-														<td>
-															{source.duration.hour ? makeTwoDigits(source.duration.hour) : ""}:
-															{source.duration.minute ? makeTwoDigits(source.duration.minute) : ""}
-														</td>
-													</tr>
-													)}
-													{/* end time */}
-													{hasAccessRole && (
-														<SchedulingTime
-															hour={formik.values.scheduleEndHour}
-															minute={formik.values.scheduleEndMinute}
-															disabled={!accessAllowed(formik.values.captureAgent)}
-															title={"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.END_TIME"}
-															hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
-															minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"}
-															callbackHour={(value: string) => {
-																changeEndHour(
-																	value,
-																	formik.values,
-																	formik.setFieldValue,
-																	eventId,
-																	checkConflictsWrapper
-																)
-															}}
-															callbackMinute={(value: string) => {
-																changeEndMinute(
-																	value,
-																	formik.values,
-																	formik.setFieldValue,
-																	eventId,
-																	checkConflictsWrapper
-																)
-															}}
-															date={
-																hasAccessRole &&
-																(new Date(formik.values.scheduleEndDate).getDate() !==
-																new Date(formik.values.scheduleStartDate).getDate())
-																? formik.values.scheduleEndDate
-																: undefined
 															}
+															showYearDropdown
+															showMonthDropdown
+															yearDropdownItemNumber={2}
+															dateFormat="P"
+															popperClassName="datepicker-custom"
+															className="datepicker-custom-input"
+															portalId="root"
+															locale={currentLanguage?.dateLocale}
+															strictParsing
 														/>
+													) : (
+														<>
+															{sourceStartDate.toLocaleDateString(
+																currentLanguage ? currentLanguage.dateLocale.code : undefined
+															)}
+														</>
 													)}
-													{!hasAccessRole && (
-													<tr>
-														<td>
-															{t(
-																"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.END_TIME"
-															)}
-														</td>
-														<td>
-															{source.end.hour ? makeTwoDigits(source.end.hour) : ""}:
-															{source.end.minute ? makeTwoDigits(source.end.minute) : ""}
-															{formik.values.scheduleEndDate.toString() !==
-																formik.values.scheduleStartDate.toString() && (
-																<span>
-																	{new Date(
-																		formik.values.scheduleEndDate
-																	).toLocaleDateString(
-																		currentLanguage ? currentLanguage.dateLocale.code : undefined
-																	)}
-																</span>
-															)}
-														</td>
-													</tr>
-													)}
-													{/* capture agent (aka. room or location) */}
-														{hasAccessRole && (
-															<SchedulingLocation
-																location={formik.values.captureAgent}
-																inputDevices={filterDevicesForAccess(
-																	user,
-																	captureAgents
-																).filter((a) => filterCaptureAgents(a))}
-																disabled={!accessAllowed(formik.values.captureAgent)}
-																title={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"}
-																placeholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"}
-																callback={(value: string) => {
-																	changeInputs(
-																		value,
-																		formik.setFieldValue
-																	)
-																}}
-															/>
-														)}
-														{!hasAccessRole &&
-															<tr>
-																<td>
-																	{t(
-																		"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"
-																	)}
-																</td>
-																<td>{source.device.name}</td>
-															</tr>
-														}
+												</td>
+											</tr>
 
-													{/* inputs */}
-													<tr>
-														<td>
-															{t(
-																"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.INPUTS"
-															)}
-														</td>
-														<td>
-															{!!formik.values.captureAgent &&
-																!!getInputs(formik.values.captureAgent) &&
-																getInputs(formik.values.captureAgent).length >
-																	0 &&
-																(hasAccessRole &&
-																accessAllowed(formik.values.captureAgent)
-																	? <SchedulingInputs
-																			inputs={getInputs(formik.values.captureAgent)}
-																		/>
-																	: formik.values.inputs.map((input, key) => (
-																			<span key={key}>
-																				{getInputForAgent(formik.values.captureAgent, input)}
-																				<br />
-																			</span>
-																		)))}
-														</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-
-										{/* Save and cancel buttons */}
-										{formik.dirty && (
-											<>
-												{/* Render buttons for updating scheduling */}
-												<WizardNavigationButtons
-													formik={formik}
-													customValidation={!checkValidity(formik)}
-													previousPage={() => {
-														formik.resetForm({
-															values: getInitialValues(),
-														});
+											{/* start time */}
+											{hasAccessRole && (
+												<SchedulingTime
+													hour={formik.values.scheduleStartHour}
+													minute={formik.values.scheduleStartMinute}
+													disabled={!accessAllowed(formik.values.captureAgent)}
+													title={"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_TIME"}
+													hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
+													minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"}
+													callbackHour={(value: string) => {
+														changeStartHour(
+															value,
+															formik.values,
+															formik.setFieldValue,
+															eventId,
+															checkConflictsWrapper
+														)
 													}}
-													createTranslationString="SAVE"
-													cancelTranslationString="CANCEL"
-													isLast
+													callbackMinute={(value: string) => {
+														changeStartMinute(
+															value,
+															formik.values,
+															formik.setFieldValue,
+															eventId,
+															checkConflictsWrapper
+														)
+													}}
 												/>
-											</>
-										)}
-									</div>
+											)}
+											{!hasAccessRole && (
+											<tr>
+												<td>
+													{t("EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.START_TIME")}
+												</td>
+												<td>
+													{source.start.hour ? makeTwoDigits(source.start.hour) : ""}:
+													{source.start.minute ? makeTwoDigits(source.start.minute) : ""}
+												</td>
+											</tr>
+											)}
+											{/* duration */}
+											{hasAccessRole && (
+												<SchedulingTime
+													hour={formik.values.scheduleDurationHours}
+													minute={formik.values.scheduleDurationMinutes}
+													disabled={!accessAllowed(formik.values.captureAgent)}
+													title={"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.DURATION"}
+													hourPlaceholder={"WIZARD.DURATION.HOURS"}
+													minutePlaceholder={"WIZARD.DURATION.MINUTES"}
+													callbackHour={(value: string) => {
+														changeDurationHour(
+															value,
+															formik.values,
+															formik.setFieldValue,
+															eventId,
+															checkConflictsWrapper
+														)
+													}}
+													callbackMinute={(value: string) => {
+														changeDurationMinute(
+															value,
+															formik.values,
+															formik.setFieldValue,
+															eventId,
+															checkConflictsWrapper
+														)
+													}}
+												/>
+											)}
+											{!hasAccessRole && (
+											<tr>
+												<td>
+													{t(
+														"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.DURATION"
+													)}
+												</td>
+												<td>
+													{source.duration.hour ? makeTwoDigits(source.duration.hour) : ""}:
+													{source.duration.minute ? makeTwoDigits(source.duration.minute) : ""}
+												</td>
+											</tr>
+											)}
+											{/* end time */}
+											{hasAccessRole && (
+												<SchedulingTime
+													hour={formik.values.scheduleEndHour}
+													minute={formik.values.scheduleEndMinute}
+													disabled={!accessAllowed(formik.values.captureAgent)}
+													title={"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.END_TIME"}
+													hourPlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.HOUR"}
+													minutePlaceholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"}
+													callbackHour={(value: string) => {
+														changeEndHour(
+															value,
+															formik.values,
+															formik.setFieldValue,
+															eventId,
+															checkConflictsWrapper
+														)
+													}}
+													callbackMinute={(value: string) => {
+														changeEndMinute(
+															value,
+															formik.values,
+															formik.setFieldValue,
+															eventId,
+															checkConflictsWrapper
+														)
+													}}
+													date={
+														hasAccessRole &&
+														(new Date(formik.values.scheduleEndDate).getDate() !==
+														new Date(formik.values.scheduleStartDate).getDate())
+														? formik.values.scheduleEndDate
+														: undefined
+													}
+												/>
+											)}
+											{!hasAccessRole && (
+											<tr>
+												<td>
+													{t(
+														"EVENTS.EVENTS.DETAILS.SOURCE.DATE_TIME.END_TIME"
+													)}
+												</td>
+												<td>
+													{source.end.hour ? makeTwoDigits(source.end.hour) : ""}:
+													{source.end.minute ? makeTwoDigits(source.end.minute) : ""}
+													{formik.values.scheduleEndDate.toString() !==
+														formik.values.scheduleStartDate.toString() && (
+														<span>
+															{new Date(
+																formik.values.scheduleEndDate
+															).toLocaleDateString(
+																currentLanguage ? currentLanguage.dateLocale.code : undefined
+															)}
+														</span>
+													)}
+												</td>
+											</tr>
+											)}
+											{/* capture agent (aka. room or location) */}
+												{hasAccessRole && (
+													<SchedulingLocation
+														location={formik.values.captureAgent}
+														inputDevices={filterDevicesForAccess(
+															user,
+															captureAgents
+														).filter((a) => filterCaptureAgents(a))}
+														disabled={!accessAllowed(formik.values.captureAgent)}
+														title={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"}
+														placeholder={"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"}
+														callback={(value: string) => {
+															changeInputs(
+																value,
+																formik.setFieldValue
+															)
+														}}
+													/>
+												)}
+												{!hasAccessRole &&
+													<tr>
+														<td>
+															{t(
+																"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.LOCATION"
+															)}
+														</td>
+														<td>{source.device.name}</td>
+													</tr>
+												}
+
+											{/* inputs */}
+											<tr>
+												<td>
+													{t(
+														"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.INPUTS"
+													)}
+												</td>
+												<td>
+													{!!formik.values.captureAgent &&
+														!!getInputs(formik.values.captureAgent) &&
+														getInputs(formik.values.captureAgent).length >
+															0 &&
+														(hasAccessRole &&
+														accessAllowed(formik.values.captureAgent)
+															? <SchedulingInputs
+																	inputs={getInputs(formik.values.captureAgent)}
+																/>
+															: formik.values.inputs.map((input, key) => (
+																	<span key={key}>
+																		{getInputForAgent(formik.values.captureAgent, input)}
+																		<br />
+																	</span>
+																)))}
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+								{/* Save and cancel buttons */}
+								{formik.dirty && (
+									<>
+										{/* Render buttons for updating scheduling */}
+										<WizardNavigationButtons
+											formik={formik}
+											customValidation={!checkValidity(formik)}
+											previousPage={() => {
+												formik.resetForm({
+													values: getInitialValues(),
+												});
+											}}
+											createTranslationString="SAVE"
+											cancelTranslationString="CANCEL"
+											isLast
+										/>
+									</>
 								)}
-							</Formik>
-						)
-					}
-				</div>
-			</div>
-		</div>
+							</div>
+						)}
+					</Formik>
+				)
+			}
+		</ModalContentTable>
 	);
 };
 

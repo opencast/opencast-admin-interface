@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 import i18n from "../i18n/i18n";
 import languages from "../i18n/languages";
 import opencastLogo from "../img/opencast-white.svg?url";
 import { setSpecificServiceFilter } from "../slices/tableFilterSlice";
-import { loadServicesIntoTable } from "../thunks/tableThunks";
 import { getErrorCount, getHealthStatus } from "../selectors/healthSelectors";
 import {
 	getOrgProperties,
@@ -23,6 +22,7 @@ import { UserInfoState } from "../slices/userInfoSlice";
 import { Tooltip } from "./shared/Tooltip";
 import { HiTranslate } from "react-icons/hi";
 import { IconContext } from "react-icons";
+import ButtonLikeAnchor from "./shared/ButtonLikeAnchor";
 import { ModalHandle } from "./shared/modals/Modal";
 
 // References for detecting a click outside of the container of the dropdown menus
@@ -71,14 +71,6 @@ const Header = () => {
 
 	const showRegistrationModal = () => {
 		registrationModalRef.current?.open()
-	};
-
-	const redirectToServices = async () => {
-		// Load services into table
-		await dispatch(loadServicesIntoTable());
-
-		// set the action filter value of services to true
-		await dispatch(setSpecificServiceFilter({ filter: "actions", filterValue: "true" }));
 	};
 
 	const showHotKeyCheatSheet = () => {
@@ -216,7 +208,6 @@ const Header = () => {
 							{displayMenuNotify && (
 								<MenuNotify
 									healthStatus={healthStatus}
-									redirectToServices={redirectToServices}
 								/>
 							)}
 						</div>
@@ -288,12 +279,12 @@ const MenuLang = () => {
 			{/* one list item for each available language */}
 			{languages.map((language, key) => (
 				<li key={key}>
-					<button
-						className={"button-like-anchor" + (i18n.language === language.code ? " selected" : "")}
+					<ButtonLikeAnchor
+						extraClassName={(i18n.language === language.code ? "selected" : "")}
 						onClick={() => changeLanguage(language.code)}
 					>
 						{language.long}
-					</button>
+					</ButtonLikeAnchor>
 				</li>
 			))}
 		</ul>
@@ -302,20 +293,27 @@ const MenuLang = () => {
 
 const MenuNotify = ({
 	healthStatus,
-	redirectToServices
 }: {
 	healthStatus: HealthStatus[],
-	redirectToServices: () => Promise<void>,
 }) => {
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+
+	const redirectToServices = async () => {
+		// set the action filter value of services to true
+		await dispatch(setSpecificServiceFilter({ filter: "actions", filterValue: "true" }));
+		navigate("/systems/services");
+	};
+
 	return (
 		<ul className="dropdown-ul">
 			{/* For each service in the serviceList (Background Services) one list item */}
 			{healthStatus.map((service, key) => (
 				<li key={key}>
 					{!!service.status && (
-						<Link
-							to="/systems/services"
-							onClick={async () => await redirectToServices()}
+						<button
+							className="button-like-anchor"
+							onClick={() => redirectToServices()}
 						>
 							<span> {service.name} </span>
 							{service.error ? (
@@ -327,7 +325,7 @@ const MenuNotify = ({
 									{service.status}
 								</span>
 							)}
-						</Link>
+						</button>
 					)}
 				</li>
 			))}
@@ -396,16 +394,16 @@ const MenuHelp = ({
 						</li>
 					)}
 				<li>
-					<button className="button-like-anchor" onClick={() => showHotKeys()}>
+					<ButtonLikeAnchor onClick={() => showHotKeys()}>
 						<span>{t("HELP.HOTKEY_CHEAT_SHEET")}</span>
-					</button>
+					</ButtonLikeAnchor>
 				</li>
 				{/* Adoter registration Modal */}
 				{user.isAdmin && (
 					<li>
-						<button className="button-like-anchor" onClick={() => showAdoptersRegistrationModal()}>
+						<ButtonLikeAnchor onClick={() => showAdoptersRegistrationModal()}>
 							<span>{t("HELP.ADOPTER_REGISTRATION")}</span>
-						</button>
+						</ButtonLikeAnchor>
 					</li>
 				)}
 			</ul>
@@ -418,9 +416,9 @@ const MenuUser = () => {
 	return (
 		<ul className="dropdown-ul">
 			<li>
-				<button className="button-like-anchor" onClick={() => logout()}>
+				<ButtonLikeAnchor onClick={() => logout()}>
 					<span className="logout-icon">{t("LOGOUT")}</span>
-				</button>
+				</ButtonLikeAnchor>
 			</li>
 		</ul>
 	);

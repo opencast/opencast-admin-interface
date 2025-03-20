@@ -17,7 +17,9 @@ import { removeNotificationWizardForm } from "../../../../slices/notificationSli
 import { renderValidDate } from "../../../../utils/dateUtils";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { ParseKeys } from "i18next";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component manages the workflow details for the workflows tab of the event details modal
@@ -51,17 +53,17 @@ const EventDetailsWorkflowDetails = ({
 	}
 
 	return (
-		<div className="modal-content">
-			{/* Hierarchy navigation */}
+		<ModalContentTable
+			modalContentChildren={
+				/* Hierarchy navigation */
 			<EventDetailsTabHierarchyNavigation
 				openSubTab={openSubTab}
 				hierarchyDepth={0}
 				translationKey0={"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"}
 				subTabArgument0={"workflow-details"}
 			/>
-
-			<div className="modal-body">
-				<div className="full-col">
+			}
+		>
 					{/* Notifications */}
 					<Notifications context="not_corner" />
 
@@ -225,8 +227,8 @@ const EventDetailsWorkflowDetails = ({
 													) /* Operations */
 												}
 											</span>
-											<button
-												className="button-like-anchor details-link"
+											<ButtonLikeAnchor
+												extraClassName="details-link"
 												onClick={() => openSubTab("workflow-operations")}
 											>
 												{
@@ -234,7 +236,7 @@ const EventDetailsWorkflowDetails = ({
 														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
 													) /* Details */
 												}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 										<li>
 											<span>
@@ -244,8 +246,8 @@ const EventDetailsWorkflowDetails = ({
 													) /* Errors & Warnings */
 												}
 											</span>
-											<button
-												className="button-like-anchor details-link"
+											<ButtonLikeAnchor
+												extraClassName="details-link"
 												onClick={() => openSubTab("errors-and-warnings")}
 											>
 												{
@@ -253,7 +255,7 @@ const EventDetailsWorkflowDetails = ({
 														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
 													) /* Details */
 												}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 									</ul>
 								</div>
@@ -321,13 +323,13 @@ const EventDetailsWorkflowDetails = ({
 													) /* Operations */
 												}
 											</span>
-											<button className="button-like-anchor details-link">
+											<ButtonLikeAnchor extraClassName="details-link">
 												{
 													t(
 														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
 													) /* Details */
 												}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 										<li>
 											<span>
@@ -337,22 +339,20 @@ const EventDetailsWorkflowDetails = ({
 													) /* Errors & Warnings */
 												}
 											</span>
-											<button className="button-like-anchor details-link">
+											<ButtonLikeAnchor extraClassName="details-link">
 												{
 													t(
 														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
 													) /* Details */
 												}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 									</ul>
 								</div>
 							</div>
 						</>
 					)}
-				</div>
-			</div>
-		</div>
+		</ModalContentTable>
 	);
 };
 
