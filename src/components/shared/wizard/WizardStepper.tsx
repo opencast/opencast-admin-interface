@@ -11,6 +11,7 @@ import CustomStepIcon from "./CustomStepIcon";
 import { checkAcls } from "../../../slices/aclSlice";
 import { useAppDispatch } from "../../../store";
 import { FormikProps } from "formik/dist/types";
+import { ParseKeys } from "i18next";
 
 /**
  * This components renders the stepper navigation of new resource wizards
@@ -26,7 +27,7 @@ const WizardStepper = ({
 }: {
 	steps: {
 		name: string,
-		translation: string,
+		translation: ParseKeys,
 		hidden?: boolean,
 	}[],
 	page: number,

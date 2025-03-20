@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { useField } from "formik";
+import ButtonLikeAnchor from "../ButtonLikeAnchor";
+import { ParseKeys } from "i18next";
 
 type Item = {
 	name: string
@@ -186,14 +188,14 @@ const SelectContainer = ({
 				<div className="multi-select-col">
 					<div className="row">
 						<label>
-							{t(resource.label + ".LEFT")}
+							{t(`${resource.label}.LEFT` as ParseKeys)}
 							<i className="required" />
 						</label>
 						{/*Search*/}
 						{resource.searchable && (
 							<div className="search-container">
 								{/* search bar */}
-								<button className="button-like-anchor clear" onClick={() => clearSearchField()} />
+								<ButtonLikeAnchor extraClassName="clear" onClick={() => clearSearchField()} />
 								<input
 									type="text"
 									id="search"
@@ -230,7 +232,7 @@ const SelectContainer = ({
 								})}
 								onClick={() => handleClickAdd()}
 							>
-								{t(resource.label + ".ADD")}
+								{t(`${resource.label}.ADD` as ParseKeys)}
 							</button>
 						</div>
 					</div>
@@ -241,7 +243,7 @@ const SelectContainer = ({
 				{/*Select with options chosen by user*/}
 				<div className="multi-select-col">
 					<div className="row">
-						<label>{t(resource.label + ".RIGHT")}</label>
+						<label>{t(`${resource.label}.RIGHT` as ParseKeys)}</label>
 						<select
 							multiple
 							className="selected"
@@ -266,7 +268,7 @@ const SelectContainer = ({
 								})}
 								onClick={() => handleClickRemove()}
 							>
-								{t(resource.label + ".REMOVE")}
+								{t(`${resource.label}.REMOVE` as ParseKeys)}
 							</button>
 						</div>
 					</div>

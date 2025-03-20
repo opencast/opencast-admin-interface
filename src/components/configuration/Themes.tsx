@@ -13,6 +13,7 @@ import MainView from "../MainView";
 import Footer from "../Footer";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchThemes } from "../../slices/themeSlice";
+import { resetTableProperties } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of events
@@ -25,27 +26,37 @@ const Themes = () => {
 
 	const themes = useAppSelector(state => getTotalThemes(state));
 
-	const loadThemes = async () => {
-		// Fetching themes from server
-		await dispatch(fetchThemes());
-
-		// Load users into table
-		dispatch(loadThemesIntoTable());
-	};
-
 	useEffect(() => {
+		// State variable for interrupting the load function
+		let allowLoadIntoTable = true;
+
+		// Clear table of previous data
+		dispatch(resetTableProperties());
+
 		dispatch(fetchFilters("themes"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));
 
 		// Load themes on mount
+		const loadThemes = async () => {
+			// Fetching themes from server
+			await dispatch(fetchThemes());
+
+			// Load users into table
+			if (allowLoadIntoTable) {
+				dispatch(loadThemesIntoTable());
+			}
+		};
 		loadThemes();
 
 		// Fetch themes every minute
 		let fetchThemesInterval = setInterval(loadThemes, 5000);
 
-		return () => clearInterval(fetchThemesInterval);
+		return () => {
+			allowLoadIntoTable = false;
+			clearInterval(fetchThemesInterval);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -59,7 +70,6 @@ const Themes = () => {
 					{
 						path: "/configuration/themes",
 						accessRole: "ROLE_UI_THEMES_VIEW",
-						loadFn: loadThemes,
 						text: "CONFIGURATION.NAVIGATION.THEMES"
 					},
 				]}

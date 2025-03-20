@@ -21,7 +21,9 @@ import { fetchSeriesDetailsAcls } from "../../../../slices/seriesDetailsSlice";
 import { getSeriesDetailsAcl } from "../../../../selectors/seriesDetailsSelectors";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { formatAclRolesForDropdown, formatAclTemplatesForDropdown } from "../../../../utils/dropDownUtils";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component renders the access page for new events and series in the wizards.
@@ -108,250 +110,245 @@ const NewAccessPage = <T extends RequiredFormProps>({
 
 	return (
 		<>
-			<div className="modal-content">
-				<div className="modal-body">
-					<div className="full-col">
-						{/* Notifications */}
-						<Notifications context="not_corner" />
-						{!loading && (
-							<ul>
-								<li>
-									<div className="obj list-obj">
-										<header className="no-expand">
-											{t("EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.TITLE")}
+			<ModalContentTable>
+				{/* Notifications */}
+				<Notifications context="not_corner" />
+				{!loading && (
+					<ul>
+						<li>
+							<div className="obj list-obj">
+								<header className="no-expand">
+									{t("EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.TITLE")}
+								</header>
+								<div className="obj-container">
+									<p>
+										{t(
+											"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION"
+										)}
+									</p>
+
+									{/* Template selection*/}
+									<div className="obj tbl-list">
+										<table className="main-tbl">
+											<thead>
+												<tr>
+													<th>
+														{t("EVENTS.SERIES.NEW.ACCESS.TEMPLATES.TITLE")}
+													</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													{aclTemplates.length > 0 ? (
+														<td className="editable">
+															<div className="obj-container padded">
+																{/* dropdown for selecting a policy template */}
+																<DropDown
+																	value={formik.values.aclTemplate}
+																	text={getAclTemplateText(
+																		aclTemplates,
+																		formik.values.aclTemplate
+																	)}
+																	options={formatAclTemplatesForDropdown(aclTemplates)}
+																	required={true}
+																	handleChange={(element) => {
+																		if (element) {
+																			handleTemplateChange(element.value)
+																		}
+																	}}
+																	placeholder={t(
+																		"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.LABEL"
+																	)}
+																	autoFocus={true}
+																	customCSS={{ width: 200, optionPaddingTop: 5 }}
+																/>
+															</div>
+														</td>
+													) : (
+														//Show if no option is available
+														<td>
+															<div className="obj-container padded">
+																{t(
+																	"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.EMPTY"
+																)}
+															</div>
+														</td>
+													)}
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								{/* Area for editing acls */}
+								<div className="obj-container">
+									<div className="obj tbl-list">
+										<header>
+											{t(
+												"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.DETAILS"
+											)}
 										</header>
 										<div className="obj-container">
-											<p>
-												{t(
-													"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION"
-												)}
-											</p>
-
-											{/* Template selection*/}
-											<div className="obj tbl-list">
-												<table className="main-tbl">
-													<thead>
-														<tr>
-															<th>
-																{t("EVENTS.SERIES.NEW.ACCESS.TEMPLATES.TITLE")}
-															</th>
-														</tr>
-													</thead>
-													<tbody>
-														<tr>
-															{aclTemplates.length > 0 ? (
-																<td className="editable">
-																	<div className="obj-container padded">
-																		{/* dropdown for selecting a policy template */}
-																		<DropDown
-																			value={formik.values.aclTemplate}
-																			text={getAclTemplateText(
-																				aclTemplates,
-																				formik.values.aclTemplate
-																			)}
-																			options={formatAclTemplatesForDropdown(aclTemplates)}
-																			required={true}
-																			handleChange={(element) => {
-																				if (element) {
-																					handleTemplateChange(element.value)
-																				}
-																			}}
-																			placeholder={t(
-																				"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.LABEL"
-																			)}
-																			autoFocus={true}
-																			customCSS={{ width: 200, optionPaddingTop: 5 }}
-																		/>
-																	</div>
-																</td>
-															) : (
-																//Show if no option is available
-																<td>
-																	<div className="obj-container padded">
-																		{t(
-																			"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.EMPTY"
-																		)}
-																	</div>
-																</td>
+											<table className="main-tbl">
+												<thead>
+													<tr>
+														<th>
+															{t(
+																"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.ROLE"
 															)}
-														</tr>
-													</tbody>
-												</table>
-											</div>
-										</div>
-
-										{/* Area for editing acls */}
-										<div className="obj-container">
-											<div className="obj tbl-list">
-												<header>
-													{t(
-														"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.DETAILS"
-													)}
-												</header>
-												<div className="obj-container">
-													<table className="main-tbl">
-														<thead>
-															<tr>
-																<th>
-																	{t(
-																		"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.ROLE"
-																	)}
-																</th>
-																<th className="fit">
-																	{t(
-																		"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.READ"
-																	)}
-																</th>
-																<th className="fit">
-																	{t(
-																		"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.WRITE"
-																	)}
-																</th>
-																{aclActions.length > 0 && (
-																	<th className="fit">
-																		{t(
-																			"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.ADDITIONAL_ACTIONS"
-																		)}
-																	</th>
+														</th>
+														<th className="fit">
+															{t(
+																"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.READ"
+															)}
+														</th>
+														<th className="fit">
+															{t(
+																"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.WRITE"
+															)}
+														</th>
+														{aclActions.length > 0 && (
+															<th className="fit">
+																{t(
+																	"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.ADDITIONAL_ACTIONS"
 																)}
-																<th className="fit">
-																	{t(
-																		"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.ACTION"
-																	)}
-																</th>
-															</tr>
-														</thead>
-														<tbody>
-															{/*Add fieldArray/row for each policy in acls field*/}
-															<FieldArray name="acls">
-																{({ insert, remove, push }) => (
-																	<>
-																		{roles.length > 0 ? (
-																			formik.values.acls.length > 0 &&
-																			formik.values.acls.map(
-																				(policy, index) => (
-																					<tr key={index}>
-																						{/* dropdown for acl (/policy) role */}
-																						<td className="editable">
-																							<DropDown
-																								value={policy.role}
-																								text={policy.role}
-																								options={formatAclRolesForDropdown(
-																									filterRoles(
-																										roles,
-																										formik.values.acls
-																									)
-																								)}
-																								required={true}
-																								handleChange={(element) => {
-																									if (element) {
-																										formik.setFieldValue(
-																											`acls.${index}.role`,
-																											element.value
-																										)
-																									}
-																								}}
-																								placeholder={t(
-																									"EVENTS.SERIES.NEW.ACCESS.ROLES.LABEL"
-																								)}
-																								disabled={
-																									!hasAccess(
-																										editAccessRole,
-																										user
-																									)
-																								}
-																								customCSS={{ width: 360, optionPaddingTop: 5 }}
-																							/>
-																						</td>
-																						{/* Checkboxes for  policy.read and policy.write*/}
-																						<td className="fit text-center">
-																							<Field
-																								type="checkbox"
-																								name={`acls.${index}.read`}
-																							/>
-																						</td>
-																						<td className="fit text-center">
-																							<Field
-																								type="checkbox"
-																								name={`acls.${index}.write`}
-																							/>
-																						</td>
-																						{/* Show only if policy has actions*/}
-																						{aclActions.length > 0 && (
-																							<td className="fit editable">
-																								<div>
-																									<Field
-																										fieldInfo={{
-																											id: `acls.${index}.actions`,
-																											type: "mixed_text",
-																											collection: aclActions,
-																										}}
-																										onlyCollectionValues
-																										name={`acls.${index}.actions`}
-																										component={RenderMultiField}
-																									/>
-																								</div>
-																							</td>
+															</th>
+														)}
+														<th className="fit">
+															{t(
+																"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.ACTION"
+															)}
+														</th>
+													</tr>
+												</thead>
+												<tbody>
+													{/*Add fieldArray/row for each policy in acls field*/}
+													<FieldArray name="acls">
+														{({ insert, remove, push }) => (
+															<>
+																{roles.length > 0 ? (
+																	formik.values.acls.length > 0 &&
+																	formik.values.acls.map(
+																		(policy, index) => (
+																			<tr key={index}>
+																				{/* dropdown for acl (/policy) role */}
+																				<td className="editable">
+																					<DropDown
+																						value={policy.role}
+																						text={policy.role}
+																						options={formatAclRolesForDropdown(
+																							filterRoles(
+																								roles,
+																								formik.values.acls
+																							)
 																						)}
-																						{/*Remove policy*/}
-																						<td>
-																							<button
-																								onClick={() => remove(index)}
-																								className="button-like-anchor remove"
-																							/>
-																						</td>
-																					</tr>
-																				)
-																			)
-																		) : (
-																			<tr>
-																				<td>
-																					{t(
-																						"EVENTS.SERIES.NEW.ACCESS.ROLES.EMPTY"
-																					)}
-																				</td>
-																			</tr>
-																		)}
-
-																		{hasAccess(editAccessRole, user) && (
-																			<tr>
-																				{/*Add additional policy row*/}
-																				<td colSpan={5}>
-																					<button
-																						onClick={() => {
-																							push({
-																								role: "",
-																								read: false,
-																								write: false,
-																								actions: [],
-																							});
-																							dispatch(checkAcls(formik.values.acls));
+																						required={true}
+																						handleChange={(element) => {
+																							if (element) {
+																								formik.setFieldValue(
+																									`acls.${index}.role`,
+																									element.value
+																								)
+																							}
 																						}}
-                                            className="button-like-anchor"
-																					>
-																						+{" "}
-																						{t(
-																							"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.NEW"
+																						placeholder={t(
+																							"EVENTS.SERIES.NEW.ACCESS.ROLES.LABEL"
 																						)}
-																					</button>
+																						disabled={
+																							!hasAccess(
+																								editAccessRole,
+																								user
+																							)
+																						}
+																						customCSS={{ width: 360, optionPaddingTop: 5 }}
+																					/>
+																				</td>
+																				{/* Checkboxes for  policy.read and policy.write*/}
+																				<td className="fit text-center">
+																					<Field
+																						type="checkbox"
+																						name={`acls.${index}.read`}
+																					/>
+																				</td>
+																				<td className="fit text-center">
+																					<Field
+																						type="checkbox"
+																						name={`acls.${index}.write`}
+																					/>
+																				</td>
+																				{/* Show only if policy has actions*/}
+																				{aclActions.length > 0 && (
+																					<td className="fit editable">
+																						<div>
+																							<Field
+																								fieldInfo={{
+																									id: `acls.${index}.actions`,
+																									type: "mixed_text",
+																									collection: aclActions,
+																								}}
+																								onlyCollectionValues
+																								name={`acls.${index}.actions`}
+																								component={RenderMultiField}
+																							/>
+																						</div>
+																					</td>
+																				)}
+																				{/*Remove policy*/}
+																				<td>
+																					<ButtonLikeAnchor
+																						onClick={() => remove(index)}
+																						extraClassName="remove"
+																					/>
 																				</td>
 																			</tr>
-																		)}
-																	</>
+																		)
+																	)
+																) : (
+																	<tr>
+																		<td>
+																			{t(
+																				"EVENTS.SERIES.NEW.ACCESS.ROLES.EMPTY"
+																			)}
+																		</td>
+																	</tr>
 																)}
-															</FieldArray>
-														</tbody>
-													</table>
-												</div>
-											</div>
+
+																{hasAccess(editAccessRole, user) && (
+																	<tr>
+																		{/*Add additional policy row*/}
+																		<td colSpan={5}>
+																			<ButtonLikeAnchor
+																				onClick={() => {
+																					push({
+																						role: "",
+																						read: false,
+																						write: false,
+																						actions: [],
+																					});
+																					dispatch(checkAcls(formik.values.acls));
+																				}}
+																			>
+																				+{" "}
+																				{t(
+																					"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.NEW"
+																				)}
+																			</ButtonLikeAnchor>
+																		</td>
+																	</tr>
+																)}
+															</>
+														)}
+													</FieldArray>
+												</tbody>
+											</table>
 										</div>
 									</div>
-								</li>
-							</ul>
-						)}
-					</div>
-				</div>
-			</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				)}
+			</ModalContentTable>
 			{/* Button for navigation to next page and previous page */}
 			<WizardNavigationButtons
 				formik={formik}
