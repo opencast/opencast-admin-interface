@@ -26,6 +26,7 @@ import {
 	showActionsSeries,
 } from "../../slices/seriesSlice";
 import { fetchSeriesDetailsTobiraNew } from "../../slices/seriesSlice";
+import ButtonLikeAnchor from "../shared/ButtonLikeAnchor";
 import { eventsLinks } from "./partials/EventsNavigation";
 import { Modal, ModalHandle } from "../shared/modals/Modal";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
@@ -165,9 +166,9 @@ const Series = () => {
 								<ul className="dropdown-ul">
 									{hasAccess("ROLE_UI_SERIES_DELETE", user) && (
 										<li>
-											<button className="button-like-anchor" onClick={() => deleteModalRef.current?.open()}>
+											<ButtonLikeAnchor onClick={() => deleteModalRef.current?.open()}>
 												{t("BULK_ACTIONS.DELETE.SERIES.CAPTION")}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 									)}
 								</ul>
