@@ -4,6 +4,7 @@ import cn from "classnames";
 import { useClickOutsideField } from "../../../hooks/wizardHooks";
 import { FieldInputProps, FieldProps } from "formik";
 import { MetadataField } from "../../../slices/eventSlice";
+import ButtonLikeAnchor from "../ButtonLikeAnchor";
 
 const childRef = React.createRef<HTMLDivElement>();
 
@@ -180,9 +181,9 @@ const EditMultiSelect = ({
 					fieldValue.map((item, key) => (
 						<span className="ng-multi-value" key={key}>
 							{item}
-							<button className="button-like-anchor" onClick={() => removeItem(key)}>
+							<ButtonLikeAnchor onClick={() => removeItem(key)}>
 								<i className="fa fa-times" />
-							</button>
+							</ButtonLikeAnchor>
 						</span>
 					))}
 			</div>

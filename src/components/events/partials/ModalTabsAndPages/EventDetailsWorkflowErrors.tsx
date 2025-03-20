@@ -17,6 +17,7 @@ import {
 import { renderValidDate } from "../../../../utils/dateUtils";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 
 /**
  * This component manages the workflow errors for the workflows tab of the event details modal
@@ -136,8 +137,8 @@ const EventDetailsWorkflowErrors = ({
 
 														{/* link to 'Error Details'  sub-Tab */}
 														<td>
-															<button
-																className="button-like-anchor details-link"
+															<ButtonLikeAnchor
+																extraClassName="details-link"
 																onClick={() =>
 																	openSubTab("workflow-error-details", item.id)
 																}
@@ -147,7 +148,7 @@ const EventDetailsWorkflowErrors = ({
 																		"EVENTS.EVENTS.DETAILS.MEDIA.DETAILS"
 																	) /*  Details */
 																}
-															</button>
+															</ButtonLikeAnchor>
 														</td>
 													</tr>
 												))

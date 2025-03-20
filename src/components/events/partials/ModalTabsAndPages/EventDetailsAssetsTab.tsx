@@ -31,6 +31,7 @@ import EventDetailsAssetMedia from "./EventDetailsAssetMedia";
 import EventDetailsAssetMediaDetails from "./EventDetailsAssetMediaDetails";
 import EventDetailsAssetPublications from "./EventDetailsAssetPublications";
 import EventDetailsAssetPublicationDetails from "./EventDetailsAssetPublicationDetails";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { ParseKeys } from "i18next";
 
 /**
@@ -126,14 +127,13 @@ const EventDetailsAssetsTab = ({
 			{/* Assets tabs */}
 			<nav style={assetsNavStyle}>
 				{assetsTabs.map((tab, key) => (
-					<button
+					<ButtonLikeAnchor
 						key={key}
-						className={"button-like-anchor"}
 						style={tab.tabHierarchies.includes(assetsTabHierarchy) ? assetsTabActive : assetsTabInactive}
 						onClick={tab.open}
 					>
 						{t(tab.tabNameTranslation)}
-					</button>
+					</ButtonLikeAnchor>
 				))}
 			</nav>
 			{((assetsTabHierarchy === "entry" && (
@@ -172,8 +172,8 @@ const EventDetailsAssetsTab = ({
 																"ROLE_UI_EVENTS_DETAILS_ASSETS_EDIT",
 																user
 															) && (
-																<button
-																	className="button-like-anchor details-link"
+																<ButtonLikeAnchor
+																	extraClassName="details-link"
 																	onClick={() =>
 																		openSubTab(
 																			"add-asset",
@@ -182,7 +182,7 @@ const EventDetailsAssetsTab = ({
 																	}
 																>
 																	{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.ADD")}
-																</button>
+																</ButtonLikeAnchor>
 															)}
 													</th>
 												</tr>
@@ -199,8 +199,8 @@ const EventDetailsAssetsTab = ({
 													<td>{assets.attachments}</td>
 													<td>
 														{assets.attachments > 0 && (
-															<button
-																className="button-like-anchor details-link"
+															<ButtonLikeAnchor
+																extraClassName="details-link"
 																onClick={() =>
 																	openSubTab("asset-attachments", "attachment")
 																}
@@ -210,7 +210,7 @@ const EventDetailsAssetsTab = ({
 																		"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
 																	) /* Details */
 																}
-															</button>
+															</ButtonLikeAnchor>
 														)}
 													</td>
 												</tr>
@@ -225,8 +225,8 @@ const EventDetailsAssetsTab = ({
 													<td>{assets.catalogs}</td>
 													<td>
 														{assets.catalogs > 0 && (
-															<button
-																className="button-like-anchor details-link"
+															<ButtonLikeAnchor
+																extraClassName="details-link"
 																onClick={() =>
 																	openSubTab("asset-catalogs", "catalog")
 																}
@@ -236,7 +236,7 @@ const EventDetailsAssetsTab = ({
 																		"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
 																	) /* Details */
 																}
-															</button>
+															</ButtonLikeAnchor>
 														)}
 													</td>
 												</tr>
@@ -251,8 +251,8 @@ const EventDetailsAssetsTab = ({
 													<td>{assets.media}</td>
 													<td>
 														{assets.media > 0 && (
-															<button
-																className="button-like-anchor details-link"
+															<ButtonLikeAnchor
+																extraClassName="details-link"
 																onClick={() => openSubTab("asset-media", "media")}
 															>
 																{
@@ -260,7 +260,7 @@ const EventDetailsAssetsTab = ({
 																		"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
 																	) /* Details */
 																}
-															</button>
+															</ButtonLikeAnchor>
 														)}
 													</td>
 												</tr>
@@ -275,8 +275,8 @@ const EventDetailsAssetsTab = ({
 													<td>{assets.publications}</td>
 													<td>
 														{assets.publications > 0 && (
-															<button
-																className="button-like-anchor details-link"
+															<ButtonLikeAnchor
+																extraClassName="details-link"
 																onClick={() =>
 																	openSubTab("asset-publications", "publication")
 																}
@@ -286,7 +286,7 @@ const EventDetailsAssetsTab = ({
 																		"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
 																	) /* Details */
 																}
-															</button>
+															</ButtonLikeAnchor>
 														)}
 													</td>
 												</tr>
