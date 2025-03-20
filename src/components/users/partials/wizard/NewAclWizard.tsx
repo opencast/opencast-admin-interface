@@ -9,6 +9,7 @@ import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { NewAclSchema } from "../../../../utils/validate";
 import AclAccessPage from "./AclAccessPage";
 import { useAppDispatch } from "../../../../store";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the new ACL wizard
@@ -35,7 +36,10 @@ const NewAclWizard = ({
 		setPageCompleted,
 	} = usePageFunctions(0, initialValues);
 
-	const steps = [
+	const steps: {
+		name: string
+		translation: ParseKeys
+	}[] = [
 		{
 			name: "metadata",
 			translation: "USERS.ACLS.NEW.TABS.METADATA",

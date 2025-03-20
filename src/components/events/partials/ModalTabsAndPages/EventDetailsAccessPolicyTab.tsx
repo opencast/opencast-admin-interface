@@ -8,6 +8,7 @@ import {
 	saveAccessPolicies,
 } from "../../../../slices/eventDetailsSlice";
 import { useTranslation } from "react-i18next";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the access policy tab of the event details modal
@@ -19,7 +20,7 @@ const EventDetailsAccessPolicyTab = ({
 	setPolicyChanged,
 }: {
 	eventId: string,
-	header: string,
+	header: ParseKeys,
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,
 }) => {
