@@ -53,11 +53,6 @@ const NewEventSummary = <T extends RequiredFormProps>({
 }) => {
 	const { t } = useTranslation();
 
-	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
-	const metadataEvents = useAppSelector(state => getEventMetadata(state));
-	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
-	const workflowDef = useAppSelector(state => getWorkflowDef(state));
-
 	// upload asset that user has provided
 	const [uploadAssetsNonTrack, setUploadAssetsNonTrack] = useState<{
 		name: string,
@@ -65,32 +60,32 @@ const NewEventSummary = <T extends RequiredFormProps>({
 		value: any,
 	}[]>([]);
 
-	// Get upload assets that are not of type track
-	const uploadAssetsOptionsNonTrack = uploadAssetOptions.filter(
-		(asset) => asset.type !== "track"
-	);
+	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
+	const metadataEvents = useAppSelector(state => getEventMetadata(state));
+	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
+	const workflowDef = useAppSelector(state => getWorkflowDef(state));
 
+	// upload asset that user has provided
 	useEffect(() => {
-		// upload asset that user has provided
 		let uploadAssetsNonTrack: {
 			name: string,
 			translate?: string,
 			value: any,
 		}[] = [];
-		for (let i = 0; uploadAssetsOptionsNonTrack.length > i; i++) {
-			let fieldValue = formik.values[uploadAssetsOptionsNonTrack[i].id];
+		for (let i = 0; uploadAssetOptions.length > i; i++) {
+			let fieldValue = formik.values[uploadAssetOptions[i].id];
 			if (!!fieldValue) {
-				const displayOverride = uploadAssetsOptionsNonTrack[i].displayOverride as ParseKeys
+				const displayOverride = uploadAssetOptions[i].displayOverride as ParseKeys
 				setUploadAssetsNonTrack(uploadAssetsNonTrack.concat({
-					name: uploadAssetsOptionsNonTrack[i].id,
+					name: uploadAssetOptions[i].id,
 					translate: !!displayOverride
 						? t(displayOverride)
-						: translateOverrideFallback(uploadAssetsOptionsNonTrack[i], t),
+						: translateOverrideFallback(uploadAssetOptions[i], t),
 					value: fieldValue,
 				}));
 			}
 		}
-	}, [formik.values, t, uploadAssetsNonTrack, uploadAssetsOptionsNonTrack]);
+	}, [formik.values, t, uploadAssetsNonTrack, uploadAssetOptions]);
 
 
 	// Get additional information about chosen workflow definition
