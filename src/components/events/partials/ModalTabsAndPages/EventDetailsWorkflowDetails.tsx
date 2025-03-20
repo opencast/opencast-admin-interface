@@ -19,6 +19,7 @@ import { WorkflowTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
 import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { ParseKeys } from "i18next";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component manages the workflow details for the workflows tab of the event details modal
@@ -52,17 +53,17 @@ const EventDetailsWorkflowDetails = ({
 	}
 
 	return (
-		<div className="modal-content">
-			{/* Hierarchy navigation */}
+		<ModalContentTable
+			modalContentChildren={
+				/* Hierarchy navigation */
 			<EventDetailsTabHierarchyNavigation
 				openSubTab={openSubTab}
 				hierarchyDepth={0}
 				translationKey0={"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"}
 				subTabArgument0={"workflow-details"}
 			/>
-
-			<div className="modal-body">
-				<div className="full-col">
+			}
+		>
 					{/* Notifications */}
 					<Notifications context="not_corner" />
 
@@ -351,9 +352,7 @@ const EventDetailsWorkflowDetails = ({
 							</div>
 						</>
 					)}
-				</div>
-			</div>
-		</div>
+		</ModalContentTable>
 	);
 };
 

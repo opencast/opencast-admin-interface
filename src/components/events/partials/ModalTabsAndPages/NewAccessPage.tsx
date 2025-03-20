@@ -18,6 +18,7 @@ import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 import { AccessPolicyTable, TemplateSelector } from "../../../shared/modals/ResourceDetailsAccessPolicyTab";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { hasAccess } from "../../../../utils/utils";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component renders the access page for new events and series in the wizards.
@@ -91,101 +92,97 @@ const NewAccessPage = <T extends RequiredFormProps>({
 
 	return (
 		<>
-			<div className="modal-content">
-				<div className="modal-body">
-					<div className="full-col">
-						{/* Notifications */}
-						<Notifications context="not_corner" />
-						{!loading && (
-							<ul>
-								<li>
-									<div className="obj list-obj">
-										<header className="no-expand">
-											{t("EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.TITLE")}
-										</header>
+			<ModalContentTable>
+				{/* Notifications */}
+				<Notifications context="not_corner" />
+				{!loading && (
+					<ul>
+						<li>
+							<div className="obj list-obj">
+								<header className="no-expand">
+									{t("EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.TITLE")}
+								</header>
 
-										{/* Template selection*/}
-										<TemplateSelector
+								{/* Template selection*/}
+								<TemplateSelector
+									formik={formik}
+									editAccessRole={editAccessRole}
+									titleText={"EVENTS.SERIES.NEW.ACCESS.TEMPLATES.TITLE"}
+									descriptionText={"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION"}
+									buttonText={"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.LABEL"}
+									emptyText={"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.EMPTY"}
+									transactions={{read_only: false}}
+									aclTemplates={aclTemplates}
+									defaultUser={user}
+								/>
+
+								{roles.length > 0 && !roles[0].isSanitize &&
+									<>
+										{hasAccess(viewUsersAccessRole, user) &&
+											<AccessPolicyTable
+												isUserTable={true}
+												policiesFiltered={policiesFiltered(formik.values.policies, true)}
+												rolesFilteredbyPolicies={rolesFilteredbyPolicies(roles, formik.values.policies, true)}
+												header={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.USERS"}
+												firstColumnHeader={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.USER"}
+												createLabel={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW_USER"}
+												formik={formik}
+												hasActions={aclActions.length > 0 }
+												transactions={{read_only: false}}
+												aclActions={aclActions}
+												roles={roles}
+												editAccessRole={editAccessRole}
+											/>
+										}
+
+										{hasAccess(viewNonUsersAccessRole, user) &&
+											<AccessPolicyTable
+												isUserTable={false}
+												policiesFiltered={policiesFiltered(formik.values.policies, false)}
+												rolesFilteredbyPolicies={rolesFilteredbyPolicies(roles, formik.values.policies, false)}
+												header={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.DETAILS"}
+												firstColumnHeader={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.ROLE"}
+												createLabel={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW"}
+												formik={formik}
+												hasActions={aclActions.length > 0 }
+												transactions={{read_only: false}}
+												aclActions={aclActions}
+												roles={roles}
+												editAccessRole={editAccessRole}
+											/>
+										}
+									</>
+								}
+
+								{roles.length > 0 && roles[0].isSanitize &&
+									<>
+										<AccessPolicyTable
+											isUserTable={false}
+											policiesFiltered={formik.values.policies}
+											rolesFilteredbyPolicies={filterRoles(roles, formik.values.policies)}
+											header={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.DETAILS"}
+											firstColumnHeader={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.ROLE"}
+											createLabel={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW"}
 											formik={formik}
-											editAccessRole={editAccessRole}
-											titleText={"EVENTS.SERIES.NEW.ACCESS.TEMPLATES.TITLE"}
-											descriptionText={"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION"}
-											buttonText={"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.LABEL"}
-											emptyText={"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.EMPTY"}
+											hasActions={aclActions.length > 0 }
 											transactions={{read_only: false}}
-											aclTemplates={aclTemplates}
-											defaultUser={user}
+											aclActions={aclActions}
+											roles={roles}
+											editAccessRole={editAccessRole}
 										/>
+										<div className="obj-container">
+											<span>
+												{t("EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.SANITIZATION_NOTE")}
+											</span>
+										</div>
+									</>
+								}
 
-										{roles.length > 0 && !roles[0].isSanitize &&
-											<>
-												{hasAccess(viewUsersAccessRole, user) &&
-													<AccessPolicyTable
-														isUserTable={true}
-														policiesFiltered={policiesFiltered(formik.values.policies, true)}
-														rolesFilteredbyPolicies={rolesFilteredbyPolicies(roles, formik.values.policies, true)}
-														header={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.USERS"}
-														firstColumnHeader={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.USER"}
-														createLabel={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW_USER"}
-														formik={formik}
-														hasActions={aclActions.length > 0 }
-														transactions={{read_only: false}}
-														aclActions={aclActions}
-														roles={roles}
-														editAccessRole={editAccessRole}
-													/>
-												}
-
-												{hasAccess(viewNonUsersAccessRole, user) &&
-													<AccessPolicyTable
-														isUserTable={false}
-														policiesFiltered={policiesFiltered(formik.values.policies, false)}
-														rolesFilteredbyPolicies={rolesFilteredbyPolicies(roles, formik.values.policies, false)}
-														header={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.DETAILS"}
-														firstColumnHeader={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.ROLE"}
-														createLabel={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW"}
-														formik={formik}
-														hasActions={aclActions.length > 0 }
-														transactions={{read_only: false}}
-														aclActions={aclActions}
-														roles={roles}
-														editAccessRole={editAccessRole}
-													/>
-												}
-											</>
-										}
-
-										{roles.length > 0 && roles[0].isSanitize &&
-											<>
-												<AccessPolicyTable
-													isUserTable={false}
-													policiesFiltered={formik.values.policies}
-													rolesFilteredbyPolicies={filterRoles(roles, formik.values.policies)}
-													header={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.DETAILS"}
-													firstColumnHeader={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.ROLE"}
-													createLabel={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.NEW"}
-													formik={formik}
-													hasActions={aclActions.length > 0 }
-													transactions={{read_only: false}}
-													aclActions={aclActions}
-													roles={roles}
-													editAccessRole={editAccessRole}
-												/>
-												<div className="obj-container">
-													<span>
-														{t("EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.SANITIZATION_NOTE")}
-													</span>
-												</div>
-											</>
-										}
-
-									</div>
-								</li>
-							</ul>
-						)}
-					</div>
-				</div>
-			</div>
+							</div>
+						</li>
+					</ul>
+				)}
+			</ModalContentTable>
 			{/* Button for navigation to next page and previous page */}
 			<WizardNavigationButtons
 				formik={formik}

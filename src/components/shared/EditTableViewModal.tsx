@@ -23,6 +23,7 @@ import { themesTableConfig } from "../../configs/tableConfigs/themesTableConfig"
 import { Modal, ModalHandle } from "./modals/Modal";
 import { Resource } from "../../slices/tableSlice";
 import { ParseKeys } from "i18next";
+import ModalContentTable from "./modals/ModalContentTable";
 
 /**
  * This component renders the modal for editing which columns are shown in the table
@@ -170,117 +171,115 @@ const EditTableViewModalContent = ({
 
 	return (
 		<>
-			<div className="modal-content">
-				<div className="modal-body">
-					<div className="tab-description for-header">
-						<p>
-							{t("PREFERENCES.TABLE.SUBHEADING", {
-								tableName: t(getTranslationForSubheading(resource)!),
-							})}
-						</p>
+			<ModalContentTable>
+				<div className="tab-description for-header">
+					<p>
+						{t("PREFERENCES.TABLE.SUBHEADING", {
+							tableName: t(getTranslationForSubheading(resource)!),
+						})}
+					</p>
+				</div>
+
+				<div className="row">
+					<div className="col">
+						<div className="obj drag-available-column">
+							<header>
+								<h2>
+									{
+										t(
+											"PREFERENCES.TABLE.AVAILABLE_COLUMNS"
+										) /* Available Columns */
+									}
+								</h2>
+							</header>
+							<ul className="drag-drop-items">
+								{deactivatedCols.map((column, key) =>
+									column ? (
+										<li className="drag-item" key={key}>
+											<div className="title">{t(column.label)}</div>
+											<ButtonLikeAnchor
+												extraClassName="move-item add"
+												onClick={() => changeColumn(column, false)}
+											>
+												<span className="sr-only">{t("PREFERENCES.TABLE.ADD_COLUMN")}</span>
+											</ButtonLikeAnchor>
+										</li>
+									) : null
+								)}
+							</ul>
+						</div>
 					</div>
 
-					<div className="row">
-						<div className="col">
-							<div className="obj drag-available-column">
-								<header>
-									<h2>
-										{
-											t(
-												"PREFERENCES.TABLE.AVAILABLE_COLUMNS"
-											) /* Available Columns */
-										}
-									</h2>
-								</header>
-								<ul className="drag-drop-items">
-									{deactivatedCols.map((column, key) =>
-										column ? (
-											<li className="drag-item" key={key}>
-												<div className="title">{t(column.label)}</div>
-												<ButtonLikeAnchor
-													extraClassName="move-item add"
-													onClick={() => changeColumn(column, false)}
+					<div className="col">
+						<div className="obj drag-selected-column">
+							<header>
+								<h2>
+									{
+										t(
+											"PREFERENCES.TABLE.SELECTED_COLUMNS"
+										) /* Selected Columns */
+									}
+								</h2>
+							</header>
+							<ul className="drag-drop-items">
+								<li>
+									<DragDropContext
+										onDragEnd={onDragEnd}
+									>
+										<Droppable droppableId="droppable">
+											{(provided, snapshot) => (
+												<div
+													{...provided.droppableProps}
+													ref={provided.innerRef}
+													// style={}
 												>
-													<span className="sr-only">{t("PREFERENCES.TABLE.ADD_COLUMN")}</span>
-												</ButtonLikeAnchor>
-											</li>
-										) : null
-									)}
-								</ul>
-							</div>
-						</div>
-
-						<div className="col">
-							<div className="obj drag-selected-column">
-								<header>
-									<h2>
-										{
-											t(
-												"PREFERENCES.TABLE.SELECTED_COLUMNS"
-											) /* Selected Columns */
-										}
-									</h2>
-								</header>
-								<ul className="drag-drop-items">
-									<li>
-										<DragDropContext
-											onDragEnd={onDragEnd}
-										>
-											<Droppable droppableId="droppable">
-												{(provided, snapshot) => (
-													<div
-														{...provided.droppableProps}
-														ref={provided.innerRef}
-														// style={}
-													>
-														{activeCols.filter(col => col).map((column, key) =>
-															(
-																<Draggablee key={column.name} draggableId={column.name} index={key}>
-																	{(provided, snapshot) => (
-																		<div
-																			ref={provided.innerRef}
-																			{...provided.draggableProps}
-																			{...provided.dragHandleProps}
-																			style={{...provided.draggableProps.style}}
-																			className="drag-item"
-																		>
-																			<div className="title">
-																				{t(column.label)}
-																			</div>
-																			<ButtonLikeAnchor
-																				extraClassName="move-item remove"
-																				onClick={() => changeColumn(column, true)}
-																			>
-																				<span className="sr-only">{t("PREFERENCES.TABLE.REMOVE_COLUMN")}</span>
-																			</ButtonLikeAnchor>
+													{activeCols.filter(col => col).map((column, key) =>
+														(
+															<Draggablee key={column.name} draggableId={column.name} index={key}>
+																{(provided, snapshot) => (
+																	<div
+																		ref={provided.innerRef}
+																		{...provided.draggableProps}
+																		{...provided.dragHandleProps}
+																		style={{...provided.draggableProps.style}}
+																		className="drag-item"
+																	>
+																		<div className="title">
+																			{t(column.label)}
 																		</div>
-																	)}
-																</Draggablee>
-															)
-														)}
-														{provided.placeholder}
-													</div>
-												)}
-											</Droppable>
-										</DragDropContext>
+																		<ButtonLikeAnchor
+																			extraClassName="move-item remove"
+																			onClick={() => changeColumn(column, true)}
+																		>
+																			<span className="sr-only">{t("PREFERENCES.TABLE.REMOVE_COLUMN")}</span>
+																		</ButtonLikeAnchor>
+																	</div>
+																)}
+															</Draggablee>
+														)
+													)}
+													{provided.placeholder}
+												</div>
+											)}
+										</Droppable>
+									</DragDropContext>
 
-									</li>
-								</ul>
-							</div>
+								</li>
+							</ul>
 						</div>
-					</div>
-
-					<div className="tab-description for-footer">
-						<p>
-							{/* The order and selection will be saved automatically.
-													Press "Reset" to restore the default view. */}
-							{t("PREFERENCES.TABLE.FOOTER_TEXT", {
-								resetTranslation: t("RESET"),
-							})}
-						</p>
 					</div>
 				</div>
-			</div>
+
+				<div className="tab-description for-footer">
+					<p>
+						{/* The order and selection will be saved automatically.
+												Press "Reset" to restore the default view. */}
+						{t("PREFERENCES.TABLE.FOOTER_TEXT", {
+							resetTranslation: t("RESET"),
+						})}
+					</p>
+				</div>
+			</ModalContentTable>
 
 			<footer>
 				{/* Render buttons for updating table data */}

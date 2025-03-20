@@ -29,6 +29,7 @@ import { UserInfoState } from "../../../slices/userInfoSlice";
 import { ParseKeys } from "i18next";
 import ButtonLikeAnchor from "../ButtonLikeAnchor";
 import { formatAclTemplatesForDropdown } from "../../../utils/dropDownUtils";
+import ModalContentTable from "./ModalContentTable";
 
 
 /**
@@ -267,123 +268,117 @@ const ResourceDetailsAccessPolicyTab = ({
 	};
 
 	return (
-		<div className="modal-content">
-			<div className="modal-body">
-				<div className="full-col">
-					{/* Notifications */}
-					<Notifications context="not_corner" />
+		<ModalContentTable>
+			{/* Notifications */}
+			<Notifications context="not_corner" />
 
-					{!loading && !!policies && (
-						<ul>
-							<li>
-								<Formik
-									initialValues={{
-										policies: policies.length > 0 ? [...policies] : [],
-										aclTemplate: policyTemplateId ? policyTemplateId.toString() : "",
-									}}
-									enableReinitialize
-									validate={(values) => validateFormik(values)}
-									onSubmit={(values) =>
-										saveAccess(values)
-									}
-								>
-									{(formik) => (
-										<div className="obj list-obj">
-											<header>{t(header) /* Access Policy */}</header>
+			{!loading && !!policies && (
+				<ul>
+					<li>
+						<Formik
+							initialValues={{
+								policies: policies.length > 0 ? [...policies] : [],
+								aclTemplate: policyTemplateId ? policyTemplateId.toString() : "",
+							}}
+							enableReinitialize
+							validate={(values) => validateFormik(values)}
+							onSubmit={(values) =>
+								saveAccess(values)
+							}
+						>
+							{(formik) => (
+								<div className="obj list-obj">
+									<header>{t(header) /* Access Policy */}</header>
 
-											{/* policy templates */}
-											<TemplateSelector
+									{/* policy templates */}
+									<TemplateSelector
+										formik={formik}
+										editAccessRole={editAccessRole}
+										titleText={"EVENTS.EVENTS.DETAILS.ACCESS.TEMPLATES.TITLE"}
+										descriptionText={descriptionText}
+										buttonText={buttonText}
+										emptyText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.EMPTY"}
+										transactions={transactions}
+										aclTemplates={aclTemplates}
+										defaultUser={user}
+									/>
+
+									{roles.length > 0 && !roles[0].isSanitize &&
+										<>
+											{hasAccess(viewUsersAccessRole, user) &&
+												<AccessPolicyTable
+													isUserTable={true}
+													policiesFiltered={policiesFiltered(formik.values.policies, true)}
+													rolesFilteredbyPolicies={rolesFilteredbyPolicies(roles, formik.values.policies, true)}
+													header={userPolicyTableHeaderText}
+													firstColumnHeader={userPolicyTableRoleText}
+													createLabel={userPolicyTableNewText}
+													formik={formik}
+													hasActions={hasActions}
+													transactions={transactions}
+													aclActions={aclActions}
+													roles={roles}
+													editAccessRole={editAccessRole}
+												/>
+											}
+
+										{hasAccess(viewNonUsersAccessRole, user) &&
+											<AccessPolicyTable
+												isUserTable={false}
+												policiesFiltered={policiesFiltered(formik.values.policies, false)}
+												rolesFilteredbyPolicies={rolesFilteredbyPolicies(roles, formik.values.policies, false)}
+												header={policyTableHeaderText}
+												firstColumnHeader={policyTableRoleText}
+												createLabel={policyTableNewText}
 												formik={formik}
-												editAccessRole={editAccessRole}
-												titleText={"EVENTS.EVENTS.DETAILS.ACCESS.TEMPLATES.TITLE"}
-												descriptionText={descriptionText}
-												buttonText={buttonText}
-												emptyText={"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.EMPTY"}
+												hasActions={hasActions}
 												transactions={transactions}
-												aclTemplates={aclTemplates}
-												defaultUser={user}
+												aclActions={aclActions}
+												roles={roles}
+												editAccessRole={editAccessRole}
 											/>
+										}
+										</>
+									}
 
-											{roles.length > 0 && !roles[0].isSanitize &&
-												<>
-													{hasAccess(viewUsersAccessRole, user) &&
-														<AccessPolicyTable
-															isUserTable={true}
-															policiesFiltered={policiesFiltered(formik.values.policies, true)}
-															rolesFilteredbyPolicies={rolesFilteredbyPolicies(roles, formik.values.policies, true)}
-															header={userPolicyTableHeaderText}
-															firstColumnHeader={userPolicyTableRoleText}
-															createLabel={userPolicyTableNewText}
-															formik={formik}
-															hasActions={hasActions}
-															transactions={transactions}
-															aclActions={aclActions}
-															roles={roles}
-															editAccessRole={editAccessRole}
-														/>
-													}
+									{roles.length > 0 && roles[0].isSanitize &&
+										<>
+											<AccessPolicyTable
+												isUserTable={false}
+												policiesFiltered={formik.values.policies}
+												rolesFilteredbyPolicies={filterRoles(roles, formik.values.policies)}
+												header={policyTableHeaderText}
+												firstColumnHeader={policyTableRoleText}
+												createLabel={policyTableNewText}
+												formik={formik}
+												hasActions={hasActions}
+												transactions={transactions}
+												aclActions={aclActions}
+												roles={roles}
+												editAccessRole={editAccessRole}
+											/>
+											<div className="obj-container">
+												<span>
+													{t("EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.SANITIZATION_NOTE")}
+												</span>
+											</div>
+										</>
+									}
 
-												{hasAccess(viewNonUsersAccessRole, user) &&
-													<AccessPolicyTable
-														isUserTable={false}
-														policiesFiltered={policiesFiltered(formik.values.policies, false)}
-														rolesFilteredbyPolicies={rolesFilteredbyPolicies(roles, formik.values.policies, false)}
-														header={policyTableHeaderText}
-														firstColumnHeader={policyTableRoleText}
-														createLabel={policyTableNewText}
-														formik={formik}
-														hasActions={hasActions}
-														transactions={transactions}
-														aclActions={aclActions}
-														roles={roles}
-														editAccessRole={editAccessRole}
-													/>
-												}
-												</>
-											}
-
-											{roles.length > 0 && roles[0].isSanitize &&
-												<>
-													<AccessPolicyTable
-														isUserTable={false}
-														policiesFiltered={formik.values.policies}
-														rolesFilteredbyPolicies={filterRoles(roles, formik.values.policies)}
-														header={policyTableHeaderText}
-														firstColumnHeader={policyTableRoleText}
-														createLabel={policyTableNewText}
-														formik={formik}
-														hasActions={hasActions}
-														transactions={transactions}
-														aclActions={aclActions}
-														roles={roles}
-														editAccessRole={editAccessRole}
-													/>
-													<div className="obj-container">
-														<span>
-															{t("EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.SANITIZATION_NOTE")}
-														</span>
-													</div>
-												</>
-											}
-
-											{/* Save and cancel buttons */}
-											{!transactions.read_only && <SaveEditFooter
-												active={policyChanged && formik.dirty}
-												reset={() => resetPolicies(formik.resetForm)}
-												submit={() => saveAccess(formik.values)}
-												isValid={formik.isValid}
-											/>}
-										</div>
-									)}
-								</Formik>
-							</li>
-						</ul>
-					)}
-				</div>
-
-				<div className="full-col" />
-			</div>
-		</div>
+									{/* Save and cancel buttons */}
+									{!transactions.read_only && <SaveEditFooter
+										active={policyChanged && formik.dirty}
+										reset={() => resetPolicies(formik.resetForm)}
+										submit={() => saveAccess(formik.values)}
+										isValid={formik.isValid}
+									/>}
+								</div>
+							)}
+						</Formik>
+					</li>
+				</ul>
+			)}
+		</ModalContentTable>
 	);
 };
 
