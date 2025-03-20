@@ -15,9 +15,6 @@ export type DropDownOption = {
 	order?: number
 }
 
-/**
- * This component provides a bar chart for visualising (statistics) data
- */
 const DropDown = <T,>({
 	value,
 	text,
