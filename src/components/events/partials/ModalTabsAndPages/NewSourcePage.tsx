@@ -41,6 +41,7 @@ import { removeNotificationWizardForm } from "../../../../slices/notificationSli
 import { parseISO } from "date-fns";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { checkConflicts, UploadAssetsTrack } from "../../../../slices/eventSlice";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import SchedulingTime from "../wizards/scheduling/SchedulingTime";
 import SchedulingEndDateDisplay from "../wizards/scheduling/SchedulingEndDateDisplay";
@@ -108,108 +109,103 @@ const NewSourcePage = <T extends RequiredFormProps>({
 
 	return (
 		<>
-			<div className="modal-content">
-				<div className="modal-body">
-					<div className="full-col">
-						{/*Show notifications with context events-form*/}
-						<Notifications context="not_corner" />
+			<ModalContentTable>
+				{/*Show notifications with context events-form*/}
+				<Notifications context="not_corner" />
+				{
+					<SchedulingConflicts
+						conflicts={conflicts}
+					/>
+				}
 
-						{
-							<SchedulingConflicts
-								conflicts={conflicts}
-							/>
-						}
-
-						<div className="obj list-obj">
-							<header className="no-expand">
-								{t("EVENTS.EVENTS.NEW.SOURCE.SELECT_SOURCE")}
-							</header>
-							{/* Radio buttons for choosing source mode */}
-							<div className="obj-container">
-								<ul>
-									{scheduleOptionAvailable() ? (
-										<li>
-											<label>
-												<Field
-													type="radio"
-													name="sourceMode"
-													className="source-toggle"
-													value="UPLOAD"
-												/>
-												<span>
-													{t("EVENTS.EVENTS.NEW.SOURCE.UPLOAD.CAPTION")}
-												</span>
-											</label>
-										</li>
-									) : (
-										<li>
-											<label>
-												<span>
-													{t("EVENTS.EVENTS.NEW.SOURCE.UPLOAD.CAPTION")}
-												</span>
-											</label>
-										</li>
-									)}
-									{scheduleOptionAvailable() && (
-										<>
-											<li>
-												<label>
-													<Field
-														type="radio"
-														name="sourceMode"
-														className="source-toggle"
-														onClick={() =>
-															changeStartDate(
-																new Date(formik.values.scheduleStartDate),
-																formik.values,
-																formik.setFieldValue
-															)
-														}
-														value="SCHEDULE_SINGLE"
-													/>
-													<span>
-														{t(
-															"EVENTS.EVENTS.NEW.SOURCE.SCHEDULE_SINGLE.CAPTION"
-														)}
-													</span>
-												</label>
-											</li>
-											<li>
-												<label>
-													<Field
-														type="radio"
-														name="sourceMode"
-														className="source-toggle"
-														value="SCHEDULE_MULTIPLE"
-													/>
-													<span>
-														{t(
-															"EVENTS.EVENTS.NEW.SOURCE.SCHEDULE_MULTIPLE.CAPTION"
-														)}
-													</span>
-												</label>
-											</li>
-										</>
-									)}
-								</ul>
-							</div>
-						</div>
-
-						{/* Render rest of page depending on which source mode is chosen */}
-						{formik.values.sourceMode === "UPLOAD" && (
-							<Upload formik={formik} />
-						)}
-						{scheduleOptionAvailable() &&
-							(formik.values.sourceMode === "SCHEDULE_SINGLE" ||
-								formik.values.sourceMode === "SCHEDULE_MULTIPLE") && (
-								<Schedule
-									formik={formik}
-									inputDevices={filterDevicesForAccess(user, inputDevices)}
-								/>
+				<div className="obj list-obj">
+					<header className="no-expand">
+						{t("EVENTS.EVENTS.NEW.SOURCE.SELECT_SOURCE")}
+					</header>
+					{/* Radio buttons for choosing source mode */}
+					<div className="obj-container">
+						<ul>
+							{scheduleOptionAvailable() ? (
+								<li>
+									<label>
+										<Field
+											type="radio"
+											name="sourceMode"
+											className="source-toggle"
+											value="UPLOAD"
+										/>
+										<span>
+											{t("EVENTS.EVENTS.NEW.SOURCE.UPLOAD.CAPTION")}
+										</span>
+									</label>
+								</li>
+							) : (
+								<li>
+									<label>
+										<span>
+											{t("EVENTS.EVENTS.NEW.SOURCE.UPLOAD.CAPTION")}
+										</span>
+									</label>
+								</li>
 							)}
+							{scheduleOptionAvailable() && (
+								<>
+									<li>
+										<label>
+											<Field
+												type="radio"
+												name="sourceMode"
+												className="source-toggle"
+												onClick={() =>
+													changeStartDate(
+														new Date(formik.values.scheduleStartDate),
+														formik.values,
+														formik.setFieldValue
+													)
+												}
+												value="SCHEDULE_SINGLE"
+											/>
+											<span>
+												{t(
+													"EVENTS.EVENTS.NEW.SOURCE.SCHEDULE_SINGLE.CAPTION"
+												)}
+											</span>
+										</label>
+									</li>
+									<li>
+										<label>
+											<Field
+												type="radio"
+												name="sourceMode"
+												className="source-toggle"
+												value="SCHEDULE_MULTIPLE"
+											/>
+											<span>
+												{t(
+													"EVENTS.EVENTS.NEW.SOURCE.SCHEDULE_MULTIPLE.CAPTION"
+												)}
+											</span>
+										</label>
+									</li>
+								</>
+							)}
+						</ul>
 					</div>
 				</div>
-			</div>
+
+				{/* Render rest of page depending on which source mode is chosen */}
+				{formik.values.sourceMode === "UPLOAD" && (
+					<Upload formik={formik} />
+				)}
+				{scheduleOptionAvailable() &&
+					(formik.values.sourceMode === "SCHEDULE_SINGLE" ||
+						formik.values.sourceMode === "SCHEDULE_MULTIPLE") && (
+						<Schedule
+							formik={formik}
+							inputDevices={filterDevicesForAccess(user, inputDevices)}
+						/>
+					)}
+			</ModalContentTable>
 
 			{/* Button for navigation to next page and previous page */}
 			<WizardNavigationButtons
