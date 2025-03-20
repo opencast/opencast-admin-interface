@@ -5,6 +5,7 @@ import { getAssetUploadOptions } from "../../../../selectors/eventSelectors";
 import { translateOverrideFallback } from "../../../../utils/utils";
 import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
@@ -92,8 +93,8 @@ const NewAssetUploadPage = <T extends RequiredFormProps>({
 											</td>
 											{/*Button to remove asset*/}
 											<td className="fit">
-												<button
-													className="button-like-anchor remove"
+												<ButtonLikeAnchor
+													extraClassName="remove"
 													onClick={() => {
 														formik.setFieldValue(asset.id, null);
 														(document.getElementById(asset.id) as HTMLInputElement).value = "";

@@ -11,6 +11,7 @@ import {
 } from "../../../../slices/eventDetailsSlice";
 import { useTranslation } from "react-i18next";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { ParseKeys } from "i18next";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
@@ -57,18 +58,18 @@ const EventDetailsWorkflowOperations = ({
 		<ModalContentTable
 			modalContentChildren={
 				/* Hierarchy navigation */
-			<EventDetailsTabHierarchyNavigation
-				openSubTab={openSubTab}
-				hierarchyDepth={1}
-				translationKey0={"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"}
-				subTabArgument0={"workflow-details"}
-				translationKey1={"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TITLE"}
-				subTabArgument1={"workflow-operations"}
-			/>
+				<EventDetailsTabHierarchyNavigation
+					openSubTab={openSubTab}
+					hierarchyDepth={1}
+					translationKey0={"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"}
+					subTabArgument0={"workflow-details"}
+					translationKey1={"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TITLE"}
+					subTabArgument1={"workflow-operations"}
+				/>
 			}
 			modalBodyChildren={<Notifications context="not_corner" />}
 		>
-			{/* 'Workflow Operations' table */}
+		{/* 'Workflow Operations' table */}
 			<div className="obj tbl-container">
 				<header>
 					{
@@ -117,8 +118,8 @@ const EventDetailsWorkflowOperations = ({
 
 									{/* link to 'Operation Details'  sub-Tab */}
 									<td>
-										<button
-											className="button-like-anchor details-link"
+										<ButtonLikeAnchor
+											extraClassName="details-link"
 											onClick={() =>
 												openSubTab("workflow-operation-details", key)
 											}
@@ -128,7 +129,7 @@ const EventDetailsWorkflowOperations = ({
 													"EVENTS.EVENTS.DETAILS.MEDIA.DETAILS"
 												) /* Details */
 											}
-										</button>
+										</ButtonLikeAnchor>
 									</td>
 								</tr>
 							))}

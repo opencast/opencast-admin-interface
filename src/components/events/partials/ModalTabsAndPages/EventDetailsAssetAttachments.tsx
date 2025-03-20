@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchAssetAttachmentDetails, setModalAssetsTabHierarchy } from "../../../../slices/eventDetailsSlice";
 import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
@@ -92,8 +93,8 @@ const EventDetailsAssetAttachments = ({
 												: null}
 										</td>
 										<td>
-											<button
-												className="button-like-anchor details-link"
+											<ButtonLikeAnchor
+												extraClassName="details-link"
 												onClick={() =>
 													openSubTab("attachment-details", item.id)
 												}
@@ -103,7 +104,7 @@ const EventDetailsAssetAttachments = ({
 														"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
 													) /* Details */
 												}
-											</button>
+											</ButtonLikeAnchor>
 										</td>
 									</tr>
 								))}

@@ -25,6 +25,7 @@ import {
 	updateSeriesMetadata,
 } from "../../../../slices/seriesDetailsSlice";
 import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { removeNotificationWizardTobira } from "../../../../slices/notificationSlice";
 import { ParseKeys } from "i18next";
 
@@ -117,13 +118,13 @@ const SeriesDetails = ({
 			{/* navigation for navigating between tabs */}
 			<nav className="modal-nav" id="modal-nav">
 				{tabs.map((tab, index) => !tab.hidden && hasAccess(tab.accessRole, user) && (
-					<button
+					<ButtonLikeAnchor
 						key={tab.name}
-						className={"button-like-anchor " + cn({ active: page === index })}
+						extraClassName={cn({ active: page === index })}
 						onClick={() => openTab(index)}
 					>
 						{t(tab.tabNameTranslation)}
-					</button>
+					</ButtonLikeAnchor>
 				))}
 			</nav>
 

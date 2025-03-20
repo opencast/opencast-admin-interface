@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchAssetMediaDetails, setModalAssetsTabHierarchy } from "../../../../slices/eventDetailsSlice";
 import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
@@ -78,8 +79,8 @@ const EventDetailsAssetMedia = ({
 												: null}
 										</td>
 										<td>
-											<button
-												className="button-like-anchor details-link"
+											<ButtonLikeAnchor
+												extraClassName="details-link"
 												onClick={() => openSubTab("media-details", item.id)}
 											>
 												{
@@ -87,7 +88,7 @@ const EventDetailsAssetMedia = ({
 														"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
 													) /* Details */
 												}
-											</button>
+											</ButtonLikeAnchor>
 										</td>
 									</tr>
 								))}

@@ -21,6 +21,7 @@ import { fetchSeriesDetailsAcls } from "../../../../slices/seriesDetailsSlice";
 import { getSeriesDetailsAcl } from "../../../../selectors/seriesDetailsSelectors";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { formatAclRolesForDropdown, formatAclTemplatesForDropdown } from "../../../../utils/dropDownUtils";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
@@ -294,9 +295,9 @@ const NewAccessPage = <T extends RequiredFormProps>({
 																				)}
 																				{/*Remove policy*/}
 																				<td>
-																					<button
+																					<ButtonLikeAnchor
 																						onClick={() => remove(index)}
-																						className="button-like-anchor remove"
+																						extraClassName="remove"
 																					/>
 																				</td>
 																			</tr>
@@ -316,7 +317,7 @@ const NewAccessPage = <T extends RequiredFormProps>({
 																	<tr>
 																		{/*Add additional policy row*/}
 																		<td colSpan={5}>
-																			<button
+																			<ButtonLikeAnchor
 																				onClick={() => {
 																					push({
 																						role: "",
@@ -326,13 +327,12 @@ const NewAccessPage = <T extends RequiredFormProps>({
 																					});
 																					dispatch(checkAcls(formik.values.acls));
 																				}}
-																				className="button-like-anchor"
 																			>
 																				+{" "}
 																				{t(
 																					"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.NEW"
 																				)}
-																			</button>
+																			</ButtonLikeAnchor>
 																		</td>
 																	</tr>
 																)}

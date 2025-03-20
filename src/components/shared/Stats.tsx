@@ -52,7 +52,11 @@ const Stats = () => {
 
 	useEffect(() => {
 		// Load stats on mount
-		loadStats().then((r) => console.info(r));
+		loadStats();
+
+		let fetchEventsInterval = setInterval(() => loadStats(), 5000);
+
+		return () => clearInterval(fetchEventsInterval);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
