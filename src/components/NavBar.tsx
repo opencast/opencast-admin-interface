@@ -1,12 +1,11 @@
 import React, { useRef } from "react";
 import { Link, useLocation } from "react-router";
 import { hasAccess } from "../utils/utils";
-import { AppDispatch, useAppDispatch, useAppSelector } from "../store";
+import { useAppSelector } from "../store";
 import { getUserInformation } from "../selectors/userInfoSelectors";
 import cn from "classnames";
 import { useTranslation } from "react-i18next";
 import MainNav from "./shared/MainNav";
-import { setOffset } from "../slices/tableSlice";
 import NewResourceModal, { NewResource } from "./shared/NewResourceModal";
 import { useHotkeys } from "react-hotkeys-hook";
 import { ModalHandle } from "./shared/modals/Modal";
@@ -15,13 +14,6 @@ import { ParseKeys } from "i18next";
 /**
  * Component that renders the nav bar
  */
-type LinkType = {
-	path: string
-	accessRole: string
-	loadFn: (dispatch: AppDispatch) => void
-	text: ParseKeys
-}
-
 type CreateType = {
 	accessRole: string
 	onShowModal?: () => Promise<void>
@@ -45,12 +37,14 @@ const NavBar = ({
 	navAriaLabel?: ParseKeys
 	displayNavigation: boolean
 	setNavigation: React.Dispatch<React.SetStateAction<boolean>>
-	links: LinkType[]
+	links: {
+		path: string
+		accessRole: string
+		text: ParseKeys
+	}[]
 	create?: CreateType
 }) => {
-
 	const { t } = useTranslation();
-	const dispatch = useAppDispatch();
 	const location = useLocation();
 
 	const user = useAppSelector(state => getUserInformation(state));
@@ -99,13 +93,6 @@ const NavBar = ({
 							key={index}
 							to={link.path}
 							className={cn({ active: location.pathname === link.path || (location.pathname === "/" && link.path === "/events/events") })}
-							onClick={() => {
-								if (location.pathname !== link.path) {
-									// Reset the current page to first page
-									dispatch(setOffset(0));
-								}
-								link.loadFn(dispatch)
-							}}
 						>
 							{t(link.text)}
 						</Link>

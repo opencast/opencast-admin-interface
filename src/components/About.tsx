@@ -47,13 +47,11 @@ const About = () => {
 					{
 						path: "/about/imprint",
 						accessRole: "ROLE_UI_USERS_VIEW",
-						loadFn: () => { },
 						text: "ABOUT.IMPRINT"
 					},
 					{
 						path: "/about/privacy",
 						accessRole: "ROLE_UI_GROUPS_VIEW",
-						loadFn: () => { },
 						text: "ABOUT.PRIVACY"
 					},
 				]}
