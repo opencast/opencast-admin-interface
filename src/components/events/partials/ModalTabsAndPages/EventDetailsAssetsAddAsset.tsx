@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { setModalAssetsTabHierarchy, updateAssets } from "../../../../slices/eventDetailsSlice";
 import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 
 /**
  * This component manages the add asset sub-tab for assets tab of event details modal
@@ -117,8 +118,8 @@ const EventDetailsAssetsAddAsset = ({
 															</td>
 															{/*Button to remove asset*/}
 															<td className="fit">
-																<button
-																	className="button-like-anchor remove"
+																<ButtonLikeAnchor
+																	className="remove"
 																	onClick={() => {
 																		formik.setFieldValue(asset.id, null);
 																		const element = document.getElementById(asset.id) as HTMLInputElement;

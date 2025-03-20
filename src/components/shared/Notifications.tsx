@@ -12,6 +12,7 @@ import {
 } from "../../configs/modalConfig";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { OurNotification, setHidden } from "../../slices/notificationSlice";
+import ButtonLikeAnchor from "./ButtonLikeAnchor";
 
 type Context = "not_corner" | "tobira" | "above_table" | "other"
 
@@ -103,9 +104,9 @@ export const NotificationComponent = ({
 	return(
 		<div className={cn(notification.type, "alert sticky")}>
 			{closeNotification &&
-				<button
+				<ButtonLikeAnchor
 					onClick={() => closeNotification(notification.id)}
-					className="button-like-anchor fa fa-times close"
+					extraClassName="fa fa-times close"
 				/>
 			}
 			<p>{t(notification.message, notification.parameter)}</p>
