@@ -3,6 +3,7 @@ import { Role, fetchRolesWithTarget } from "../../../../slices/aclSlice";
 import SelectContainer from "../../../shared/wizard/SelectContainer";
 import { FormikProps } from "formik";
 import { NotificationComponent } from "../../../shared/Notifications";
+import ModalContent from "../../../shared/modals/ModalContent";
 
 /**
  * This component renders the role selection tab of the new user wizard and the user details modal
@@ -34,8 +35,7 @@ const UserRolesTab = <T extends RequiredFormProps>({
 	}, []);
 
 	return (
-		<div className="modal-content">
-			<div className="modal-body">
+		<ModalContent>
 			{!formik.values.manageable && (
 				<NotificationComponent
 					notification={{
@@ -45,22 +45,21 @@ const UserRolesTab = <T extends RequiredFormProps>({
 					}}
 				/>
 			)}
-				<div className="form-container">
-					{/*Select container for roles*/}
-					{!loading && (
-						<SelectContainer
-							resource={{
-								searchable: true,
-								label: "USERS.USERS.DETAILS.ROLES",
-								items: roles,
-							}}
-							formikField="roles"
-							manageable={formik.values.manageable}
-						/>
-					)}
-				</div>
+			<div className="form-container">
+				{/*Select container for roles*/}
+				{!loading && (
+					<SelectContainer
+						resource={{
+							searchable: true,
+							label: "USERS.USERS.DETAILS.ROLES",
+							items: roles,
+						}}
+						formikField="roles"
+						manageable={formik.values.manageable}
+					/>
+				)}
 			</div>
-		</div>
+		</ModalContent>
 	);
 };
 
