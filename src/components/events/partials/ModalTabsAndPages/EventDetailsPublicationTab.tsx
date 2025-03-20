@@ -5,6 +5,7 @@ import { getPublications } from "../../../../selectors/eventDetailsSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { fetchEventPublications } from "../../../../slices/eventDetailsSlice";
 import { ParseKeys } from "i18next";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 const EventDetailsPublicationTab = ({
 	eventId,
@@ -29,73 +30,70 @@ const EventDetailsPublicationTab = ({
 
 	return (
 		<>
-			<div className="modal-content">
-				<div className="modal-body">
-					<Notifications context={"other"}/>
-					<div className="full-col">
-						<div className="obj list-obj">
-							<header>{t("EVENTS.EVENTS.DETAILS.PUBLICATIONS.CAPTION")}</header>
-							<div className="obj-container">
-								{publications?.length > 0 ? (
-									<>
-										<p>
-											{t(
-												"EVENTS.EVENTS.DETAILS.PUBLICATIONS.PUBLICATION_DESCRIPTION"
-											)}
-										</p>
-										{/* list all publications depending on their existing information */}
-										<ul>
-											{publications.map((publication, key) => (
-												<li key={key}>
-													<div className="v-container">
-														<span className="icon-container">
-															{!!publication.icon ? (
-																<i
-																	className="custom-icon"
-																	style={{
-																		backgroundImage:
-																			"url(" + publication.icon + ")",
-																	}}
-																/>
-															) : (
-																<i className="video-icon" />
-															)}
-														</span>
-														<div>
-															<span>{publication.label ? t(publication.label as ParseKeys) : t(publication.name as ParseKeys)}</span>
-															{publication.description && (
-																<p className="description">
-																	{publication.description}
-																</p>
-															)}
-														</div>
+			<ModalContentTable
+				modalBodyChildren={<Notifications context={"other"}/>}
+			>
+				<div className="obj list-obj">
+					<header>{t("EVENTS.EVENTS.DETAILS.PUBLICATIONS.CAPTION")}</header>
+					<div className="obj-container">
+						{publications?.length > 0 ? (
+							<>
+								<p>
+									{t(
+										"EVENTS.EVENTS.DETAILS.PUBLICATIONS.PUBLICATION_DESCRIPTION"
+									)}
+								</p>
+								{/* list all publications depending on their existing information */}
+								<ul>
+									{publications.map((publication, key) => (
+										<li key={key}>
+											<div className="v-container">
+												<span className="icon-container">
+													{!!publication.icon ? (
+														<i
+															className="custom-icon"
+															style={{
+																backgroundImage:
+																	"url(" + publication.icon + ")",
+															}}
+														/>
+													) : (
+														<i className="video-icon" />
+													)}
+												</span>
+												<div>
+													<span>{publication.label ? t(publication.label as ParseKeys) : t(publication.name as ParseKeys)}</span>
+													{publication.description && (
+														<p className="description">
+															{publication.description}
+														</p>
+													)}
+												</div>
 
-														{publication.enabled ? (
-															<a className="play" href={publication.url} target="_blank" rel="noreferrer"/>
-														) : (
-															<span style={styleSpan}>
-																{t(
-																	"EVENTS.EVENTS.DETAILS.PUBLICATIONS.LIVE_EVENT_NOT_IN_PROGRESS"
-																)}
-															</span>
+												{publication.enabled ? (
+													<a className="play" href={publication.url} target="_blank" rel="noreferrer"/>
+												) : (
+													<span style={styleSpan}>
+														{t(
+															"EVENTS.EVENTS.DETAILS.PUBLICATIONS.LIVE_EVENT_NOT_IN_PROGRESS"
 														)}
-													</div>
-												</li>
-											))}
-										</ul>
-									</>
-								) : (
-									<p>
-										{t(
-											"EVENTS.EVENTS.DETAILS.PUBLICATIONS.NO_PUBLICATIONS_AVAILABLE"
-										)}
-									</p>
+													</span>
+												)}
+											</div>
+										</li>
+									))}
+								</ul>
+							</>
+						) : (
+							<p>
+								{t(
+									"EVENTS.EVENTS.DETAILS.PUBLICATIONS.NO_PUBLICATIONS_AVAILABLE"
 								)}
-							</div>
-						</div>
+							</p>
+						)}
 					</div>
 				</div>
-			</div>
+			</ModalContentTable>
 		</>
 	);
 };
