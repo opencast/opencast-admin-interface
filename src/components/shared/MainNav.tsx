@@ -10,6 +10,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { useAppSelector } from "../../store";
 import { Tooltip } from "./Tooltip";
+import ButtonLikeAnchor from "./ButtonLikeAnchor";
 import { ParseKeys } from "i18next";
 
 /**
@@ -53,11 +54,11 @@ const MainNav = ({
 
 	return (
 		<div className="menu-top" >
-			<button className="button-like-anchor" onClick={() => toggleMenu()}>
+			<ButtonLikeAnchor onClick={() => toggleMenu()}>
 				<Tooltip title={t("HOTKEYS.DESCRIPTIONS.GENERAL.MAIN_MENU")} placement={"right"}>
 					<i className="fa fa-bars" />
 				</Tooltip>
-			</button>
+			</ButtonLikeAnchor>
 			{isOpen && (
 				<nav id="roll-up-menu">
 					<div id="nav-container">
