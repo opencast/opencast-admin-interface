@@ -33,6 +33,7 @@ import EventDetailsAssetPublications from "./EventDetailsAssetPublications";
 import EventDetailsAssetPublicationDetails from "./EventDetailsAssetPublicationDetails";
 import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { ParseKeys } from "i18next";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component manages the main assets tab of event details modal
@@ -137,167 +138,160 @@ const EventDetailsAssetsTab = ({
 				))}
 			</nav>
 			{((assetsTabHierarchy === "entry" && (
-				<div className="modal-content">
-					<div className="modal-body">
-						{/* Notifications */}
-						<Notifications context="not_corner" />
-
-						{/* table with types of assets */}
-						<div className="full-col">
-							<div className="obj tbl-container operations-tbl">
-								{" "}
-								{/* Assets */}
-								<header>{t("EVENTS.EVENTS.DETAILS.ASSETS.CAPTION")}</header>
-								<div className="obj-container">
-									{isFetching || (
-										<table cellPadding="0" cellSpacing="0" className="main-tbl">
-											<thead>
-												<tr>
-													<th>
-														{" "}
-														{t("EVENTS.EVENTS.DETAILS.ASSETS.TYPE") /* Type */}
-													</th>
-													<th>
-														{" "}
-														{t("EVENTS.EVENTS.DETAILS.ASSETS.SIZE") /* Size */}
-													</th>
-													<th className="medium">
-														{!isFetchingAssetUploadOptions &&
-															!!uploadAssetOptions &&
-															uploadAssetOptions.filter(
-																(asset) => asset.type !== "track"
-															).length > 0 &&
-															!transactionsReadOnly &&
-															hasAccess(
-																"ROLE_UI_EVENTS_DETAILS_ASSETS_EDIT",
-																user
-															) && (
-																<ButtonLikeAnchor
-																	extraClassName="details-link"
-																	onClick={() =>
-																		openSubTab(
-																			"add-asset",
-																			"newassetupload",
-																		)
-																	}
-																>
-																	{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.ADD")}
-																</ButtonLikeAnchor>
-															)}
-													</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>
+				<ModalContentTable
+					modalBodyChildren={<Notifications context="not_corner" />}
+				>
+					{/* table with types of assets */}
+					<div className="obj tbl-container operations-tbl">
+						{" "}
+						{/* Assets */}
+						<header>{t("EVENTS.EVENTS.DETAILS.ASSETS.CAPTION")}</header>
+						<div className="obj-container">
+							{isFetching || (
+								<table cellPadding="0" cellSpacing="0" className="main-tbl">
+									<thead>
+										<tr>
+											<th>
+												{" "}
+												{t("EVENTS.EVENTS.DETAILS.ASSETS.TYPE") /* Type */}
+											</th>
+											<th>
+												{" "}
+												{t("EVENTS.EVENTS.DETAILS.ASSETS.SIZE") /* Size */}
+											</th>
+											<th className="medium">
+												{!isFetchingAssetUploadOptions &&
+													!!uploadAssetOptions &&
+													uploadAssetOptions.length > 0 &&
+													!transactionsReadOnly &&
+													hasAccess(
+														"ROLE_UI_EVENTS_DETAILS_ASSETS_EDIT",
+														user
+													) && (
+														<ButtonLikeAnchor
+															extraClassName="details-link"
+															onClick={() =>
+																openSubTab(
+																	"add-asset",
+																	"newassetupload",
+																)
+															}
+														>
+															{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.ADD")}
+														</ButtonLikeAnchor>
+													)}
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												{
+													t(
+														"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.CAPTION"
+													) /* Attachments */
+												}
+											</td>
+											<td>{assets.attachments}</td>
+											<td>
+												{assets.attachments > 0 && (
+													<ButtonLikeAnchor
+														extraClassName="details-link"
+														onClick={() =>
+															openSubTab("asset-attachments", "attachment")
+														}
+													>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.CAPTION"
-															) /* Attachments */
+																"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
+															) /* Details */
 														}
-													</td>
-													<td>{assets.attachments}</td>
-													<td>
-														{assets.attachments > 0 && (
-															<ButtonLikeAnchor
-																extraClassName="details-link"
-																onClick={() =>
-																	openSubTab("asset-attachments", "attachment")
-																}
-															>
-																{
-																	t(
-																		"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
-																	) /* Details */
-																}
-															</ButtonLikeAnchor>
-														)}
-													</td>
-												</tr>
-												<tr>
-													<td>
+													</ButtonLikeAnchor>
+												)}
+											</td>
+										</tr>
+										<tr>
+											<td>
+												{
+													t(
+														"EVENTS.EVENTS.DETAILS.ASSETS.CATALOGS.CAPTION"
+													) /* Catalogs */
+												}
+											</td>
+											<td>{assets.catalogs}</td>
+											<td>
+												{assets.catalogs > 0 && (
+													<ButtonLikeAnchor
+														extraClassName="details-link"
+														onClick={() =>
+															openSubTab("asset-catalogs", "catalog")
+														}
+													>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.ASSETS.CATALOGS.CAPTION"
-															) /* Catalogs */
+																"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
+															) /* Details */
 														}
-													</td>
-													<td>{assets.catalogs}</td>
-													<td>
-														{assets.catalogs > 0 && (
-															<ButtonLikeAnchor
-																extraClassName="details-link"
-																onClick={() =>
-																	openSubTab("asset-catalogs", "catalog")
-																}
-															>
-																{
-																	t(
-																		"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
-																	) /* Details */
-																}
-															</ButtonLikeAnchor>
-														)}
-													</td>
-												</tr>
-												<tr>
-													<td>
+													</ButtonLikeAnchor>
+												)}
+											</td>
+										</tr>
+										<tr>
+											<td>
+												{
+													t(
+														"EVENTS.EVENTS.DETAILS.ASSETS.MEDIA.CAPTION"
+													) /* Media */
+												}
+											</td>
+											<td>{assets.media}</td>
+											<td>
+												{assets.media > 0 && (
+													<ButtonLikeAnchor
+														extraClassName="details-link"
+														onClick={() => openSubTab("asset-media", "media")}
+													>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.ASSETS.MEDIA.CAPTION"
-															) /* Media */
+																"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
+															) /* Details */
 														}
-													</td>
-													<td>{assets.media}</td>
-													<td>
-														{assets.media > 0 && (
-															<ButtonLikeAnchor
-																extraClassName="details-link"
-																onClick={() => openSubTab("asset-media", "media")}
-															>
-																{
-																	t(
-																		"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
-																	) /* Details */
-																}
-															</ButtonLikeAnchor>
-														)}
-													</td>
-												</tr>
-												<tr>
-													<td>
+													</ButtonLikeAnchor>
+												)}
+											</td>
+										</tr>
+										<tr>
+											<td>
+												{
+													t(
+														"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.CAPTION"
+													) /* Publications */
+												}
+											</td>
+											<td>{assets.publications}</td>
+											<td>
+												{assets.publications > 0 && (
+													<ButtonLikeAnchor
+														extraClassName="details-link"
+														onClick={() =>
+															openSubTab("asset-publications", "publication")
+														}
+													>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.CAPTION"
-															) /* Publications */
+																"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
+															) /* Details */
 														}
-													</td>
-													<td>{assets.publications}</td>
-													<td>
-														{assets.publications > 0 && (
-															<ButtonLikeAnchor
-																extraClassName="details-link"
-																onClick={() =>
-																	openSubTab("asset-publications", "publication")
-																}
-															>
-																{
-																	t(
-																		"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
-																	) /* Details */
-																}
-															</ButtonLikeAnchor>
-														)}
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									)}
-								</div>
-							</div>
+													</ButtonLikeAnchor>
+												)}
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							)}
 						</div>
 					</div>
-				</div>
+				</ModalContentTable>
 			)) ||
 			(assetsTabHierarchy === "add-asset" && (
 				<EventDetailsAssetsAddAsset

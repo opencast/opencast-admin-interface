@@ -14,10 +14,11 @@ import {
 	getAssetUploadOptions,
 	getEventMetadata,
 	getExtendedEventMetadata,
+	getSourceUploadOptions,
 } from "../../../../selectors/eventSelectors";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
-import { MetadataCatalog, UploadAssetOption, postNewEvent } from "../../../../slices/eventSlice";
+import { MetadataCatalog, UploadOption, postNewEvent } from "../../../../slices/eventSlice";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import NewMetadataCommonPage from "../ModalTabsAndPages/NewMetadataCommonPage";
@@ -34,7 +35,8 @@ const NewEventWizard: React.FC<{
 }) => {
 	const dispatch = useAppDispatch();
 
-	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
+	const uploadSourceOptions = useAppSelector(state => getSourceUploadOptions(state));
+	const assetUploadOptions = useAppSelector(state => getAssetUploadOptions(state));
 	const metadataFields = useAppSelector(state => getEventMetadata(state));
 	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
 	const user = useAppSelector(state => getUserInformation(state));
@@ -56,7 +58,7 @@ const NewEventWizard: React.FC<{
 	const initialValues = getInitialValues(
 		metadataFields,
 		extendedMetadata,
-		uploadAssetOptions,
+		uploadSourceOptions,
 		user,
 	);
 
@@ -88,9 +90,7 @@ const NewEventWizard: React.FC<{
 		{
 			translation: "EVENTS.EVENTS.NEW.UPLOAD_ASSET.CAPTION",
 			name: "upload-asset",
-			hidden:
-				uploadAssetOptions.filter((asset) => asset.type !== "track").length ===
-				0,
+			hidden: assetUploadOptions.length === 0,
 		},
 		{
 			translation: "EVENTS.EVENTS.NEW.PROCESSING.CAPTION",
@@ -258,7 +258,7 @@ const NewEventWizard: React.FC<{
 const getInitialValues = (
 	metadataFields: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
-	uploadAssetOptions: UploadAssetOption[],
+	uploadSourceOptions: UploadOption[],
 	user: UserInfoState
 ) => {
 	let initialValues = initialFormValuesNewEvents;
@@ -297,20 +297,16 @@ const getInitialValues = (
 	}
 
 	// Add possible files that can be uploaded in source step
-	if (!!uploadAssetOptions) {
+	if (!!uploadSourceOptions) {
 		initialValues.uploadAssetsTrack = [];
 		// Sort by displayOrder
-		uploadAssetOptions = uploadAssetOptions.slice().sort((a, b) => a.displayOrder - b.displayOrder)
+		uploadSourceOptions = uploadSourceOptions.slice().sort((a, b) => a.displayOrder - b.displayOrder)
 		// initial value of upload asset needs to be null, because object (file) is saved there
-		for (const option of uploadAssetOptions) {
-			if (option.type === "track") {
-				initialValues.uploadAssetsTrack.push({
-					...option,
-					file: undefined,
-				});
-			} else {
-				initialValues[option.id] = null;
-			}
+		for (const option of uploadSourceOptions) {
+			initialValues.uploadAssetsTrack.push({
+				...option,
+				file: undefined,
+			});
 		};
 	}
 
