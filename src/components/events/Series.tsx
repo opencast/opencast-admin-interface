@@ -26,9 +26,11 @@ import {
 	showActionsSeries,
 } from "../../slices/seriesSlice";
 import { fetchSeriesDetailsTobiraNew } from "../../slices/seriesSlice";
-import { eventsLinks, loadSeries } from "./partials/EventsNavigation";
+import ButtonLikeAnchor from "../shared/ButtonLikeAnchor";
+import { eventsLinks } from "./partials/EventsNavigation";
 import { Modal, ModalHandle } from "../shared/modals/Modal";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
+import { resetTableProperties } from "../../slices/tableSlice";
 
 // References for detecting a click outside of the container of the dropdown menu
 const containerAction = React.createRef<HTMLDivElement>();
@@ -52,6 +54,12 @@ const Series = () => {
 	const showActions = useAppSelector(state => isShowActions(state));
 
 	useEffect(() => {
+		// State variable for interrupting the load function
+		let allowLoadIntoTable = true;
+
+		// Clear table of previous data
+		dispatch(resetTableProperties());
+
 		dispatch(fetchFilters("series"))
 
 		// Reset text filer
@@ -61,7 +69,16 @@ const Series = () => {
 		dispatch(showActionsSeries(false));
 
 		// Load events on mount
-		loadSeries(dispatch);
+		const loadSeries = async() => {
+			// fetching series from server
+			await dispatch(fetchSeries());
+
+			// load series into table
+			if (allowLoadIntoTable) {
+				dispatch(loadSeriesIntoTable());
+			}
+		};
+		loadSeries();
 
 		// Function for handling clicks outside of an dropdown menu
 		const handleClickOutside = (e: MouseEvent) => {
@@ -74,12 +91,13 @@ const Series = () => {
 		};
 
 		// Fetch series every minute
-		let fetchSeriesInterval = setInterval(() => loadSeries(dispatch), 5000);
+		let fetchSeriesInterval = setInterval(() => loadSeries(), 5000);
 
 		// Event listener for handle a click outside of dropdown menu
 		window.addEventListener("mousedown", handleClickOutside);
 
 		return () => {
+			allowLoadIntoTable = false;
 			window.removeEventListener("mousedown", handleClickOutside);
 			clearInterval(fetchSeriesInterval);
 		};
@@ -148,9 +166,9 @@ const Series = () => {
 								<ul className="dropdown-ul">
 									{hasAccess("ROLE_UI_SERIES_DELETE", user) && (
 										<li>
-											<button className="button-like-anchor" onClick={() => deleteModalRef.current?.open()}>
+											<ButtonLikeAnchor onClick={() => deleteModalRef.current?.open()}>
 												{t("BULK_ACTIONS.DELETE.SERIES.CAPTION")}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 									)}
 								</ul>

@@ -15,7 +15,8 @@ import MainView from "../MainView";
 import Footer from "../Footer";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchAcls } from "../../slices/aclSlice";
-import { loadAcls, usersLinks } from "./partials/UsersNavigation";
+import { usersLinks } from "./partials/UsersNavigation";
+import { resetTableProperties } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of acls
@@ -28,18 +29,36 @@ const Acls = () => {
 	const acls = useAppSelector(state => getTotalAcls(state));
 
 	useEffect(() => {
+		// State variable for interrupting the load function
+		let allowLoadIntoTable = true;
+
+		// Clear table of previous data
+		dispatch(resetTableProperties());
+
 		dispatch(fetchFilters("acls"));
 
 		// Reset text filter
 		dispatch(editTextFilter(""));
 
 		// Load acls on mount
-		loadAcls(dispatch);
+		const loadAcls = async () => {
+			// Fetching acls from server
+			await dispatch(fetchAcls());
+
+			// Load acls into table
+			if (allowLoadIntoTable) {
+				dispatch(loadAclsIntoTable());
+			}
+		};
+		loadAcls();
 
 		// Fetch Acls every minute
 		let fetchAclInterval = setInterval(loadAcls, 5000);
 
-		return () => clearInterval(fetchAclInterval);
+		return () => {
+			allowLoadIntoTable = false;
+			clearInterval(fetchAclInterval);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

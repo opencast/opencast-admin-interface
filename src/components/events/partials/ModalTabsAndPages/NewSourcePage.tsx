@@ -41,6 +41,7 @@ import { removeNotificationWizardForm } from "../../../../slices/notificationSli
 import { parseISO } from "date-fns";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { checkConflicts, UploadAssetsTrack } from "../../../../slices/eventSlice";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import SchedulingTime from "../wizards/scheduling/SchedulingTime";
 import SchedulingEndDateDisplay from "../wizards/scheduling/SchedulingEndDateDisplay";
 import SchedulingLocation from "../wizards/scheduling/SchedulingLocation";
@@ -295,9 +296,9 @@ const Upload = <T extends RequiredFormPropsUpload>({
 												</div>
 											</td>
 											<td className="fit">
-												<button
+												<ButtonLikeAnchor
 													style={{ visibility: asset.file ? "visible" : "hidden" }}
-													className="button-like-anchor remove"
+													extraClassName="remove"
 													onClick={(e) => {
 														formik.setFieldValue(
 															`uploadAssetsTrack.${key}.file`,
