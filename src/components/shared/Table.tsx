@@ -1,6 +1,7 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
+	getMultiSelect,
 	getPageOffset,
 	getTable,
 	getTableDirection,
@@ -35,7 +36,9 @@ import sortDownIcon from "../../img/tbl-sort-down.png";
 import Notifications from "./Notifications";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { TableColumn } from "../../configs/tableConfigs/aclsTableConfig";
+import ButtonLikeAnchor from "./ButtonLikeAnchor";
 import { ModalHandle } from "./modals/Modal";
+import { ParseKeys } from "i18next";
 
 const containerPageSize = React.createRef<HTMLButtonElement>();
 
@@ -60,6 +63,7 @@ const Table = ({
 	const rows = useAppSelector(state => getTableRows(state));
 	const sortBy = useAppSelector(state => getTableSorting(state));
 	const reverse = useAppSelector(state => getTableDirection(state));
+	const multiSelect = useAppSelector(state => getMultiSelect(state));
 
 	// Size options for pagination
 	const sizeOptions = [10, 20, 50, 100, 1000];
@@ -158,12 +162,11 @@ const Table = ({
 			<div className="action-bar">
 				<ul>
 					<li>
-						<button
-              onClick={() => showEditTableViewModal()}
-              className="button-like-anchor"
-            >
-                {t("TABLE_EDIT")}
-            </button>
+						<ButtonLikeAnchor
+							onClick={() => showEditTableViewModal()}
+						>
+							{t("TABLE_EDIT")}
+						</ButtonLikeAnchor>
 					</li>
 				</ul>
 			</div>
@@ -179,7 +182,7 @@ const Table = ({
 				<thead>
 					<tr>
 						{/* Only show if multiple selection is possible */}
-						{table.multiSelect ? (
+						{multiSelect ? (
 							<th className="small">
 								{/*Checkbox to select all rows*/}
 								<input
@@ -245,7 +248,7 @@ const Table = ({
 							<tr key={key}>
 								{/* Show if multi selection is possible */}
 								{/* Checkbox for selection of row */}
-								{table.multiSelect && "id" in row && (
+								{multiSelect && "id" in row && (
 									<td>
 										<input
 											type="checkbox"
@@ -265,7 +268,7 @@ const Table = ({
 									  column.translate &&
 									  !column.deactivated ? (
 										//Show only if column not template, translate, not deactivated
-										<td key={key}>{t(tryToGetValueForKeyFromRowAsString(row, column.name))}</td>
+										<td key={key}>{t(tryToGetValueForKeyFromRowAsString(row, column.name) as ParseKeys)}</td>
 									) : !!column.template &&
 									  !column.deactivated &&
 									  !!templateMap[column.template] ? (
@@ -300,12 +303,11 @@ const Table = ({
 						<ul className="dropdown-ul">
 							{sizeOptions.map((size, key) => (
 								<li key={key}>
-									<button
-                    onClick={() => changePageSize(size)}
-                    className="button-like-anchor"
-                  >
-                    {size}
-                  </button>
+									<ButtonLikeAnchor
+										onClick={() => changePageSize(size)}
+									>
+										{size}
+									</ButtonLikeAnchor>
 								</li>
 							))}
 						</ul>
@@ -314,30 +316,30 @@ const Table = ({
 
 				{/* Pagination and navigation trough pages */}
 				<div className="pagination">
-					<button
-						className={"button-like-anchor " + cn("prev", { disabled: !isNavigatePrevious() })}
+					<ButtonLikeAnchor
+						extraClassName={cn("prev", { disabled: !isNavigatePrevious() })}
 						onClick={() => dispatch(goToPage(pageOffset - 1))}
 					>
 						<span className="sr-only">{t("TABLE_PREVIOUS")}</span>
-					</button>
+					</ButtonLikeAnchor>
 					{directAccessible.map((page, key) =>
 						page.active ? (
-							<button key={key} className="button-like-anchor active">
+							<ButtonLikeAnchor key={key} extraClassName="active">
 								{page.label}
-							</button>
+							</ButtonLikeAnchor>
 						) : (
-							<button key={key} className="button-like-anchor" onClick={() => dispatch(goToPage(page.number))}>
+							<ButtonLikeAnchor key={key} onClick={() => dispatch(goToPage(page.number))}>
 								{page.label}
-							</button>
+							</ButtonLikeAnchor>
 						)
 					)}
 
-					<button
-						className={"button-like-anchor " + cn("next", { disabled: !isNavigateNext() })}
+					<ButtonLikeAnchor
+						extraClassName={cn("next", { disabled: !isNavigateNext() })}
 						onClick={() => dispatch(goToPage(pageOffset + 1))}
 					>
 						<span className="sr-only">{t("TABLE_NEXT")}</span>
-					</button>
+					</ButtonLikeAnchor>
 				</div>
 			</div>
 		</>
