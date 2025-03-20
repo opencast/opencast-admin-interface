@@ -142,10 +142,12 @@ const TableFilters = ({
 	};
 
 	useEffect(() => {
-		// Call to apply filter changes with 500MS debounce!
-		let applyFilterChangesDebouncedTimeoutId = setTimeout(applyFilterChangesDebounced, 500);
+		if (itemValue) {
+			// Call to apply filter changes with 500MS debounce!
+			let applyFilterChangesDebouncedTimeoutId = setTimeout(applyFilterChangesDebounced, 500);
 
-		return () => clearTimeout(applyFilterChangesDebouncedTimeoutId);
+			return () => clearTimeout(applyFilterChangesDebouncedTimeoutId);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [itemValue]);
 
