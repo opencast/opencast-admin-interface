@@ -2,6 +2,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import DropDown from "../../../../shared/DropDown";
 import { Recording } from "../../../../../slices/recordingSlice";
+import { formatCaptureAgentForDropdown } from "../../../../../utils/dropDownUtils";
+import { ParseKeys } from "i18next";
 
 const SchedulingLocation = ({
 	location,
@@ -14,8 +16,8 @@ const SchedulingLocation = ({
 	location: string,
 	inputDevices: Recording[]
 	disabled: boolean
-	title: string
-	placeholder: string
+	title: ParseKeys
+	placeholder: ParseKeys
 	callback: (value: string) => void
 }) => {
 	const { t } = useTranslation();
@@ -34,8 +36,7 @@ const SchedulingLocation = ({
 				<DropDown
 					value={location}
 					text={location}
-					options={inputDevices}
-					type={"captureAgent"}
+					options={formatCaptureAgentForDropdown(inputDevices)}
 					required={true}
 					handleChange={(element) => {
 						if (element) {

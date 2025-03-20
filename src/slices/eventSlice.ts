@@ -1,4 +1,4 @@
-import { PayloadAction, SerializedError, createSlice, unwrapResult } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import { eventsTableConfig } from "../configs/tableConfigs/eventsTableConfig";
 import axios, { AxiosProgressEvent } from 'axios';
 import moment from "moment-timezone";
@@ -23,7 +23,7 @@ import {
 import { getAssetUploadOptions, getSchedulingEditedEvents } from '../selectors/eventSelectors';
 import { fetchSeriesOptions } from "./seriesSlice";
 import { AppDispatch } from '../store';
-import { enrichPublications, fetchAssetUploadOptions } from '../thunks/assetsThunks';
+import { fetchAssetUploadOptions } from '../thunks/assetsThunks';
 import { TransformedAcl } from './aclDetailsSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { Publication } from './eventDetailsSlice';
@@ -89,7 +89,13 @@ export type Event = {
 export type MetadataField = {
 	delimiter?: string,
 	differentValues?: boolean,
-	collection?: { [key: string]: unknown }[],  // different for e.g. languages and presenters
+	collection?: {
+		name: string,
+		value: string,
+		label?: string,
+		order?: number,
+		selectable?: boolean,
+	 }[],
 	id: string,
 	label: string,
 	readOnly: boolean,
@@ -116,7 +122,7 @@ export type EditedEvents = {
 	changedStartTimeHour: string,
 	changedStartTimeMinutes: string,
 	changedTitle: string,
-	changedWeekday: string,
+	changedWeekday: "MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU",
 	deviceInputs: string,
 	endTimeHour: string,
 	endTimeMinutes: string,
@@ -126,7 +132,7 @@ export type EditedEvents = {
 	startTimeHour: string,
 	startTimeMinutes: string,
 	title: string,
-	weekday: string,
+	weekday: "MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU",
 }
 
 export type UploadAssetOption = {
@@ -231,10 +237,17 @@ const initialState: EventState = {
 // fetch events from server
 export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, { dispatch, getState }) => {
 	const state = getState();
-	let params: ReturnType<typeof getURLParams> & { getComments?: boolean } = getURLParams(state);
+	let params: ReturnType<typeof getURLParams> & { getComments?: boolean } = getURLParams(state, "events");
+
+	// Add a secondary filter to enforce order of events
+	// (Elasticsearch does not guarantee ordering)
+	params = {
+		...params,
+		sort: params.sort ? params.sort + ",uid:asc" : "uid:asc"
+	}
 
 	// Only if the notes column is enabled, fetch comment information for events
-	if (state.table.columns.find(column => column.label === "EVENTS.EVENTS.TABLE.ADMINUI_NOTES" && !column.deactivated)) {
+	if (state.events.columns.find(column => column.label === "EVENTS.EVENTS.TABLE.ADMINUI_NOTES" && !column.deactivated)) {
 		params = {
 			...params,
 			getComments: true
@@ -253,21 +266,6 @@ export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, {
 			...response.results[i],
 			date: response.results[i].start_date,
 		};
-		// insert enabled and hide property of publications, if result has publications
-		let result = response.results[i];
-		if (!!result.publications && result.publications.length > 0) {
-			let transformedPublications: Publication[] = [];
-			try {
-				const resultAction = await dispatch(enrichPublications({ publications: result.publications }));
-				transformedPublications = unwrapResult(resultAction);
-			} catch (rejectedValueOrSerializedError) {
-				console.error(rejectedValueOrSerializedError)
-			}
-			response.results[i] = {
-				...response.results[i],
-				publications: transformedPublications,
-			};
-		}
 	}
 	const events = response;
 
@@ -302,7 +300,7 @@ export const fetchEventMetadata = createAppAsyncThunk('events/fetchEventMetadata
 });
 
 // get merged metadata for provided event ids
-export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', async (ids: string[]) => {
+export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', async (ids: Event["id"][]) => {
 	let formData = new URLSearchParams();
 	formData.append("eventIds", JSON.stringify(ids));
 
@@ -477,7 +475,6 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 					id: smetadata.id,
 					value: values[smetadata.id],
 					type: smetadata.type,
-					tabindex: smetadata.tabindex,
 				});
 			}
 		}
@@ -653,7 +650,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 });
 
 // delete event with provided id
-export const deleteEvent = createAppAsyncThunk('events/deleteEvent', async (id: string, { dispatch }) => {
+export const deleteEvent = createAppAsyncThunk('events/deleteEvent', async (id: Event["id"], { dispatch }) => {
 	// API call for deleting an event
 	axios
 		.delete(`/admin-ng/event/${id}`)

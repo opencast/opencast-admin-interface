@@ -27,6 +27,8 @@ import { useTranslation } from "react-i18next";
 import { TransformedAcl } from "../../../slices/aclDetailsSlice";
 import { AsyncThunk, unwrapResult } from "@reduxjs/toolkit";
 import { SaveEditFooter } from "../SaveEditFooter";
+import { formatAclRolesForDropdown, formatAclTemplatesForDropdown } from "../../../utils/dropDownUtils";
+import { ParseKeys } from "i18next";
 
 
 /**
@@ -46,13 +48,13 @@ const ResourceDetailsAccessPolicyTab = ({
 	setPolicyChanged,
 }: {
 	resourceId: string,
-	header: string,
+	header: ParseKeys,
 	policies: TransformedAcl[],
 	fetchHasActiveTransactions?: AsyncThunk<any, string, any>
 	fetchAccessPolicies: AsyncThunk<TransformedAcl[], string, any>,
 	saveNewAccessPolicies:  AsyncThunk<boolean, { id: string, policies: { acl: Acl } }, any>
 	descriptionText: string,
-	buttonText: string,
+	buttonText: ParseKeys,
 	editAccessRole: string,
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,
@@ -360,9 +362,8 @@ const ResourceDetailsAccessPolicyTab = ({
 																					formik.values.template
 																				)}
 																				options={
-																					!!aclTemplates ? aclTemplates : []
+																					!!aclTemplates ? formatAclTemplatesForDropdown(aclTemplates) : []
 																				}
-																				type={"aclTemplate"}
 																				required={true}
 																				handleChange={(element) => {
 																						if (element) {
@@ -381,6 +382,7 @@ const ResourceDetailsAccessPolicyTab = ({
 																								"EVENTS.EVENTS.DETAILS.ACCESS.ACCESS_POLICY.EMPTY"
 																						  )
 																				}
+																				customCSS={{ width: 200, optionPaddingTop: 5 }}
 																			/>
 																		) : (
 																			baseAclId
@@ -468,14 +470,13 @@ const ResourceDetailsAccessPolicyTab = ({
 																										text={policy.role}
 																										options={
 																											roles.length > 0
-																												? filterRoles(
+																												? formatAclRolesForDropdown(filterRoles(
 																														roles,
 																														formik.values
 																															.policies
-																												  )
+																												  ))
 																												: []
 																										}
-																										type={"aclRole"}
 																										required={true}
 																										creatable={true}
 																										handleChange={(element) => {
@@ -495,6 +496,7 @@ const ResourceDetailsAccessPolicyTab = ({
 																												user
 																											)
 																										}
+																										customCSS={{ width: 360, optionPaddingTop: 5 }}
 																									/>
 																								) : (
 																									<p>{policy.role}</p>

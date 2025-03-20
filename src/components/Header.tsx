@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 import i18n from "../i18n/i18n";
 import languages from "../i18n/languages";
 import opencastLogo from "../img/opencast-white.svg?url";
 import { setSpecificServiceFilter } from "../slices/tableFilterSlice";
-import { loadServicesIntoTable } from "../thunks/tableThunks";
 import { getErrorCount, getHealthStatus } from "../selectors/healthSelectors";
 import {
 	getOrgProperties,
@@ -71,14 +70,6 @@ const Header = () => {
 
 	const showRegistrationModal = () => {
 		registrationModalRef.current?.open()
-	};
-
-	const redirectToServices = async () => {
-		// Load services into table
-		await dispatch(loadServicesIntoTable());
-
-		// set the action filter value of services to true
-		await dispatch(setSpecificServiceFilter({ filter: "actions", filterValue: "true" }));
 	};
 
 	const showHotKeyCheatSheet = () => {
@@ -178,7 +169,7 @@ const Header = () => {
 										}
 										target="_blank" rel="noreferrer"
 									>
-										<span className="fa fa-play-circle" />
+										<i className="fa fa-play-circle" />
 									</a>
 								</Tooltip>
 							</div>
@@ -189,7 +180,7 @@ const Header = () => {
 						<div className="nav-dd">
 							<Tooltip  title={t("STUDIO")}>
 								<a href={studioURL} target="_blank" rel="noreferrer">
-									<span className="fa fa-video-camera" />
+									<i className="fa fa-video-camera" />
 								</a>
 							</Tooltip>
 						</div>
@@ -216,7 +207,6 @@ const Header = () => {
 							{displayMenuNotify && (
 								<MenuNotify
 									healthStatus={healthStatus}
-									redirectToServices={redirectToServices}
 								/>
 							)}
 						</div>
@@ -302,20 +292,27 @@ const MenuLang = () => {
 
 const MenuNotify = ({
 	healthStatus,
-	redirectToServices
 }: {
 	healthStatus: HealthStatus[],
-	redirectToServices: () => Promise<void>,
 }) => {
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+
+	const redirectToServices = async () => {
+		// set the action filter value of services to true
+		await dispatch(setSpecificServiceFilter({ filter: "actions", filterValue: "true" }));
+		navigate("/systems/services");
+	};
+
 	return (
 		<ul className="dropdown-ul">
 			{/* For each service in the serviceList (Background Services) one list item */}
 			{healthStatus.map((service, key) => (
 				<li key={key}>
 					{!!service.status && (
-						<Link
-							to="/systems/services"
-							onClick={async () => await redirectToServices()}
+						<button
+							className="button-like-anchor"
+							onClick={() => redirectToServices()}
 						>
 							<span> {service.name} </span>
 							{service.error ? (
@@ -327,7 +324,7 @@ const MenuNotify = ({
 									{service.status}
 								</span>
 							)}
-						</Link>
+						</button>
 					)}
 				</li>
 			))}

@@ -1,9 +1,11 @@
+import { ParseKeys } from "i18next";
+
 // keymap containing information about available hotkeys
 type HotkeyMapType = {
 	[key: string]: {
 		[key: string]: {
 			name: string,
-			description: string,
+			description: ParseKeys,
 			sequence: string[],
 		}
 	}

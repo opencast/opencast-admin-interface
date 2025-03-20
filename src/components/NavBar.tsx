@@ -1,35 +1,28 @@
 import React, { useRef } from "react";
 import { Link, useLocation } from "react-router";
 import { hasAccess } from "../utils/utils";
-import { AppDispatch, useAppDispatch, useAppSelector } from "../store";
+import { useAppSelector } from "../store";
 import { getUserInformation } from "../selectors/userInfoSelectors";
 import cn from "classnames";
 import { useTranslation } from "react-i18next";
 import MainNav from "./shared/MainNav";
-import { setOffset } from "../slices/tableSlice";
 import NewResourceModal, { NewResource } from "./shared/NewResourceModal";
 import { useHotkeys } from "react-hotkeys-hook";
 import { ModalHandle } from "./shared/modals/Modal";
+import { ParseKeys } from "i18next";
 
 /**
  * Component that renders the nav bar
  */
-type LinkType = {
-	path: string
-	accessRole: string
-	loadFn: (dispatch: AppDispatch) => void
-	text: string
-}
-
 type CreateType = {
 	accessRole: string
 	onShowModal?: () => Promise<void>
 	onHideModal?: () => void
-	text: string
+	text: ParseKeys
 	isDisplay?: boolean
 	resource: NewResource
 	hotkeySequence?: string[]
-	hotkeyDescription?: string
+	hotkeyDescription?: ParseKeys
 }
 
 const NavBar = ({
@@ -41,15 +34,17 @@ const NavBar = ({
 	create,
 } : {
 	children?: React.ReactNode
-	navAriaLabel?: string
+	navAriaLabel?: ParseKeys
 	displayNavigation: boolean
 	setNavigation: React.Dispatch<React.SetStateAction<boolean>>
-	links: LinkType[]
+	links: {
+		path: string
+		accessRole: string
+		text: ParseKeys
+	}[]
 	create?: CreateType
 }) => {
-
 	const { t } = useTranslation();
-	const dispatch = useAppDispatch();
 	const location = useLocation();
 
 	const user = useAppSelector(state => getUserInformation(state));
@@ -73,7 +68,7 @@ const NavBar = ({
 	useHotkeys(
 		(create && create.hotkeySequence) ?? [],
 		() => showNewResourceModal(),
-		{ description: t((create && create.hotkeyDescription) ?? "") ?? undefined },
+		{ description: create && create.hotkeyDescription ? t(create.hotkeyDescription) : undefined },
 		[showNewResourceModal]
 	);
 
@@ -92,18 +87,12 @@ const NavBar = ({
 			<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
 
 			<nav aria-label={navAriaLabel && t(navAriaLabel)}>
-				{links.map((link) =>
+				{links.map((link, index) =>
 					{return (hasAccess(link.accessRole, user) && (
 						<Link
+							key={index}
 							to={link.path}
-							className={cn({ active: location.pathname === link.path })}
-							onClick={() => {
-								if (location.pathname !== link.path) {
-									// Reset the current page to first page
-									dispatch(setOffset(0));
-								}
-								link.loadFn(dispatch)
-							}}
+							className={cn({ active: location.pathname === link.path || (location.pathname === "/" && link.path === "/events/events") })}
 						>
 							{t(link.text)}
 						</Link>

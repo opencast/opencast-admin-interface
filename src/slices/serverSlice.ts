@@ -50,7 +50,7 @@ const initialState: ServerState = {
 // fetch servers from server
 export const fetchServers = createAppAsyncThunk('servers/fetchServers', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state);
+	let params = getURLParams(state, "servers");
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -61,8 +61,8 @@ export const fetchServers = createAppAsyncThunk('servers/fetchServers', async (_
 
 // change maintenance status of a server/host
 export const setServerMaintenance = createAppAsyncThunk('servers/setServerMaintenance', async (params: {
-	host: string,
-	maintenance: boolean
+	host: Server["hostname"],
+	maintenance: Server["maintenance"]
 }) => {
 	const { host, maintenance } = params;
 	let data = new URLSearchParams();

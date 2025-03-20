@@ -40,7 +40,7 @@ const SeriesDetailsModal = ({
 		<Modal
 			closeCallback={close}
 			header={t("EVENTS.SERIES.DETAILS.HEADER", { name: seriesTitle })}
-			classId="series-details-modal"
+			classId="details-modal"
 			ref={modalRef}
 		>
 			<SeriesDetails

@@ -35,9 +35,10 @@ import {
 } from "../../slices/eventSlice";
 import EventDetailsModal from "./partials/modals/EventDetailsModal";
 import { showModal } from "../../selectors/eventDetailsSelectors";
-import { eventsLinks, loadEvents } from "./partials/EventsNavigation";
+import { eventsLinks } from "./partials/EventsNavigation";
 import { Modal, ModalHandle } from "../shared/modals/Modal";
 import TableActionDropdown from "../shared/TableActionDropdown";
+import { resetTableProperties } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of events
@@ -63,6 +64,12 @@ const Events = () => {
 	let location = useLocation();
 
 	useEffect(() => {
+		// State variable for interrupting the load function
+		let allowLoadIntoTable = true;
+
+		// Clear redux of previous table data
+		dispatch(resetTableProperties());
+
 		dispatch(fetchFilters("events"))
 
 		// Reset text filter
@@ -72,12 +79,23 @@ const Events = () => {
 		dispatch(setShowActions(false));
 
 		// Load events on mount
-		loadEvents(dispatch);
+		const loadEvents = async () => {
+			// Fetching events from server
+			await dispatch(fetchEvents());
+
+			// Load events into table
+			if (allowLoadIntoTable) {
+				dispatch(loadEventsIntoTable());
+			}
+		}
+		// call the function
+		loadEvents();
 
 		// Fetch events every five seconds
-		let fetchEventsInterval = setInterval(() => loadEvents(dispatch), 5000);
+		let fetchEventsInterval = setInterval(() => loadEvents(), 5000);
 
 		return () => {
+			allowLoadIntoTable = false;
 			clearInterval(fetchEventsInterval);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -130,7 +148,6 @@ const Events = () => {
 				<Modal
 					header={t("BULK_ACTIONS.DELETE.EVENTS.CAPTION")}
 					classId="delete-events-status-modal"
-					className="modal active modal-open"
 					ref={deleteModalRef}
 				>
 					<DeleteEventsModal close={hideDeleteModal} />

@@ -9,8 +9,19 @@ import {
 } from "../../selectors/tableSelectors";
 import { DragDropContext, Droppable, OnDragEndResponder, Draggable as Draggablee } from "@hello-pangea/dnd";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { TableColumn } from "../../configs/tableConfigs/aclsTableConfig";
+import { aclsTableConfig, TableColumn } from "../../configs/tableConfigs/aclsTableConfig";
+import { eventsTableConfig } from "../../configs/tableConfigs/eventsTableConfig";
+import { seriesTableConfig } from "../../configs/tableConfigs/seriesTableConfig";
+import { recordingsTableConfig } from "../../configs/tableConfigs/recordingsTableConfig";
+import { jobsTableConfig } from "../../configs/tableConfigs/jobsTableConfig";
+import { serversTableConfig } from "../../configs/tableConfigs/serversTableConfig";
+import { servicesTableConfig } from "../../configs/tableConfigs/servicesTableConfig";
+import { usersTableConfig } from "../../configs/tableConfigs/usersTableConfig";
+import { groupsTableConfig } from "../../configs/tableConfigs/groupsTableConfig";
+import { themesTableConfig } from "../../configs/tableConfigs/themesTableConfig";
 import { Modal, ModalHandle } from "./modals/Modal";
+import { Resource } from "../../slices/tableSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the modal for editing which columns are shown in the table
@@ -97,8 +108,34 @@ const EditTableViewModalContent = ({
 	const clearData = () => {
 		setActiveColumns(originalActiveColumns);
 		setDeactivatedColumns(originalDeactivatedColumns);
-		close();
+		handleClose();
 	};
+
+	// Reset columns to how they were before the user made any changes ever
+	const resetToInitialConfig = () => {
+		const initialConfig = getConfigByResource(resource);
+		setActiveColumns(initialConfig?.columns.filter((column) => !column.deactivated) ?? []);
+		setDeactivatedColumns(initialConfig?.columns.filter((column) => column.deactivated) ?? []);
+	}
+
+	const getConfigByResource = (resource: Resource) => {
+		switch (resource) {
+			case "events": return eventsTableConfig;
+			case "series": return seriesTableConfig;
+			case "recordings": return recordingsTableConfig;
+			case "jobs": return jobsTableConfig;
+			case "servers": return serversTableConfig;
+			case "services": return servicesTableConfig;
+			case "users": return usersTableConfig;
+			case "groups": return groupsTableConfig;
+			case "acls": return aclsTableConfig;
+			case "themes": return themesTableConfig;
+			default: {
+				console.warn("Resource of type " + resource + " is undefined for tableConfigs.")
+				return undefined;
+			}
+		}
+	}
 
 	// change column order based on where column was dragged and dropped
 	const onDragEnd: OnDragEndResponder = (result) => {
@@ -111,24 +148,23 @@ const EditTableViewModalContent = ({
 		setActiveColumns((columns) => arrayMoveImmutable(columns, result.source.index, destination.index));
 	}
 
-	const getTranslationForSubheading = (resource: string) => {
-		const resourceLC = resource.toLowerCase();
-		if (resourceLC === "events" || resourceLC === "series") {
-			return "EVENTS." + resource.toUpperCase() + ".TABLE.CAPTION"
+	const getTranslationForSubheading = (resource: Resource): ParseKeys | undefined => {
+		const resourceUC: Uppercase<Resource> = resource.toUpperCase() as Uppercase<Resource>;
+		if (resourceUC === "EVENTS" || resourceUC === "SERIES") {
+			return `EVENTS.${resourceUC}.TABLE.CAPTION`
 		}
-		if (resourceLC === "recordings") {
-			return resource.toUpperCase() + "." + resource.toUpperCase() + ".TABLE.CAPTION"
+		if (resourceUC === "RECORDINGS") {
+			return `${resourceUC}.${resourceUC}.TABLE.CAPTION`
 		}
-		if (resourceLC === "jobs" || resourceLC === "servers" || resourceLC === "services") {
-			return "SYSTEMS." + resource.toUpperCase() + ".TABLE.CAPTION"
+		if (resourceUC === "JOBS" || resourceUC === "SERVERS" || resourceUC === "SERVICES") {
+			return `SYSTEMS.${resourceUC}.TABLE.CAPTION`
 		}
-		if (resourceLC === "users" || resourceLC === "groups" || resourceLC === "acls") {
-			return "USERS." + resource.toUpperCase() + ".TABLE.CAPTION"
+		if (resourceUC === "USERS" || resourceUC === "GROUPS" || resourceUC === "ACLS") {
+			return `USERS.${resourceUC}.TABLE.CAPTION`
 		}
-		if (resourceLC === "themes") {
-			return "CONFIGURATION." + resource.toUpperCase() + ".TABLE.CAPTION"
+		if (resourceUC === "THEMES") {
+			return `CONFIGURATION.${resourceUC}.TABLE.CAPTION`
 		}
-		return ""
 	}
 
 	return (
@@ -138,7 +174,7 @@ const EditTableViewModalContent = ({
 					<div className="tab-description for-header">
 						<p>
 							{t("PREFERENCES.TABLE.SUBHEADING", {
-								tableName: t(getTranslationForSubheading(resource)),
+								tableName: t(getTranslationForSubheading(resource)!),
 							})}
 						</p>
 					</div>
@@ -252,6 +288,9 @@ const EditTableViewModalContent = ({
 					</button>
 					<button onClick={() => save()} className="submit active">
 						{t("SAVE") /* Save As Default */}
+					</button>
+					<button onClick={() => resetToInitialConfig()} className="cancel active">
+						{t("RESET") /* Reset saved setting */}
 					</button>
 			</footer>
 		</>

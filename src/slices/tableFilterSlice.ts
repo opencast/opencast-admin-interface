@@ -1,10 +1,7 @@
 import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { relativeDateSpanToFilterValue } from '../utils/dateUtils';
-import { setOffset } from '../slices/tableSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { fetchEvents } from './eventSlice';
-import { fetchServices } from './serviceSlice';
 import { FilterProfile } from './tableFilterProfilesSlice';
 
 /**
@@ -21,6 +18,7 @@ export type FilterData = {
 	}[],
 	translatable: boolean,
 	type: string,
+	resource: string, // Not from the backend. We set this to keep track of which table this filter belongs to
 	value: string,
 }
 
@@ -76,6 +74,7 @@ export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', asy
 	const filtersList = Object.keys(filters.filters).map((key) => {
 		let filter = filters.filters[key];
 		filter.name = key;
+		filter.resource = resource;
 		return filter;
 	});
 
@@ -84,10 +83,24 @@ export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', asy
 			label: "FILTERS.EVENTS.PRESENTERS_BIBLIOGRAPHIC.LABEL",
 			name: "presentersBibliographic",
 			translatable: false,
-			type: "events",
+			type: "select",
+			resource: "events",
 			value: "",
 		});
 	}
+
+	// Do all this purely to keep set filter values saved if the tab gets switched
+	let oldData = getState().tableFilters.data
+
+	for (const oldFilter of oldData) {
+		var foundIndex = filtersList.findIndex(x => x.name === oldFilter.name && x.resource === oldFilter.resource);
+		if (foundIndex >= 0) {
+			filtersList[foundIndex].value = oldFilter.value;
+		}
+	}
+
+	oldData = oldData.filter(filter => filter.resource !== resource)
+	filtersList.push(...oldData)
 
 	return { filtersList, resource };
 });
@@ -150,11 +163,13 @@ export const fetchStats = createAppAsyncThunk('tableFilters/fetchStats', async (
 
 export const setSpecificEventFilter = createAppAsyncThunk('tableFilters/setSpecificEventFilter', async (params: { filter: string, filterValue: string }, { dispatch, getState }) => {
 	const { filter, filterValue } = params;
-	await dispatch(fetchFilters("events"));
-
 	const { tableFilters } = getState();
 
 	let filterToChange = tableFilters.data.find(({ name }) => name === filter);
+
+	if (!filterToChange) {
+		await dispatch(fetchFilters("events"));
+	}
 
 	if (!!filterToChange) {
 		await dispatch(editFilterValue({
@@ -162,21 +177,17 @@ export const setSpecificEventFilter = createAppAsyncThunk('tableFilters/setSpeci
 			value: filterValue
 		}));
 	}
-
-	dispatch(setOffset(0));
-
-	dispatch(fetchStats());
-
-	dispatch(fetchEvents());
 });
 
 export const setSpecificServiceFilter = createAppAsyncThunk('tableFilters/setSpecificServiceFilter', async (params: { filter: string, filterValue: string }, { dispatch, getState }) => {
 	const { filter, filterValue } = params;
-	await dispatch(fetchFilters("services"));
-
 	const { tableFilters } = getState();
 
 	let filterToChange = tableFilters.data.find(({ name }) => name === filter);
+
+	if (!filterToChange) {
+		await dispatch(fetchFilters("services"));
+	}
 
 	if (!!filterToChange) {
 		await dispatch(editFilterValue({
@@ -184,10 +195,6 @@ export const setSpecificServiceFilter = createAppAsyncThunk('tableFilters/setSpe
 			value: filterValue
 		}));
 	}
-
-	dispatch(setOffset(0));
-
-	dispatch(fetchServices());
 });
 
 // Transform received filter.json to a structure that can be used for filtering
@@ -199,6 +206,7 @@ function transformResponse(data: {
 		name: string
 		translatable: boolean,
 		type: string,
+		resource: string,
 	}
 }) {
 	type ParsedFilters = {
@@ -209,6 +217,7 @@ function transformResponse(data: {
 			name: string
 			translatable: boolean,
 			type: string,
+			resource: string,
 		}
 	}
 
@@ -246,8 +255,14 @@ function transformResponse(data: {
 			});
 			filters[key].options = filterArr;
 		}
-	} catch (e: any) {
-		console.error(e.message);
+	} catch (e) {
+		let errorMessage;
+		if (e instanceof Error) {
+			errorMessage = e.message
+		} else {
+			errorMessage = String(e);
+		}
+		console.error(errorMessage);
 	}
 
 	return { filters: filters };

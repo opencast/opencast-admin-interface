@@ -50,7 +50,7 @@ const initialState: GroupState = {
 // fetch groups from server
 export const fetchGroups = createAppAsyncThunk('groups/fetchGroups', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state);
+	let params = getURLParams(state, "groups");
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -84,7 +84,7 @@ export const postNewGroup = createAppAsyncThunk('groups/postNewGroup', async (va
 		});
 });
 
-export const deleteGroup = createAppAsyncThunk('groups/deleteGroup', async (id: string, {dispatch}) => {
+export const deleteGroup = createAppAsyncThunk('groups/deleteGroup', async (id: Group["id"], {dispatch}) => {
 	// API call for deleting a group
 	axios
 		.delete(`/admin-ng/groups/${id}`)
