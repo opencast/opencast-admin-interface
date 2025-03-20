@@ -26,8 +26,9 @@ import { TransformedAcl } from "../../../slices/aclDetailsSlice";
 import { AsyncThunk, unwrapResult } from "@reduxjs/toolkit";
 import { SaveEditFooter } from "../SaveEditFooter";
 import { UserInfoState } from "../../../slices/userInfoSlice";
-import { formatAclTemplatesForDropdown } from "../../../utils/dropDownUtils";
 import { ParseKeys } from "i18next";
+import ButtonLikeAnchor from "../ButtonLikeAnchor";
+import { formatAclTemplatesForDropdown } from "../../../utils/dropDownUtils";
 
 
 /**
@@ -672,11 +673,11 @@ export const AccessPolicyTable = <T extends AccessPolicyTabFormikProps>({
 															) && (
 																<td>
 																	{!transactions.read_only && (
-																		<button
+																		<ButtonLikeAnchor
 																			onClick={() =>
 																				remove(formik.values.policies.findIndex(p => p === policy))
 																			}
-																			className="button-like-anchor remove"
+																			extraClassName="remove"
 																		/>
 																	)}
 																</td>
@@ -690,15 +691,14 @@ export const AccessPolicyTable = <T extends AccessPolicyTabFormikProps>({
 												hasAccess(editAccessRole, user) && (
 													<tr>
 														<td colSpan={5}>
-															<button
+															<ButtonLikeAnchor
 																onClick={() =>
 																	push(createPolicy("", isUserTable))
 																}
-																className="button-like-anchor"
 															>
 																+{" "}
 																{t(createLabel)}
-															</button>
+															</ButtonLikeAnchor>
 														</td>
 													</tr>
 												)}
