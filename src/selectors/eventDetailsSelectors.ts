@@ -59,6 +59,7 @@ export const getAssetPublicationDetails = (state: RootState) =>
 
 /* selectors for policies */
 export const getPolicies = (state: RootState) => state.eventDetails.policies;
+export const getPolicyTemplateId = (state: RootState) => state.eventDetails.policyTemplateId;
 
 /* selectors for comments */
 export const getComments = (state: RootState) => state.eventDetails.comments;
