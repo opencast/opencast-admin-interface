@@ -30,12 +30,6 @@ const NewAssetUploadPage = <T extends RequiredFormProps>({
 
 	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
 
-	// if user not chose upload in step before, the skip this step
-	if (formik.values.sourceMode !== "UPLOAD") {
-		nextPage(formik.values);
-		return null;
-	}
-
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>, assetId: string) => {
 		if (e.target.files) {
 			if (e.target.files.length === 0) {
