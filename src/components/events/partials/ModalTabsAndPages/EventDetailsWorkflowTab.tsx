@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Formik } from "formik";
+import { Formik, FormikProps } from "formik";
 import {
 	deletingWorkflow as getDeletingWorkflow,
 	getBaseWorkflow,
@@ -32,13 +32,22 @@ import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { formatWorkflowsForDropdown } from "../../../../utils/dropDownUtils";
 import { ParseKeys } from "i18next";
 
+type InitialValues = {
+	workflowDefinition: string;
+	configuration: {
+			[key: string]: any;
+	} | undefined;
+}
+
 /**
  * This component manages the workflows tab of the event details modal
  */
 const EventDetailsWorkflowTab = ({
 	eventId,
+	formikRef,
 }: {
 	eventId: string,
+	formikRef?: React.RefObject<FormikProps<InitialValues> | null>
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -280,10 +289,11 @@ const EventDetailsWorkflowTab = ({
 
 							{workflows.scheduling &&
 								(isLoading || (
-									<Formik
+									<Formik<InitialValues>
 										initialValues={setInitialValues()}
 										enableReinitialize
 										onSubmit={(values) => handleSubmit(values)}
+										innerRef={formikRef}
 									>
 										{(formik) => (
 											<div className="obj list-obj">
