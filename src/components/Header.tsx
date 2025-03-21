@@ -163,7 +163,7 @@ const Header = () => {
 					{!!orgProperties &&
 						!!orgProperties["org.opencastproject.admin.mediamodule.url"] && (
 							<div className="nav-dd">
-								<Tooltip  title={t("MEDIAMODULE")}>
+								<Tooltip title={t("MEDIAMODULE")}>
 									<a
 										href={
 											orgProperties["org.opencastproject.admin.mediamodule.url"]
@@ -179,7 +179,7 @@ const Header = () => {
 					{/* Opencast Studio */}
 					{hasAccess("ROLE_STUDIO", user) && (
 						<div className="nav-dd">
-							<Tooltip  title={t("STUDIO")}>
+							<Tooltip title={t("STUDIO")}>
 								<a href={studioURL} target="_blank" rel="noreferrer">
 									<i className="fa fa-video-camera" />
 								</a>

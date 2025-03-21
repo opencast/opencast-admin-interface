@@ -93,7 +93,7 @@ export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', asy
 	let oldData = getState().tableFilters.data
 
 	for (const oldFilter of oldData) {
-		var foundIndex = filtersList.findIndex(x => x.name === oldFilter.name && x.resource === oldFilter.resource);
+		const foundIndex = filtersList.findIndex(x => x.name === oldFilter.name && x.resource === oldFilter.resource);
 		if (foundIndex >= 0) {
 			filtersList[foundIndex].value = oldFilter.value;
 		}
@@ -120,7 +120,7 @@ export const fetchStats = createAppAsyncThunk('tableFilters/fetchStats', async (
 	let stats = [];
 
 	// fetch for each status the corresponding count of events having this status
-	for (let i in statsResponse) {
+	for (const [i, _] of statsResponse.entries()) {
 		let filter = [];
 		for (let j in statsResponse[i].filters) {
 			let value = statsResponse[i].filters[j].value;

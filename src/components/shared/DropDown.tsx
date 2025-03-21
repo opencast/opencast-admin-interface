@@ -18,7 +18,7 @@ export type DropDownOption = {
 /**
  * This component provides a bar chart for visualising (statistics) data
  */
-const DropDown = <T,>({
+const DropDown = <T, >({
 	value,
 	text,
 	options,
@@ -77,7 +77,7 @@ const DropDown = <T,>({
 	}
 
 	const formatOptions = (
-		unformattedOptions: DropDownOption[],//any[],
+		unformattedOptions: DropDownOption[],
 		filterText: string,
 		required: boolean,
 	) => {

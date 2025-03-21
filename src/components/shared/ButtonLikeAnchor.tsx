@@ -29,7 +29,7 @@ const ButtonLikeAnchor = React.forwardRef<HTMLButtonElement, ButtonLikeAnchorPro
 		return (<></>);
 	}
 
-	var buttonComponent = (
+	const buttonComponent = (
 		<button
 			ref={ref}
 			type="button"

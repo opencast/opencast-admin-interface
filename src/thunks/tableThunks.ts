@@ -42,7 +42,7 @@ import { AppDispatch, AppThunk, RootState } from "../store";
 
 // Method to load events into the table
 export const loadEventsIntoTable = (): AppThunk => async (dispatch, getState) => {
-	const { events, table } = getState() as RootState;
+	const { events, table } = getState();
 	const total = events.total;
 
 	const pagination = table.pagination;
@@ -81,7 +81,7 @@ export const loadEventsIntoTable = (): AppThunk => async (dispatch, getState) =>
 
 // Method to load series into the table
 export const loadSeriesIntoTable = (): AppThunk => (dispatch, getState) => {
-	const { series, table } = getState() as RootState;
+	const { series, table } = getState();
 	const total = series.total;
 	const pagination = table.pagination;
 
@@ -119,7 +119,7 @@ export const loadSeriesIntoTable = (): AppThunk => (dispatch, getState) => {
 };
 
 export const loadRecordingsIntoTable = (): AppThunk => (dispatch, getState) => {
-	const { recordings, table } = getState() as RootState;
+	const { recordings, table } = getState();
 	const pagination = table.pagination;
 	const resource = recordings.results;
 	const total = recordings.total;
@@ -143,7 +143,7 @@ export const loadRecordingsIntoTable = (): AppThunk => (dispatch, getState) => {
 };
 
 export const loadJobsIntoTable = (): AppThunk => (dispatch, getState) => {
-	const { jobs, table } = getState() as RootState;
+	const { jobs, table } = getState();
 	const pagination = table.pagination;
 	const resource = jobs.results;
 	const total = jobs.total;
@@ -167,7 +167,7 @@ export const loadJobsIntoTable = (): AppThunk => (dispatch, getState) => {
 };
 
 export const loadServersIntoTable = (): AppThunk => (dispatch, getState) => {
-	const { servers, table } = getState() as RootState;
+	const { servers, table } = getState();
 	const pagination = table.pagination;
 	const resource = servers.results;
 	const total = servers.total;
@@ -191,7 +191,7 @@ export const loadServersIntoTable = (): AppThunk => (dispatch, getState) => {
 };
 
 export const loadServicesIntoTable = (): AppThunk => (dispatch, getState) => {
-	const { services, table } = getState() as RootState;
+	const { services, table } = getState();
 	const pagination = table.pagination;
 	const resource = services.results;
 	const total = services.total;
@@ -215,7 +215,7 @@ export const loadServicesIntoTable = (): AppThunk => (dispatch, getState) => {
 };
 
 export const loadUsersIntoTable = (): AppThunk => (dispatch, getState) => {
-	const { users, table } = getState() as RootState;
+	const { users, table } = getState();
 	const pagination = table.pagination;
 	const resource = users.results;
 	const total = users.total;
@@ -239,7 +239,7 @@ export const loadUsersIntoTable = (): AppThunk => (dispatch, getState) => {
 };
 
 export const loadGroupsIntoTable = (): AppThunk => (dispatch, getState) => {
-	const { groups, table } = getState() as RootState;
+	const { groups, table } = getState();
 	const pagination = table.pagination;
 	const resource = groups.results;
 	const total = groups.total;
@@ -263,7 +263,7 @@ export const loadGroupsIntoTable = (): AppThunk => (dispatch, getState) => {
 };
 
 export const loadAclsIntoTable = (): AppThunk => (dispatch, getState) => {
-	const { acls, table } = getState() as RootState;
+	const { acls, table } = getState();
 	const pagination = table.pagination;
 	const resource = acls.results;
 	const total = acls.total;
@@ -287,7 +287,7 @@ export const loadAclsIntoTable = (): AppThunk => (dispatch, getState) => {
 };
 
 export const loadThemesIntoTable = (): AppThunk => (dispatch, getState) => {
-	const { themes, table } = getState() as RootState;
+	const { themes, table } = getState();
 	const pagination = table.pagination;
 	const resource = themes.results;
 	const total = themes.total;
@@ -324,7 +324,6 @@ export const goToPage = (pageNumber: number) => async (dispatch: AppDispatch, ge
 	}
 
 	// Get resources of page and load them into table
-	// eslint-disable-next-line default-case
 	switch (getResourceType(state)) {
 		case "events": {
 			await dispatch(fetchEvents());
@@ -381,7 +380,7 @@ export const goToPage = (pageNumber: number) => async (dispatch: AppDispatch, ge
 
 // Update pages for example if page size was changed
 export const updatePages = () => async (dispatch: AppDispatch, getState: () => RootState) => {
-	const state = getState() as RootState;
+	const state = getState();
 
 	const pagination = getTablePagination(state);
 
@@ -393,7 +392,6 @@ export const updatePages = () => async (dispatch: AppDispatch, getState: () => R
 	dispatch(setPages(pages));
 
 	// Get resources of page and load them into table
-	// eslint-disable-next-line default-case
 	switch (getResourceType(state)) {
 		case "events": {
 			await dispatch(fetchEvents());
@@ -453,7 +451,6 @@ export const changeAllSelected = (selected: boolean): AppThunk => (dispatch, get
 	const state = getState();
 
 	if (selected) {
-		// eslint-disable-next-line default-case
 		switch (getResourceType(state)) {
 			case "events": {
 				dispatch(showEventsActions(true));
@@ -466,7 +463,6 @@ export const changeAllSelected = (selected: boolean): AppThunk => (dispatch, get
 		}
 		dispatch(selectAll());
 	} else {
-		// eslint-disable-next-line default-case
 		switch (getResourceType(state)) {
 			case "events": {
 				dispatch(showEventsActions(false));
@@ -487,7 +483,6 @@ export const changeColumnSelection = (updatedColumns: TableConfig["columns"]) =>
 ) => {
 	const state = getState();
 
-	// eslint-disable-next-line default-case
 	switch (getResourceType(state)) {
 		case "events": {
 			await dispatch(setEventColumns(updatedColumns));
@@ -566,7 +561,6 @@ export const changeRowSelection = (id: number | string, selected: boolean): AppT
 
 	const state = getState();
 
-	// eslint-disable-next-line default-case
 	switch (getResourceType(state)) {
 		case "events": {
 			if (getSelectedRows(state).length > 0) {

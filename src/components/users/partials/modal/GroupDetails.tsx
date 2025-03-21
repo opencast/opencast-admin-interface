@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import GroupMetadataPage from "../wizard/GroupMetadataPage";
 import GroupRolesPage from "../wizard/GroupRolesPage";
@@ -21,19 +21,25 @@ const GroupDetails: React.FC<{
 }) => {
 	const dispatch = useAppDispatch();
 
-	const [page, setPage] = useState(0);
-
 	const groupDetails = useAppSelector(state => getGroupDetails(state));
 
-	// transform roles for use in SelectContainer
-	let roleNames = [];
-	for (let i = 0; i < groupDetails.roles.length; i++) {
-		if (!groupDetails.roles[i].startsWith("ROLE_GROUP")) {
-			roleNames.push({
-				name: groupDetails.roles[i],
-			});
+	const [page, setPage] = useState(0);
+		// transform roles for use in SelectContainer
+
+	const [roleNames, setRoleNames] = useState<{ name: string }[]>([]);
+
+
+	useEffect(() => {
+		const roleNames = [];
+		for (let i = 0; i < groupDetails.roles.length; i++) {
+			if (!groupDetails.roles[i].startsWith("ROLE_GROUP")) {
+				roleNames.push({
+					name: groupDetails.roles[i],
+				});
+			}
 		}
-	}
+		setRoleNames(roleNames);
+	}, [groupDetails.roles]);
 
 	const initialValues = {
 		...groupDetails,

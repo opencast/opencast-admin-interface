@@ -29,7 +29,7 @@ const PublishCell = ({
 
 	useEffect(() => {
 		// Enrich publications
-		const fetchPublications = async() => {
+		const fetchPublications = async () => {
 			if (!!row.publications && row.publications.length > 0) {
 				let transformedPublications: Publication[] = [];
 				try {
@@ -79,7 +79,7 @@ const PublishCell = ({
 		<div className="popover-wrapper">
 			{onlyEngage && (
 				<Tooltip title={t("EVENTS.EVENTS.TABLE.TOOLTIP.PLAYER")}>
-					<a href={publications[0].url} rel='noreferrer' target="_blank">
+					<a href={publications[0].url} rel="noreferrer" target="_blank">
 						<ButtonLikeAnchor>
 							{t("YES")}
 						</ButtonLikeAnchor>
@@ -104,10 +104,10 @@ const PublishCell = ({
 												href={publication.url}
 												className="popover__list-item"
 												target="_blank"
-												rel='noreferrer'
+												rel="noreferrer"
 												key={key}
 											>
-												<span>{publication.label? t(publication.label as ParseKeys) : t(publication.name as ParseKeys)}</span>
+												<span>{publication.label ? t(publication.label as ParseKeys) : t(publication.name as ParseKeys)}</span>
 											</a>
 										) : (
 											<ButtonLikeAnchor key={key} extraClassName="popover__list-item">

@@ -28,7 +28,7 @@ const ServicesActionCell = ({
 				editAccessRole={"ROLE_UI_SERVICES_STATUS_EDIT"}
 				tooltipText={"SYSTEMS.SERVICES.TABLE.SANITIZE"}
 			/>
-		): <></>
+		) : <></>
 	);
 };
 

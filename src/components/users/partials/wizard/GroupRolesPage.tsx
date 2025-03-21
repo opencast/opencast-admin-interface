@@ -8,7 +8,7 @@ import ModalContent from "../../../shared/modals/ModalContent";
 /**
  * This component renders the role selection page of the new group wizard and group details modal
  */
-const GroupRolesPage = <T,>({
+const GroupRolesPage = <T, >({
 	formik,
 	nextPage,
 	previousPage,
