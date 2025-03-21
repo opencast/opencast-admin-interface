@@ -126,6 +126,7 @@ const DetailsMetadataTab = ({
 																			name={field.id}
 																			fieldInfo={field}
 																			showCheck
+																			isFirstField={index === 0}
 																			component={RenderMultiField}
 																		/>
 																	) : (
@@ -133,6 +134,7 @@ const DetailsMetadataTab = ({
 																			name={field.id}
 																			metadataField={field}
 																			showCheck
+																			isFirstField={index === 0}
 																			component={RenderField}
 																		/>
 																	)}
