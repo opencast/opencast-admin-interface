@@ -21,6 +21,7 @@ import {
 	fetchStatisticsPageStatisticsValueUpdate,
 } from "../../slices/statisticsSlice";
 import { createChartOptions } from "../../utils/statisticsUtils";
+import { NotificationComponent } from "../shared/Notifications";
 import { ParseKeys } from "i18next";
 
 const Statistics: React.FC = () => {
@@ -89,9 +90,13 @@ const Statistics: React.FC = () => {
 						(hasError || !hasStatistics ? (
 							/* error message */
 							<div className="obj">
-								<div className="modal-alert danger">
-									{t("STATISTICS.NOT_AVAILABLE")}
-								</div>
+								<NotificationComponent
+									notification={{
+										type: "error",
+										message: "STATISTICS.NOT_AVAILABLE",
+										id: 0,
+									}}
+								/>
 							</div>
 						) : (
 							/* iterates over the different available statistics */
@@ -123,9 +128,13 @@ const Statistics: React.FC = () => {
 										</div>
 									) : (
 										/* unsupported type message */
-										<div className="modal-alert danger">
-											{t("STATISTICS.UNSUPPORTED_TYPE")}
-										</div>
+										<NotificationComponent
+											notification={{
+												type: "error",
+												message: "STATISTICS.UNSUPPORTED_TYPE",
+												id: 0,
+											}}
+										/>
 									)}
 								</div>
 							))
