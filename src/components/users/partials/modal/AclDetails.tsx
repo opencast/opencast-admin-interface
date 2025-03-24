@@ -29,7 +29,7 @@ const AclDetails = ({
 	const initialValues = {
 		name: aclDetails.name,
 		aclTemplate: "",
-		acls: aclDetails.acl,
+		policies: aclDetails.acl,
 	};
 
 	// information about tabs
@@ -57,7 +57,7 @@ const AclDetails = ({
 	const handleSubmit = (
 		values: {
 			name: string,
-			acls: TransformedAcl[],
+			policies: TransformedAcl[],
 		}
 	) => {
 		dispatch(updateAclDetails({values: values, aclId: aclDetails.id}));
@@ -90,7 +90,7 @@ const AclDetails = ({
 							formik={formik}
 							submitPage={
 								async () => {
-									if (await dispatch(checkAcls(formik.values.acls))) {
+									if (await dispatch(checkAcls(formik.values.policies))) {
 										formik.handleSubmit();
 									}
 								}
