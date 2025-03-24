@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	getAssetUploadOptions,
@@ -53,30 +53,40 @@ const NewEventSummary = <T extends RequiredFormProps>({
 }) => {
 	const { t } = useTranslation();
 
+	// upload asset that user has provided
+	const [uploadAssetsNonTrack, setUploadAssetsNonTrack] = useState<{
+		name: string,
+		translate?: string,
+		value: any,
+	}[]>([]);
+
 	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
 	const metadataEvents = useAppSelector(state => getEventMetadata(state));
 	const extendedMetadata = useAppSelector(state => getExtendedEventMetadata(state));
 	const workflowDef = useAppSelector(state => getWorkflowDef(state));
 
 	// upload asset that user has provided
-	let uploadAssetsNonTrack: {
-		name: string,
-		translate?: string,
-		value: any,
-	}[] = [];
-	for (let i = 0; uploadAssetOptions.length > i; i++) {
-		let fieldValue = formik.values[uploadAssetOptions[i].id];
-		if (!!fieldValue) {
-			const displayOverride = uploadAssetOptions[i].displayOverride as ParseKeys
-			uploadAssetsNonTrack = uploadAssetsNonTrack.concat({
-				name: uploadAssetOptions[i].id,
-				translate: !!displayOverride
-					? t(displayOverride)
-					: translateOverrideFallback(uploadAssetOptions[i], t),
-				value: fieldValue,
-			});
+	useEffect(() => {
+		let uploadAssetsNonTrack: {
+			name: string,
+			translate?: string,
+			value: any,
+		}[] = [];
+		for (let i = 0; uploadAssetOptions.length > i; i++) {
+			let fieldValue = formik.values[uploadAssetOptions[i].id];
+			if (!!fieldValue) {
+				const displayOverride = uploadAssetOptions[i].displayOverride as ParseKeys
+				setUploadAssetsNonTrack(uploadAssetsNonTrack.concat({
+					name: uploadAssetOptions[i].id,
+					translate: !!displayOverride
+						? t(displayOverride)
+						: translateOverrideFallback(uploadAssetOptions[i], t),
+					value: fieldValue,
+				}));
+			}
 		}
-	}
+	}, [formik.values, t, uploadAssetsNonTrack, uploadAssetOptions]);
+
 
 	// Get additional information about chosen workflow definition
 	const workflowDefinition = workflowDef.find(
@@ -91,7 +101,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 				{/*Summary metadata*/}
 				<MetadataSummaryTable
 					metadataCatalogs={[metadataEvents]}
-					//@ts-ignore
+					//@ts-expect-error: Metadata not correctly typed
 					formikValues={formik.values}
 					header={"EVENTS.EVENTS.NEW.METADATA.CAPTION"}
 				/>
@@ -100,7 +110,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 				{!metaDataExtendedHidden && (
 					<MetadataSummaryTable
 						metadataCatalogs={extendedMetadata}
-						//@ts-ignore
+						//@ts-expect-error: Metadata not correctly typed
 						formikValues={formik.values}
 						header={"EVENTS.EVENTS.NEW.METADATA_EXTENDED.CAPTION"}
 					/>

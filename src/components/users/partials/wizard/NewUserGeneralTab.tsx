@@ -129,7 +129,7 @@ const PasswordStrengthIndicator = ({
 		"987654321", "aa12345678", "abc123", "admin", "dragon", "Dragon", "google",
 		"iloveyou", "Iloveyou", "lovely", "Monkey", "mynoob", "password",
 		"password1", "password12", "password123", "princess", "qwerty", "qwerty123", "qwertyuiop",
-		"Qwertyuiop", "welcome", "zxcvbnm", "opencast" ];
+		"Qwertyuiop", "welcome", "zxcvbnm", "opencast"];
 
 	function testPassword(regex: RegExp) {
 		return !!password && regex.test(password);
@@ -160,20 +160,15 @@ const PasswordStrengthIndicator = ({
 	const setProgBar = (strength: number): [string | undefined, ParseKeys | undefined] => {
 		if (strength >= 90) {
 			return ["green", "USERS.USERS.DETAILS.STRENGTH.VERYSTRONG"]
-		}
-		else if (strength >= 70) {
+		} else if (strength >= 70) {
 			return ["#388ed6", "USERS.USERS.DETAILS.STRENGTH.STRONG"]
-		}
-		else if (strength >= 50) {
+		} else if (strength >= 50) {
 			return ["gold", "USERS.USERS.DETAILS.STRENGTH.GOOD"]
-		}
-		else if (strength >= 30) {
+		} else if (strength >= 30) {
 			return ["darkorange", "USERS.USERS.DETAILS.STRENGTH.WEAK"]
-		}
-		else if (strength > 1) {
+		} else if (strength > 1) {
 			return ["red", "USERS.USERS.DETAILS.STRENGTH.VERYWEAK"]
-		}
-		else if (strength <= 1){
+		} else if (strength <= 1) {
 			return ["white", "USERS.USERS.DETAILS.STRENGTH.BAD"]
 		}
 
@@ -181,7 +176,7 @@ const PasswordStrengthIndicator = ({
 	}
 
 	const strength = calcStrength(password);
-	const [ barColor, barText ] = setProgBar(strength);
+	const [barColor, barText] = setProgBar(strength);
 
 	const progressBarStyle = {
 		background: barColor,

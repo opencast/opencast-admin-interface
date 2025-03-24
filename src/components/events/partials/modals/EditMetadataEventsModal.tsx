@@ -56,7 +56,7 @@ const EditMetadataEventsModal = ({
 			setLoading(true);
 
 			let eventIds: string[] = [];
-			selectedEvents.forEach((event) => isEvent(event) &&  eventIds.push(event.id));
+			selectedEvents.forEach((event) => isEvent(event) && eventIds.push(event.id));
 
 			// Get merged metadata from backend
 			// const responseMetadataFields = await dispatch(postEditMetadata(eventIds))

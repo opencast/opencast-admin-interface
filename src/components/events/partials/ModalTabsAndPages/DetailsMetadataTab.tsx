@@ -62,7 +62,7 @@ const DetailsMetadataTab = ({
 		return initialValues;
 	};
 
-	const checkValidity = (formik: FormikProps<{}>) => {
+	const checkValidity = (formik: FormikProps<any>) => {
 		if (formik.dirty && formik.isValid && hasAccess(editAccessRole, user)) {
 			// check if user provided values differ from initial ones
 			return !_.isEqual(formik.values, formik.initialValues);
@@ -82,6 +82,7 @@ const DetailsMetadataTab = ({
 					metadata.map((catalog, key) => (
 						// initialize form
 						<Formik
+							key={key}
 							enableReinitialize
 							initialValues={getInitialValues(catalog)}
 							onSubmit={(values) => handleSubmit(values, catalog)}

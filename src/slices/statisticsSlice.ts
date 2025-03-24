@@ -211,7 +211,7 @@ export const fetchStatisticsValueUpdate = async (
 	dataResolution: DataResolution,
 	timeMode: TimeMode,
 	statistics: Statistics[],
-) =>  {
+) => {
 	// settings for this statistic of this resource for value request
 	const statisticsValueRequest = [
 		{

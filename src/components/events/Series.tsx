@@ -60,7 +60,7 @@ const Series = () => {
 		dispatch(showActionsSeries(false));
 
 		// Load events on mount
-		const loadSeries = async() => {
+		const loadSeries = async () => {
 			// fetching series from server
 			await dispatch(fetchSeries());
 

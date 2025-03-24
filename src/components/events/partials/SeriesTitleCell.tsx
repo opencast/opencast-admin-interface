@@ -28,7 +28,7 @@ const SeriesTitleCell = ({
 		<Tooltip title={t("EVENTS.SERIES.TABLE.TOOLTIP.SERIES")}>
 			<button
 				className="button-like-anchor crosslink"
-				onClick={() =>  redirectToEvents(row.id)}
+				onClick={() => redirectToEvents(row.id)}
 			>
 				{row.title}
 			</button>

@@ -128,7 +128,7 @@ const NewSeriesWizard: React.FC<{
 		let newPage = page;
 		do {
 			newPage = newPage + 1;
-		} while(steps[newPage] && steps[newPage]!.hidden);
+		} while(steps[newPage] && steps[newPage].hidden);
 		if (steps[newPage]) {
 			setPage(newPage)
 		}
@@ -148,7 +148,7 @@ const NewSeriesWizard: React.FC<{
 		let newPage = page;
 		do {
 			newPage = newPage - 1;
-		} while(steps[newPage] && steps[newPage]!.hidden);
+		} while(steps[newPage] && steps[newPage].hidden);
 		if (steps[newPage]) {
 			setPage(newPage)
 		}

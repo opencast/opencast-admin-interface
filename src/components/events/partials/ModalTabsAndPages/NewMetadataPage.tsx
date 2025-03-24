@@ -27,7 +27,7 @@ const NewMetadataPage = ({
 				!!metadataCatalogs &&
 				metadataCatalogs.length > 0 &&
 				metadataCatalogs.map((catalog, index) => (
-					<div className="obj tbl-list">
+					<div key={index} className="obj tbl-list">
 						{/* <header className="no-expand">{t(header)}</header> */}
 						<header>
 							<span>{t(header ? header : catalog.title as ParseKeys)}</span>

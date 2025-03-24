@@ -19,7 +19,7 @@ export const relativeToAbsoluteDate = (relative: string, type: string, from: boo
 	if (from) {
 		absolute = localMoment.startOf(type as moment.unitOfTime.StartOf);
 	} else {
-		absolute = localMoment.endOf(type  as moment.unitOfTime.StartOf);
+		absolute = localMoment.endOf(type as moment.unitOfTime.StartOf);
 	}
 
 	absolute = absolute.add(relative, type as moment.unitOfTime.Base);
@@ -71,7 +71,7 @@ export const calculateDuration = (
 // sets the duration in the formik
 const setDuration = (
 	startDate: Date,
-	endDate: Date ,
+	endDate: Date,
 	setFieldValue: (field: string, value: string) => Promise<void | FormikErrors<any>>
 ) => {
 	const { durationHours, durationMinutes } = calculateDuration(
@@ -403,7 +403,7 @@ const changeStartMultiple = (
 	setFieldValue("scheduleEndDate", endDate.toISOString());
 	setFieldValue("scheduleStartDate", startDate.toISOString());
 
-	if (!!checkConflicts && !! formikValues.captureAgent) {
+	if (!!checkConflicts && !!formikValues.captureAgent) {
 		checkConflicts(
 			eventId,
 			startDate,

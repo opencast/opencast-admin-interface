@@ -87,8 +87,8 @@ const NavBar = ({
 			<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
 
 			<nav aria-label={navAriaLabel && t(navAriaLabel)}>
-				{links.map((link, index) =>
-					{return (hasAccess(link.accessRole, user) && (
+				{links.map((link, index) => {
+					return (hasAccess(link.accessRole, user) && (
 						<Link
 							key={index}
 							to={link.path}
@@ -96,8 +96,8 @@ const NavBar = ({
 						>
 							{t(link.text)}
 						</Link>
-					))}
-				)}
+					))
+				})}
 			</nav>
 
 			{children}
