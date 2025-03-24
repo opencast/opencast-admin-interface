@@ -40,7 +40,7 @@ import ButtonLikeAnchor from "./ButtonLikeAnchor";
 import { ModalHandle } from "./modals/Modal";
 import { ParseKeys } from "i18next";
 
-const containerPageSize = React.createRef<HTMLButtonElement>();
+const containerPageSize = React.createRef<HTMLDivElement>();
 
 type TemplateMap = {
 	[key: string]: ({ row }: { row: any }) => JSX.Element | JSX.Element[]
@@ -292,10 +292,12 @@ const Table = ({
 
 			{/* Selection of page size */}
 			<div id="tbl-view-controls-container">
-				<button
+				<div
 					className="drop-down-container small flipped"
 					onClick={() => setShowPageSizes(!showPageSizes)}
 					ref={containerPageSize}
+					role="button"
+					tabIndex={0}
 				>
 					<span>{pagination.limit}</span>
 					{/* Drop down menu for selection of page size */}
@@ -312,7 +314,7 @@ const Table = ({
 							))}
 						</ul>
 					)}
-				</button>
+				</div>
 
 				{/* Pagination and navigation trough pages */}
 				<div className="pagination">
