@@ -365,13 +365,13 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 					{!mode.edit && <p style={{ fontSize: 12 }}>{t("EVENTS.SERIES.NEW.TOBIRA.DIRECT_LINK")}</p>}
 				</>}
 			{/* Render buttons for saving or resetting updated path */}
-			{mode.edit && <SaveEditFooter
-				active={formik.values.selectedPage !== undefined}
-				reset={() => formik.setFieldValue("selectedPage", undefined)}
-				submit={() => formik.handleSubmit()}
-				{...{ isValid }}
-			/>}
 		</ModalContent>
+		{mode.edit && <SaveEditFooter
+			active={formik.values.selectedPage !== undefined}
+			reset={() => formik.setFieldValue("selectedPage", undefined)}
+			submit={() => formik.handleSubmit()}
+			{...{ isValid }}
+		/>}
 
 		{/* Button for navigation to next page and previous page */}
 		{!mode.edit && <WizardNavigationButtons
