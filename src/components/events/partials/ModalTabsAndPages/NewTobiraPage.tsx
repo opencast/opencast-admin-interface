@@ -174,7 +174,6 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 			segment: "",
 		};
 		dispatch(setTobiraPage({ ...currentPage, children: [...currentPage.children, newPage]}));
-		select(newPage);
 	};
 
 	const setPage = (
