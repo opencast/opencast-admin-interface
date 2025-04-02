@@ -21,6 +21,7 @@ import {
 	fetchStatisticsPageStatisticsValueUpdate,
 } from "../../slices/statisticsSlice";
 import { createChartOptions } from "../../utils/statisticsUtils";
+import { ParseKeys } from "i18next";
 
 const Statistics: React.FC = () => {
 	const { t } = useTranslation();
@@ -68,7 +69,6 @@ const Statistics: React.FC = () => {
 						{
 							path: "/statistics/organization",
 							accessRole: "ROLE_UI_STATISTICS_ORGANIZATION_VIEW",
-							loadFn: () => {},
 							text: "STATISTICS.NAVIGATION.ORGANIZATION"
 						}
 					]}
@@ -98,14 +98,14 @@ const Statistics: React.FC = () => {
 							statistics.map((stat, key) => (
 								<div className="obj" key={key}>
 									{/* title of statistic */}
-									<header className="no-expand">{t(stat.title)}</header>
+									<header className="no-expand">{t(stat.title as ParseKeys)}</header>
 
 									{stat.providerType === "timeSeries" ? (
 										/* visualization of statistic for time series data */
 										<div className="obj-container">
 											<TimeSeriesStatistics
 												resourceId={organizationId}
-												statTitle={t(stat.title)}
+												statTitle={t(stat.title as ParseKeys)}
 												providerId={stat.providerId}
 												fromDate={stat.from}
 												toDate={stat.to}

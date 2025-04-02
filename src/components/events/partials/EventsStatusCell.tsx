@@ -9,6 +9,7 @@ import {
 import { EventDetailsPage } from "./modals/EventDetails";
 import { hasScheduledStatus } from "../../../utils/eventDetailsUtils";
 import { IconButton } from "../../shared/IconButton";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the status cells of events in the table view
@@ -35,7 +36,7 @@ const EventsStatusCell = ({
 				}
 
 				// Show operations of last workflow
-				const lastWorkflow = workflows.entries[workflows.entries.length-1];
+				const lastWorkflow = workflows.entries[workflows.entries.length - 1];
 				dispatch(openModal(EventDetailsPage.Workflow, row, 'workflow-operations', 'entry', lastWorkflow.id));
 			});
 	};
@@ -46,7 +47,7 @@ const EventsStatusCell = ({
 			iconClassname={"crosslink"}
 			tooltipText={"EVENTS.EVENTS.TABLE.TOOLTIP.STATUS"}
 		>
-			{t(row.displayable_status)}
+			{t(row.displayable_status as ParseKeys)}
 		</IconButton>
 	);
 };

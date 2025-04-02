@@ -19,6 +19,8 @@ import {
 import { unwrapResult } from "@reduxjs/toolkit";
 import { isEvent } from "../../../../slices/tableSlice";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { ParseKeys } from "i18next";
+import ModalContent from "../../../shared/modals/ModalContent";
 
 /**
  * This component manges the edit metadata bulk action
@@ -54,7 +56,7 @@ const EditMetadataEventsModal = ({
 			setLoading(true);
 
 			let eventIds: string[] = [];
-			selectedEvents.forEach((event) => isEvent(event) &&  eventIds.push(event.id));
+			selectedEvents.forEach((event) => isEvent(event) && eventIds.push(event.id));
 
 			// Get merged metadata from backend
 			// const responseMetadataFields = await dispatch(postEditMetadata(eventIds))
@@ -142,30 +144,26 @@ const EditMetadataEventsModal = ({
 		<>
 			{/* Loading spinner */}
 			{loading && (
-				<div className="modal-content">
-					<div className="modal-body">
-						<div className="loading">
-							<i className="fa fa-spinner fa-spin fa-2x fa-fw" />
-						</div>
+				<ModalContent>
+					<div className="loading">
+						<i className="fa fa-spinner fa-spin fa-2x fa-fw" />
 					</div>
-				</div>
+				</ModalContent>
 			)}
 
 			{/* Fatal error view */}
 			{!!fatalError && (
-				<div className="modal-content">
-					<div className="modal-body">
-						<div className="row">
-							<div className="alert sticky error">
-								<p>
-									{t("BULK_ACTIONS.EDIT_EVENTS_METADATA.FATAL_ERROR", {
-										fatalError: fatalError,
-									})}
-								</p>
-							</div>
+				<ModalContent>
+					<div className="row">
+						<div className="alert sticky error">
+							<p>
+								{t("BULK_ACTIONS.EDIT_EVENTS_METADATA.FATAL_ERROR", {
+									fatalError: fatalError,
+								})}
+							</p>
 						</div>
 					</div>
-				</div>
+				</ModalContent>
 			)}
 
 			{/* todo: Request Errors View and Update Errors View (not quite sure what this is used for) */}
@@ -177,105 +175,101 @@ const EditMetadataEventsModal = ({
 				>
 					{(formik) => (
 						<>
-							<div className="modal-content">
-								<div className="modal-body">
-									<div className="full-col">
-										<div className="obj header-description">
-											<span>
-												{t(
-													"BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.DESCRIPTION"
-												)}
-											</span>
-										</div>
-										<div className="obj tbl-details">
-											<header>
-												<span>
-													{t(
-														"BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.TABLE.CAPTION"
-													)}
-												</span>
-											</header>
-											<div className="obj-container">
-												<table className="main-tbl">
-													<thead>
-														<tr>
-															<th className="small" />
-															<th>
-																{t(
-																	"BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.TABLE.FIELDS"
-																)}
-															</th>
-															<th>
-																{t(
-																	"BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.TABLE.VALUES"
-																)}
-															</th>
-														</tr>
-													</thead>
-													<tbody>
-														{metadataFields.mergedMetadata.map(
-															(metadata, key) =>
-																!metadata.readOnly && (
-																	<tr
-																		key={key}
-																		className={cn({
-																			info: metadata.differentValues,
-																		})}
-																	>
-																		<td>
-																			<input
-																				type="checkbox"
-																				name="changes"
-																				checked={isTouchedOrSelected(
-																					metadata,
-																					formik.values
-																				)}
-																				disabled={
-																					(!metadata.differentValues &&
-																						!metadata.selected) ||
-																					(metadata.required &&
-																						!metadata.selected)
-																				}
-																				onChange={(e) =>
-																					onChangeSelected(e, metadata.id)
-																				}
-																				className="child-cbox"
-																			/>
-																		</td>
-																		<td>
-																			<span>{t(metadata.label)}</span>
-																			{metadata.required && (
-																				<i className="required">*</i>
-																			)}
-																		</td>
-																		<td className="editable ng-isolated-scope">
-																			{/* Render single value or multi value input */}
-																			{metadata.type === "mixed_text" ? (
-																				<Field
-																					name={metadata.id}
-																					fieldInfo={metadata}
-																					showCheck
-																					component={RenderMultiField}
-																				/>
-																			) : (
-																				<Field
-																					name={metadata.id}
-																					metadataField={metadata}
-																					showCheck
-																					component={RenderField}
-																				/>
-																			)}
-																		</td>
-																	</tr>
-																)
+							<ModalContent>
+								<div className="obj header-description">
+									<span>
+										{t(
+											"BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.DESCRIPTION"
+										)}
+									</span>
+								</div>
+								<div className="obj tbl-details">
+									<header>
+										<span>
+											{t(
+												"BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.TABLE.CAPTION"
+											)}
+										</span>
+									</header>
+									<div className="obj-container">
+										<table className="main-tbl">
+											<thead>
+												<tr>
+													<th className="small" />
+													<th>
+														{t(
+															"BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.TABLE.FIELDS"
 														)}
-													</tbody>
-												</table>
-											</div>
-										</div>
+													</th>
+													<th>
+														{t(
+															"BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.TABLE.VALUES"
+														)}
+													</th>
+												</tr>
+											</thead>
+											<tbody>
+												{metadataFields.mergedMetadata.map(
+													(metadata, key) =>
+														!metadata.readOnly && (
+															<tr
+																key={key}
+																className={cn({
+																	info: metadata.differentValues,
+																})}
+															>
+																<td>
+																	<input
+																		type="checkbox"
+																		name="changes"
+																		checked={isTouchedOrSelected(
+																			metadata,
+																			formik.values
+																		)}
+																		disabled={
+																			(!metadata.differentValues &&
+																				!metadata.selected) ||
+																			(metadata.required &&
+																				!metadata.selected)
+																		}
+																		onChange={(e) =>
+																			onChangeSelected(e, metadata.id)
+																		}
+																		className="child-cbox"
+																	/>
+																</td>
+																<td>
+																	<span>{t(metadata.label as ParseKeys)}</span>
+																	{metadata.required && (
+																		<i className="required">*</i>
+																	)}
+																</td>
+																<td className="editable ng-isolated-scope">
+																	{/* Render single value or multi value input */}
+																	{metadata.type === "mixed_text" ? (
+																		<Field
+																			name={metadata.id}
+																			fieldInfo={metadata}
+																			showCheck
+																			component={RenderMultiField}
+																		/>
+																	) : (
+																		<Field
+																			name={metadata.id}
+																			metadataField={metadata}
+																			showCheck
+																			component={RenderField}
+																		/>
+																	)}
+																</td>
+															</tr>
+														)
+												)}
+											</tbody>
+										</table>
 									</div>
 								</div>
-							</div>
+							</ModalContent>
 
 							{/* Buttons for cancel and submit */}
 							<WizardNavigationButtons

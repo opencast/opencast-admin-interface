@@ -1,7 +1,7 @@
 // Bourbon leftovers
 
 @mixin clearfix {
-  .element::after {
+  &::after {
       clear: both;
       content: "";
       display: block;

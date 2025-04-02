@@ -5,6 +5,7 @@ import { NOTIFICATION_CONTEXT } from "../../../configs/modalConfig";
 import { useAppDispatch } from "../../../store";
 import { addNotification } from "../../../slices/notificationSlice";
 import { FormikProps } from "formik";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders a custom file upload button in wizards.
@@ -23,9 +24,9 @@ const FileUpload = <T extends RequiredFormProps>({
 	formik,
 	isEdit,
 }: {
-	descriptionKey?: string,
-	labelKey: string,
-	buttonKey: string,
+	descriptionKey?: ParseKeys,
+	labelKey: ParseKeys,
+	buttonKey: ParseKeys,
 	acceptableTypes: string,
 	fileId: string,
 	fileName: string,
@@ -160,7 +161,7 @@ const FileUpload = <T extends RequiredFormProps>({
 			</div>
 
 			{/* render progress bar while loaded is under 100 and a file is in the upload */}
-			{!! file && !!file.name && loaded < 100 && (
+			{!!file && !!file.name && loaded < 100 && (
 				<div className="list-sub-row file-management">
 					<div className="progress-container">
 						<div className="progress compact">

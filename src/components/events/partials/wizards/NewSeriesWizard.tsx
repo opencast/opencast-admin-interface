@@ -24,6 +24,7 @@ import { TransformedAcl } from "../../../../slices/aclDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import NewMetadataCommonPage from "../ModalTabsAndPages/NewMetadataCommonPage";
 import { hasAccess } from "../../../../utils/utils";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the new series wizard and the submission of values
@@ -64,7 +65,11 @@ const NewSeriesWizard: React.FC<{
 	}, []);
 
 	// Caption of steps used by Stepper
-	const steps = [
+	const steps: {
+		translation: ParseKeys,
+		name: string,
+		hidden: boolean,
+	}[] = [
 		{
 			translation: "EVENTS.SERIES.NEW.METADATA.CAPTION",
 			name: "metadata",
@@ -123,7 +128,7 @@ const NewSeriesWizard: React.FC<{
 		let newPage = page;
 		do {
 			newPage = newPage + 1;
-		} while(steps[newPage] && steps[newPage]!.hidden);
+		} while(steps[newPage] && steps[newPage].hidden);
 		if (steps[newPage]) {
 			setPage(newPage)
 		}
@@ -143,7 +148,7 @@ const NewSeriesWizard: React.FC<{
 		let newPage = page;
 		do {
 			newPage = newPage - 1;
-		} while(steps[newPage] && steps[newPage]!.hidden);
+		} while(steps[newPage] && steps[newPage].hidden);
 		if (steps[newPage]) {
 			setPage(newPage)
 		}

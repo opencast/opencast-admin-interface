@@ -18,6 +18,7 @@ import type { ChartOptions } from 'chart.js';
 import { AsyncThunk } from "@reduxjs/toolkit";
 import { useAppDispatch } from "../../store";
 import { DataResolution, TimeMode } from "../../slices/statisticsSlice";
+import { ParseKeys } from "i18next";
 
 
 /**
@@ -198,9 +199,9 @@ const TimeSeriesStatistics = ({
 				dataResolution: dataResolution,
 				// Typescript complains that the method "startOf" cannot take "custom" as a parameter, but in practice
 				// this does not seem to be a problem
-				//@ts-ignore
+				//@ts-expect-error: timeMode should be assignable here
 				fromDate: moment(fromDate).startOf(timeMode).format("YYYY-MM-DD"),
-				//@ts-ignore
+				//@ts-expect-error: timeMode should be assignable here
 				toDate: moment(toDate).endOf(timeMode).format("YYYY-MM-DD"),
 			}}
 			onSubmit={(values) => {}}
@@ -209,7 +210,6 @@ const TimeSeriesStatistics = ({
 				<div className="statistics-graph">
 					{/* download link for a statistic file */}
 					<div className="download">
-						{/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
 						<a
 							className="download-icon"
 							href={exportUrl}
@@ -252,7 +252,7 @@ const TimeSeriesStatistics = ({
 										)
 									}
 								/>
-								{t("STATISTICS.TIME_MODES." + mode.translation)}
+								{t(`STATISTICS.TIME_MODES.${mode.translation}` as ParseKeys)}
 							</label>
 						))}
 					</div>
@@ -263,7 +263,6 @@ const TimeSeriesStatistics = ({
 						formik.values.timeMode === "month") && (
 						/* year/month selection for statistic via previous and next buttons */
 						<span className="preset">
-							{/* eslint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/anchor-is-valid */}
 							<a
 								className="navigation prev"
 								onClick={() =>
@@ -281,7 +280,6 @@ const TimeSeriesStatistics = ({
 									formik.values.timeMode
 								)}
 							</div>
-							{/* eslint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/anchor-is-valid */}
 							<a
 								className="navigation next"
 								onClick={() =>
@@ -377,7 +375,7 @@ const TimeSeriesStatistics = ({
 										<option value="" hidden />
 										{availableCustomDataResolutions.map((option, key) => (
 											<option value={option.value} key={key}>
-												{t("STATISTICS.TIME_GRANULARITIES." + option.label)}
+												{t(`STATISTICS.TIME_GRANULARITIES.${option.label}` as ParseKeys)}
 											</option>
 										))}
 									</Field>
@@ -395,7 +393,7 @@ const TimeSeriesStatistics = ({
 					/>
 
 					{/* statistic description */}
-					<p>{t(statDescription)}</p>
+					<p>{t(statDescription as ParseKeys)}</p>
 				</div>
 			)}
 		</Formik>

@@ -1,10 +1,7 @@
 import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { relativeDateSpanToFilterValue } from '../utils/dateUtils';
-import { setOffset } from '../slices/tableSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { fetchEvents } from './eventSlice';
-import { fetchServices } from './serviceSlice';
 import { FilterProfile } from './tableFilterProfilesSlice';
 
 /**
@@ -96,7 +93,7 @@ export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', asy
 	let oldData = getState().tableFilters.data
 
 	for (const oldFilter of oldData) {
-		var foundIndex = filtersList.findIndex(x => x.name === oldFilter.name && x.resource === oldFilter.resource);
+		const foundIndex = filtersList.findIndex(x => x.name === oldFilter.name && x.resource === oldFilter.resource);
 		if (foundIndex >= 0) {
 			filtersList[foundIndex].value = oldFilter.value;
 		}
@@ -123,7 +120,7 @@ export const fetchStats = createAppAsyncThunk('tableFilters/fetchStats', async (
 	let stats = [];
 
 	// fetch for each status the corresponding count of events having this status
-	for (let i in statsResponse) {
+	for (const [i, _] of statsResponse.entries()) {
 		let filter = [];
 		for (let j in statsResponse[i].filters) {
 			let value = statsResponse[i].filters[j].value;
@@ -166,11 +163,13 @@ export const fetchStats = createAppAsyncThunk('tableFilters/fetchStats', async (
 
 export const setSpecificEventFilter = createAppAsyncThunk('tableFilters/setSpecificEventFilter', async (params: { filter: string, filterValue: string }, { dispatch, getState }) => {
 	const { filter, filterValue } = params;
-	await dispatch(fetchFilters("events"));
-
 	const { tableFilters } = getState();
 
 	let filterToChange = tableFilters.data.find(({ name }) => name === filter);
+
+	if (!filterToChange) {
+		await dispatch(fetchFilters("events"));
+	}
 
 	if (!!filterToChange) {
 		await dispatch(editFilterValue({
@@ -178,21 +177,17 @@ export const setSpecificEventFilter = createAppAsyncThunk('tableFilters/setSpeci
 			value: filterValue
 		}));
 	}
-
-	dispatch(setOffset(0));
-
-	dispatch(fetchStats());
-
-	dispatch(fetchEvents());
 });
 
 export const setSpecificServiceFilter = createAppAsyncThunk('tableFilters/setSpecificServiceFilter', async (params: { filter: string, filterValue: string }, { dispatch, getState }) => {
 	const { filter, filterValue } = params;
-	await dispatch(fetchFilters("services"));
-
 	const { tableFilters } = getState();
 
 	let filterToChange = tableFilters.data.find(({ name }) => name === filter);
+
+	if (!filterToChange) {
+		await dispatch(fetchFilters("services"));
+	}
 
 	if (!!filterToChange) {
 		await dispatch(editFilterValue({
@@ -200,10 +195,6 @@ export const setSpecificServiceFilter = createAppAsyncThunk('tableFilters/setSpe
 			value: filterValue
 		}));
 	}
-
-	dispatch(setOffset(0));
-
-	dispatch(fetchServices());
 });
 
 // Transform received filter.json to a structure that can be used for filtering

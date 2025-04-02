@@ -1,4 +1,4 @@
-import { PayloadAction, SerializedError, createSlice, unwrapResult } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
 import { eventsTableConfig } from "../configs/tableConfigs/eventsTableConfig";
 import axios, { AxiosProgressEvent } from 'axios';
 import moment from "moment-timezone";
@@ -20,10 +20,10 @@ import {
 	removeNotification,
 	addNotification,
 } from "./notificationSlice";
-import { getAssetUploadOptions, getSchedulingEditedEvents } from '../selectors/eventSelectors';
+import { getAssetUploadOptions, getSchedulingEditedEvents, getSourceUploadOptions } from '../selectors/eventSelectors';
 import { fetchSeriesOptions } from "./seriesSlice";
 import { AppDispatch } from '../store';
-import { enrichPublications, fetchAssetUploadOptions } from '../thunks/assetsThunks';
+import { fetchAssetUploadOptions } from '../thunks/assetsThunks';
 import { TransformedAcl } from './aclDetailsSlice';
 import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
 import { Publication } from './eventDetailsSlice';
@@ -122,7 +122,7 @@ export type EditedEvents = {
 	changedStartTimeHour: string,
 	changedStartTimeMinutes: string,
 	changedTitle: string,
-	changedWeekday: string,
+	changedWeekday: "MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU",
 	deviceInputs: string,
 	endTimeHour: string,
 	endTimeMinutes: string,
@@ -132,10 +132,10 @@ export type EditedEvents = {
 	startTimeHour: string,
 	startTimeMinutes: string,
 	title: string,
-	weekday: string,
+	weekday: "MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU",
 }
 
-export type UploadAssetOption = {
+export type UploadOption = {
 	accept: string,
 	displayFallback?: string,
 	"displayFallback.DETAIL"?: string,
@@ -151,9 +151,11 @@ export type UploadAssetOption = {
 	displayOverride?: string,
 	"displayOverride.SHORT"?: string,
 	"displayOverride.DETAIL"?: string,
+	showForNewEvents?: boolean,
+	showForExistingEvents?: boolean,
 }
 
-export type UploadAssetsTrack = UploadAssetOption & {
+export type UploadAssetsTrack = UploadOption & {
 	file?: FileList
 }
 
@@ -185,7 +187,8 @@ type EventState = {
 	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	isFetchingAssetUploadOptions: boolean,
-	uploadAssetOptions: UploadAssetOption[],
+	uploadAssetOptions: UploadOption[],
+	uploadSourceOptions: UploadOption[],
 	uploadAssetWorkflow: string | undefined,
 	schedulingInfo: {
 		editedEvents: EditedEvents[],
@@ -227,6 +230,7 @@ const initialState: EventState = {
 	extendedMetadata: [],
 	isFetchingAssetUploadOptions: false,
 	uploadAssetOptions: [],
+	uploadSourceOptions: [],
 	uploadAssetWorkflow: "",
 	schedulingInfo: {
 		editedEvents: [],
@@ -266,21 +270,6 @@ export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, {
 			...response.results[i],
 			date: response.results[i].start_date,
 		};
-		// insert enabled and hide property of publications, if result has publications
-		let result = response.results[i];
-		if (!!result.publications && result.publications.length > 0) {
-			let transformedPublications: Publication[] = [];
-			try {
-				const resultAction = await dispatch(enrichPublications({ publications: result.publications }));
-				transformedPublications = unwrapResult(resultAction);
-			} catch (rejectedValueOrSerializedError) {
-				console.error(rejectedValueOrSerializedError)
-			}
-			response.results[i] = {
-				...response.results[i],
-				publications: transformedPublications,
-			};
-		}
 	}
 	const events = response;
 
@@ -414,7 +403,7 @@ export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata
 						dispatch(
 							addNotification({
 								type: "warning",
-								key:"BULK_ACTIONS.EDIT_EVENTS_METADATA.REQUEST_ERRORS.NOT_FOUND"
+								key: "BULK_ACTIONS.EDIT_EVENTS_METADATA.REQUEST_ERRORS.NOT_FOUND"
 							})
 						);
 					}
@@ -454,6 +443,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	// get asset upload options from redux store
 	const state = getState();
 	const uploadAssetOptions = getAssetUploadOptions(state);
+	const uploadSourceOptions = getSourceUploadOptions(state);
 
 	let formData = new FormData();
 	let source: {
@@ -563,21 +553,18 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	// need to provide all possible upload asset options independent of source mode/type
 	let assets: {
 		workflow: string,
-		options: UploadAssetOption[],
-	}= {
+		options: UploadOption[],
+	} = {
 		workflow: WORKFLOW_UPLOAD_ASSETS_NON_TRACK,
 		options: [],
 	};
 
 	// iterate through possible upload asset options and put them in assets
 	// if source mode/type is UPLOAD and a file for a asset is uploaded by user than append file to form data
-	for (let i = 0; uploadAssetOptions.length > i; i++) {
-		if (
-			uploadAssetOptions[i].type === "track" &&
-			values.sourceMode === "UPLOAD"
-		) {
+	for (let i = 0; uploadSourceOptions.length > i; i++) {
+		if (values.sourceMode === "UPLOAD") {
 			let asset = values.uploadAssetsTrack?.find(
-				(asset) => asset.id === uploadAssetOptions[i].id
+				(asset) => asset.id === uploadSourceOptions[i].id
 			);
 			if (!!asset && !!asset.file) {
 				if (asset.multiple) {
@@ -588,18 +575,19 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 					formData.append(asset.id + ".0", asset.file[0]);
 				}
 			}
+			assets.options = assets.options.concat(uploadSourceOptions[i]);
+		}
+	}
+	for (let i = 0; uploadAssetOptions.length > i; i++) {
+		if (
+			!!values[uploadAssetOptions[i].id] &&
+			values.sourceMode === "UPLOAD"
+		) {
+			formData.append(
+				uploadAssetOptions[i].id + ".0",
+				values[uploadAssetOptions[i].id] as File
+			);
 			assets.options = assets.options.concat(uploadAssetOptions[i]);
-		} else {
-			if (
-				!!values[uploadAssetOptions[i].id] &&
-				values.sourceMode === "UPLOAD"
-			) {
-				formData.append(
-					uploadAssetOptions[i].id + ".0",
-					values[uploadAssetOptions[i].id] as File
-				);
-				assets.options = assets.options.concat(uploadAssetOptions[i]);
-			}
 		}
 	}
 
@@ -631,9 +619,9 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	);
 
 	// Process bar notification
-	var config = {
-		onUploadProgress: function(progressEvent: AxiosProgressEvent) {
-			var percentCompleted = progressEvent.total ? (progressEvent.loaded * 100) / progressEvent.total : undefined;
+	const config = {
+		onUploadProgress: function (progressEvent: AxiosProgressEvent) {
+			const percentCompleted = progressEvent.total ? (progressEvent.loaded * 100) / progressEvent.total : undefined;
 			if (percentCompleted) {
 				dispatch(addNotification({
 					id: -42000,
@@ -1174,12 +1162,14 @@ const eventSlice = createSlice({
 			.addCase(fetchAssetUploadOptions.fulfilled, (state, action: PayloadAction<{
 				workflow: EventState["uploadAssetWorkflow"],
 				newAssetUploadOptions: EventState["uploadAssetOptions"],
+				newSourceUploadOptions: EventState["uploadSourceOptions"],
 			} | undefined>) => {
 				state.statusAssetUploadOptions = 'succeeded';
 				const assetUpload = action.payload;
 				if (assetUpload) {
 					state.uploadAssetWorkflow = assetUpload.workflow;
 					state.uploadAssetOptions = assetUpload.newAssetUploadOptions;
+					state.uploadSourceOptions = assetUpload.newSourceUploadOptions;
 				}
 			})
 			.addCase(fetchAssetUploadOptions.rejected, (state, action) => {

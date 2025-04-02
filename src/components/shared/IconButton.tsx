@@ -4,6 +4,7 @@ import { useAppSelector } from "../../store";
 import { hasAccess } from "../../utils/utils"
 import { Tooltip } from "./Tooltip";
 import React from "react";
+import { ParseKeys } from "i18next";
 
 export const IconButton = ({
 	callback,
@@ -15,7 +16,7 @@ export const IconButton = ({
 	callback: () => void
 	iconClassname: string
 	editAccessRole?: string
-	tooltipText?: string
+	tooltipText?: ParseKeys
 	children?: React.ReactNode
 }) => {
 	const { t } = useTranslation();

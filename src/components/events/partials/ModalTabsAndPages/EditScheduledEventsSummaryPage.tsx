@@ -6,6 +6,8 @@ import { getSchedulingSeriesOptions } from "../../../../selectors/eventSelectors
 import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
 import { EditedEvents } from "../../../../slices/eventSlice";
+import { ParseKeys } from "i18next";
+import ModalContent from "../../../shared/modals/ModalContent";
 
 /**
  * This component renders the summary page of the edit scheduled bulk action
@@ -13,6 +15,16 @@ import { EditedEvents } from "../../../../slices/eventSlice";
 interface RequiredFormProps {
 	editedEvents: EditedEvents[],
 	changedEvents: string[],
+}
+
+type Change = {
+	eventId: string,
+	title: string,
+	changes: {
+		type: ParseKeys,
+		previous: string,
+		next: string
+	}[]
 }
 
 const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
@@ -25,7 +37,7 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 	const { t } = useTranslation();
 
 	// Changes applied to events
-	const [changes, setChanges] = useState<{eventId: string, title: string, changes: { type: string, previous: string, next: string }[]}[]>([]);
+	const [changes, setChanges] = useState<Change[]>([]);
 
 	const seriesOptions = useAppSelector(state => getSchedulingSeriesOptions(state));
 
@@ -36,11 +48,11 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 	}, []);
 
 	const checkForChanges = () => {
-		let changed: {eventId: string, title: string, changes: { type: string, previous: string, next: string }[]}[] = [];
+		let changed: Change[] = [];
 
 		// Loop through each event selected for editing and compare original values and changed values
 		for (const event of formik.values.editedEvents) {
-			let eventChanges : {eventId: string, title: string, changes: { type: string, previous: string, next: string }[]}= {
+			let eventChanges: Change = {
 				eventId: event.eventId,
 				title: event.title,
 				changes: [],
@@ -110,8 +122,8 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 			if (isChanged(event.weekday, event.changedWeekday)) {
 				eventChanges.changes.push({
 					type: "EVENTS.EVENTS.TABLE.WEEKDAY",
-					previous: t("EVENTS.EVENTS.NEW.WEEKDAYSLONG." + event.weekday),
-					next: t("EVENTS.EVENTS.NEW.WEEKDAYSLONG." + event.changedWeekday),
+					previous: t(`EVENTS.EVENTS.NEW.WEEKDAYSLONG.${event.weekday}`),
+					next: t(`EVENTS.EVENTS.NEW.WEEKDAYSLONG.${event.changedWeekday}`),
 				});
 			}
 
@@ -137,59 +149,57 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 
 	return (
 		<>
-			<div className="modal-content active">
-				<div className="modal-body">
-					{changes.length > 0 ? (
-						<div className="full-col">
-							{/*Repeat for each changed event*/}
-							{changes.map((event, key) => (
-								<div key={key} className="obj tbl-list">
-									<header>
-										{t(
-											"BULK_ACTIONS.EDIT_EVENTS.SUMMARY.SINGLE_EVENT_CAPTION",
-											{ title: event.title }
-										)}
-									</header>
-									<div className="obj-container">
-										<table className="main-tbl">
-											<thead>
-												<tr>
-													<th className="fit">
-														{t("BULK_ACTIONS.EDIT_EVENTS.SUMMARY.TYPE")}
-													</th>
-													<th className="fit">
-														{t("BULK_ACTIONS.EDIT_EVENTS.SUMMARY.PREVIOUS")}
-													</th>
-													<th className="fit">
-														{t("BULK_ACTIONS.EDIT_EVENTS.SUMMARY.NEXT")}
-													</th>
+			<ModalContent modalContentClassName="modal-content active">
+				{changes.length > 0 ? (
+					<div className="full-col">
+						{/*Repeat for each changed event*/}
+						{changes.map((event, key) => (
+							<div key={key} className="obj tbl-list">
+								<header>
+									{t(
+										"BULK_ACTIONS.EDIT_EVENTS.SUMMARY.SINGLE_EVENT_CAPTION",
+										{ title: event.title }
+									)}
+								</header>
+								<div className="obj-container">
+									<table className="main-tbl">
+										<thead>
+											<tr>
+												<th className="fit">
+													{t("BULK_ACTIONS.EDIT_EVENTS.SUMMARY.TYPE")}
+												</th>
+												<th className="fit">
+													{t("BULK_ACTIONS.EDIT_EVENTS.SUMMARY.PREVIOUS")}
+												</th>
+												<th className="fit">
+													{t("BULK_ACTIONS.EDIT_EVENTS.SUMMARY.NEXT")}
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											{/* Add table row with old value and new one if something has changed */}
+											{event.changes.map((row, key) => (
+												<tr key={key}>
+													<td>{t(row.type)}</td>
+													<td>{row.previous}</td>
+													<td className="highlighted-cell">{row.next}</td>
 												</tr>
-											</thead>
-											<tbody>
-												{/* Add table row with old value and new one if something has changed */}
-												{event.changes.map((row, key) => (
-													<tr key={key}>
-														<td>{t(row.type)}</td>
-														<td>{row.previous}</td>
-														<td className="highlighted-cell">{row.next}</td>
-													</tr>
-												))}
-											</tbody>
-										</table>
-									</div>
+											))}
+										</tbody>
+									</table>
 								</div>
-							))}
-						</div>
-					) : (
-						<div className="row">
-							{/* Show only if there no changes*/}
-							<div className="alert sticky warning">
-								<p>{t("BULK_ACTIONS.EDIT_EVENTS.GENERAL.NOCHANGES")}</p>
 							</div>
+						))}
+					</div>
+				) : (
+					<div className="row">
+						{/* Show only if there no changes*/}
+						<div className="alert sticky warning">
+							<p>{t("BULK_ACTIONS.EDIT_EVENTS.GENERAL.NOCHANGES")}</p>
 						</div>
-					)}
-				</div>
-			</div>
+					</div>
+				)}
+			</ModalContent>
 
 			{/* Navigation buttons */}
 			<WizardNavigationButtons

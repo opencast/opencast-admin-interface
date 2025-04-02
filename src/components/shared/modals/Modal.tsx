@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../configs/hotkeysConfig";
 import { useTranslation } from "react-i18next";
+import ButtonLikeAnchor from "../ButtonLikeAnchor";
 // TODO: Implement focus trapping
 // Attempted to do that with focus-trap-react, but it would not focus
 // the correct element in e.g. the new event modal
@@ -54,8 +55,7 @@ export const Modal = forwardRef<ModalHandle, PropsWithChildren<ModalProps>>(({
 
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
-		// TODO: Figure out what typescripts problem is
-		//@ts-ignore
+		//@ts-expect-error: TODO: Figure out what typescripts problem is
 		() => ref?.current.close?.(),
 		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
 		[ref],
@@ -70,9 +70,9 @@ export const Modal = forwardRef<ModalHandle, PropsWithChildren<ModalProps>>(({
 					className={className ? className : "modal wizard modal-animation"}
 				>
 					<header>
-						<button
-							className="button-like-anchor fa fa-times close-modal"
-							//@ts-ignore
+						<ButtonLikeAnchor
+							extraClassName="fa fa-times close-modal"
+							//@ts-expect-error: TODO: Figure out what typescripts problem is
 							onClick={() => ref?.current.close?.()}
 							tabIndex={0}
 						/>

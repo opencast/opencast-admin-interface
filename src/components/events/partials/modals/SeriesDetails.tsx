@@ -25,7 +25,9 @@ import {
 	updateSeriesMetadata,
 } from "../../../../slices/seriesDetailsSlice";
 import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { removeNotificationWizardTobira } from "../../../../slices/notificationSlice";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the tabs of the series details modal
@@ -65,7 +67,12 @@ const SeriesDetails = ({
 	const themesEnabled = (orgProperties['admin.themes.enabled'] || 'false').toLowerCase() === 'true';
 
 	// information about each tab
-	const tabs = [
+	const tabs: {
+		tabNameTranslation: ParseKeys,
+		accessRole: string,
+		name: string,
+		hidden?: boolean,
+	}[] = [
 		{
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.METADATA",
 			accessRole: "ROLE_UI_SERIES_DETAILS_METADATA_VIEW",
@@ -111,13 +118,13 @@ const SeriesDetails = ({
 			{/* navigation for navigating between tabs */}
 			<nav className="modal-nav" id="modal-nav">
 				{tabs.map((tab, index) => !tab.hidden && hasAccess(tab.accessRole, user) && (
-					<button
+					<ButtonLikeAnchor
 						key={tab.name}
-						className={"button-like-anchor " + cn({ active: page === index })}
+						extraClassName={cn({ active: page === index })}
 						onClick={() => openTab(index)}
 					>
 						{t(tab.tabNameTranslation)}
-					</button>
+					</ButtonLikeAnchor>
 				))}
 			</nav>
 

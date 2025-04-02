@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import GroupMetadataPage from "../wizard/GroupMetadataPage";
 import GroupRolesPage from "../wizard/GroupRolesPage";
@@ -9,6 +9,7 @@ import ModalNavigation from "../../../shared/modals/ModalNavigation";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { UpdateGroupDetailsState, updateGroupDetails } from "../../../../slices/groupDetailsSlice";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the group details
@@ -20,19 +21,25 @@ const GroupDetails: React.FC<{
 }) => {
 	const dispatch = useAppDispatch();
 
-	const [page, setPage] = useState(0);
-
 	const groupDetails = useAppSelector(state => getGroupDetails(state));
 
-	// transform roles for use in SelectContainer
-	let roleNames = [];
-	for (let i = 0; i < groupDetails.roles.length; i++) {
-		if (!groupDetails.roles[i].startsWith("ROLE_GROUP")) {
-			roleNames.push({
-				name: groupDetails.roles[i],
-			});
+	const [page, setPage] = useState(0);
+		// transform roles for use in SelectContainer
+
+	const [roleNames, setRoleNames] = useState<{ name: string }[]>([]);
+
+
+	useEffect(() => {
+		const roleNames = [];
+		for (let i = 0; i < groupDetails.roles.length; i++) {
+			if (!groupDetails.roles[i].startsWith("ROLE_GROUP")) {
+				roleNames.push({
+					name: groupDetails.roles[i],
+				});
+			}
 		}
-	}
+		setRoleNames(roleNames);
+	}, [groupDetails.roles]);
 
 	const initialValues = {
 		...groupDetails,
@@ -40,7 +47,11 @@ const GroupDetails: React.FC<{
 	};
 
 	// information about tabs
-	const tabs = [
+	const tabs: {
+		tabTranslation: ParseKeys
+		accessRole: string
+		name: string
+	}[] = [
 		{
 			tabTranslation: "USERS.GROUPS.DETAILS.TABS.GROUP",
 			accessRole: "ROLE_UI_GROUPS_EDIT",

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import cn from "classnames";
 import { useLocation } from "react-router";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
@@ -16,8 +15,6 @@ import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
 import Footer from "../Footer";
-import { getUserInformation } from "../../selectors/userInfoSelectors";
-import { hasAccess } from "../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
 	fetchSeries,
@@ -26,12 +23,11 @@ import {
 	showActionsSeries,
 } from "../../slices/seriesSlice";
 import { fetchSeriesDetailsTobiraNew } from "../../slices/seriesSlice";
-import { eventsLinks, loadSeries } from "./partials/EventsNavigation";
+import { eventsLinks } from "./partials/EventsNavigation";
 import { Modal, ModalHandle } from "../shared/modals/Modal";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
-
-// References for detecting a click outside of the container of the dropdown menu
-const containerAction = React.createRef<HTMLDivElement>();
+import TableActionDropdown from "../shared/TableActionDropdown";
+import { resetTableProperties } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of series
@@ -39,12 +35,9 @@ const containerAction = React.createRef<HTMLDivElement>();
 const Series = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
-	const [displayActionMenu, setActionMenu] = useState(false);
 	const [displayNavigation, setNavigation] = useState(false);
 	const newSeriesModalRef = useRef<ModalHandle>(null);
 	const deleteModalRef = useRef<ModalHandle>(null);
-
-  const user = useAppSelector(state => getUserInformation(state));
 
 	let location = useLocation();
 
@@ -52,6 +45,12 @@ const Series = () => {
 	const showActions = useAppSelector(state => isShowActions(state));
 
 	useEffect(() => {
+		// State variable for interrupting the load function
+		let allowLoadIntoTable = true;
+
+		// Clear table of previous data
+		dispatch(resetTableProperties());
+
 		dispatch(fetchFilters("series"))
 
 		// Reset text filer
@@ -61,35 +60,26 @@ const Series = () => {
 		dispatch(showActionsSeries(false));
 
 		// Load events on mount
-		loadSeries(dispatch);
+		const loadSeries = async () => {
+			// fetching series from server
+			await dispatch(fetchSeries());
 
-		// Function for handling clicks outside of an dropdown menu
-		const handleClickOutside = (e: MouseEvent) => {
-			if (
-				containerAction.current &&
-				!containerAction.current.contains(e.target as Node)
-			) {
-				setActionMenu(false);
+			// load series into table
+			if (allowLoadIntoTable) {
+				dispatch(loadSeriesIntoTable());
 			}
 		};
+		loadSeries();
 
 		// Fetch series every minute
-		let fetchSeriesInterval = setInterval(() => loadSeries(dispatch), 5000);
-
-		// Event listener for handle a click outside of dropdown menu
-		window.addEventListener("mousedown", handleClickOutside);
+		let fetchSeriesInterval = setInterval(() => loadSeries(), 5000);
 
 		return () => {
-			window.removeEventListener("mousedown", handleClickOutside);
+			allowLoadIntoTable = false;
 			clearInterval(fetchSeriesInterval);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location.hash]);
-
-	const handleActionMenu = (e: React.MouseEvent) => {
-		e.preventDefault();
-		setActionMenu(!displayActionMenu);
-	};
 
 	const onNewSeriesModal = async () => {
 		await dispatch(fetchSeriesMetadata());
@@ -137,25 +127,16 @@ const Series = () => {
 
 				<div className="controls-container">
 					<div className="filters-container">
-						<div
-							className={cn("drop-down-container", { disabled: !showActions })}
-							onClick={(e) => handleActionMenu(e)}
-							ref={containerAction}
-						>
-							<span>{t("BULK_ACTIONS.CAPTION")}</span>
-							{/* show dropdown if actions is clicked*/}
-							{displayActionMenu && (
-								<ul className="dropdown-ul">
-									{hasAccess("ROLE_UI_SERIES_DELETE", user) && (
-										<li>
-											<button className="button-like-anchor" onClick={() => deleteModalRef.current?.open()}>
-												{t("BULK_ACTIONS.DELETE.SERIES.CAPTION")}
-											</button>
-										</li>
-									)}
-								</ul>
-							)}
-						</div>
+						<TableActionDropdown
+							actions={[
+								{
+									accessRole: ["ROLE_UI_SERIES_DELETE"],
+									handleOnClick: () => deleteModalRef.current?.open(),
+									text: "BULK_ACTIONS.DELETE.SERIES.CAPTION",
+								},
+							]}
+							disabled={!showActions}
+						/>
 						{/* Include filters component */}
 						<TableFilters
 							loadResource={fetchSeries}

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import cn from "classnames";
 import { useLocation } from "react-router";
 import TableFilters from "../shared/TableFilters";
 import Stats from "../shared/Stats";
@@ -36,11 +35,10 @@ import {
 } from "../../slices/eventSlice";
 import EventDetailsModal from "./partials/modals/EventDetailsModal";
 import { showModal } from "../../selectors/eventDetailsSelectors";
-import { eventsLinks, loadEvents } from "./partials/EventsNavigation";
+import { eventsLinks } from "./partials/EventsNavigation";
 import { Modal, ModalHandle } from "../shared/modals/Modal";
-
-// References for detecting a click outside of the container of the dropdown menu
-const containerAction = React.createRef<HTMLDivElement>();
+import TableActionDropdown from "../shared/TableActionDropdown";
+import { resetTableProperties } from "../../slices/tableSlice";
 
 /**
  * This component renders the table view of events
@@ -51,7 +49,6 @@ const Events = () => {
 
 	const displayEventDetailsModal = useAppSelector(state => showModal(state));
 
-	const [displayActionMenu, setActionMenu] = useState(false);
 	const [displayNavigation, setNavigation] = useState(false);
 	const newEventModalRef = useRef<ModalHandle>(null);
 	const startTaskModalRef = useRef<ModalHandle>(null);
@@ -67,6 +64,12 @@ const Events = () => {
 	let location = useLocation();
 
 	useEffect(() => {
+		// State variable for interrupting the load function
+		let allowLoadIntoTable = true;
+
+		// Clear redux of previous table data
+		dispatch(resetTableProperties());
+
 		dispatch(fetchFilters("events"))
 
 		// Reset text filter
@@ -76,35 +79,27 @@ const Events = () => {
 		dispatch(setShowActions(false));
 
 		// Load events on mount
-		loadEvents(dispatch);
+		const loadEvents = async () => {
+			// Fetching events from server
+			await dispatch(fetchEvents());
 
-		// Function for handling clicks outside of an open dropdown menu
-		const handleClickOutside = (e: MouseEvent) => {
-			if (
-				containerAction.current &&
-				!containerAction.current.contains(e.target as Node)
-			) {
-				setActionMenu(false);
+			// Load events into table
+			if (allowLoadIntoTable) {
+				dispatch(loadEventsIntoTable());
 			}
-		};
+		}
+		// call the function
+		loadEvents();
 
 		// Fetch events every five seconds
-		let fetchEventsInterval = setInterval(() => loadEvents(dispatch), 5000);
-
-		// Event listener for handle a click outside of dropdown menu
-		window.addEventListener("mousedown", handleClickOutside);
+		let fetchEventsInterval = setInterval(() => loadEvents(), 5000);
 
 		return () => {
-			window.removeEventListener("mousedown", handleClickOutside);
+			allowLoadIntoTable = false;
 			clearInterval(fetchEventsInterval);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location.hash]);
-
-	const handleActionMenu = (e: React.MouseEvent) => {
-		e.preventDefault();
-		setActionMenu(!displayActionMenu);
-	};
 
 	const onNewEventModal = async () => {
 		await dispatch(fetchEventMetadata());
@@ -196,48 +191,31 @@ const Events = () => {
 
 				<div className="controls-container">
 					<div className="filters-container">
-						<div
-							className={cn("drop-down-container", { disabled: !showActions })}
-							onClick={(e) => handleActionMenu(e)}
-							ref={containerAction}
-						>
-							<span>{t("BULK_ACTIONS.CAPTION")}</span>
-							{/* show dropdown if actions is clicked*/}
-							{displayActionMenu && (
-								<ul className="dropdown-ul">
-									{hasAccess("ROLE_UI_EVENTS_DELETE", user) && (
-										<li>
-											<button className="button-like-anchor" onClick={() => deleteModalRef.current?.open()}>
-												{t("BULK_ACTIONS.DELETE.EVENTS.CAPTION")}
-											</button>
-										</li>
-									)}
-									{hasAccess("ROLE_UI_TASKS_CREATE", user) && (
-										<li>
-											<button className="button-like-anchor" onClick={() => startTaskModalRef.current?.open()}>
-												{t("BULK_ACTIONS.SCHEDULE_TASK.CAPTION")}
-											</button>
-										</li>
-									)}
-									{hasAccess("ROLE_UI_EVENTS_DETAILS_SCHEDULING_EDIT", user) &&
-										hasAccess("ROLE_UI_EVENTS_DETAILS_METADATA_EDIT", user) && (
-											<li>
-												<button className="button-like-anchor" onClick={() => editScheduledEventsModalRef.current?.open()}>
-													{t("BULK_ACTIONS.EDIT_EVENTS.CAPTION")}
-												</button>
-											</li>
-										)}
-									{hasAccess("ROLE_UI_EVENTS_DETAILS_METADATA_EDIT", user) && (
-										<li>
-											<button className="button-like-anchor" onClick={() => editMetadataEventsModalRef.current?.open()}>
-												{t("BULK_ACTIONS.EDIT_EVENTS_METADATA.CAPTION")}
-											</button>
-										</li>
-									)}
-								</ul>
-							)}
-						</div>
-
+						<TableActionDropdown
+							actions={[
+								{
+									accessRole: ["ROLE_UI_EVENTS_DELETE"],
+									handleOnClick: () => deleteModalRef.current?.open(),
+									text: "BULK_ACTIONS.DELETE.EVENTS.CAPTION",
+								},
+								{
+									accessRole: ["ROLE_UI_TASKS_CREATE"],
+									handleOnClick: () => startTaskModalRef.current?.open(),
+									text: "BULK_ACTIONS.SCHEDULE_TASK.CAPTION",
+								},
+								{
+									accessRole: ["ROLE_UI_EVENTS_DETAILS_SCHEDULING_EDIT", "ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"],
+									handleOnClick: () => editScheduledEventsModalRef.current?.open(),
+									text: "BULK_ACTIONS.EDIT_EVENTS.CAPTION",
+								},
+								{
+									accessRole: ["ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"],
+									handleOnClick: () => editMetadataEventsModalRef.current?.open(),
+									text: "BULK_ACTIONS.EDIT_EVENTS_METADATA.CAPTION",
+								}
+							]}
+							disabled={!showActions}
+						/>
 						{/* Include filters component*/}
 						<TableFilters
 							loadResource={fetchEvents}

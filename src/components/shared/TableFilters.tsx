@@ -27,9 +27,10 @@ import moment from "moment";
 import { AppThunk, useAppDispatch, useAppSelector } from "../../store";
 import { renderValidDate } from "../../utils/dateUtils";
 import { getCurrentLanguageInformation } from "../../utils/utils";
-import { Tooltip } from "./Tooltip";
 import DropDown from "./DropDown";
 import { AsyncThunk } from "@reduxjs/toolkit";
+import ButtonLikeAnchor from "./ButtonLikeAnchor";
+import { ParseKeys } from "i18next";
 
 /**
  * This component renders the table filters in the upper right corner of the table
@@ -78,7 +79,7 @@ const TableFilters = ({
 		dispatch(resetFilterValues())
 
 		// Reload resources when filters are removed
-		await dispatch(loadResource);
+		await dispatch(loadResource());
 		dispatch(loadResourceIntoTable());
 	};
 
@@ -141,14 +142,16 @@ const TableFilters = ({
 	};
 
 	useEffect(() => {
-		// Call to apply filter changes with 500MS debounce!
-		let applyFilterChangesDebouncedTimeoutId = setTimeout(applyFilterChangesDebounced, 500);
+		if (itemValue) {
+			// Call to apply filter changes with 500MS debounce!
+			let applyFilterChangesDebouncedTimeoutId = setTimeout(applyFilterChangesDebounced, 500);
 
-		return () => clearTimeout(applyFilterChangesDebouncedTimeoutId);
+			return () => clearTimeout(applyFilterChangesDebouncedTimeoutId);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [itemValue]);
 
-	const handleDatepicker = async (dates?:  [Date | undefined | null, Date | undefined | null]) => {
+	const handleDatepicker = async (dates?: [Date | undefined | null, Date | undefined | null]) => {
 		if (dates != null) {
 			let [start, end] = dates;
 
@@ -161,14 +164,18 @@ const TableFilters = ({
 
 			submitDateFilter(start, end);
 
-			if (start) setStartDate(start);
-			if (end) setEndDate(end);
+			if (start) {
+				setStartDate(start);
+			}
+			if (end) {
+				setEndDate(end);
+			}
 		}
 	}
 
 	// Workaround for entering a date range by only entering one date
 	// (e.g. 01/01/2025 results in a range of 01/01/2025 - 01/01/2025)
-	const handleDatePickerOnKeyDown = async(keyEvent: React.KeyboardEvent<HTMLElement>) => {
+	const handleDatePickerOnKeyDown = async (keyEvent: React.KeyboardEvent<HTMLElement>) => {
 		if (keyEvent.key === "Enter") {
 			let end = endDate ?? (startDate ? new Date(startDate) : undefined);
 			end?.setHours(23);
@@ -182,7 +189,7 @@ const TableFilters = ({
 		}
 	}
 
-	const submitDateFilter = async(start: Date | undefined | null, end: Date | undefined | null) => {
+	const submitDateFilter = async (start: Date | undefined | null, end: Date | undefined | null) => {
 		if (start && end && moment(start).isValid() && moment(end).isValid()) {
 			let filter = filterMap.find(({ name }) => name === selectedFilter);
 			if (filter) {
@@ -212,14 +219,14 @@ const TableFilters = ({
 			?.label || filter.value;
 		return (
 			<span className="table-filter-blue-box">
-				{t(filter.label)}:
-				{filter.translatable? t(valueLabel) : valueLabel}
+				{t(filter.label as ParseKeys)}:
+				{filter.translatable ? t(valueLabel as ParseKeys) : valueLabel}
 			</span>
 		);
 	};
 
 	const getSelectedFilterText = () => {
-		return filter?.label ? t(filter.label) : selectedFilter;
+		return filter?.label ? t(filter.label as ParseKeys) : selectedFilter;
 	}
 
 	return (
@@ -242,11 +249,12 @@ const TableFilters = ({
 				{!!filterMap && (
 					<div className="table-filter">
 						<div className="filters">
-							<Tooltip title={t("TABLE_FILTERS.ADD")}>
-								<button className="button-like-anchor" onClick={() => setFilterSelector(!showFilterSelector)}>
-									<i className="fa fa-filter" />
-								</button>
-							</Tooltip>
+							<ButtonLikeAnchor
+								onClick={() => setFilterSelector(!showFilterSelector)}
+								tooltipText="TABLE_FILTERS.ADD"
+							>
+								<i className="fa fa-filter" />
+							</ButtonLikeAnchor>
 
 							{/*show if icon is clicked*/}
 							{showFilterSelector && (
@@ -259,11 +267,11 @@ const TableFilters = ({
 											? filterMap.filter(
 													(filter) => filter.name !== "presentersBibliographic"
 												)
-												.sort((a, b) => t(a.label).localeCompare(t(b.label))) // Sort alphabetically
+												.sort((a, b) => t(a.label as ParseKeys).localeCompare(t(b.label as ParseKeys))) // Sort alphabetically
 												.map(filter => {
 													return {
 														value: filter.name,
-														label: t(filter.label).substr(0, 40),
+														label: t(filter.label as ParseKeys).substr(0, 40),
 													};
 												})
 											: []
@@ -312,7 +320,7 @@ const TableFilters = ({
 											// Use different representation of name and value depending on type of filter
 											filter.type === "period" ? (
 												<span className="table-filter-blue-box">
-													{t(filter.label)}:
+													{t(filter.label as ParseKeys)}:
 													{t("dateFormats.date.short", {
 														date: renderValidDate(filter.value.split("/")[0]),
 													})}
@@ -326,31 +334,31 @@ const TableFilters = ({
 											)
 										}
 										{/* Remove icon in blue area around filter */}
-										<Tooltip title={t("TABLE_FILTERS.REMOVE")}>
-											<button
-												onClick={() => removeFilter(filter)}
-												className="button-like-anchor"
-											>
-												<i className="fa fa-times" />
-											</button>
-										</Tooltip>
+										<ButtonLikeAnchor
+											onClick={() => removeFilter(filter)}
+											tooltipText="TABLE_FILTERS.REMOVE"
+										>
+											<i className="fa fa-times" />
+										</ButtonLikeAnchor>
 									</span>
 								);
 							})}
 						</div>
 
 						{/* Remove icon to clear all filters */}
-						<Tooltip title={t("TABLE_FILTERS.CLEAR")}>
-							<button className="button-like-anchor" onClick={removeFilters}>
-								<i className="clear fa fa-times" />
-							</button>
-						</Tooltip>
+						<ButtonLikeAnchor
+							onClick={removeFilters}
+							tooltipText="TABLE_FILTERS.CLEAR"
+						>
+							<i className="clear fa fa-times" />
+						</ButtonLikeAnchor>
 						{/* Settings icon to open filters profile dialog (save and editing filter profiles)*/}
-						<Tooltip title={t("TABLE_FILTERS.PROFILES.FILTERS_HEADER")}>
-							<button className="button-like-anchor" onClick={() => setFilterSettings(!showFilterSettings)}>
-								<i className="settings fa fa-cog fa-times" />
-							</button>
-						</Tooltip>
+						<ButtonLikeAnchor
+							onClick={() => setFilterSettings(!showFilterSettings)}
+							tooltipText="TABLE_FILTERS.PROFILES.FILTERS_HEADER"
+						>
+							<i className="settings fa fa-cog fa-times" />
+						</ButtonLikeAnchor>
 
 						{/* Filter profile dialog for saving and editing filter profiles */}
 						<TableFilterProfiles
@@ -399,7 +407,6 @@ const FilterSwitch = ({
 		return null;
 	}
 
-	// eslint-disable-next-line default-case
 	switch (filter.type) {
 		case "select":
 			return (
@@ -419,7 +426,7 @@ const FilterSwitch = ({
 									} else {
 										return {
 											...option,
-											label: t(option.label).substr(0, 40),
+											label: t(option.label as ParseKeys).substr(0, 40),
 										}
 									}
 								})

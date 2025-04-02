@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import MuiTooltip, { TooltipProps } from "@mui/material/Tooltip";
 
 export const Tooltip = (
-	{ active=true, className, placement="top", ...props }: TooltipProps & { active?: boolean },
+	{ active = true, className, placement = "top", ...props }: TooltipProps & { active?: boolean },
 ) => {
 	const [open, setOpen] = useState(false);
 

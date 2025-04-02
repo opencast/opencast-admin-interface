@@ -12,18 +12,19 @@ import {
 } from "../configs/generalConfig";
 import { getLastAddedNotification } from '../selectors/notificationSelector';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { ParseKeys } from 'i18next';
 
 /**
  * This file contains redux reducer for actions affecting the state of table
  */
 // Calling this "OurNotification" because "Notification" is reserved by the Notifications Web API
 export type OurNotification = {
-	message: string,
+	message: ParseKeys,
 	id: number,
 	hidden: boolean,
 	duration: number,  // in milliseconds. -1 means stay forever
 	type: "error" | "success" | "warning" | "info",
-	parameter?: { [key: string]:  unknown },
+	parameter?: { [key: string]: unknown },
 	key: string,
 	context: string
 }
@@ -82,7 +83,9 @@ export const addNotification = createAppAsyncThunk('notifications/addNotificatio
 		}
 	}
 	// default durations are in seconds. duration needs to be in milliseconds
-	if (duration > 0) duration *= 1000;
+	if (duration > 0) {
+		duration *= 1000;
+	}
 
 	if (!context) {
 		context = "global";
@@ -97,13 +100,13 @@ export const addNotification = createAppAsyncThunk('notifications/addNotificatio
 		id: 0,  // value does not matter, id is set in action
 		type: type,
 		key: key,
-		message: "NOTIFICATIONS." + key,
+		message: "NOTIFICATIONS." + key as ParseKeys,
 		parameter: parameter,
 		duration: duration,
 		hidden: false,
 		context: context,
 	};
-	var dispatchedNotification;
+	let dispatchedNotification;
 	if (!id) {
 		dispatchedNotification = dispatch(createNotification({notification: notification, id: nextNotificationId++}));
 	} else {
