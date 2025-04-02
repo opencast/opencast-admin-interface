@@ -4,7 +4,7 @@ import { IconButton } from "./IconButton";
 import { ModalHandle } from "./modals/Modal";
 import { ParseKeys } from "i18next";
 
-export const ActionCellDelete = <T,>({
+export const ActionCellDelete = <T, >({
 	editAccessRole,
 	tooltipText,
 	resourceId,

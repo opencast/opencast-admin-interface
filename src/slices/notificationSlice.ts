@@ -24,7 +24,7 @@ export type OurNotification = {
 	hidden: boolean,
 	duration: number,  // in milliseconds. -1 means stay forever
 	type: "error" | "success" | "warning" | "info",
-	parameter?: { [key: string]:  unknown },
+	parameter?: { [key: string]: unknown },
 	key: string,
 	context: string
 }
@@ -83,7 +83,9 @@ export const addNotification = createAppAsyncThunk('notifications/addNotificatio
 		}
 	}
 	// default durations are in seconds. duration needs to be in milliseconds
-	if (duration > 0) duration *= 1000;
+	if (duration > 0) {
+		duration *= 1000;
+	}
 
 	if (!context) {
 		context = "global";
@@ -104,7 +106,7 @@ export const addNotification = createAppAsyncThunk('notifications/addNotificatio
 		hidden: false,
 		context: context,
 	};
-	var dispatchedNotification;
+	let dispatchedNotification;
 	if (!id) {
 		dispatchedNotification = dispatch(createNotification({notification: notification, id: nextNotificationId++}));
 	} else {

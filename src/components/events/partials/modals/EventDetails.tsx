@@ -231,7 +231,7 @@ const EventDetails = ({
 				{tabs.map((tab, index) => !tab.hidden && hasAccess(tab.accessRole, user) && (
 					<ButtonLikeAnchor
 						key={tab.name}
-						extraClassName={cn({ active: page === index })}
+						extraClassName={cn({ active: page === tab.page })}
 						onClick={() => openTab(index)}
 					>
 						{t(tab.tabNameTranslation)}
@@ -259,16 +259,16 @@ const EventDetails = ({
 						formikRef={formikRef}
 					/>
 				)}
-				{page === 2 && <EventDetailsPublicationTab eventId={eventId} />}
+				{page === EventDetailsPage.Publication && <EventDetailsPublicationTab eventId={eventId} />}
 				{page === EventDetailsPage.Assets && (
 					<EventDetailsAssetsTab
 						eventId={eventId}
 					/>
 				)}
-				{page === 4 && !isLoadingScheduling && (
+				{page === EventDetailsPage.Scheduling && !isLoadingScheduling && (
 					<EventDetailsSchedulingTab
-					eventId={eventId}
-					formikRef={formikRef}
+						eventId={eventId}
+						formikRef={formikRef}
 					/>
 				)}
 				{page === EventDetailsPage.Workflow &&
