@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import { initialFormValuesEditScheduledEvents } from "../../../../configs/modalConfig";
-import WizardStepper from "../../../shared/wizard/WizardStepper";
+import WizardStepper, { WizardStep } from "../../../shared/wizard/WizardStepper";
 import EditScheduledEventsGeneralPage from "../ModalTabsAndPages/EditScheduledEventsGeneralPage";
 import EditScheduledEventsEditPage from "../ModalTabsAndPages/EditScheduledEventsEditPage";
 import EditScheduledEventsSummaryPage from "../ModalTabsAndPages/EditScheduledEventsSummaryPage";
@@ -21,7 +21,6 @@ import {
 } from "../../../../slices/eventSlice";
 import { fetchRecordings } from "../../../../slices/recordingSlice";
 import { Event } from "../../../../slices/eventSlice";
-import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the edit scheduled bulk action
@@ -58,10 +57,12 @@ const EditScheduledEventsModal = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const steps: {
-		translation: ParseKeys
-		name: string
-	}[] = [
+	type StepName = "general" | "edit" | "summary";
+	type Step = WizardStep & {
+		name: StepName,
+	}
+
+	const steps: Step[] = [
 		{
 			translation: "BULK_ACTIONS.EDIT_EVENTS.GENERAL.CAPTION",
 			name: "general",
@@ -137,20 +138,20 @@ const EditScheduledEventsModal = ({
 							{/* Stepper that shows each step of wizard as header */}
 							<WizardStepper
 								steps={steps}
-								page={page}
-								setPage={setPage}
+								activePageIndex={page}
+								setActivePage={setPage}
 								completed={pageCompleted}
 								setCompleted={setPageCompleted}
 								formik={formik}
 							/>
 							<div>
-								{page === 0 && (
+								{steps[page].name === "general" && (
 									<EditScheduledEventsGeneralPage
 										formik={formik}
 										nextPage={nextPage}
 									/>
 								)}
-								{page === 1 && (
+								{steps[page].name === "edit" && (
 									<EditScheduledEventsEditPage
 										formik={formik}
 										nextPage={nextPage}
@@ -160,7 +161,7 @@ const EditScheduledEventsModal = ({
 										setPageCompleted={setPageCompleted}
 									/>
 								)}
-								{page === 2 && (
+								{steps[page].name === "summary" && (
 									<EditScheduledEventsSummaryPage
 										formik={formik}
 										previousPage={previousPage}
