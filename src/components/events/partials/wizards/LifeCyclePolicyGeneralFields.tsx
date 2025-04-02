@@ -167,7 +167,7 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 								metadataField={{
 									type: "text",
 									required: true,
-									collection: targetTypes.map((element) => ({ value: element, name: element }) ),
+									collection: targetTypes.map((element) => ({ value: element, name: element })),
 									id: "language",
 								}}
 								component={RenderField}
@@ -182,7 +182,7 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 								metadataField={{
 									type: "text",
 									required: true,
-									collection: timings.map((element) => ({ value: element, name: element }) ),
+									collection: timings.map((element) => ({ value: element, name: element })),
 									id: "language",
 								}}
 								component={RenderField}
@@ -197,7 +197,7 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 								metadataField={{
 									type: "text",
 									required: true,
-									collection: actions.map((element) => ({ value: element, name: element }) ),
+									collection: actions.map((element) => ({ value: element, name: element })),
 									id: "language"
 								}}
 								component={RenderField}
@@ -457,7 +457,7 @@ const DropdownField = ({
 	)
 };
 
-const getTargetFilterRenderType = (filterName: string, targetFilterOptions: { id: string, type: string, collection?: unknown }[] ) => {
+const getTargetFilterRenderType = (filterName: string, targetFilterOptions: { id: string, type: string, collection?: unknown }[]) => {
 	const option = targetFilterOptions.find(e => e.id === filterName);
 	if (option === undefined) {
 		return "text";
@@ -469,7 +469,7 @@ const getTargetFilterRenderType = (filterName: string, targetFilterOptions: { id
 	return option.type;
 }
 
-const getTargetFilterRenderCollection = (filterName: string, targetFilterOptions: { id: string, type: string, collection?: unknown }[] ) => {
+const getTargetFilterRenderCollection = (filterName: string, targetFilterOptions: { id: string, type: string, collection?: unknown }[]) => {
 	const option = targetFilterOptions.find(e => e.id === filterName);
 	return option !== undefined ? option.collection : undefined
 }

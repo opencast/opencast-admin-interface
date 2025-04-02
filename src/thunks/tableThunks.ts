@@ -120,7 +120,7 @@ export const loadSeriesIntoTable = (): AppThunk => (dispatch, getState) => {
 };
 
 export const loadLifeCyclePoliciesIntoTable = (): AppThunk => (dispatch, getState) => {
-	const { lifeCycle, table } = getState() as RootState;
+	const { lifeCycle, table } = getState();
 	const pagination = table.pagination;
 	const resource = lifeCycle.results;
 	const total = lifeCycle.total;

@@ -40,8 +40,7 @@ const LifeCyclePolicyDetailsAccessTab = ({
 			descriptionText={t("LIFECYCLE.POLICIES.DETAILS.ACCESS.DESCRIPTION")}
 			policies={acl}
 			fetchAccessPolicies={fetchLifeCyclePolicyDetailsAcls}
-			// TODO: Figure out why typescript is being funky here
-			// @ts-ignore
+			// @ts-expect-error: TODO: Figure out why typescript is being funky here
 			saveNewAccessPolicies={updateLifeCyclePolicyAccess}
 			editAccessRole={"ROLE_UI_LIFECYCLEPOLICY_DETAILS_ACL_EDIT"}
 			policyChanged={policyChanged}

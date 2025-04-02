@@ -69,8 +69,7 @@ const LifeCyclePolicyGeneralTab = ({
 
 		// Access policies are handled in a different tab
 		// Remove them here, else they will delete the ACL due to their formatting
-		// TODO: Find a typesafe (or straight up better) way to do this
-		// @ts-ignore
+		// @ts-expect-error: TODO: Find a typesafe (or straight up better) way to do this
 		delete initialValues.accessControlEntries
 
 		// Transform filters into something more editable

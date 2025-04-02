@@ -137,11 +137,10 @@ export const updateLifeCyclePolicy = createAppAsyncThunk('lifeCyclePolicyDetails
 		let stringified = value
 		if (stringified instanceof Date) {
 			stringified = stringified.toJSON()
-		}
-		else if (stringified === Object(stringified)) {
+		} else if (stringified === Object(stringified)) {
 			stringified = JSON.stringify(stringified)
 		}
-		// @ts-ignore
+		// @ts-expect-error: ???
 		data.append(key, stringified);
 	})
 

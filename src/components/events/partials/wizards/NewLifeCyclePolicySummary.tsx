@@ -55,7 +55,7 @@ const NewLifeCyclePolicySummary = <T extends typeof initialFormValuesNewLifeCycl
 										</tr>
 										<tr>
 											<td>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.ACTIONDATE")}</td>
-											<td>{t("dateFormats.dateTime.medium", { dateTime: renderValidDate(formik.values.actionDate) } )}</td>
+											<td>{t("dateFormats.dateTime.medium", { dateTime: renderValidDate(formik.values.actionDate) })}</td>
 										</tr>
 										<tr>
 											<td>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.CRONTRIGGER")}</td>
@@ -64,8 +64,8 @@ const NewLifeCyclePolicySummary = <T extends typeof initialFormValuesNewLifeCycl
 										<tr>
 											<td>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.TARGETFILTERS.CAPTION")}</td>
 											<td>
-												{formik.values.targetFiltersArray.map((filter) => (
-													<tr>
+												{formik.values.targetFiltersArray.map((filter, key) => (
+													<tr key={key}>
 														<td>{filter.filter}</td>
 														<td>{filter.value}</td>
 														<td>{filter.type}</td>
@@ -79,9 +79,9 @@ const NewLifeCyclePolicySummary = <T extends typeof initialFormValuesNewLifeCycl
 											<td>
 												{formik.values.action === "START_WORKFLOW" &&
 													<tr>
-														{/*  @ts-ignore */}
+														{/*  @ts-expect-error: Potentially unknown */}
 														<td>{formik.values.actionParameters.workflowId}</td>
-														{/*  @ts-ignore */}
+														{/*  @ts-expect-error: Potentially unknown */}
 														<td>{formik.values.actionParameters.workflowParameters}</td>
 													</tr>
 													}
