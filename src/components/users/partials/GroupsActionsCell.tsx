@@ -3,7 +3,7 @@ import { Group, deleteGroup } from "../../../slices/groupSlice";
 import { fetchGroupDetails } from "../../../slices/groupDetailsSlice";
 import { ActionCellDelete } from "../../shared/ActionCellDelete";
 import { IconButton } from "../../shared/IconButton";
-import { useAppDispatch  } from "../../../store";
+import { useAppDispatch } from "../../../store";
 import { ModalHandle } from "../../shared/modals/Modal";
 import GroupDetailsModal from "./modal/GroupDetailsModal";
 

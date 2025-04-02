@@ -177,7 +177,7 @@ const DeleteSeriesModal = ({
 													type="checkbox"
 													name="selection"
 													checked={series.selected}
-													onChange={(e) => onChangeSelected(e, isSeries(series) ?series.id : "")}
+													onChange={(e) => onChangeSelected(e, isSeries(series) ? series.id : "")}
 													className="child-cbox"
 												/>
 											</td>

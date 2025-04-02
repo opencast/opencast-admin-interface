@@ -5,7 +5,7 @@ import { ParseKeys } from "i18next";
 
 export type ResourceType = "EVENT" | "SERIES" | "LOCATION" | "USER" | "GROUP" | "ACL" | "THEME" | "TOBIRA_PATH" | "LIFECYCLE_POLICY";
 
-const ConfirmModal = <T,>({
+const ConfirmModal = <T, >({
 	close,
 	resourceType,
 	resourceName,

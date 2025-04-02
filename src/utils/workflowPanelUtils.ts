@@ -36,14 +36,12 @@ const fillDefaultConfig = (
     // set only the checked input of radio button as default value
     if (field.type === "radio" && field.checked) {
       defaultConfiguration[field.name] = field.value;
-    }
-    else if (field.type === "datetime-local") {
-      const date = new Date(new Date().toString().split('GMT')[0]+' UTC').toISOString().split('.')[0];
+    } else if (field.type === "datetime-local") {
+      const date = new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0];
       defaultConfiguration[field.name] = date;
       field.defaultValue = date;
-    }
     // set value in default configuration
-    else {
+    } else {
       defaultConfiguration[field.name] = field.value;
     }
 

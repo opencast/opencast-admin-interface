@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOMClient from "react-dom/client";
 import "./index.css";
 import App from "./App";
+import axios from "axios";
 
 // redux imports
 import { persistStore } from "redux-persist";
@@ -30,6 +31,11 @@ const theme = createTheme({
 		modal: 2147483550,
 	}
 })
+
+if (import.meta.env.DEV && import.meta.env.VITE_TEST_SERVER_URL) {
+  axios.defaults.baseURL = import.meta.env.VITE_TEST_SERVER_URL || ""
+  axios.defaults.headers.common['Authorization'] = import.meta.env.VITE_TEST_SERVER_AUTH && ("Basic " + window.btoa(import.meta.env.VITE_TEST_SERVER_AUTH));
+}
 
 const container = document.getElementById("root");
 if (!container) {

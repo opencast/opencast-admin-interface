@@ -4,7 +4,7 @@ import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButt
 import { MetadataCatalog } from "../../../../slices/eventSlice";
 import NewMetadataPage from "./NewMetadataPage";
 
-const NewMetadataExtendedPage = <T,>({
+const NewMetadataExtendedPage = <T, >({
 	formik,
 	nextPage,
 	previousPage,

@@ -26,7 +26,7 @@ function App() {
 		dispatch(fetchOcVersion());
 
 		// Add event listener for back button to check if we are still logged in
-		window.addEventListener("popstate", function(event) {
+		window.addEventListener("popstate", function (event) {
 			dispatch(fetchUserInfo());
 		});
 
