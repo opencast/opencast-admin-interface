@@ -79,7 +79,7 @@ const TableFilters = ({
 		dispatch(resetFilterValues())
 
 		// Reload resources when filters are removed
-		await dispatch(loadResource);
+		await dispatch(loadResource());
 		dispatch(loadResourceIntoTable());
 	};
 
