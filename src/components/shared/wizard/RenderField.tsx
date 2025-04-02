@@ -178,7 +178,7 @@ const EditableDateValue = ({
 	setEditMode: (e: boolean) => void
 	showCheck?: boolean,
 	handleKeyDown: (event: React.KeyboardEvent, type: string) => void
-}) => 
+}) =>
 	editMode ? (
 	<div>
 		<DatePicker
