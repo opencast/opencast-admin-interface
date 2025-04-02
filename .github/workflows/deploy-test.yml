@@ -6,6 +6,10 @@ on:
       - opened
       - synchronize
 
+concurrency:
+  group: pull-request-page
+  cancel-in-progress: false
+
 jobs:
   main:
     runs-on: ubuntu-latest
@@ -31,6 +35,9 @@ jobs:
       - name: build app
         env:
           PUBLIC_URL: /${{ steps.build-path.outputs.build }}
+          NODE_ENV: development
+          VITE_TEST_SERVER_URL: "https://develop.opencast.org"
+          VITE_TEST_SERVER_AUTH: "admin:opencast"
         run: npm run build
 
       - name: prepare git
@@ -62,10 +69,6 @@ jobs:
         working-directory: admin-interface-test
         run: |
           git checkout gh-pages
-
-      - name: include mock data
-        working-directory: admin-interface-test
-        run: cp -rv ../test/GET/* .
 
       - name: store build
         working-directory: admin-interface-test

@@ -68,7 +68,7 @@ const ResourceDetailsAccessPolicyTab = ({
 	policyTemplateId: number,
 	fetchHasActiveTransactions?: AsyncThunk<any, string, any>
 	fetchAccessPolicies: AsyncThunk<any, string, any>,
-	saveNewAccessPolicies:  AsyncThunk<boolean, { id: string, policies: { acl: Acl } }, any>
+	saveNewAccessPolicies: AsyncThunk<boolean, { id: string, policies: { acl: Acl } }, any>
 	descriptionText: ParseKeys,
 	buttonText: ParseKeys,
 	policyTableHeaderText: ParseKeys,
@@ -428,7 +428,6 @@ export const AccessPolicyTable = <T extends AccessPolicyTabFormikProps>({
 		}
 
 		fetchData();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const createPolicy = (role: string, withUser: boolean): TransformedAcl => {
@@ -749,7 +748,6 @@ export const TemplateSelector = <T extends TemplateSelectorProps>({
 		}
 
 		fetchData();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	if (!hasAccess(editAccessRole, user)) {

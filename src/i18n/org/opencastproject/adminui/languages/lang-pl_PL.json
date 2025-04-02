@@ -24,6 +24,7 @@
 	"LOGOUT": "Wyloguj",
 	"RESET": "Wyzeruj",
 	"SELECT_NO_OPTION_SELECTED": "Nie wybrano opcji",
+	"SELECT_NO_OPTION_SELECTED_DASHED": "-- No option selected --",
 	"SELECT_NO_OPTIONS_AVAILABLE": "Brak opcji",
 	"SELECT_NO_MATCHING_RESULTS": "No matching results.",
 	"YES": "Tak",
@@ -569,7 +570,8 @@
 						"CAPTIONS_WEBVTT": "Napisy w formacie WebVTT",
 						"PREVIEW_IMAGE": "Obraz podglądowy",
 						"SMIL": "Katalog Smil",
-						"TRACK_PARTS": "Składowe ścieżki"
+						"TRACK_PARTS": "Składowe ścieżki",
+						"SUBTITLES": "Subtitles"
 					}
 				},
 				"ACCESS": {

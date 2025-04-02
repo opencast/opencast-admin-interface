@@ -3,12 +3,12 @@ import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNaviga
 import Notifications from "../../../shared/Notifications";
 import { style_button_spacing } from "../../../../utils/eventDetailsUtils";
 import { Formik, FormikProps } from "formik";
-import { getAssetUploadOptions } from "../../../../selectors/eventSelectors";
 import { translateOverrideFallback } from "../../../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { setModalAssetsTabHierarchy, updateAssets } from "../../../../slices/eventDetailsSlice";
 import { AssetTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import { getUploadAssetOptions } from "../../../../selectors/eventDetailsSelectors";
 import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
@@ -23,14 +23,9 @@ const EventDetailsAssetsAddAsset = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const uploadAssetOptions = useAppSelector(state => getAssetUploadOptions(state));
+	const uploadAssetOptions = useAppSelector(state => getUploadAssetOptions(state));
 
 	const initialValues: { [key: string]: File } = {};
-
-	// Get upload assets that are not of type track
-	const uploadAssets = uploadAssetOptions.filter(
-		(asset) => asset.type !== "track"
-	);
 
 	const openSubTab = (subTabName: AssetTabHierarchy) => {
 		dispatch(setModalAssetsTabHierarchy(subTabName));
@@ -81,14 +76,14 @@ const EventDetailsAssetsAddAsset = ({
 								{/* file select for upload for different types of assets */}
 								<table className="main-tbl">
 									<tbody>
-										{uploadAssets.length === 0 ? (
+										{uploadAssetOptions && uploadAssetOptions.length === 0 ? (
 											<tr>
 												<td>
 													{t("EVENTS.EVENTS.NEW.UPLOAD_ASSET.NO_OPTIONS")}
 												</td>
 											</tr>
 										) : (
-											uploadAssets.map((asset, key) => (
+											uploadAssetOptions && uploadAssetOptions.map((asset, key) => (
 												<tr key={key}>
 													<td>
 														{" "}

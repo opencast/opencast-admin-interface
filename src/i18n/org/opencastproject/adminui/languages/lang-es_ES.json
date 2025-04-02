@@ -24,6 +24,7 @@
 	"LOGOUT": "Logout",
 	"RESET": "Reset",
 	"SELECT_NO_OPTION_SELECTED": "No option selected",
+	"SELECT_NO_OPTION_SELECTED_DASHED": "-- No option selected --",
 	"SELECT_NO_OPTIONS_AVAILABLE": "No options available",
 	"SELECT_NO_MATCHING_RESULTS": "No se encontraron resultados.",
 	"YES": "Yes",
@@ -569,7 +570,8 @@
 						"CAPTIONS_WEBVTT": "Captions WebVTT",
 						"PREVIEW_IMAGE": "Preview image",
 						"SMIL": "Smil catalog",
-						"TRACK_PARTS": "Track parts"
+						"TRACK_PARTS": "Track parts",
+						"SUBTITLES": "Subtitles"
 					}
 				},
 				"ACCESS": {
