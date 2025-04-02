@@ -16,7 +16,7 @@ const containerAction = React.createRef<HTMLDivElement>();
  */
 const TableActionDropdown = ({
 	actions,
-	disabled=true,
+	disabled = true,
 }: {
 	actions: React.ComponentProps<typeof Action>[]
 	disabled: boolean
@@ -59,11 +59,12 @@ const TableActionDropdown = ({
 			{/* show dropdown if actions is clicked*/}
 			{displayActionMenu && (
 				<ul className="dropdown-ul">
-					{actions.map((action =>
+					{actions.map((action, key) =>
 						<Action
+							key={key}
 							{...action}
 						/>
-					))}
+					)}
 				</ul>
 			)}
 		</div>
