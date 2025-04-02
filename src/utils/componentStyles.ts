@@ -8,6 +8,7 @@ const colorDropDownNormalFocus = "#5897fb";
 const colorDropDownDarkerFocus = "#2a62bc";
 
 export function dropDownStyle(customCss: {
+	isMetadataStyle?: boolean,
 	width?: number | string,
 	optionPaddingTop?: number,
 	optionLineHeight?: string,
@@ -31,14 +32,16 @@ export function dropDownStyle(customCss: {
 		control: (provided, state) => ({
 			...provided,
 			marginBottom: 0,
-			border: `1px solid ${colorDropDownMain}`,
+			border: customCss.isMetadataStyle ? 0 : `1px solid ${colorDropDownMain}`,
 			borderColor: state.selectProps.menuIsOpen
 				? colorDropDownNormalFocus
 				: colorDropDownMain,
 			hoverBorderColor: state.selectProps.menuIsOpen
 				? colorDropDownNormalFocus
 				: colorDropDownMain,
-			boxShadow: state.selectProps.menuIsOpen
+			boxShadow: customCss.isMetadataStyle
+				? `0 0 0 0px`
+				: state.selectProps.menuIsOpen
 				? `0 0 0 1px ${colorDropDownNormalFocus}`
 				: `0 0 0 1px ${colorDropDownMain}`,
 			borderRadius: 4,
@@ -46,6 +49,14 @@ export function dropDownStyle(customCss: {
 			paddingBottom: 0,
 			"&:hover": {
 				borderColor: colorDropDownMain,
+			},
+
+			...customCss.isMetadataStyle && {
+				backgroundColor: "transparent",
+				"& div": {
+					padding: "0 !important",
+					paddingLeft: "0 !important",
+				},
 			},
 		}),
 		dropdownIndicator: (provided, state) => ({
@@ -58,6 +69,9 @@ export function dropDownStyle(customCss: {
 			color: colorDropDownMain,
 			"&:hover": {
 				color: colorDropDownNormalFocus,
+			},
+			...customCss.isMetadataStyle && {
+				display: "none",
 			},
 		}),
 		indicatorSeparator: (provided, state) => ({
