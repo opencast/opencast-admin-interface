@@ -151,7 +151,7 @@ const EditScheduledEventsModal = ({
 										nextPage={nextPage}
 									/>
 								)}
-								{steps[page].name === "edit"  && (
+								{steps[page].name === "edit" && (
 									<EditScheduledEventsEditPage
 										formik={formik}
 										nextPage={nextPage}
@@ -161,7 +161,7 @@ const EditScheduledEventsModal = ({
 										setPageCompleted={setPageCompleted}
 									/>
 								)}
-								{steps[page].name === "summary"  && (
+								{steps[page].name === "summary" && (
 									<EditScheduledEventsSummaryPage
 										formik={formik}
 										previousPage={previousPage}

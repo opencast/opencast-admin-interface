@@ -111,13 +111,13 @@ const StartTaskModal = ({
 								formik={formik}
 							/>
 							<div>
-								{steps[page].name === "general"  && (
+								{steps[page].name === "general" && (
 									<StartTaskGeneralPage
 										formik={formik}
 										nextPage={nextPage}
 									/>
 								)}
-								{steps[page].name === "tasks"  && (
+								{steps[page].name === "tasks" && (
 									<StartTaskWorkflowPage
 										formik={formik}
 										nextPage={nextPage}
@@ -125,7 +125,7 @@ const StartTaskModal = ({
 										setPageCompleted={setPageCompleted}
 									/>
 								)}
-								{steps[page].name === "summary"  && (
+								{steps[page].name === "summary" && (
 									<StartTaskSummaryPage
 										formik={formik}
 										previousPage={previousPage}

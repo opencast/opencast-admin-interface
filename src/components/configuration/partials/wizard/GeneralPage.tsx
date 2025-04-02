@@ -11,7 +11,7 @@ import ModalContentTable from "../../../shared/modals/ModalContentTable";
  * and for themes in the themes details modal.
  * Here, additional information, like name, for themes can be provided.
  */
-const GeneralPage = <T,>({
+const GeneralPage = <T, >({
 	formik,
 	nextPage,
 	isEdit,
@@ -35,7 +35,7 @@ const GeneralPage = <T,>({
 				<div className="form-container">
 					<div className="row">
 						<Notifications context={"other"}/>
-						<label className="required" style={isEdit ? editStyle: undefined}>
+						<label className="required" style={isEdit ? editStyle : undefined}>
 							{t("CONFIGURATION.THEMES.DETAILS.GENERAL.NAME")}
 						</label>
 						<Field
@@ -48,7 +48,7 @@ const GeneralPage = <T,>({
 						/>
 					</div>
 					<div className="row">
-						<label style={isEdit ? editStyle: undefined}>
+						<label style={isEdit ? editStyle : undefined}>
 							{t("CONFIGURATION.THEMES.DETAILS.GENERAL.DESCRIPTION")}
 						</label>
 						<Field
