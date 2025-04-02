@@ -1696,7 +1696,6 @@
 				"HOST_NAME": "Host name",
 				"NODE_NAME": "Node name",
 				"CORES": "Cores",
-				"COMPLETED": "Jobs completed",
 				"RUNNING": "Jobs running",
 				"QUEUED": "Jobs queued",
 				"MAINTENANCE": "Maintenance",
