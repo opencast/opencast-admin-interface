@@ -947,7 +947,7 @@ export const fetchEventDetailsTobira = createAppAsyncThunk('eventDetails/fetchEv
 		.catch(response => handleTobiraError(response, dispatch));
 
 	if (!res) {
-		throw Error;
+		throw new Error();
 	}
 
 	const data = res.data;
@@ -1224,7 +1224,7 @@ if (endDate < now) {
 					addNotification({
 						type: "error",
 						key: "CONFLICT_DETECTED",
-						duration:-1,
+						duration: -1,
 						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					})
@@ -1255,7 +1255,7 @@ if (endDate < now) {
 					addNotification({
 						type: "error",
 						key: "CONFLICT_DETECTED",
-						duration:-1,
+						duration: -1,
 						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					})
@@ -2406,7 +2406,7 @@ const eventDetailsSlice = createSlice({
 					time_in_queue: 0,
 				};
 				state.workflowOperationDetails = emptyOperationDetails;
-				state.errorWorkflowOperationDetails= action.error;
+				state.errorWorkflowOperationDetails = action.error;
 			})
 			// fetchWorkflowErrors
 			.addCase(fetchWorkflowErrors.pending, (state) => {

@@ -132,10 +132,6 @@ const EditTableViewModalContent = ({
 			case "groups": return groupsTableConfig;
 			case "acls": return aclsTableConfig;
 			case "themes": return themesTableConfig;
-			default: {
-				console.warn("Resource of type " + resource + " is undefined for tableConfigs.")
-				return undefined;
-			}
 		}
 	}
 

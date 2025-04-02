@@ -3,7 +3,7 @@ import { FormikProps } from "formik";
 import NavigationButtons from "../NavigationButtons";
 import { ParseKeys } from "i18next";
 
-const WizardNavigationButtons = <T,>({
+const WizardNavigationButtons = <T, >({
 	isFirst,
 	isLast,
 	noValidation, // Do not validate
