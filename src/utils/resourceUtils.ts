@@ -46,7 +46,7 @@ export const getURLParams = (
 		filters.push(["textFilter", textFilter]);
 	}
 	// transform filters for use as URL param
-	for (let key in filterMap) {
+	for (const [key, _] of filterMap.entries()) {
 		if (!!filterMap[key].value) {
 			filters.push([filterMap[key].name, filterMap[key].value.toString()]);
 		}

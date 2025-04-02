@@ -161,7 +161,7 @@ const FileUpload = <T extends RequiredFormProps>({
 			</div>
 
 			{/* render progress bar while loaded is under 100 and a file is in the upload */}
-			{!! file && !!file.name && loaded < 100 && (
+			{!!file && !!file.name && loaded < 100 && (
 				<div className="list-sub-row file-management">
 					<div className="progress-container">
 						<div className="progress compact">

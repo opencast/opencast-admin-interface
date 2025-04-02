@@ -9,7 +9,7 @@ import type { ChartOptions, TooltipItem } from 'chart.js';
  */
 
 /* creates callback function for formatting the labels of the xAxis in a statistics diagram */
-function createXAxisTickCallback (
+function createXAxisTickCallback(
 	timeMode: TimeMode,
 	dataResolution: DataResolution,
 	language: string,
@@ -36,8 +36,7 @@ function createXAxisTickCallback (
 	}
 
 	return function (tickValue: number | string) {
-		// Typescript does not like "this", but the chart.js documentation insists we should do it this way
-		// @ts-ignore
+		// @ts-expect-error: Typescript does not like "this", but the chart.js documentation insists we should do it this way
 		return moment(this.getLabelForValue(tickValue)).locale(language).format(formatString);
 	};
 };
@@ -153,5 +152,5 @@ export const createDownloadUrl = (
 		to: moment(to).endOf("day").toJSON(),
 	});
 
-	return "/admin-ng/statistics/export.csv?" + csvUrlSearchParams;
+	return "/admin-ng/statistics/export.csv?" + csvUrlSearchParams.toString();
 };

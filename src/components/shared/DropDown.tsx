@@ -18,7 +18,7 @@ export type DropDownOption = {
 /**
  * This component provides a bar chart for visualising (statistics) data
  */
-const DropDown = <T,>({
+const DropDown = <T, >({
 	ref = React.createRef<SelectInstance<any, boolean, GroupBase<any>>>(),
 	value,
 	text,
@@ -80,7 +80,7 @@ const DropDown = <T,>({
 	}
 
 	const formatOptions = (
-		unformattedOptions: DropDownOption[],//any[],
+		unformattedOptions: DropDownOption[],
 		filterText: string,
 		required: boolean,
 	) => {
