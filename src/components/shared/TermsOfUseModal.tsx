@@ -57,7 +57,7 @@ const TermsOfUseModal = () => {
 	const handleSubmit = async (values) => {
 		let body = new URLSearchParams();
 		body.append("key", "agreedToTerms");
-		body.append("value", values.agreedToTerms == true);
+		body.append("value", values.agreedToTerms ? "true" : "false");
 
 		await axios.post("/admin-ng/user-settings/setting", body, {
 			headers: {
