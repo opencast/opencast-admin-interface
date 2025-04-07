@@ -256,7 +256,7 @@
 				"UNAUTHORIZED": "Vous n'êtes pas autorisé à supprimer les événements sélectionnés . Veuillez les désélectionner pour continuer."
 			}
 		},
-		"DELETE_EVENTS_WARNING_LINE1": "Une fois supprimés, toutes les métadonnées, les fichiers audio et vidéo seront supprimés et rendus irrécupérable.",
+		"DELETE_EVENTS_WARNING_LINE1": "Once deleted, all event metadata, audio and video files are irrevocably gone.",
 		"DELETE_EVENTS_WARNING_LINE2": "",
 		"DELETE_SERIES_WARNING_LINE1": "Une fois supprimées, toutes les métadonnées seront rendues irrécupérables.",
 		"DELETE_SERIES_WARNING_LINE2": "",
