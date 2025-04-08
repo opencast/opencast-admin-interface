@@ -1707,6 +1707,7 @@
 		"SERVICES": {
 			"TABLE": {
 				"CAPTION": "Services",
+				"ONLINE": "Online",
 				"STATUS": "Status",
 				"NAME": "Service name",
 				"HOST_NAME": "Host name",
