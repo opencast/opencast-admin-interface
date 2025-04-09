@@ -88,8 +88,6 @@ const LifeCyclePolicies = () => {
 					onShowModal: showNewPolicyModal,
 					text: "LIFECYCLE.POLICIES.TABLE.ADD_POLICY",
 					resource: "lifecyclepolicy",
-					hotkeySequence: availableHotkeys.general.NEW_LIFECYCLEPOLICY.sequence,
-					hotkeyDescription: availableHotkeys.general.NEW_LIFECYCLEPOLICY.description,
 				}}
 			>
 			</NavBar>
