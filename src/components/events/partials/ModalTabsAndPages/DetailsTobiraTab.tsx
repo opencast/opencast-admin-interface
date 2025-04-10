@@ -12,7 +12,6 @@ import NewTobiraPage, { TobiraFormProps } from "./NewTobiraPage";
 import { fetchSeriesDetailsTobira, removeSeriesTobiraPath, setTobiraTabHierarchy, TobiraData, updateSeriesTobiraPath } from "../../../../slices/seriesDetailsSlice";
 import { fetchSeriesDetailsTobiraNew, TobiraPage } from "../../../../slices/seriesSlice";
 import ConfirmModal from "../../../shared/ConfirmModal";
-import { Tooltip } from "../../../shared/Tooltip";
 import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { ModalHandle } from "../../../shared/modals/Modal";
 import { fetchEventDetailsTobira } from "../../../../slices/eventDetailsSlice";
@@ -213,13 +212,12 @@ const TobiraTable = ({ tobiraData, i18nKey, openSubTab, handleDelete }: TobiraTa
 				{tobiraData.hostPages.length === 0 && <tr>
 					<td className="tobira-not-mounted">
 						{t(`EVENTS.${i18nKey}.DETAILS.TOBIRA.NOT_MOUNTED`)}
-						{i18nKey === "SERIES" && <Tooltip title={t("EVENTS.SERIES.DETAILS.TOBIRA.MOUNT_SERIES")}>
-							<ButtonLikeAnchor
-								style={{ margin: 5 }}
-								extraClassName="edit fa fa-pencil-square pull-right"
-								onClick={() => openSubTab("edit-path")}
-								/>
-						</Tooltip>}
+						{i18nKey === "SERIES" && <ButtonLikeAnchor
+							style={{ margin: 5 }}
+							extraClassName="edit fa fa-pencil-square pull-right"
+							onClick={() => openSubTab("edit-path")}
+							tooltipText="EVENTS.SERIES.DETAILS.TOBIRA.MOUNT_SERIES"
+						/>}
 					</td>
 				</tr>}
 				{tobiraData.hostPages.map(hostPage => <tr key={hostPage.path}>
