@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { getModalEvent } from "../../../../selectors/eventDetailsSelectors";
 import { setModalEvent, setShowModal } from "../../../../slices/eventDetailsSlice";
-import { Modal, ModalHandle } from "../../../shared/modals/Modal";
+import { Modal } from "../../../shared/modals/Modal";
 
 /**
  * This component renders the modal for displaying event details
@@ -13,7 +13,6 @@ import { Modal, ModalHandle } from "../../../shared/modals/Modal";
 const EventDetailsModal = () => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
-	const modalRef = useRef<ModalHandle>(null);
 
 	// tracks, whether the policies are different to the initial value
 	const [policyChanged, setPolicyChanged] = useState(false);
@@ -45,7 +44,6 @@ const EventDetailsModal = () => {
 			closeCallback={close}
 			header={t("EVENTS.EVENTS.DETAILS.HEADER", { name: event.title })}
 			classId="details-modal"
-			ref={modalRef}
 		>
 			<EventDetails
 				eventId={event.id}
