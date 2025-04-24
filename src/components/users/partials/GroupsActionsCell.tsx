@@ -52,7 +52,7 @@ const GroupsActionsCell = ({
 			{/* delete group */}
 			<ActionCellDelete
 				editAccessRole={"ROLE_UI_GROUPS_DELETE"}
-				tooltipText={"USERS.GROUPS.TABLE.TOOLTIP.DETAILS"}
+				tooltipText={"USERS.GROUPS.TABLE.TOOLTIP.DELETE"}
 				resourceId={row.id}
 				resourceName={row.name}
 				resourceType={"GROUP"}
