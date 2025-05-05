@@ -128,6 +128,10 @@ const NewEventWizard: React.FC<{
 		let newPage = page;
 		do {
 			newPage = newPage + 1;
+			// Skip asset upload step when scheduling
+			if (steps[newPage].name === "upload-asset" && values.sourceMode !== "UPLOAD") {
+				newPage = newPage + 1;
+			}
 		} while(steps[newPage] && steps[newPage].hidden);
 		if (steps[newPage]) {
 			setPage(newPage)
@@ -140,6 +144,10 @@ const NewEventWizard: React.FC<{
 		let newPage = page;
 		do {
 			newPage = newPage - 1;
+			// Skip asset upload step when scheduling
+			if (steps[newPage].name === "upload-asset" && values.sourceMode !== "UPLOAD") {
+				newPage = newPage - 1;
+			}
 		} while(steps[newPage] && steps[newPage].hidden);
 		if (steps[newPage]) {
 			setPage(newPage)
