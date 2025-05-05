@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import { getCurrentLanguageInformation } from "../../utils/utils";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import DatePicker from "react-datepicker";
 import { Formik, FormikErrors } from "formik";
 import { Field } from "./Field";
 import BarChart from "./BarChart";
@@ -82,23 +82,28 @@ const TimeSeriesStatistics = ({
 	// Get info about the current language and its date locale
 	const currentLanguage = getCurrentLanguageInformation();
 
+	// Set the date for the react-datepicker
+	const [startDatepicker, setStartDatepicker] = useState(fromDate ? new Date(fromDate) : null);
+  	const [endDatepicker, setEndDatepicker] = useState(toDate ? new Date(toDate) : null);
+
 	// change formik values and get new statistic values from API
 	const change = (
 		setFormikValue: (field: string, value: any) => Promise<void | FormikErrors<any>>,
 		timeMode: TimeMode,
-		from: string | Date,
-		to: string | Date,
+		from: string,
+		to: string,
 		dataResolution: DataResolution
 	) => {
 		if (timeMode === "year" || timeMode === "month") {
 			from = moment(from).clone().startOf(timeMode).format("YYYY-MM-DD");
 			to = moment(from).clone().endOf(timeMode).format("YYYY-MM-DD");
-			setFormikValue("fromDat0e", from);
+			setStartDatepicker(new Date(from));
+			setEndDatepicker(new Date(to));
+			setFormikValue("fromDate", from);
 			setFormikValue("toDate", to);
 			setFormikValue("dataResolution", fixedDataResolutions(timeMode));
 			dataResolution = fixedStatisticDataResolutions(timeMode);
 		}
-
 		dispatch(onChange({id: resourceId, providerId, from, to, dataResolution, timeMode}));
 	};
 
@@ -112,30 +117,6 @@ const TimeSeriesStatistics = ({
 	) => {
 		setFormikValue("timeMode", newTimeMode);
 		change(setFormikValue, newTimeMode, from, to, dataResolution);
-	};
-
-	// change custom from date in formik and get new values from API
-	const changeFrom = async (
-		newFrom: Date,
-		setFormikValue: (field: string, value: any) => Promise<void | FormikErrors<any>>,
-		timeMode: TimeMode,
-		to: string,
-		dataResolution: DataResolution,
-	) => {
-		setFormikValue("fromDate", newFrom);
-		change(setFormikValue, timeMode, newFrom, to, dataResolution);
-	};
-
-	// change custom to date in formik and get new values from API
-	const changeTo = async (
-		newTo: Date,
-		setFormikValue: (field: string, value: any) => Promise<void | FormikErrors<any>>,
-		timeMode: TimeMode,
-		from: string,
-		dataResolution: DataResolution
-	) => {
-		setFormikValue("toDate", newTo);
-		change(setFormikValue, timeMode, from, newTo, dataResolution);
 	};
 
 	// change custom time granularity in formik and get new values from API
@@ -299,51 +280,41 @@ const TimeSeriesStatistics = ({
 						<span className="custom">
 							{/* time range selection */}
 							<div className="range">
+							<span>
+									{t("STATISTICS.TIMERANGE") + " " /* Time range */}
+							</span>
 								{/* date picker for selecting start date of the statistic */}
-								<span>{t("STATISTICS.FROM") /* From */}</span>
-								<div className="chosen-container">
-									<DatePicker
-										name="fromDate"
-										value={typeof formik.values.fromDate === "string" ? parseISO(formik.values.fromDate) : formik.values.fromDate}
-										slotProps={{ textField: { placeholder: t(
-											"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.START_DATE"
-										) } }}
-										onChange={(value) => {
-											if (value) {
-												changeFrom(
-													value,
-													formik.setFieldValue,
-													formik.values.timeMode,
-													formik.values.toDate,
-													formik.values.dataResolution
-												)
-											}
-										}}
-									/>
-								</div>
-
-								{/* date picker for selecting end date of the statistic */}
-								<span>{t("STATISTICS.TO") /* To */}</span>
-								<div className="chosen-container">
-									<DatePicker
-										name="toDate"
-										value={typeof formik.values.toDate === "string" ? parseISO(formik.values.toDate) : formik.values.toDate}
-										slotProps={{ textField: { placeholder: t(
-											"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.END_DATE"
-										) } }}
-										onChange={(value) => {
-											if (value) {
-												changeTo(
-													value,
-													formik.setFieldValue,
-													formik.values.timeMode,
-													formik.values.fromDate,
-													formik.values.dataResolution
-												)
-											}
-										}}
-									/>
-								</div>
+								<DatePicker
+									selected={new Date(formik.values.fromDate)}
+									onChange={(dates) => {
+										const [startDate, endDate] = dates;
+										setStartDatepicker(startDate);
+										setEndDatepicker(endDate);
+										const newStartDate = startDate ? moment(startDate).format('YYYY-MM-DD') : formik.values.fromDate;
+										const newEndDate = endDate ? moment(endDate).format('YYYY-MM-DD') : formik.values.toDate;
+										change(
+											formik.setFieldValue,
+											formik.values.timeMode,
+											newStartDate,
+											newEndDate,
+											formik.values.dataResolution
+										);
+									}}
+									startDate={startDatepicker}
+									endDate={endDatepicker}
+									selectsRange
+									showYearDropdown
+									showMonthDropdown
+									yearDropdownItemNumber={2}
+									swapRange
+									allowSameDay
+									dateFormat="P"
+									popperPlacement="bottom"
+									popperClassName="datepicker-custom"
+									className="datepicker-custom-input"
+									locale={getCurrentLanguageInformation()?.dateLocale}
+									strictParsing
+								/>
 							</div>
 
 							{/* time granularity selection */}

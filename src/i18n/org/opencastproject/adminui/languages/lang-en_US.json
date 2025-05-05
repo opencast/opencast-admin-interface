@@ -2080,9 +2080,8 @@
 	"STATISTICS": {
 		"NOT_AVAILABLE": "Statistics cannot be displayed at the moment. Please try again later.",
 		"UNSUPPORTED_TYPE": "Sorry, Opencast cannot render this type of statistical data.",
-		"FROM": "From",
-		"TO": "To",
 		"TOTAL": "Total",
+		"TIMERANGE": "Time Range",
 		"GRANULARITY": "Granularity",
 		"NAVIGATION": {
 			"ORGANIZATION": "Organization"
