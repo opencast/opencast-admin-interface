@@ -34,11 +34,6 @@ export const serversTableConfig: TableConfig = {
 			sortable: true,
 		},
 		{
-			name: "completed",
-			label: "SYSTEMS.SERVERS.TABLE.COMPLETED",
-			sortable: true,
-		},
-		{
 			name: "running",
 			label: "SYSTEMS.SERVERS.TABLE.RUNNING",
 			sortable: true,
