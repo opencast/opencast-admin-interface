@@ -3,15 +3,23 @@ name: Publish Test Page
 on:
   push:
     branches:
-      - main
+      - develop
+      - r/*.x
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  detect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: determine the correct test server
+        run: echo "TEST_SERVER=`./.github/get-release-server.sh`" >> GITHUB_ENV
+
   build:
     if: github.repository_owner == 'opencast'
+    needs: detect
     runs-on: ubuntu-latest
     steps:
       - name: checkout code
@@ -28,15 +36,22 @@ jobs:
       - name: build project
         env:
           NODE_ENV: development
-          VITE_TEST_SERVER_URL: "https://develop.opencast.org"
+          VITE_TEST_SERVER_URL: ${{ TEST_SERVER }}
           VITE_TEST_SERVER_AUTH: "admin:opencast"
         run: npm run build
 
+      - name: restore cache
+        id: cache-builds
+        run: actions/cache/restore@v4
+        with:
+          path: gh-pages
+          id: gh-pages
+
       - name: create pages directory
-        run: mkdir gh-pages
+        run: mkdir -p gh-pages
 
       - name: include admin interface
-        run: mv build gh-pages/admin-ui
+        run: mv build gh-pages/${{ github.ref }}/admin-ui
 
       - name: include landing page
         run: cp .github/demo-page.html gh-pages/index.html
@@ -45,6 +60,12 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./gh-pages
+
+      - name: cache built artifacts
+        uses: actions/cache@v4
+        with:
+          path: gh-pages
+          id: gh-pages
 
   deploy:
     if: github.repository_owner == 'opencast'
