@@ -192,7 +192,8 @@ const Table = ({
 									checked={selectAllChecked}
 									type="checkbox"
 									onChange={(e) => {
-										setSelectAllChecked(e.target.checked, onChangeAllSelected(e));
+										setSelectAllChecked(e.target.checked);
+										onChangeAllSelected(e);
 									}}
 									aria-label={t("EVENTS.EVENTS.TABLE.SELECT_ALL")}
 								/>
