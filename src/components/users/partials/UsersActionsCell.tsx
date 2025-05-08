@@ -47,7 +47,7 @@ const UsersActionCell = ({
 
 			{/* user details modal */}
 			<Modal
-				header={t("USERS.USERS.DETAILS.EDITCAPTION", { username: row.username })}
+				header={t("USERS.USERS.DETAILS.EDITCAPTION", { name: row.username })}
 				classId="user-details-modal"
 				ref={modalRef}
 			>
