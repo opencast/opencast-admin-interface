@@ -101,6 +101,7 @@ const GroupDetails: React.FC<{
 							createTranslationString="SUBMIT"
 							cancelTranslationString="CANCEL"
 							isLast
+							previousPage={close}
 						/>
 					</>
 				)}
