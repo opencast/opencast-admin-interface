@@ -99,8 +99,8 @@ const NewUserWizard = ({
 							close();
 					}
 			}}
-					cancelTranslationString={"CANCEL"}
-				/>
+			cancelTranslationString={"CANCEL"}
+/>
 
 						</>
 					);
