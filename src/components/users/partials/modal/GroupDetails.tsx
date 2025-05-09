@@ -88,6 +88,7 @@ const GroupDetails: React.FC<{
 				initialValues={initialValues}
 				validationSchema={EditGroupSchema}
 				onSubmit={(values) => handleSubmit(values)}
+				enableReinitialize={true}
 			>
 				{(formik) => (
 					<>
