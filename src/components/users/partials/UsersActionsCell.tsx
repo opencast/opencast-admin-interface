@@ -58,7 +58,7 @@ const UsersActionCell = ({
 			{(row.manageable || (row.provider !== "opencast" && row.provider !== "system")) &&
 				<ActionCellDelete
 					editAccessRole={"ROLE_UI_USERS_DELETE"}
-					tooltipText={"USERS.USERS.TABLE.TOOLTIP.DETAILS"}
+					tooltipText={"USERS.USERS.TABLE.TOOLTIP.DELETE"}
 					resourceId={row.username}
 					resourceName={row.name}
 					resourceType={"USER"}

@@ -88,6 +88,7 @@ const GroupDetails: React.FC<{
 				initialValues={initialValues}
 				validationSchema={EditGroupSchema}
 				onSubmit={(values) => handleSubmit(values)}
+				enableReinitialize={true}
 			>
 				{(formik) => (
 					<>
@@ -101,6 +102,7 @@ const GroupDetails: React.FC<{
 							createTranslationString="SUBMIT"
 							cancelTranslationString="CANCEL"
 							isLast
+							previousPage={close}
 						/>
 					</>
 				)}
