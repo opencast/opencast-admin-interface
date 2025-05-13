@@ -252,7 +252,8 @@ const SelectContainer = ({
 							onChange={(e) => handleChangeRemove(e)}
 							value={markedForRemoval}
 						>
-{/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}
+							{/* Show assigned users or directly assigned roles*/}
+							{/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}
 							{selectedItems.map((item, key) => (
 								<option key={key} value={item.name}>
 									{item.name}

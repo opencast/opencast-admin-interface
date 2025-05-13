@@ -24,9 +24,11 @@ const UserDetails: React.FC<{
 	const [page, setPage] = useState(0);
 
 	const userDetails = useAppSelector(state => getUserDetails(state));
+	const assignedRoles = userDetails.roles.filter(role => role.type === "GROUP" || role.type === "INTERNAL")
 
 	const initialValues = {
 		...userDetails,
+		assignedRoles,
 		password: "",
 		passwordConfirmation: "",
 	};
@@ -58,8 +60,16 @@ const UserDetails: React.FC<{
 		setPage(tabNr);
 	};
 
-	const handleSubmit = (values: UpdateUser) => {
-		dispatch(updateUserDetails({values: values, username: userDetails.username}));
+	const handleSubmit = (values: any) => {
+		const newValues: UpdateUser = {
+			email: values.email,
+			name: values.name,
+			username: values.username,
+			roles: values.assignedRoles,
+			password: values.password,
+		};
+
+		dispatch(updateUserDetails({values: newValues, username: userDetails.username}));
 		close();
 	};
 
