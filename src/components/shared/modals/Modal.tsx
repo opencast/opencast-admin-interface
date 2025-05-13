@@ -74,7 +74,7 @@ export const Modal = forwardRef<ModalHandle, PropsWithChildren<ModalProps>>(({
 							extraClassName="fa fa-times close-modal"
 							onClick={close}
 							tabIndex={0}
-							tooltipText={t("CLOSE")}
+							tooltipText="CLOSE"
 						/>
 						<h2>
 							{header}
