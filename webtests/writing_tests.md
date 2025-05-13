@@ -41,6 +41,3 @@ In both cases you can add `--trace on` to get a trace view of the tests.
 ## References
 
 - [Playwright Documentation](https://playwright.dev/docs/intro)
-- [Getting Started Guide](https://playwright.dev/docs/getting-started-intro)
-- [Test API Reference](https://playwright.dev/docs/api/class-test)
-- [Assertions Documentation](https://playwright.dev/docs/assertions)
