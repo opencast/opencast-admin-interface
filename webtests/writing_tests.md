@@ -2,7 +2,7 @@
 
 ## Overview
 
-Playwright is a powerful testing framework that allows automated testing of web applications across multiple browsers (Chromium, Firefox, WebKit). It enables reliable end-to-end testing through its robust auto-waiting capabilities and resilient selector engine.
+Playwright is a testing framework that allows automated testing of web applications across multiple browsers (Chromium, Firefox, WebKit).
 
 ## Setup Browsers
 
