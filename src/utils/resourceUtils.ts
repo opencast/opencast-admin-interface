@@ -166,37 +166,45 @@ export const transformMetadataFields = (metadata: MetadataField[]) => {
 };
 
 // transform metadata catalog for update via post request
-export const transformMetadataForUpdate = (catalog: MetadataCatalog, values: { [key: string]: MetadataCatalog["fields"][0]["value"] }) => {
+export const transformMetadataForUpdate = (
+	catalog: MetadataCatalog,
+	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
+  ) => {
 	let fields: MetadataCatalog["fields"] = [];
-	let updatedFields: MetadataCatalog["fields"] = [];
+	let updatedFields: { id: string; value: unknown }[] = [];
 
 	catalog.fields.forEach((field) => {
-		if (field.value !== values[field.id]) {
-			let updatedField = {
-				...field,
-				value: values[field.id],
-			};
-			updatedFields.push(updatedField);
-			fields.push(updatedField);
-		} else {
-			fields.push({ ...field });
-		}
+	  const newValue = values[field.id];
+
+	  // update UI state with full field (optional)
+	  const fullField = { ...field, value: newValue };
+	  fields.push(fullField);
+
+	  // only include minimal clean data for backend if value changed
+	  if (field.value !== newValue) {
+		updatedFields.push({
+		  id: field.id,
+		  value: newValue,
+		});
+	  }
 	});
+
 	let data = new URLSearchParams();
 	data.append(
-		"metadata",
-		JSON.stringify([
-			{
-				flavor: catalog.flavor,
-				title: catalog.title,
-				fields: updatedFields,
-			},
-		])
+	  "metadata",
+	  JSON.stringify([
+		{
+		  flavor: catalog.flavor,
+		  title: catalog.title,
+		  fields: updatedFields,
+		},
+	  ])
 	);
+
 	const headers = getHttpHeaders();
 
 	return { fields, data, headers };
-};
+  };
 
 // Prepare metadata for post of new events or series
 export const prepareMetadataFieldsForPost = (

@@ -1,3 +1,4 @@
+import { User } from "../../slices/userSlice";
 import { TableConfig } from "./aclsTableConfig";
 
 /**
