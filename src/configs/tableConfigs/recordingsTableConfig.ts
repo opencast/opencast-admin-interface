@@ -29,7 +29,7 @@ export const recordingsTableConfig: TableConfig = {
 			template: "RecordingsUpdateCell",
 			name: "update",
 			label: "RECORDINGS.RECORDINGS.TABLE.UPDATED",
-			sortable: true,
+			sortable: false,
 		},
 		{
 			template: "RecordingsActionCell",
