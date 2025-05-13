@@ -51,7 +51,7 @@ type SeriesDetailsState = {
   	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	acl: TransformedAcl[],
-	theme: string,
+	theme: { id: string, value: string } | null,
 	themeNames: { id: string, value: string }[],
 	fetchingStatisticsInProgress: boolean,
 	statistics: Statistics[],
@@ -83,7 +83,7 @@ const initialState: SeriesDetailsState = {
 	},
 	extendedMetadata: [],
 	acl: [],
-	theme: "",
+	theme: null,
 	themeNames: [],
 	fetchingStatisticsInProgress: false,
 	statistics: [],
@@ -165,12 +165,12 @@ export const fetchSeriesDetailsTheme = createAppAsyncThunk('seriesDetails/fetchS
 	const res = await axios.get(`/admin-ng/series/${id}/theme.json`);
 	const themeResponse = res.data;
 
-	let seriesTheme = "";
+	let seriesTheme = null;
 
 	// check if series has a theme
 	if (!_.isEmpty(themeResponse)) {
 		// transform response for further use
-		seriesTheme = transformToIdValueArray(themeResponse)[0].value;
+		seriesTheme = transformToIdValueArray(themeResponse)[0];
 	}
 
 	return seriesTheme;
@@ -298,17 +298,16 @@ export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSerie
 export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeriesTheme', async (params: {
 	id: string,
 	values: { theme: SeriesDetailsState["theme"] },
-}, {dispatch, getState}) => {
+}, {dispatch}) => {
 	const { id, values } = params;
 
-	let themeNames = getSeriesDetailsThemeNames(getState());
+	let themeId = values.theme?.id;
 
-	let themeId = themeNames.find((theme) => theme.value === values.theme)?.id;
-
-	if (!values.theme) {
+	if (!themeId || themeId === '') {
         axios
             .delete(`/admin-ng/series/${id}/theme`)
             .then((response) => {
+				dispatch(setSeriesDetailsTheme(values.theme));
                 dispatch(
                     addNotification({
                         type: "warning",
@@ -322,17 +321,6 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
             .catch((response) => {
                 console.error(response);
             });
-	} else if (!themeId) {
-        console.error("Can't update series theme. " + values.theme + " not found");
-        dispatch(
-            addNotification({
-                type: "error",
-                key: "SERIES_NOT_SAVED",
-                duration: 10,
-                parameter: undefined,
-                context: NOTIFICATION_CONTEXT
-            })
-        );
     } else {
         let data = new URLSearchParams();
         data.append("themeId", themeId);
@@ -342,7 +330,7 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
             .then((response) => {
                 let themeResponse = response.data;
 
-                let seriesTheme = transformToIdValueArray(themeResponse)[0].value;
+                let seriesTheme = transformToIdValueArray(themeResponse)[0];
 
                 dispatch(setSeriesDetailsTheme(seriesTheme));
                 dispatch(
