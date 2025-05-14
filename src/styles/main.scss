@@ -158,6 +158,56 @@ a {
     text-overflow: ellipsis;
   }
 
+  // When not focused, make it look like a span
+  .single-value:not(:focus){
+    background-color: transparent;
+    padding: 0px;
+    border: initial;
+    font: inherit;
+    margin: 0px;
+
+    // border-radius: 0;
+    // border-bottom: 1px dashed #999;
+
+    width: auto;
+  }
+  .single-value:focus{
+    width: 98%;
+  }
+
+  .single-value-textarea:not(:focus){
+    background-color: transparent;
+    padding: 0px;
+    border: initial;
+    font: inherit;
+    margin: 0px;
+    resize: none;
+    overflow: hidden;
+
+    // border-radius: 0;
+    // border-bottom: 1px dashed #999;
+
+    width: auto;
+    // height: auto;
+  }
+  .single-value-textarea:focus{
+    resize: vertical;
+
+    width: 98%;
+    // height: auto;
+  }
+
+  .datepicker-custom-input:not(:focus) {
+    background: transparent;
+    padding: 0px;
+    border: initial;
+    font: inherit;
+    margin: 0px;
+    &:hover {
+      border: initial;
+    }
+  }
+
   .editable {
     word-wrap: anywhere;
   }
@@ -568,7 +618,6 @@ table.main-tbl {
 
   td {
     max-width: 800px;
-    word-wrap: anywhere;
   }
 
   td {

@@ -47,20 +47,34 @@ import { Recording } from "../../../../slices/recordingSlice";
 import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import SchedulingTime from "../wizards/scheduling/SchedulingTime";
-import SchedulingEndDateDisplay from "../wizards/scheduling/SchedulingEndDateDisplay";
 import SchedulingLocation from "../wizards/scheduling/SchedulingLocation";
 import SchedulingInputs from "../wizards/scheduling/SchedulingInputs";
 import SchedulingConflicts from "../wizards/scheduling/SchedulingConflicts";
 import { ParseKeys } from "i18next";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
-/**../wizards/scheduling/SchedulingTime
+export type InitialValues = {
+	scheduleStartDate: string;
+	scheduleStartHour: string;
+	scheduleStartMinute: string;
+	scheduleDurationHours: string;
+	scheduleDurationMinutes: string;
+	scheduleEndDate: string;
+	scheduleEndHour: string;
+	scheduleEndMinute: string;
+	captureAgent: string;
+	inputs: string[];
+}
+
+/**
  * This component manages the main assets tab of event details modal
  */
 const EventDetailsSchedulingTab = ({
 	eventId,
+	formikRef
 }: {
 	eventId: string,
+	formikRef?: React.RefObject<FormikProps<InitialValues> | null>
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -234,10 +248,11 @@ const EventDetailsSchedulingTab = ({
 				/* Scheduling configuration */
 				hasSchedulingProperties && (
 				/* Initialize form */
-					<Formik
+					<Formik<InitialValues>
 						enableReinitialize
 						initialValues={getInitialValues()}
 						onSubmit={(values) => submitForm(values).then((r) => {})}
+						innerRef={formikRef}
 					>
 						{(formik) => (
 							<div className="obj tbl-details">
@@ -415,16 +430,15 @@ const EventDetailsSchedulingTab = ({
 															checkConflictsWrapper
 														)
 													}}
+													date={
+														hasAccessRole &&
+														(new Date(formik.values.scheduleEndDate).getDate() !==
+														new Date(formik.values.scheduleStartDate).getDate())
+														? formik.values.scheduleEndDate
+														: undefined
+													}
 												/>
 											)}
-											{hasAccessRole &&
-												formik.values.scheduleEndDate.toString() !==
-													formik.values.scheduleStartDate.toString() && (
-														<SchedulingEndDateDisplay
-															scheduleEndDate={formik.values.scheduleEndDate}
-														/>
-												)
-											}
 											{!hasAccessRole && (
 											<tr>
 												<td>

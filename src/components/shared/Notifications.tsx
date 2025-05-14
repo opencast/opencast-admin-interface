@@ -24,7 +24,6 @@ const Notifications = ({
 }: {
 	context: Context,
 }) => {
-	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const notifications = useAppSelector(state => getNotifications(state));
@@ -36,13 +35,10 @@ const Notifications = ({
 
 	const renderNotification = (notification: OurNotification, key: number) => (
 		<li key={key}>
-			<div className={cn(notification.type, "alert sticky")}>
-				<ButtonLikeAnchor
-					onClick={() => closeNotification(notification.id)}
-					extraClassName="fa fa-times close"
-				/>
-				<p>{t(notification.message, notification.parameter)}</p>
-			</div>
+			<NotificationComponent
+				notification={notification}
+				closeNotification={closeNotification}
+			/>
 		</li>
 	);
 
@@ -95,5 +91,27 @@ const Notifications = ({
 		)
 	);
 };
+
+export const NotificationComponent = ({
+	notification,
+	closeNotification,
+}: {
+	notification: Pick<OurNotification, "type" | "id" | "message" | "parameter">,
+	closeNotification?: (id: number) => unknown
+}) => {
+	const { t } = useTranslation();
+
+	return(
+		<div className={cn(notification.type, "alert sticky")}>
+			{closeNotification &&
+				<ButtonLikeAnchor
+					onClick={() => closeNotification(notification.id)}
+					extraClassName="fa fa-times close"
+				/>
+			}
+			<p>{t(notification.message, notification.parameter)}</p>
+		</div>
+	);
+}
 
 export default Notifications;

@@ -256,7 +256,7 @@
 				"UNAUTHORIZED": "Nimate pravic za izbris označenih posnetkov. Spremenite izbiro za nadaljevanje."
 			}
 		},
-		"DELETE_EVENTS_WARNING_LINE1": "Izbrisanih metapodatkov dogodka ter zvočnih in video datotek ne bo mogoče povrniti.",
+		"DELETE_EVENTS_WARNING_LINE1": "Once deleted, all event metadata, audio and video files are irrevocably gone.",
 		"DELETE_EVENTS_WARNING_LINE2": "",
 		"DELETE_SERIES_WARNING_LINE1": "Izbrisanih metapodatkov serije ne bo mogoče povrniti. Dogodki v seriji ne bodo izbrisani.",
 		"DELETE_SERIES_WARNING_LINE2": "",

@@ -256,7 +256,7 @@
 				"UNAUTHORIZED": "אין לך הרשאה למחוק את האירועים המודגשים. בבקשה הסר את הסימון שלהם על מנת להמשיך."
 			}
 		},
-		"DELETE_EVENTS_WARNING_LINE1": "לאחר מחיקתו, כל המטא נתונים של האירוע, קובצי האודיו והווידאו יימחקו ויהיו בלתי ניתנים לשחזור.",
+		"DELETE_EVENTS_WARNING_LINE1": "Once deleted, all event metadata, audio and video files are irrevocably gone.",
 		"DELETE_EVENTS_WARNING_LINE2": "",
 		"DELETE_SERIES_WARNING_LINE1": "לאחר מחיקה, כל הסידרה של מטא נתונים יהיו בלתי ניתנים לשחזור. אירועים בסדרה לא יימחקו.",
 		"DELETE_SERIES_WARNING_LINE2": "",

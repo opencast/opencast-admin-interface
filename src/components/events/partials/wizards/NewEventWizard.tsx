@@ -132,13 +132,28 @@ const NewEventWizard = ({
 		updatedPageCompleted[page] = true;
 		setPageCompleted(updatedPageCompleted);
 
-		setPage(page + 1);
+		let newPage = page;
+		newPage = newPage + 1;
+
+		// Skip asset upload step when scheduling
+		if (steps[newPage].name === "upload-asset" && values.sourceMode !== "UPLOAD") {
+			newPage = newPage + 1;
+		}
+
+		setPage(newPage);
 	};
 
 	const previousPage = (values: typeof initialValues) => {
 		setSnapshot(values);
 
-		setPage(page - 1);
+		let newPage = page;
+		newPage = newPage - 1;
+		// Skip asset upload step when scheduling
+		if (steps[newPage].name === "upload-asset" && values.sourceMode !== "UPLOAD") {
+			newPage = newPage - 1;
+		}
+
+		setPage(newPage);
 	};
 
 	const handleSubmit = (values: typeof initialValues) => {

@@ -15,7 +15,7 @@ const MetadataSummaryTable = ({
 	header
 }: {
 	metadataCatalogs: MetadataCatalog[],
-	formikValues: { [key: string]: string | string[] | boolean },
+	formikValues: { [key: string]: string | string[] | boolean | Date },
 	header: ParseKeys,
 }) => {
 	const { t } = useTranslation();
@@ -53,6 +53,10 @@ const MetadataSummaryTable = ({
 						},
 						t
 					)
+				}
+
+				if (fieldValue instanceof Date) {
+					fieldValue = t("dateFormats.dateTime.short", { dateTime: fieldValue })
 				}
 
 				metadata = metadata.concat({

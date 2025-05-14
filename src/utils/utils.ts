@@ -39,7 +39,7 @@ export const initArray = (numberOfElements: number) => {
 		result = [];
 	for (i = 0; i < numberOfElements; i++) {
 		result.push({
-			index: i,
+			index: makeTwoDigits(i),
 			value: makeTwoDigits(i),
 		});
 	}
