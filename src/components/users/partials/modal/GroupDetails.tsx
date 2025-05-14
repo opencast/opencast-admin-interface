@@ -98,7 +98,7 @@ const GroupDetails: React.FC<{
 						{/* Navigation buttons and validation */}
 						<WizardNavigationButtons
 							formik={formik}
-							previousPage={() => close()}
+							previousPage={close}
 							createTranslationString="SUBMIT"
 							cancelTranslationString="CANCEL"
 							isLast

@@ -88,7 +88,7 @@ const AclDetails = ({
 						{/* Navigation buttons and validation */}
 						<WizardNavigationButtons
 							formik={formik}
-							previousPage={() => close()}
+							previousPage={close}
 							submitPage={
 								async () => {
 									if (await dispatch(checkAcls(formik.values.acls))) {
