@@ -48,18 +48,20 @@ const ResourceDetailsAccessPolicyTab = ({
 	editAccessRole,
 	policyChanged,
 	setPolicyChanged,
+	withOverrideButton
 }: {
 	resourceId: string,
 	header: ParseKeys,
 	policies: TransformedAcl[],
 	fetchHasActiveTransactions?: AsyncThunk<any, string, any>
 	fetchAccessPolicies: AsyncThunk<TransformedAcl[], string, any>,
-	saveNewAccessPolicies: AsyncThunk<boolean, { id: string, policies: { acl: Acl } }, any>
+	saveNewAccessPolicies: AsyncThunk<boolean, { id: string, policies: { acl: Acl }, override: boolean }, any>
 	descriptionText: string,
 	buttonText: ParseKeys,
 	editAccessRole: string,
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,
+	withOverrideButton?: boolean
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -135,7 +137,7 @@ const ResourceDetailsAccessPolicyTab = ({
 
 	/* transforms rules into proper format for saving and checks validity
 	 * if the policies are valid, the new policies are saved in the backend */
-	const saveAccess = (values: { policies: TransformedAcl[] }) => {
+	const saveAccess = (values: { policies: TransformedAcl[] }, override: boolean) => {
 		dispatch(removeNotificationWizardForm());
 		const { roleWithFullRightsExists, allRulesValid } = validatePolicies(
 			values
@@ -163,7 +165,7 @@ const ResourceDetailsAccessPolicyTab = ({
 		}
 
 		if (allRulesValid && roleWithFullRightsExists) {
-			dispatch(saveNewAccessPolicies({id: resourceId, policies: access})).then((success) => {
+			dispatch(saveNewAccessPolicies({id: resourceId, policies: access, override: override})).then((success) => {
 				// fetch new policies from the backend, if save successful
 				if (success) {
 					setPolicyChanged(false);
@@ -321,7 +323,7 @@ const ResourceDetailsAccessPolicyTab = ({
 							enableReinitialize
 							validate={(values) => validateFormik(values)}
 							onSubmit={(values) =>
-								saveAccess(values)
+								saveAccess(values, false)
 							}
 						>
 							{(formik) => (
@@ -650,8 +652,13 @@ const ResourceDetailsAccessPolicyTab = ({
 									{!transactions.read_only && <SaveEditFooter
 										active={policyChanged && formik.dirty}
 										reset={() => resetPolicies(formik.resetForm)}
-										submit={() => saveAccess(formik.values)}
+										submit={() => saveAccess(formik.values, false)}
 										isValid={formik.isValid}
+										additionalButton={withOverrideButton ? {
+											label: "EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.REPLACE_EVENT_ACLS",
+											hint: "EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.REPLACE_EVENT_ACLS_HINT",
+											onClick: () => saveAccess(formik.values, true)
+										} : undefined}
 									/>}
 								</div>
 							)}
