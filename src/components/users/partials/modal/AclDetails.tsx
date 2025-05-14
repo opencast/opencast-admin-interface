@@ -72,7 +72,7 @@ const AclDetails = ({
 			{/* formik form used in entire modal */}
 			<Formik
 				initialValues={initialValues}
-				validationSchema={NewAclSchema[0]}
+				validationSchema={NewAclSchema["metadata"]}
 				onSubmit={(values) => handleSubmit(values)}
 			>
 				{(formik) => (

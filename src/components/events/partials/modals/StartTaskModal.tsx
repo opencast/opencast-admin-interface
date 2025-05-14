@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Formik } from "formik";
 import { initialFormValuesStartTask } from "../../../../configs/modalConfig";
-import WizardStepper from "../../../shared/wizard/WizardStepper";
+import WizardStepper, { WizardStep } from "../../../shared/wizard/WizardStepper";
 import StartTaskGeneralPage from "../ModalTabsAndPages/StartTaskGeneralPage";
 import StartTaskWorkflowPage from "../ModalTabsAndPages/StartTaskWorkflowPage";
 import StartTaskSummaryPage from "../ModalTabsAndPages/StartTaskSummaryPage";
@@ -11,7 +11,6 @@ import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { checkValidityStartTaskEventSelection } from "../../../../utils/bulkActionUtils";
 import { useAppDispatch } from "../../../../store";
 import { Event } from "../../../../slices/eventSlice";
-import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the task start bulk action
@@ -35,10 +34,12 @@ const StartTaskModal = ({
 		setPageCompleted,
 	} = usePageFunctions(0, initialValues);
 
-	const steps: {
-		translation: ParseKeys
-		name: string
-	}[] = [
+	type StepName = "general" | "tasks" | "summary";
+	type Step = WizardStep & {
+		name: StepName,
+	}
+
+	const steps: Step[] = [
 		{
 			translation: "BULK_ACTIONS.SCHEDULE_TASK.GENERAL.CAPTION",
 			name: "general",
@@ -103,20 +104,20 @@ const StartTaskModal = ({
 							{/* Stepper that shows each step of wizard as header */}
 							<WizardStepper
 								steps={steps}
-								page={page}
-								setPage={setPage}
+								activePageIndex={page}
+								setActivePage={setPage}
 								completed={pageCompleted}
 								setCompleted={setPageCompleted}
 								formik={formik}
 							/>
 							<div>
-								{page === 0 && (
+								{steps[page].name === "general" && (
 									<StartTaskGeneralPage
 										formik={formik}
 										nextPage={nextPage}
 									/>
 								)}
-								{page === 1 && (
+								{steps[page].name === "tasks" && (
 									<StartTaskWorkflowPage
 										formik={formik}
 										nextPage={nextPage}
@@ -124,7 +125,7 @@ const StartTaskModal = ({
 										setPageCompleted={setPageCompleted}
 									/>
 								)}
-								{page === 2 && (
+								{steps[page].name === "summary" && (
 									<StartTaskSummaryPage
 										formik={formik}
 										previousPage={previousPage}
