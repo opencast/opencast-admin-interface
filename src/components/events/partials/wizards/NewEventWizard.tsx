@@ -22,16 +22,15 @@ import { MetadataCatalog, UploadOption, postNewEvent } from "../../../../slices/
 import { UserInfoState } from "../../../../slices/userInfoSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import NewMetadataCommonPage from "../ModalTabsAndPages/NewMetadataCommonPage";
-import WizardStepper from "../../../shared/wizard/WizardStepper";
-import { ParseKeys } from "i18next";
+import WizardStepper, { WizardStep } from "../../../shared/wizard/WizardStepper";
 
 /**
  * This component manages the pages of the new event wizard and the submission of values
  */
-const NewEventWizard: React.FC<{
+const NewEventWizard = ({
+	close
+}: {
 	close: () => void
-}> = ({
-	close,
 }) => {
 	const dispatch = useAppDispatch();
 
@@ -66,55 +65,63 @@ const NewEventWizard: React.FC<{
 	const [snapshot, setSnapshot] = useState(initialValues);
 	const [pageCompleted, setPageCompleted] = useState<{ [key: number]: boolean }>({});
 
-	// Caption of steps used by Stepper
-	const steps: {
-		translation: ParseKeys,
-		name: string,
+	type StepName = "metadata" | "metadata-extended" | "source" | "upload-asset" | "processing" | "access" | "summary";
+	type Step = WizardStep & {
+		name: StepName,
 		hidden: boolean,
-	}[] = [
-		{
-			translation: "EVENTS.EVENTS.NEW.METADATA.CAPTION",
-			name: "metadata",
-			hidden: false,
-		},
-		{
-			translation: "EVENTS.EVENTS.DETAILS.TABS.EXTENDED-METADATA",
-			name: "metadata-extended",
-			hidden: !(!!extendedMetadata && extendedMetadata.length > 0),
-		},
-		{
-			translation: "EVENTS.EVENTS.NEW.SOURCE.CAPTION",
-			name: "source",
-			hidden: false,
-		},
-		{
-			translation: "EVENTS.EVENTS.NEW.UPLOAD_ASSET.CAPTION",
-			name: "upload-asset",
-			hidden: assetUploadOptions.length === 0,
-		},
-		{
-			translation: "EVENTS.EVENTS.NEW.PROCESSING.CAPTION",
-			name: "processing",
-			hidden: false,
-		},
-		{
-			translation: "EVENTS.EVENTS.NEW.ACCESS.CAPTION",
-			name: "access",
-			hidden: false,
-		},
-		{
-			translation: "EVENTS.EVENTS.NEW.SUMMARY.CAPTION",
-			name: "summary",
-			hidden: false,
-		},
-	];
+	}
+
+	// Caption of steps used by Stepper
+	const filterSteps = (): Omit<Step, "hidden">[] => {
+		const steps: Step[] = [
+			{
+				translation: "EVENTS.EVENTS.NEW.METADATA.CAPTION",
+				name: "metadata",
+				hidden: false,
+			},
+			{
+				translation: "EVENTS.EVENTS.DETAILS.TABS.EXTENDED-METADATA",
+				name: "metadata-extended",
+				hidden: !(!!extendedMetadata && extendedMetadata.length > 0),
+			},
+			{
+				translation: "EVENTS.EVENTS.NEW.SOURCE.CAPTION",
+				name: "source",
+				hidden: false,
+			},
+			{
+				translation: "EVENTS.EVENTS.NEW.UPLOAD_ASSET.CAPTION",
+				name: "upload-asset",
+				hidden: assetUploadOptions.length === 0,
+			},
+			{
+				translation: "EVENTS.EVENTS.NEW.PROCESSING.CAPTION",
+				name: "processing",
+				hidden: false,
+			},
+			{
+				translation: "EVENTS.EVENTS.NEW.ACCESS.CAPTION",
+				name: "access",
+				hidden: false,
+			},
+			{
+				translation: "EVENTS.EVENTS.NEW.SUMMARY.CAPTION",
+				name: "summary",
+				hidden: false,
+			},
+		]
+
+		return steps.filter(step => !step.hidden)
+	};
+
+	const steps = filterSteps();
 
 	// Validation schema of current page
 	let currentValidationSchema;
-	if (page === 0 || page === 1) {
+	if (steps[page].name === "metadata" || steps[page].name === "metadata-extended") {
 		currentValidationSchema = MetadataSchema(metadataFields);
 	} else {
-		currentValidationSchema = NewEventSchema[page];
+		currentValidationSchema = NewEventSchema[steps[page].name];
 	}
 
 	const nextPage = (values: typeof initialValues) => {
@@ -126,32 +133,27 @@ const NewEventWizard: React.FC<{
 		setPageCompleted(updatedPageCompleted);
 
 		let newPage = page;
-		do {
+		newPage = newPage + 1;
+
+		// Skip asset upload step when scheduling
+		if (steps[newPage].name === "upload-asset" && values.sourceMode !== "UPLOAD") {
 			newPage = newPage + 1;
-			// Skip asset upload step when scheduling
-			if (steps[newPage].name === "upload-asset" && values.sourceMode !== "UPLOAD") {
-				newPage = newPage + 1;
-			}
-		} while(steps[newPage] && steps[newPage].hidden);
-		if (steps[newPage]) {
-			setPage(newPage)
 		}
+
+		setPage(newPage);
 	};
 
 	const previousPage = (values: typeof initialValues) => {
 		setSnapshot(values);
 
 		let newPage = page;
-		do {
+		newPage = newPage - 1;
+		// Skip asset upload step when scheduling
+		if (steps[newPage].name === "upload-asset" && values.sourceMode !== "UPLOAD") {
 			newPage = newPage - 1;
-			// Skip asset upload step when scheduling
-			if (steps[newPage].name === "upload-asset" && values.sourceMode !== "UPLOAD") {
-				newPage = newPage - 1;
-			}
-		} while(steps[newPage] && steps[newPage].hidden);
-		if (steps[newPage]) {
-			setPage(newPage)
 		}
+
+		setPage(newPage);
 	};
 
 	const handleSubmit = (values: typeof initialValues) => {
@@ -180,15 +182,15 @@ const NewEventWizard: React.FC<{
 							{/* Stepper that shows each step of wizard as header */}
 							<WizardStepper
 								steps={steps}
-								page={page}
-								setPage={setPage}
+								activePageIndex={page}
+								setActivePage={setPage}
 								completed={pageCompleted}
 								setCompleted={setPageCompleted}
 								formik={formik}
 								hasAccessPage
 							/>
 							<div>
-								{page === 0 && (
+								{steps[page].name === "metadata" && (
 									<NewMetadataCommonPage
 										nextPage={nextPage}
 										formik={formik}
@@ -196,7 +198,7 @@ const NewEventWizard: React.FC<{
 										header={steps[page].translation}
 									/>
 								)}
-								{page === 1 && (
+								{steps[page].name === "metadata-extended" && (
 									<NewMetadataExtendedPage
 										previousPage={previousPage}
 										nextPage={nextPage}
@@ -204,28 +206,28 @@ const NewEventWizard: React.FC<{
 										extendedMetadataFields={extendedMetadata}
 									/>
 								)}
-								{page === 2 && (
+								{steps[page].name === "source" && (
 									<NewSourcePage
 										previousPage={previousPage}
 										nextPage={nextPage}
 										formik={formik}
 									/>
 								)}
-								{page === 3 && (
+								{steps[page].name === "upload-asset" && (
 									<NewAssetUploadPage
 										previousPage={previousPage}
 										nextPage={nextPage}
 										formik={formik}
 									/>
 								)}
-								{page === 4 && (
+								{steps[page].name === "processing" && (
 									<NewProcessingPage
 										previousPage={previousPage}
 										nextPage={nextPage}
 										formik={formik}
 									/>
 								)}
-								{page === 5 && (
+								{steps[page].name === "access" && (
 									<NewAccessPage
 									// @ts-expect-error TS(7006):
 										previousPage={previousPage}
@@ -237,12 +239,12 @@ const NewEventWizard: React.FC<{
 										initEventAclWithSeriesAcl={initEventAclWithSeriesAcl}
 									/>
 								)}
-								{page === 6 && (
+								{steps[page].name === "summary" && (
 									<NewEventSummary
 										previousPage={previousPage}
 										formik={formik}
-										metaDataExtendedHidden={steps[1].hidden}
-										assetUploadHidden={steps[3].hidden}
+										metaDataExtendedHidden={!steps.some(step => step.name === "metadata-extended")}
+										assetUploadHidden={!steps.some(step => step.name === "upload-asset")}
 									/>
 								)}
 							</div>
