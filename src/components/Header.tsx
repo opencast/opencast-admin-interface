@@ -24,6 +24,7 @@ import { HiTranslate } from "react-icons/hi";
 import { IconContext } from "react-icons";
 import ButtonLikeAnchor from "./shared/ButtonLikeAnchor";
 import { ModalHandle } from "./shared/modals/Modal";
+import { broadcastLogout } from "../utils/broadcastSync";
 
 // References for detecting a click outside of the container of the dropdown menus
 const containerLang = React.createRef<HTMLDivElement>();
@@ -36,10 +37,6 @@ function changeLanguage(code: string) {
 	i18n.changeLanguage(code);
 	// Reload window for updating the flag of the language dropdown menu
 	window.location.reload();
-}
-
-function logout() {
-	window.location.href = "/j_spring_security_logout";
 }
 
 /**
@@ -413,6 +410,12 @@ const MenuHelp = ({
 
 const MenuUser = () => {
 	const { t } = useTranslation();
+
+	const logout = () => {
+		// Here we broadcast logout, in order to redirect other tabs to login page!
+		broadcastLogout();
+		window.location.href = "/j_spring_security_logout";
+	}
 	return (
 		<ul className="dropdown-ul">
 			<li>
