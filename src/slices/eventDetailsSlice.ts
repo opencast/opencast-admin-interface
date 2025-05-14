@@ -1708,7 +1708,7 @@ export const saveAccessPolicies = createAppAsyncThunk('eventDetails/saveAccessPo
 	params: {
 		id: Event["id"],
 		policies: { acl: { ace: Ace[] }},
-		override: boolean, // Although there is no use of parameter here, but in order to keep it sync with series and make the mechanism reuseable, we should keep it!
+		override?: boolean,
 	}, { dispatch }) => {
 	const { id, policies } = params;
 	const headers = getHttpHeaders();

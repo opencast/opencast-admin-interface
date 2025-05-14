@@ -254,7 +254,7 @@ export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSerie
 	params: {
 		id: Series["id"],
 		policies: { acl: Acl },
-		override: boolean
+		override?: boolean
 	}, {dispatch}) => {
 	const { id, policies, override } = params;
 
