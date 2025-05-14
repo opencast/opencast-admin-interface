@@ -2291,6 +2291,18 @@ const eventDetailsSlice = createSlice({
 			})
 			.addCase(fetchWorkflows.rejected, (state, action) => {
 				state.statusWorkflows = 'failed';
+				state.workflows = {
+					scheduling: false,
+					entries: [],
+					workflow: {
+						workflowId: "",
+						description: "",
+					},
+				};
+				state.workflowConfiguration = {
+					workflowId: "",
+					description: "",
+				};
 				state.errorWorkflows = action.error;
 				console.error(action.error);
 			})

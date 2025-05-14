@@ -45,6 +45,7 @@ import {
 } from "../../../../slices/eventDetailsSlice";
 import { addNotification, removeNotificationByKey, removeNotificationWizardForm, removeNotificationWizardTobira } from "../../../../slices/notificationSlice";
 import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
+import { FormikProps } from "formik";
 import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -71,14 +72,14 @@ export type AssetTabHierarchy = "entry" | "add-asset" | "asset-attachments" | "a
  */
 const EventDetails = ({
 	eventId,
-	close,
 	policyChanged,
 	setPolicyChanged,
+	formikRef,
 }: {
 	eventId: string,
-	close?: () => void,
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,
+	formikRef: React.RefObject<FormikProps<any> | null>
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -243,6 +244,7 @@ const EventDetails = ({
 						metadata={[metadata]}
 						updateResource={updateMetadata}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
+						formikRef={formikRef}
 						header={tabs[page].bodyHeaderTranslation}
 					/>
 				)}
@@ -252,6 +254,7 @@ const EventDetails = ({
 						metadata={extendedMetadata}
 						updateResource={updateExtendedMetadata}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
+						formikRef={formikRef}
 					/>
 				)}
 				{page === EventDetailsPage.Publication && <EventDetailsPublicationTab eventId={eventId} />}
@@ -261,12 +264,16 @@ const EventDetails = ({
 					/>
 				)}
 				{page === EventDetailsPage.Scheduling && !isLoadingScheduling && (
-					<EventDetailsSchedulingTab eventId={eventId} />
+					<EventDetailsSchedulingTab
+						eventId={eventId}
+						formikRef={formikRef}
+					/>
 				)}
 				{page === EventDetailsPage.Workflow &&
 					((workflowTabHierarchy === "entry" && (
 						<EventDetailsWorkflowTab
 							eventId={eventId}
+							formikRef={formikRef}
 						/>
 					)) ||
 						(workflowTabHierarchy === "workflow-details" && (

@@ -186,7 +186,10 @@ export const setSpecificServiceFilter = createAppAsyncThunk('tableFilters/setSpe
 	let filterToChange = tableFilters.data.find(({ name }) => name === filter);
 
 	if (!filterToChange) {
-		await dispatch(fetchFilters("services"));
+		const fetchedFilters = await dispatch(fetchFilters("services")) as {
+			payload: { filtersList: FilterData[] }
+		};
+		filterToChange = fetchedFilters.payload.filtersList.find(({ name }: { name: string }) => name === filter);
 	}
 
 	if (!!filterToChange) {

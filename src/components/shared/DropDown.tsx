@@ -16,9 +16,10 @@ export type DropDownOption = {
 }
 
 /**
- * This component provides a bar chart for visualising (statistics) data
+ * This component renders a dropdown menu using react-select
  */
 const DropDown = <T, >({
+	ref = React.createRef<SelectInstance<any, boolean, GroupBase<any>>>(),
 	value,
 	text,
 	options,
@@ -35,6 +36,7 @@ const DropDown = <T, >({
 	handleMenuIsOpen = undefined,
 	customCSS,
 }: {
+	ref?: React.RefObject<SelectInstance<any, boolean, GroupBase<any>> | null>
 	value: T
 	text: string,
 	options: DropDownOption[],
@@ -50,6 +52,7 @@ const DropDown = <T, >({
 	menuIsOpen?: boolean,
 	handleMenuIsOpen?: (open: boolean) => void,
 	customCSS?: {
+		isMetadataStyle?: boolean,
 		width?: number | string,
 		optionPaddingTop?: number,
 		optionLineHeight?: string
@@ -57,7 +60,7 @@ const DropDown = <T, >({
 }) => {
 	const { t } = useTranslation();
 
-	const selectRef = React.useRef<SelectInstance<any, boolean, GroupBase<any>>>(null);
+	const selectRef = ref;
 
 	const style = dropDownStyle(customCSS ?? {});
 
@@ -69,7 +72,7 @@ const DropDown = <T, >({
 	}, [menuIsOpen, selectRef]);
 
 	const openMenu = (open: boolean) => {
-		if (handleMenuIsOpen !== undefined && menuIsOpen !== undefined) {
+		if (handleMenuIsOpen !== undefined) {
 			handleMenuIsOpen(open);
 		}
 	}

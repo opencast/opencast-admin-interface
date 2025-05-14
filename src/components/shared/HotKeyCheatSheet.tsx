@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { availableHotkeys } from "../../configs/hotkeysConfig";
 import { useHotkeysContext } from "react-hotkeys-hook";
-import { Hotkey } from "react-hotkeys-hook/dist/types";
+import { Hotkey } from "react-hotkeys-hook/packages/react-hotkeys-hook/dist/types";
 import { Modal, ModalHandle } from "./modals/Modal";
 import { ParseKeys } from "i18next";
 import ModalContentTable from "./modals/ModalContentTable";

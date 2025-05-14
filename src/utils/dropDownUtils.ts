@@ -4,7 +4,7 @@ import { Workflow } from "../slices/workflowSlice";
  * this file contains functions, which are needed for the searchable drop-down selections
  */
 
-export const formatTimeForDropdown = (times: {index: number, value: string}[]) => {
+export const formatTimeForDropdown = (times: {index: string, value: string}[]) => {
 	return times.map(({index, value}) => ({ label: value, value: index }));
 };
 
