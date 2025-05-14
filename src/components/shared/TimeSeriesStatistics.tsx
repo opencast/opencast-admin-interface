@@ -84,7 +84,7 @@ const TimeSeriesStatistics = ({
 
 	// Set the date for the react-datepicker
 	const [startDatepicker, setStartDatepicker] = useState(fromDate ? new Date(fromDate) : null);
-  	const [endDatepicker, setEndDatepicker] = useState(toDate ? new Date(toDate) : null);
+	const [endDatepicker, setEndDatepicker] = useState(toDate ? new Date(toDate) : null);
 
 	// change formik values and get new statistic values from API
 	const change = (
@@ -281,7 +281,7 @@ const TimeSeriesStatistics = ({
 							{/* time range selection */}
 							<div className="range">
 							<span>
-									{t("STATISTICS.TIMERANGE") + " " /* Time range */}
+								{t("STATISTICS.TIMERANGE") /* Time range */}{" "}
 							</span>
 								{/* date picker for selecting start date of the statistic */}
 								<DatePicker
@@ -320,7 +320,7 @@ const TimeSeriesStatistics = ({
 							{/* time granularity selection */}
 							<div>
 								<span>
-									{t("STATISTICS.GRANULARITY") + " " /* Granularity */}
+									{t("STATISTICS.GRANULARITY")/* Granularity */}{" "}
 								</span>
 								<div className="chosen-container chosen-container-single">
 									{/* drop-down for selecting the time granularity of the statistic */}
