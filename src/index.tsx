@@ -18,6 +18,7 @@ import "font-awesome/css/font-awesome.min.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { HotkeysProvider } from "react-hotkeys-hook";
 
+
 // Commenting persistent stuff out can help with debugging
 const persistor = persistStore(store);
 

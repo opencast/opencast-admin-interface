@@ -58,7 +58,7 @@ const AclsActionsCell = ({
 			{/* delete ACL */}
 			<ActionCellDelete
 				editAccessRole={"ROLE_UI_ACLS_DELETE"}
-				tooltipText={"USERS.ACLS.TABLE.TOOLTIP.DETAILS"}
+				tooltipText={"USERS.ACLS.TABLE.TOOLTIP.DELETE"}
 				resourceId={row.id}
 				resourceName={row.name}
 				resourceType={"ACL"}
