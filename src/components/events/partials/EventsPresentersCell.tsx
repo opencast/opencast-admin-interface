@@ -1,7 +1,7 @@
 import React from "react";
 import { getFilters } from "../../../selectors/tableFilterSelectors";
 import { editFilterValue } from "../../../slices/tableFilterSlice";
-import { loadEventsIntoTable } from "../../../thunks/tableThunks";
+import { loadEventsIntoTable, goToPage } from "../../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
 import { Event } from "../../../slices/eventSlice";
@@ -25,6 +25,7 @@ const EventsPresentersCell = ({
 			({ name }) => name === "presentersBibliographic"
 		);
 		if (!!filter) {
+      dispatch(goToPage(0));
 			await dispatch(editFilterValue({filterName: filter.name, value: presenter}));
 			await dispatch(fetchEvents());
 			dispatch(loadEventsIntoTable());
