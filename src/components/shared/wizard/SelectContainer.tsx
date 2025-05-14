@@ -49,7 +49,16 @@ const SelectContainer = ({
 		// no field value yet --> skip for loop and use all provided items for left
 		if (selectedItems.length > 0) {
 			for (let i = 0; i < selectedItems.length; i++) {
-				remove(selectedItems[i].name, initialItems);
+				// In case we are dealing with Users,
+				// we have to also check the combination of "name (id)" as for the key!
+				let namesArray = [];
+				// Pushing the usual name of selected item into the array, in order to work with other fields like roles etc.
+				namesArray.push(selectedItems[i].name);
+				// Make sure it is "users" field and then add the combination.
+				if (field.name === 'users' && selectedItems[i]?.id) {
+					namesArray.push(`${selectedItems[i].name} (${selectedItems[i].id})`);
+				}
+				remove(namesArray, initialItems);
 			}
 		}
 
@@ -172,10 +181,10 @@ const SelectContainer = ({
 		}
 	};
 
-	// remove item from array when matching key
-	const remove = (key: string, compare: Item[]) => {
+	// remove item from array when matching items in keys array
+	const remove = (keys: string[], compare: Item[]) => {
 		for (let i = 0; i < compare.length; i++) {
-			if (compare[i].name === key) {
+			if (keys.includes(compare[i].name)) {
 				compare.splice(i, 1);
 				return;
 			}
