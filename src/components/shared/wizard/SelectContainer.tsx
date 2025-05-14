@@ -127,8 +127,11 @@ const SelectContainer = ({
 		for (let i = 0; i < markedForAddition.length; i++) {
 			move(markedForAddition[i], editableItems, editableSelectedItems);
 
-			// remove marked item from items considered for search bar
-			remove(markedForAddition[i], editableDefaultItems);
+			// Since we are using array of strings as for the remove method!
+			let array = [
+				markedForAddition[i]
+			];
+			remove(array, editableDefaultItems);
 		}
 
 		// update state with current values
