@@ -250,11 +250,12 @@ export const updateExtendedSeriesMetadata = createAppAsyncThunk('seriesDetails/u
 	dispatch(setSeriesDetailsExtendedMetadata(newExtendedMetadata));
 });
 
-export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSeriesAccess', async (params: {
-	id: Series["id"],
-	policies: { acl: Acl },
-	override: boolean
-}, {dispatch}) => {
+export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSeriesAccess', async (
+	params: {
+		id: Series["id"],
+		policies: { acl: Acl },
+		override: boolean
+	}, {dispatch}) => {
 	const { id, policies, override } = params;
 
 	let data = new URLSearchParams();
