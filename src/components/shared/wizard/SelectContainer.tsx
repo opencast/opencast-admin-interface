@@ -6,9 +6,9 @@ import ButtonLikeAnchor from "../ButtonLikeAnchor";
 import { ParseKeys } from "i18next";
 
 type Item = {
-	name: string
-	[key: string]: unknown
-}
+	name: string;
+	[key: string]: unknown;
+};
 
 /**
  * This component renders the select container used for roles and user pages in new group and new user pages.
@@ -16,15 +16,15 @@ type Item = {
 const SelectContainer = ({
 	resource,
 	formikField,
-	manageable = true
+	manageable = true,
 }: {
 	resource: {
-		searchable: boolean,
-		label: string,
-		items: Item[]
-	}
-	formikField: string
-	manageable?: boolean,
+		searchable: boolean;
+		label: string;
+		items: Item[];
+	};
+	formikField: string;
+	manageable?: boolean;
 }) => {
 	const { t } = useTranslation();
 
@@ -195,7 +195,10 @@ const SelectContainer = ({
 						{resource.searchable && (
 							<div className="search-container">
 								{/* search bar */}
-								<ButtonLikeAnchor extraClassName="clear" onClick={() => clearSearchField()} />
+								<ButtonLikeAnchor
+									extraClassName="clear"
+									onClick={() => clearSearchField()}
+								/>
 								<input
 									type="text"
 									id="search"
@@ -208,7 +211,17 @@ const SelectContainer = ({
 								/>
 							</div>
 						)}
-						{/*Select with options provided by backend*/}
+					</div>
+				</div>
+				<div className="multi-select-col label-right">
+					<div className="row">
+						<label>{t(`${resource.label}.RIGHT` as ParseKeys)}</label>
+					</div>
+				</div>
+			</div>
+			<div className="multi-select-container">
+				<div className="multi-select-col">
+					<div className="row">
 						<select
 							multiple
 							className="available"
@@ -237,13 +250,9 @@ const SelectContainer = ({
 						</div>
 					</div>
 				</div>
-
 				<div className="exchange-icon" />
-
-				{/*Select with options chosen by user*/}
 				<div className="multi-select-col">
 					<div className="row">
-						<label>{t(`${resource.label}.RIGHT` as ParseKeys)}</label>
 						<select
 							multiple
 							className="selected"
@@ -252,7 +261,7 @@ const SelectContainer = ({
 							onChange={(e) => handleChangeRemove(e)}
 							value={markedForRemoval}
 						>
-{/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}
+							{/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}
 							{selectedItems.map((item, key) => (
 								<option key={key} value={item.name}>
 									{item.name}
