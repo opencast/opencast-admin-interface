@@ -172,15 +172,12 @@ export const transformMetadataForUpdate = (
   ) => {
 	let fields: MetadataCatalog["fields"] = [];
 	let updatedFields: { id: string; value: unknown }[] = [];
-
 	catalog.fields.forEach((field) => {
 	  const newValue = values[field.id];
-
-	  // update UI state with full field (optional)
+  	  // update UI state with full field (optional)
 	  const fullField = { ...field, value: newValue };
 	  fields.push(fullField);
 
-	  // only include minimal clean data for backend if value changed
 	  if (field.value !== newValue) {
 		updatedFields.push({
 		  id: field.id,
@@ -188,7 +185,6 @@ export const transformMetadataForUpdate = (
 		});
 	  }
 	});
-
 	let data = new URLSearchParams();
 	data.append(
 	  "metadata",
@@ -200,11 +196,10 @@ export const transformMetadataForUpdate = (
 		},
 	  ])
 	);
-
 	const headers = getHttpHeaders();
-
 	return { fields, data, headers };
   };
+
 
 // Prepare metadata for post of new events or series
 export const prepareMetadataFieldsForPost = (
