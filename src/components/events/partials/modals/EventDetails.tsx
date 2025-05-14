@@ -72,13 +72,11 @@ export type AssetTabHierarchy = "entry" | "add-asset" | "asset-attachments" | "a
  */
 const EventDetails = ({
 	eventId,
-	close,
 	policyChanged,
 	setPolicyChanged,
 	formikRef,
 }: {
 	eventId: string,
-	close?: () => void,
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,
 	formikRef: React.RefObject<FormikProps<any> | null>

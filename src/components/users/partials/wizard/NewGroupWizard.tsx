@@ -61,8 +61,7 @@ const NewGroupWizard: React.FC<{
 	const currentValidationSchema = NewGroupSchema[page];
 
 	const handleSubmit = (values: typeof initialFormValuesNewGroup) => {
-		const response = dispatch(postNewGroup(values));
-		console.info(response);
+		dispatch(postNewGroup(values));
 		close();
 	};
 

@@ -47,7 +47,7 @@ const UsersActionCell = ({
 
 			{/* user details modal */}
 			<Modal
-				header={t("USERS.USERS.DETAILS.EDITCAPTION", { username: row.username })}
+				header={t("USERS.USERS.DETAILS.EDITCAPTION", { name: row.username })}
 				classId="user-details-modal"
 				ref={modalRef}
 			>
@@ -58,7 +58,7 @@ const UsersActionCell = ({
 			{(row.manageable || (row.provider !== "opencast" && row.provider !== "system")) &&
 				<ActionCellDelete
 					editAccessRole={"ROLE_UI_USERS_DELETE"}
-					tooltipText={"USERS.USERS.TABLE.TOOLTIP.DETAILS"}
+					tooltipText={"USERS.USERS.TABLE.TOOLTIP.DELETE"}
 					resourceId={row.username}
 					resourceName={row.name}
 					resourceType={"USER"}
