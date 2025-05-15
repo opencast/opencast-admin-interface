@@ -86,6 +86,7 @@ const Table = ({
 	// State of dropdown menu
 	const [showPageSizes, setShowPageSizes] = useState(false);
 	const editTableViewModalRef = useRef<ModalHandle>(null);
+	const selectAllCheckboxRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		// Function for handling clicks outside of an open dropdown menu
@@ -128,6 +129,8 @@ const Table = ({
 	};
 
 	const sortByColumn = (colName: string) => {
+		// By sorting, any selected item has to be deselected!
+		forceDeselectAll();
 		dispatch(setSortBy(colName));
 		let direction: ReverseOptions = "ASC";
 		if (reverse && reverse === "ASC") {
@@ -136,6 +139,13 @@ const Table = ({
 		dispatch(reverseTable(direction));
 		dispatch(updatePages());
 	};
+
+	const forceDeselectAll = () => {
+		dispatch(changeAllSelected(false));
+		if (selectAllCheckboxRef.current?.checked) {
+			selectAllCheckboxRef.current.checked = false;
+		}
+	}
 
 	const showEditTableViewModal = async () => {
 		editTableViewModalRef.current?.open()
@@ -186,6 +196,7 @@ const Table = ({
 							<th className="small">
 								{/*Checkbox to select all rows*/}
 								<input
+									ref={selectAllCheckboxRef}
 									type="checkbox"
 									onChange={(e) => onChangeAllSelected(e)}
 									aria-label={t("EVENTS.EVENTS.TABLE.SELECT_ALL")}

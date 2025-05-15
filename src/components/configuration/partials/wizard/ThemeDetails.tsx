@@ -43,7 +43,7 @@ const ThemeDetails = ({
 
 	// information about tabs
 	const tabs: {
-		name: string
+		name: "generalForm" | "bumperForm" | "trailerForm" | "titleSlideForm" | "watermarkForm" | "usage"
 		tabTranslation: ParseKeys
 		translation: ParseKeys
 		accessRole: string
@@ -87,7 +87,7 @@ const ThemeDetails = ({
 	];
 
 	// Validation schema of current page
-	const currentValidationSchema = NewThemeSchema[page];
+	const currentValidationSchema = NewThemeSchema[tabs[page].name];
 
 	// update theme
 	const handleSubmit = (values: ThemeDetailsInitialValues) => {

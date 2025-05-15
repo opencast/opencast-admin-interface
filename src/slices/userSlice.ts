@@ -52,7 +52,7 @@ const initialColumns = usersTableConfig.columns.map((column) => ({
 // Initial state of users in redux store
 const initialState: UsersState = {
 	status: 'uninitialized',
-  error: null,
+	error: null,
 	results: [],
 	columns: initialColumns,
 	total: 0,

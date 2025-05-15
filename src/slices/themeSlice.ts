@@ -12,7 +12,7 @@ import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 export type ThemeDetailsType = {
 	bumperActive: boolean,
 	bumperFile: string,
-	creationDate: string,
+	creationDate?: string,
 	creator: string,
 	default: boolean,
 	description: string,
