@@ -278,13 +278,15 @@ div.editable {
 }
 td.editable {
   cursor: text;
-
+ 
   &> div {
     overflow: visible;
+   padding-right: 11px;
+
   }
 
   input {
-    padding-right: 10px;
+    padding-right: 1000px;
     padding-top: 3px;
     padding-bottom: 3px;
     padding-left: 5px;
