@@ -105,6 +105,7 @@ const AclAccessPage = <T extends RequiredFormProps>({
 											isUserTable={false}
 											policiesFiltered={policiesFiltered(formik.values.policies, false)}
 											rolesFilteredbyPolicies={rolesFilteredbyPolicies(roles, formik.values.policies, false)}
+											header={"USERS.ACLS.NEW.ACCESS.ACCESS_POLICY.NON_USER_ROLES"}
 											firstColumnHeader={"USERS.ACLS.NEW.ACCESS.ACCESS_POLICY.ROLE"}
 											createLabel={"USERS.ACLS.NEW.ACCESS.ACCESS_POLICY.NEW"}
 											formik={formik}
