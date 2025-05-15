@@ -54,6 +54,7 @@ const SeriesDetailsAccessTab = ({
 			viewNonUsersAccessRole={"ROLE_UI_SERIES_DETAILS_ACL_NONUSER_ROLES_VIEW"}
 			policyChanged={policyChanged}
 			setPolicyChanged={setPolicyChanged}
+			withOverrideButton={true}
 		/>
 	);
 };
