@@ -1704,16 +1704,16 @@ export const updateAssets = createAppAsyncThunk('eventDetails/updateAssets', asy
 		});
 });
 
-export const saveAccessPolicies = createAppAsyncThunk('eventDetails/saveAccessPolicies', async (params: {
-	id: Event["id"],
-	policies: { acl: { ace: Ace[] } }
-}, { dispatch }) => {
+export const saveAccessPolicies = createAppAsyncThunk('eventDetails/saveAccessPolicies', async (
+	params: {
+		id: Event["id"],
+		policies: { acl: { ace: Ace[] }},
+	}, { dispatch }) => {
 	const { id, policies } = params;
 	const headers = getHttpHeaders();
 
 	let data = new URLSearchParams();
 	data.append("acl", JSON.stringify(policies));
-	data.append("override", "true");
 
 	return axios
 		.post(`/admin-ng/event/${id}/access`, data.toString(), headers)
@@ -2311,6 +2311,18 @@ const eventDetailsSlice = createSlice({
 			})
 			.addCase(fetchWorkflows.rejected, (state, action) => {
 				state.statusWorkflows = 'failed';
+				state.workflows = {
+					scheduling: false,
+					entries: [],
+					workflow: {
+						workflowId: "",
+						description: "",
+					},
+				};
+				state.workflowConfiguration = {
+					workflowId: "",
+					description: "",
+				};
 				state.errorWorkflows = action.error;
 				console.error(action.error);
 			})

@@ -250,16 +250,20 @@ export const updateExtendedSeriesMetadata = createAppAsyncThunk('seriesDetails/u
 	dispatch(setSeriesDetailsExtendedMetadata(newExtendedMetadata));
 });
 
-export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSeriesAccess', async (params: {
-	id: Series["id"],
-	policies: { acl: Acl }
-}, {dispatch}) => {
-	const { id, policies } = params;
+export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSeriesAccess', async (
+	params: {
+		id: Series["id"],
+		policies: { acl: Acl },
+		override?: boolean
+	}, {dispatch}) => {
+	const { id, policies, override } = params;
 
 	let data = new URLSearchParams();
 
+	let overrideString = override ? String(true) : String(false);
+
 	data.append("acl", JSON.stringify(policies));
-	data.append("override", String(true));
+	data.append("override", overrideString);
 
 	return axios
 		.post(`/admin-ng/series/${id}/access`, data, {

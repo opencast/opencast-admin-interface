@@ -118,8 +118,8 @@ const NewLifeCyclePolicyWizard = ({
 							{/* Stepper that shows each step of wizard as header */}
 							<WizardStepper
 								steps={steps}
-								page={page}
-								setPage={setPage}
+								activePageIndex={page}
+								setActivePage={setPage}
 								completed={pageCompleted}
 								setCompleted={setPageCompleted}
 								formik={formik}

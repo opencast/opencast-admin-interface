@@ -24,26 +24,15 @@ const GroupDetails: React.FC<{
 	const groupDetails = useAppSelector(state => getGroupDetails(state));
 
 	const [page, setPage] = useState(0);
-		// transform roles for use in SelectContainer
 
-	const [roleNames, setRoleNames] = useState<{ name: string }[]>([]);
-
-
-	useEffect(() => {
-		const roleNames = [];
-		for (let i = 0; i < groupDetails.roles.length; i++) {
-			if (!groupDetails.roles[i].startsWith("ROLE_GROUP")) {
-				roleNames.push({
-					name: groupDetails.roles[i],
-				});
-			}
-		}
-		setRoleNames(roleNames);
-	}, [groupDetails.roles]);
-
+	// Since we are using the initialValues to be consumed by SelectContainer via Formik later on,
+	// we should not use useState because the asynchronous nature! which has no use here,
+	// and in fact prevents the "roles" to get the data properly!
 	const initialValues = {
-		...groupDetails,
-		roles: roleNames,
+	...groupDetails,
+	roles: groupDetails.roles
+		.filter(role => !role.startsWith("ROLE_GROUP"))
+		.map(role => ({ name: role })),
 	};
 
 	// information about tabs
