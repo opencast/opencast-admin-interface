@@ -10,6 +10,8 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { UpdateUser, updateUserDetails } from "../../../../slices/userDetailsSlice";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { ParseKeys } from "i18next";
+import { UserRole } from "../../../../slices/userSlice";
+import { SerializedError } from "@reduxjs/toolkit";
 
 /**
  * This component manages the pages of the user details
@@ -24,7 +26,7 @@ const UserDetails: React.FC<{
 	const [page, setPage] = useState(0);
 
 	const userDetails = useAppSelector(state => getUserDetails(state));
-	const assignedRoles = userDetails.roles.filter(role => role.type === "GROUP" || role.type === "INTERNAL")
+	const assignedRoles = userDetails.roles.filter(role => role.type === "GROUP" || role.type === "INTERNAL");
 
 	const initialValues = {
 		...userDetails,
@@ -60,7 +62,19 @@ const UserDetails: React.FC<{
 		setPage(tabNr);
 	};
 
-	const handleSubmit = (values: any) => {
+	const handleSubmit = (values: {
+		status?: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+		error?: SerializedError | null,
+		provider?: string,
+		roles?: UserRole[],
+		name?: string,
+		username: string,
+		email?: string,
+		manageable?: boolean,
+		assignedRoles?: UserRole[],
+		password?: string,
+		passwordConfirmation?: string,
+	}) => {
 		const newValues: UpdateUser = {
 			email: values.email,
 			name: values.name,
