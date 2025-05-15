@@ -11,6 +11,8 @@ import { updateSeriesTheme } from "../../../../slices/seriesDetailsSlice";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
+type SeriesTheme = { id: string; value: string; };
+
 /**
  * This component renders the tab for editing the theme of a certain series
  */
@@ -19,14 +21,8 @@ const SeriesDetailsThemeTab = ({
 	themeNames,
 	seriesId,
 }: {
-	theme: {
-		id: string;
-		value: string;
-	} | null,
-	themeNames: {
-		id: string;
-		value: string;
-	}[],
+	theme: SeriesTheme | null,
+	themeNames: SeriesTheme[],
 	seriesId: string
 }) => {
 	const { t } = useTranslation();
@@ -34,11 +30,11 @@ const SeriesDetailsThemeTab = ({
 
 	const user = useAppSelector(state => getUserInformation(state));
 
-	const handleSubmit = (values: { theme: {id: string, value: string } | null }) => {
+	const handleSubmit = (values: { theme: SeriesTheme | null }) => {
 		dispatch(updateSeriesTheme({id: seriesId, values: values}));
 	};
 
-	const checkValidity = (formik: FormikProps<{theme: {id: string, value: string } | null }>) => {
+	const checkValidity = (formik: FormikProps<{theme: SeriesTheme | null }>) => {
 		if (formik.dirty && formik.isValid) {
 			// check if user provided values differ from initial ones
 			return !_.isEqual(formik.values, formik.initialValues);

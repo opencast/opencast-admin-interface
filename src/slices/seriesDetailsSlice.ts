@@ -304,49 +304,49 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
 	let themeId = values.theme?.id;
 
 	if (!themeId || themeId === '') {
-        axios
-            .delete(`/admin-ng/series/${id}/theme`)
-            .then((response) => {
+		axios
+			.delete(`/admin-ng/series/${id}/theme`)
+			.then((response) => {
 				dispatch(setSeriesDetailsTheme(values.theme));
-                dispatch(
-                    addNotification({
-                        type: "warning",
-                        key: "SERIES_THEME_REPROCESS_EXISTING_EVENTS",
-                        duration: 10,
-                        parameter: undefined,
-                        context: NOTIFICATION_CONTEXT
-                    })
-                );
-            })
-            .catch((response) => {
-                console.error(response);
-            });
-    } else {
-        let data = new URLSearchParams();
-        data.append("themeId", themeId);
+				dispatch(
+					addNotification({
+						type: "warning",
+						key: "SERIES_THEME_REPROCESS_EXISTING_EVENTS",
+						duration: 10,
+						parameter: undefined,
+						context: NOTIFICATION_CONTEXT
+					})
+				);
+			})
+			.catch((response) => {
+				console.error(response);
+			});
+	} else {
+		let data = new URLSearchParams();
+		data.append("themeId", themeId);
 
-        axios
-            .put(`/admin-ng/series/${id}/theme`, data)
-            .then((response) => {
-                let themeResponse = response.data;
+		axios
+			.put(`/admin-ng/series/${id}/theme`, data)
+			.then((response) => {
+				let themeResponse = response.data;
 
-                let seriesTheme = transformToIdValueArray(themeResponse)[0];
+				let seriesTheme = transformToIdValueArray(themeResponse)[0];
 
-                dispatch(setSeriesDetailsTheme(seriesTheme));
-                dispatch(
-                    addNotification({
-                        type: "warning",
-                        key: "SERIES_THEME_REPROCESS_EXISTING_EVENTS",
-                        duration: 10,
-                        parameter: undefined,
-                        context: NOTIFICATION_CONTEXT
-                    })
-                );
-            })
-            .catch((response) => {
-                console.error(response);
-            });
-    }
+				dispatch(setSeriesDetailsTheme(seriesTheme));
+				dispatch(
+					addNotification({
+						type: "warning",
+						key: "SERIES_THEME_REPROCESS_EXISTING_EVENTS",
+						duration: 10,
+						parameter: undefined,
+						context: NOTIFICATION_CONTEXT
+					})
+				);
+			})
+			.catch((response) => {
+				console.error(response);
+			});
+	}
 });
 
 // fetch Tobira data of certain series from server
