@@ -1708,7 +1708,6 @@ export const saveAccessPolicies = createAppAsyncThunk('eventDetails/saveAccessPo
 	params: {
 		id: Event["id"],
 		policies: { acl: { ace: Ace[] }},
-		override?: boolean,
 	}, { dispatch }) => {
 	const { id, policies } = params;
 	const headers = getHttpHeaders();
