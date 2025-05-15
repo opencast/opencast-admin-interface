@@ -16,6 +16,7 @@ import About from "./components/About";
 import { useAppDispatch } from "./store";
 import { fetchOcVersion, fetchUserInfo } from "./slices/userInfoSlice";
 import LifeCyclePolicies from "./components/events/LifeCyclePolicies";
+import { subscribeToAuthEvents } from "./utils/broadcastSync";
 
 function App() {
 	const dispatch = useAppDispatch();
@@ -24,6 +25,9 @@ function App() {
 		dispatch(fetchUserInfo());
 		// Load information about current opencast version on mount
 		dispatch(fetchOcVersion());
+
+		// Subscribe to the auth event to follow the login - logout events!
+		subscribeToAuthEvents();
 
 		// Add event listener for back button to check if we are still logged in
 		window.addEventListener("popstate", function (event) {
