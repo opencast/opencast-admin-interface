@@ -165,7 +165,7 @@ export const fetchSeriesDetailsTheme = createAppAsyncThunk('seriesDetails/fetchS
 	const res = await axios.get(`/admin-ng/series/${id}/theme.json`);
 	const themeResponse = res.data;
 
-	let seriesTheme = null;
+	let seriesTheme: SeriesDetailsState["theme"] = null;
 
 	// check if series has a theme
 	if (!_.isEmpty(themeResponse)) {
