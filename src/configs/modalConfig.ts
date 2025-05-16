@@ -6,6 +6,7 @@ import { initArray } from "../utils/utils";
 import { EditedEvents, Event, UploadAssetsTrack } from "../slices/eventSlice";
 import { Role } from "../slices/aclSlice";
 import { ParseKeys } from "i18next";
+import { UserRole } from "../slices/userSlice";
 
 // Context for notifications shown in modals
 export const NOTIFICATION_CONTEXT = "modal-form";
@@ -182,6 +183,7 @@ export const initialFormValuesNewUser: {
 	password: string,
 	passwordConfirmation: string,
 	roles: Role[],
+	assignedRoles: UserRole[],
 	manageable: boolean,
 } = {
 	username: "",
@@ -190,6 +192,7 @@ export const initialFormValuesNewUser: {
 	password: "",
 	passwordConfirmation: "",
 	roles: [],
+	assignedRoles: [],
 	manageable: true,
 };
 
