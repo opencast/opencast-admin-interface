@@ -16,7 +16,7 @@ export type DropDownOption = {
 }
 
 /**
- * This component provides a bar chart for visualising (statistics) data
+ * This component renders a dropdown menu using react-select
  */
 const DropDown = <T, >({
 	ref = React.createRef<SelectInstance<any, boolean, GroupBase<any>>>(),

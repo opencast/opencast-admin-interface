@@ -33,9 +33,7 @@
 @use "menu";
 @use "footer";
 @use "tables";
-@use "date-picker";
 @use "datepicker-custom";
-@use "alerts";
 @use "inputs";
 @use "stats";
 @use "popover";
@@ -52,3 +50,6 @@
 // Large Components
 @use "modals/modals-config";
 @use "data-filter/data-filter-config";
+
+// Alerts
+@use "alerts";
