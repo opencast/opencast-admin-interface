@@ -36,8 +36,10 @@ const GroupDetails: React.FC<{
 	}
 
 	const initialValues = {
-		...groupDetails,
-		roles: roleNames,
+	...groupDetails,
+	roles: groupDetails.roles
+		.filter((role: string) => !role.startsWith("ROLE_GROUP"))
+		.map((role: any) => ({ name: role })),
 	};
 
 	// information about tabs
@@ -82,6 +84,7 @@ const GroupDetails: React.FC<{
 				initialValues={initialValues}
 				validationSchema={EditGroupSchema}
 				onSubmit={(values) => handleSubmit(values)}
+				enableReinitialize={true}
 			>
 				{(formik) => (
 					<>
@@ -92,6 +95,7 @@ const GroupDetails: React.FC<{
 						{/* Navigation buttons and validation */}
 						<WizardNavigationButtons
 							formik={formik}
+							previousPage={close}
 							createTranslationString="SUBMIT"
 							cancelTranslationString="CANCEL"
 							isLast
