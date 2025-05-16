@@ -24,16 +24,13 @@ import { HiTranslate } from "react-icons/hi";
 import { IconContext } from "react-icons";
 import ButtonLikeAnchor from "./shared/ButtonLikeAnchor";
 import { ModalHandle } from "./shared/modals/Modal";
+import { broadcastLogout } from "../utils/broadcastSync";
 
 // References for detecting a click outside of the container of the dropdown menus
 const containerLang = React.createRef<HTMLDivElement>();
 const containerHelp = React.createRef<HTMLDivElement>();
 const containerUser = React.createRef<HTMLDivElement>();
 const containerNotify = React.createRef<HTMLDivElement>();
-
-function logout() {
-	window.location.href = "/j_spring_security_logout";
-}
 
 /**
  * Component that renders the header and the navigation in the upper right corner.
@@ -417,6 +414,12 @@ const MenuHelp = ({
 
 const MenuUser = () => {
 	const { t } = useTranslation();
+
+	const logout = () => {
+		// Here we broadcast logout, in order to redirect other tabs to login page!
+		broadcastLogout();
+		window.location.href = "/j_spring_security_logout";
+	}
 	return (
 		<ul className="dropdown-ul">
 			<li>
