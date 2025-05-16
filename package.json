@@ -9,14 +9,7 @@
     "@emotion/styled": "^11.14.0",
     "@hello-pangea/dnd": "^18.0.1",
     "@mui/material": "^7.0.1",
-<<<<<<< HEAD
-    "@mui/x-date-pickers": "^8.3.1",
-    "@mui/x-date-pickers-pro": "^8.3.1",
-    "@reduxjs/toolkit": "^2.6.1",
-    "@types/date-fns": "^2.5.3",
-=======
-    "@reduxjs/toolkit": "^2.8.1",
->>>>>>> upstream/main
+    "@reduxjs/toolkit": "^2.8.2",
     "array-move": "^4.0.0",
     "axios": "^1.9.0",
     "classnames": "^2.5.1",
