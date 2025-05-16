@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { editFilterValue } from "../../../slices/tableFilterSlice";
-import { loadEventsIntoTable } from "../../../thunks/tableThunks";
+import { loadEventsIntoTable, goToPage } from "../../../thunks/tableThunks";
 import { getFilters } from "../../../selectors/tableFilterSelectors";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
@@ -35,6 +35,7 @@ const EventsDateCell = ({
 			endDate.setMinutes(59);
 			endDate.setSeconds(59);
 
+      dispatch(goToPage(0));
 			await dispatch(editFilterValue({filterName: filter.name, value: startDate.toISOString() + "/" + endDate.toISOString()}));
 			await dispatch(fetchEvents());
 			dispatch(loadEventsIntoTable());

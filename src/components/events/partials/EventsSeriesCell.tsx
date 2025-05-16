@@ -1,7 +1,7 @@
 import React from "react";
 import { getFilters } from "../../../selectors/tableFilterSelectors";
 import { editFilterValue } from "../../../slices/tableFilterSlice";
-import { loadEventsIntoTable } from "../../../thunks/tableThunks";
+import { loadEventsIntoTable, goToPage } from "../../../thunks/tableThunks";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchEvents } from "../../../slices/eventSlice";
 import { Event } from "../../../slices/eventSlice";
@@ -23,6 +23,7 @@ const EventsSeriesCell = ({
 	const addFilter = async (seriesId: string) => {
 		let filter = filterMap.find(({ name }) => name === "series");
 		if (!!filter) {
+      dispatch(goToPage(0));
 			await dispatch(editFilterValue({filterName: filter.name, value: seriesId}));
 			await dispatch(fetchEvents());
 			dispatch(loadEventsIntoTable());
