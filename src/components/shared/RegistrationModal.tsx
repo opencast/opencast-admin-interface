@@ -531,7 +531,7 @@ const RegistrationModalContent = () => {
 											<div className="form-group form-group-checkbox">
 												<Field
 													type="checkbox"
-													name="contactme"
+													name="contactMe"
 													id="adopter_contactme"
 													className="form-control"
 												/>
