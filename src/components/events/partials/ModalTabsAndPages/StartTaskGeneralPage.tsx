@@ -87,7 +87,7 @@ const StartTaskGeneralPage = <T extends RequiredFormProps>({
 												onChange={(e) => onChangeAllSelected(e)}
 											/>
 										</th>
-										<th className="full-width">
+										<th>
 											{t("EVENTS.EVENTS.TABLE.TITLE")}
 										</th>
 										<th className="nowrap">
@@ -105,7 +105,7 @@ const StartTaskGeneralPage = <T extends RequiredFormProps>({
 											key={key}
 											className={cn({ error: !isStartable(event) })}
 										>
-											<td>
+											<td className="small">
 												<input
 													name="events"
 													type="checkbox"
@@ -114,10 +114,10 @@ const StartTaskGeneralPage = <T extends RequiredFormProps>({
 												/>
 											</td>
 											<td>{event.title}</td>
-											<td className="nowrap">
+											<td>
 												{event.series ? event.series.title : ""}
 											</td>
-											<td className="nowrap">{t(event.event_status as ParseKeys)}</td>
+											<td>{t(event.event_status as ParseKeys)}</td>
 										</tr>
 									))}
 								</tbody>

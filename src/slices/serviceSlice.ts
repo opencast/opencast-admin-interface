@@ -18,6 +18,8 @@ export type Service = {
 	queued: number,
 	running: number,
 	status: string,
+	online: boolean,
+	maintenance: boolean,
 }
 
 type ServiceState = {

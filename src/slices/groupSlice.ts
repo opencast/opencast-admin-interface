@@ -71,7 +71,6 @@ export const postNewGroup = createAppAsyncThunk('groups/postNewGroup', async (va
 			},
 		})
 		.then((response) => {
-			console.info(response);
 			dispatch(addNotification({type: "success", key: "GROUP_ADDED"}));
 		})
 		.catch((response) => {
@@ -89,7 +88,6 @@ export const deleteGroup = createAppAsyncThunk('groups/deleteGroup', async (id: 
 	axios
 		.delete(`/admin-ng/groups/${id}`)
 		.then((res) => {
-			console.info(res);
 			// add success notification
 			dispatch(addNotification({type: "success", key: "GROUP_DELETED"}));
 		})

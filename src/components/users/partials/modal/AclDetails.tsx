@@ -72,7 +72,7 @@ const AclDetails = ({
 			{/* formik form used in entire modal */}
 			<Formik
 				initialValues={initialValues}
-				validationSchema={NewAclSchema[0]}
+				validationSchema={NewAclSchema["metadata"]}
 				onSubmit={(values) => handleSubmit(values)}
 			>
 				{(formik) => (
@@ -88,6 +88,7 @@ const AclDetails = ({
 						{/* Navigation buttons and validation */}
 						<WizardNavigationButtons
 							formik={formik}
+							previousPage={close}
 							submitPage={
 								async () => {
 									if (await dispatch(checkAcls(formik.values.acls))) {

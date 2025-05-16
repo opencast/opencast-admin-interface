@@ -24,23 +24,13 @@ import { HiTranslate } from "react-icons/hi";
 import { IconContext } from "react-icons";
 import ButtonLikeAnchor from "./shared/ButtonLikeAnchor";
 import { ModalHandle } from "./shared/modals/Modal";
+import { broadcastLogout } from "../utils/broadcastSync";
 
 // References for detecting a click outside of the container of the dropdown menus
 const containerLang = React.createRef<HTMLDivElement>();
 const containerHelp = React.createRef<HTMLDivElement>();
 const containerUser = React.createRef<HTMLDivElement>();
 const containerNotify = React.createRef<HTMLDivElement>();
-
-function changeLanguage(code: string) {
-	// Load json-file of the language with provided code
-	i18n.changeLanguage(code);
-	// Reload window for updating the flag of the language dropdown menu
-	window.location.reload();
-}
-
-function logout() {
-	window.location.href = "/j_spring_security_logout";
-}
 
 /**
  * Component that renders the header and the navigation in the upper right corner.
@@ -83,6 +73,13 @@ const Header = () => {
 		} else {
 			hotKeyCheatSheetModalRef.current?.open()
 		}
+	};
+
+	const handleChangeLanguage = (code: string) => {
+		// Load json-file of the language with provided code
+		i18n.changeLanguage(code);
+		// Close the language dropdown menu
+		setMenuLang(false);
 	};
 
 	useHotkeys(
@@ -153,7 +150,7 @@ const Header = () => {
 								</IconContext.Provider>
 							</button>
 						</Tooltip>
-						{displayMenuLang && <MenuLang />}
+						{displayMenuLang && <MenuLang handleChangeLanguage={handleChangeLanguage}/>}
 					</div>
 
 					{/* Media Module */}
@@ -273,7 +270,11 @@ const Header = () => {
 	);
 };
 
-const MenuLang = () => {
+const MenuLang = ({ handleChangeLanguage }: { handleChangeLanguage: (code: string) => void }) => {
+	// const handleChangeLanguage = (code: string) => {
+	// 	handleChangeLanguage(code);
+	// };
+
 	return (
 		<ul className="dropdown-ul">
 			{/* one list item for each available language */}
@@ -281,7 +282,7 @@ const MenuLang = () => {
 				<li key={key}>
 					<ButtonLikeAnchor
 						extraClassName={(i18n.language === language.code ? "selected" : "")}
-						onClick={() => changeLanguage(language.code)}
+						onClick={() => handleChangeLanguage(language.code)}
 					>
 						{language.long}
 					</ButtonLikeAnchor>
@@ -413,6 +414,12 @@ const MenuHelp = ({
 
 const MenuUser = () => {
 	const { t } = useTranslation();
+
+	const logout = () => {
+		// Here we broadcast logout, in order to redirect other tabs to login page!
+		broadcastLogout();
+		window.location.href = "/j_spring_security_logout";
+	}
 	return (
 		<ul className="dropdown-ul">
 			<li>

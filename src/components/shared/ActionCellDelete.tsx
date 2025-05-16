@@ -47,9 +47,8 @@ export const ActionCellDelete = <T, >({
 				resourceType={resourceType}
 				deleteMethod={deleteMethod}
 				deleteAllowed={deleteAllowed}
-				showCautionMessage={showCautionMessage}
 				deleteNotAllowedMessage={deleteNotAllowedMessage}
-				deleteWithCautionMessage={deleteWithCautionMessage}
+				deleteWithCautionMessage={showCautionMessage ? deleteWithCautionMessage : undefined}
 				modalRef={deleteConfirmationModalRef}
 			/>
 		</>
