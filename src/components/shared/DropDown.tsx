@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	dropDownSpacingTheme,
@@ -56,13 +56,11 @@ const DropDown = <T, >({
 		width?: number | string,
 		optionPaddingTop?: number,
 		optionLineHeight?: string
-	}
+	},
 }) => {
 	const { t } = useTranslation();
 
 	const selectRef = ref;
-
-	const [searchText, setSearch] = useState("");
 
 	const style = dropDownStyle(customCSS ?? {});
 
@@ -81,15 +79,10 @@ const DropDown = <T, >({
 
 	const formatOptions = (
 		unformattedOptions: DropDownOption[],
-		filterText: string,
 		required: boolean,
 	) => {
 		// Translate?
-		unformattedOptions = unformattedOptions.map(option => ({...option, label: t(option.label as ParseKeys)}))
-
-		// Filter
-		filterText = filterText.toLowerCase();
-		unformattedOptions = unformattedOptions.filter(option => option.label.toLowerCase().includes(filterText));
+		unformattedOptions = unformattedOptions.map(option => ({...option, label: t(option.label as ParseKeys)}));
 
 		// Add "No value" option
 		if (!required) {
@@ -128,14 +121,11 @@ const DropDown = <T, >({
 		autoFocus: autoFocus,
 		isSearchable: true,
 		value: { value: value, label: text === "" ? placeholder : text },
-		inputValue: searchText,
 		options: formatOptions(
 			options,
-			searchText,
 			required,
 		),
 		placeholder: placeholder,
-		onInputChange: (value: string) => setSearch(value),
 		onChange: (element) => handleChange(element as {value: T, label: string}),
 		menuIsOpen: menuIsOpen,
 		onMenuOpen: () => openMenu(true),
