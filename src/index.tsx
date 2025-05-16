@@ -17,15 +17,6 @@ import "./i18n/i18n";
 import "font-awesome/css/font-awesome.min.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { HotkeysProvider } from "react-hotkeys-hook";
-<<<<<<< HEAD
-import { ThemeProvider } from "@mui/material";
-import { createTheme } from '@mui/material/styles';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { getCurrentLanguageInformation } from "./utils/utils";
-=======
-
->>>>>>> upstream/main
 
 // Commenting persistent stuff out can help with debugging
 const persistor = persistStore(store);
