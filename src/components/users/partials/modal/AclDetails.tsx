@@ -98,6 +98,7 @@ const AclDetails = ({
 							createTranslationString="SUBMIT"
 							cancelTranslationString="CANCEL"
 							isLast
+							previousPage={close}
 						/>
 					</>
 				)}
