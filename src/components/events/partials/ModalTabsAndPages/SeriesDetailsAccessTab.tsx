@@ -46,6 +46,7 @@ const SeriesDetailsAccessTab = ({
 			editAccessRole={"ROLE_UI_SERIES_DETAILS_ACL_EDIT"}
 			policyChanged={policyChanged}
 			setPolicyChanged={setPolicyChanged}
+			withOverrideButton={true}
 		/>
 	);
 };
