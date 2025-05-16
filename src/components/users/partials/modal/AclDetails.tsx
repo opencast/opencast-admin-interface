@@ -1,3 +1,4 @@
+/* eslint-disable no-trailing-spaces */
 import React, { useState } from "react";
 import { Formik } from "formik";
 import AclAccessPage from "../wizard/AclAccessPage";
@@ -87,8 +88,7 @@ const AclDetails = ({
 
 						{/* Navigation buttons and validation */}
 						<WizardNavigationButtons
-							formik={formik}
-							previousPage={close}
+							formik={formik}							
 							submitPage={
 								async () => {
 									if (await dispatch(checkAcls(formik.values.acls))) {
