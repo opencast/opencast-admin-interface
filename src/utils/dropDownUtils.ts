@@ -24,3 +24,7 @@ export const formatAclTemplatesForDropdown = (templates: { id: string, value: st
 export const formatAclRolesForDropdown = (roles: Role[]) => {
 	return roles.map(role => ({ label: role.name, value: role.name }));
 };
+
+export const formatPolicyActionsForDropdown = (policieActions: string[]) => {
+	return policieActions.map(action => ({ label: action, value: action }));
+};

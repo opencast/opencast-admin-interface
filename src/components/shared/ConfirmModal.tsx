@@ -4,7 +4,7 @@ import { Modal, ModalHandle } from "./modals/Modal";
 import { NotificationComponent } from "./Notifications";
 import { ParseKeys } from "i18next";
 
-export type ResourceType = "EVENT" | "SERIES" | "LOCATION" | "USER" | "GROUP" | "ACL" | "THEME" | "TOBIRA_PATH";
+export type ResourceType = "EVENT" | "SERIES" | "LOCATION" | "USER" | "GROUP" | "ACL" | "THEME" | "TOBIRA_PATH" | "LIFECYCLE_POLICY";
 
 const ConfirmModal = <T, >({
 	close,
