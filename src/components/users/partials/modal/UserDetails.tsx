@@ -63,24 +63,19 @@ const UserDetails: React.FC<{
 	};
 
 	const handleSubmit = (values: {
-		status?: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
-		error?: SerializedError | null,
-		provider?: string,
-		roles?: UserRole[],
-		name?: string,
 		username: string,
+		name?: string,
 		email?: string,
-		manageable?: boolean,
-		assignedRoles?: UserRole[],
 		password?: string,
-		passwordConfirmation?: string,
+		roles?: UserRole[],
+		assignedRoles?: UserRole[],
 	}) => {
 		const newValues: UpdateUser = {
-			email: values.email,
-			name: values.name,
 			username: values.username,
-			roles: values.assignedRoles,
+			name: values.name,
+			email: values.email,
 			password: values.password,
+			roles: values.assignedRoles,
 		};
 
 		dispatch(updateUserDetails({values: newValues, username: userDetails.username}));

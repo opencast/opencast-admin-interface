@@ -43,10 +43,8 @@ const NewUserWizard = ({
 			name: string,
 			email: string,
 			password: string,
-			passwordConfirmation: string,
 			roles: Role[],
 			assignedRoles: UserRole[],
-			manageable: boolean,
 	}) => {
 		const newValues: NewUser = {
 			username: values.username,
