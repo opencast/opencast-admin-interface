@@ -1,6 +1,5 @@
 import { Recording } from "../slices/recordingSlice";
 import { Workflow } from "../slices/workflowSlice";
-import { Role } from "../slices/aclSlice";
 /*
  * this file contains functions, which are needed for the searchable drop-down selections
  */
@@ -19,8 +18,4 @@ export const formatWorkflowsForDropdown = (workflows: Workflow[]) => {
 
 export const formatAclTemplatesForDropdown = (templates: { id: string, value: string }[]) => {
 	return templates.map(template => ({ label: template.value, value: template.id}));
-};
-
-export const formatAclRolesForDropdown = (roles: Role[]) => {
-	return roles.map(role => ({ label: role.name, value: role.name }));
 };
