@@ -1,5 +1,5 @@
 import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { addNotification } from './notificationSlice';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 
@@ -73,26 +73,31 @@ const initialState: UserInfoState = {
 	},
 };
 
-export const fetchUserInfo = createAppAsyncThunk('UserInfo/fetchUserInfo', async (_, { dispatch }) => {
-	// Just make the async request here, and return the response.
-	// This will automatically dispatch a `pending` action first,
-	// and then `fulfilled` or `rejected` actions based on the promise.
-	const res = await axios.get("/info/me.json")
-		.then((response) => {
-			return response.data;
-		})
-		.catch((response) => {
-			console.error(response);
-			dispatch(addNotification({type: "error", key: "USER_NOT_SAVED"}));
-		});
-
-	// Redirect to login if not in ROLE_ADMIN_UI
-	if (!(res.roles.includes('ROLE_ADMIN') || res.roles.includes('ROLE_ADMIN_UI'))) {
-		window.location.href = "/login.html";
+export const fetchUserInfo = createAppAsyncThunk(
+	'UserInfo/fetchUserInfo',
+	async (_, { dispatch }) => {
+	  try {
+		const response = await axios.get("/info/me.json");
+		const res = response.data;
+		if (!res || !(res.roles?.includes('ROLE_ADMIN') || res.roles?.includes('ROLE_ADMIN_UI'))) {
+		  window.location.href = "/login.html";
+		}
+		return res;
+	  } catch (err: unknown) {
+		const error = err as AxiosError;
+		// eslint-disable-next-line no-trailing-spaces
+		console.error(error);  
+		const status = error?.response?.status;
+		if (status === 401 || status === 403) {
+		  window.location.href = "/login.html";
+		// eslint-disable-next-line no-trailing-spaces
+		}  
+		dispatch(addNotification({ type: "error", key: "USER_NOT_SAVED" }));
+		throw error;
+	  }
 	}
-
-	return res;
-});
+  // eslint-disable-next-line no-trailing-spaces
+  );  
 
 export const fetchOcVersion = createAppAsyncThunk('UserInfo/fetchOcVersion', async () => {
 	const res = await axios.get("/sysinfo/bundles/version?prefix=opencast");

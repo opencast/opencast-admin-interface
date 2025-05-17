@@ -103,10 +103,10 @@ const UserDetails: React.FC<{
 						{page !== 2 && (
 							<WizardNavigationButtons
 								formik={formik}
-								previousPage={close}
 								createTranslationString="SUBMIT"
 								cancelTranslationString="CANCEL"
 								isLast
+								previousPage={close}
 							/>
 						)}
 					</>
