@@ -1,3 +1,4 @@
+/* eslint-disable no-trailing-spaces */
 import React, { useState } from "react";
 import { Formik } from "formik";
 import { EditUserSchema } from "../../../../utils/validate";
@@ -106,7 +107,7 @@ const UserDetails: React.FC<{
 								previousPage={close}
 								createTranslationString="SUBMIT"
 								cancelTranslationString="CANCEL"
-								isLast
+								isLast								
 							/>
 						)}
 					</>

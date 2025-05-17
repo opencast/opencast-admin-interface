@@ -1,3 +1,4 @@
+/* eslint-disable no-trailing-spaces */
 import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import GroupMetadataPage from "../wizard/GroupMetadataPage";
@@ -77,6 +78,7 @@ const GroupDetails: React.FC<{
 				initialValues={initialValues}
 				validationSchema={EditGroupSchema}
 				onSubmit={(values) => handleSubmit(values)}
+				enableReinitialize={true}
 			>
 				{(formik) => (
 					<>
@@ -90,7 +92,7 @@ const GroupDetails: React.FC<{
 							previousPage={close}
 							createTranslationString="SUBMIT"
 							cancelTranslationString="CANCEL"
-							isLast
+							isLast					
 						/>
 					</>
 				)}
