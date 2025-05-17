@@ -1,3 +1,4 @@
+/* eslint-disable no-trailing-spaces */
 import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import GroupMetadataPage from "../wizard/GroupMetadataPage";
@@ -91,8 +92,7 @@ const GroupDetails: React.FC<{
 							previousPage={close}
 							createTranslationString="SUBMIT"
 							cancelTranslationString="CANCEL"
-							isLast
-							previousPage={close}
+							isLast					
 						/>
 					</>
 				)}

@@ -1,3 +1,4 @@
+/* eslint-disable no-trailing-spaces */
 import React, { useState } from "react";
 import { Formik } from "formik";
 import AclAccessPage from "../wizard/AclAccessPage";
@@ -99,7 +100,7 @@ const AclDetails = ({
 							createTranslationString="SUBMIT"
 							cancelTranslationString="CANCEL"
 							isLast
-							previousPage={close}
+							
 						/>
 					</>
 				)}
