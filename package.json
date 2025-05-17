@@ -65,6 +65,7 @@
     "@types/lodash": "^4.17.16",
     "@types/node": "^22.15.18",
     "@types/react-dom": "^19.1.5",
+    "@types/react-window": "^1.8.8",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react-swc": "^3.9.0",
     "eslint": "^9.26.0",
