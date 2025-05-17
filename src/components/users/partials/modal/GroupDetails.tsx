@@ -77,6 +77,7 @@ const GroupDetails: React.FC<{
 				initialValues={initialValues}
 				validationSchema={EditGroupSchema}
 				onSubmit={(values) => handleSubmit(values)}
+				enableReinitialize={true}
 			>
 				{(formik) => (
 					<>
@@ -87,10 +88,11 @@ const GroupDetails: React.FC<{
 						{/* Navigation buttons and validation */}
 						<WizardNavigationButtons
 							formik={formik}
-							previousPage={close}
+							//previousPage={close}
 							createTranslationString="SUBMIT"
 							cancelTranslationString="CANCEL"
 							isLast
+							previousPage={close}
 						/>
 					</>
 				)}
