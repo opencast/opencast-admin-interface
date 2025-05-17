@@ -10,6 +10,8 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { UpdateUser, updateUserDetails } from "../../../../slices/userDetailsSlice";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { ParseKeys } from "i18next";
+import { UserRole } from "../../../../slices/userSlice";
+import { SerializedError } from "@reduxjs/toolkit";
 
 /**
  * This component manages the pages of the user details
@@ -24,9 +26,11 @@ const UserDetails: React.FC<{
 	const [page, setPage] = useState(0);
 
 	const userDetails = useAppSelector(state => getUserDetails(state));
+	const assignedRoles = userDetails.roles.filter(role => role.type === "GROUP" || role.type === "INTERNAL");
 
 	const initialValues = {
 		...userDetails,
+		assignedRoles,
 		password: "",
 		passwordConfirmation: "",
 	};
@@ -58,8 +62,23 @@ const UserDetails: React.FC<{
 		setPage(tabNr);
 	};
 
-	const handleSubmit = (values: UpdateUser) => {
-		dispatch(updateUserDetails({values: values, username: userDetails.username}));
+	const handleSubmit = (values: {
+		username: string,
+		name?: string,
+		email?: string,
+		password?: string,
+		roles?: UserRole[],
+		assignedRoles?: UserRole[],
+	}) => {
+		const newValues: UpdateUser = {
+			username: values.username,
+			name: values.name,
+			email: values.email,
+			password: values.password,
+			roles: values.assignedRoles,
+		};
+
+		dispatch(updateUserDetails({values: newValues, username: userDetails.username}));
 		close();
 	};
 
@@ -84,6 +103,7 @@ const UserDetails: React.FC<{
 						{page !== 2 && (
 							<WizardNavigationButtons
 								formik={formik}
+								previousPage={close}
 								createTranslationString="SUBMIT"
 								cancelTranslationString="CANCEL"
 								isLast

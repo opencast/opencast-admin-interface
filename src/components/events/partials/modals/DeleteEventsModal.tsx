@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { deleteMultipleEvent } from "../../../../slices/eventSlice";
 import { isEvent } from "../../../../slices/tableSlice";
 import NavigationButtons from "../../../shared/NavigationButtons";
+import { NotificationComponent } from "../../../shared/Notifications";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
@@ -69,10 +70,13 @@ const DeleteEventsModal = ({
 		<>
 			<ModalContentTable modalContentClassName="modal-content active">
 				<div className="list-obj">
-					<div className="modal-alert danger obj">
-						<p>{t("BULK_ACTIONS.DELETE_EVENTS_WARNING_LINE1")}</p>
-						<p>{t("BULK_ACTIONS.DELETE_EVENTS_WARNING_LINE2")}</p>
-					</div>
+					<NotificationComponent
+						notification={{
+							type: "error",
+							message: "BULK_ACTIONS.DELETE_EVENTS_WARNING_LINE1",
+							id: 0,
+						}}
+					/>
 
 					<div className="full-col">
 						<div className="obj">
