@@ -13,7 +13,7 @@ import { eventsTemplateMap } from "../../configs/tableConfigs/eventsTableMap";
 import {
 	loadEventsIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
+import { fetchFilters } from "../../slices/tableFilterSlice";
 import {
 	getTotalEvents,
 	isFetchingAssetUploadOptions as getIsFetchingAssetUploadOptions,
@@ -70,10 +70,7 @@ const Events = () => {
 		// Clear redux of previous table data
 		dispatch(resetTableProperties());
 
-		dispatch(fetchFilters("events"))
-
-		// Reset text filter
-		dispatch(editTextFilter(""));
+		dispatch(fetchFilters("events"));
 
 		// disable actions button
 		dispatch(setShowActions(false));

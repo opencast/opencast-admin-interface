@@ -30,10 +30,10 @@ const Stats = () => {
 		let filterValue;
 		await stats.filters.forEach((f) => {
 			if (f.name.toLowerCase() === "textfilter") {
-				dispatch(editTextFilter(f.value));
+				dispatch(editTextFilter({text: f.value, resource: "events"}));
 				return;
 			} else {
-				dispatch(removeTextFilter());
+				dispatch(removeTextFilter("events"));
 			}
 			let filter = filterMap.find(({ name }) => name === f.name);
 			filterValue = f.value;

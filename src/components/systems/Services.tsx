@@ -4,7 +4,7 @@ import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
 import { servicesTemplateMap } from "../../configs/tableConfigs/servicesTableMap";
-import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
+import { fetchFilters } from "../../slices/tableFilterSlice";
 import {
 	loadServicesIntoTable,
 } from "../../thunks/tableThunks";
@@ -36,9 +36,6 @@ const Services = () => {
 		dispatch(resetTableProperties());
 
 		dispatch(fetchFilters("services"));
-
-		// Reset text filter
-		dispatch(editTextFilter(""));
 
 		// Load services on mount
 		const loadServices = async () => {
