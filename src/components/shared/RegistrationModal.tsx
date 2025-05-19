@@ -20,6 +20,7 @@ import { ParseKeys } from "i18next";
 /**
  * This component renders the adopter registration modal. This modal has various states.
  */
+
 const RegistrationModal = ({
 	modalRef
 }: {
@@ -38,6 +39,7 @@ const RegistrationModal = ({
 		</Modal>
 	);
 };
+
 
 const RegistrationModalContent = () => {
 	const { t } = useTranslation();
@@ -337,6 +339,50 @@ const RegistrationModalContent = () => {
 										<div className="col">
 											<div className="form-group">
 												<Field
+													type="text"
+													name="street"
+													id="adopter_street"
+													className="form-control"
+												/>
+												<label
+													className="form-control-placeholder"
+													htmlFor="adopter_street"
+													style={
+														formik.values.street ? styleWithContent : {}
+													}
+												>
+													{t(
+														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.STREET"
+													)}
+												</label>
+											</div>
+										</div>
+										<div className="col">
+											<div className="form-group">
+												<Field
+													type="text"
+													name="streetNo"
+													id="adopter_streetnumber"
+													className="form-control"
+												/>
+												<label
+													className="form-control-placeholder"
+													htmlFor="adopter_streetnumber"
+													style={
+														formik.values.streetNo ? styleWithContent : {}
+													}
+												>
+													{t(
+														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.NUMBER"
+													)}
+												</label>
+											</div>
+										</div>
+									</div>
+									<div className="row">
+										<div className="col">
+											<div className="form-group">
+												<Field
 													style={{ color: "#666", fontWeight: "600" }}
 													id="adopter_country"
 													name="country"
@@ -363,6 +409,7 @@ const RegistrationModalContent = () => {
 												</label>
 											</div>
 										</div>
+
 										<div className="col">
 											<div className="form-group-pair">
 												<div className="form-group">
@@ -456,50 +503,6 @@ const RegistrationModalContent = () => {
 												>
 													{t(
 														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.LAST_NAME"
-													)}
-												</label>
-											</div>
-										</div>
-									</div>
-									<div className="row">
-										<div className="col">
-											<div className="form-group">
-												<Field
-													type="text"
-													name="street"
-													id="adopter_street"
-													className="form-control"
-												/>
-												<label
-													className="form-control-placeholder"
-													htmlFor="adopter_street"
-													style={
-														formik.values.street ? styleWithContent : {}
-													}
-												>
-													{t(
-														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.STREET"
-													)}
-												</label>
-											</div>
-										</div>
-										<div className="col">
-											<div className="form-group">
-												<Field
-													type="text"
-													name="streetNo"
-													id="adopter_streetnumber"
-													className="form-control"
-												/>
-												<label
-													className="form-control-placeholder"
-													htmlFor="adopter_streetnumber"
-													style={
-														formik.values.streetNo ? styleWithContent : {}
-													}
-												>
-													{t(
-														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.NUMBER"
 													)}
 												</label>
 											</div>
