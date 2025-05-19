@@ -54,7 +54,7 @@ const UserRolesTab = <T extends RequiredFormProps>({
 							label: "USERS.USERS.DETAILS.ROLES",
 							items: roles,
 						}}
-						formikField="roles"
+						formikField="assignedRoles"
 						manageable={formik.values.manageable}
 					/>
 				)}

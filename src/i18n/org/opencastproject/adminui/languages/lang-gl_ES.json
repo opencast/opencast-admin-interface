@@ -175,7 +175,7 @@
 		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
 		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "Evento creado",
-		"EVENTS_UPLOAD_STARTED": "Cargando o evento…",
+		"EVENTS_UPLOAD_STARTED": "The event \"{{ title }}\" is being uploaded… {{ progress }}%",
 		"EVENTS_NOT_CREATED": "Non se puido crear o evento",
 		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "Todos os eventos foron actualizados correctamente",
@@ -184,6 +184,8 @@
 		"EVENTS_NOT_UPDATED_ALL": "Non se puido gardar ningún evento",
 		"EVENTS_PROCESSING_DELETE_WORKFLOW": "Fluxo de traballo borrado.",
 		"EVENTS_PROCESSING_DELETE_WORKFLOW_FAILED": "Non se puido borrar o fluxo de traballo.",
+		"EVENTS_PROCESSING_ACTION_STOP": "The event processing has been stopped.",
+		"EVENTS_PROCESSING_ACTION_NON_STOP": "The event processing could not be stopped.",
 		"SERIES_NOT_UPDATED": "Non se puido gardar a serie",
 		"EVENT_DELETED": "Evento borrado.",
 		"EVENT_WILL_BE_DELETED": "O evento está a ser eliminado",
@@ -892,7 +894,11 @@
 						"ADDITIONAL_ACTIONS": "Máis accións",
 						"ACTION": "Accións",
 						"NEW": "Nova política",
-						"DETAILS": "Detalles"
+						"NON_USER_ROLES": "Roles and Groups authorized for the event",
+						"USER": "User",
+						"USERS": "Users who are authorized for the event",
+						"NEW_USER": "New user",
+						"SANITIZATION_NOTE": "User role sanitization is enabled in your Opencast, therefore user roles are displayed alongside other roles. This does not impact role functionality in any way."
 					},
 					"ROLES": {
 						"LABEL": "Select or create a role"
@@ -1202,7 +1208,10 @@
 						"ADDITIONAL_ACTIONS": "Accións adicionais",
 						"ACTION": "Accións",
 						"NEW": "Nova política",
-						"DETAILS": "Detalles",
+						"NON_USER_ROLES": "Roles and Groups authorized for the series",
+						"USER": "User",
+						"USERS": "Users who are authorized for the series",
+						"NEW_USER": "New user",
 						"REPLACE_EVENT_ACLS": "Actualizar permisos do evento",
 						"REPLACE_EVENT_ACLS_HINT": "Asegura que todos os eventos desta serie teñen estes permisos en vigor",
 						"LOAD_MORE_LIMIT": "policies shown.",
@@ -1461,8 +1470,11 @@
 						"ADDITIONAL_ACTIONS": "Accións adicionais",
 						"ACTION": "Accións",
 						"NEW": "Nova política",
-						"DETAILS": "Detalles",
-						"DESCRIPTION": "Por favor, elixa un conxunto de políticas preconfigurado ou engada políticas personalizadas a continuación"
+						"NON_USER_ROLES": "Roles and Groups authorized for the access policy",
+						"DESCRIPTION": "Por favor, elixa un conxunto de políticas preconfigurado ou engada políticas personalizadas a continuación",
+						"USER": "User",
+						"USERS": "Users who are authorized for the access policy",
+						"NEW_USER": "New user"
 					},
 					"ROLES": {
 						"LABEL": "Seleccione un rol",
@@ -1693,7 +1705,6 @@
 				"HOST_NAME": "Nome do servidor",
 				"NODE_NAME": "Nome do nodo",
 				"CORES": "Núcleos",
-				"COMPLETED": "Traballos completados",
 				"RUNNING": "Traballos en execución",
 				"QUEUED": "Traballos en cola",
 				"MAINTENANCE": "Mantemento",
@@ -1704,6 +1715,7 @@
 		"SERVICES": {
 			"TABLE": {
 				"CAPTION": "Servizos",
+				"ONLINE": "Online",
 				"STATUS": "Estado",
 				"NAME": "Nome do servizo",
 				"HOST_NAME": "Nome do servidor",
@@ -2077,9 +2089,8 @@
 	"STATISTICS": {
 		"NOT_AVAILABLE": "Neste momento non se poden amosar as estatísticas. Por favor, inténteo de novo máis tarde.",
 		"UNSUPPORTED_TYPE": "Sentímolo. Opencast non pode representar este tipo de datos estatísticos.",
-		"FROM": "Dende",
-		"TO": "Ata",
 		"TOTAL": "Total",
+		"TIMERANGE": "Time Range",
 		"GRANULARITY": "Granularidade",
 		"NAVIGATION": {
 			"ORGANIZATION": "Organization"

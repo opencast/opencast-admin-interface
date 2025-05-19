@@ -175,7 +175,7 @@
 		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
 		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "Η εκδήλωση έχει δημιουργηθεί",
-		"EVENTS_UPLOAD_STARTED": "Μια εκδήλωση ανέβηκε…",
+		"EVENTS_UPLOAD_STARTED": "The event \"{{ title }}\" is being uploaded… {{ progress }}%",
 		"EVENTS_NOT_CREATED": "Δεν ήταν δυνατή η δημιουργία της εκδήλωσης",
 		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "Όλες οι εκδηλώσεις έχουν ενημερωθεί με επιτυχία",
@@ -184,6 +184,8 @@
 		"EVENTS_NOT_UPDATED_ALL": "Καμμία από τις εκδηλώσεις δεν μπορεί να αποθηκευτεί",
 		"EVENTS_PROCESSING_DELETE_WORKFLOW": "Διαγραμμένη ροή εργασίας.",
 		"EVENTS_PROCESSING_DELETE_WORKFLOW_FAILED": "Δεν ήταν δυνατή η διαγραφή της ροής εργασίας.",
+		"EVENTS_PROCESSING_ACTION_STOP": "The event processing has been stopped.",
+		"EVENTS_PROCESSING_ACTION_NON_STOP": "The event processing could not be stopped.",
 		"SERIES_NOT_UPDATED": "Δεν ήταν δυνατή η αποθήκευση της σειράς",
 		"EVENT_DELETED": "Η εκδήλωση έχει διαγραφεί.",
 		"EVENT_WILL_BE_DELETED": "Η εκδήλωση έχει διαγραφεί",
@@ -892,7 +894,11 @@
 						"ADDITIONAL_ACTIONS": "Πρόσθετες ενέργειες",
 						"ACTION": "Ενέργειες",
 						"NEW": "Νέα πολιτική",
-						"DETAILS": "Λεπτομέρειες"
+						"NON_USER_ROLES": "Roles and Groups authorized for the event",
+						"USER": "User",
+						"USERS": "Users who are authorized for the event",
+						"NEW_USER": "New user",
+						"SANITIZATION_NOTE": "User role sanitization is enabled in your Opencast, therefore user roles are displayed alongside other roles. This does not impact role functionality in any way."
 					},
 					"ROLES": {
 						"LABEL": "Select or create a role"
@@ -1202,7 +1208,10 @@
 						"ADDITIONAL_ACTIONS": "Πρόσθετες ενέργειες",
 						"ACTION": "Ενέργειες",
 						"NEW": "Νέα πολιτική",
-						"DETAILS": "Λεπτομέρειες",
+						"NON_USER_ROLES": "Roles and Groups authorized for the series",
+						"USER": "User",
+						"USERS": "Users who are authorized for the series",
+						"NEW_USER": "New user",
 						"REPLACE_EVENT_ACLS": "Ενημέρωση δικαιωμάτων εκδήλωσης",
 						"REPLACE_EVENT_ACLS_HINT": "Επιβεβαίωση ότι όλες οι εκδηλώσεις σε αυτή την σειρά έχουν τα ίδια δικαιώματα σε ισχύ",
 						"LOAD_MORE_LIMIT": "Εμφάνιση πολιτικών.",
@@ -1461,8 +1470,11 @@
 						"ADDITIONAL_ACTIONS": "Πρόσθετες ενέργειες",
 						"ACTION": "Ενέργειες",
 						"NEW": "Νέα πολιτική",
-						"DETAILS": "Λεπτομέρειες",
-						"DESCRIPTION": "Παρακαλώ επιλέξτε ένα σύνολο προ-διαμορφωμένων πολιτικών ή να προσθέσετε τις ακόλουθες προσαρμοσμένες πολιτικές"
+						"NON_USER_ROLES": "Roles and Groups authorized for the access policy",
+						"DESCRIPTION": "Παρακαλώ επιλέξτε ένα σύνολο προ-διαμορφωμένων πολιτικών ή να προσθέσετε τις ακόλουθες προσαρμοσμένες πολιτικές",
+						"USER": "User",
+						"USERS": "Users who are authorized for the access policy",
+						"NEW_USER": "New user"
 					},
 					"ROLES": {
 						"LABEL": "Επιλέξτε ένα ρόλο",
@@ -1693,7 +1705,6 @@
 				"HOST_NAME": "Όνομα κεντρικού υπολογιστή",
 				"NODE_NAME": "Όνομα κόμβου",
 				"CORES": "Πυρήνες",
-				"COMPLETED": "Ολοκληρωμένες εργασίες",
 				"RUNNING": "Εργασίες σε εκτέλεση",
 				"QUEUED": "Εργασίες στην ουρά",
 				"MAINTENANCE": "Συντήρηση",
@@ -1704,6 +1715,7 @@
 		"SERVICES": {
 			"TABLE": {
 				"CAPTION": "Υπηρεσίες",
+				"ONLINE": "Online",
 				"STATUS": "Κατάσταση",
 				"NAME": "Όνομα υπηρεσίας",
 				"HOST_NAME": "Όνομα κεντρικού υπολογιστή",
@@ -2077,9 +2089,8 @@
 	"STATISTICS": {
 		"NOT_AVAILABLE": "Δεν είναι δυνατή η εμφάνιση των στατιστικών αυτή τη στιγμή. Παρακαλώ δοκιμάστε αργότερα.",
 		"UNSUPPORTED_TYPE": "Λυπούμαστε, το Opencast δεν μπορεί να προβάλει αυτόν τον τύπο στατιστικών δεδομένων.",
-		"FROM": "Απο",
-		"TO": "Προς",
 		"TOTAL": "Σύνολο",
+		"TIMERANGE": "Time Range",
 		"GRANULARITY": "Διακριτότητα",
 		"NAVIGATION": {
 			"ORGANIZATION": "Organization"

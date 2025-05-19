@@ -8,14 +8,13 @@ import {
 } from "../selectors/seriesDetailsSelectors";
 import { addNotification } from "./notificationSlice";
 import {
-	createPolicy,
 	transformMetadataCollection,
 	transformMetadataForUpdate,
 } from "../utils/resourceUtils";
 import { transformToIdValueArray } from "../utils/utils";
 import { NOTIFICATION_CONTEXT, NOTIFICATION_CONTEXT_TOBIRA } from "../configs/modalConfig";
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { Ace, Acl } from './aclSlice';
+import { Acl } from './aclSlice';
 import { DataResolution, Statistics, TimeMode, fetchStatistics, fetchStatisticsValueUpdate } from './statisticsSlice';
 import { TransformedAcl } from './aclDetailsSlice';
 import { MetadataCatalog } from './eventSlice';
@@ -51,7 +50,8 @@ type SeriesDetailsState = {
   	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	acl: TransformedAcl[],
-	theme: string,
+	policyTemplateId: number,
+	theme: { id: string, value: string } | null,
 	themeNames: { id: string, value: string }[],
 	fetchingStatisticsInProgress: boolean,
 	statistics: Statistics[],
@@ -83,7 +83,8 @@ const initialState: SeriesDetailsState = {
 	},
 	extendedMetadata: [],
 	acl: [],
-	theme: "",
+	policyTemplateId: 0,
+	theme: null,
 	themeNames: [],
 	fetchingStatisticsInProgress: false,
 	statistics: [],
@@ -138,26 +139,7 @@ export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSe
 		);
 	}
 
-	let seriesAcls: TransformedAcl[] = [];
-	if (!!response.series_access) {
-		const json = JSON.parse(response.series_access.acl).acl.ace;
-		let policies: { [key: string]: TransformedAcl } = {};
-		let policyRoles: string[] = [];
-		json.forEach((policy: Ace) => {
-			if (!policies[policy.role]) {
-				policies[policy.role] = createPolicy(policy.role);
-				policyRoles.push(policy.role);
-			}
-			if (policy.action === "read" || policy.action === "write") {
-				policies[policy.role][policy.action] = policy.allow;
-			} else if (policy.allow === true) { //|| policy.allow === "true") {
-				policies[policy.role].actions.push(policy.action);
-			}
-		});
-		seriesAcls = policyRoles.map((role) => policies[role]);
-	}
-
-	return seriesAcls;
+	return { acl: response.series_access.acl, current_acl: response.series_access.current_acl };
 });
 
 // fetch theme of certain series from server
@@ -165,12 +147,12 @@ export const fetchSeriesDetailsTheme = createAppAsyncThunk('seriesDetails/fetchS
 	const res = await axios.get(`/admin-ng/series/${id}/theme.json`);
 	const themeResponse = res.data;
 
-	let seriesTheme = "";
+	let seriesTheme: SeriesDetailsState["theme"] = null;
 
 	// check if series has a theme
 	if (!_.isEmpty(themeResponse)) {
 		// transform response for further use
-		seriesTheme = transformToIdValueArray(themeResponse)[0].value;
+		seriesTheme = transformToIdValueArray(themeResponse)[0];
 	}
 
 	return seriesTheme;
@@ -302,67 +284,55 @@ export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSerie
 export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeriesTheme', async (params: {
 	id: string,
 	values: { theme: SeriesDetailsState["theme"] },
-}, {dispatch, getState}) => {
+}, {dispatch}) => {
 	const { id, values } = params;
 
-	let themeNames = getSeriesDetailsThemeNames(getState());
+	let themeId = values.theme?.id;
 
-	let themeId = themeNames.find((theme) => theme.value === values.theme)?.id;
+	if (!themeId || themeId === '') {
+		axios
+			.delete(`/admin-ng/series/${id}/theme`)
+			.then((response) => {
+				dispatch(setSeriesDetailsTheme(values.theme));
+				dispatch(
+					addNotification({
+						type: "warning",
+						key: "SERIES_THEME_REPROCESS_EXISTING_EVENTS",
+						duration: 10,
+						parameter: undefined,
+						context: NOTIFICATION_CONTEXT
+					})
+				);
+			})
+			.catch((response) => {
+				console.error(response);
+			});
+	} else {
+		let data = new URLSearchParams();
+		data.append("themeId", themeId);
 
-	if (!values.theme) {
-        axios
-            .delete(`/admin-ng/series/${id}/theme`)
-            .then((response) => {
-                dispatch(
-                    addNotification({
-                        type: "warning",
-                        key: "SERIES_THEME_REPROCESS_EXISTING_EVENTS",
-                        duration: 10,
-                        parameter: undefined,
-                        context: NOTIFICATION_CONTEXT
-                    })
-                );
-            })
-            .catch((response) => {
-                console.error(response);
-            });
-	} else if (!themeId) {
-        console.error("Can't update series theme. " + values.theme + " not found");
-        dispatch(
-            addNotification({
-                type: "error",
-                key: "SERIES_NOT_SAVED",
-                duration: 10,
-                parameter: undefined,
-                context: NOTIFICATION_CONTEXT
-            })
-        );
-    } else {
-        let data = new URLSearchParams();
-        data.append("themeId", themeId);
+		axios
+			.put(`/admin-ng/series/${id}/theme`, data)
+			.then((response) => {
+				let themeResponse = response.data;
 
-        axios
-            .put(`/admin-ng/series/${id}/theme`, data)
-            .then((response) => {
-                let themeResponse = response.data;
+				let seriesTheme = transformToIdValueArray(themeResponse)[0];
 
-                let seriesTheme = transformToIdValueArray(themeResponse)[0].value;
-
-                dispatch(setSeriesDetailsTheme(seriesTheme));
-                dispatch(
-                    addNotification({
-                        type: "warning",
-                        key: "SERIES_THEME_REPROCESS_EXISTING_EVENTS",
-                        duration: 10,
-                        parameter: undefined,
-                        context: NOTIFICATION_CONTEXT
-                    })
-                );
-            })
-            .catch((response) => {
-                console.error(response);
-            });
-    }
+				dispatch(setSeriesDetailsTheme(seriesTheme));
+				dispatch(
+					addNotification({
+						type: "warning",
+						key: "SERIES_THEME_REPROCESS_EXISTING_EVENTS",
+						duration: 10,
+						parameter: undefined,
+						context: NOTIFICATION_CONTEXT
+					})
+				);
+			})
+			.catch((response) => {
+				console.error(response);
+			});
+	}
 });
 
 // fetch Tobira data of certain series from server
@@ -566,12 +536,14 @@ const seriesDetailsSlice = createSlice({
 			.addCase(fetchSeriesDetailsAcls.pending, (state) => {
 				state.statusAcl = 'loading';
 			})
-			.addCase(fetchSeriesDetailsAcls.fulfilled, (state, action: PayloadAction<
-				SeriesDetailsState["acl"]
-			>) => {
+			.addCase(fetchSeriesDetailsAcls.fulfilled, (state, action: PayloadAction<{
+				acl: SeriesDetailsState["acl"],
+				current_acl: SeriesDetailsState["policyTemplateId"]
+			}>) => {
 				state.statusAcl = 'succeeded';
 				const seriesDetailsAcls = action.payload;
-				state.acl = seriesDetailsAcls;
+				state.acl = seriesDetailsAcls.acl;
+				state.policyTemplateId = seriesDetailsAcls.current_acl;
 			})
 			.addCase(fetchSeriesDetailsAcls.rejected, (state, action) => {
 				state.statusAcl = 'failed';
