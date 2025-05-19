@@ -175,7 +175,7 @@
 		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
 		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "Wydarzenie zostało utworzone",
-		"EVENTS_UPLOAD_STARTED": "Ładowanie wydarzenia…",
+		"EVENTS_UPLOAD_STARTED": "The event \"{{ title }}\" is being uploaded… {{ progress }}%",
 		"EVENTS_NOT_CREATED": "Nie można było utworzyć wydarzenia",
 		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "Wszystkie wydarzenia zostały zaktualizowane pomyślnie",
@@ -184,6 +184,8 @@
 		"EVENTS_NOT_UPDATED_ALL": "Żadne wydarzenie nie mogło zostać zapisane",
 		"EVENTS_PROCESSING_DELETE_WORKFLOW": "Skasowano ciąg przetwarzania.",
 		"EVENTS_PROCESSING_DELETE_WORKFLOW_FAILED": "Plan przetwarzania nagrania nie mógł zostać usunięty.",
+		"EVENTS_PROCESSING_ACTION_STOP": "The event processing has been stopped.",
+		"EVENTS_PROCESSING_ACTION_NON_STOP": "The event processing could not be stopped.",
 		"SERIES_NOT_UPDATED": "Nie udało się zapisać serii",
 		"EVENT_DELETED": "Wydarzenie zostało usunięte.",
 		"EVENT_WILL_BE_DELETED": "Wydarzenie jest usuwane",
@@ -892,7 +894,11 @@
 						"ADDITIONAL_ACTIONS": "Dodatkowe Działania",
 						"ACTION": "Działania",
 						"NEW": "Nowe zasada",
-						"DETAILS": "Szczegóły"
+						"NON_USER_ROLES": "Roles and Groups authorized for the event",
+						"USER": "User",
+						"USERS": "Users who are authorized for the event",
+						"NEW_USER": "New user",
+						"SANITIZATION_NOTE": "User role sanitization is enabled in your Opencast, therefore user roles are displayed alongside other roles. This does not impact role functionality in any way."
 					},
 					"ROLES": {
 						"LABEL": "Select or create a role"
@@ -1202,7 +1208,10 @@
 						"ADDITIONAL_ACTIONS": "Dodatkowe Działania",
 						"ACTION": "Działania",
 						"NEW": "Nowe zasada",
-						"DETAILS": "Szczegóły",
+						"NON_USER_ROLES": "Roles and Groups authorized for the series",
+						"USER": "User",
+						"USERS": "Users who are authorized for the series",
+						"NEW_USER": "New user",
 						"REPLACE_EVENT_ACLS": "Update series permissions",
 						"REPLACE_EVENT_ACLS_HINT": "Upewnij się, że wszystkie zdarzenia tej serii mają te uprawnienia w mocy",
 						"LOAD_MORE_LIMIT": "policies shown.",
@@ -1461,8 +1470,11 @@
 						"ADDITIONAL_ACTIONS": "Dodatkowe Działania",
 						"ACTION": "Działania",
 						"NEW": "Nowe zasada",
-						"DETAILS": "Szczegóły",
-						"DESCRIPTION": "Proszę wybrać zestaw wstępnie skonfigurowanych zasad lub dodać niestandardowe zasady poniżej"
+						"NON_USER_ROLES": "Roles and Groups authorized for the access policy",
+						"DESCRIPTION": "Proszę wybrać zestaw wstępnie skonfigurowanych zasad lub dodać niestandardowe zasady poniżej",
+						"USER": "User",
+						"USERS": "Users who are authorized for the access policy",
+						"NEW_USER": "New user"
 					},
 					"ROLES": {
 						"LABEL": "Wybierz rolę",
@@ -1693,7 +1705,6 @@
 				"HOST_NAME": "Nazwa hosta",
 				"NODE_NAME": "Node name",
 				"CORES": "Rdzenie",
-				"COMPLETED": "Zadania wykonane",
 				"RUNNING": "Uruchomione zadania",
 				"QUEUED": "Zadania w kolejce",
 				"MAINTENANCE": "Obsługa",
@@ -1704,6 +1715,7 @@
 		"SERVICES": {
 			"TABLE": {
 				"CAPTION": "Usługi",
+				"ONLINE": "Online",
 				"STATUS": "Status",
 				"NAME": "Nazwa usługi",
 				"HOST_NAME": "Nazwa hosta",
@@ -2077,9 +2089,8 @@
 	"STATISTICS": {
 		"NOT_AVAILABLE": "Statystyki nie mogą być wyświetlane w tej chwili. Spróbuj ponownie później.",
 		"UNSUPPORTED_TYPE": "Przepraszamy, Opencast nie może renderować tego typu danych statystycznych.",
-		"FROM": "Od",
-		"TO": "To",
 		"TOTAL": "Total",
+		"TIMERANGE": "Time Range",
 		"GRANULARITY": "Granularity",
 		"NAVIGATION": {
 			"ORGANIZATION": "Organization"
