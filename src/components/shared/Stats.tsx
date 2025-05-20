@@ -38,7 +38,7 @@ const Stats = () => {
 			let filter = filterMap.find(({ name }) => name === f.name);
 			filterValue = f.value;
 			if (!!filter) {
-        dispatch(goToPage(0));
+				dispatch(goToPage(0));
 				dispatch(editFilterValue({filterName: filter.name, value: filterValue}));
 			}
 		});

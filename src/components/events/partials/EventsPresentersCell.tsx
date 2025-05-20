@@ -25,7 +25,7 @@ const EventsPresentersCell = ({
 			({ name }) => name === "presentersBibliographic"
 		);
 		if (!!filter) {
-      dispatch(goToPage(0));
+			dispatch(goToPage(0));
 			await dispatch(editFilterValue({filterName: filter.name, value: presenter}));
 			await dispatch(fetchEvents());
 			dispatch(loadEventsIntoTable());

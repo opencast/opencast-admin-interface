@@ -34,8 +34,7 @@ const EventsDateCell = ({
 			endDate.setHours(23);
 			endDate.setMinutes(59);
 			endDate.setSeconds(59);
-
-      dispatch(goToPage(0));
+			dispatch(goToPage(0));
 			await dispatch(editFilterValue({filterName: filter.name, value: startDate.toISOString() + "/" + endDate.toISOString()}));
 			await dispatch(fetchEvents());
 			dispatch(loadEventsIntoTable());

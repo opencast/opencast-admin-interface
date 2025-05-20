@@ -23,7 +23,7 @@ const EventsSeriesCell = ({
 	const addFilter = async (seriesId: string) => {
 		let filter = filterMap.find(({ name }) => name === "series");
 		if (!!filter) {
-      dispatch(goToPage(0));
+			dispatch(goToPage(0));
 			await dispatch(editFilterValue({filterName: filter.name, value: seriesId}));
 			await dispatch(fetchEvents());
 			dispatch(loadEventsIntoTable());
