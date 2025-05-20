@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Formik } from "formik";
-import WizardStepper from "../../../shared/wizard/WizardStepper";
+import WizardStepper, { WizardStep } from "../../../shared/wizard/WizardStepper";
 import AclMetadataPage from "./AclMetadataPage";
 import NewAclSummaryPage from "./NewAclSummaryPage";
 import { postNewAcl } from "../../../../slices/aclSlice";
@@ -9,7 +9,6 @@ import { usePageFunctions } from "../../../../hooks/wizardHooks";
 import { NewAclSchema } from "../../../../utils/validate";
 import AclAccessPage from "./AclAccessPage";
 import { useAppDispatch } from "../../../../store";
-import { ParseKeys } from "i18next";
 
 /**
  * This component manages the pages of the new ACL wizard
@@ -36,10 +35,12 @@ const NewAclWizard = ({
 		setPageCompleted,
 	} = usePageFunctions(0, initialValues);
 
-	const steps: {
-		name: string
-		translation: ParseKeys
-	}[] = [
+	type StepName = "metadata" | "access" | "summary";
+	type Step = WizardStep & {
+		name: StepName,
+	}
+
+	const steps: Step[] = [
 		{
 			name: "metadata",
 			translation: "USERS.ACLS.NEW.TABS.METADATA",
@@ -54,7 +55,7 @@ const NewAclWizard = ({
 		},
 	];
 
-	const currentValidationSchema = NewAclSchema[page];
+	const currentValidationSchema = NewAclSchema[steps[page].name];
 
 	const handleSubmit = (values: typeof initialFormValuesNewAcl) => {
 		const response = dispatch(postNewAcl(values));
@@ -83,28 +84,28 @@ const NewAclWizard = ({
 							{/* Stepper that shows each step of wizard as header */}
 							<WizardStepper
 								steps={steps}
-								page={page}
-								setPage={setPage}
+								activePageIndex={page}
+								setActivePage={setPage}
 								completed={pageCompleted}
 								setCompleted={setPageCompleted}
 								formik={formik}
 								hasAccessPage
 							/>
 							<div>
-								{page === 0 && (
+								{steps[page].name === "metadata" && (
 									<AclMetadataPage
 										formik={formik}
 										nextPage={nextPage}
 									/>
 								)}
-								{page === 1 && (
+								{steps[page].name === "access" && (
 									<AclAccessPage
 										formik={formik}
 										nextPage={nextPage}
 										previousPage={previousPage}
 									/>
 								)}
-								{page === 2 && (
+								{steps[page].name === "summary" && (
 									<NewAclSummaryPage
 										formik={formik}
 										previousPage={previousPage}

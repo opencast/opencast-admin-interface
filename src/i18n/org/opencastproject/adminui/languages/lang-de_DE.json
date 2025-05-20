@@ -175,7 +175,7 @@
 		"SERIES_PATH_NOT_UPDATED": "Der Serien-Pfad konnte nicht aktualisiert werden",
 		"SERIES_PATH_NOT_REMOVED": "Der Serien-Pfad konnte nicht entfernt werden",
 		"EVENTS_CREATED": "Das Video wurde angelegt",
-		"EVENTS_UPLOAD_STARTED": "Das Video wird hochgeladen… {{ progress }}%",
+		"EVENTS_UPLOAD_STARTED": "The event \"{{ title }}\" is being uploaded… {{ progress }}%",
 		"EVENTS_NOT_CREATED": "Das Video konnte nicht angelegt werden",
 		"EVENTS_UPDATED": "Das Video wurde erfolgreich aktualisiert",
 		"EVENTS_UPDATED_ALL": "Alle Videos wurden erfolgreich aktualisiert",
@@ -184,6 +184,8 @@
 		"EVENTS_NOT_UPDATED_ALL": "Kein Video konnte gespeichert werden",
 		"EVENTS_PROCESSING_DELETE_WORKFLOW": "Workflow gelöscht.",
 		"EVENTS_PROCESSING_DELETE_WORKFLOW_FAILED": "Workflow konnte nicht gelöscht werden.",
+		"EVENTS_PROCESSING_ACTION_STOP": "The event processing has been stopped.",
+		"EVENTS_PROCESSING_ACTION_NON_STOP": "The event processing could not be stopped.",
 		"SERIES_NOT_UPDATED": "Diese Serie konnte nicht gespeichert werden",
 		"EVENT_DELETED": "Das Video wurde gelöscht.",
 		"EVENT_WILL_BE_DELETED": "Das Video wird gelöscht",
@@ -892,7 +894,11 @@
 						"ADDITIONAL_ACTIONS": "Weitere Aktionen",
 						"ACTION": "Aktionen",
 						"NEW": "Neue Richtlinie",
-						"DETAILS": "Details"
+						"NON_USER_ROLES": "Roles and Groups authorized for the event",
+						"USER": "User",
+						"USERS": "Users who are authorized for the event",
+						"NEW_USER": "New user",
+						"SANITIZATION_NOTE": "User role sanitization is enabled in your Opencast, therefore user roles are displayed alongside other roles. This does not impact role functionality in any way."
 					},
 					"ROLES": {
 						"LABEL": "Rolle auswählen oder erstellen"
@@ -1202,7 +1208,10 @@
 						"ADDITIONAL_ACTIONS": "Weitere Aktionen",
 						"ACTION": "Aktionen",
 						"NEW": "Neue Richtlinie",
-						"DETAILS": "Details",
+						"NON_USER_ROLES": "Roles and Groups authorized for the series",
+						"USER": "User",
+						"USERS": "Users who are authorized for the series",
+						"NEW_USER": "New user",
 						"REPLACE_EVENT_ACLS": "Zugriffsrechte der Serie aktualisieren",
 						"REPLACE_EVENT_ACLS_HINT": "Sicherstellen, dass alle Videos dieser Serie genau diese Zugriffsrechte haben",
 						"LOAD_MORE_LIMIT": "angezeigte Richtlinien.",
@@ -1461,8 +1470,11 @@
 						"ADDITIONAL_ACTIONS": "Weitere Aktionen",
 						"ACTION": "Aktionen",
 						"NEW": "Neue Richtlinie",
-						"DETAILS": "Details",
-						"DESCRIPTION": "Bitte wählen Sie eine vordefinierten Richtlinie aus oder fügen Sie eine neue Richtlinie hinzu"
+						"NON_USER_ROLES": "Roles and Groups authorized for the access policy",
+						"DESCRIPTION": "Bitte wählen Sie eine vordefinierten Richtlinie aus oder fügen Sie eine neue Richtlinie hinzu",
+						"USER": "User",
+						"USERS": "Users who are authorized for the access policy",
+						"NEW_USER": "New user"
 					},
 					"ROLES": {
 						"LABEL": "Rolle auswählen",
@@ -1693,7 +1705,6 @@
 				"HOST_NAME": "Hostname",
 				"NODE_NAME": "Knotenname",
 				"CORES": "Kerne",
-				"COMPLETED": "Jobs abgeschlossen",
 				"RUNNING": "Jobs in Bearbeitung",
 				"QUEUED": "Jobs in Warteschlange",
 				"MAINTENANCE": "Wartungsarbeiten",
@@ -1704,6 +1715,7 @@
 		"SERVICES": {
 			"TABLE": {
 				"CAPTION": "Dienste",
+				"ONLINE": "Online",
 				"STATUS": "Status",
 				"NAME": "Dienstname",
 				"HOST_NAME": "Hostname",
@@ -2077,9 +2089,8 @@
 	"STATISTICS": {
 		"NOT_AVAILABLE": "Die Statistik kann aktuell nicht angezeigt werden. Bitte versuchen Sie es später nochmals.",
 		"UNSUPPORTED_TYPE": "Diese Statistik-Daten können nicht dargestellt werden.",
-		"FROM": "Von",
-		"TO": "Bis",
 		"TOTAL": "Summe",
+		"TIMERANGE": "Time Range",
 		"GRANULARITY": "Granularität",
 		"NAVIGATION": {
 			"ORGANIZATION": "Organisation"

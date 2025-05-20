@@ -175,7 +175,7 @@
 		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
 		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "Etkinlik oluşturuldu",
-		"EVENTS_UPLOAD_STARTED": "Etkinlik yüklenmekte…",
+		"EVENTS_UPLOAD_STARTED": "The event \"{{ title }}\" is being uploaded… {{ progress }}%",
 		"EVENTS_NOT_CREATED": "Etkinlik oluşturulamadı",
 		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "Tüm etkinlikler başarıyla güncellendi",
@@ -184,6 +184,8 @@
 		"EVENTS_NOT_UPDATED_ALL": "Etkinliklerden hiçbiri kaydedilemedi",
 		"EVENTS_PROCESSING_DELETE_WORKFLOW": "Silinen iş akışı.",
 		"EVENTS_PROCESSING_DELETE_WORKFLOW_FAILED": "İş akışı silinemedi.",
+		"EVENTS_PROCESSING_ACTION_STOP": "The event processing has been stopped.",
+		"EVENTS_PROCESSING_ACTION_NON_STOP": "The event processing could not be stopped.",
 		"SERIES_NOT_UPDATED": "Seriler kaydedilemedi",
 		"EVENT_DELETED": "Etkinlik silindi.",
 		"EVENT_WILL_BE_DELETED": "Etkinlik siliniyor",
@@ -892,7 +894,11 @@
 						"ADDITIONAL_ACTIONS": "Ek Eylemler",
 						"ACTION": "Eylemler",
 						"NEW": "Yeni sözleşme",
-						"DETAILS": "Ayrıntılar"
+						"NON_USER_ROLES": "Roles and Groups authorized for the event",
+						"USER": "User",
+						"USERS": "Users who are authorized for the event",
+						"NEW_USER": "New user",
+						"SANITIZATION_NOTE": "User role sanitization is enabled in your Opencast, therefore user roles are displayed alongside other roles. This does not impact role functionality in any way."
 					},
 					"ROLES": {
 						"LABEL": "Select or create a role"
@@ -1202,7 +1208,10 @@
 						"ADDITIONAL_ACTIONS": "Ek eylemler",
 						"ACTION": "Eylemler",
 						"NEW": "Yeni sözleşme",
-						"DETAILS": "Ayrıntılar",
+						"NON_USER_ROLES": "Roles and Groups authorized for the series",
+						"USER": "User",
+						"USERS": "Users who are authorized for the series",
+						"NEW_USER": "New user",
 						"REPLACE_EVENT_ACLS": "Etkinlik izinlerini güncelle",
 						"REPLACE_EVENT_ACLS_HINT": "Bu dizinin tüm etkinliklerinin geçerli izinlere sahip olduğundan emin olun",
 						"LOAD_MORE_LIMIT": "policies shown.",
@@ -1461,8 +1470,11 @@
 						"ADDITIONAL_ACTIONS": "Ek Eylemler",
 						"ACTION": "Eylemler",
 						"NEW": "Yeni sözleşme",
-						"DETAILS": "Ayrıntılar",
-						"DESCRIPTION": "Lütfen önceden yapılandırılmış bir ilkeler kümesi seçim veya aşağıdaki özel ilkelerden ekleyin"
+						"NON_USER_ROLES": "Roles and Groups authorized for the access policy",
+						"DESCRIPTION": "Lütfen önceden yapılandırılmış bir ilkeler kümesi seçim veya aşağıdaki özel ilkelerden ekleyin",
+						"USER": "User",
+						"USERS": "Users who are authorized for the access policy",
+						"NEW_USER": "New user"
 					},
 					"ROLES": {
 						"LABEL": "Bir rol seç",
@@ -1693,7 +1705,6 @@
 				"HOST_NAME": "Ana bilgisayar adı",
 				"NODE_NAME": "Düğüm adı",
 				"CORES": "Çekirdekler",
-				"COMPLETED": "Tamamlanan işler",
 				"RUNNING": "Çalışan işler",
 				"QUEUED": "Kuyruktaki işler",
 				"MAINTENANCE": "Bakım",
@@ -1704,6 +1715,7 @@
 		"SERVICES": {
 			"TABLE": {
 				"CAPTION": "Hizmetler",
+				"ONLINE": "Online",
 				"STATUS": "Durum",
 				"NAME": "Hizmet adı",
 				"HOST_NAME": "Ana bilgisayar adı",
@@ -2077,9 +2089,8 @@
 	"STATISTICS": {
 		"NOT_AVAILABLE": "İstatistiklere şu anda erişilemiyor. Lütfen daha sonra tekrar deneyin.",
 		"UNSUPPORTED_TYPE": "Üzgünüz, Opencast bu tür istatistiksel veriyi oluşturamıyor.",
-		"FROM": "den",
-		"TO": "Kime",
 		"TOTAL": "Toplam",
+		"TIMERANGE": "Time Range",
 		"GRANULARITY": "Ayrıntı Düzeyi",
 		"NAVIGATION": {
 			"ORGANIZATION": "Organization"

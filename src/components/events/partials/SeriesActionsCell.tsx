@@ -93,12 +93,11 @@ const SeriesActionsCell = ({
 				resourceId={row.id}
 				deleteMethod={deletingSeries}
 				deleteAllowed={deleteAllowed}
-				showCautionMessage={hasEvents}
 				deleteNotAllowedMessage={
 					"CONFIRMATIONS.ERRORS.SERIES_HAS_EVENTS"
 				} /* The highlighted series cannot be deleted as they still contain events */
 				deleteWithCautionMessage={
-					"CONFIRMATIONS.WARNINGS.SERIES_HAS_EVENTS"
+					hasEvents ? "CONFIRMATIONS.WARNINGS.SERIES_HAS_EVENTS" : undefined
 				} /* This series does contain events. Deleting the series will not delete the events. */
 				modalRef={deleteConfirmationModalRef}
 			/>

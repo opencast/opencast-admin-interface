@@ -1,4 +1,4 @@
-import { forwardRef, PropsWithChildren, useImperativeHandle, useState } from "react";
+import { forwardRef, PropsWithChildren, useCallback, useImperativeHandle, useState } from "react";
 import ReactDOM from "react-dom";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../configs/hotkeysConfig";
@@ -40,23 +40,23 @@ export const Modal = forwardRef<ModalHandle, PropsWithChildren<ModalProps>>(({
 	const { t } = useTranslation();
 
 	const [isOpen, setOpen] = useState(open);
+	const close = useCallback(() => {
+		if (closeCallback !== undefined && !closeCallback()) {
+			// Don't close modal
+			return;
+		}
+		setOpen(false);
+	}, [closeCallback]);
 
 	useImperativeHandle(ref, () => ({
 		isOpen: () => isOpen,
 		open: () => setOpen(true),
-		close: () => {
-			if (closeCallback !== undefined && !closeCallback()) {
-				// Don't close modal
-				return;
-			}
-			setOpen(false);
-		},
-	}), [closeCallback, isOpen]);
+		close,
+	}), [close, isOpen]);
 
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
-		//@ts-expect-error: TODO: Figure out what typescripts problem is
-		() => ref?.current.close?.(),
+		close,
 		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
 		[ref],
 	);
@@ -72,8 +72,7 @@ export const Modal = forwardRef<ModalHandle, PropsWithChildren<ModalProps>>(({
 					<header>
 						<ButtonLikeAnchor
 							extraClassName="fa fa-times close-modal"
-							//@ts-expect-error: TODO: Figure out what typescripts problem is
-							onClick={() => ref?.current.close?.()}
+							onClick={close}
 							tabIndex={0}
 						/>
 						<h2>
