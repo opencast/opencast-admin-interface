@@ -68,9 +68,6 @@ const Table = ({
 	// Size options for pagination
 	const sizeOptions = [10, 20, 50, 100, 1000];
 
-	// State variable for controlling the 'select all' header cell
-	const [selectAllChecked, setSelectAllChecked] = useState(false);
-
 	const lengthDivStyle = {
 		position: "absolute" as const,
 		visibility: "hidden" as const,
@@ -201,10 +198,7 @@ const Table = ({
 								<input
 									ref={selectAllCheckboxRef}
 									type="checkbox"
-									onChange={(e) => {
-										setSelectAllChecked(e.target.checked);
-										onChangeAllSelected(e);
-									}}
+									onChange={(e) => onChangeAllSelected(e)}
 									aria-label={t("EVENTS.EVENTS.TABLE.SELECT_ALL")}
 								/>
 							</th>
@@ -339,7 +333,7 @@ const Table = ({
 						extraClassName={cn("prev", { disabled: !isNavigatePrevious() })}
 						onClick={() => {
 							dispatch(goToPage(pageOffset - 1));
-							setSelectAllChecked(false);
+							forceDeselectAll();
 						}}
 					>
 						<span className="sr-only">{t("TABLE_PREVIOUS")}</span>
@@ -352,7 +346,7 @@ const Table = ({
 						) : (
 							<ButtonLikeAnchor key={key} onClick={() => {
 								dispatch(goToPage(page.number));
-								setSelectAllChecked(false);
+								forceDeselectAll();
 							}}>
 								{page.label}
 							</ButtonLikeAnchor>
@@ -363,7 +357,7 @@ const Table = ({
 						extraClassName={cn("next", { disabled: !isNavigateNext() })}
 						onClick={() => {
 							dispatch(goToPage(pageOffset + 1));
-							setSelectAllChecked(false);
+							forceDeselectAll();
 						}}
 					>
 						<span className="sr-only">{t("TABLE_NEXT")}</span>
