@@ -13,25 +13,26 @@ import { useAppDispatch } from "../../../store";
 import { FormikProps } from "formik/dist/types";
 import { ParseKeys } from "i18next";
 
+export type WizardStep = {
+	translation: ParseKeys,
+	name: string,
+}
+
 /**
  * This components renders the stepper navigation of new resource wizards
  */
 const WizardStepper = ({
 	steps,
-	page,
-	setPage,
+	activePageIndex,
+	setActivePage,
 	formik,
 	completed,
 	setCompleted,
 	hasAccessPage = false,
 }: {
-	steps: {
-		name: string,
-		translation: ParseKeys,
-		hidden?: boolean,
-	}[],
-	page: number,
-	setPage: (num: number) => void,
+	steps: WizardStep[],
+	activePageIndex: number,
+	setActivePage: (num: number) => void,
 	formik: FormikProps<any>,
 	completed: Record<number, boolean>,
 	setCompleted: (rec: Record<number, boolean>) => void,
@@ -51,14 +52,20 @@ const WizardStepper = ({
 
 			if (formik.isValid) {
 				let updatedCompleted = completed;
-				updatedCompleted[page] = true;
+				updatedCompleted[activePageIndex] = true;
 				setCompleted(updatedCompleted);
-				setPage(key);
+				// If all previous pages have been completed
+				if (Object.values(updatedCompleted)
+						.filter((_, index) => index > key)
+						.every(value => value)
+				) {
+					setActivePage(key);
+				}
 			}
 
 			if (!formik.isValid) {
 				if (completed[key]) {
-					setPage(key);
+					setActivePage(key);
 				}
 			}
 		}
@@ -66,7 +73,7 @@ const WizardStepper = ({
 
 	return (
 		<Stepper
-			activeStep={page}
+			activeStep={activePageIndex}
 			nonLinear
 			alternativeLabel
 			connector={<></>}
@@ -74,15 +81,13 @@ const WizardStepper = ({
 			className={cn("step-by-step")}
 		>
 			{steps.map((label, key) =>
-				!label.hidden ? (
-					<Step key={label.translation} completed={completed[key]}>
-						<StepButton onClick={() => handleOnClick(key)}>
-							<StepLabel sx={stepLabelStyle.root} StepIconComponent={CustomStepIcon}>
-								{t(label.translation)}
-							</StepLabel>
-						</StepButton>
-					</Step>
-				) : <React.Fragment key={label.translation} />
+				<Step key={label.translation} completed={completed[key]}>
+					<StepButton onClick={() => handleOnClick(key)}>
+						<StepLabel sx={stepLabelStyle.root} StepIconComponent={CustomStepIcon}>
+							{t(label.translation)}
+						</StepLabel>
+					</StepButton>
+				</Step>
 			)}
 		</Stepper>
 	);

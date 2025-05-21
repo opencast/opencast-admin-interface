@@ -29,6 +29,12 @@ export type Role = {
 	name: string,
 	organization: string,
 	type: string,
+	isSanitize: boolean,
+	user?: {
+		username: string,
+		name: string,
+		email: string,
+	}
 }
 
 export type AclResult = {
@@ -126,12 +132,12 @@ export const fetchRolesWithTarget = async (target: string) => {
 	let response = await axios.get("/admin-ng/acl/roles.json", { params: params });
 	let data : Role[] = response.data
 
-	return await data;
+	return data;
 };
 
 // post new acl to backend
 export const postNewAcl = (values: typeof initialFormValuesNewAcl) => async (dispatch: AppDispatch) => {
-	let acls = prepareAccessPolicyRulesForPost(values.acls);
+	let acls = prepareAccessPolicyRulesForPost(values.policies);
 
 	let data = new URLSearchParams();
 	data.append("name", values.name);

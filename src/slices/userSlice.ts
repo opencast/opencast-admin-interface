@@ -52,7 +52,7 @@ const initialColumns = usersTableConfig.columns.map((column) => ({
 // Initial state of users in redux store
 const initialState: UsersState = {
 	status: 'uninitialized',
-  error: null,
+	error: null,
 	results: [],
 	columns: initialColumns,
 	total: 0,
@@ -71,6 +71,12 @@ export const fetchUsers = createAppAsyncThunk('users/fetchUsers', async (_, { ge
 	const res = await axios.get("/admin-ng/users/users.json", { params: params });
 	return res.data;
 });
+
+// For a each role in a list of roles, get user information if available
+export const fetchUsersForTemplate = async (roles: string[]) => {
+	const res = await axios.get("/admin-ng/users/usersforroles.json", { params: { roles: JSON.stringify(roles) } });
+	return res.data as { [key: string]: User };
+};
 
 // new user to backend
 export const postNewUser = createAppAsyncThunk('users/postNewUser', async (values: NewUser, {dispatch}) => {

@@ -6,6 +6,7 @@ import { RootState } from "../store";
 export const getSeriesDetailsMetadata = (state: RootState) => state.seriesDetails.metadata;
 export const getSeriesDetailsExtendedMetadata = (state: RootState) => state.seriesDetails.extendedMetadata;
 export const getSeriesDetailsAcl = (state: RootState) => state.seriesDetails.acl;
+export const getPolicyTemplateId = (state: RootState) => state.seriesDetails.policyTemplateId;
 export const getSeriesDetailsTheme = (state: RootState) => state.seriesDetails.theme;
 export const getSeriesDetailsThemeNames = (state: RootState) =>
 	state.seriesDetails.themeNames;

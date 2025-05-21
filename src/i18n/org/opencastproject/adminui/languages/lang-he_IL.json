@@ -175,7 +175,7 @@
 		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
 		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "הארוע נוצר",
-		"EVENTS_UPLOAD_STARTED": "האירוע מועלה לשרת…",
+		"EVENTS_UPLOAD_STARTED": "The event \"{{ title }}\" is being uploaded… {{ progress }}%",
 		"EVENTS_NOT_CREATED": "לא ניתן היה ליצור את האירוע",
 		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "כל האירועים עודכנו בהצלחה",
@@ -184,6 +184,8 @@
 		"EVENTS_NOT_UPDATED_ALL": "לא הייתה אפשרות לשמור אף אחד מהאירועים",
 		"EVENTS_PROCESSING_DELETE_WORKFLOW": "זרימות שנמחקו.",
 		"EVENTS_PROCESSING_DELETE_WORKFLOW_FAILED": "לא ניתן למחוק את תהליך העבודה.",
+		"EVENTS_PROCESSING_ACTION_STOP": "The event processing has been stopped.",
+		"EVENTS_PROCESSING_ACTION_NON_STOP": "The event processing could not be stopped.",
 		"SERIES_NOT_UPDATED": "לא היתה אפשרות לשמור את הסידרה",
 		"EVENT_DELETED": "הארוע נמחק.",
 		"EVENT_WILL_BE_DELETED": "הארוע נמחק",
@@ -892,7 +894,11 @@
 						"ADDITIONAL_ACTIONS": "פעולות נוספות",
 						"ACTION": "פעולות",
 						"NEW": "מדיניות חדשה",
-						"DETAILS": "פרטים"
+						"NON_USER_ROLES": "Roles and Groups authorized for the event",
+						"USER": "User",
+						"USERS": "Users who are authorized for the event",
+						"NEW_USER": "New user",
+						"SANITIZATION_NOTE": "User role sanitization is enabled in your Opencast, therefore user roles are displayed alongside other roles. This does not impact role functionality in any way."
 					},
 					"ROLES": {
 						"LABEL": "Select or create a role"
@@ -1202,7 +1208,10 @@
 						"ADDITIONAL_ACTIONS": "פעולות נוספות",
 						"ACTION": "פעולות",
 						"NEW": "מדיניות חדשה",
-						"DETAILS": "פרטים",
+						"NON_USER_ROLES": "Roles and Groups authorized for the series",
+						"USER": "User",
+						"USERS": "Users who are authorized for the series",
+						"NEW_USER": "New user",
 						"REPLACE_EVENT_ACLS": "עדכון הרשאות אירוע",
 						"REPLACE_EVENT_ACLS_HINT": "בדיקה שכל האירועים של סדרה זו יש הרשאות אלה בתוקף",
 						"LOAD_MORE_LIMIT": "policies shown.",
@@ -1461,8 +1470,11 @@
 						"ADDITIONAL_ACTIONS": "פעולות נוספות",
 						"ACTION": "פעולות",
 						"NEW": "מדיניות חדשה",
-						"DETAILS": "פרטים",
-						"DESCRIPTION": "נא לבחור סט מדיניויות מוגדרות מראש או להוסיף מדיניות מותאמת אישית להלן"
+						"NON_USER_ROLES": "Roles and Groups authorized for the access policy",
+						"DESCRIPTION": "נא לבחור סט מדיניויות מוגדרות מראש או להוסיף מדיניות מותאמת אישית להלן",
+						"USER": "User",
+						"USERS": "Users who are authorized for the access policy",
+						"NEW_USER": "New user"
 					},
 					"ROLES": {
 						"LABEL": "בחר תפקיד",
@@ -1693,7 +1705,6 @@
 				"HOST_NAME": "שם מחשב מארח",
 				"NODE_NAME": "שם שרת",
 				"CORES": "ליבות",
-				"COMPLETED": "משימות שהושלמו",
 				"RUNNING": "משימות רצות",
 				"QUEUED": "משימות בתור",
 				"MAINTENANCE": "תחזוקה",
@@ -1704,6 +1715,7 @@
 		"SERVICES": {
 			"TABLE": {
 				"CAPTION": "שירותים",
+				"ONLINE": "Online",
 				"STATUS": "מצב",
 				"NAME": "שם שירות",
 				"HOST_NAME": "שם מחשב מארח",
@@ -2077,9 +2089,8 @@
 	"STATISTICS": {
 		"NOT_AVAILABLE": "סטטיסטיקטות לא ניתנות להצגה ברגע זה. יש לנסות בשלב מאוחר יותר.",
 		"UNSUPPORTED_TYPE": "מצטערים, Opencast לא יכולה לחשב את הנתון הסטטיסטי הזה.",
-		"FROM": "מאת",
-		"TO": "עבור",
 		"TOTAL": "סה\"כ",
+		"TIMERANGE": "Time Range",
 		"GRANULARITY": "גרנולריות",
 		"NAVIGATION": {
 			"ORGANIZATION": "Organization"

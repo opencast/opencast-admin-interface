@@ -418,7 +418,7 @@ export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata
 
 export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (params: {
 	values: {
-		acls: TransformedAcl[],
+		policies: TransformedAcl[],
 		configuration: { [key: string]: unknown },
 		deviceInputs?: string[],
 		processingWorkflow: string,
@@ -592,7 +592,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	}
 
 	// prepare access rules provided by user
-	let access = prepareAccessPolicyRulesForPost(values.acls);
+	let access = prepareAccessPolicyRulesForPost(values.policies);
 
 	// prepare configurations for post
 	let configurationPrepared: { [key: string]: string } = {};
@@ -619,20 +619,21 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	);
 
 	// Process bar notification
+	const notificationId = Math.floor(Math.random() * -100000);
 	const config = {
 		onUploadProgress: function (progressEvent: AxiosProgressEvent) {
 			const percentCompleted = progressEvent.total ? (progressEvent.loaded * 100) / progressEvent.total : undefined;
 			if (percentCompleted) {
 				dispatch(addNotification({
-					id: -42000,
+					id: notificationId,
 					type: "success",
 					key: "EVENTS_UPLOAD_STARTED",
 					duration: -1,
-					parameter: { "progress": percentCompleted.toFixed(2) }
+					parameter: { "progress": percentCompleted.toFixed(2), "title": metadata[0].fields[0].value }
 				}))
 			}
 			if (!percentCompleted || percentCompleted >= 100) {
-				dispatch(removeNotification(-42000))
+				dispatch(removeNotification(notificationId))
 			}
 		},
 		headers: {
