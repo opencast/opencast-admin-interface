@@ -28,7 +28,13 @@ Branded Browsers:
 
 ## Developing tests
 
-For developing new tests you can have a look at the references below. To execute the tests locally, there are multiple options:
+### Installation
+
+Besides the dependencies in the ```package.json``` file which need to be install to run the webserver at all, playwright has browser dependencies as well. To install the extra broser dependencies, run: ```npx playwright install --with-deps```
+
+### Run tests locally
+
+To execute the tests locally, there are multiple options:
 
 **Running the tests headless:**
 Execute `npm run test:e2e:headless` or `npx playwright test` in the terminal.
@@ -37,6 +43,10 @@ Execute `npm run test:e2e:headless` or `npx playwright test` in the terminal.
 Execute `npm run test:e2e` or `npx playwright test --ui` in the terminal.
 
 In both cases you can add `--trace on` to get a trace view of the tests.
+
+### Developing
+
+Please have a look at the official playwright documentation on how to develop new tests. 
 
 ## References
 
