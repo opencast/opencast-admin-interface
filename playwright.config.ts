@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from "@playwright/test";
 
 /**
  * Read environment variables from file.
@@ -26,7 +26,7 @@ export default defineConfig({
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
 		/* Base URL to use in actions like `await page.goto('/')`. */
-		baseURL: "http://127.0.0.1:3000",
+		baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || "http://localhost:3000",
 
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		trace: "on-first-retry",
@@ -72,8 +72,7 @@ export default defineConfig({
 
 	/* Run your local dev server before starting the tests */
 	webServer: {
-		command: "npm run test:serve",
-		url: "http://127.0.0.1:3000",
+		command: "npm start",
 		timeout: 120 * 1000, // increase the timeout to 120s (from default 60s) for the server to start
 	},
 });
