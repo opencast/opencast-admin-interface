@@ -113,6 +113,7 @@ const Table = ({
 	};
 
 	const changePageSize = (size: number) => {
+		forceDeselectAll();
 		dispatch(updatePageSize(size));
 		dispatch(setOffset(0));
 		dispatch(updatePages());
