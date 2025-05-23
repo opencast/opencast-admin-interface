@@ -78,10 +78,10 @@ export const fetchRecordings = createAppAsyncThunk('recordings/fetchRecordings',
 			name: agent.Name,
 			status: agent.Status,
 			updated: agent.Update,
-			inputs: !!agent.inputs ? [...agent.inputs] : [],
-			roomId: !!agent.roomId ? agent.roomId : "",
+			inputs: agent.inputs ? [...agent.inputs] : [],
+			roomId: agent.roomId ? agent.roomId : "",
 			type: "LOCATION",
-			url: !!agent.url ? agent.url : "",
+			url: agent.url ? agent.url : "",
 			removable:
 				"AGENTS.STATUS.OFFLINE" === agent.Status ||
 				"AGENTS.STATUS.UNKNOWN" === agent.Status,

@@ -95,7 +95,7 @@ const userDetailsSlice = createSlice({
 				state.roles = userDetails.roles;
 				state.name = userDetails.name;
 				state.username = userDetails.username;
-				state.email = !!userDetails.email ? userDetails.email : "";
+				state.email = userDetails.email ? userDetails.email : "";
 				state.manageable = userDetails.manageable;
 			})
 			.addCase(fetchUserDetails.rejected, (state, action) => {

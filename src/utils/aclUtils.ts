@@ -18,7 +18,7 @@ export const getAclTemplateText = (
 		const template = aclTemplates.find(
 			(template) => formikTemplate === template.id
 		);
-		return !!template ? template.value : "";
+		return template ? template.value : "";
 	} else {
 		return "";
 	}

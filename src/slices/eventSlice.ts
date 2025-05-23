@@ -527,7 +527,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 			metadata: {
 				start: startDate,
 				device: values.location,
-				inputs: !!values.deviceInputs ? values.deviceInputs.join(",") : "",
+				inputs: values.deviceInputs ? values.deviceInputs.join(",") : "",
 				end: endDate,
 				duration: duration.toString(),
 			},
@@ -735,10 +735,10 @@ export const fetchScheduling = createAppAsyncThunk('events/fetchScheduling', asy
 				eventId: d.eventId,
 				title: d.agentConfiguration["event.title"],
 				changedTitle: d.agentConfiguration["event.title"],
-				series: !!d.agentConfiguration["event.series"]
+				series: d.agentConfiguration["event.series"]
 					? d.agentConfiguration["event.series"]
 					: "",
-				changedSeries: !!d.agentConfiguration["event.series"]
+				changedSeries: d.agentConfiguration["event.series"]
 					? d.agentConfiguration["event.series"]
 					: "",
 				location: d.agentConfiguration["event.location"],
@@ -973,7 +973,7 @@ export const checkForConflicts = async (
 	device: string,
 	repeatOn: string[] | undefined = undefined
 ) => {
-	let metadata = !!repeatOn
+	let metadata = repeatOn
 		? {
 				start: startDate,
 				device: device,

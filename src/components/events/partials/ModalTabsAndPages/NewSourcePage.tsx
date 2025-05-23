@@ -367,7 +367,7 @@ const Schedule = <T extends {
 	const currentLanguage = getCurrentLanguageInformation();
 
 	const renderInputDeviceOptions = () => {
-		if (!!formik.values.location) {
+		if (formik.values.location) {
 			let inputDevice = inputDevices.find(
 				({ name }) => name === formik.values.location
 			);

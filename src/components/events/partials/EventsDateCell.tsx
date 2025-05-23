@@ -25,7 +25,7 @@ const EventsDateCell = ({
 	// Filter with value of current cell
 	const addFilter = async (date: string) => {
 		let filter = filterMap.find(({ name }) => name === "startDate");
-		if (!!filter) {
+		if (filter) {
 			let startDate = new Date(date);
 			startDate.setHours(0);
 			startDate.setMinutes(0);

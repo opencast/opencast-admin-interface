@@ -74,11 +74,11 @@ const NewEventSummary = <T extends RequiredFormProps>({
 		}[] = [];
 		for (let i = 0; uploadAssetOptions.length > i; i++) {
 			let fieldValue = formik.values[uploadAssetOptions[i].id];
-			if (!!fieldValue) {
+			if (fieldValue) {
 				const displayOverride = uploadAssetOptions[i].displayOverride as ParseKeys
 				setUploadAssetsNonTrack(uploadAssetsNonTrack.concat({
 					name: uploadAssetOptions[i].id,
-					translate: !!displayOverride
+					translate: displayOverride
 						? t(displayOverride)
 						: translateOverrideFallback(uploadAssetOptions[i], t),
 					value: fieldValue,
@@ -157,7 +157,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 									{/*Insert row for each upload asset of type track user has provided*/}
 {/* @ts-expect-error TS(7006): Parameter 'asset' implicitly has an 'any' type. */}
 									{formik.values.uploadAssetsTrack.map((asset, key) =>
-										!!asset.file ? (
+										asset.file ? (
 											<tr key={key}>
 												<td>
 													{translateOverrideFallback(asset, t, "SHORT")}
@@ -279,7 +279,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 							<tr>
 								<td>{t("EVENTS.EVENTS.NEW.PROCESSING.WORKFLOW")}</td>
 								<td>
-									{!!workflowDefinition ? workflowDefinition.title : ""}
+									{workflowDefinition ? workflowDefinition.title : ""}
 								</td>
 							</tr>
 							{/* Repeat entry for each configuration key/value pair */}

@@ -787,7 +787,7 @@ export const TemplateSelector = <T extends TemplateSelectorProps>({
 											aclTemplates,
 											formik.values.aclTemplate
 										)}
-										options={!!aclTemplates ? formatAclTemplatesForDropdown(aclTemplates) : []}
+										options={aclTemplates ? formatAclTemplatesForDropdown(aclTemplates) : []}
 										required={true}
 										handleChange={(element) => {
 											if (element) {

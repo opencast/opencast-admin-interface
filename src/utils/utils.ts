@@ -126,7 +126,7 @@ export const isJson = (text: string) => {
  */
 export const translateOverrideFallback = (asset: UploadOption, t: TFunction, suffix?: "SHORT" | "DETAIL") => {
 	let result = undefined;
-	const sub = !!suffix ? `.${suffix}` as const : "" as const;
+	const sub = suffix ? `.${suffix}` as const : "" as const;
 	const translatable = asset["title"] + sub;
 
 	if (asset[`displayOverride${sub}` as const]) {

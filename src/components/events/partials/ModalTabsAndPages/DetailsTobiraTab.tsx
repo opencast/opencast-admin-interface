@@ -115,7 +115,7 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 	}
 
 	const openSubTab = async (tabType: TobiraTabHierarchy, currentPage?: TobiraPage) => {
-		if (!!currentPage) {
+		if (currentPage) {
 			const breadcrumbs = getBreadcrumbs(currentPage);
 			// Breadcrumbs always include at least the homepage, so the length is at least 1.
 			const hostPage = breadcrumbs[breadcrumbs.length - 1];
