@@ -80,7 +80,7 @@ export const fetchStatistics = async (resourceId: string, resourceType: string, 
 	let hasError = false;
 
 	// create url params
-	let params = new URLSearchParams();
+	const params = new URLSearchParams();
 	params.append("resourceType", resourceType);
 
 	let newStatistics: Statistics[] = [];

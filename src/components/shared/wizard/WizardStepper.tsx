@@ -44,14 +44,14 @@ const WizardStepper = ({
 	const handleOnClick = async (key: number) => {
 		if (isSummaryReachable(key, steps, completed)) {
 			if (hasAccessPage) {
-				let check = await dispatch(checkAcls(formik.values.acls));
+				const check = await dispatch(checkAcls(formik.values.acls));
 				if (!check) {
 					return;
 				}
 			}
 
 			if (formik.isValid) {
-				let updatedCompleted = completed;
+				const updatedCompleted = completed;
 				updatedCompleted[activePageIndex] = true;
 				setCompleted(updatedCompleted);
 				// If all previous pages have been completed

@@ -12,7 +12,7 @@ export const usePageFunctions = <initialValuesType>(initialPage: number, initial
 		setSnapshot(values);
 
 		// set page as completely filled out
-		let updatedPageCompleted = pageCompleted;
+		const updatedPageCompleted = pageCompleted;
 		updatedPageCompleted[page] = true;
 		setPageCompleted(updatedPageCompleted);
 
@@ -56,7 +56,7 @@ export const useSelectionChanges = <T extends RequiredFormProps>(
 	const onChangeAllSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selected = e.target.checked;
 		setAllChecked(selected);
-		let changedSelection = selectedEvents.map((event) => {
+		const changedSelection = selectedEvents.map((event) => {
 			return {
 				...event,
 				selected: selected,
@@ -69,7 +69,7 @@ export const useSelectionChanges = <T extends RequiredFormProps>(
 	// Handle change of checkboxes indicating which events to consider further
 	const onChangeSelected = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
 		const selected = e.target.checked;
-		let changedEvents = selectedEvents.map((event) => {
+		const changedEvents = selectedEvents.map((event) => {
 			if (isEvent(event) && event.id === id) {
 				return {
 					...event,

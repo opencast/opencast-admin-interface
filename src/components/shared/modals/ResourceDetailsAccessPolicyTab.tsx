@@ -438,9 +438,9 @@ export const AccessPolicyTable = <T extends AccessPolicyTabFormikProps>({
 	}, []);
 
 	const createPolicy = (role: string, withUser: boolean): TransformedAcl => {
-		let user = withUser ? {username: "", name: "", email: ""} : undefined
+		const user = withUser ? {username: "", name: "", email: ""} : undefined
 
-		let newRole: TransformedAcl = {
+		const newRole: TransformedAcl = {
 			role: role,
 			read: true,
 			write: false,

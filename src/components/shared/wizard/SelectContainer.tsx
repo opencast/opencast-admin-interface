@@ -41,7 +41,7 @@ const SelectContainer = ({
 	const [markedForAddition, setMarkedForAddition] = useState<string[]>([]);
 	const [markedForRemoval, setMarkedForRemoval] = useState<string[]>([]);
 
-	let initialItems = resource.items;
+	const initialItems = resource.items;
 
 	useEffect(() => {
 		// Makes sure that options user already chosen are only shown in right select
@@ -51,7 +51,7 @@ const SelectContainer = ({
 			for (let i = 0; i < selectedItems.length; i++) {
 				// In case we are dealing with Users,
 				// we have to also check the combination of "name (id)" as for the key!
-				let namesArray = [];
+				const namesArray = [];
 				// Pushing the usual name of selected item into the array, in order to work with other fields like roles etc.
 				namesArray.push(selectedItems[i].name);
 				// Make sure it is "users" field and then add the combination.
@@ -89,8 +89,8 @@ const SelectContainer = ({
 	};
 
 	const handleChangeAdd = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		let options = e.target.options;
-		let selectedOptions = [];
+		const options = e.target.options;
+		const selectedOptions = [];
 
 		// put marked options in array
 		for (let i = 0; i < options.length; i++) {
@@ -104,8 +104,8 @@ const SelectContainer = ({
 	};
 
 	const handleChangeRemove = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		let options = e.target.options;
-		let deselectedOptions = [];
+		const options = e.target.options;
+		const deselectedOptions = [];
 
 		// put all marked options in array
 		for (let i = 0; i < options.length; i++) {
@@ -119,16 +119,16 @@ const SelectContainer = ({
 	};
 
 	const handleClickAdd = () => {
-		let editableItems = [...items];
-		let editableSelectedItems = [...selectedItems];
-		let editableDefaultItems = [...defaultItems];
+		const editableItems = [...items];
+		const editableSelectedItems = [...selectedItems];
+		const editableDefaultItems = [...defaultItems];
 
 		// move marked items to selected items
 		for (let i = 0; i < markedForAddition.length; i++) {
 			move(markedForAddition[i], editableItems, editableSelectedItems);
 
 			// Since we are using array of strings as for the remove method!
-			let array = [
+			const array = [
 				markedForAddition[i]
 			];
 			remove(array, editableDefaultItems);
@@ -145,9 +145,9 @@ const SelectContainer = ({
 	};
 
 	const handleClickRemove = () => {
-		let editableItems = [...items];
-		let editableSelectedItems = [...selectedItems];
-		let editableDefaultItems = [...defaultItems];
+		const editableItems = [...items];
+		const editableSelectedItems = [...selectedItems];
+		const editableDefaultItems = [...defaultItems];
 
 		// move marked items from selected items back to items
 		for (let i = 0; i < markedForRemoval.length; i++) {

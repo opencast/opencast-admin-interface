@@ -21,7 +21,6 @@ export default [
             "no-tabs": "off",
             "no-unused-expressions": "off",
             "object-curly-spacing": "off",
-            "prefer-const": "off",
             "quotes": "off",
             "semi": "off",
             "spaced-comment": "off",

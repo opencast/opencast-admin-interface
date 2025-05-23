@@ -122,7 +122,7 @@ const initialState: SeriesState = {
 // fetch series from server
 export const fetchSeries = createAppAsyncThunk('series/fetchSeries', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state, "series");
+	const params = getURLParams(state, "series");
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -160,7 +160,7 @@ export const fetchSeriesMetadata = createAppAsyncThunk('series/fetchSeriesMetada
 
 // fetch series themes from server
 export const fetchSeriesThemes = createAppAsyncThunk('series/fetchSeriesThemes', async () => {
-	let res = await axios.get("/admin-ng/series/new/themes");
+	const res = await axios.get("/admin-ng/series/new/themes");
 	const data = await res.data as { [key: string]: { name: string, description: string } };
 	// Transform object of objects to array of objects
 	const themes = Object.keys(data).map((key) => {
@@ -213,10 +213,10 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 	const access = prepareAccessPolicyRulesForPost(values.policies);
 
 	// Tobira
-	let tobira: any = {};
+	const tobira: any = {};
 	if (values.selectedPage && values.breadcrumbs) {
-		let existingPages: any[] = [];
-		let newPages: any[] = [];
+		const existingPages: any[] = [];
+		const newPages: any[] = [];
 		values.breadcrumbs.concat(values.selectedPage).forEach(function (page: TobiraPage) {
 			if (page.new) {
 				newPages.push({
@@ -253,7 +253,7 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 		};
 	}
 
-	let data = new URLSearchParams();
+	const data = new URLSearchParams();
 	data.append("metadata", JSON.stringify(jsonData));
 
 	// Todo: process bar notification
@@ -323,7 +323,7 @@ export const deleteMultipleSeries = createAppAsyncThunk('series/deleteMultipleSe
 		title: string,
 	}[],
 {dispatch}) => {
-	let data = [];
+	const data = [];
 
 	for (let i = 0; i < series.length; i++) {
 		if (series[i].selected) {
@@ -360,7 +360,7 @@ export const fetchSeriesDetailsTobiraNew = createAppAsyncThunk('seriesDetails/fe
 
 // Get names and ids of selectable series
 export const fetchSeriesOptions = async () => {
-	let data = await axios.get("/admin-ng/resources/SERIES.json");
+	const data = await axios.get("/admin-ng/resources/SERIES.json");
 
 	const response = await data.data;
 
@@ -374,14 +374,14 @@ export const fetchSeriesOptions = async () => {
 
 // Check if a series has events
 export const hasEvents = async (seriesId: Series["id"]) => {
-	let data = await axios.get(`/admin-ng/series/${seriesId}/hasEvents.json`);
+	const data = await axios.get(`/admin-ng/series/${seriesId}/hasEvents.json`);
 
 	return (await data.data).hasEvents;
 };
 
 // Get series configuration and flag indicating if series with events is allowed to delete
 export const getSeriesConfig = async () => {
-	let data = await axios.get("/admin-ng/series/configuration.json");
+	const data = await axios.get("/admin-ng/series/configuration.json");
 
 	const response = await data.data;
 

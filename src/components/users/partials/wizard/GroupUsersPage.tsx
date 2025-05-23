@@ -30,7 +30,7 @@ const GroupUsersPage = <T, >({
 			setLoading(true);
 			const responseUsers = await fetchUsersAndUsernames();
 
-			let userNames = [];
+			const userNames = [];
 			for (let i = 0; i < responseUsers.length; i++) {
 				userNames.push({
 					id: responseUsers[i].id,

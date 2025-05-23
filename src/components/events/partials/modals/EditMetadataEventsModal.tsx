@@ -55,7 +55,7 @@ const EditMetadataEventsModal = ({
 		async function fetchData() {
 			setLoading(true);
 
-			let eventIds: string[] = [];
+			const eventIds: string[] = [];
 			selectedEvents.forEach((event) => isEvent(event) && eventIds.push(event.id));
 
 			// Get merged metadata from backend
@@ -64,7 +64,7 @@ const EditMetadataEventsModal = ({
 			.then(unwrapResult)
 			.then((result) => {
 				// Set initial values and save metadata field infos in state
-				let initialValues = getInitialValues(result.mergedMetadata);
+				const initialValues = getInitialValues(result.mergedMetadata);
 				setFetchedValues(initialValues);
 				setMetadataFields({
 					merged: result.merged,
@@ -90,8 +90,8 @@ const EditMetadataEventsModal = ({
 	};
 
 	const onChangeSelected = (e: React.ChangeEvent<HTMLInputElement>, fieldId: string) => {
-		let selected = e.target.checked;
-		let fields = metadataFields;
+		const selected = e.target.checked;
+		const fields = metadataFields;
 		fields.mergedMetadata = metadataFields.mergedMetadata.map((field) => {
 			if (field.id === fieldId) {
 				return {
@@ -112,8 +112,8 @@ const EditMetadataEventsModal = ({
 			return true;
 		}
 
-		let fetched = fetchedValues[field.id];
-		let inForm = formikValues[field.id];
+		const fetched = fetchedValues[field.id];
+		const inForm = formikValues[field.id];
 		let same = false;
 		if (fetched === inForm) {
 			same = true;
@@ -121,7 +121,7 @@ const EditMetadataEventsModal = ({
 			same = fetched.length === inForm.length && fetched.every((e, i) => e === inForm[i]);
 		}
 		if (!same) {
-			let fields = metadataFields;
+			const fields = metadataFields;
 			fields.mergedMetadata = metadataFields.mergedMetadata.map((f) => {
 				if (f.id === field.id) {
 					return {
@@ -299,7 +299,7 @@ const EditMetadataEventsModal = ({
 
 const getInitialValues = (metadataFields: MetadataFieldSelected[]) => {
 	// Transform metadata fields provided by backend (saved in redux)
-	let initialValues: { [key: string]: string | string[] } = {};
+	const initialValues: { [key: string]: string | string[] } = {};
 	metadataFields.forEach((field) => {
 		initialValues[field.id] = field.value;
 	});

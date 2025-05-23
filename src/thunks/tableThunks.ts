@@ -65,7 +65,7 @@ export const loadEventsIntoTable = (): AppThunk => async (dispatch, getState) =>
 
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
-	let tableData = {
+	const tableData = {
 		resource: "events" as const,
 		rows: resource,
 		columns: events.columns,
@@ -104,7 +104,7 @@ export const loadSeriesIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
-	let tableData = {
+	const tableData = {
 		resource: "series" as const,
 		rows: resource,
 		columns: series.columns,
@@ -126,7 +126,7 @@ export const loadRecordingsIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
-	let tableData = {
+	const tableData = {
 		resource: "recordings" as const,
 		columns: recordings.columns,
 		multiSelect: table.multiSelect["recordings"],
@@ -150,7 +150,7 @@ export const loadJobsIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
-	let tableData = {
+	const tableData = {
 		resource: "jobs" as const,
 		rows: resource.map((obj) => {
 			return { ...obj, selected: false }
@@ -174,7 +174,7 @@ export const loadServersIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
-	let tableData = {
+	const tableData = {
 		resource: "servers" as const,
 		rows: resource.map((obj) => {
 			return { ...obj, selected: false }
@@ -198,7 +198,7 @@ export const loadServicesIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
-	let tableData = {
+	const tableData = {
 		rows: resource.map((obj) => {
 			return { ...obj, selected: false }
 		}),
@@ -222,7 +222,7 @@ export const loadUsersIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
-	let tableData = {
+	const tableData = {
 		resource: "users" as const,
 		rows: resource.map((obj) => {
 			return { ...obj, selected: false }
@@ -246,7 +246,7 @@ export const loadGroupsIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
-	let tableData = {
+	const tableData = {
 		resource: "groups" as const,
 		rows: resource.map((obj) => {
 			return { ...obj, selected: false }
@@ -270,7 +270,7 @@ export const loadAclsIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
-	let tableData = {
+	const tableData = {
 		resource: "acls" as const,
 		rows: resource.map((obj) => {
 			return { ...obj, selected: false }
@@ -294,7 +294,7 @@ export const loadThemesIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
-	let tableData = {
+	const tableData = {
 		resource: "themes" as const,
 		rows: resource.map((obj) => {
 			return { ...obj, selected: false }

@@ -78,7 +78,7 @@ const EventDetailsWorkflowTab = ({
 	}, []);
 
 	const isCurrentWorkflow = (workflowId: string) => {
-		let currentWorkflow = workflows.entries[workflows.entries.length - 1];
+		const currentWorkflow = workflows.entries[workflows.entries.length - 1];
 		return currentWorkflow.id === workflowId;
 	};
 

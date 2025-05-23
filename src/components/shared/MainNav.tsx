@@ -24,7 +24,7 @@ const MainNav = ({
 	toggleMenu: () => void,
 }) => {
 	const { t } = useTranslation();
-	let navigate = useNavigate();
+	const navigate = useNavigate();
 
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
 

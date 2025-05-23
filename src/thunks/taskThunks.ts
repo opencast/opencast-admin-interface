@@ -10,25 +10,25 @@ export const postTasks = (
 		workflow: string
 	}
 ) => async (dispatch: AppDispatch) => {
-	let configuration: { [key: string] : string } = {};
+	const configuration: { [key: string] : string } = {};
 	Object.keys(values.configuration).forEach((config) => {
 		configuration[config] = String(values.configuration[config]);
 	});
 
-	let workflowConfig: { [key: string] : { [key: string] : string } } = {};
+	const workflowConfig: { [key: string] : { [key: string] : string } } = {};
 	for (let i = 0; i < values.events.length; i++) {
 		if (values.events[i].selected) {
-			let eventId = values.events[i].id;
+			const eventId = values.events[i].id;
 			workflowConfig[eventId] = configuration;
 		}
 	}
 
-	let metadataJson = {
+	const metadataJson = {
 		workflow: values.workflow,
 		configuration: workflowConfig,
 	};
 
-	let data = new URLSearchParams();
+	const data = new URLSearchParams();
 	data.append("metadata", JSON.stringify(metadataJson));
 
 	axios

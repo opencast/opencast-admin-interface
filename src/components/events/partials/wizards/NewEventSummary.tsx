@@ -67,13 +67,13 @@ const NewEventSummary = <T extends RequiredFormProps>({
 
 	// upload asset that user has provided
 	useEffect(() => {
-		let uploadAssetsNonTrack: {
+		const uploadAssetsNonTrack: {
 			name: string,
 			translate?: string,
 			value: any,
 		}[] = [];
 		for (let i = 0; uploadAssetOptions.length > i; i++) {
-			let fieldValue = formik.values[uploadAssetOptions[i].id];
+			const fieldValue = formik.values[uploadAssetOptions[i].id];
 			if (!!fieldValue) {
 				const displayOverride = uploadAssetOptions[i].displayOverride as ParseKeys
 				setUploadAssetsNonTrack(uploadAssetsNonTrack.concat({

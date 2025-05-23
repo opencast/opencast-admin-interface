@@ -54,7 +54,7 @@ const initialState: ServiceState = {
 // fetch services from server
 export const fetchServices = createAppAsyncThunk('services/fetchServices', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state, "services");
+	const params = getURLParams(state, "services");
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -68,7 +68,7 @@ export const restartService = createAppAsyncThunk('services/fetchServices', asyn
 	serviceType: string
 }) => {
 	const { host, serviceType } = params
-	let data = new URLSearchParams();
+	const data = new URLSearchParams();
 	data.append("host", host);
 	data.append("serviceType", serviceType);
 

@@ -39,7 +39,7 @@ const EventDetailsWorkflowOperations = ({
 		loadWorkflowOperations().then();
 
 		// Fetch workflow operations every 5 seconds
-		let fetchWorkflowOperationsInterval = setInterval(loadWorkflowOperations, 5000);
+		const fetchWorkflowOperationsInterval = setInterval(loadWorkflowOperations, 5000);
 
 		// Unmount interval
 		return () => clearInterval(fetchWorkflowOperationsInterval);

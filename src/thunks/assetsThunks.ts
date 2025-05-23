@@ -19,8 +19,8 @@ export const fetchAssetUploadOptions = createAppAsyncThunk('assets/fetchAssetUpl
 	// only fetch asset upload options, if they haven't been fetched yet
 	if (!(assetUploadOptions.length !== 0 && assetSourceOptions.length !== 0)) {
 		let workflow;
-		let newAssetUploadOptions: UploadOption[] = [];
-		let newSourceUploadOptions: UploadOption[] = [];
+		const newAssetUploadOptions: UploadOption[] = [];
+		const newSourceUploadOptions: UploadOption[] = [];
 
 		// request asset upload options from API
 		await axios
@@ -81,16 +81,16 @@ export const enrichPublications = createAppAsyncThunk('assets/enrichPublications
 	},
 ) => {
 	// get information about possible publication channels
-	let data = await axios.get("/admin-ng/resources/PUBLICATION.CHANNELS.json");
+	const data = await axios.get("/admin-ng/resources/PUBLICATION.CHANNELS.json");
 
-	let publicationChannels: { [key: string]: string } = await data.data;
+	const publicationChannels: { [key: string]: string } = await data.data;
 
-	let now = new Date();
+	const now = new Date();
 	let combinedPublications: Publication[] = [];
 
 	// fill publication objects with additional information
 	publications.publications.forEach((publication) => {
-		let newPublication: Publication = {
+		const newPublication: Publication = {
 			enabled: true,
 			id: publication.id,
 			name: publication.name,
@@ -107,7 +107,7 @@ export const enrichPublications = createAppAsyncThunk('assets/enrichPublications
 		true;
 
 		if (publicationChannels[publication.id]) {
-			let channel = JSON.parse(publicationChannels[publication.id]);
+			const channel = JSON.parse(publicationChannels[publication.id]);
 
 			if (channel.label) {
 				newPublication.label = channel.label;

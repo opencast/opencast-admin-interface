@@ -73,15 +73,15 @@ export const checkSchedulingConflicts = async (
 ) => {
 	// Check if each start is before end
 	for (let i = 0; i < formikValues.editedEvents.length; i++) {
-		let event = formikValues.editedEvents[i];
-		let startTime = new Date();
+		const event = formikValues.editedEvents[i];
+		const startTime = new Date();
 		startTime.setHours(
 			parseInt(event.changedStartTimeHour),
 			parseInt(event.changedStartTimeMinutes),
 			0,
 			0
 		);
-		let endTime = new Date();
+		const endTime = new Date();
 		endTime.setHours(
 			parseInt(event.changedEndTimeHour),
 			parseInt(event.changedEndTimeMinutes),

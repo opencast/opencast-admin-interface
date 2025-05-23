@@ -72,7 +72,7 @@ export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', asy
 
 	const filters = transformResponse(resourceData);
 	const filtersList = Object.keys(filters.filters).map((key) => {
-		let filter = filters.filters[key];
+		const filter = filters.filters[key];
 		filter.name = key;
 		filter.resource = resource;
 		return filter;
@@ -107,24 +107,24 @@ export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', asy
 
 export const fetchStats = createAppAsyncThunk('tableFilters/fetchStats', async () => {
 	// fetch information about possible status an event can have
-	let data = await axios.get("/admin-ng/resources/STATS.json");
-	let response = await data.data;
+	const data = await axios.get("/admin-ng/resources/STATS.json");
+	const response = await data.data;
 
 	// transform response
 	const statsResponse = Object.keys(response).map((key) => {
-		let stat = JSON.parse(response[key]);
+		const stat = JSON.parse(response[key]);
 		stat.name = key;
 		return stat;
 	});
 
-	let stats = [];
+	const stats = [];
 
 	// fetch for each status the corresponding count of events having this status
 	for (const [i, _] of statsResponse.entries()) {
-		let filter = [];
-		for (let j in statsResponse[i].filters) {
+		const filter = [];
+		for (const j in statsResponse[i].filters) {
 			let value = statsResponse[i].filters[j].value;
-			let name = statsResponse[i].filters[j].name;
+			const name = statsResponse[i].filters[j].name;
 
 			if (Object.prototype.hasOwnProperty.call(value, "relativeDateSpan")) {
 				value = relativeDateSpanToFilterValue(
@@ -137,14 +137,14 @@ export const fetchStats = createAppAsyncThunk('tableFilters/fetchStats', async (
 			}
 			filter.push(name + ":" + value);
 		}
-		let data = await axios.get("/admin-ng/event/events.json", {
+		const data = await axios.get("/admin-ng/event/events.json", {
 			params: {
 				filter: filter.join(","),
 				limit: 1,
 			},
 		});
 
-		let response = await data.data;
+		const response = await data.data;
 
 		// add count to status information fetched before
 		statsResponse[i] = {
@@ -165,7 +165,7 @@ export const setSpecificEventFilter = createAppAsyncThunk('tableFilters/setSpeci
 	const { filter, filterValue } = params;
 	const { tableFilters } = getState();
 
-	let filterToChange = tableFilters.data.find(({ name }) => name === filter);
+	const filterToChange = tableFilters.data.find(({ name }) => name === filter);
 
 	if (!filterToChange) {
 		await dispatch(fetchFilters("events"));
@@ -224,8 +224,8 @@ function transformResponse(data: {
 		}
 	}
 
-	let filters = Object.keys(data).reduce((acc, key) => {
-		let newOptions: {
+	const filters = Object.keys(data).reduce((acc, key) => {
+		const newOptions: {
 			label: string,
 			value: string,
 		}[] = []
@@ -237,14 +237,14 @@ function transformResponse(data: {
 	}, {} as ParsedFilters);
 
 	try {
-		for (let key in data) {
+		for (const key in data) {
 			filters[key].value = "";
 			if (!data[key].options) {
 				continue;
 			}
 			let filterArr: { value: string, label: string }[] = [];
-			let options = data[key].options;
-			for (let subKey in options) {
+			const options = data[key].options;
+			for (const subKey in options) {
 				filterArr.push({ value: subKey, label: options[subKey] });
 			}
 			filterArr = filterArr.sort(function (a, b) {

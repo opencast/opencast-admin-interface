@@ -21,7 +21,7 @@ const EventsLocationCell = ({
 
 	// Filter with value of current cell
 	const addFilter = (location: string) => {
-		let filter = filterMap.find(({ name }) => name === "location");
+		const filter = filterMap.find(({ name }) => name === "location");
 		if (!!filter) {
 			dispatch(editFilterValue({filterName: filter.name, value: location}));
 			dispatch(fetchEvents());
