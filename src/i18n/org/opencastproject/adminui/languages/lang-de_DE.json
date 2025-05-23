@@ -175,7 +175,7 @@
 		"SERIES_PATH_NOT_UPDATED": "Der Serien-Pfad konnte nicht aktualisiert werden",
 		"SERIES_PATH_NOT_REMOVED": "Der Serien-Pfad konnte nicht entfernt werden",
 		"EVENTS_CREATED": "Das Video wurde angelegt",
-		"EVENTS_UPLOAD_STARTED": "The event \"{{ title }}\" is being uploaded… {{ progress }}%",
+		"EVENTS_UPLOAD_STARTED": "Das Video \"{{ title }}\" wird hochgeladen… {{ progress }}%",
 		"EVENTS_NOT_CREATED": "Das Video konnte nicht angelegt werden",
 		"EVENTS_UPDATED": "Das Video wurde erfolgreich aktualisiert",
 		"EVENTS_UPDATED_ALL": "Alle Videos wurden erfolgreich aktualisiert",
@@ -184,8 +184,8 @@
 		"EVENTS_NOT_UPDATED_ALL": "Kein Video konnte gespeichert werden",
 		"EVENTS_PROCESSING_DELETE_WORKFLOW": "Workflow gelöscht.",
 		"EVENTS_PROCESSING_DELETE_WORKFLOW_FAILED": "Workflow konnte nicht gelöscht werden.",
-		"EVENTS_PROCESSING_ACTION_STOP": "The event processing has been stopped.",
-		"EVENTS_PROCESSING_ACTION_NON_STOP": "The event processing could not be stopped.",
+		"EVENTS_PROCESSING_ACTION_STOP": "Die Videoverarbeitung wurde gestoppt.",
+		"EVENTS_PROCESSING_ACTION_NON_STOP": "Die Videoverarbeitung konnte nicht gestoppt werden.",
 		"SERIES_NOT_UPDATED": "Diese Serie konnte nicht gespeichert werden",
 		"EVENT_DELETED": "Das Video wurde gelöscht.",
 		"EVENT_WILL_BE_DELETED": "Das Video wird gelöscht",
@@ -894,11 +894,11 @@
 						"ADDITIONAL_ACTIONS": "Weitere Aktionen",
 						"ACTION": "Aktionen",
 						"NEW": "Neue Richtlinie",
-						"NON_USER_ROLES": "Roles and Groups authorized for the event",
-						"USER": "User",
-						"USERS": "Users who are authorized for the event",
-						"NEW_USER": "New user",
-						"SANITIZATION_NOTE": "User role sanitization is enabled in your Opencast, therefore user roles are displayed alongside other roles. This does not impact role functionality in any way."
+						"NON_USER_ROLES": "Rollen und Gruppen, die für das Video autorisiert sind",
+						"USER": "Benutzer",
+						"USERS": "Benutzer, die für das Video autorisiert sind",
+						"NEW_USER": "Neuer Benutzer",
+						"SANITIZATION_NOTE": "\"User role sanitization\" ist in Opencast aktiviert, daher werden Benutzerrollen neben anderen Rollen angezeigt. Dies beeinträchtigt die Funktionalität in keiner Weise."
 					},
 					"ROLES": {
 						"LABEL": "Rolle auswählen oder erstellen"
@@ -1208,10 +1208,10 @@
 						"ADDITIONAL_ACTIONS": "Weitere Aktionen",
 						"ACTION": "Aktionen",
 						"NEW": "Neue Richtlinie",
-						"NON_USER_ROLES": "Roles and Groups authorized for the series",
-						"USER": "User",
-						"USERS": "Users who are authorized for the series",
-						"NEW_USER": "New user",
+						"NON_USER_ROLES": "Rollen und Gruppen, die für die Serie autorisiert sind",
+						"USER": "Benutzer",
+						"USERS": "Benutzer, die für die Serie autorisiert sind",
+						"NEW_USER": "Neuer Benutzer",
 						"REPLACE_EVENT_ACLS": "Zugriffsrechte der Serie aktualisieren",
 						"REPLACE_EVENT_ACLS_HINT": "Sicherstellen, dass alle Videos dieser Serie genau diese Zugriffsrechte haben",
 						"LOAD_MORE_LIMIT": "angezeigte Richtlinien.",
@@ -1470,11 +1470,11 @@
 						"ADDITIONAL_ACTIONS": "Weitere Aktionen",
 						"ACTION": "Aktionen",
 						"NEW": "Neue Richtlinie",
-						"NON_USER_ROLES": "Roles and Groups authorized for the access policy",
+						"NON_USER_ROLES": "Rollen und Gruppen, die für die Zugriffsrichtlinie autorisiert sind",
 						"DESCRIPTION": "Bitte wählen Sie eine vordefinierten Richtlinie aus oder fügen Sie eine neue Richtlinie hinzu",
-						"USER": "User",
-						"USERS": "Users who are authorized for the access policy",
-						"NEW_USER": "New user"
+						"USER": "Benutzer",
+						"USERS": "Benutzer, die für die Zugriffsrichtlinie autorisiert sind",
+						"NEW_USER": "Neuer Benutzer"
 					},
 					"ROLES": {
 						"LABEL": "Rolle auswählen",
@@ -2090,7 +2090,7 @@
 		"NOT_AVAILABLE": "Die Statistik kann aktuell nicht angezeigt werden. Bitte versuchen Sie es später nochmals.",
 		"UNSUPPORTED_TYPE": "Diese Statistik-Daten können nicht dargestellt werden.",
 		"TOTAL": "Summe",
-		"TIMERANGE": "Time Range",
+		"TIMERANGE": "Zeitspanne",
 		"GRANULARITY": "Granularität",
 		"NAVIGATION": {
 			"ORGANIZATION": "Organisation"
