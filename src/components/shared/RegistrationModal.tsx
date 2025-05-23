@@ -20,7 +20,6 @@ import { ParseKeys } from "i18next";
 /**
  * This component renders the adopter registration modal. This modal has various states.
  */
-
 const RegistrationModal = ({
 	modalRef
 }: {
@@ -39,7 +38,6 @@ const RegistrationModal = ({
 		</Modal>
 	);
 };
-
 
 const RegistrationModalContent = () => {
 	const { t } = useTranslation();
@@ -409,7 +407,6 @@ const RegistrationModalContent = () => {
 												</label>
 											</div>
 										</div>
-
 										<div className="col">
 											<div className="form-group-pair">
 												<div className="form-group">
