@@ -403,17 +403,21 @@ const Schedule = <T extends {
 									selected={typeof formik.values.scheduleStartDate === "string" ? parseISO(formik.values.scheduleStartDate) : formik.values.scheduleStartDate}
 									onChange={(value) => {
 										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-											value && changeStartDateMultiple(
-												value,
-												formik.values,
-												formik.setFieldValue
-											);
+											if (value) {
+												changeStartDateMultiple(
+													value,
+													formik.values,
+													formik.setFieldValue
+												);
+											}
 										} else {
-											value && changeStartDate(
-												value,
-												formik.values,
-												formik.setFieldValue
-											);
+											if (value) {
+												changeStartDate(
+													value,
+													formik.values,
+													formik.setFieldValue
+												);
+											}
 										}
 									}}
 									showYearDropdown

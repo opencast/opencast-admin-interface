@@ -123,9 +123,11 @@ const ResourceDetailsAccessPolicyTab = ({
 			fetchRolesWithTarget("ACL").then((roles) => setRoles(roles));
 			if (fetchHasActiveTransactions) {
 				const fetchTransactionResult = await dispatch(fetchHasActiveTransactions(resourceId)).then(unwrapResult)
-				fetchTransactionResult.active !== undefined
-					? setTransactions({ read_only: fetchTransactionResult.active })
-					: setTransactions({ read_only: true });
+				if (fetchTransactionResult.active !== undefined) {
+					setTransactions({ read_only: fetchTransactionResult.active })
+				} else {
+					setTransactions({ read_only: true });
+				}
 				if (
 					fetchTransactionResult.active === undefined ||
 					fetchTransactionResult.active
