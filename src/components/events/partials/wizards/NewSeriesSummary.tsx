@@ -19,7 +19,7 @@ import ModalContentTable from "../../../shared/modals/ModalContentTable";
  */
 interface RequiredFormProps {
 	theme: string,
-	policies: TransformedAcl[],
+	acls: TransformedAcl[],
 	selectedPage?: TobiraPage,
 }
 
@@ -65,7 +65,7 @@ const NewSeriesSummary = <T extends RequiredFormProps>({
 
 				{/*Summary access configuration*/}
 				<AccessSummaryTable
-					policies={formik.values.policies}
+					policies={formik.values.acls}
 					header={"EVENTS.SERIES.NEW.ACCESS.CAPTION"}
 				/>
 

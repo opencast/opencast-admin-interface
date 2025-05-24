@@ -897,11 +897,7 @@
 						"ADDITIONAL_ACTIONS": "Additional Actions",
 						"ACTION": "Actions",
 						"NEW": "New policy",
-						"NON_USER_ROLES": "Roles and Groups authorized for the event",
-						"USER": "User",
-						"USERS": "Users who are authorized for the event",
-						"NEW_USER": "New user",
-						"SANITIZATION_NOTE": "User role sanitization is enabled in your Opencast, therefore user roles are displayed alongside other roles. This does not impact role functionality in any way."
+						"DETAILS": "Details"
 					},
 					"ROLES": {
 						"LABEL": "Select or create a role"
@@ -1211,10 +1207,7 @@
 						"ADDITIONAL_ACTIONS": "Additional Actions",
 						"ACTION": "Actions",
 						"NEW": "New policy",
-						"NON_USER_ROLES": "Roles and Groups authorized for the series",
-						"USER": "User",
-						"USERS": "Users who are authorized for the series",
-						"NEW_USER": "New user",
+						"DETAILS": "Details",
 						"REPLACE_EVENT_ACLS": "Update series permissions",
 						"REPLACE_EVENT_ACLS_HINT": "Ensure all events of this series have these permissions in effect",
 						"LOAD_MORE_LIMIT": "policies shown.",
@@ -1473,11 +1466,8 @@
 						"ADDITIONAL_ACTIONS": "Additional Actions",
 						"ACTION": "Actions",
 						"NEW": "New policy",
-						"NON_USER_ROLES": "Roles and Groups authorized for the access policy",
-						"DESCRIPTION": "Please choose a pre-configured set of policies or add custom policies below",
-						"USER": "User",
-						"USERS": "Users who are authorized for the access policy",
-						"NEW_USER": "New user"
+						"DETAILS": "Details",
+						"DESCRIPTION": "Please choose a pre-configured set of policies or add custom policies below"
 					},
 					"ROLES": {
 						"LABEL": "Select a role",

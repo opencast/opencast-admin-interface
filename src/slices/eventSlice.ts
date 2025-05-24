@@ -418,7 +418,7 @@ export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata
 
 export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (params: {
 	values: {
-		policies: TransformedAcl[],
+		acls: TransformedAcl[],
 		configuration: { [key: string]: unknown },
 		deviceInputs?: string[],
 		processingWorkflow: string,
@@ -592,7 +592,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	}
 
 	// prepare access rules provided by user
-	let access = prepareAccessPolicyRulesForPost(values.policies);
+	let access = prepareAccessPolicyRulesForPost(values.acls);
 
 	// prepare configurations for post
 	let configurationPrepared: { [key: string]: string } = {};

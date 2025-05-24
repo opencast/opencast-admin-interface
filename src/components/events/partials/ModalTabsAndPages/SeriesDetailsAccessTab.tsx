@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import ResourceDetailsAccessPolicyTab from "../../../shared/modals/ResourceDetailsAccessPolicyTab";
-import { getPolicyTemplateId, getSeriesDetailsAcl } from "../../../../selectors/seriesDetailsSelectors";
+import { getSeriesDetailsAcl } from "../../../../selectors/seriesDetailsSelectors";
 import {
 	fetchSeriesDetailsAcls,
 	updateSeriesAccess,
@@ -23,10 +24,10 @@ const SeriesDetailsAccessTab = ({
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,
 }) => {
+	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
 	const policies = useAppSelector(state => getSeriesDetailsAcl(state));
-	const policyTemplateId = useAppSelector(state => getPolicyTemplateId(state));
 
 	useEffect(() => {
 		dispatch(removeNotificationWizardForm());
@@ -38,20 +39,11 @@ const SeriesDetailsAccessTab = ({
 			resourceId={seriesId}
 			header={header}
 			buttonText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.LABEL"}
-			descriptionText={"EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION"}
+			descriptionText={t("EVENTS.SERIES.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION")}
 			policies={policies}
-			policyTemplateId={policyTemplateId}
 			fetchAccessPolicies={fetchSeriesDetailsAcls}
 			saveNewAccessPolicies={updateSeriesAccess}
-			policyTableHeaderText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.NON_USER_ROLES"}
-			policyTableRoleText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.ROLE"}
-			policyTableNewText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.NEW"}
-			userPolicyTableHeaderText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.USERS"}
-			userPolicyTableRoleText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.USER"}
-			userPolicyTableNewText={"EVENTS.SERIES.DETAILS.ACCESS.ACCESS_POLICY.NEW_USER"}
 			editAccessRole={"ROLE_UI_SERIES_DETAILS_ACL_EDIT"}
-			viewUsersAccessRole={"ROLE_UI_SERIES_DETAILS_ACL_USER_ROLES_VIEW"}
-			viewNonUsersAccessRole={"ROLE_UI_SERIES_DETAILS_ACL_NONUSER_ROLES_VIEW"}
 			policyChanged={policyChanged}
 			setPolicyChanged={setPolicyChanged}
 			withOverrideButton={true}
