@@ -9,8 +9,8 @@ import { UploadOption } from "../slices/eventSlice";
  */
 
 export const getTimezoneOffset = () => {
-	let d = new Date();
-	let offset = d.getTimezoneOffset() * -1;
+	const d = new Date();
+	const offset = d.getTimezoneOffset() * -1;
 
 	return offset / 60;
 };
@@ -35,8 +35,8 @@ export const getCurrentLanguageInformation = () => {
 
 // fills an array from 00 to number of elements specified
 export const initArray = (numberOfElements: number) => {
-	let i,
-		result = [];
+	let i;
+	const result = [];
 	for (i = 0; i < numberOfElements; i++) {
 		result.push({
 			index: makeTwoDigits(i),
@@ -73,7 +73,7 @@ export const transformToIdValueArray = (data: {[key: string | number]: string}) 
  * to their corresponding boolean value. All other values stay the same.
  */
 export const parseBooleanInObject = (baseObject: {[key: string]: unknown}) => {
-	let parsedObject: {[key: string]: unknown} = {};
+	const parsedObject: {[key: string]: unknown} = {};
 
 	Object.keys(baseObject).forEach((config) => {
 		parsedObject[config] = parseValueForBooleanStrings(baseObject[config]);

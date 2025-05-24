@@ -72,7 +72,7 @@ export const updateThemeDetails = createAppAsyncThunk('themeDetails/updateThemeD
 	values: ThemeDetailsInitialValues
 }, {dispatch}) => {
 	const { values, id } = params
-	let data = buildThemeBody(values);
+	const data = buildThemeBody(values);
 
 	// request for updating
 	axios

@@ -24,13 +24,13 @@ const EventsDateCell = ({
 
 	// Filter with value of current cell
 	const addFilter = async (date: string) => {
-		let filter = filterMap.find(({ name }) => name === "startDate");
+		const filter = filterMap.find(({ name }) => name === "startDate");
 		if (!!filter) {
-			let startDate = new Date(date);
+			const startDate = new Date(date);
 			startDate.setHours(0);
 			startDate.setMinutes(0);
 			startDate.setSeconds(0);
-			let endDate = new Date(date);
+			const endDate = new Date(date);
 			endDate.setHours(23);
 			endDate.setMinutes(59);
 			endDate.setSeconds(59);

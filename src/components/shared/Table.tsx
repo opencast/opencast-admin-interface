@@ -374,9 +374,9 @@ const Table = ({
 const getDirectAccessiblePages = (pages: Page[], pagination: Pagination) => {
 	let startIndex = pagination.offset - pagination.directAccessibleNo,
 		endIndex = pagination.offset + pagination.directAccessibleNo,
-		directAccessible = [],
 		i,
 		pageToPush;
+	const directAccessible = [];
 
 	if (startIndex < 0) {
 		// Adjust range if selected range is too low
@@ -425,7 +425,7 @@ const ColumnTemplate = ({ row, column, templateMap }: {row: Row, column: TableCo
 	if (!column.template) {
 		return <></>;
 	}
-	let Template = templateMap[column.template];
+	const Template = templateMap[column.template];
 	return <Template row={row} />;
 };
 

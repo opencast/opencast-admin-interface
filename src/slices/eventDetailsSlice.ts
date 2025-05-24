@@ -613,13 +613,13 @@ export const fetchMetadata = createAppAsyncThunk('eventDetails/fetchMetadata', a
 		flavor: "",
 		fields: []
 	};
-	let extendedMetadata = [];
+	const extendedMetadata = [];
 
 	for (const catalog of metadataResponse) {
 		let transformedCatalog = { ...catalog };
 
 		if (catalog.locked !== undefined) {
-			let fields = [];
+			const fields = [];
 
 			for (const field of catalog.fields) {
 				const adaptedField = {
@@ -692,7 +692,7 @@ const formatUploadAssetOptions = (optionsData: { [key: string]: string }) => {
 	const optionPrefixAsset = "EVENTS.EVENTS.NEW.UPLOAD_ASSET.OPTION";
 	const workflowPrefix = "EVENTS.EVENTS.NEW.UPLOAD_ASSET.WORKFLOWDEFID";
 
-	let optionsResult: {
+	const optionsResult: {
 		assetOptions: UploadOption[],
 		sourceOptions: UploadOption[],
 		workflow?: string,
@@ -702,8 +702,8 @@ const formatUploadAssetOptions = (optionsData: { [key: string]: string }) => {
 		workflow: "",
 	};
 
-	let uploadAssets: UploadOption[] = [];
-	let uploadSource: UploadOption[] = [];
+	const uploadAssets: UploadOption[] = [];
+	const uploadSource: UploadOption[] = [];
 
 	for (const [key, value] of Object.entries(optionsData)) {
 		if (key.charAt(0) !== "$") {
@@ -712,7 +712,7 @@ const formatUploadAssetOptions = (optionsData: { [key: string]: string }) => {
 				key.indexOf(optionPrefixSource) >= 0
 			) {
 				// parse upload asset options
-				let options: UploadOption = JSON.parse(value);
+				const options: UploadOption = JSON.parse(value);
 				if (!options["title"]) {
 					options["title"] = key;
 				}
@@ -737,7 +737,7 @@ const formatUploadAssetOptions = (optionsData: { [key: string]: string }) => {
 };
 
 export const fetchAssetAttachments = createAppAsyncThunk('eventDetails/fetchAssetAttachments', async (eventId: Event["id"]) => {
-	let params = new URLSearchParams();
+	const params = new URLSearchParams();
 	params.append("id1", "attachment");
 
 	const attachmentsRequest = await axios.get(
@@ -752,7 +752,7 @@ export const fetchAssetAttachmentDetails = createAppAsyncThunk('eventDetails/fet
 	attachmentId: EventDetailsState["assetAttachments"][0]["id"]
 }) => {
 	const { eventId, attachmentId } = params;
-	let searchParams = new URLSearchParams();
+	const searchParams = new URLSearchParams();
 	searchParams.append("id1", "attachment");
 
 	const attachmentDetailsRequest = await axios.get(
@@ -763,7 +763,7 @@ export const fetchAssetAttachmentDetails = createAppAsyncThunk('eventDetails/fet
 });
 
 export const fetchAssetCatalogs = createAppAsyncThunk('eventDetails/fetchAssetCatalogs', async (eventId: Event["id"]) => {
-	let params = new URLSearchParams();
+	const params = new URLSearchParams();
 	params.append("id1", "catalog");
 
 	const catalogsRequest = await axios.get(
@@ -778,7 +778,7 @@ export const fetchAssetCatalogDetails = createAppAsyncThunk('eventDetails/fetchA
 	catalogId: EventDetailsState["assetCatalogs"][0]["id"]
 }) => {
 	const { eventId, catalogId } = params;
-	let searchParams = new URLSearchParams();
+	const searchParams = new URLSearchParams();
 	searchParams.append("id1", "catalog");
 
 	const catalogDetailsRequest = await axios.get(
@@ -789,7 +789,7 @@ export const fetchAssetCatalogDetails = createAppAsyncThunk('eventDetails/fetchA
 });
 
 export const fetchAssetMedia = createAppAsyncThunk('eventDetails/fetchAssetMedia', async (eventId: Event["id"]) => {
-	let params = new URLSearchParams();
+	const params = new URLSearchParams();
 	params.append("id1", "media");
 
 	const mediaRequest = await axios.get(
@@ -798,11 +798,11 @@ export const fetchAssetMedia = createAppAsyncThunk('eventDetails/fetchAssetMedia
 	);
 	const mediaResponse = await mediaRequest.data;
 
-	let media = [];
+	const media = [];
 
 	//for every media file item we define the filename
 	for (let i = 0; i < mediaResponse.length; i++) {
-		let item = mediaResponse[i];
+		const item = mediaResponse[i];
 		const url = item.url;
 		item.mediaFileName = url
 			.substring(url.lastIndexOf("/") + 1)
@@ -818,7 +818,7 @@ export const fetchAssetMediaDetails = createAppAsyncThunk('eventDetails/fetchAss
 	mediaId: EventDetailsState["assetMedia"][0]["id"]
 }) => {
 	const { eventId, mediaId } = params;
-	let searchParams = new URLSearchParams();
+	const searchParams = new URLSearchParams();
 	searchParams.append("id1", "media");
 
 	const mediaDetailsRequest = await axios.get(
@@ -846,7 +846,7 @@ export const fetchAssetMediaDetails = createAppAsyncThunk('eventDetails/fetchAss
 });
 
 export const fetchAssetPublications = createAppAsyncThunk('eventDetails/fetchAssetPublications', async (eventId: Event["id"]) => {
-	let params = new URLSearchParams();
+	const params = new URLSearchParams();
 	params.append("id1", "publication");
 
 	const publicationsRequest = await axios.get(
@@ -861,7 +861,7 @@ export const fetchAssetPublicationDetails = createAppAsyncThunk('eventDetails/fe
 	publicationId: EventDetailsState["publications"][0]["id"]
 }) => {
 	const { eventId, publicationId } = params;
-	let searchParams = new URLSearchParams();
+	const searchParams = new URLSearchParams();
 	searchParams.append("id1", "publication");
 
 	const publicationDetailsRequest = await axios.get(
@@ -875,7 +875,7 @@ export const fetchAccessPolicies = createAppAsyncThunk('eventDetails/fetchAccess
 	const policyData = await axios.get(
 		`/admin-ng/event/${id}/access.json`
 	);
-	let accessPolicies = await policyData.data;
+	const accessPolicies = await policyData.data;
 
 	let policies: TransformedAcl[] = [];
 	let currentAclTemplateId = 0
@@ -901,9 +901,9 @@ export const fetchComments = createAppAsyncThunk('eventDetails/fetchComments', a
 });
 
 export const fetchEventPublications = createAppAsyncThunk('eventDetails/fetchEventPublications', async (eventId: Event["id"], { dispatch }) => {
-	let data = await axios.get(`/admin-ng/event/${eventId}/publications.json`);
+	const data = await axios.get(`/admin-ng/event/${eventId}/publications.json`);
 
-	let publications: {
+	const publications: {
 		publications: {
 			id: string,
 			name: string,
@@ -938,9 +938,9 @@ export const saveComment = createAppAsyncThunk('eventDetails/saveComment', async
 	commentReason: Comment["reason"]
 }) => {
 	const { eventId, commentText, commentReason } = params;
-	let headers = getHttpHeaders();
+	const headers = getHttpHeaders();
 
-	let data = new URLSearchParams();
+	const data = new URLSearchParams();
 	data.append("text", commentText);
 	data.append("reason", commentReason);
 
@@ -961,9 +961,9 @@ export const saveCommentReply = createAppAsyncThunk('eventDetails/saveCommentRep
 	commentResolved: Comment["resolvedStatus"]
 }) => {
 	const { eventId, commentId, replyText, commentResolved } = params;
-	let headers = getHttpHeaders();
+	const headers = getHttpHeaders();
 
-	let data = new URLSearchParams();
+	const data = new URLSearchParams();
 	data.append("text", replyText);
 	data.append("resolved", String(commentResolved));
 
@@ -1009,7 +1009,7 @@ export const fetchSchedulingInfo = createAppAsyncThunk('eventDetails/fetchSchedu
 			(agent) => agent.id === schedulingResponse.agentId
 		);
 		if (!!agent) {
-			let inputMethods = [];
+			const inputMethods = [];
 
 			if (
 				schedulingResponse.agentConfiguration["capture.device.names"] !==
@@ -1119,7 +1119,7 @@ export const saveSchedulingInfo = createAppAsyncThunk('eventDetails/saveScheduli
 	const end = endDate.toISOString();
 
 	const headers = getHttpHeaders();
-	let data = new URLSearchParams();
+	const data = new URLSearchParams();
 	data.append(
 		"scheduling",
 		JSON.stringify({
@@ -1179,7 +1179,7 @@ if (endDate < now) {
 	hasSchedulingConflicts = true;
 } else {
 	dispatch(removeNotificationWizardForm());
-	let headers = getHttpHeaders();
+	const headers = getHttpHeaders();
 
 	const conflictTimeFrame = {
 		id: eventId,
@@ -1189,7 +1189,7 @@ if (endDate < now) {
 		end: endDate.toISOString(),
 	};
 
-	let data = new URLSearchParams();
+	const data = new URLSearchParams();
 	data.append("metadata", JSON.stringify(conflictTimeFrame));
 
 	await axios
@@ -1315,13 +1315,13 @@ export const performWorkflowAction = createAppAsyncThunk('eventDetails/performWo
 	close?: () => void,
 }, { dispatch }) => {
 	const { eventId, workflowId, action, close} = params;
-	let headers = {
+	const headers = {
 		headers: {
 			"Content-Type": "application/json;charset=utf-8",
 		},
 	};
 
-	let data = {
+	const data = {
 		action: action,
 		id: eventId,
 		wfId: workflowId,
@@ -1542,7 +1542,7 @@ export const updateMetadata = createAppAsyncThunk('eventDetails/updateMetadata',
 	await axios.put(`/admin-ng/event/${id}/metadata`, data, headers);
 
 	// updated metadata in event details redux store
-	let eventMetadata = {
+	const eventMetadata = {
 		flavor: catalog.flavor,
 		title: catalog.title,
 		fields: fields,
@@ -1565,13 +1565,13 @@ export const updateExtendedMetadata = createAppAsyncThunk('eventDetails/updateEx
 	await axios.put(`/admin-ng/event/${id}/metadata`, data, headers);
 
 	// updated extended metadata in event details redux store
-	let eventMetadata = {
+	const eventMetadata = {
 		...catalog,
 		fields: fields,
 	};
 
 	const oldExtendedMetadata = getExtendedMetadata(getState());
-	let newExtendedMetadata = [];
+	const newExtendedMetadata = [];
 
 	for (const catalog of oldExtendedMetadata) {
 		if (
@@ -1605,9 +1605,9 @@ export const updateAssets = createAppAsyncThunk('eventDetails/updateAssets', asy
 	const uploadAssetOptions = getAssetUploadOptions(state);
 	const uploadAssetWorkflow = getAssetUploadWorkflow(state);
 
-	let formData = new FormData();
+	const formData = new FormData();
 
-	let assets: {
+	const assets: {
 		options: UploadOption[],
 	} = {
 		options: [],
@@ -1690,7 +1690,7 @@ export const saveAccessPolicies = createAppAsyncThunk('eventDetails/saveAccessPo
 	const { id, policies } = params;
 	const headers = getHttpHeaders();
 
-	let data = new URLSearchParams();
+	const data = new URLSearchParams();
 	data.append("acl", JSON.stringify(policies));
 
 	return axios
@@ -1731,9 +1731,9 @@ export const updateComment = createAppAsyncThunk('eventDetails/updateComment', a
 	commentReason: Comment["reason"]
 }, { dispatch }) => {
 	const { eventId, commentId, commentText, commentReason } = params;
-	let headers = getHttpHeaders();
+	const headers = getHttpHeaders();
 
-	let data = new URLSearchParams();
+	const data = new URLSearchParams();
 	data.append("text", commentText);
 	data.append("reason", commentReason);
 
@@ -1780,13 +1780,13 @@ export const saveWorkflowConfig = createAppAsyncThunk('eventDetails/saveWorkflow
 	eventId: Event["id"]
 }, { dispatch }) => {
 	const { values, eventId } = params;
-	let jsonData = {
+	const jsonData = {
 		id: values.workflowDefinition,
 		configuration: values.configuration,
 	};
 
-	let header = getHttpHeaders();
-	let data = new URLSearchParams();
+	const header = getHttpHeaders();
+	const data = new URLSearchParams();
 	// Scheduler service in Opencast expects values to be strings, so we convert them here
 	data.append("configuration", JSON.stringify(jsonData, (k, v) => v && typeof v === 'object' ? v : '' + v));
 

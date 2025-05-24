@@ -69,7 +69,7 @@ export const updateGroupDetails = createAppAsyncThunk('groupDetails/updateGroupD
 	const { values, groupId } = params
 
 	// get URL params used for put request
-	let data = buildGroupBody(values);
+	const data = buildGroupBody(values);
 
 	// PUT request
 	axios

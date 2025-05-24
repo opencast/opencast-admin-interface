@@ -67,7 +67,7 @@ export const handleTemplateChange = async <T extends { policies: TransformedAcl[
 	// fetch information about chosen template from backend
 	let template = await fetchAclTemplateById(templateId);
 	// fetch user info
-	let users = await fetchUsersForTemplate(template.map(role => role.role))
+	const users = await fetchUsersForTemplate(template.map(role => role.role))
 
 	// Add user info to applicable roles
 	template = template.map((acl) => {

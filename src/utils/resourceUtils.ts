@@ -37,9 +37,9 @@ export const getURLParams = (
 	resource: TableState["resource"],
 ) => {
 	// get filter map from state
-	let filters = [];
-	let filterMap = getFilters(state, resource);
-	let textFilter = getTextFilter(state);
+	const filters = [];
+	const filterMap = getFilters(state, resource);
+	const textFilter = getTextFilter(state);
 
 	// check if textFilter has value and transform for use as URL param
 	if (textFilter !== "") {
@@ -85,7 +85,7 @@ export const getURLParams = (
 
 // used for create URLSearchParams for API requests used to create/update user
 export const buildUserBody = (values: NewUser | UpdateUser) => {
-	let data = new URLSearchParams();
+	const data = new URLSearchParams();
 	// fill form data with user inputs
 	data.append("username", values.username);
 	values.name && data.append("name", values.name);
@@ -100,11 +100,11 @@ export const buildUserBody = (values: NewUser | UpdateUser) => {
 export const buildGroupBody = (
 	values: typeof initialFormValuesNewGroup
 ) => {
-	let roles = [],
+	const roles = [],
 		users = [];
 
 	// fill form data depending on user inputs
-	let data = new URLSearchParams();
+	const data = new URLSearchParams();
 	data.append("name", values.name);
 	data.append("description", values.description);
 
@@ -124,7 +124,7 @@ export const buildGroupBody = (
 export const getInitialMetadataFieldValues = (
 	metadataCatalog: MetadataCatalog,
 ) => {
-	let initialValues: { [key: string]: string | string[] | boolean } = {};
+	const initialValues: { [key: string]: string | string[] | boolean } = {};
 
 	if (!!metadataCatalog.fields && metadataCatalog.fields.length > 0) {
 		metadataCatalog.fields.forEach((field) => {
@@ -147,7 +147,7 @@ export const transformMetadataFields = (metadata: MetadataField[]) => {
 			field.collection = Object.entries(field.collection)
 				.map(([key, value]) => {
 					if (isJson(key)) {
-						let collectionParsed = JSON.parse(key);
+						const collectionParsed = JSON.parse(key);
 						return {
 							name: collectionParsed.label || key,
 							value,
@@ -167,12 +167,12 @@ export const transformMetadataFields = (metadata: MetadataField[]) => {
 
 // transform metadata catalog for update via post request
 export const transformMetadataForUpdate = (catalog: MetadataCatalog, values: { [key: string]: MetadataCatalog["fields"][0]["value"] }) => {
-	let fields: MetadataCatalog["fields"] = [];
-	let updatedFields: MetadataCatalog["fields"] = [];
+	const fields: MetadataCatalog["fields"] = [];
+	const updatedFields: MetadataCatalog["fields"] = [];
 
 	catalog.fields.forEach((field) => {
 		if (field.value !== values[field.id]) {
-			let updatedField = {
+			const updatedField = {
 				...field,
 				value: values[field.id],
 			};
@@ -182,7 +182,7 @@ export const transformMetadataForUpdate = (catalog: MetadataCatalog, values: { [
 			fields.push({ ...field });
 		}
 	});
-	let data = new URLSearchParams();
+	const data = new URLSearchParams();
 	data.append(
 		"metadata",
 		JSON.stringify([
@@ -270,7 +270,7 @@ export const getMetadataCollectionFieldName = (metadataField: { collection?: { [
 // Prepare rules of access policies for post of new events or series
 export const prepareAccessPolicyRulesForPost = (policies: TransformedAcl[]) => {
 	// access policies for post request
-	let access : {
+	const access : {
 		acl : Acl
 	} = {
 		acl: {
@@ -433,7 +433,7 @@ export const buildThemeBody = (values: {
 	watermarkPosition: string,
 }) => {
 	// fill form data depending on user inputs
-	let data = new URLSearchParams();
+	const data = new URLSearchParams();
 	data.append("name", values.name);
 	data.append("description", values.description);
 	data.append("bumperActive", values.bumperActive.toString());
