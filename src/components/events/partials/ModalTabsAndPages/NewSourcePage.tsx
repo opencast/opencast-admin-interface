@@ -613,8 +613,21 @@ const Schedule = <T extends {
 								disabled={false}
 								title={"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.LOCATION"}
 								placeholder={"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.LOCATION"}
-								callback={(value: string) => {
-									formik.setFieldValue("location", value)
+								callback={async (value: string) => {
+										// Set inputs depending on location
+										let inputDevice = inputDevices.find(
+											({ name }) => name === value
+										);
+										if (inputDevice) {
+											if (inputDevice.inputs.length > 0) {
+												await formik.setFieldValue("locationHasInputs", true)
+											} else {
+												await formik.setFieldValue("locationHasInputs", false)
+											}
+											await formik.setFieldValue("deviceInputs", inputDevice.inputs.map(input => input.id))
+										}
+										// Set location
+										await formik.setFieldValue("location", value)
 								}}
 							/>
 						<tr>
