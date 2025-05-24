@@ -29,12 +29,6 @@ export type Role = {
 	name: string,
 	organization: string,
 	type: string,
-	isSanitize: boolean,
-	user?: {
-		username: string,
-		name: string,
-		email: string,
-	}
 }
 
 export type AclResult = {
@@ -137,7 +131,7 @@ export const fetchRolesWithTarget = async (target: string) => {
 
 // post new acl to backend
 export const postNewAcl = (values: typeof initialFormValuesNewAcl) => async (dispatch: AppDispatch) => {
-	let acls = prepareAccessPolicyRulesForPost(values.policies);
+	let acls = prepareAccessPolicyRulesForPost(values.acls);
 
 	let data = new URLSearchParams();
 	data.append("name", values.name);

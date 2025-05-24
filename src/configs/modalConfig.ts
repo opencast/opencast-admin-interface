@@ -32,7 +32,7 @@ export const initialFormValuesNewEvents: {
 	processingWorkflow: string,
 	configuration: { [key: string]: string },
 	aclTemplate: string,
-	policies: TransformedAcl[],
+	acls: TransformedAcl[],
 	uploadAssetsTrack?: UploadAssetsTrack[]
 	[key: string]: unknown,  // Metadata fields that are getting added later
 } = {
@@ -51,7 +51,7 @@ export const initialFormValuesNewEvents: {
 	processingWorkflow: "",
 	configuration: {},
 	aclTemplate: "",
-	policies: [],
+	acls: [],
 };
 
 // constants for hours and minutes (used in selection for start/end time and duration)
@@ -99,14 +99,14 @@ export const WORKFLOW_UPLOAD_ASSETS_NON_TRACK = "publish-uploaded-assets";
 // All fields for new series form that are fix and not depending on response of backend
 // InitialValues of Formik form (others computed dynamically depending on responses from backend)
 export const initialFormValuesNewSeries: {
-	policies: TransformedAcl[],
+	acls: TransformedAcl[],
 	theme: string,
 
 	breadcrumbs: TobiraPage[],
 	selectedPage?: TobiraPage,
 	[key: string]: unknown,  // Metadata fields that are getting added later
 } = {
-	policies: [
+	acls: [
 		{
 			role: "ROLE_USER_ADMIN",
 			read: true,
@@ -154,10 +154,10 @@ export const initialFormValuesNewThemes = {
 // InitialValues of Formik form (others computed dynamically depending on responses from backend)
 export const initialFormValuesNewAcl: {
 	name: string,
-	policies: TransformedAcl[],
+	acls: TransformedAcl[],
 } = {
 	name: "",
-	policies: [],
+	acls: [],
 };
 
 // All fields for new group form that are fix and not depending on response of backend

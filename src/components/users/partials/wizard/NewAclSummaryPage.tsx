@@ -8,7 +8,7 @@ import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 interface RequiredFormProps {
 	name: string,
-	policies: TransformedAcl[],
+	acls: TransformedAcl[],
 }
 
 const NewAclSummaryPage = <T extends RequiredFormProps>({
@@ -58,8 +58,8 @@ const NewAclSummaryPage = <T extends RequiredFormProps>({
 									)}
 								</th>
 							</tr>
-							{formik.values.policies.length > 0 &&
-								formik.values.policies.map((acl, key) => (
+							{formik.values.acls.length > 0 &&
+								formik.values.acls.map((acl, key) => (
 									<tr key={key}>
 										<td>{acl.role}</td>
 										<td className="fit">
