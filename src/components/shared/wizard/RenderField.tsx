@@ -39,8 +39,12 @@ const RenderField = ({
 		<div
 			onClick={() => {
 				if (editableRef.current) {
-					editableRef.current.focus && editableRef.current.focus()
-					editableRef.current.setFocus && editableRef.current.setFocus() // For DatePicker
+					if (editableRef.current.focus) {
+						editableRef.current.focus()
+					}
+					if (editableRef.current.setFocus) {
+						editableRef.current.setFocus() // For DatePicker
+					}
 				}
 			}}
 			onFocus={onFocus}
