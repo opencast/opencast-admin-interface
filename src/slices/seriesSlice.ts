@@ -176,7 +176,7 @@ export const fetchSeriesThemes = createAppAsyncThunk('series/fetchSeriesThemes',
 export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (params: {
 	values: {
 		[key: string]: any;
-		acls: TransformedAcl[],
+		policies: TransformedAcl[],
 		// contributor: string[],
 		// creator: string[],
 		// description: string,
@@ -210,7 +210,7 @@ export const postNewSeries = createAppAsyncThunk('series/postNewSeries', async (
 		metadata.push(entry);
 	}
 
-	const access = prepareAccessPolicyRulesForPost(values.acls);
+	const access = prepareAccessPolicyRulesForPost(values.policies);
 
 	// Tobira
 	let tobira: any = {};
