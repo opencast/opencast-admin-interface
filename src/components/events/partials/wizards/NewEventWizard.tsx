@@ -20,6 +20,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { MetadataCatalog, UploadOption, postNewEvent } from "../../../../slices/eventSlice";
 import { UserInfoState } from "../../../../slices/userInfoSlice";
+import { hasAccess } from "../../../../utils/utils";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import NewMetadataCommonPage from "../ModalTabsAndPages/NewMetadataCommonPage";
 import WizardStepper, { WizardStep } from "../../../shared/wizard/WizardStepper";
@@ -102,7 +103,7 @@ const NewEventWizard = ({
 			{
 				translation: "EVENTS.EVENTS.NEW.ACCESS.CAPTION",
 				name: "access",
-				hidden: false,
+				hidden: !hasAccess("ROLE_UI_EVENTS_DETAILS_ACL_VIEW", user),
 			},
 			{
 				translation: "EVENTS.EVENTS.NEW.SUMMARY.CAPTION",
@@ -235,7 +236,9 @@ const NewEventWizard = ({
 										nextPage={nextPage}
 										// @ts-expect-error TS(7006):
 										formik={formik}
-										editAccessRole="ROLE_UI_SERIES_DETAILS_ACL_EDIT"
+										editAccessRole="ROLE_UI_EVENTS_DETAILS_ACL_EDIT"
+										viewUsersAccessRole="ROLE_UI_EVENTS_DETAILS_ACL_USER_ROLES_VIEW"
+										viewNonUsersAccessRole="ROLE_UI_EVENTS_DETAILS_ACL_NONUSER_ROLES_VIEW"
 										initEventAclWithSeriesAcl={initEventAclWithSeriesAcl}
 									/>
 								)}
@@ -327,12 +330,13 @@ const getInitialValues = (
 	initialValues["scheduleEndHour"] = (defaultDate.getHours() + 1).toString();
 	initialValues["scheduleEndMinute"] = "55";
 
-	initialValues["acls"] = [
+	initialValues["policies"] = [
 		{
 			role: user.userRole,
 			read: true,
 			write: true,
 			actions: [],
+			user: user.user,
 		},
 	];
 
