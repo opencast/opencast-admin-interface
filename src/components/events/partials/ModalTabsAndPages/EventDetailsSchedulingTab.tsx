@@ -125,11 +125,11 @@ const EventDetailsSchedulingTab = ({
 	// finds the inputs to be displayed in the formik
 	const getInputs = (deviceId: Recording["id"]) => {
 		if (deviceId === source.device.id) {
-			return !!source.device.inputs ? source.device.inputs : [];
+			return source.device.inputs ? source.device.inputs : [];
 		} else {
 			for (const agent of filterDevicesForAccess(user, captureAgents)) {
 				if (agent.id === deviceId) {
-					return !!agent.inputs ? agent.inputs : [];
+					return agent.inputs ? agent.inputs : [];
 				}
 			}
 			return [];
@@ -213,7 +213,7 @@ const EventDetailsSchedulingTab = ({
 		const startDate = new Date(source.start.date);
 		const endDate = new Date(source.end.date);
 
-		const inputs = !!source.device.inputMethods
+		const inputs = source.device.inputMethods
 			? Array.from(source.device.inputMethods)
 			: [];
 

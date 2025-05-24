@@ -268,7 +268,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 											</td>
 										</Tooltip>
 										<td>
-											{!!page.new
+											{page.new
 												? <input
 													placeholder={t('EVENTS.SERIES.NEW.TOBIRA.PAGE_TITLE')}
 													disabled={checkboxActive(page, key)}
@@ -295,7 +295,7 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 										</td>
 										<td>
 											<code className="tobira-path">
-												{!!page.new
+												{page.new
 													? <input
 														placeholder={t('EVENTS.SERIES.NEW.TOBIRA.PATH_SEGMENT')}
 														value={page.segment ?? ""}

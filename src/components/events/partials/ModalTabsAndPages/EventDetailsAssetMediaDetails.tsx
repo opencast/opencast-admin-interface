@@ -101,7 +101,7 @@ const EventDetailsAssetMediaDetails = () => {
 										}
 									</td>
 									<td>
-										{!!media.duration
+										{media.duration
 											? formatDuration(media.duration)
 											: null}
 									</td>
