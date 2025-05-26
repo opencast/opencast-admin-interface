@@ -262,7 +262,7 @@ export const getMetadataCollectionFieldName = (metadataField: { collection?: { [
 		}
 
 		return "";
-	} catch (e) {
+	} catch (_e) {
 		return "";
 	}
 };

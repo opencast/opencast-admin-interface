@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { getSeriesThemes } from "../../../../selectors/seriesSeletctor";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";

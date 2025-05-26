@@ -1,4 +1,3 @@
-import React from "react";
 import Notifications from "../../../shared/Notifications";
 import {
 	getWorkflowErrorDetails,

@@ -1,4 +1,3 @@
-import React from "react";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { useTranslation } from "react-i18next";
 import { FormikProps } from "formik";

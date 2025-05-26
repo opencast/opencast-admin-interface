@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { Usage } from "../../../../slices/themeDetailsSlice";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";

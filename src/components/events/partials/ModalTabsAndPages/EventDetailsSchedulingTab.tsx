@@ -251,7 +251,7 @@ const EventDetailsSchedulingTab = ({
 					<Formik<InitialValues>
 						enableReinitialize
 						initialValues={getInitialValues()}
-						onSubmit={(values) => submitForm(values).then((r) => {})}
+						onSubmit={(values) => submitForm(values).then(() => {})}
 						innerRef={formikRef}
 					>
 						{(formik) => (

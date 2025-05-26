@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../../../store";
 import { Event } from "../../../slices/eventSlice";

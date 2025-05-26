@@ -7,10 +7,8 @@ import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
  * This component renders the embedding code modal
  */
 const EmbeddingCodeModal = ({
-	close,
 	eventId,
 }: {
-	close: () => void
 	eventId: string
 }) => {
 	const { t } = useTranslation();

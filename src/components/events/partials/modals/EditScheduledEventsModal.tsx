@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import { initialFormValuesEditScheduledEvents } from "../../../../configs/modalConfig";
 import WizardStepper, { WizardStep } from "../../../shared/wizard/WizardStepper";

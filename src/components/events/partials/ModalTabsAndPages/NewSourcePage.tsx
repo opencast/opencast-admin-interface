@@ -261,6 +261,7 @@ const Upload = <T extends RequiredFormPropsUpload>({
 						<tbody>
 							<FieldArray name="uploadAssetsTrack">
 								{/*File upload button for each upload asset*/}
+								{/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
 								{({ insert, remove, push }) =>
 									formik.values.uploadAssetsTrack &&
 									formik.values.uploadAssetsTrack.length > 0 &&
@@ -294,7 +295,7 @@ const Upload = <T extends RequiredFormPropsUpload>({
 												<ButtonLikeAnchor
 													style={{ visibility: asset.file ? "visible" : "hidden" }}
 													extraClassName="remove"
-													onClick={(e) => {
+													onClick={() => {
 														formik.setFieldValue(
 															`uploadAssetsTrack.${key}.file`,
 															null
