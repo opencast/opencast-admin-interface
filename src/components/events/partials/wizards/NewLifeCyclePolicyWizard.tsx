@@ -87,12 +87,11 @@ const NewLifeCyclePolicyWizard = ({
 		const fixedValues = {
 			...values,
 			targetFilters: parseTargetFiltersForSubmit(values.targetFiltersArray),
-			accessControlEntries: values.acls
+			accessControlEntries: values.policies
 		}
 		if (fixedValues.action === "START_WORKFLOW") {
 			fixedValues.actionParameters["workflowParameters"] = JSON.parse(values.actionParameters["workflowParameters"] as string)
 		}
-		// values["accessControlEntries"] = values.acls;
 		const response = dispatch(postNewLifeCyclePolicy(fixedValues));
 		console.info(response);
 		close();
@@ -167,12 +166,13 @@ const getInitialValues = (
 ) => {
 	let initialValues = initialFormValuesNewLifeCyclePolicy;
 
-	initialValues["acls"] = [
+	initialValues["policies"] = [
 		{
 			role: user.userRole,
 			read: true,
 			write: true,
 			actions: [],
+			user: user.user,
 		},
 	];
 

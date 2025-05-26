@@ -453,6 +453,9 @@ const DropdownField = ({
 			}}
 			placeholder={`-- ${t("SELECT_NO_OPTION_SELECTED")} --`}
 			creatable={creatable}
+			customCSS={{
+				width: "100%"
+			}}
 		/>
 	)
 };

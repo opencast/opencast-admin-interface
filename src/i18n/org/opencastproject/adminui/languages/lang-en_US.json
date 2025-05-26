@@ -1327,7 +1327,13 @@
 				},
 				"ACCESS": {
 					"LABEL": "Select a template",
-					"DESCRIPTION": "At least one role with Read and Write permissions is required."
+					"DESCRIPTION": "At least one role with Read and Write permissions is required.",
+					"NON_USER_ROLES": "Roles and Groups authorized for the policy",
+					"ROLE": "Role",
+					"NEW": "New policy",
+					"USER": "User",
+					"USERS": "Users who are authorized for the policy",
+					"NEW_USER": "New user"
 				},
 				"TAB": {
 					"GENERAL": "General",

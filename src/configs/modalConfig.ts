@@ -229,7 +229,7 @@ export const initialFormValuesNewLifeCyclePolicy: {
 	actionDate: string,
 	cronTrigger: string,
 	actionParameters: { [key: string]: unknown }
-	acls: TransformedAcl[]
+	policies: TransformedAcl[]
 	targetFiltersArray: (TargetFilter & { filter: string })[],
 } = {
 	title: "",
@@ -245,6 +245,6 @@ export const initialFormValuesNewLifeCyclePolicy: {
 		workflowParameters: `{"straightToPublishing": true}`
 	},
 
-	acls: [],
+	policies: [],
 	targetFiltersArray: [],
 };
