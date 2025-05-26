@@ -51,7 +51,7 @@ const Themes = () => {
 		loadThemes();
 
 		// Fetch themes every minute
-		let fetchThemesInterval = setInterval(loadThemes, 5000);
+		const fetchThemesInterval = setInterval(loadThemes, 5000);
 
 		return () => {
 			allowLoadIntoTable = false;

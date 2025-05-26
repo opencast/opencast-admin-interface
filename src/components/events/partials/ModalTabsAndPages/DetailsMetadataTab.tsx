@@ -56,7 +56,7 @@ const DetailsMetadataTab = ({
 
 	// set current values of metadata fields as initial values
 	const getInitialValues = (metadataCatalog: MetadataCatalog) => {
-		let initialValues: { [key: string]: any } = {};
+		const initialValues: { [key: string]: any } = {};
 
 		// Transform metadata fields and their values provided by backend (saved in redux)
 		if (!!metadataCatalog.fields && metadataCatalog.fields.length > 0) {

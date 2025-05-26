@@ -13,7 +13,7 @@ const UsersRolesCell = ({
 	const { t } = useTranslation();
 
 	const getRoleString = () => {
-		let displayRoles = [];
+		const displayRoles = [];
 		let roleCountUI = 0;
 		let roleCountAPI = 0;
 		let roleCountCaptureAgent = 0;

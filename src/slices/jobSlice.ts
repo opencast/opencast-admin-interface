@@ -51,7 +51,7 @@ const initialState: JobState = {
 
 export const fetchJobs = createAppAsyncThunk('jobs/fetchJobs', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state, "jobs");
+	const params = getURLParams(state, "jobs");
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.

@@ -53,7 +53,7 @@ const Jobs = () => {
 		loadJobs();
 
 		// Fetch jobs every minute
-		let fetchJobInterval = setInterval(() => loadJobs(), 5000);
+		const fetchJobInterval = setInterval(() => loadJobs(), 5000);
 
 		return () => {
 			allowLoadIntoTable = false;

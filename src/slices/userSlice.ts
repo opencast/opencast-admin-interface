@@ -64,7 +64,7 @@ const initialState: UsersState = {
 // fetch users from server
 export const fetchUsers = createAppAsyncThunk('users/fetchUsers', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state, "users");
+	const params = getURLParams(state, "users");
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -81,7 +81,7 @@ export const fetchUsersForTemplate = async (roles: string[]) => {
 // new user to backend
 export const postNewUser = createAppAsyncThunk('users/postNewUser', async (values: NewUser, {dispatch}) => {
 	// get URL params used for post request
-	let data = buildUserBody(values);
+	const data = buildUserBody(values);
 
 	axios
 		.post("/admin-ng/users", data, {
@@ -121,7 +121,7 @@ export const deleteUser = createAppAsyncThunk('users/deleteUser', async (id: str
 
 // get users and their user names
 export const fetchUsersAndUsernames = async () => {
-	let data = await axios.get(
+	const data = await axios.get(
 		"/admin-ng/resources/USERS.NAME.AND.USERNAME.json"
 	);
 
