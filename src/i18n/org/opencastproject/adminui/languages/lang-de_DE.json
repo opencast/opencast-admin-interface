@@ -894,11 +894,11 @@
 						"ADDITIONAL_ACTIONS": "Weitere Aktionen",
 						"ACTION": "Aktionen",
 						"NEW": "Neue Richtlinie",
-						"NON_USER_ROLES": "Rollen und Gruppen, die für das Video autorisiert sind",
-						"USER": "Benutzer",
-						"USERS": "Benutzer, die für das Video autorisiert sind",
-						"NEW_USER": "Neuer Benutzer",
-						"SANITIZATION_NOTE": "\"User role sanitization\" ist in Opencast aktiviert, daher werden Benutzerrollen neben anderen Rollen angezeigt. Dies beeinträchtigt die Funktionalität in keiner Weise."
+						"NON_USER_ROLES": "Roles and Groups authorized for the event",
+						"USER": "User",
+						"USERS": "Users who are authorized for the event",
+						"NEW_USER": "New user",
+						"SANITIZATION_NOTE": "User role sanitization is enabled in your Opencast, therefore user roles are displayed alongside other roles. This does not impact role functionality in any way."
 					},
 					"ROLES": {
 						"LABEL": "Rolle auswählen oder erstellen"
@@ -1208,10 +1208,10 @@
 						"ADDITIONAL_ACTIONS": "Weitere Aktionen",
 						"ACTION": "Aktionen",
 						"NEW": "Neue Richtlinie",
-						"NON_USER_ROLES": "Rollen und Gruppen, die für die Serie autorisiert sind",
-						"USER": "Benutzer",
-						"USERS": "Benutzer, die für die Serie autorisiert sind",
-						"NEW_USER": "Neuer Benutzer",
+						"NON_USER_ROLES": "Roles and Groups authorized for the series",
+						"USER": "User",
+						"USERS": "Users who are authorized for the series",
+						"NEW_USER": "New user",
 						"REPLACE_EVENT_ACLS": "Zugriffsrechte der Serie aktualisieren",
 						"REPLACE_EVENT_ACLS_HINT": "Sicherstellen, dass alle Videos dieser Serie genau diese Zugriffsrechte haben",
 						"LOAD_MORE_LIMIT": "angezeigte Richtlinien.",
@@ -1470,11 +1470,11 @@
 						"ADDITIONAL_ACTIONS": "Weitere Aktionen",
 						"ACTION": "Aktionen",
 						"NEW": "Neue Richtlinie",
-						"NON_USER_ROLES": "Rollen und Gruppen, die für die Zugriffsrichtlinie autorisiert sind",
+						"NON_USER_ROLES": "Roles and Groups authorized for the access policy",
 						"DESCRIPTION": "Bitte wählen Sie eine vordefinierten Richtlinie aus oder fügen Sie eine neue Richtlinie hinzu",
-						"USER": "Benutzer",
-						"USERS": "Benutzer, die für die Zugriffsrichtlinie autorisiert sind",
-						"NEW_USER": "Neuer Benutzer"
+						"USER": "User",
+						"USERS": "Users who are authorized for the access policy",
+						"NEW_USER": "New user"
 					},
 					"ROLES": {
 						"LABEL": "Rolle auswählen",
