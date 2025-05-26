@@ -60,7 +60,7 @@ const TableFiltersProfiles = ({
   	);
 
 	const currentProfiles = profiles.filter(
-		(profile) => profile.resource === resource
+		profile => profile.resource === resource,
 	);
 
 	// todo: Maybe saving to storage is needed
@@ -116,7 +116,7 @@ const TableFiltersProfiles = ({
 
 		if (itemName === "name") {
 			const isDuplicated = profiles.some(
-				(profile) => profile.name === itemValue
+				profile => profile.name === itemValue,
 			);
 			if (!isDuplicated) {
 				setValidName(true);
@@ -134,7 +134,7 @@ const TableFiltersProfiles = ({
 		dispatch(loadFilterProfile(filterMap));
 
 		// No matter what, we go to page one.
-		dispatch(goToPage(0))
+		dispatch(goToPage(0));
 		// Reload resources when filters are removed
 		dispatch(loadResource());
 		dispatch(loadResourceIntoTable());
@@ -222,7 +222,7 @@ const TableFiltersProfiles = ({
 									name="name"
 									type="text"
 									value={profileName}
-									onChange={(e) => handleChange(e)}
+									onChange={e => handleChange(e)}
 									placeholder={t("TABLE_FILTERS.PROFILES.NAME_PLACEHOLDER")}
 								/>
 
@@ -231,9 +231,9 @@ const TableFiltersProfiles = ({
 								<textarea
 									value={profileDescription}
 									name="description"
-									onChange={(e) => handleChange(e)}
+									onChange={e => handleChange(e)}
 									placeholder={t(
-										"TABLE_FILTERS.PROFILES.DESCRIPTION_PLACEHOLDER"
+										"TABLE_FILTERS.PROFILES.DESCRIPTION_PLACEHOLDER",
 									)}
 								/>
 							</div>

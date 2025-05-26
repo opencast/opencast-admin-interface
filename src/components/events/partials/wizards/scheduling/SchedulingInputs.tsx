@@ -4,7 +4,7 @@ import { Field } from "formik";
 import { ParseKeys } from "i18next";
 
 const SchedulingInputs = ({
-	inputs
+	inputs,
 }: {
 	inputs: {
 		id: string,
@@ -25,10 +25,10 @@ const SchedulingInputs = ({
 						/>
 						{t(input.value as ParseKeys)}
 					</label>
-				)
+				),
 			)}
 		</>
-	)
+	);
 };
 
 export default SchedulingInputs;

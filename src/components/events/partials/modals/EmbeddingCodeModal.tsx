@@ -70,7 +70,7 @@ const EmbeddingCodeModal = ({
 		let iFrameString = `<iframe allowfullscreen src="${url}"
 			style="border: 0; margin 0;" name="Player" scrolling="no"
 			width="${size[0]}" height="${size[1]}"></iframe>`
-			.replace(/\s\s+/g, ' ');
+			.replace(/\s\s+/g, " ");
 
 		// set state with new inputs
 		setTextAreaContent(iFrameString);
@@ -85,35 +85,35 @@ const EmbeddingCodeModal = ({
 				<ButtonLikeAnchor
 					id="620x349"
 					extraClassName="embedSizeButton size_620x349"
-					onClick={(e) => updateTextArea(e)}
+					onClick={e => updateTextArea(e)}
 				>
 					<span className="span-embedded-code">620x349</span>
 				</ButtonLikeAnchor>
 				<ButtonLikeAnchor
 					id="540x304"
 					extraClassName="embedSizeButton size_540x304"
-					onClick={(e) => updateTextArea(e)}
+					onClick={e => updateTextArea(e)}
 				>
 					<span className="span-embedded-code">540x304</span>
 				</ButtonLikeAnchor>
 				<ButtonLikeAnchor
 					id="460x259"
 					extraClassName="embedSizeButton size_460x259"
-					onClick={(e) => updateTextArea(e)}
+					onClick={e => updateTextArea(e)}
 				>
 					<span className="span-embedded-code">460x259</span>
 				</ButtonLikeAnchor>
 				<ButtonLikeAnchor
 					id="380x214"
 					extraClassName="embedSizeButton size_380x214"
-					onClick={(e) => updateTextArea(e)}
+					onClick={e => updateTextArea(e)}
 				>
 					<span className="span-embedded-code">380x214</span>
 				</ButtonLikeAnchor>
 				<ButtonLikeAnchor
 					id="300x169"
 					extraClassName="embedSizeButton size_300x169"
-					onClick={(e) => updateTextArea(e)}
+					onClick={e => updateTextArea(e)}
 				>
 					<span className="span-embedded-code">300x169</span>
 				</ButtonLikeAnchor>
@@ -138,7 +138,7 @@ const EmbeddingCodeModal = ({
 			{showCopySuccess && (
 				<div className="copyConfirm" role="alert">
 					<span id="copy_confirm_pre">
-						{t("CONFIRMATIONS.EMBEDDING_CODE", {size: currentSize})}
+						{t("CONFIRMATIONS.EMBEDDING_CODE", { size: currentSize })}
 					</span>
 				</div>
 			)}

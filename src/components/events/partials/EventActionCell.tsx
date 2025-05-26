@@ -52,7 +52,7 @@ const EventActionCell = ({
 	};
 
 	const onClickSeriesDetails = async () => {
-		if (!!row.series) {
+		if (row.series) {
 			await dispatch(fetchSeriesDetailsMetadata(row.series.id));
 			await dispatch(fetchSeriesDetailsAcls(row.series.id));
 			await dispatch(fetchSeriesDetailsTheme(row.series.id));

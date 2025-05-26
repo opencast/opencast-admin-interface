@@ -19,12 +19,12 @@ export const statisticTimeModes = [
 // data resolutions (or time granularity) for statistics with year or month timeframe
 export const fixedStatisticDataResolutions = (timeMode: "month" | "year") => {
 	if (timeMode === "month") {
-		return "daily"
+		return "daily";
 	}
 	if (timeMode === "year") {
-		return "monthly"
+		return "monthly";
 	}
-	return "monthly"
+	return "monthly";
 };
 
 // available data resolutions (or time granularity) for statistics with custom timeframe

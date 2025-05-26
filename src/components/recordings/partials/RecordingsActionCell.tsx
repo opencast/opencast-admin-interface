@@ -22,7 +22,7 @@ const RecordingsActionCell = ({
 	const showRecordingDetails = async () => {
 		await dispatch(fetchRecordingDetails(row.name));
 
-		recordingDetailsModalRef.current?.open()
+		recordingDetailsModalRef.current?.open();
 	};
 
 	const deletingRecording = (id: string) => {

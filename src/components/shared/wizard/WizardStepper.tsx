@@ -87,7 +87,7 @@ const WizardStepper = ({
 							{t(label.translation)}
 						</StepLabel>
 					</StepButton>
-				</Step>
+				</Step>,
 			)}
 		</Stepper>
 	);

@@ -22,13 +22,13 @@ const AclsActionsCell = ({
 	const modalRef = useRef<ModalHandle>(null);
 
 	const hideAclDetails = () => {
-		modalRef.current?.close?.()
+		modalRef.current?.close?.();
 	};
 
 	const showAclDetails = async () => {
 		await dispatch(fetchAclDetails(row.id));
 
-		modalRef.current?.open()
+		modalRef.current?.open();
 	};
 
 	const deletingAcl = (id: number) => {
