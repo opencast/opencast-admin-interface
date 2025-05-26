@@ -91,13 +91,13 @@ const EventDetailsAssetsTab = ({
 		padding: "14px 5px",
 		fontWeight: "600",
 		minWidth: "100px",
-		color: "#5d7589",
+		color: "#435263",
 	};
 
 	const assetsTabInactive = {
 		padding: "14px 5px",
 		minWidth: "100px",
-		color: "#92a0ab",
+		color: "#646e75",
 	};
 
 	useEffect(() => {
