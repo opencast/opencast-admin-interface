@@ -68,6 +68,6 @@ export const availableHotkeys: HotkeyMapType = {
 			name: "close_modal",
 			description: "HOTKEYS.DESCRIPTIONS.GENERAL.CLOSE_MODAL",
 			sequence: ["Esc"],
-		}
+		},
 	},
 };

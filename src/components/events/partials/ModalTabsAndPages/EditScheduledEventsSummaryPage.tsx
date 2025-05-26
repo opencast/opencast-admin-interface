@@ -70,19 +70,19 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 					previous: getMetadataCollectionFieldName(
 						{ collection: seriesOptions },
 						{ value: event.series },
-						t
+						t,
 					),
 					next: getMetadataCollectionFieldName(
 						{ collection: seriesOptions },
 						{ value: event.changedSeries },
-						t
+						t,
 					),
 				});
 			}
 			if (
 				isChanged(
 					event.startTimeHour + ":" + event.startTimeMinutes,
-					event.changedStartTimeHour + ":" + event.changedStartTimeMinutes
+					event.changedStartTimeHour + ":" + event.changedStartTimeMinutes,
 				)
 			) {
 				eventChanges.changes.push({
@@ -95,7 +95,7 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 			if (
 				isChanged(
 					event.endTimeHour + ":" + event.endTimeMinutes,
-					event.changedEndTimeHour + ":" + event.changedEndTimeMinutes
+					event.changedEndTimeHour + ":" + event.changedEndTimeMinutes,
 				)
 			) {
 				eventChanges.changes.push({
@@ -133,7 +133,7 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 				// Keep ids of changed events (used later)
 				formik.setFieldValue(
 					"changedEvent",
-					formik.values.changedEvents.push(event.eventId)
+					formik.values.changedEvents.push(event.eventId),
 				);
 			}
 		}
@@ -158,7 +158,7 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 								<header>
 									{t(
 										"BULK_ACTIONS.EDIT_EVENTS.SUMMARY.SINGLE_EVENT_CAPTION",
-										{ title: event.title }
+										{ title: event.title },
 									)}
 								</header>
 								<div className="obj-container">

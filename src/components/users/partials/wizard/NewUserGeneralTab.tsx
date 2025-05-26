@@ -19,7 +19,7 @@ interface RequiredFormProps {
 }
 
 const NewUserGeneralTab = <T extends RequiredFormProps>({
-	formik
+	formik,
 }: {
 	formik: FormikProps<T>
 }) => {
@@ -114,7 +114,7 @@ const NewUserGeneralTab = <T extends RequiredFormProps>({
 };
 
 const PasswordStrengthIndicator = ({
-	password
+	password,
 }: {
 	password: string
 }) => {
@@ -140,7 +140,7 @@ const PasswordStrengthIndicator = ({
 			return 0;
 		}
 
-		const rules = [/[A-Z]/, /[a-z]/, /\d/, /\W/, /^.{8,}$/]
+		const rules = [/[A-Z]/, /[a-z]/, /\d/, /\W/, /^.{8,}$/];
 
 		const ruleScore: number = rules.reduce((acc, rule) => acc + Number(testPassword(rule)), 0);
 
@@ -155,25 +155,25 @@ const PasswordStrengthIndicator = ({
 
 		const strength = Math.max(1, usedRules + uniqueChars + password_length + lowerCase + upperCase + number + symbol);
 		return Math.round(strength);
-	}
+	};
 
 	const setProgBar = (strength: number): [string | undefined, ParseKeys | undefined] => {
 		if (strength >= 90) {
-			return ["green", "USERS.USERS.DETAILS.STRENGTH.VERYSTRONG"]
+			return ["green", "USERS.USERS.DETAILS.STRENGTH.VERYSTRONG"];
 		} else if (strength >= 70) {
-			return ["#388ed6", "USERS.USERS.DETAILS.STRENGTH.STRONG"]
+			return ["#388ed6", "USERS.USERS.DETAILS.STRENGTH.STRONG"];
 		} else if (strength >= 50) {
-			return ["gold", "USERS.USERS.DETAILS.STRENGTH.GOOD"]
+			return ["gold", "USERS.USERS.DETAILS.STRENGTH.GOOD"];
 		} else if (strength >= 30) {
-			return ["darkorange", "USERS.USERS.DETAILS.STRENGTH.WEAK"]
+			return ["darkorange", "USERS.USERS.DETAILS.STRENGTH.WEAK"];
 		} else if (strength > 1) {
-			return ["red", "USERS.USERS.DETAILS.STRENGTH.VERYWEAK"]
+			return ["red", "USERS.USERS.DETAILS.STRENGTH.VERYWEAK"];
 		} else if (strength <= 1) {
-			return ["white", "USERS.USERS.DETAILS.STRENGTH.BAD"]
+			return ["white", "USERS.USERS.DETAILS.STRENGTH.BAD"];
 		}
 
 		return [undefined, undefined];
-	}
+	};
 
 	const strength = calcStrength(password);
 	const [barColor, barText] = setProgBar(strength);
@@ -181,16 +181,16 @@ const PasswordStrengthIndicator = ({
 	const progressBarStyle = {
 		background: barColor,
 		width: strength + "%",
-	}
+	};
 
 	return (
 		<div>
 			<div className="progress pw-strength">
 				<div id="bar" className="progress-bar" style={progressBarStyle}></div>
 			</div>
-			<label id="pw" style={{textAlign: "left"}}>{barText ? t(barText) : undefined}</label>
+			<label id="pw" style={{ textAlign: "left" }}>{barText ? t(barText) : undefined}</label>
 		</div>
 	);
-}
+};
 
 export default NewUserGeneralTab;

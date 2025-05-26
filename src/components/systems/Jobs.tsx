@@ -58,7 +58,7 @@ const Jobs = () => {
 		return () => {
 			allowLoadIntoTable = false;
 			clearInterval(fetchJobInterval);
-		}
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

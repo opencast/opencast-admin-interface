@@ -51,7 +51,7 @@ const DetailsMetadataTab = ({
 	const user = useAppSelector(state => getUserInformation(state));
 
 	const handleSubmit = (values: { [key: string]: any }, catalog: MetadataCatalog) => {
-		dispatch(updateResource({id: resourceId, values, catalog}));
+		dispatch(updateResource({ id: resourceId, values, catalog }));
 	};
 
 	// set current values of metadata fields as initial values
@@ -60,7 +60,7 @@ const DetailsMetadataTab = ({
 
 		// Transform metadata fields and their values provided by backend (saved in redux)
 		if (!!metadataCatalog.fields && metadataCatalog.fields.length > 0) {
-			metadataCatalog.fields.forEach((field) => {
+			metadataCatalog.fields.forEach(field => {
 				initialValues[field.id] = field.value;
 			});
 		}
@@ -91,10 +91,10 @@ const DetailsMetadataTab = ({
 							key={key}
 							enableReinitialize
 							initialValues={getInitialValues(catalog)}
-							onSubmit={(values) => handleSubmit(values, catalog)}
+							onSubmit={values => handleSubmit(values, catalog)}
 							innerRef={formikRef}
 						>
-							{(formik) => (
+							{formik => (
 								/* Render table for each metadata catalog */
 								<div className="obj tbl-details" key={key}>
 									<header>

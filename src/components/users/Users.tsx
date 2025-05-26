@@ -58,7 +58,7 @@ const Users = () => {
 		return () => {
 			allowLoadIntoTable = false;
 			clearInterval(fetchUsersInterval);
-		}
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

@@ -40,7 +40,7 @@ export function dropDownStyle(customCss: {
 				? colorDropDownNormalFocus
 				: colorDropDownMain,
 			boxShadow: customCss.isMetadataStyle
-				? `0 0 0 0px`
+				? "0 0 0 0px"
 				: state.selectProps.menuIsOpen
 				? `0 0 0 1px ${colorDropDownNormalFocus}`
 				: `0 0 0 1px ${colorDropDownMain}`,
