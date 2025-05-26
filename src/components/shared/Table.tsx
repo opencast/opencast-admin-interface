@@ -113,6 +113,7 @@ const Table = ({
 	};
 
 	const changePageSize = (size: number) => {
+		forceDeselectAll();
 		dispatch(updatePageSize(size));
 		dispatch(setOffset(0));
 		dispatch(updatePages());
@@ -331,7 +332,10 @@ const Table = ({
 				<div className="pagination">
 					<ButtonLikeAnchor
 						extraClassName={cn("prev", { disabled: !isNavigatePrevious() })}
-						onClick={() => dispatch(goToPage(pageOffset - 1))}
+						onClick={() => {
+							dispatch(goToPage(pageOffset - 1));
+							forceDeselectAll();
+						}}
 					>
 						<span className="sr-only">{t("TABLE_PREVIOUS")}</span>
 					</ButtonLikeAnchor>
@@ -341,7 +345,10 @@ const Table = ({
 								{page.label}
 							</ButtonLikeAnchor>
 						) : (
-							<ButtonLikeAnchor key={key} onClick={() => dispatch(goToPage(page.number))}>
+							<ButtonLikeAnchor key={key} onClick={() => {
+								dispatch(goToPage(page.number));
+								forceDeselectAll();
+							}}>
 								{page.label}
 							</ButtonLikeAnchor>
 						)
@@ -349,7 +356,10 @@ const Table = ({
 
 					<ButtonLikeAnchor
 						extraClassName={cn("next", { disabled: !isNavigateNext() })}
-						onClick={() => dispatch(goToPage(pageOffset + 1))}
+						onClick={() => {
+							dispatch(goToPage(pageOffset + 1));
+							forceDeselectAll();
+						}}
 					>
 						<span className="sr-only">{t("TABLE_NEXT")}</span>
 					</ButtonLikeAnchor>
