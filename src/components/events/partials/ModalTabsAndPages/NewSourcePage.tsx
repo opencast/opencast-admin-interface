@@ -92,7 +92,7 @@ const NewSourcePage = <T extends RequiredFormProps>({
 		dispatch(fetchRecordings("inputs"));
 
 		// validate form because dependent default values need to be checked
-		formik.validateForm().then((r) => console.info(r));
+		formik.validateForm().then(r => console.info(r));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -159,14 +159,14 @@ const NewSourcePage = <T extends RequiredFormProps>({
 													changeStartDate(
 														new Date(formik.values.scheduleStartDate),
 														formik.values,
-														formik.setFieldValue
+														formik.setFieldValue,
 													)
 												}
 												value="SCHEDULE_SINGLE"
 											/>
 											<span>
 												{t(
-													"EVENTS.EVENTS.NEW.SOURCE.SCHEDULE_SINGLE.CAPTION"
+													"EVENTS.EVENTS.NEW.SOURCE.SCHEDULE_SINGLE.CAPTION",
 												)}
 											</span>
 										</label>
@@ -181,7 +181,7 @@ const NewSourcePage = <T extends RequiredFormProps>({
 											/>
 											<span>
 												{t(
-													"EVENTS.EVENTS.NEW.SOURCE.SCHEDULE_MULTIPLE.CAPTION"
+													"EVENTS.EVENTS.NEW.SOURCE.SCHEDULE_MULTIPLE.CAPTION",
 												)}
 											</span>
 										</label>
@@ -234,7 +234,7 @@ type RequiredFormPropsUpload = {
 }
 
 const Upload = <T extends RequiredFormPropsUpload>({
-	formik
+	formik,
 }: {
 	formik: FormikProps<T>
 }) => {
@@ -280,7 +280,7 @@ const Upload = <T extends RequiredFormPropsUpload>({
 														id={asset.id}
 														className="blue-btn file-select-btn"
 														accept={asset.accept}
-														onChange={(e) =>
+														onChange={e =>
 															handleChange(e, `uploadAssetsTrack.${key}.file`)
 														}
 														type="file"
@@ -294,12 +294,12 @@ const Upload = <T extends RequiredFormPropsUpload>({
 												<ButtonLikeAnchor
 													style={{ visibility: asset.file ? "visible" : "hidden" }}
 													extraClassName="remove"
-													onClick={(e) => {
+													onClick={e => {
 														formik.setFieldValue(
 															`uploadAssetsTrack.${key}.file`,
-															null
+															null,
 														);
-														(document.getElementById(asset.id) as HTMLInputElement).value = '';
+														(document.getElementById(asset.id) as HTMLInputElement).value = "";
 													}}
 												/>
 											</td>
@@ -358,7 +358,7 @@ const Schedule = <T extends {
 	scheduleDurationMinutes: string
 }>({
 	formik,
-	inputDevices
+	inputDevices,
 }: {
 	formik: FormikProps<T>,
 	inputDevices: Recording[]
@@ -367,9 +367,9 @@ const Schedule = <T extends {
 	const currentLanguage = getCurrentLanguageInformation();
 
 	const renderInputDeviceOptions = () => {
-		if (!!formik.values.location) {
+		if (formik.values.location) {
 			let inputDevice = inputDevices.find(
-				({ name }) => name === formik.values.location
+				({ name }) => name === formik.values.location,
 			);
 			if (!inputDevice) {
 				return <></>;
@@ -378,7 +378,7 @@ const Schedule = <T extends {
 				<SchedulingInputs
 					inputs={inputDevice.inputs}
 				/>
-			)
+			);
 		}
 	};
 
@@ -401,18 +401,18 @@ const Schedule = <T extends {
 								<DatePicker
 									name="scheduleStartDate"
 									selected={typeof formik.values.scheduleStartDate === "string" ? parseISO(formik.values.scheduleStartDate) : formik.values.scheduleStartDate}
-									onChange={(value) => {
+									onChange={value => {
 										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
 											value && changeStartDateMultiple(
 												value,
 												formik.values,
-												formik.setFieldValue
+												formik.setFieldValue,
 											);
 										} else {
 											value && changeStartDate(
 												value,
 												formik.values,
-												formik.setFieldValue
+												formik.setFieldValue,
 											);
 										}
 									}}
@@ -440,11 +440,11 @@ const Schedule = <T extends {
 										<DatePicker
 											name="scheduleEndDate"
 											selected={typeof formik.values.scheduleEndDate === "string" ? parseISO(formik.values.scheduleEndDate) : formik.values.scheduleEndDate}
-											onChange={(value) =>
+											onChange={value =>
 												value && changeEndDateMultiple(
 													value,
 													formik.values,
-													formik.setFieldValue
+													formik.setFieldValue,
 												)
 											}
 											showYearDropdown
@@ -495,13 +495,13 @@ const Schedule = <T extends {
 									changeStartHourMultiple(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								} else {
 									changeStartHour(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								}
 							}}
@@ -510,13 +510,13 @@ const Schedule = <T extends {
 									changeStartMinuteMultiple(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								} else {
 									changeStartMinute(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								}
 							}}
@@ -534,13 +534,13 @@ const Schedule = <T extends {
 									changeDurationHourMultiple(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								} else {
 									changeDurationHour(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								}
 							}}
@@ -549,13 +549,13 @@ const Schedule = <T extends {
 									changeDurationMinuteMultiple(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								} else {
 									changeDurationMinute(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								}
 							}}
@@ -573,13 +573,13 @@ const Schedule = <T extends {
 									changeEndHourMultiple(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								} else {
 									changeEndHour(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								}
 							}}
@@ -588,13 +588,13 @@ const Schedule = <T extends {
 									changeEndMinuteMultiple(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								} else {
 									changeEndMinute(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								}
 							}}
@@ -614,7 +614,7 @@ const Schedule = <T extends {
 								title={"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.LOCATION"}
 								placeholder={"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.LOCATION"}
 								callback={(value: string) => {
-									formik.setFieldValue("location", value)
+									formik.setFieldValue("location", value);
 								}}
 							/>
 						<tr>

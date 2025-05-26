@@ -12,7 +12,7 @@ const DetailsModal = ({
 	handleClose,
 	prefix,
 	title,
-	children
+	children,
 }: PropsWithChildren<{
 	handleClose: () => void
 	prefix: ParseKeys

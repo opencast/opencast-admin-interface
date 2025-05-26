@@ -46,7 +46,7 @@ const SeriesDetailsModal = ({
 			<SeriesDetails
 				seriesId={seriesId}
 				policyChanged={policyChanged}
-				setPolicyChanged={(value) => setPolicyChanged(value)}
+				setPolicyChanged={value => setPolicyChanged(value)}
 			/>
 		</Modal>
 	);

@@ -32,7 +32,7 @@ export default [
             "@typescript-eslint/no-unsafe-return": "off",
             "@typescript-eslint/require-await": "off",
             "@typescript-eslint/unbound-method": "off",
-        }
-    }
+        },
+    },
 ];
 

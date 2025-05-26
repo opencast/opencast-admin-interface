@@ -56,7 +56,7 @@ const Themes = () => {
 		return () => {
 			allowLoadIntoTable = false;
 			clearInterval(fetchThemesInterval);
-		}
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -70,7 +70,7 @@ const Themes = () => {
 					{
 						path: "/configuration/themes",
 						accessRole: "ROLE_UI_THEMES_VIEW",
-						text: "CONFIGURATION.NAVIGATION.THEMES"
+						text: "CONFIGURATION.NAVIGATION.THEMES",
 					},
 				]}
 				create={{

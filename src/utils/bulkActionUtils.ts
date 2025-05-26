@@ -47,14 +47,14 @@ export const checkValidityUpdateScheduleEventSelection = (
 	formikValues: {
 		events: Event[]
 	},
-	user: UserInfoState
+	user: UserInfoState,
 ) => {
 	if (formikValues.events.length > 0) {
 		if (
 			isAllScheduleEditable(formikValues.events) &&
 			isAllAgentAccess(formikValues.events, user)
 		) {
-			return formikValues.events.some((event) => event.selected === true);
+			return formikValues.events.some(event => event.selected === true);
 		} else {
 			return false;
 		}
@@ -79,14 +79,14 @@ export const checkSchedulingConflicts = async (
 			parseInt(event.changedStartTimeHour),
 			parseInt(event.changedStartTimeMinutes),
 			0,
-			0
+			0,
 		);
 		let endTime = new Date();
 		endTime.setHours(
 			parseInt(event.changedEndTimeHour),
 			parseInt(event.changedEndTimeMinutes),
 			0,
-			0
+			0,
 		);
 
 		if (startTime > endTime) {
@@ -95,7 +95,7 @@ export const checkSchedulingConflicts = async (
 				key: "CONFLICT_END_BEFORE_START",
 				duration: -1,
 				parameter: undefined,
-				context: NOTIFICATION_CONTEXT
+				context: NOTIFICATION_CONTEXT,
 			}));
 			return false;
 		}
@@ -137,7 +137,7 @@ export const isTaskStartable = (events: Event[]) => {
 export const checkValidityStartTaskEventSelection = (formikValues: { events: Event[] }) => {
 	if (formikValues.events.length > 0) {
 		if (isTaskStartable(formikValues.events)) {
-			return formikValues.events.some((event) => event.selected === true);
+			return formikValues.events.some(event => event.selected === true);
 		} else {
 			return false;
 		}
