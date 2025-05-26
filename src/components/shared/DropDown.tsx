@@ -121,6 +121,7 @@ const DropDown = <T, >({
 
 
   let commonProps: Props = {
+	  	menuPlacement: 'auto',
 		tabIndex: tabIndex,
 		theme: (theme) => (dropDownSpacingTheme(theme)),
 		styles: style,
