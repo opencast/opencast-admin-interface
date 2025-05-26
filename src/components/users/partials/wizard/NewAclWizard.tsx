@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Formik } from "formik";
 import WizardStepper, { WizardStep } from "../../../shared/wizard/WizardStepper";
 import AclMetadataPage from "./AclMetadataPage";

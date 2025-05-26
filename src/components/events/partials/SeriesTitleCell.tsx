@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { setSpecificEventFilter } from "../../../slices/tableFilterSlice";
 import { useNavigate } from "react-router";

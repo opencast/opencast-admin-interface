@@ -1,4 +1,3 @@
-import React from "react";
 import { FormikProps } from "formik";
 import NavigationButtons from "../NavigationButtons";
 import { ParseKeys } from "i18next";

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SelectContainer from "../../../shared/wizard/SelectContainer";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { fetchUsersAndUsernames } from "../../../../slices/userSlice";

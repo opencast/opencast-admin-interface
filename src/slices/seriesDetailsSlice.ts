@@ -3,7 +3,6 @@ import axios from 'axios';
 import _ from "lodash";
 import {
 	getSeriesDetailsExtendedMetadata,
-	getSeriesDetailsThemeNames,
 	getStatistics,
 } from "../selectors/seriesDetailsSelectors";
 import { addNotification } from "./notificationSlice";
@@ -174,7 +173,7 @@ export const updateSeriesMetadata = createAppAsyncThunk('seriesDetails/updateSer
 	id: Series["id"],
 	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
 	catalog: MetadataCatalog,
-}, {dispatch, getState}) => {
+}, {dispatch}) => {
 	const { id, values, catalog } = params;
 
 	const { fields, data, headers } = transformMetadataForUpdate(
@@ -292,7 +291,7 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
 	if (!themeId || themeId === '') {
 		axios
 			.delete(`/admin-ng/series/${id}/theme`)
-			.then((response) => {
+			.then(() => {
 				dispatch(setSeriesDetailsTheme(values.theme));
 				dispatch(
 					addNotification({
@@ -510,9 +509,6 @@ const seriesDetailsSlice = createSlice({
 		>) {
 			state.tobiraTab = action.payload;
 		},
-		setDoNothing(state) {
-
-		}
 	},
 	// These are used for thunks
 	extraReducers: builder => {
@@ -630,7 +626,6 @@ export const {
 	setSeriesStatisticsError,
 	setSeriesStatistics,
 	setTobiraTabHierarchy,
-	setDoNothing,
 } = seriesDetailsSlice.actions;
 
 // Export the slice reducer as the default export

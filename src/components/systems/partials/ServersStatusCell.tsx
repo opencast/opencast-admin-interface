@@ -1,4 +1,3 @@
-import React from "react";
 import { Server } from "../../../slices/serverSlice";
 
 /**

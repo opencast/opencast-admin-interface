@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
 import { getModalWorkflowId, getWorkflowOperations } from "../../../../selectors/eventDetailsSelectors";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";

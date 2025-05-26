@@ -110,7 +110,7 @@ export const isJson = (text: string) => {
 		const json = JSON.parse(text);
 		const type = Object.prototype.toString.call(json);
 		return type === "[object Object]" || type === "[object Array]";
-	} catch (e) {
+	} catch (_e) {
 		return false;
 	}
 };
