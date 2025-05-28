@@ -51,6 +51,7 @@ const DropDown = <T, >({
 	disabled?: boolean,
 	menuIsOpen?: boolean,
 	handleMenuIsOpen?: (open: boolean) => void,
+	menuPlacement?: 'auto' | 'top' | 'bottom',
 	customCSS?: {
 		isMetadataStyle?: boolean,
 		width?: number | string,
@@ -114,6 +115,7 @@ const DropDown = <T, >({
 
 
   let commonProps: Props = {
+	  	menuPlacement: 'auto',
 		tabIndex: tabIndex,
 		theme: (theme) => (dropDownSpacingTheme(theme)),
 		styles: style,
