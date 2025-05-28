@@ -127,7 +127,7 @@
 .multi-select-container {
 
     $icon-top-margin: 90px;
-    $multiple-select-expanded-height: 152px;
+    $multiple-select-expanded-height: 133px;
 
     &.offset-col-1,
     &.offset-col-2 {
@@ -139,6 +139,10 @@
 
     &.offset-col-1 .multi-select-col:first-child select[multiple] {
         height: $multiple-select-expanded-height;
+    }
+
+    &.offset-col-2 .multi-select-col:last-child .row:first-child  {
+       margin-top: 50px;
     }
 
     &.offset-col-2 .multi-select-col:last-child select[multiple] {
