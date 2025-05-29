@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { HashRouter, Navigate, Route, Routes } from "react-router";
+import { HashRouter, Navigate, Route, Routes, useNavigate, useNavigation } from "react-router";
 import "./App.scss";
 import Events from "./components/events/Events";
 import Recordings from "./components/recordings/Recordings";
@@ -39,8 +39,6 @@ function App() {
 	return (
 		<HashRouter>
 			<Routes>
-				<Route path={"/"} element={<Events />} />
-
 				<Route path={"/events/events"} element={<Events />} />
 
 				<Route path={"/events/series"} element={<Series />} />

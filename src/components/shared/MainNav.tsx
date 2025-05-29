@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import {
 	getOrgProperties,
 	getUserInformation
@@ -70,7 +70,7 @@ const MainNav = ({
 									path: "/events/events",
 									accessRole: "ROLE_UI_EVENTS_VIEW",
 									tooltipTitle: "NAV.EVENTS.TITLE",
-									className: "events",
+									className: "events"
 								},
 								{
 									path: "/events/series",
@@ -194,7 +194,7 @@ const MainNavButton = ({
 const MainNavLink = ({
 	path,
 	tooltipTitle,
-	className,
+	className
 }: {
 	path: string
 	tooltipTitle: ParseKeys
@@ -203,11 +203,12 @@ const MainNavLink = ({
 	const { t } = useTranslation();
 
 	return (
-		<Link to={path}>
+		<NavLink to={path}
+			className={({ isActive }) => isActive ? "roll-up-menu-active" : "roll-up-menu-inactive"}>
 			<Tooltip title={t(tooltipTitle)} placement={"right"}>
 				<i className={className} />
 			</Tooltip>
-		</Link>
+		</NavLink>
 	);
 };
 
