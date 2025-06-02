@@ -90,7 +90,7 @@ export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', asy
 	}
 
 	// Do all this purely to keep set filter values saved if the tab gets switched
-	let oldData = getState().tableFilters.data
+	/*let oldData = getState().tableFilters.data
 
 	for (const oldFilter of oldData) {
 		const foundIndex = filtersList.findIndex(x => x.name === oldFilter.name && x.resource === oldFilter.resource);
@@ -100,7 +100,7 @@ export const fetchFilters = createAppAsyncThunk('tableFilters/fetchFilters', asy
 	}
 
 	oldData = oldData.filter(filter => filter.resource !== resource)
-	filtersList.push(...oldData)
+	filtersList.push(...oldData) */
 
 	return { filtersList, resource };
 });
