@@ -153,7 +153,7 @@ const MainNav = ({
 			forEach(arrToSort, (item) => {
 				if (item.path === pathname) { item.tmpIndex = 0 } else { item.tmpIndex = 1 }
 			});
-			arrToSort.sort((a, b) => a.tmpIndex - b.tmpIndex);
+			arrToSort.sort((a: any, b: any) => a.tmpIndex - b.tmpIndex);
 		}
 	}
 
