@@ -14,7 +14,7 @@ export const systemsLinks: {
 		text: "SYSTEMS.NAVIGATION.JOBS"
 	},
 	{
-		path: "/systems/SERVERS",
+		path: "/systems/servers",
 		accessRole: "ROLE_UI_SERVERS_VIEW",
 		text: "SYSTEMS.NAVIGATION.SERVERS"
 	},
