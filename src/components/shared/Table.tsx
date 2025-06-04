@@ -265,7 +265,7 @@ const Table = ({
 										<input
 											type="checkbox"
 											checked={row.selected}
-											onChange={() => dispatch(changeRowSelection(row.id, false))}
+											onChange={() => dispatch(changeRowSelection(row.id))}
 											aria-label={t("EVENTS.EVENTS.TABLE.SELECT_EVENT", { title: "title" in row ? row.title : row.id })}
 										/>
 									</td>

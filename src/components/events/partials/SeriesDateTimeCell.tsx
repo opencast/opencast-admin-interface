@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { renderValidDate } from "../../../utils/dateUtils";
 import { Series } from "../../../slices/seriesSlice";

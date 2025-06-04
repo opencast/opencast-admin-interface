@@ -14,7 +14,7 @@ export const getSourceURL = async () => {
 		} else {
 			return "<SERVER_URL>";
 		}
-	} catch (e) {
+	} catch (_e) {
 		return "<SERVER_URL>";
 	}
 };

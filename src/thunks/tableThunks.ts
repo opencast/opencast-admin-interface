@@ -556,7 +556,7 @@ export const changeColumnSelection = (updatedColumns: TableConfig["columns"]) =>
 };
 
 // Select certain row
-export const changeRowSelection = (id: number | string, selected: boolean): AppThunk => (dispatch, getState) => {
+export const changeRowSelection = (id: number | string): AppThunk => (dispatch, getState) => {
 	dispatch(selectRow(id));
 
 	const state = getState();
