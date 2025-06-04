@@ -15,6 +15,8 @@ export const getMetadata = (state: RootState) => state.eventDetails.metadata;
 export const getExtendedMetadata = (state: RootState) => state.eventDetails.extendedMetadata;
 export const isFetchingMetadata = (state: RootState) =>
 	state.eventDetails.statusMetadata === 'loading';
+export const getUpdateMetadataStatus = (state: RootState) => state.eventDetails.statusUpdateMetadata;
+export const getUpdateExtendedMetadataStatus = (state: RootState) => state.eventDetails.statusUpdateExtendedMetadata;
 
 /* selectors for assets */
 export const getAssets = (state: RootState) => state.eventDetails.assets;

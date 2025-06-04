@@ -11,6 +11,10 @@ export const getSeriesDetailsTheme = (state: RootState) => state.seriesDetails.t
 export const getSeriesDetailsThemeNames = (state: RootState) =>
 	state.seriesDetails.themeNames;
 
+export const getSeriesDetailsUpdateMetadataStatus = (state: RootState) => state.seriesDetails.statusUpdateMetadata;
+export const getSeriesDetailsUpdateExtendedMetadataStatus = (state: RootState) =>
+	state.seriesDetails.statusUpdateExtendedMetadata;
+
 export const getSeriesDetailsTobiraData = (state: RootState) =>
 	state.seriesDetails.tobiraData;
 export const getSeriesDetailsTobiraStatus = (state: RootState) =>

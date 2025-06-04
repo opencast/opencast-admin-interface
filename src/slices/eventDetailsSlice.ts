@@ -207,6 +207,8 @@ type EventDetailsState = {
 	errorStatisticsValue: SerializedError | null,
 	statusTobiraData: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorTobiraData: SerializedError | null,
+	statusUpdateMetadata: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	statusUpdateExtendedMetadata: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	eventId: string,
 	modal: EventDetailsModal,
 	metadata: MetadataCatalog,
@@ -433,6 +435,8 @@ const initialState: EventDetailsState = {
 	errorStatisticsValue: null,
 	statusTobiraData: 'uninitialized',
 	errorTobiraData: null,
+	statusUpdateMetadata: 'uninitialized',
+	statusUpdateExtendedMetadata: 'uninitialized',
 	eventId: "",
 	modal: {
 		show: false,
@@ -2477,11 +2481,23 @@ const eventDetailsSlice = createSlice({
 				state.errorStatisticsValue = action.error;
 				console.error(action.error);
 			})
+			.addCase(updateMetadata.pending, (state, action) => {
+				state.statusUpdateMetadata = 'loading';
+			})
+			.addCase(updateMetadata.fulfilled, (state, action) => {
+				state.statusUpdateMetadata = 'succeeded';
+			})
 			.addCase(updateMetadata.rejected, (state, action) => {
-				console.error(action.error);
+				state.statusUpdateMetadata = 'failed';
+			})
+			.addCase(updateExtendedMetadata.pending, (state, action) => {
+				state.statusUpdateExtendedMetadata = 'loading';
+			})
+			.addCase(updateExtendedMetadata.fulfilled, (state, action) => {
+				state.statusUpdateExtendedMetadata = 'succeeded';
 			})
 			.addCase(updateExtendedMetadata.rejected, (state, action) => {
-				console.error(action.error);
+				state.statusUpdateExtendedMetadata = 'failed';
 			})
 			.addCase(fetchHasActiveTransactions.rejected, (state, action) => {
 				console.error(action.error);

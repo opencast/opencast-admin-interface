@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Formik, FormikProps } from "formik";
 import { Field } from "../../../shared/Field";
@@ -11,7 +11,7 @@ import {
 	hasAccess,
 } from "../../../../utils/utils";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
-import { useAppDispatch, useAppSelector } from "../../../../store";
+import { RootState, useAppDispatch, useAppSelector } from "../../../../store";
 import { MetadataCatalog } from "../../../../slices/eventSlice";
 import { AsyncThunk } from "@reduxjs/toolkit";
 import RenderDate from "../../../shared/RenderDate";
@@ -32,6 +32,7 @@ const DetailsMetadataTab = ({
 	resourceId,
 	metadata,
 	updateResource,
+	getUpdateMetadataStatus,
 	editAccessRole,
 	formikRef,
 	header,
@@ -43,6 +44,7 @@ const DetailsMetadataTab = ({
 		values: { [key: string]: any; };
 		catalog: MetadataCatalog;
 	}, any> //(id: string, values: { [key: string]: any }, catalog: MetadataCatalog) => void,
+	getUpdateMetadataStatus: (state: RootState) => string
 	editAccessRole: string,
 	formikRef?: React.RefObject<FormikProps<InitialValues> | null>
 	header?: ParseKeys
@@ -52,15 +54,31 @@ const DetailsMetadataTab = ({
 
 	const user = useAppSelector(state => getUserInformation(state));
 
+	const statusUpdateMetadata = useAppSelector(state => getUpdateMetadataStatus(state));
+
+	useEffect(() => {
+		if (statusUpdateMetadata === "succeeded") {
+			dispatch(addNotification({
+				type: "info",
+				key: "METADATA_SAVED",
+				duration: 3,
+				parameter: undefined,
+				context: NOTIFICATION_CONTEXT,
+			}));
+		}
+		if (statusUpdateMetadata === "failed") {
+			dispatch(addNotification({
+				type: "warning",
+				key: "METADATA_NOT_SAVED",
+				duration: 3,
+				parameter: undefined,
+				context: NOTIFICATION_CONTEXT,
+			}));
+		}
+	}, [dispatch, statusUpdateMetadata]);
+
 	const handleSubmit = (values: { [key: string]: any }, catalog: MetadataCatalog) => {
 		dispatch(updateResource({id: resourceId, values, catalog}));
-		dispatch(addNotification({
-			type: "info",
-			key: "METADATA_SAVED",
-			duration: 3,
-			parameter: undefined,
-			context: NOTIFICATION_CONTEXT,
-		}));
 	};
 
 	// set current values of metadata fields as initial values
