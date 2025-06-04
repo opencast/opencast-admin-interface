@@ -30,6 +30,7 @@ import { handleTobiraError } from './shared/tobiraErrors';
  */
 export type TobiraData = {
 	baseURL: string,
+	id: string,
 	hostPages: TobiraPage[],
 };
 
@@ -91,6 +92,7 @@ const initialState: SeriesDetailsState = {
 	tobiraTab: "main",
 	tobiraData: {
 		baseURL: "",
+		id: "",
 		hostPages: [],
 	},
 };
