@@ -24,7 +24,7 @@ const EventsPresentersCell = ({
 		let filter = filterMap.find(
 			({ name }) => name === "presentersBibliographic"
 		);
-		if (!!filter) {
+		if (filter) {
 			await dispatch(editFilterValue({filterName: filter.name, value: presenter}));
 			await dispatch(fetchEvents());
 			dispatch(loadEventsIntoTable());

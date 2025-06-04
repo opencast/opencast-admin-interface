@@ -158,7 +158,7 @@ const RenderField = <T extends RequiredFormProps>({
 }) => {
 	// id used for Field and label
 	const uuid = uuidv4();
-	const disabled = !!field.disabled ? field.disabled : false;
+	const disabled = field.disabled ? field.disabled : false;
 
 	const renderField = () => {
 			return(

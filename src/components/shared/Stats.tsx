@@ -37,7 +37,7 @@ const Stats = () => {
 			}
 			let filter = filterMap.find(({ name }) => name === f.name);
 			filterValue = f.value;
-			if (!!filter) {
+			if (filter) {
 				dispatch(editFilterValue({filterName: filter.name, value: filterValue}));
 			}
 		});
@@ -70,7 +70,7 @@ const Stats = () => {
 							<h1>{st.count}</h1>
 							{/* Show the description of the status, if defined,
 								else show name of filter and its value*/}
-							{!!st.description ? (
+							{st.description ? (
 								<span>{t(st.description as ParseKeys)}</span>
 							) : (
 								st.filters.map((filter, key) => (

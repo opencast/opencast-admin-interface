@@ -285,24 +285,24 @@ const getInitialValues = (
 	}
 
 	// Transform additional metadata for source (provided by constant in newEventConfig)
-	if (!!sourceMetadata.UPLOAD) {
+	if (sourceMetadata.UPLOAD) {
 		sourceMetadata.UPLOAD.metadata.forEach((field) => {
 			initialValues[field.id] = field.value;
 		});
 	}
-	if (!!sourceMetadata.SCHEDULE_SINGLE) {
+	if (sourceMetadata.SCHEDULE_SINGLE) {
 		sourceMetadata.SCHEDULE_SINGLE.metadata.forEach((field) => {
 			initialValues[field.id] = field.value;
 		});
 	}
-	if (!!sourceMetadata.SCHEDULE_MULTIPLE) {
+	if (sourceMetadata.SCHEDULE_MULTIPLE) {
 		sourceMetadata.SCHEDULE_MULTIPLE.metadata.forEach((field) => {
 			initialValues[field.id] = field.value;
 		});
 	}
 
 	// Add possible files that can be uploaded in source step
-	if (!!uploadSourceOptions) {
+	if (uploadSourceOptions) {
 		initialValues.uploadAssetsTrack = [];
 		// Sort by displayOrder
 		uploadSourceOptions = uploadSourceOptions.slice().sort((a, b) => a.displayOrder - b.displayOrder)
