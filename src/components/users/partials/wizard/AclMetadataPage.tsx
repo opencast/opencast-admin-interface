@@ -11,7 +11,7 @@ import ModalContentTable from "../../../shared/modals/ModalContentTable";
 const AclMetadataPage = <T, >({
 	formik,
 	nextPage,
-	isEdit
+	isEdit,
 }: {
 	formik: FormikProps<T>,
 	nextPage?: (values: T) => void,
@@ -40,7 +40,7 @@ const AclMetadataPage = <T, >({
 													tabIndex={1}
 													autoFocus={!isEdit}
 													placeholder={t(
-														"USERS.ACLS.NEW.METADATA.NAME.PLACEHOLDER"
+														"USERS.ACLS.NEW.METADATA.NAME.PLACEHOLDER",
 													)}
 												/>
 											</td>

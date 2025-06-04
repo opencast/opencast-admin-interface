@@ -1,6 +1,6 @@
-import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios';
-import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { PayloadAction, SerializedError, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { createAppAsyncThunk } from "../createAsyncThunkWithTypes";
 
 /**
  * This file contains redux reducer for actions affecting the state of workflows
@@ -34,7 +34,7 @@ export type Workflow = {
 }
 
 type WorkflowState = {
-	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	status: "uninitialized" | "loading" | "succeeded" | "failed",
 	error: SerializedError | null,
 	defaultWorkflowId: string,
 	workflows: Workflow[],
@@ -42,14 +42,14 @@ type WorkflowState = {
 
 // Initial state of workflows in redux store
 const initialState: WorkflowState = {
-	status: 'uninitialized',
+	status: "uninitialized",
 	error: null,
 	defaultWorkflowId: "",
 	workflows: [],
 };
 
 // fetch workflow definitions from server
-export const fetchWorkflowDef = createAppAsyncThunk('workflow/fetchWorkflowDef', async (type: string) => {
+export const fetchWorkflowDef = createAppAsyncThunk("workflow/fetchWorkflowDef", async (type: string) => {
 	let urlParams;
 
 	switch (type) {
@@ -88,7 +88,7 @@ export const fetchWorkflowDef = createAppAsyncThunk('workflow/fetchWorkflowDef',
 			return {
 				...workflow,
 				configuration_panel_json: JSON.parse(
-					workflow.configuration_panel_json as string
+					workflow.configuration_panel_json as string,
 				),
 			};
 		} else {
@@ -105,14 +105,14 @@ export const fetchWorkflowDef = createAppAsyncThunk('workflow/fetchWorkflowDef',
 });
 
 const workflowSlice = createSlice({
-	name: 'workflow',
+	name: "workflow",
 	initialState,
 	reducers: {},
 	// These are used for thunks
 	extraReducers: builder => {
 		builder
-			.addCase(fetchWorkflowDef.pending, (state) => {
-				state.status = 'loading';
+			.addCase(fetchWorkflowDef.pending, state => {
+				state.status = "loading";
 			})
 			// Pass the generated action creators to `.addCase()`
 			.addCase(fetchWorkflowDef.fulfilled, (state, action: PayloadAction<{
@@ -120,16 +120,16 @@ const workflowSlice = createSlice({
 				workflows: WorkflowState["workflows"],
 			}>) => {
 				// Same "mutating" update syntax thanks to Immer
-				state.status = 'succeeded';
+				state.status = "succeeded";
 				const acls = action.payload;
 				state.defaultWorkflowId = acls.defaultWorkflowId;
 				state.workflows = acls.workflows;
 			})
 			.addCase(fetchWorkflowDef.rejected, (state, action) => {
-				state.status = 'failed';
+				state.status = "failed";
 				state.error = action.error;
 			});
-	}
+	},
 });
 
 // export const {} = workflowSlice.actions;

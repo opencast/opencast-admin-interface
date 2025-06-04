@@ -23,7 +23,7 @@ const NewAclWizard = ({
 	const initialValues = {
 		...initialFormValuesNewAcl,
 		aclTemplate: "",
-	}
+	};
 
 	const {
 		snapshot,
@@ -69,10 +69,10 @@ const NewAclWizard = ({
 			<Formik
 				initialValues={snapshot}
 				validationSchema={currentValidationSchema}
-				onSubmit={(values) => handleSubmit(values)}
+				onSubmit={values => handleSubmit(values)}
 			>
 				{/* Render wizard pages depending on current value of page variable */}
-				{(formik) => {
+				{formik => {
 					// eslint-disable-next-line react-hooks/rules-of-hooks
 					useEffect(() => {
 						formik.validateForm();

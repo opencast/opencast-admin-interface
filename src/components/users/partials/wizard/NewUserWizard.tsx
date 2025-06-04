@@ -52,7 +52,7 @@ const NewUserWizard = ({
 			email: values.email,
 			password: values.password,
 			roles: values.assignedRoles,
-		}
+		};
 		const response = dispatch(postNewUser(newValues));
 		console.info(response);
 		close();
@@ -81,10 +81,10 @@ const NewUserWizard = ({
 			<Formik
 				initialValues={initialFormValuesNewUser}
 				validationSchema={NewUserSchema(usernames)}
-				onSubmit={(values) => handleSubmit(values)}
+				onSubmit={values => handleSubmit(values)}
 			>
 				{/* Render wizard tabs depending on current value of tab variable */}
-				{(formik) => {
+				{formik => {
 					// eslint-disable-next-line react-hooks/rules-of-hooks
 					useEffect(() => {
 						formik.validateForm();

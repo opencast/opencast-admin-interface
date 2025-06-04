@@ -35,7 +35,7 @@ export type Registration = {
 
 // post request for adopter information
 export const postRegistration = async (
-	values: Registration
+	values: Registration,
 ) => {
 	// build body
 	let body = new URLSearchParams();

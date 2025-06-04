@@ -52,7 +52,7 @@ const TableActionDropdown = ({
 	return (
 		<div
 			className={cn("drop-down-container", { disabled: disabled })}
-			onClick={(e) => handleActionMenu(e)}
+			onClick={e => handleActionMenu(e)}
 			ref={containerAction}
 		>
 			<span>{t("BULK_ACTIONS.CAPTION")}</span>
@@ -63,12 +63,12 @@ const TableActionDropdown = ({
 						<Action
 							key={key}
 							{...action}
-						/>
+						/>,
 					)}
 				</ul>
 			)}
 		</div>
-	)
+	);
 };
 
 const Action = ({
@@ -85,14 +85,14 @@ const Action = ({
 
 	return (
 		!!handleOnClick &&
-		accessRole.every((accessRole) => hasAccess(accessRole, user)) && (
+		accessRole.every(accessRole => hasAccess(accessRole, user)) && (
 			<li>
 				<ButtonLikeAnchor onClick={handleOnClick}>
 					{t(text)}
 				</ButtonLikeAnchor>
 			</li>
 		)
-	)
-}
+	);
+};
 
 export default TableActionDropdown;

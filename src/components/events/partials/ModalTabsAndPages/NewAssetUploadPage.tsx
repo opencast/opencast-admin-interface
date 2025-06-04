@@ -20,7 +20,7 @@ interface RequiredFormProps {
 const NewAssetUploadPage = <T extends RequiredFormProps>({
 	formik,
 	nextPage,
-	previousPage
+	previousPage,
 }: {
 	formik: FormikProps<T>,
 	nextPage: (values: T) => void,
@@ -38,7 +38,7 @@ const NewAssetUploadPage = <T extends RequiredFormProps>({
 				formik.setFieldValue(assetId, e.target.files[0]);
 			}
 		} else {
-			console.warn("File event did not contain any files")
+			console.warn("File event did not contain any files");
 		}
 	};
 
@@ -69,7 +69,7 @@ const NewAssetUploadPage = <T extends RequiredFormProps>({
 														id={asset.id}
 														className="blue-btn file-select-btn"
 														accept={asset.accept}
-														onChange={(e) => handleChange(e, asset.id)}
+														onChange={e => handleChange(e, asset.id)}
 														type="file"
 														tabIndex={0}
 													/>

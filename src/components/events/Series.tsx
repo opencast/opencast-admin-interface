@@ -51,7 +51,7 @@ const Series = () => {
 		// Clear table of previous data
 		dispatch(resetTableProperties());
 
-		dispatch(fetchFilters("series"))
+		dispatch(fetchFilters("series"));
 
 		// Reset text filer
 		dispatch(editTextFilter(""));

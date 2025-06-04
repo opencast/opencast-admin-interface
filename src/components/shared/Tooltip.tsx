@@ -59,7 +59,7 @@ export const Tooltip = (
 			placement={placement}
 			ref={areaRef}
 			onMouseOut={() => (positionRef.current = { x: -9999, y: -9999 })}
-			onMouseMove={(event) => (positionRef.current = { x: event.clientX, y: event.clientY })}
+			onMouseMove={event => (positionRef.current = { x: event.clientX, y: event.clientY })}
 			PopperProps={{
 				anchorEl: {
 					getBoundingClientRect,

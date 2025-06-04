@@ -7,7 +7,7 @@ import ModalContentTable from "../../../shared/modals/ModalContentTable";
  * This component renders the usage of a theme in the theme details modal
  */
 const UsagePage = ({
-	themeUsage
+	themeUsage,
 }: {
 	themeUsage: Usage
 }) => {
