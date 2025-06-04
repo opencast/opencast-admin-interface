@@ -52,15 +52,27 @@ const DetailsMetadataTab = ({
 
 	const user = useAppSelector(state => getUserInformation(state));
 
-	const handleSubmit = (values: { [key: string]: any }, catalog: MetadataCatalog) => {
-		dispatch(updateResource({id: resourceId, values, catalog}));
-		dispatch(addNotification({
-			type: "info",
-			key: "METADATA_SAVED",
-			duration: 3,
-			parameter: undefined,
-			context: NOTIFICATION_CONTEXT,
-		}));
+	const handleSubmit = async (values: { [key: string]: any }, catalog: MetadataCatalog) => {
+		dispatch(updateResource({id: resourceId, values, catalog}))
+			.unwrap()
+			.then(() => {
+				dispatch(addNotification({
+					type: "info",
+					key: "METADATA_SAVED",
+					duration: 3,
+					parameter: undefined,
+					context: NOTIFICATION_CONTEXT,
+				}));
+			})
+			.catch(() => {
+				dispatch(addNotification({
+					type: "warning",
+					key: "METADATA_NOT_SAVED",
+					duration: 3,
+					parameter: undefined,
+					context: NOTIFICATION_CONTEXT,
+				}));
+			})
 	};
 
 	// set current values of metadata fields as initial values
