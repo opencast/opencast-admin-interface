@@ -39,8 +39,6 @@ function App() {
 	return (
 		<HashRouter>
 			<Routes>
-				<Route path={"/"} element={<Events />} />
-
 				<Route path={"/events/events"} element={<Events />} />
 
 				<Route path={"/events/series"} element={<Series />} />
