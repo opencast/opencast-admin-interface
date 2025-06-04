@@ -26,8 +26,6 @@ import {
 	getModalPage,
 	getEventDetailsTobiraDataError,
 	getEventDetailsTobiraStatus,
-	getUpdateMetadataStatus,
-	getUpdateExtendedMetadataStatus,
 } from "../../../../selectors/eventDetailsSelectors";
 import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import EventDetailsStatisticsTab from "../ModalTabsAndPages/EventDetailsStatisticsTab";
@@ -245,7 +243,6 @@ const EventDetails = ({
 						resourceId={eventId}
 						metadata={[metadata]}
 						updateResource={updateMetadata}
-						getUpdateMetadataStatus={getUpdateMetadataStatus}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
 						formikRef={formikRef}
 						header={tabs[page].bodyHeaderTranslation}
@@ -256,7 +253,6 @@ const EventDetails = ({
 						resourceId={eventId}
 						metadata={extendedMetadata}
 						updateResource={updateExtendedMetadata}
-						getUpdateMetadataStatus={getUpdateExtendedMetadataStatus}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
 						formikRef={formikRef}
 					/>

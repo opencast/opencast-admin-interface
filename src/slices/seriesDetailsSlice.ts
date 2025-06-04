@@ -47,9 +47,7 @@ type SeriesDetailsState = {
 	errorStatisticsValue: SerializedError | null,
 	statusTobiraData: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
 	errorTobiraData: SerializedError | null,
-	statusUpdateMetadata: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
-	statusUpdateExtendedMetadata: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
-	metadata: MetadataCatalog,
+  	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	acl: TransformedAcl[],
 	policyTemplateId: number,
@@ -78,8 +76,6 @@ const initialState: SeriesDetailsState = {
 	errorStatisticsValue: null,
 	statusTobiraData: 'uninitialized',
 	errorTobiraData: null,
-	statusUpdateMetadata: 'uninitialized',
-	statusUpdateExtendedMetadata: 'uninitialized',
 	metadata: {
 		title: "",
 		flavor: "",
@@ -623,24 +619,6 @@ const seriesDetailsSlice = createSlice({
 			.addCase(fetchSeriesStatisticsValueUpdate.rejected, (state, action) => {
 				state.statusStatisticsValue = 'failed';
 				state.errorStatisticsValue = action.error;
-			})
-			.addCase(updateSeriesMetadata.pending, (state, action) => {
-				state.statusUpdateMetadata = 'loading';
-			})
-			.addCase(updateSeriesMetadata.fulfilled, (state, action) => {
-				state.statusUpdateMetadata = 'succeeded';
-			})
-			.addCase(updateSeriesMetadata.rejected, (state, action) => {
-				state.statusUpdateMetadata = 'failed';
-			})
-			.addCase(updateExtendedSeriesMetadata.pending, (state, action) => {
-				state.statusUpdateMetadata = 'loading';
-			})
-			.addCase(updateExtendedSeriesMetadata.fulfilled, (state, action) => {
-				state.statusUpdateMetadata = 'succeeded';
-			})
-			.addCase(updateExtendedSeriesMetadata.rejected, (state, action) => {
-				state.statusUpdateMetadata = 'failed';
 			})
 	}
 });

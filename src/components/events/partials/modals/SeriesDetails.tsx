@@ -8,8 +8,6 @@ import {
 	getSeriesDetailsThemeNames,
 	getSeriesDetailsTobiraDataError,
 	getSeriesDetailsTobiraStatus,
-	getSeriesDetailsUpdateExtendedMetadataStatus,
-	getSeriesDetailsUpdateMetadataStatus,
 	hasStatistics as seriesHasStatistics,
 } from "../../../../selectors/seriesDetailsSelectors";
 import { getOrgProperties, getUserInformation } from "../../../../selectors/userInfoSelectors";
@@ -137,7 +135,6 @@ const SeriesDetails = ({
 						resourceId={seriesId}
 						metadata={[metadataFields]}
 						updateResource={updateSeriesMetadata}
-						getUpdateMetadataStatus={getSeriesDetailsUpdateMetadataStatus}
 						editAccessRole="ROLE_UI_SERIES_DETAILS_METADATA_EDIT"
 						header={tabs[page].tabNameTranslation}
 					/>
@@ -147,7 +144,6 @@ const SeriesDetails = ({
 						resourceId={seriesId}
 						metadata={extendedMetadata}
 						updateResource={updateExtendedSeriesMetadata}
-						getUpdateMetadataStatus={getSeriesDetailsUpdateExtendedMetadataStatus}
 						editAccessRole="ROLE_UI_SERIES_DETAILS_METADATA_EDIT"
 					/>
 				)}
