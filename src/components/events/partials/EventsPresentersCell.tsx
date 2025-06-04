@@ -21,7 +21,7 @@ const EventsPresentersCell = ({
 
 	// Filter with value of current cell
 	const addFilter = async (presenter: string) => {
-		let filter = filterMap.find(
+		const filter = filterMap.find(
 			({ name }) => name === "presentersBibliographic"
 		);
 		if (!!filter) {

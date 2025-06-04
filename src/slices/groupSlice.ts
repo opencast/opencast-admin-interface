@@ -50,7 +50,7 @@ const initialState: GroupState = {
 // fetch groups from server
 export const fetchGroups = createAppAsyncThunk('groups/fetchGroups', async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state, "groups");
+	const params = getURLParams(state, "groups");
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -61,7 +61,7 @@ export const fetchGroups = createAppAsyncThunk('groups/fetchGroups', async (_, {
 // post new group to backend
 export const postNewGroup = createAppAsyncThunk('groups/postNewGroup', async (values: typeof initialFormValuesNewGroup, {dispatch}) => {
 	// get URL params used for post request
-	let data = buildGroupBody(values);
+	const data = buildGroupBody(values);
 
 	// POST request
 	axios

@@ -53,7 +53,7 @@ const Acls = () => {
 		loadAcls();
 
 		// Fetch Acls every minute
-		let fetchAclInterval = setInterval(loadAcls, 5000);
+		const fetchAclInterval = setInterval(loadAcls, 5000);
 
 		return () => {
 			allowLoadIntoTable = false;
