@@ -33,6 +33,7 @@ const DropDown = <T, >({
 	creatable = false,
 	disabled = false,
 	menuIsOpen = undefined,
+	menuPlacement = "auto",
 	handleMenuIsOpen = undefined,
 	customCSS,
 }: {
@@ -122,7 +123,7 @@ const DropDown = <T, >({
 
 
   let commonProps: Props = {
-	  	menuPlacement: 'auto',
+	  	menuPlacement: menuPlacement ?? 'auto',
 		tabIndex: tabIndex,
 		theme: (theme) => (dropDownSpacingTheme(theme)),
 		styles: style,
