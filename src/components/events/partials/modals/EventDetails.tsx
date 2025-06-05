@@ -100,7 +100,6 @@ const EventDetails = ({
 						type: "warning",
 						key: "ACTIVE_TRANSACTION",
 						duration: -1,
-						parameter: undefined,
 						context: NOTIFICATION_CONTEXT,
 						noDuplicates: true
 					})
