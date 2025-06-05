@@ -52,7 +52,7 @@ const DetailsMetadataTab = ({
 
 	const user = useAppSelector(state => getUserInformation(state));
 
-	const handleSubmit = async (values: { [key: string]: any }, catalog: MetadataCatalog) => {
+	const handleSubmit = (values: { [key: string]: any }, catalog: MetadataCatalog) => {
 		dispatch(updateResource({id: resourceId, values, catalog}))
 			.unwrap()
 			.then(() => {
@@ -60,7 +60,6 @@ const DetailsMetadataTab = ({
 					type: "info",
 					key: "METADATA_SAVED",
 					duration: 3,
-					parameter: undefined,
 					context: NOTIFICATION_CONTEXT,
 				}));
 			})
@@ -69,7 +68,6 @@ const DetailsMetadataTab = ({
 					type: "warning",
 					key: "METADATA_NOT_SAVED",
 					duration: 3,
-					parameter: undefined,
 					context: NOTIFICATION_CONTEXT,
 				}));
 			})
