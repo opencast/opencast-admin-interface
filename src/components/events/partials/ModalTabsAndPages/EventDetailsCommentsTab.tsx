@@ -249,6 +249,7 @@ const EventDetailsCommentsTab = ({
 										text={t(commentReason as ParseKeys)}
 										options={Object.entries(commentReasons).map(([key, value]) => ({ label: value, value: key }))}
 										required={true}
+										menuPlacement="top"
 										handleChange={(element) => {
 											if (element) {
 												setCommentReason(element.value)
