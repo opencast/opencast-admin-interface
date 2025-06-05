@@ -94,7 +94,6 @@ export const checkSchedulingConflicts = async (
 				type: "error",
 				key: "CONFLICT_END_BEFORE_START",
 				duration: -1,
-				parameter: undefined,
 				context: NOTIFICATION_CONTEXT
 			}));
 			return false;

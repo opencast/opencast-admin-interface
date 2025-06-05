@@ -905,7 +905,6 @@ export const checkConflicts = (values: {
 					type: "error",
 					key: "CONFLICT_ALREADY_ENDED",
 					duration: -1,
-					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -923,7 +922,6 @@ export const checkConflicts = (values: {
 					type: "error",
 					key: "CONFLICT_END_BEFORE_START",
 					duration: -1,
-					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -954,7 +952,6 @@ export const checkConflicts = (values: {
 					type: "error",
 					key: "CONFLICT_DETECTED",
 					duration: -1,
-					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -1070,7 +1067,6 @@ export const checkForSchedulingConflicts = (events: EditedEvents[]) => async (di
 						type: "error",
 						key: "CONFLICT_BULK_DETECTED",
 						duration: -1,
-						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					})
 				);
