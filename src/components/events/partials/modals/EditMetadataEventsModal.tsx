@@ -33,9 +33,8 @@ const EditMetadataEventsModal = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const selectedRows = useAppSelector(state => getSelectedRows(state));
+	const selectedEvents = useAppSelector(state => getSelectedRows(state));
 
-	const [selectedEvents] = useState(selectedRows);
 	const [metadataFields, setMetadataFields] = useState<{
 		merged: string[],
 		mergedMetadata: MetadataFieldSelected[],
