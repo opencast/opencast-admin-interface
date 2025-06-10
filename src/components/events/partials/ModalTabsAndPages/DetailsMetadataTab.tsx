@@ -154,18 +154,17 @@ const DetailsMetadataTab = ({
 										</table>
 									</div>
 
-							{formik.dirty && (
-								<>
-									{/* Render buttons for updating metadata */}
-									<WizardNavigationButtons
-										formik={formik}
-										customValidation={!checkValidity(formik)}
-										previousPage={() => formik.resetForm()}
-										createTranslationString="SAVE"
-										cancelTranslationString="CANCEL"
-										isLast
-									/>
-
+									{formik.dirty && (
+										<>
+											{/* Render buttons for updating metadata */}
+											<WizardNavigationButtons
+												formik={formik}
+												customValidation={!checkValidity(formik)}
+												previousPage={() => formik.resetForm()}
+												createTranslationString="SAVE"
+												cancelTranslationString="CANCEL"
+												isLast
+											/>
 										</>
 									)}
 								</div>
