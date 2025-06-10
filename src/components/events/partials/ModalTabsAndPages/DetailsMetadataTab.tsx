@@ -85,10 +85,10 @@ const DetailsMetadataTab = ({
 				//iterate through metadata catalogs
 				!!metadata &&
 					metadata.length > 0 &&
-					metadata.map((catalog, key) => (
+					metadata.map((catalog) => (
 						// initialize form
 						<Formik<InitialValues>
-							key={key}
+							key={catalog.flavor}
 							enableReinitialize
 							initialValues={getInitialValues(catalog)}
 							onSubmit={(values) => handleSubmit(values, catalog)}
@@ -96,7 +96,7 @@ const DetailsMetadataTab = ({
 						>
 							{(formik) => (
 								/* Render table for each metadata catalog */
-								<div className="obj tbl-details" key={key}>
+								<div className="obj tbl-details">
 									<header>
 										<span>{t(header ? header : catalog.title as ParseKeys)}</span>
 									</header>
@@ -106,7 +106,7 @@ const DetailsMetadataTab = ({
 												{/* Render table row for each metadata field depending on type */}
 												{!!catalog.fields &&
 													catalog.fields.map((field, index) => (
-														<tr key={index}>
+														<tr key={field.id}>
 															<td>
 																<span>{t(field.label as ParseKeys)}</span>
 																{field.required && (
