@@ -40,7 +40,7 @@ const NavigationButtons = ({
 					className={cn(submitClassName, submitActiveClassName)}
 					disabled={disabled}
 					onClick={() => {
-						!!nextPage && nextPage()
+						nextPage?.()
 					}}
 					tabIndex={100}
 				>
@@ -52,7 +52,7 @@ const NavigationButtons = ({
 					className={cn(submitClassName, submitActiveClassName)}
 					disabled={disabled}
 					onClick={() => {
-						!!nextPage && nextPage();
+						nextPage?.();
 					}}
 					tabIndex={100}
 				>
@@ -63,7 +63,7 @@ const NavigationButtons = ({
 				<button
 					className="cancel"
 					onClick={() => {
-						!!previousPage && previousPage()
+						previousPage?.()
 					}}
 					tabIndex={101}
 				>
