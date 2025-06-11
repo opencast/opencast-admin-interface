@@ -12,7 +12,6 @@ concurrency:
 
 jobs:
   detect:
-    if: github.repository_owner == 'opencast'
     runs-on: ubuntu-latest
     outputs:
       server: ${{ steps.test-server.outputs.server }}
