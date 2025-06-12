@@ -31,6 +31,7 @@ import DropDown from "./DropDown";
 import { AsyncThunk } from "@reduxjs/toolkit";
 import ButtonLikeAnchor from "./ButtonLikeAnchor";
 import { ParseKeys } from "i18next";
+import { Resource } from "../../slices/tableSlice";
 
 /**
  * This component renders the table filters in the upper right corner of the table
@@ -42,7 +43,7 @@ const TableFilters = ({
 }: {
 	loadResource: AsyncThunk<any, void, any>,
 	loadResourceIntoTable: () => AppThunk,
-	resource: string,
+	resource: Resource,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
