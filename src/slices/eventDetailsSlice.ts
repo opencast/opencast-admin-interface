@@ -1007,7 +1007,7 @@ export const fetchSchedulingInfo = createAppAsyncThunk('eventDetails/fetchSchedu
 		const agent = captureAgents.find(
 			(agent) => agent.id === schedulingResponse.agentId
 		);
-		if (!!agent) {
+		if (agent) {
 			let inputMethods = [];
 
 			if (
@@ -1082,7 +1082,7 @@ export const saveSchedulingInfo = createAppAsyncThunk('eventDetails/saveScheduli
 	};
 
 	const agent = captureAgents.find((agent) => agent.id === values.captureAgent);
-	if (!!agent) {
+	if (agent) {
 		device = {
 			...agent,
 			inputMethods: values.inputs,
@@ -1258,7 +1258,7 @@ export const fetchWorkflows = createAppAsyncThunk('eventDetails/fetchWorkflows',
 	const workflowsData = await data.data;
 	let workflows: Workflow;
 
-	if (!!workflowsData.results) {
+	if (workflowsData.results) {
 		workflows = {
 			entries: workflowsData.results,
 			scheduling: false,
@@ -1373,7 +1373,7 @@ export const deleteWorkflow = createAppAsyncThunk('eventDetails/deleteWorkflow',
 			const state = getState();
 			const workflows = getWorkflows(state);
 
-			if (!!workflows.entries) {
+			if (workflows.entries) {
 				return workflows.entries.filter((wf) => wf.id !== workflowId)
 			} else {
 				return workflows.entries;
@@ -1607,7 +1607,7 @@ export const updateAssets = createAppAsyncThunk('eventDetails/updateAssets', asy
 	let assetFlavors = "";
 
 	uploadAssetOptions.forEach((option) => {
-		if (!!values[option.id]) {
+		if (values[option.id]) {
 			formData.append(option.id + ".0", values[option.id]);
 			assets.options = assets.options.concat(option);
 			const uploadAssetFlavor = [option.flavorType, option.flavorSubType].join("/");

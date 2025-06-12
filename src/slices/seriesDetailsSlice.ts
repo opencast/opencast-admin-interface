@@ -126,7 +126,7 @@ export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSe
 	const res = await axios.get(`/admin-ng/series/${id}/access.json`);
 	const response = res.data;
 
-	if (!!response.series_access.locked) {
+	if (response.series_access.locked) {
 		dispatch(
 			addNotification({
 				type: "warning",

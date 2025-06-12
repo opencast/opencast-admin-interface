@@ -49,7 +49,7 @@ const EventDetailsPublicationTab = ({
 										<li key={key}>
 											<div className="v-container">
 												<span className="icon-container">
-													{!!publication.icon ? (
+													{publication.icon ? (
 														<i
 															className="custom-icon"
 															style={{

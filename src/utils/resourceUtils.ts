@@ -47,7 +47,7 @@ export const getURLParams = (
 	}
 	// transform filters for use as URL param
 	for (const [key, _] of filterMap.entries()) {
-		if (!!filterMap[key].value) {
+		if (filterMap[key].value) {
 			filters.push([filterMap[key].name, filterMap[key].value.toString()]);
 		}
 	}
@@ -71,7 +71,7 @@ export const getURLParams = (
 		};
 	}
 
-	if (!!getTableSortingForResource(state, resource)) {
+	if (getTableSortingForResource(state, resource)) {
 		params = {
 			...params,
 			sort: getTableSortingForResource(state, resource)
@@ -225,7 +225,7 @@ export const prepareMetadataFieldsForPost = (
 				value: values[catalogPrefix + info.id],
 				$$hashKey: "object:123",
 			};
-			if (!!info.translatable) {
+			if (info.translatable) {
 				fieldValue = {
 					...fieldValue,
 					translatable: info.translatable,
@@ -249,7 +249,7 @@ export const prepareMetadataFieldsForPost = (
 // returns the name for a field value from the collection
 export const getMetadataCollectionFieldName = (metadataField: { collection?: { [key: string]: unknown }[] }, field: { value: unknown }, t: TFunction) => {
 	try {
-		if (!!metadataField.collection) {
+		if (metadataField.collection) {
 			const collectionField = metadataField.collection.find(
 				(element) => element.value === field.value
 			);
