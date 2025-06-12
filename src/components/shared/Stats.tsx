@@ -38,7 +38,7 @@ const Stats = () => {
 			let filter = filterMap.find(({ name }) => name === f.name);
 			filterValue = f.value;
 			if (!!filter) {
-				dispatch(editFilterValue({filterName: filter.name, value: filterValue}));
+				dispatch(editFilterValue({filterName: filter.name, value: filterValue, resource: "events"}));
 			}
 		});
 		await dispatch(fetchEvents());
