@@ -49,9 +49,9 @@ const StartTaskWorkflowPage = <T extends RequiredFormProps>({
 	}, [workflowDef]);
 
 	const setDefaultValues = (value: string) => {
-		let workflowId = value;
+		const workflowId = value;
 		// fill values with default configuration of chosen workflow
-		let defaultConfiguration = setDefaultConfig(workflowDef, workflowId);
+		const defaultConfiguration = setDefaultConfig(workflowDef, workflowId);
 
 		// set default configuration in formik
 		formik.setFieldValue("configuration", defaultConfiguration);

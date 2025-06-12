@@ -53,7 +53,7 @@ const Services = () => {
 		loadServices();
 
 		// Fetch services every minute
-		let fetchServicesInterval = setInterval(() => loadServices(), 5000);
+		const fetchServicesInterval = setInterval(() => loadServices(), 5000);
 
 		return () => {
 			allowLoadIntoTable = false;

@@ -60,7 +60,7 @@ export const fetchRecordings = createAppAsyncThunk('recordings/fetchRecordings',
 			);
 		} else {
 			const state = getState();
-			let params = getURLParams(state, "recordings");
+			const params = getURLParams(state, "recordings");
 
 		// /agents.json?filter={filter}&limit=100&offset=0&inputs=false&sort={sort}
 		res = await axios.get("/admin-ng/capture-agents/agents.json", {
@@ -70,7 +70,7 @@ export const fetchRecordings = createAppAsyncThunk('recordings/fetchRecordings',
 
 	const recordings = await res.data;
 
-	let captureAgents = [];
+	const captureAgents = [];
 
 	for (const agent of recordings.results) {
 		const transformedAgent = {
