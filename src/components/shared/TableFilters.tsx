@@ -31,6 +31,7 @@ import DropDown from "./DropDown";
 import { AsyncThunk } from "@reduxjs/toolkit";
 import ButtonLikeAnchor from "./ButtonLikeAnchor";
 import { ParseKeys } from "i18next";
+import { Resource } from "../../slices/tableSlice";
 
 /**
  * This component renders the table filters in the upper right corner of the table
@@ -42,7 +43,7 @@ const TableFilters = ({
 }: {
 	loadResource: AsyncThunk<any, void, any>,
 	loadResourceIntoTable: () => AppThunk,
-	resource: string,
+	resource: Resource,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -91,7 +92,7 @@ const TableFilters = ({
 			setEndDate(undefined);
 		}
 
-		dispatch(editFilterValue({filterName: filter.name, value: ""}));
+		dispatch(editFilterValue({filterName: filter.name, value: "", resource}));
 
 		// Reload resources when filter is removed
 		await dispatch(loadResource());
@@ -116,7 +117,7 @@ const TableFilters = ({
 		if (name === "secondFilter") {
 			let filter = filterMap.find(({ name }) => name === selectedFilter);
 			if (!!filter) {
-				dispatch(editFilterValue({filterName: filter.name, value: value}));
+				dispatch(editFilterValue({filterName: filter.name, value: value, resource}));
 				setFilterSelector(false);
 				dispatch(removeSelectedFilter());
 				dispatch(removeSecondFilter());
@@ -195,7 +196,8 @@ const TableFilters = ({
 			if (filter) {
 				dispatch(editFilterValue({
 					filterName: filter.name,
-					value: start.toISOString() + "/" + end.toISOString()
+					value: start.toISOString() + "/" + end.toISOString(),
+					resource
 				}));
 				setFilterSelector(false);
 				dispatch(removeSelectedFilter());

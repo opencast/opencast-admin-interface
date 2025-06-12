@@ -3,6 +3,7 @@ import axios from 'axios';
 import { relativeDateSpanToFilterValue } from '../utils/dateUtils';
 import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
 import { FilterProfile } from './tableFilterProfilesSlice';
+import { Resource } from './tableSlice';
 
 /**
  * This file contains redux reducer for actions affecting the state of table filters
@@ -174,7 +175,8 @@ export const setSpecificEventFilter = createAppAsyncThunk('tableFilters/setSpeci
 	if (!!filterToChange) {
 		await dispatch(editFilterValue({
 			filterName: filterToChange.name,
-			value: filterValue
+			value: filterValue,
+			resource: "events"
 		}));
 	}
 });
@@ -195,7 +197,8 @@ export const setSpecificServiceFilter = createAppAsyncThunk('tableFilters/setSpe
 	if (!!filterToChange) {
 		await dispatch(editFilterValue({
 			filterName: filterToChange.name,
-			value: filterValue
+			value: filterValue,
+			resource: "services"
 		}));
 	}
 });
@@ -290,10 +293,11 @@ const tableFilterSlice = createSlice({
 		editFilterValue(state, action: PayloadAction<{
 			filterName: TableFilterState["data"][0]["name"],
 			value: TableFilterState["data"][0]["value"],
+			resource: Resource
 		}>) {
-			const { filterName, value } = action.payload;
+			const { filterName, value, resource } = action.payload;
 			state.data = state.data.map((filter) => {
-				return filter.name === filterName
+				return filter.name === filterName && filter.resource === resource
 					? { ...filter, value: value }
 					: filter;
 			})
