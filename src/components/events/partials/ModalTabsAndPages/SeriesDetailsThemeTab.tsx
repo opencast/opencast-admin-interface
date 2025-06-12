@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { Formik, FormikProps } from "formik";
 import _ from "lodash";

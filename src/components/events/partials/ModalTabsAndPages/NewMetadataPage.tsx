@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { Field } from "../../../shared/Field";
 import RenderField from "../../../shared/wizard/RenderField";

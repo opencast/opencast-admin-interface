@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Group, deleteGroup } from "../../../slices/groupSlice";
 import { fetchGroupDetails } from "../../../slices/groupDetailsSlice";
 import { ActionCellDelete } from "../../shared/ActionCellDelete";

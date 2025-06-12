@@ -1,4 +1,3 @@
-import React from "react";
 import { getFilters } from "../../../selectors/tableFilterSelectors";
 import { editFilterValue } from "../../../slices/tableFilterSlice";
 import { loadEventsIntoTable } from "../../../thunks/tableThunks";

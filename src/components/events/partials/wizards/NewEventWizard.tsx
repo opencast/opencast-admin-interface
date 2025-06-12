@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import NewEventSummary from "./NewEventSummary";
 import NewAssetUploadPage from "../ModalTabsAndPages/NewAssetUploadPage";

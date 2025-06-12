@@ -157,6 +157,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 				{/* Repeat table for each selected event */}
 				{!loading && (
 					<FieldArray name="editedEvents">
+						{/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
 						{({ insert, remove, push }) => (
 							<>
 							{hasAccess(

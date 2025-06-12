@@ -1,4 +1,3 @@
-import React from "react";
 import { Field } from "../../../shared/Field";
 import { FormikProps } from "formik";
 import Notifications from "../../../shared/Notifications";

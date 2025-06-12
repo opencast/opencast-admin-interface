@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { ParseKeys } from "i18next";
