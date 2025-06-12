@@ -8,7 +8,7 @@ import { getTotalUsers } from "../../selectors/userSelectors";
 import {
 	loadUsersIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
+import { fetchFilters } from "../../slices/tableFilterSlice";
 import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
@@ -36,9 +36,6 @@ const Users = () => {
 		dispatch(resetTableProperties());
 
 		dispatch(fetchFilters("users"));
-
-		// Reset text filter
-		dispatch(editTextFilter(""));
 
 		// Load users on mount
 		const loadUsers = async () => {

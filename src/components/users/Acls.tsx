@@ -4,7 +4,7 @@ import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
 import { aclsTemplateMap } from "../../configs/tableConfigs/aclsTableMap";
-import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
+import { fetchFilters } from "../../slices/tableFilterSlice";
 import {
 	loadAclsIntoTable,
 } from "../../thunks/tableThunks";
@@ -36,9 +36,6 @@ const Acls = () => {
 		dispatch(resetTableProperties());
 
 		dispatch(fetchFilters("acls"));
-
-		// Reset text filter
-		dispatch(editTextFilter(""));
 
 		// Load acls on mount
 		const loadAcls = async () => {

@@ -6,7 +6,7 @@ import Notifications from "../shared/Notifications";
 import { recordingsTemplateMap } from "../../configs/tableConfigs/recordingsTableMap";
 import { getTotalRecordings } from "../../selectors/recordingSelectors";
 import { loadRecordingsIntoTable } from "../../thunks/tableThunks";
-import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
+import { fetchFilters } from "../../slices/tableFilterSlice";
 import Header from "../Header";
 import NavBar from "../NavBar";
 import MainView from "../MainView";
@@ -34,9 +34,6 @@ const Recordings = () => {
 		dispatch(resetTableProperties());
 
 		dispatch(fetchFilters("recordings"));
-
-		// Reset text filter
-		dispatch(editTextFilter(""));
 
 		// Load recordings on mount
 		const loadRecordings = async () => {
