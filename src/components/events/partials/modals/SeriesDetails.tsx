@@ -28,6 +28,7 @@ import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
 import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { removeNotificationWizardTobira } from "../../../../slices/notificationSlice";
 import { ParseKeys } from "i18next";
+import { FormikProps } from "formik";
 
 /**
  * This component manages the tabs of the series details modal
@@ -36,10 +37,12 @@ const SeriesDetails = ({
 	seriesId,
 	policyChanged,
 	setPolicyChanged,
+	formikRef,
 }: {
 	seriesId: string
 	policyChanged: boolean
 	setPolicyChanged: (policyChanged: boolean) => void
+	formikRef: React.RefObject<FormikProps<any> | null>
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -137,6 +140,7 @@ const SeriesDetails = ({
 						updateResource={updateSeriesMetadata}
 						editAccessRole="ROLE_UI_SERIES_DETAILS_METADATA_EDIT"
 						header={tabs[page].tabNameTranslation}
+						formikRef={formikRef}
 					/>
 				)}
 				{page === 1 && (
@@ -145,6 +149,7 @@ const SeriesDetails = ({
 						metadata={extendedMetadata}
 						updateResource={updateExtendedSeriesMetadata}
 						editAccessRole="ROLE_UI_SERIES_DETAILS_METADATA_EDIT"
+						formikRef={formikRef}
 					/>
 				)}
 				{page === 2 && (
