@@ -90,7 +90,6 @@ const FileUpload = <T extends RequiredFormProps>({
 					type: "error",
 					key: "NOTIFICATIONS.BUMPER_UPLOAD_ERROR",
 					duration: -1,
-					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				}));
 			});
