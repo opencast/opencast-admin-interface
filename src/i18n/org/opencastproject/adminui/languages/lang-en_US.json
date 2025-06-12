@@ -1176,7 +1176,10 @@
 				"TOOLTIP": {
 					"SERIES": "Filter events for this series",
 					"DETAILS": "Open series details",
-					"DELETE": "Delete series"
+					"DELETE": "Delete series",
+					"CREATION": "Filter for this creation date",
+					"ORGANIZER": "Filter for this organizer",
+					"CONTRIBUTORS": "Filter for this contributor"
 				}
 			},
 			"DETAILS": {
