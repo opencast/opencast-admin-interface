@@ -221,6 +221,7 @@ const EditTableViewModalContent = ({
 								<li>
 									<DragDropContext
 										onDragEnd={onDragEnd}
+										dragHandleUsageInstructions={t("PREFERENCES.TABLE.DRAG_HANDLE_USAGE_INSTRUCTIONS")}
 									>
 										<Droppable droppableId="droppable">
 											{(provided, snapshot) => (
