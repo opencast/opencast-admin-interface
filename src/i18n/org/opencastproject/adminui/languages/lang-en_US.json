@@ -1982,6 +1982,8 @@
 	"TABLE_EDIT": "Edit",
 	"TABLE_NEXT": "Next page",
 	"TABLE_PREVIOUS": "Previous page",
+	"TABLE_CURRENT": "Current page {{pageNumber}}",
+	"TABLE_NUMBERED": "Go to page {{pageNumber}}",
 	"DASHBOARD": {
 		"RUNNING": "Running",
 		"FINISHED": "Finished",
