@@ -242,6 +242,7 @@ const SelectContainer = ({
 								className={cn("submit", {
 									disabled: !markedForAddition.length || !manageable,
 								})}
+								aria-disabled={!markedForAddition.length || !manageable}
 								onClick={() => handleClickAdd()}
 							>
 								{t(`${resource.label}.ADD` as ParseKeys)}
@@ -278,6 +279,7 @@ const SelectContainer = ({
 								className={cn("remove", {
 									disabled: !markedForRemoval.length || !manageable,
 								})}
+								aria-disabled={!markedForRemoval.length || !manageable}
 								onClick={() => handleClickRemove()}
 							>
 								{t(`${resource.label}.REMOVE` as ParseKeys)}

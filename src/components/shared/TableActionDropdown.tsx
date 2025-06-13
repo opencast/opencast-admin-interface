@@ -52,6 +52,7 @@ const TableActionDropdown = ({
 	return (
 		<div
 			className={cn("drop-down-container", { disabled: disabled })}
+			aria-disabled={disabled}
 			onClick={(e) => handleActionMenu(e)}
 			ref={containerAction}
 		>
