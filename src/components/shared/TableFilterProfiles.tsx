@@ -240,12 +240,14 @@ const TableFiltersProfiles = ({
 							<div className="input-container">
 								{/* Buttons for saving and canceling editing */}
 								<div className="btn-container">
+									{/* <button className="cancel">J</button> */}
 									<ButtonLikeAnchor onClick={cancelEditProfile} extraClassName="cancel">
 										{t("CANCEL")}
 									</ButtonLikeAnchor>
 									<ButtonLikeAnchor
 										onClick={saveProfile}
 										extraClassName={cn("save", { disabled: !validName })}
+										aria-disabled={!validName}
 									>
 										{t("SAVE")}
 									</ButtonLikeAnchor>
