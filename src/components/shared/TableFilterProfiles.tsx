@@ -224,6 +224,7 @@ const TableFiltersProfiles = ({
 									value={profileName}
 									onChange={(e) => handleChange(e)}
 									placeholder={t("TABLE_FILTERS.PROFILES.NAME_PLACEHOLDER")}
+									autoFocus={true}
 								/>
 
 								<label>{t("TABLE_FILTERS.PROFILES.DESCRIPTION")}</label>
