@@ -341,14 +341,20 @@ const Table = ({
 					</ButtonLikeAnchor>
 					{directAccessible.map((page, key) =>
 						page.active ? (
-							<ButtonLikeAnchor key={key} extraClassName="active">
+							<ButtonLikeAnchor key={key}
+								extraClassName="active"
+								aria-label={t("TABLE_CURRENT", { pageNumber: page.label })}
+							>
 								{page.label}
 							</ButtonLikeAnchor>
 						) : (
-							<ButtonLikeAnchor key={key} onClick={() => {
-								dispatch(goToPage(page.number));
-								forceDeselectAll();
-							}}>
+							<ButtonLikeAnchor key={key}
+								aria-label={t("TABLE_NUMBERED", { pageNumber: page.label })}
+								onClick={() => {
+									dispatch(goToPage(page.number));
+									forceDeselectAll();
+								}}
+							>
 								{page.label}
 							</ButtonLikeAnchor>
 						)
