@@ -7,6 +7,7 @@ import { renderValidDate } from "../../utils/dateUtils";
 import { IconButton } from "../shared/IconButton";
 import { ParseKeys } from "i18next";
 import { AsyncThunk } from "@reduxjs/toolkit";
+import { Resource } from "../../slices/tableSlice";
 
 /**
  * This component renders the start date cells of events in the table view
@@ -19,7 +20,7 @@ const DateTimeCell = ({
 	loadResourceIntoTable,
 	tooltipText,
 }: {
-	resource: string
+	resource: Resource
 	date: string
 	filterName: string
 	fetchResource: AsyncThunk<any, void, any>
