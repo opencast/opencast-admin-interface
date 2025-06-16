@@ -78,17 +78,17 @@ const DetailsMetadataTab = ({
 	return <ModalContentTable
 		modalBodyChildren={<Notifications context="not_corner" />}
 	>
-		{metadata.map((catalog, key) => (
+		{metadata.map((catalog) => (
 			// initialize form
 			<Formik<InitialValues>
-				key={key}
+				key={catalog.flavor}
 				enableReinitialize
 				initialValues={getInitialValues(catalog)}
 				onSubmit={(values) => handleSubmit(values, catalog)}
 				innerRef={formikRef}
 			>{(formik) => (
 				/* Render table for each metadata catalog */
-				<div className="obj tbl-details" key={key}>
+				<div className="obj tbl-details">
 					<header>
 						<span>{t(header ? header : catalog.title as ParseKeys)}</span>
 					</header>
@@ -97,7 +97,7 @@ const DetailsMetadataTab = ({
 							<tbody>
 								{/* Render table row for each metadata field depending on type */}
 								{catalog.fields.map((field, index) => (
-									<tr key={index}>
+									<tr key={field.id}>
 										<td>
 											<span>{t(field.label as ParseKeys)}</span>
 											{field.required && (

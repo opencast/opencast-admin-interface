@@ -208,7 +208,6 @@ export const checkAcls = (acls: TransformedAcl[]) => async (dispatch: AppDispatc
 				type: "warning",
 				key: "INVALID_ACL_RULES",
 				duration: -1,
-				parameter: undefined,
 				context: NOTIFICATION_CONTEXT_ACCESS
 			})
 		);
@@ -220,7 +219,6 @@ export const checkAcls = (acls: TransformedAcl[]) => async (dispatch: AppDispatc
 				type: "warning",
 				key: "MISSING_ACL_RULES",
 				duration: -1,
-				parameter: undefined,
 				context: NOTIFICATION_CONTEXT_ACCESS
 			})
 		);

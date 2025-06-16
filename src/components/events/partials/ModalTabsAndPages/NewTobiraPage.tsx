@@ -60,7 +60,6 @@ const NewTobiraPage = <T extends TobiraFormProps>({
 					type: type,
 					key: key,
 					duration: -1,
-					parameter: undefined,
 					context: context,
 					noDuplicates: true,
 				}));
