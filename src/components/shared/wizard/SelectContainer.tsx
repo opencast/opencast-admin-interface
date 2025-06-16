@@ -4,6 +4,7 @@ import cn from "classnames";
 import { useField } from "formik";
 import ButtonLikeAnchor from "../ButtonLikeAnchor";
 import { ParseKeys } from "i18next";
+import SearchContainer from "../SearchContainer";
 
 type Item = {
 	name: string
@@ -66,10 +67,6 @@ const SelectContainer = ({
 		setDefaultItems(initialItems);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	const disabledStyle = {
-		backgroundColor: "#eeeff0",
-	};
 
 	const disabledSelectStyle = {
 		backgroundColor: "#eeeff0",
@@ -205,20 +202,13 @@ const SelectContainer = ({
 						</label>
 						{/*Search*/}
 						{resource.searchable && (
-							<div className="search-container">
-								{/* search bar */}
-								<ButtonLikeAnchor extraClassName="clear" onClick={() => clearSearchField()} />
-								<input
-									type="text"
-									id="search"
-									className="search"
-									disabled={!manageable}
-									style={manageable ? {} : disabledStyle}
-									placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
-									onChange={(e) => handleChangeSearch(e.target.value)}
-									value={searchField}
-								/>
-							</div>
+							<SearchContainer
+								value={searchField}
+								handleChange={handleChangeSearch}
+								clearSearchField={clearSearchField}
+								isDisabled={!manageable}
+								style={{ marginTop: "10px" }}
+							/>
 						)}
 						{/*Select with options provided by backend*/}
 						<select
