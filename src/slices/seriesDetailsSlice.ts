@@ -132,7 +132,6 @@ export const fetchSeriesDetailsAcls = createAppAsyncThunk('seriesDetails/fetchSe
 				type: "warning",
 				key: "SERIES_ACL_LOCKED",
 				duration: -1,
-				parameter: undefined,
 				context: NOTIFICATION_CONTEXT,
 				noDuplicates: true
 			})
@@ -260,7 +259,6 @@ export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSerie
 					type: "info",
 					key: "SAVED_ACL_RULES",
 					duration: -1,
-					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -273,7 +271,6 @@ export const updateSeriesAccess = createAppAsyncThunk('seriesDetails/updateSerie
 					type: "error",
 					key: "ACL_NOT_SAVED",
 					duration: -1,
-					parameter: undefined,
 					context: NOTIFICATION_CONTEXT
 				})
 			);
@@ -299,7 +296,6 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
 						type: "warning",
 						key: "SERIES_THEME_REPROCESS_EXISTING_EVENTS",
 						duration: 10,
-						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					})
 				);
@@ -324,7 +320,6 @@ export const updateSeriesTheme = createAppAsyncThunk('seriesDetails/updateSeries
 						type: "warning",
 						key: "SERIES_THEME_REPROCESS_EXISTING_EVENTS",
 						duration: 10,
-						parameter: undefined,
 						context: NOTIFICATION_CONTEXT
 					})
 				);

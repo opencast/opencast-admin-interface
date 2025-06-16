@@ -79,7 +79,6 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 				type: "info",
 				key: "TOBIRA_COPIED_DIRECT_LINK",
 				duration: 3,
-				parameter: undefined,
 				context: NOTIFICATION_CONTEXT_TOBIRA,
 			}));
 		}, function () {
@@ -87,7 +86,6 @@ const DetailsTobiraTab = ({ kind, id }: DetailsTobiraTabProps) => {
 				type: "error",
 				key: "TOBIRA_FAILED_COPYING_DIRECT_LINK",
 				duration: 3,
-				parameter: undefined,
 				context: NOTIFICATION_CONTEXT_TOBIRA,
 			}));
 		});
