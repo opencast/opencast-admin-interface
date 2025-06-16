@@ -75,7 +75,7 @@ const DetailsMetadataTab = ({
 		}
 	};
 
-	return <ModalContentTable
+	return (<ModalContentTable
 		modalBodyChildren={<Notifications context="not_corner" />}
 	>
 		{metadata.map((catalog) => (
@@ -157,7 +157,7 @@ const DetailsMetadataTab = ({
 				</div>
 			)}</Formik>
 		))}
-	</ModalContentTable>;
+	</ModalContentTable>);
 };
 
 export default DetailsMetadataTab;
