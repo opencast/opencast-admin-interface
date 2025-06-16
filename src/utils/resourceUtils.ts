@@ -1,22 +1,22 @@
-import { getFilters, getTextFilter } from "../selectors/tableFilterSelectors";
+import {getFilters, getTextFilter} from "../selectors/tableFilterSelectors";
 import {
 	getPageLimit,
 	getPageOffset,
 	getTableDirectionForResource,
 	getTableSortingForResource,
 } from "../selectors/tableSelectors";
-import { TransformedAcl } from "../slices/aclDetailsSlice";
-import { Acl } from "../slices/aclSlice";
-import { NewUser } from "../slices/userSlice";
-import { Recording } from "../slices/recordingSlice";
-import { UserInfoState } from "../slices/userInfoSlice";
-import { hasAccess, isJson } from "./utils";
-import { RootState } from "../store";
-import { MetadataCatalog, MetadataField } from "../slices/eventSlice";
-import { initialFormValuesNewGroup } from '../configs/modalConfig';
-import { UpdateUser } from '../slices/userDetailsSlice';
-import { ParseKeys, TFunction } from 'i18next';
-import { TableState } from "../slices/tableSlice";
+import {TransformedAcl} from "../slices/aclDetailsSlice";
+import {Acl} from "../slices/aclSlice";
+import {NewUser} from "../slices/userSlice";
+import {Recording} from "../slices/recordingSlice";
+import {UserInfoState} from "../slices/userInfoSlice";
+import {hasAccess, isJson} from "./utils";
+import {RootState} from "../store";
+import {MetadataCatalog, MetadataField} from "../slices/eventSlice";
+import {initialFormValuesNewGroup} from '../configs/modalConfig';
+import {UpdateUser} from '../slices/userDetailsSlice';
+import {ParseKeys, TFunction} from 'i18next';
+import {TableState} from "../slices/tableSlice";
 
 /**
  * This file contains methods that are needed in more than one resource thunk
@@ -166,22 +166,28 @@ export const transformMetadataFields = (metadata: MetadataField[]) => {
 };
 
 // transform metadata catalog for update via post request
-export const transformMetadataForUpdate = (catalog: MetadataCatalog, values: { [key: string]: MetadataCatalog["fields"][0]["value"] }) => {
+export const transformMetadataForUpdate = (
+	catalog: MetadataCatalog,
+	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
+) => {
 	let fields: MetadataCatalog["fields"] = [];
-	let updatedFields: MetadataCatalog["fields"] = [];
-
+	let updatedFields: { id: string; value: unknown }[] = [];
 	catalog.fields.forEach((field) => {
-		if (field.value !== values[field.id]) {
-			let updatedField = {
-				...field,
-				value: values[field.id],
-			};
-			updatedFields.push(updatedField);
-			fields.push(updatedField);
-		} else {
-			fields.push({ ...field });
+		const newValue = values[field.id];
+
+		// update UI state with full field (optional)
+		const fullField = {...field, value: newValue};
+		fields.push(fullField);
+
+		// only include minimal clean data for backend if value changed
+		if (field.value !== newValue) {
+			updatedFields.push({
+				id: field.id,
+				value: newValue,
+			});
 		}
 	});
+
 	let data = new URLSearchParams();
 	data.append(
 		"metadata",
@@ -194,8 +200,7 @@ export const transformMetadataForUpdate = (catalog: MetadataCatalog, values: { [
 		])
 	);
 	const headers = getHttpHeaders();
-
-	return { fields, data, headers };
+	return {fields, data, headers};
 };
 
 // Prepare metadata for post of new events or series
@@ -247,7 +252,9 @@ export const prepareMetadataFieldsForPost = (
 };
 
 // returns the name for a field value from the collection
-export const getMetadataCollectionFieldName = (metadataField: { collection?: { [key: string]: unknown }[] }, field: { value: unknown }, t: TFunction) => {
+export const getMetadataCollectionFieldName = (metadataField: { collection?: { [key: string]: unknown }[] }, field: {
+	value: unknown
+}, t: TFunction) => {
 	try {
 		if (!!metadataField.collection) {
 			const collectionField = metadataField.collection.find(
@@ -270,8 +277,8 @@ export const getMetadataCollectionFieldName = (metadataField: { collection?: { [
 // Prepare rules of access policies for post of new events or series
 export const prepareAccessPolicyRulesForPost = (policies: TransformedAcl[]) => {
 	// access policies for post request
-	let access : {
-		acl : Acl
+	let access: {
+		acl: Acl
 	} = {
 		acl: {
 			ace: [],
