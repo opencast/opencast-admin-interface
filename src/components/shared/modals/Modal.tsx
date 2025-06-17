@@ -4,10 +4,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../configs/hotkeysConfig";
 import { useTranslation } from "react-i18next";
 import ButtonLikeAnchor from "../ButtonLikeAnchor";
-// TODO: Implement focus trapping
-// Attempted to do that with focus-trap-react, but it would not focus
-// the correct element in e.g. the new event modal
-// import { FocusTrap } from "focus-trap-react";
+import { FocusTrap } from "focus-trap-react";
 
 export type ModalProps = {
 	open?: boolean
@@ -63,26 +60,28 @@ export const Modal = forwardRef<ModalHandle, PropsWithChildren<ModalProps>>(({
 
 	return ReactDOM.createPortal(
 		isOpen &&
-			<div>
-				<div className="modal-animation modal-overlay" />
-				<section
-					id={classId}
-					className={className ? className : "modal wizard modal-animation"}
-				>
-					<header>
-						<ButtonLikeAnchor
-							extraClassName="fa fa-times close-modal"
-							onClick={close}
-							tabIndex={0}
-						/>
-						<h2>
-							{header}
-						</h2>
-					</header>
+			<FocusTrap>
+				<div>
+					<div className="modal-animation modal-overlay" />
+					<section
+						id={classId}
+						className={className ? className : "modal wizard modal-animation"}
+					>
+						<header>
+							<ButtonLikeAnchor
+								extraClassName="fa fa-times close-modal"
+								onClick={close}
+								tabIndex={0}
+							/>
+							<h2>
+								{header}
+							</h2>
+						</header>
 
-						{children}
-				</section>
-			</div>,
+							{children}
+					</section>
+				</div>
+			</FocusTrap>,
 		document.body,
 	);
 
