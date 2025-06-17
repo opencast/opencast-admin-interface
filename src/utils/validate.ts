@@ -272,5 +272,13 @@ export const LifeCyclePolicySchema = [
 			is: (timing: string) => timing === "REPEATING",
 			then: () => Yup.string().required("Required"),
 		}),
+		targetFiltersArray: Yup.array().of(
+			Yup.object().shape({
+				filter: Yup.string().required('Required'),
+				value: Yup.mixed().required('Required'),
+				type: Yup.string().required('Required'),
+				must: Yup.boolean(),
+			})
+		),
 	}),
 ];

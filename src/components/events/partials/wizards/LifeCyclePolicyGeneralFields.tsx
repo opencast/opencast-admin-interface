@@ -312,7 +312,7 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 														name={`targetFiltersArray.${key}.value`}
 														metadataField={{
 															type: getTargetFilterRenderType(filter.filter, filterOptions(formik.values.targetType)),
-															required: false,
+															required: true,
 															collection: getTargetFilterRenderCollection(filter.filter, filterOptions(formik.values.targetType)),
 															id: undefined
 														}}
