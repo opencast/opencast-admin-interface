@@ -63,94 +63,110 @@ const MainNav = ({
 		}
 	}
 
+	interface linkMapItem {
+		links: (React.ComponentProps<typeof MainNavLink> & {accessRole: string})[]
+	}
+
 	const linkMap = {
-		"events": [
-			{
-				path: "/events/events",
-				accessRole: "ROLE_UI_EVENTS_VIEW",
-				tooltipTitle: "NAV.EVENTS.TITLE",
-				className: "events"
-			},
-			{
-				path: "/events/series",
-				accessRole: "ROLE_UI_SERIES_VIEW",
-				tooltipTitle: "NAV.EVENTS.TITLE",
-				className: "events",
-			}
-		],
-		"recordings": [
-			{
-				path: "/recordings/recordings",
-				accessRole: "ROLE_UI_LOCATIONS_VIEW",
-				tooltipTitle: "NAV.CAPTUREAGENTS.TITLE",
-				className: "recordings",
-			}
-		],
-		"systems": [
-			{
-				path: "/systems/jobs",
-				accessRole: "ROLE_UI_JOBS_VIEW",
-				tooltipTitle: "NAV.SYSTEMS.TITLE",
-				className: "systems",
-			},
-			{
-				path: "/systems/servers",
-				accessRole: "ROLE_UI_SERVERS_VIEW",
-				tooltipTitle: "NAV.SYSTEMS.TITLE",
-				className: "systems",
-			},
-			{
-				path: "/systems/services",
-				accessRole: "ROLE_UI_SERVICES_VIEW",
-				tooltipTitle: "NAV.SYSTEMS.TITLE",
-				className: "systems",
-			}
-		],
-		"users": [
-			{
-				path: "/users/users",
-				accessRole: "ROLE_UI_USERS_VIEW",
-				tooltipTitle: "NAV.USERS.TITLE",
-				className: "users",
-			},
-			{
-				path: "/users/groups",
-				accessRole: "ROLE_UI_GROUPS_VIEW",
-				tooltipTitle: "NAV.USERS.TITLE",
-				className: "users",
-			},
-			{
-				path: "/users/acls",
-				accessRole: "ROLE_UI_ACLS_VIEW",
-				tooltipTitle: "NAV.USERS.TITLE",
-				className: "users",
-			}
-		],
-		"configuration": [
-			{
-				path: "/configuration/themes",
-				accessRole: "ROLE_UI_THEMES_VIEW",
-				tooltipTitle: "NAV.CONFIGURATION.TITLE",
-				className: "configuration",
-			}
-		],
-		"statistics": [
-			{
-				path: "/statistics/organization",
-				accessRole: "ROLE_UI_STATISTICS_ORGANIZATION_VIEW",
-				tooltipTitle: "NAV.STATISTICS.TITLE",
-				className: "statistics",
-			}
-		]
+		"events": {
+			links: [
+				{
+					path: "/events/events",
+					accessRole: "ROLE_UI_EVENTS_VIEW",
+					tooltipTitle: "NAV.EVENTS.TITLE",
+					className: "events"
+				},
+				{
+					path: "/events/series",
+					accessRole: "ROLE_UI_SERIES_VIEW",
+					tooltipTitle: "NAV.EVENTS.TITLE",
+					className: "events",
+				}
+			]
+		} as linkMapItem,
+		"recordings": {
+			links: [
+				{
+					path: "/recordings/recordings",
+					accessRole: "ROLE_UI_LOCATIONS_VIEW",
+					tooltipTitle: "NAV.CAPTUREAGENTS.TITLE" as ParseKeys,
+					className: "recordings",
+				}
+			]
+		} as linkMapItem,
+		"systems": {
+			links: [
+				{
+					path: "/systems/jobs",
+					accessRole: "ROLE_UI_JOBS_VIEW",
+					tooltipTitle: "NAV.SYSTEMS.TITLE" as ParseKeys,
+					className: "systems"
+				},
+				{
+					path: "/systems/servers",
+					accessRole: "ROLE_UI_SERVERS_VIEW",
+					tooltipTitle: "NAV.SYSTEMS.TITLE" as ParseKeys,
+					className: "systems"
+				},
+				{
+					path: "/systems/services",
+					accessRole: "ROLE_UI_SERVICES_VIEW",
+					tooltipTitle: "NAV.SYSTEMS.TITLE" as ParseKeys,
+					className: "systems"
+				}
+			]
+		} as linkMapItem,
+		"users": {
+			links: [
+				{
+					path: "/users/users",
+					accessRole: "ROLE_UI_USERS_VIEW",
+					tooltipTitle: "NAV.USERS.TITLE" as ParseKeys,
+					className: "users"
+				},
+				{
+					path: "/users/groups",
+					accessRole: "ROLE_UI_GROUPS_VIEW",
+					tooltipTitle: "NAV.USERS.TITLE" as ParseKeys,
+					className: "users"
+				},
+				{
+					path: "/users/acls",
+					accessRole: "ROLE_UI_ACLS_VIEW",
+					tooltipTitle: "NAV.USERS.TITLE" as ParseKeys,
+					className: "users"
+				}
+			]
+		} as linkMapItem,
+		"configuration": {
+			links: [
+				{
+					path: "/configuration/themes",
+					accessRole: "ROLE_UI_THEMES_VIEW",
+					tooltipTitle: "NAV.CONFIGURATION.TITLE" as ParseKeys,
+					className: "configuration"
+				}
+			]
+		} as linkMapItem,
+		"statistics": {
+			links: [
+				{
+					path: "/statistics/organization",
+					accessRole: "ROLE_UI_STATISTICS_ORGANIZATION_VIEW",
+					tooltipTitle: "NAV.STATISTICS.TITLE" as ParseKeys,
+					className: "statistics"
+				}
+			]
+		} as linkMapItem
 	};
 
 	// Link arrays containing more than one link must be sorted so that the
 	// current view is always the first element. Otherwise, NavLink will not
 	// recognize the current view as active.
 	if (firstPathFragment.length > 0) {
-		let arrToSort = linkMap[firstPathFragment];
+		let arrToSort = linkMap[firstPathFragment as keyof typeof linkMap].links;
 		if (arrToSort != undefined && arrToSort.length > 1) {
-			arrToSort.forEach((item) => {
+			arrToSort.forEach((item : any) => {
 				if (item.path === pathname) { item.tmpIndex = 0 } else { item.tmpIndex = 1 }
 			});
 			arrToSort.sort((a: any, b: any) => a.tmpIndex - b.tmpIndex);
@@ -170,30 +186,30 @@ const MainNav = ({
 						{/* todo: more than one href? how? roles? (see MainNav admin-ui-frontend)*/}
 						<MainNavButton
 							accessRole="ROLE_UI_NAV_RECORDINGS_VIEW"
-							links={linkMap["events"]}
+							links={linkMap["events"].links}
 						/>
 						<MainNavButton
 							accessRole="ROLE_UI_NAV_CAPTURE_VIEW"
-							links={linkMap["recordings"]}
+							links={linkMap["recordings"].links}
 						/>
 						<MainNavButton
 							accessRole="ROLE_UI_NAV_SYSTEMS_VIEW"
-							links={linkMap["systems"]}
+							links={linkMap["systems"].links}
 						/>
 						<MainNavButton
 							accessRole="ROLE_UI_NAV_ORGANIZATION_VIEW"
-							links={linkMap["users"]}
+							links={linkMap["users"].links}
 						/>
 						{themesEnabled &&
 							<MainNavButton
 								accessRole="ROLE_UI_NAV_CONFIGURATION_VIEW"
-								links={linkMap["configuration"]}
+								links={linkMap["configuration"].links}
 							/>
 						}
 						{statisticsEnabled &&
 							<MainNavButton
 								accessRole="ROLE_UI_NAV_STATISTICS_VIEW"
-								links={linkMap["statistics"]}
+								links={linkMap["statistics"].links}
 							/>
 						}
 					</div>
