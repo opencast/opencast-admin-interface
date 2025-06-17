@@ -12,7 +12,6 @@ import { useAppSelector } from "../../store";
 import { Tooltip } from "./Tooltip";
 import ButtonLikeAnchor from "./ButtonLikeAnchor";
 import { ParseKeys } from "i18next";
-import { forEach } from "lodash";
 
 /**
  * This component renders the main navigation that opens when the burger button is clicked
@@ -64,85 +63,86 @@ const MainNav = ({
 		}
 	}
 
-	const linkMap = Object.create(null);
-	linkMap["events"] = [
-		{
-			path: "/events/events",
-			accessRole: "ROLE_UI_EVENTS_VIEW",
-			tooltipTitle: "NAV.EVENTS.TITLE",
-			className: "events"
-		},
-		{
-			path: "/events/series",
-			accessRole: "ROLE_UI_SERIES_VIEW",
-			tooltipTitle: "NAV.EVENTS.TITLE",
-			className: "events",
-		}
-	];
-	linkMap["recordings"] = [
-		{
-			path: "/recordings/recordings",
-			accessRole: "ROLE_UI_LOCATIONS_VIEW",
-			tooltipTitle: "NAV.CAPTUREAGENTS.TITLE",
-			className: "recordings",
-		}
-	];
-	linkMap["systems"] = [
-	{
-			path: "/systems/jobs",
-			accessRole: "ROLE_UI_JOBS_VIEW",
-			tooltipTitle: "NAV.SYSTEMS.TITLE",
-			className: "systems",
-		},
-		{
-			path: "/systems/servers",
-			accessRole: "ROLE_UI_SERVERS_VIEW",
-			tooltipTitle: "NAV.SYSTEMS.TITLE",
-			className: "systems",
-		},
-		{
-			path: "/systems/services",
-			accessRole: "ROLE_UI_SERVICES_VIEW",
-			tooltipTitle: "NAV.SYSTEMS.TITLE",
-			className: "systems",
-		}
-	];
-	linkMap["users"] = [
-		{
-			path: "/users/users",
-			accessRole: "ROLE_UI_USERS_VIEW",
-			tooltipTitle: "NAV.USERS.TITLE",
-			className: "users",
-		},
-		{
-			path: "/users/groups",
-			accessRole: "ROLE_UI_GROUPS_VIEW",
-			tooltipTitle: "NAV.USERS.TITLE",
-			className: "users",
-		},
-		{
-			path: "/users/acls",
-			accessRole: "ROLE_UI_ACLS_VIEW",
-			tooltipTitle: "NAV.USERS.TITLE",
-			className: "users",
-		}
-	];
-	linkMap["configuration"] = [
-		{
-			path: "/configuration/themes",
-			accessRole: "ROLE_UI_THEMES_VIEW",
-			tooltipTitle: "NAV.CONFIGURATION.TITLE",
-			className: "configuration",
-		}
-	];
-	linkMap["statistics"] = [
-		{
-			path: "/statistics/organization",
-			accessRole: "ROLE_UI_STATISTICS_ORGANIZATION_VIEW",
-			tooltipTitle: "NAV.STATISTICS.TITLE",
-			className: "statistics",
-		}
-	];
+	const linkMap = {
+		"events": [
+			{
+				path: "/events/events",
+				accessRole: "ROLE_UI_EVENTS_VIEW",
+				tooltipTitle: "NAV.EVENTS.TITLE",
+				className: "events"
+			},
+			{
+				path: "/events/series",
+				accessRole: "ROLE_UI_SERIES_VIEW",
+				tooltipTitle: "NAV.EVENTS.TITLE",
+				className: "events",
+			}
+		],
+		"recordings": [
+			{
+				path: "/recordings/recordings",
+				accessRole: "ROLE_UI_LOCATIONS_VIEW",
+				tooltipTitle: "NAV.CAPTUREAGENTS.TITLE",
+				className: "recordings",
+			}
+		],
+		"systems": [
+			{
+				path: "/systems/jobs",
+				accessRole: "ROLE_UI_JOBS_VIEW",
+				tooltipTitle: "NAV.SYSTEMS.TITLE",
+				className: "systems",
+			},
+			{
+				path: "/systems/servers",
+				accessRole: "ROLE_UI_SERVERS_VIEW",
+				tooltipTitle: "NAV.SYSTEMS.TITLE",
+				className: "systems",
+			},
+			{
+				path: "/systems/services",
+				accessRole: "ROLE_UI_SERVICES_VIEW",
+				tooltipTitle: "NAV.SYSTEMS.TITLE",
+				className: "systems",
+			}
+		],
+		"users": [
+			{
+				path: "/users/users",
+				accessRole: "ROLE_UI_USERS_VIEW",
+				tooltipTitle: "NAV.USERS.TITLE",
+				className: "users",
+			},
+			{
+				path: "/users/groups",
+				accessRole: "ROLE_UI_GROUPS_VIEW",
+				tooltipTitle: "NAV.USERS.TITLE",
+				className: "users",
+			},
+			{
+				path: "/users/acls",
+				accessRole: "ROLE_UI_ACLS_VIEW",
+				tooltipTitle: "NAV.USERS.TITLE",
+				className: "users",
+			}
+		],
+		"configuration": [
+			{
+				path: "/configuration/themes",
+				accessRole: "ROLE_UI_THEMES_VIEW",
+				tooltipTitle: "NAV.CONFIGURATION.TITLE",
+				className: "configuration",
+			}
+		],
+		"statistics": [
+			{
+				path: "/statistics/organization",
+				accessRole: "ROLE_UI_STATISTICS_ORGANIZATION_VIEW",
+				tooltipTitle: "NAV.STATISTICS.TITLE",
+				className: "statistics",
+			}
+		]
+	};
 
 	// Link arrays containing more than one link must be sorted so that the
 	// current view is always the first element. Otherwise, NavLink will not
@@ -150,7 +150,7 @@ const MainNav = ({
 	if (firstPathFragment.length > 0) {
 		let arrToSort = linkMap[firstPathFragment];
 		if (arrToSort != undefined && arrToSort.length > 1) {
-			forEach(arrToSort, (item) => {
+			arrToSort.forEach((item) => {
 				if (item.path === pathname) { item.tmpIndex = 0 } else { item.tmpIndex = 1 }
 			});
 			arrToSort.sort((a: any, b: any) => a.tmpIndex - b.tmpIndex);
@@ -237,7 +237,7 @@ const MainNavLink = ({
 
 	return (
 		<NavLink to={path}
-			className={({ isActive }) => isActive ? "roll-up-menu-active" : "roll-up-menu-inactive"}>
+			className={({ isActive }) => isActive ? "roll-up-menu-active" : ""}>
 			<Tooltip title={t(tooltipTitle)} placement={"right"}>
 				<i className={className} />
 			</Tooltip>

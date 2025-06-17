@@ -22,7 +22,7 @@
  *
  */
 
-@mixin triangle-point-side($position, $width, $height, $position-from-left: 5px, $background-color: variables.$white, $border-stroke: 1px, $border-color: color.adjust(variables.$main-border-color, $lightness: -5%), $position-from-origin: 1) {
+@mixin triangle-point-side($position, $width, $height, $position-from-left: 4.75px, $background-color: variables.$white, $border-stroke: 1px, $border-color: color.adjust(variables.$main-border-color, $lightness: -5%), $position-from-origin: 1) {
     
     @if $position == left {
         &:before,
@@ -38,15 +38,15 @@
 
         &:after {
             rotate: 90deg;
-            -webkit-transform: translateX(150%);
-            transform: translateX(150%);
+            -webkit-transform: translateX(25px);
+            transform: translateX(25px);
             border-color: transparent transparent $border-color transparent;
         }
 
         &:before {
             rotate: 90deg;
-            -webkit-transform: translateX(150%);
-            transform: translateX(150%);
+            -webkit-transform: translateX(25px);
+            transform: translateX(25px);
             border-color: transparent transparent $background-color transparent;
             z-index: variables.$z-100;
         }

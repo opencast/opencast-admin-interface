@@ -118,6 +118,6 @@
 
 .roll-up-menu-active {
     $size: 8px;
-    $position-from-left: 5px;
+    $position-from-left: 4.75px;
     @include triangle-point.triangle-point-side(left, $size, $size, $position-from-left, variables.$color-gray, 1px, variables.$modal-nav-border-color, -8px);
 }
