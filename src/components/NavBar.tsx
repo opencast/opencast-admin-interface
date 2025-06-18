@@ -52,10 +52,16 @@ const NavBar = ({
 	const newResourceModalRef = useRef<ModalHandle>(null);
 
 	const showNewResourceModal = async () => {
+		if (create && create.onShowModal) {
+			await create.onShowModal();
+		};
 		newResourceModalRef.current?.open()
 	};
 
 	const hideNewResourceModal = () => {
+		if (create && create.onHideModal) {
+			create.onHideModal();
+		};
 		newResourceModalRef.current?.close?.()
 	};
 
