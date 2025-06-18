@@ -1337,7 +1337,9 @@ export const performWorkflowAction = createAppAsyncThunk("eventDetails/performWo
 					context: NOTIFICATION_CONTEXT,
 				}),
 			);
-			close && close();
+			if (close) {
+				close();
+			}
 		})
 		.catch(response => {
 			dispatch(

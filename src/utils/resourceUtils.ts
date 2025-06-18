@@ -88,10 +88,18 @@ export const buildUserBody = (values: NewUser | UpdateUser) => {
 	const data = new URLSearchParams();
 	// fill form data with user inputs
 	data.append("username", values.username);
-	values.name && data.append("name", values.name);
-	values.email && data.append("email", values.email);
-	values.password && data.append("password", values.password);
-	values.roles && data.append("roles", JSON.stringify(values.roles));
+	if (values.name) {
+		data.append("name", values.name);
+	}
+	if (values.email) {
+		data.append("email", values.email);
+	}
+	if (values.password) {
+		data.append("password", values.password);
+	}
+	if (values.roles) {
+		data.append("roles", JSON.stringify(values.roles));
+	}
 
 	return data;
 };

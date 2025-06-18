@@ -261,7 +261,7 @@ const Upload = <T extends RequiredFormPropsUpload>({
 						<tbody>
 							<FieldArray name="uploadAssetsTrack">
 								{/*File upload button for each upload asset*/}
-								{/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
+								{ }
 								{({ insert, remove, push }) =>
 									formik.values.uploadAssetsTrack &&
 									formik.values.uploadAssetsTrack.length > 0 &&
@@ -404,17 +404,21 @@ const Schedule = <T extends {
 									selected={typeof formik.values.scheduleStartDate === "string" ? parseISO(formik.values.scheduleStartDate) : formik.values.scheduleStartDate}
 									onChange={value => {
 										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
-											value && changeStartDateMultiple(
-												value,
-												formik.values,
-												formik.setFieldValue,
-											);
+											if (value) {
+												changeStartDateMultiple(
+													value,
+													formik.values,
+													formik.setFieldValue,
+												);
+											}
 										} else {
-											value && changeStartDate(
-												value,
-												formik.values,
-												formik.setFieldValue,
-											);
+											if (value) {
+												changeStartDate(
+													value,
+													formik.values,
+													formik.setFieldValue,
+												);
+											}
 										}
 									}}
 									showYearDropdown
