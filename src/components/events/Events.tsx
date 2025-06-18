@@ -84,7 +84,7 @@ const Events = () => {
 			if (allowLoadIntoTable) {
 				dispatch(loadEventsIntoTable());
 			}
-		}
+		};
 		// call the function
 		loadEvents();
 
@@ -209,7 +209,7 @@ const Events = () => {
 									accessRole: ["ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"],
 									handleOnClick: () => editMetadataEventsModalRef.current?.open(),
 									text: "BULK_ACTIONS.EDIT_EVENTS_METADATA.CAPTION",
-								}
+								},
 							]}
 							disabled={!showActions}
 						/>

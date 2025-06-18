@@ -15,4 +15,4 @@ export const getFilters = (state: RootState, resource: string) =>
 export const getTextFilter = (state: RootState, resource: string) => {
 	const textFilter = state.tableFilters.textFilter.find(obj => obj.resource === resource);
 	return textFilter?.text ?? "";
-}
+};

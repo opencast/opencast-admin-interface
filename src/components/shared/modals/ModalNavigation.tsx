@@ -32,7 +32,7 @@ const ModalNavigation = ({
 						editAccessRole={tab.accessRole}
 					>
 						{t(tab.tabTranslation)}
-					</ButtonLikeAnchor>
+					</ButtonLikeAnchor>,
 			)}
 		</nav>
 	);

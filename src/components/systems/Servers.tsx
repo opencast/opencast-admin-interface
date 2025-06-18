@@ -55,7 +55,7 @@ const Servers = () => {
 		return () => {
 			allowLoadIntoTable = false;
 			clearInterval(fetchServersInterval);
-		}
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

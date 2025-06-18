@@ -55,7 +55,7 @@ const Groups = () => {
 		return () => {
 			allowLoadIntoTable = false;
 			clearInterval(fetchGroupsInterval);
-		}
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

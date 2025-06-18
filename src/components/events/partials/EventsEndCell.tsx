@@ -7,7 +7,7 @@ import { Event } from "../../../slices/eventSlice";
  * This component renders the end cells of events in the table view
  */
 const EventsEndCell = ({
-	row
+	row,
 }: {
 	row: Event
 }) => {

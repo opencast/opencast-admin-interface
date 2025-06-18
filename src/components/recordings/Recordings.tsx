@@ -63,8 +63,8 @@ const Recordings = () => {
 					{
 						path: "/recordings/recordings",
 						accessRole: "ROLE_UI_LOCATIONS_VIEW",
-						text: "RECORDINGS.NAVIGATION.LOCATIONS"
-					}
+						text: "RECORDINGS.NAVIGATION.LOCATIONS",
+					},
 				]}
 			/>
 
