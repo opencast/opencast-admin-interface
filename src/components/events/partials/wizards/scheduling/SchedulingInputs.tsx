@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import { Field } from "formik";
-import { ParseKeys } from "i18next";
 
 const SchedulingInputs = ({
 	inputs,
@@ -22,7 +21,7 @@ const SchedulingInputs = ({
 							type="checkbox"
 							value={input.id}
 						/>
-						{t(input.value as ParseKeys)}
+						{t(input.value, input.id)}
 					</label>
 				),
 			)}
