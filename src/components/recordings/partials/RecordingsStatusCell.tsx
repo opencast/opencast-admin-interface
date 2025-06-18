@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { Recording } from "../../../slices/recordingSlice";
 import { ParseKeys } from "i18next";

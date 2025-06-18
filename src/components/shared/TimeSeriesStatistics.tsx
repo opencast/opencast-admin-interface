@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import moment from "moment";
 import { getCurrentLanguageInformation } from "../../utils/utils";
 import DatePicker from "react-datepicker";
@@ -12,7 +12,6 @@ import {
 	statisticTimeModes,
 } from "../../configs/statisticsConfig";
 import { localizedMoment } from "../../utils/dateUtils";
-import { parseISO } from "date-fns";
 import { useTranslation } from "react-i18next";
 import type { ChartOptions } from "chart.js";
 import { AsyncThunk } from "@reduxjs/toolkit";
@@ -185,7 +184,7 @@ const TimeSeriesStatistics = ({
 				//@ts-expect-error: timeMode should be assignable here
 				toDate: moment(toDate).endOf(timeMode).format("YYYY-MM-DD"),
 			}}
-			onSubmit={values => {}}
+			onSubmit={() => {}}
 		>
 			{formik => (
 				<div className="statistics-graph">

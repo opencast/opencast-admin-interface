@@ -1132,7 +1132,7 @@ export const saveSchedulingInfo = createAppAsyncThunk("eventDetails/saveScheduli
 	// save new scheduling information
 	await axios
 		.put(`/admin-ng/event/${eventId}/scheduling`, data, headers)
-		.then(response => {
+		.then(() => {
 			dispatch(removeNotificationWizardForm());
 			dispatch(fetchSchedulingInfo(eventId));
 		})
@@ -1328,7 +1328,7 @@ export const performWorkflowAction = createAppAsyncThunk("eventDetails/performWo
 			data,
 			headers,
 		)
-		.then(response => {
+		.then(() => {
 			dispatch(
 				addNotification({
 					type: "success",
@@ -1360,7 +1360,7 @@ export const deleteWorkflow = createAppAsyncThunk("eventDetails/deleteWorkflow",
 
 	const workflowEntries = await axios
 		.delete(`/admin-ng/event/${eventId}/workflows/${workflowId}`)
-		.then(response => {
+		.then(() => {
 			dispatch(
 				addNotification({
 					type: "success",
@@ -1522,7 +1522,7 @@ export const updateMetadata = createAppAsyncThunk("eventDetails/updateMetadata",
 	id: Event["id"],
 	values: { [key: string]: MetadataCatalog["fields"][0]["value"] }
 	catalog: MetadataCatalog
-}, { dispatch, getState }) => {
+}, { dispatch }) => {
 	const { id, values, catalog } = params;
 
 	const { fields, data, headers } = transformMetadataForUpdate(
@@ -1716,7 +1716,7 @@ export const updateComment = createAppAsyncThunk("eventDetails/updateComment", a
 	commentId: Comment["id"],
 	commentText: Comment["text"],
 	commentReason: Comment["reason"]
-}, { dispatch }) => {
+}) => {
 	const { eventId, commentId, commentText, commentReason } = params;
 	const headers = getHttpHeaders();
 
@@ -1775,7 +1775,7 @@ export const saveWorkflowConfig = createAppAsyncThunk("eventDetails/saveWorkflow
 	const header = getHttpHeaders();
 	const data = new URLSearchParams();
 	// Scheduler service in Opencast expects values to be strings, so we convert them here
-	data.append("configuration", JSON.stringify(jsonData, (k, v) => v && typeof v === "object" ? v : "" + v));
+	data.append("configuration", JSON.stringify(jsonData, (_k, v) => v && typeof v === "object" ? v : "" + v));
 
 	axios
 		.put(`/admin-ng/event/${eventId}/workflows`, data, header)
@@ -2463,16 +2463,16 @@ const eventDetailsSlice = createSlice({
 				state.errorStatisticsValue = action.error;
 				console.error(action.error);
 			})
-			.addCase(updateMetadata.rejected, (state, action) => {
+			.addCase(updateMetadata.rejected, (_state, action) => {
 				console.error(action.error);
 			})
-			.addCase(updateExtendedMetadata.rejected, (state, action) => {
+			.addCase(updateExtendedMetadata.rejected, (_state, action) => {
 				console.error(action.error);
 			})
-			.addCase(fetchHasActiveTransactions.rejected, (state, action) => {
+			.addCase(fetchHasActiveTransactions.rejected, (_state, action) => {
 				console.error(action.error);
 			})
-			.addCase(deleteComment.rejected, (state, action) => {
+			.addCase(deleteComment.rejected, (_state, action) => {
 				console.error(action.error);
 			})
 			// fetch Tobira data

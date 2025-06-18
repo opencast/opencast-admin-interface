@@ -85,7 +85,7 @@ const FileUpload = <T extends RequiredFormProps>({
 					setLoaded(1337);
 				}
 			})
-			.catch(res => {
+			.catch(() => {
 				dispatch(addNotification({
 					type: "error",
 					key: "NOTIFICATIONS.BUMPER_UPLOAD_ERROR",

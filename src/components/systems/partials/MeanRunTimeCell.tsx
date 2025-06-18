@@ -1,4 +1,3 @@
-import React from "react";
 import { Service } from "../../../slices/serviceSlice";
 import moment from "moment";
 

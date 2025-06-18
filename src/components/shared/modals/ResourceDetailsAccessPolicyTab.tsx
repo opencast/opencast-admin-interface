@@ -142,7 +142,7 @@ const ResourceDetailsAccessPolicyTab = ({
 			setLoading(false);
 		}
 
-		fetchData().then(r => {});
+		fetchData().then(() => {});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

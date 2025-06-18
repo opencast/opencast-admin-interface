@@ -239,7 +239,7 @@ const initialState: EventState = {
 };
 
 // fetch events from server
-export const fetchEvents = createAppAsyncThunk("events/fetchEvents", async (_, { dispatch, getState }) => {
+export const fetchEvents = createAppAsyncThunk("events/fetchEvents", async (_, { getState }) => {
 	const state = getState();
 	let params: ReturnType<typeof getURLParams> & { getComments?: boolean } = getURLParams(state, "events");
 
