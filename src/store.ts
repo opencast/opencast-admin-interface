@@ -38,7 +38,7 @@ import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 const tableFilterProfilesPersistConfig = { key: "tableFilterProfiles", storage, whitelist: ["profiles"] };
 const eventsPersistConfig = { key: "events", storage, whitelist: ["columns"] };
 const seriesPersistConfig = { key: "series", storage, whitelist: ["columns"] };
-const tablePersistConfig = { key: "table", storage, whitelist: ["pagination"] };
+const tablePersistConfig = { key: "table", storage, whitelist: ["pagination", "sortBy", "reverse"] };
 const recordingsPersistConfig = { key: "recordings", storage, whitelist: ["columns"] };
 const jobsPersistConfig = { key: "jobs", storage, whitelist: ["columns"] };
 const serversPersistConfig = { key: "servers", storage, whitelist: ["columns"] };
