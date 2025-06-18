@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import NewEventSummary from "./NewEventSummary";
 import NewAssetUploadPage from "../ModalTabsAndPages/NewAssetUploadPage";
@@ -129,7 +129,7 @@ const NewEventWizard = ({
 		setSnapshot(values);
 
 		// set page as completely filled out
-		let updatedPageCompleted = pageCompleted;
+		const updatedPageCompleted = pageCompleted;
 		updatedPageCompleted[page] = true;
 		setPageCompleted(updatedPageCompleted);
 

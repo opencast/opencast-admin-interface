@@ -56,7 +56,7 @@ export const updateUserDetails = createAppAsyncThunk("userDetails/updateUserDeta
 	const { username, values } = params;
 
 	// get URL params used for put request
-	let data = buildUserBody(values);
+	const data = buildUserBody(values);
 
 	// PUT request
 	axios

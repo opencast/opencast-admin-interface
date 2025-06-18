@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { getMetadataCollectionFieldName } from "../../../../utils/resourceUtils";
@@ -48,11 +48,11 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 	}, []);
 
 	const checkForChanges = () => {
-		let changed: Change[] = [];
+		const changed: Change[] = [];
 
 		// Loop through each event selected for editing and compare original values and changed values
 		for (const event of formik.values.editedEvents) {
-			let eventChanges: Change = {
+			const eventChanges: Change = {
 				eventId: event.eventId,
 				title: event.title,
 				changes: [],

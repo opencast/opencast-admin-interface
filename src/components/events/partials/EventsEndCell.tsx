@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import React from "react";
 import { renderValidDate } from "../../../utils/dateUtils";
 import { Event } from "../../../slices/eventSlice";
 

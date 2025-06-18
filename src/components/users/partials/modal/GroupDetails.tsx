@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Formik } from "formik";
 import GroupMetadataPage from "../wizard/GroupMetadataPage";
 import GroupRolesPage from "../wizard/GroupRolesPage";
