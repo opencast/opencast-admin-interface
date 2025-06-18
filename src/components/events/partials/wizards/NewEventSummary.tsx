@@ -74,11 +74,11 @@ const NewEventSummary = <T extends RequiredFormProps>({
 		}[] = [];
 		for (let i = 0; uploadAssetOptions.length > i; i++) {
 			const fieldValue = formik.values[uploadAssetOptions[i].id];
-			if (!!fieldValue) {
+			if (fieldValue) {
 				const displayOverride = uploadAssetOptions[i].displayOverride as ParseKeys
 				setUploadAssetsNonTrack(uploadAssetsNonTrack.concat({
 					name: uploadAssetOptions[i].id,
-					translate: !!displayOverride
+					translate: displayOverride
 						? t(displayOverride)
 						: translateOverrideFallback(uploadAssetOptions[i], t),
 					value: fieldValue,
@@ -90,7 +90,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 
 	// Get additional information about chosen workflow definition
 	const workflowDefinition = workflowDef.find(
-		(workflow) => workflow.id === formik.values.processingWorkflow
+		workflow => workflow.id === formik.values.processingWorkflow,
 	);
 
 	const endsOnSameDay = formik.values.scheduleStartDate === formik.values.scheduleEndDate;
@@ -157,14 +157,14 @@ const NewEventSummary = <T extends RequiredFormProps>({
 									{/*Insert row for each upload asset of type track user has provided*/}
 {/* @ts-expect-error TS(7006): Parameter 'asset' implicitly has an 'any' type. */}
 									{formik.values.uploadAssetsTrack.map((asset, key) =>
-										!!asset.file ? (
+										asset.file ? (
 											<tr key={key}>
 												<td>
 													{translateOverrideFallback(asset, t, "SHORT")}
 												</td>
 												<td>{asset.file[0].name}</td>
 											</tr>
-										) : null
+										) : null,
 									)}
 									{!!formik.values.startDate && (
 									<tr>
@@ -230,13 +230,13 @@ const NewEventSummary = <T extends RequiredFormProps>({
 										<tr>
 											<td>
 												{t(
-													"EVENTS.EVENTS.NEW.SOURCE.SCHEDULE_MULTIPLE.WEEKDAYS"
+													"EVENTS.EVENTS.NEW.SOURCE.SCHEDULE_MULTIPLE.WEEKDAYS",
 												)}
 											</td>
 											<td>
 												{formik.values.repeatOn
-													.map((day) =>
-														t(`EVENTS.EVENTS.NEW.WEEKDAYSLONG.${day}`)
+													.map(day =>
+														t(`EVENTS.EVENTS.NEW.WEEKDAYSLONG.${day}`),
 													)
 													.join(", ")}
 											</td>
@@ -279,7 +279,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 							<tr>
 								<td>{t("EVENTS.EVENTS.NEW.PROCESSING.WORKFLOW")}</td>
 								<td>
-									{!!workflowDefinition ? workflowDefinition.title : ""}
+									{workflowDefinition ? workflowDefinition.title : ""}
 								</td>
 							</tr>
 							{/* Repeat entry for each configuration key/value pair */}
@@ -291,7 +291,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 											{formik.values.configuration[config].toString()}
 										</td>
 									</tr>
-								)
+								),
 							)}
 						</tbody>
 					</table>

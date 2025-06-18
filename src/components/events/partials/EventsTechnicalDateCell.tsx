@@ -25,7 +25,7 @@ const EventsTechnicalDateCell = ({
 	// Filter with value of current cell
 	const addFilter = async (date: string) => {
 		const filter = filterMap.find(({ name }) => name === "technicalStart");
-		if (!!filter) {
+		if (filter) {
 			await dispatch(editFilterValue({filterName: filter.name, value: date + "/" + date}));
 			await dispatch(fetchEvents());
 			dispatch(loadEventsIntoTable());

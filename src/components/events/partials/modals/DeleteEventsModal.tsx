@@ -34,7 +34,7 @@ const DeleteEventsModal = ({
 	const onChangeAllSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selected = e.target.checked;
 		setAllChecked(selected);
-		const changedSelection = selectedEvents.map((event) => {
+		const changedSelection = selectedEvents.map(event => {
 			return {
 				...event,
 				selected: selected,
@@ -46,7 +46,7 @@ const DeleteEventsModal = ({
 	// Handle change of checkboxes indicating which events to consider further
 	const onChangeSelected = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
 		const selected = e.target.checked;
-		const changedEvents = selectedEvents.map((event) => {
+		const changedEvents = selectedEvents.map(event => {
 			if (isEvent(event) && event.id === id) {
 				return {
 					...event,
@@ -61,7 +61,7 @@ const DeleteEventsModal = ({
 		if (!selected) {
 			setAllChecked(false);
 		}
-		if (changedEvents.every((event) => event.selected === true)) {
+		if (changedEvents.every(event => event.selected === true)) {
 			setAllChecked(true);
 		}
 	};
@@ -90,7 +90,7 @@ const DeleteEventsModal = ({
 											<input
 												type="checkbox"
 												checked={allChecked}
-												onChange={(e) => onChangeAllSelected(e)}
+												onChange={e => onChangeAllSelected(e)}
 												className="select-all-cbox"
 											/>
 										</th>
@@ -108,7 +108,7 @@ const DeleteEventsModal = ({
 													name="selection"
 													type="checkbox"
 													checked={event.selected}
-													onChange={(e) => onChangeSelected(e, isEvent(event) ? event.id : "")}
+													onChange={e => onChangeSelected(e, isEvent(event) ? event.id : "")}
 												/>
 											</td>
 											<td>{isEvent(event) && event.title}</td>
@@ -132,7 +132,7 @@ const DeleteEventsModal = ({
 
 			<NavigationButtons
 				isLast
-				isSubmitDisabled={!selectedEvents.some((event) => event.selected === true)}
+				isSubmitDisabled={!selectedEvents.some(event => event.selected === true)}
 				submitClassName="danger"
 				nextPage={deleteSelectedEvents}
 				previousPage={close}

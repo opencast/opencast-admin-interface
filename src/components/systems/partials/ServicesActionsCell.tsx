@@ -15,7 +15,7 @@ const ServicesActionCell = ({
 	const dispatch = useAppDispatch();
 
 	const onClickRestart = async () => {
-		await dispatch(restartService({host: row.hostname, serviceType: row.name}));
+		await dispatch(restartService({ host: row.hostname, serviceType: row.name }));
 		await dispatch(fetchServices());
 		dispatch(loadServicesIntoTable());
 	};

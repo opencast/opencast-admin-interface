@@ -8,10 +8,10 @@ export const postTasks = (
 		events: Event[]
 		configuration: { [key: string] : string }
 		workflow: string
-	}
+	},
 ) => async (dispatch: AppDispatch) => {
 	const configuration: { [key: string] : string } = {};
-	Object.keys(values.configuration).forEach((config) => {
+	Object.keys(values.configuration).forEach(config => {
 		configuration[config] = String(values.configuration[config]);
 	});
 
@@ -37,12 +37,12 @@ export const postTasks = (
 				"Content-Type": "application/x-www-form-urlencoded",
 			},
 		})
-		.then((response) => {
+		.then(response => {
 			console.info(response);
-			dispatch(addNotification({type: "success", key: "TASK_CREATED"}));
+			dispatch(addNotification({ type: "success", key: "TASK_CREATED" }));
 		})
-		.catch((response) => {
+		.catch(response => {
 			console.error(response);
-			dispatch(addNotification({type: "error", key: "TASK_NOT_CREATED"}));
+			dispatch(addNotification({ type: "error", key: "TASK_NOT_CREATED" }));
 		});
 };

@@ -47,8 +47,8 @@ export const loadEventsIntoTable = (): AppThunk => async (dispatch, getState) =>
 
 	const pagination = table.pagination;
 	// check which events are currently selected
-	const resource = events.results.map((result) => {
-		const current = table.rows.find((row) => "id" in row && row.id === result.id);
+	const resource = events.results.map(result => {
+		const current = table.rows.find(row => "id" in row && row.id === result.id);
 
 		if (!!current && table.resource === "events") {
 			return {
@@ -86,8 +86,8 @@ export const loadSeriesIntoTable = (): AppThunk => (dispatch, getState) => {
 	const pagination = table.pagination;
 
 	// check which events are currently selected
-	const resource = series.results.map((result) => {
-		const current = table.rows.find((row) => "id" in row && row.id === result.id);
+	const resource = series.results.map(result => {
+		const current = table.rows.find(row => "id" in row && row.id === result.id);
 
 		if (!!current && table.resource === "series") {
 			return {
@@ -133,8 +133,8 @@ export const loadRecordingsIntoTable = (): AppThunk => (dispatch, getState) => {
 		pages: pages,
 		sortBy: table.sortBy["recordings"],
 		reverse: table.reverse["recordings"],
-		rows: resource.map((obj) => {
-			return { ...obj, selected: false }
+		rows: resource.map(obj => {
+			return { ...obj, selected: false };
 		}),
 		totalItems: total,
 	};
@@ -152,8 +152,8 @@ export const loadJobsIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	const tableData = {
 		resource: "jobs" as const,
-		rows: resource.map((obj) => {
-			return { ...obj, selected: false }
+		rows: resource.map(obj => {
+			return { ...obj, selected: false };
 		}),
 		columns: jobs.columns,
 		multiSelect: table.multiSelect["jobs"],
@@ -176,8 +176,8 @@ export const loadServersIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	const tableData = {
 		resource: "servers" as const,
-		rows: resource.map((obj) => {
-			return { ...obj, selected: false }
+		rows: resource.map(obj => {
+			return { ...obj, selected: false };
 		}),
 		columns: servers.columns,
 		multiSelect: table.multiSelect["servers"],
@@ -199,7 +199,7 @@ export const loadServicesIntoTable = (): AppThunk => (dispatch, getState) => {
 	const pages = calculatePages(total / pagination.limit, pagination.offset);
 
 	const tableData = {
-		rows: resource.map((obj) => {
+		rows: resource.map(obj => {
 			return { ...obj, selected: false }
 		}),
 		pages: pages,
@@ -224,8 +224,8 @@ export const loadUsersIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	const tableData = {
 		resource: "users" as const,
-		rows: resource.map((obj) => {
-			return { ...obj, selected: false }
+		rows: resource.map(obj => {
+			return { ...obj, selected: false };
 		}),
 		columns: users.columns,
 		multiSelect: table.multiSelect["users"],
@@ -248,8 +248,8 @@ export const loadGroupsIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	const tableData = {
 		resource: "groups" as const,
-		rows: resource.map((obj) => {
-			return { ...obj, selected: false }
+		rows: resource.map(obj => {
+			return { ...obj, selected: false };
 		}),
 		columns: groups.columns,
 		multiSelect: table.multiSelect["groups"],
@@ -272,8 +272,8 @@ export const loadAclsIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	const tableData = {
 		resource: "acls" as const,
-		rows: resource.map((obj) => {
-			return { ...obj, selected: false }
+		rows: resource.map(obj => {
+			return { ...obj, selected: false };
 		}),
 		columns: acls.columns,
 		multiSelect: table.multiSelect["acls"],
@@ -296,8 +296,8 @@ export const loadThemesIntoTable = (): AppThunk => (dispatch, getState) => {
 
 	const tableData = {
 		resource: "themes" as const,
-		rows: resource.map((obj) => {
-			return { ...obj, selected: false }
+		rows: resource.map(obj => {
+			return { ...obj, selected: false };
 		}),
 		columns: themes.columns,
 		multiSelect: table.multiSelect["themes"],
@@ -386,7 +386,7 @@ export const updatePages = () => async (dispatch: AppDispatch, getState: () => R
 
 	const pages = calculatePages(
 		pagination.totalItems / pagination.limit,
-		pagination.offset
+		pagination.offset,
 	);
 
 	dispatch(setPages(pages));
@@ -479,7 +479,7 @@ export const changeAllSelected = (selected: boolean): AppThunk => (dispatch, get
 
 // Select certain columns
 export const changeColumnSelection = (updatedColumns: TableConfig["columns"]) => async (
-	dispatch: AppDispatch, getState: () => RootState
+	dispatch: AppDispatch, getState: () => RootState,
 ) => {
 	const state = getState();
 

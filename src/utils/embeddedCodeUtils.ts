@@ -4,7 +4,7 @@ export const getSourceURL = async () => {
 	try {
 		// get source url
 		const response = await axios.get(
-			"/api/info/organization/properties/engageuiurl"
+			"/api/info/organization/properties/engageuiurl",
 		);
 
 		const data = await response.data;

@@ -82,21 +82,21 @@ const NewProcessingPage = <T extends RequiredFormProps>({
 									value={formik.values.processingWorkflow}
 									text={
 										workflowDef.find(
-											(workflow) =>
-												formik.values.processingWorkflow === workflow.id
+											workflow =>
+												formik.values.processingWorkflow === workflow.id,
 										)?.title ?? ""
 									}
 									options={formatWorkflowsForDropdown(workflowDef)}
 									required={true}
-									handleChange={(element) => {
+									handleChange={element => {
 										if (element) {
-											setDefaultValues(element.value)
+											setDefaultValues(element.value);
 										}
 									}}
 									placeholder={t(
-										"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW"
+										"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW",
 									)}
-									customCSS={{width: "100%"}}
+									customCSS={{ width: "100%" }}
 								/>
 							</div>
 						) : (

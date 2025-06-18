@@ -16,7 +16,7 @@ type Item = {
 const SelectContainer = ({
 	resource,
 	formikField,
-	manageable = true
+	manageable = true,
 }: {
 	resource: {
 		searchable: boolean,
@@ -55,7 +55,7 @@ const SelectContainer = ({
 				// Pushing the usual name of selected item into the array, in order to work with other fields like roles etc.
 				namesArray.push(selectedItems[i].name);
 				// Make sure it is "users" field and then add the combination.
-				if (field.name === 'users' && selectedItems[i]?.id) {
+				if (field.name === "users" && selectedItems[i]?.id) {
 					namesArray.push(`${selectedItems[i].name} (${selectedItems[i].id})`);
 				}
 				remove(namesArray, initialItems);
@@ -81,7 +81,7 @@ const SelectContainer = ({
 	};
 
 	const handleChangeSearch = async (input: string) => {
-		const filtered = defaultItems.filter((item) => {
+		const filtered = defaultItems.filter(item => {
 			return item.name.toLowerCase().includes(input.toLowerCase());
 		});
 		setSearchField(input);
@@ -129,7 +129,7 @@ const SelectContainer = ({
 
 			// Since we are using array of strings as for the remove method!
 			const array = [
-				markedForAddition[i]
+				markedForAddition[i],
 			];
 			remove(array, editableDefaultItems);
 		}
@@ -155,7 +155,7 @@ const SelectContainer = ({
 
 			// add marked item to items considered for search bar if not already containing
 			if (
-				!editableDefaultItems.some((item) => item.name === markedForRemoval[i])
+				!editableDefaultItems.some(item => item.name === markedForRemoval[i])
 			) {
 				editableDefaultItems.push({
 					name: markedForRemoval[i],
@@ -215,7 +215,7 @@ const SelectContainer = ({
 									disabled={!manageable}
 									style={manageable ? {} : disabledStyle}
 									placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
-									onChange={(e) => handleChangeSearch(e.target.value)}
+									onChange={e => handleChangeSearch(e.target.value)}
 									value={searchField}
 								/>
 							</div>
@@ -227,7 +227,7 @@ const SelectContainer = ({
 							disabled={!manageable}
 							style={manageable ? { minHeight: "11em" } : disabledSelectStyle}
 							value={markedForAddition}
-							onChange={(e) => handleChangeAdd(e)}
+							onChange={e => handleChangeAdd(e)}
 						>
 							{items.map((item, key) => (
 								<option key={key} value={item.name}>
@@ -261,7 +261,7 @@ const SelectContainer = ({
 							className="selected"
 							disabled={!manageable}
 							style={manageable ? { minHeight: "11em" } : disabledSelectStyle}
-							onChange={(e) => handleChangeRemove(e)}
+							onChange={e => handleChangeRemove(e)}
 							value={markedForRemoval}
 						>
 							{/* @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type. */}

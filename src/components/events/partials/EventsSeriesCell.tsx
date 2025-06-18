@@ -22,7 +22,7 @@ const EventsSeriesCell = ({
 	// Filter with value of current cell
 	const addFilter = async (seriesId: string) => {
 		const filter = filterMap.find(({ name }) => name === "series");
-		if (!!filter) {
+		if (filter) {
 			await dispatch(editFilterValue({filterName: filter.name, value: seriesId}));
 			await dispatch(fetchEvents());
 			dispatch(loadEventsIntoTable());
@@ -30,7 +30,7 @@ const EventsSeriesCell = ({
 	};
 
 	return (
-		!!row.series ? (
+		row.series ? (
 			// Link template for series of event
 			<IconButton
 				callback={() => row.series

@@ -33,9 +33,8 @@ const EditMetadataEventsModal = ({
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
-	const selectedRows = useAppSelector(state => getSelectedRows(state));
+	const selectedEvents = useAppSelector(state => getSelectedRows(state));
 
-	const [selectedEvents] = useState(selectedRows);
 	const [metadataFields, setMetadataFields] = useState<{
 		merged: string[],
 		mergedMetadata: MetadataFieldSelected[],
@@ -43,7 +42,7 @@ const EditMetadataEventsModal = ({
 		runningWorkflow?: string[],
 	}>({
 		merged: [],
-		mergedMetadata: []
+		mergedMetadata: [],
 	});
 	const [loading, setLoading] = useState(true);
 	const [fatalError, setFatalError] = useState<string | undefined>(undefined);
@@ -56,13 +55,13 @@ const EditMetadataEventsModal = ({
 			setLoading(true);
 
 			const eventIds: string[] = [];
-			selectedEvents.forEach((event) => isEvent(event) && eventIds.push(event.id));
+			selectedEvents.forEach(event => isEvent(event) && eventIds.push(event.id));
 
 			// Get merged metadata from backend
 			// const responseMetadataFields = await dispatch(postEditMetadata(eventIds))
 			await dispatch(postEditMetadata(eventIds))
 			.then(unwrapResult)
-			.then((result) => {
+			.then(result => {
 				// Set initial values and save metadata field infos in state
 				const initialValues = getInitialValues(result.mergedMetadata);
 				setFetchedValues(initialValues);
@@ -84,7 +83,7 @@ const EditMetadataEventsModal = ({
 	}, []);
 
 	const handleSubmit = (values: { [key: string]: unknown }) => {
-		const response = dispatch(updateBulkMetadata({metadataFields, values}));
+		const response = dispatch(updateBulkMetadata({ metadataFields, values }));
 		console.info(response);
 		close();
 	};
@@ -92,7 +91,7 @@ const EditMetadataEventsModal = ({
 	const onChangeSelected = (e: React.ChangeEvent<HTMLInputElement>, fieldId: string) => {
 		const selected = e.target.checked;
 		const fields = metadataFields;
-		fields.mergedMetadata = metadataFields.mergedMetadata.map((field) => {
+		fields.mergedMetadata = metadataFields.mergedMetadata.map(field => {
 			if (field.id === fieldId) {
 				return {
 					...field,
@@ -122,7 +121,7 @@ const EditMetadataEventsModal = ({
 		}
 		if (!same) {
 			const fields = metadataFields;
-			fields.mergedMetadata = metadataFields.mergedMetadata.map((f) => {
+			fields.mergedMetadata = metadataFields.mergedMetadata.map(f => {
 				if (f.id === field.id) {
 					return {
 						...f,
@@ -171,15 +170,15 @@ const EditMetadataEventsModal = ({
 			{!loading && fatalError === undefined && (
 				<Formik
 					initialValues={fetchedValues}
-					onSubmit={(values) => handleSubmit(values)}
+					onSubmit={values => handleSubmit(values)}
 				>
-					{(formik) => (
+					{formik => (
 						<>
 							<ModalContent>
 								<div className="obj header-description">
 									<span>
 										{t(
-											"BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.DESCRIPTION"
+											"BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.DESCRIPTION",
 										)}
 									</span>
 								</div>
@@ -187,7 +186,7 @@ const EditMetadataEventsModal = ({
 									<header>
 										<span>
 											{t(
-												"BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.TABLE.CAPTION"
+												"BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.TABLE.CAPTION",
 											)}
 										</span>
 									</header>
@@ -198,12 +197,12 @@ const EditMetadataEventsModal = ({
 													<th className="small" />
 													<th>
 														{t(
-															"BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.TABLE.FIELDS"
+															"BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.TABLE.FIELDS",
 														)}
 													</th>
 													<th>
 														{t(
-															"BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.TABLE.VALUES"
+															"BULK_ACTIONS.EDIT_EVENTS_METADATA.EDIT.TABLE.VALUES",
 														)}
 													</th>
 												</tr>
@@ -224,7 +223,7 @@ const EditMetadataEventsModal = ({
 																		name="changes"
 																		checked={isTouchedOrSelected(
 																			metadata,
-																			formik.values
+																			formik.values,
 																		)}
 																		disabled={
 																			(!metadata.differentValues &&
@@ -232,7 +231,7 @@ const EditMetadataEventsModal = ({
 																			(metadata.required &&
 																				!metadata.selected)
 																		}
-																		onChange={(e) =>
+																		onChange={e =>
 																			onChangeSelected(e, metadata.id)
 																		}
 																		className="child-cbox"
@@ -263,7 +262,7 @@ const EditMetadataEventsModal = ({
 																	)}
 																</td>
 															</tr>
-														)
+														),
 												)}
 											</tbody>
 										</table>
@@ -280,7 +279,7 @@ const EditMetadataEventsModal = ({
 										formik.isValid &&
 										hasAccess(
 											"ROLE_UI_EVENTS_DETAILS_METADATA_EDIT",
-											user
+											user,
 										)
 									)
 								}
@@ -300,7 +299,7 @@ const EditMetadataEventsModal = ({
 const getInitialValues = (metadataFields: MetadataFieldSelected[]) => {
 	// Transform metadata fields provided by backend (saved in redux)
 	const initialValues: { [key: string]: string | string[] } = {};
-	metadataFields.forEach((field) => {
+	metadataFields.forEach(field => {
 		initialValues[field.id] = field.value;
 	});
 
