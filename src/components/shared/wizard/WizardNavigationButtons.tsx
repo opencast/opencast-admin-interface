@@ -40,11 +40,11 @@ const WizardNavigationButtons = <T, >({
 			isSubmitDisabled={disabled}
 			nextPage={
 				isLast
-				? () => { !!submitPage ? submitPage() : formik.handleSubmit(); }
+				? () => { submitPage ? submitPage() : formik.handleSubmit(); }
 				: () => { !!nextPage && nextPage(formik.values); }
 			}
 			previousPage={
-				() => { !!previousPage && previousPage(formik.values) }
+				() => { !!previousPage && previousPage(formik.values); }
 			}
 			nextTranslationString={
 				isLast
