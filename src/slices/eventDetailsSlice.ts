@@ -2465,13 +2465,7 @@ const eventDetailsSlice = createSlice({
 				state.errorStatisticsValue = action.error;
 				console.error(action.error);
 			})
-			.addCase(updateMetadata.rejected, (_state, action) => {
-				console.error(action.error);
-			})
-			.addCase(updateExtendedMetadata.rejected, (_state, action) => {
-				console.error(action.error);
-			})
-			.addCase(fetchHasActiveTransactions.rejected, (_state, action) => {
+			.addCase(fetchHasActiveTransactions.rejected, (state, action) => {
 				console.error(action.error);
 			})
 			.addCase(deleteComment.rejected, (_state, action) => {

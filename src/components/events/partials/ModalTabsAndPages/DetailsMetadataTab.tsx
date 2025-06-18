@@ -18,6 +18,8 @@ import RenderDate from "../../../shared/RenderDate";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { ParseKeys } from "i18next";
 import ModalContentTable from "../../../shared/modals/ModalContentTable";
+import { addNotification } from "../../../../slices/notificationSlice";
+import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 
 type InitialValues = {
 	[key: string]: string | string[];
@@ -51,7 +53,24 @@ const DetailsMetadataTab = ({
 	const user = useAppSelector(state => getUserInformation(state));
 
 	const handleSubmit = (values: { [key: string]: any }, catalog: MetadataCatalog) => {
-		dispatch(updateResource({ id: resourceId, values, catalog }));
+		dispatch(updateResource({ id: resourceId, values, catalog }))
+			.unwrap()
+			.then(() => {
+				dispatch(addNotification({
+					type: "info",
+					key: "METADATA_SAVED",
+					duration: 3,
+					context: NOTIFICATION_CONTEXT,
+				}));
+			})
+			.catch(() => {
+				dispatch(addNotification({
+					type: "warning",
+					key: "METADATA_NOT_SAVED",
+					duration: 3,
+					context: NOTIFICATION_CONTEXT,
+				}));
+			});
 	};
 
 	// set current values of metadata fields as initial values
