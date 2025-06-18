@@ -17,7 +17,7 @@ export type NewResource = "events" | "series" | "user" | "group" | "acl" | "them
 const NewResourceModal = ({
 	handleClose,
 	resource,
-	modalRef
+	modalRef,
 }: {
 	handleClose: () => void,
 	resource: NewResource
@@ -30,7 +30,7 @@ const NewResourceModal = ({
 	};
 
 	const headerText = () => {
-		switch(resource) {
+		switch (resource) {
 			case "events": return t("EVENTS.EVENTS.NEW.CAPTION");
 			case "series": return t("EVENTS.SERIES.NEW.CAPTION");
 			case "themes": return t("CONFIGURATION.THEMES.DETAILS.NEWCAPTION");
@@ -39,7 +39,7 @@ const NewResourceModal = ({
 			case "user": return t("USERS.USERS.DETAILS.NEWCAPTION");
 			case "lifecyclepolicy": return t("LIFECYCLE.POLICIES.NEW.CAPTION");
 		}
-	}
+	};
 
 	return (
 		<Modal

@@ -1,26 +1,26 @@
-import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
-import { aclsTableConfig, TableConfig } from '../configs/tableConfigs/aclsTableConfig';
-import { Server } from './serverSlice';
-import { Recording } from './recordingSlice';
-import { Job } from './jobSlice';
-import { Service } from './serviceSlice';
-import { User } from './userSlice';
-import { Group } from './groupSlice';
-import { AclResult } from './aclSlice';
-import { ThemeDetailsType } from './themeSlice';
-import { Series } from './seriesSlice';
-import { Event } from './eventSlice';
-import { LifeCyclePolicy } from './lifeCycleSlice';
-import { eventsTableConfig } from '../configs/tableConfigs/eventsTableConfig';
-import { seriesTableConfig } from '../configs/tableConfigs/seriesTableConfig';
-import { recordingsTableConfig } from '../configs/tableConfigs/recordingsTableConfig';
-import { jobsTableConfig } from '../configs/tableConfigs/jobsTableConfig';
-import { serversTableConfig } from '../configs/tableConfigs/serversTableConfig';
-import { servicesTableConfig } from '../configs/tableConfigs/servicesTableConfig';
-import { usersTableConfig } from '../configs/tableConfigs/usersTableConfig';
-import { groupsTableConfig } from '../configs/tableConfigs/groupsTableConfig';
-import { themesTableConfig } from '../configs/tableConfigs/themesTableConfig';
-import { lifeCyclePolicyTableConfig } from '../configs/tableConfigs/lifeCyclePoliciesTableConfig';
+import { PayloadAction, SerializedError, createSlice } from "@reduxjs/toolkit";
+import { aclsTableConfig, TableConfig } from "../configs/tableConfigs/aclsTableConfig";
+import { Server } from "./serverSlice";
+import { Recording } from "./recordingSlice";
+import { Job } from "./jobSlice";
+import { Service } from "./serviceSlice";
+import { User } from "./userSlice";
+import { Group } from "./groupSlice";
+import { AclResult } from "./aclSlice";
+import { ThemeDetailsType } from "./themeSlice";
+import { Series } from "./seriesSlice";
+import { Event } from "./eventSlice";
+import { LifeCyclePolicy } from "./lifeCycleSlice";
+import { eventsTableConfig } from "../configs/tableConfigs/eventsTableConfig";
+import { seriesTableConfig } from "../configs/tableConfigs/seriesTableConfig";
+import { recordingsTableConfig } from "../configs/tableConfigs/recordingsTableConfig";
+import { jobsTableConfig } from "../configs/tableConfigs/jobsTableConfig";
+import { serversTableConfig } from "../configs/tableConfigs/serversTableConfig";
+import { servicesTableConfig } from "../configs/tableConfigs/servicesTableConfig";
+import { usersTableConfig } from "../configs/tableConfigs/usersTableConfig";
+import { groupsTableConfig } from "../configs/tableConfigs/groupsTableConfig";
+import { themesTableConfig } from "../configs/tableConfigs/themesTableConfig";
+import { lifeCyclePolicyTableConfig } from "../configs/tableConfigs/lifeCyclePoliciesTableConfig";
 
 /*
 Overview of the structure of the data in arrays in state
@@ -86,7 +86,7 @@ export type Resource = "events" | "series" | "recordings" | "jobs" | "servers" |
 export type ReverseOptions = "ASC" | "DESC"
 
 export type TableState = {
-	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	status: "uninitialized" | "loading" | "succeeded" | "failed",
 	error: SerializedError | null,
 	multiSelect: { [key in Resource]: boolean },
 	resource: Resource,
@@ -102,7 +102,7 @@ export type TableState = {
 
 // initial redux state
 const initialState: TableState = {
-	status: 'uninitialized',
+	status: "uninitialized",
 	error: null,
 	multiSelect: {
 		events: eventsTableConfig.multiSelect,
@@ -158,7 +158,7 @@ const initialState: TableState = {
 };
 
 const tableSlice = createSlice({
-	name: 'table',
+	name: "table",
 	initialState,
 	reducers: {
 		loadResourceIntoTable(state, action: PayloadAction<{
@@ -192,7 +192,7 @@ const tableSlice = createSlice({
 			number | string
 		>) {
 			const id = action.payload;
-			state.rows = state.rows.map((row) => {
+			state.rows = state.rows.map(row => {
 				if ("id" in row && row.id === id) {
 					return {
 						...row,
@@ -200,23 +200,23 @@ const tableSlice = createSlice({
 					};
 				}
 				return row;
-			})
+			});
 		},
 		selectAll(state) {
-			state.rows = state.rows.map((row) => {
+			state.rows = state.rows.map(row => {
 				return {
 					...row,
 					selected: true,
 				};
-			})
+			});
 		},
 		deselectAll(state) {
-			state.rows = state.rows.map((row) => {
+			state.rows = state.rows.map(row => {
 				return {
 					...row,
 					selected: false,
 				};
-			})
+			});
 		},
 		reverseTable(state, action: PayloadAction<
 			TableState["reverse"][Resource]
@@ -231,7 +231,7 @@ const tableSlice = createSlice({
 		createPage(state, action: PayloadAction<
 			Page
 		>) {
-			state.pages = state.pages.concat(action.payload)
+			state.pages = state.pages.concat(action.payload);
 		},
 		updatePageSize(state, action: PayloadAction<
 			TableState["pagination"]["limit"]
@@ -239,7 +239,7 @@ const tableSlice = createSlice({
 			state.pagination = {
 				...state.pagination,
 				limit: action.payload,
-			}
+			};
 		},
 		setPages(state, action: PayloadAction<
 			TableState["pages"]
@@ -252,7 +252,7 @@ const tableSlice = createSlice({
 			state.pagination = {
 				...state.pagination,
 				totalItems: action.payload,
-			}
+			};
 		},
 		setOffset(state, action: PayloadAction<
 			TableState["pagination"]["offset"]
@@ -260,7 +260,7 @@ const tableSlice = createSlice({
 			state.pagination = {
 				...state.pagination,
 				offset: action.payload,
-			}
+			};
 		},
 		setDirectAccessiblePages(state, action: PayloadAction<
 			TableState["pagination"]["directAccessibleNo"]
@@ -268,13 +268,13 @@ const tableSlice = createSlice({
 			state.pagination = {
 				...state.pagination,
 				directAccessibleNo: action.payload,
-			}
+			};
 		},
 		setPageActive(state, action: PayloadAction<
 			number
 		>) {
 			const pageNumber = action.payload;
-			state.pages = state.pages.map((page) => {
+			state.pages = state.pages.map(page => {
 				if (page.number === pageNumber) {
 					return {
 						...page,
@@ -286,9 +286,9 @@ const tableSlice = createSlice({
 						active: false,
 					};
 				}
-			})
+			});
 		},
-		resetTableProperties: (state) => {
+		resetTableProperties: state => {
 			state.columns = initialState.columns;
 			state.pages = initialState.pages;
 			state.rows = initialState.rows;
@@ -312,7 +312,7 @@ export const {
 	setOffset,
 	setDirectAccessiblePages,
 	setPageActive,
-	resetTableProperties
+	resetTableProperties,
 } = tableSlice.actions;
 
 // Export the slice reducer as the default export

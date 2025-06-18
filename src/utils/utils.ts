@@ -60,7 +60,7 @@ export const makeTwoDigits = (number: number) => {
  * to [{id: id1, value: value1},{id: id2, value: value2}]
  */
 export const transformToIdValueArray = (data: {[key: string | number]: string}) => {
-	return Object.keys(data).map((key) => {
+	return Object.keys(data).map(key => {
 		return {
 			id: key,
 			value: data[key],
@@ -75,7 +75,7 @@ export const transformToIdValueArray = (data: {[key: string | number]: string}) 
 export const parseBooleanInObject = (baseObject: {[key: string]: unknown}) => {
 	let parsedObject: {[key: string]: unknown} = {};
 
-	Object.keys(baseObject).forEach((config) => {
+	Object.keys(baseObject).forEach(config => {
 		parsedObject[config] = parseValueForBooleanStrings(baseObject[config]);
 	});
 
@@ -126,7 +126,7 @@ export const isJson = (text: string) => {
  */
 export const translateOverrideFallback = (asset: UploadOption, t: TFunction, suffix?: "SHORT" | "DETAIL") => {
 	let result = undefined;
-	const sub = !!suffix ? `.${suffix}` as const : "" as const;
+	const sub = suffix ? `.${suffix}` as const : "" as const;
 	const translatable = asset["title"] + sub;
 
 	if (asset[`displayOverride${sub}` as const]) {
@@ -144,7 +144,7 @@ export const translateOverrideFallback = (asset: UploadOption, t: TFunction, suf
 	}
 
 	return result;
-}
+};
 
 /**
  * (Hopefully) Typesafe way of checking if an object has a specific property

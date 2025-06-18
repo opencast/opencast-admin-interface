@@ -65,9 +65,9 @@ const NewLifeCyclePolicyWizard = ({
 		let newPage = page;
 		do {
 			newPage = newPage + 1;
-		} while(steps[newPage] && steps[newPage].hidden);
+		} while (steps[newPage] && steps[newPage].hidden);
 		if (steps[newPage]) {
-			setPage(newPage)
+			setPage(newPage);
 		}
 	};
 
@@ -77,9 +77,9 @@ const NewLifeCyclePolicyWizard = ({
 		let newPage = page;
 		do {
 			newPage = newPage - 1;
-		} while(steps[newPage] && steps[newPage].hidden);
+		} while (steps[newPage] && steps[newPage].hidden);
 		if (steps[newPage]) {
-			setPage(newPage)
+			setPage(newPage);
 		}
 	};
 
@@ -87,10 +87,10 @@ const NewLifeCyclePolicyWizard = ({
 		const fixedValues = {
 			...values,
 			targetFilters: parseTargetFiltersForSubmit(values.targetFiltersArray),
-			accessControlEntries: values.policies
-		}
+			accessControlEntries: values.policies,
+		};
 		if (fixedValues.action === "START_WORKFLOW") {
-			fixedValues.actionParameters["workflowParameters"] = JSON.parse(values.actionParameters["workflowParameters"] as string)
+			fixedValues.actionParameters["workflowParameters"] = JSON.parse(values.actionParameters["workflowParameters"] as string);
 		}
 		const response = dispatch(postNewLifeCyclePolicy(fixedValues));
 		console.info(response);
@@ -102,10 +102,10 @@ const NewLifeCyclePolicyWizard = ({
 			<Formik
 				initialValues={snapshot}
 				validationSchema={LifeCyclePolicySchema[page]}
-				onSubmit={(values) => handleSubmit(values)}
+				onSubmit={values => handleSubmit(values)}
 			>
 				{/* Render wizard pages depending on current value of page variable */}
-				{(formik) => {
+				{formik => {
 					// eslint-disable-next-line react-hooks/rules-of-hooks
 					useEffect(() => {
 						formik.validateForm();
@@ -158,11 +158,11 @@ const NewLifeCyclePolicyWizard = ({
 			</Formik>
 		</>
 	);
-}
+};
 
 // Transform all initial values needed from information provided by backend
 const getInitialValues = (
-	user: UserInfoState
+	user: UserInfoState,
 ) => {
 	let initialValues = initialFormValuesNewLifeCyclePolicy;
 

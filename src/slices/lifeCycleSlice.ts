@@ -1,11 +1,11 @@
-import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from "@reduxjs/toolkit";
 import { TableConfig } from "../configs/tableConfigs/aclsTableConfig";
 import { lifeCyclePolicyTableConfig } from "../configs/tableConfigs/lifeCyclePoliciesTableConfig";
-import axios from 'axios';
-import { getURLParams, prepareAccessPolicyRulesForPost } from '../utils/resourceUtils';
-import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { TransformedAcl } from './aclDetailsSlice';
-import { addNotification } from './notificationSlice';
+import axios from "axios";
+import { getURLParams, prepareAccessPolicyRulesForPost } from "../utils/resourceUtils";
+import { createAppAsyncThunk } from "../createAsyncThunkWithTypes";
+import { TransformedAcl } from "./aclDetailsSlice";
+import { addNotification } from "./notificationSlice";
 
 // type LifeCyclePolicyTiming = "SPECIFIC_DATE" | "REPEATING" | "ALWAYS";
 // type LifeCyclePolicyAction = "START_WORKFLOW"
@@ -15,7 +15,7 @@ export type TargetFilter = {
 	type: TargetFiltersType,
 	must: boolean
 }
-export const ALL_TARGET_FILTER_TYPES = ['SEARCH', 'WILDCARD', 'GREATER_THAN', 'LESS_THAN'] as const;
+export const ALL_TARGET_FILTER_TYPES = ["SEARCH", "WILDCARD", "GREATER_THAN", "LESS_THAN"] as const;
 type TargetFilterTypesTuple = typeof ALL_TARGET_FILTER_TYPES;
 type TargetFiltersType = TargetFilterTypesTuple[number];
 
@@ -35,7 +35,7 @@ export type LifeCyclePolicy = {
 }
 
 type LifeCycleState = {
-	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	status: "uninitialized" | "loading" | "succeeded" | "failed",
 	error: SerializedError | null,
 	results: LifeCyclePolicy[],
 	columns: TableConfig["columns"],
@@ -46,14 +46,14 @@ type LifeCycleState = {
 };
 
 // Fill columns initially with columns defined in aclsTableConfig
-const initialColumns = lifeCyclePolicyTableConfig.columns.map((column) => ({
+const initialColumns = lifeCyclePolicyTableConfig.columns.map(column => ({
 	...column,
 	deactivated: false,
 }));
 
 // Initial state of acls in redux store
 const initialState: LifeCycleState = {
-	status: 'uninitialized',
+	status: "uninitialized",
 	error: null,
 	results: [],
 	columns: initialColumns,
@@ -63,14 +63,14 @@ const initialState: LifeCycleState = {
 	limit: 0,
 };
 
-export const fetchLifeCyclePolicies = createAppAsyncThunk('lifeCycle/fetchLifeCyclePolicies', async (_, { getState }) => {
+export const fetchLifeCyclePolicies = createAppAsyncThunk("lifeCycle/fetchLifeCyclePolicies", async (_, { getState }) => {
 	const state = getState();
 	let params = getURLParams(state, "lifeCyclePolicies");
 	const res = await axios.get("/api/lifecyclemanagement/policies", { params: params });
 	return res.data;
 });
 
-export const postNewLifeCyclePolicy = createAppAsyncThunk('lifeCycle/postNewLifeCyclePolicy', async (
+export const postNewLifeCyclePolicy = createAppAsyncThunk("lifeCycle/postNewLifeCyclePolicy", async (
 	policy: {
 		actionParameters: { [key: string]: unknown },
 		timing: string,
@@ -83,7 +83,7 @@ export const postNewLifeCyclePolicy = createAppAsyncThunk('lifeCycle/postNewLife
 		targetFilters: { [key: string]: TargetFilter },
 		accessControlEntries: TransformedAcl[]
 	},
-	{ dispatch }
+	{ dispatch },
 ) => {
 	let data = new URLSearchParams();
 
@@ -98,45 +98,45 @@ export const postNewLifeCyclePolicy = createAppAsyncThunk('lifeCycle/postNewLife
 
 	// Stringify
 	Object.entries(policy).forEach(([key, value]) => {
-		let stringified = value
+		let stringified = value;
 		if (stringified instanceof Date) {
-			stringified = stringified.toJSON()
+			stringified = stringified.toJSON();
 		} else if (stringified === Object(stringified)) {
-			stringified = JSON.stringify(stringified)
+			stringified = JSON.stringify(stringified);
 		}
 		// @ts-expect-error: ???
 		data.append(key, stringified);
-	})
+	});
 
 	data.delete("accessControlEntries");
-	data.append("accessControlEntries", JSON.stringify(prepareAccessPolicyRulesForPost(policy.accessControlEntries).acl.ace))
+	data.append("accessControlEntries", JSON.stringify(prepareAccessPolicyRulesForPost(policy.accessControlEntries).acl.ace));
 
-	axios.post(`/api/lifecyclemanagement/policies`, data)
-		.then((res) => {
+	axios.post("/api/lifecyclemanagement/policies", data)
+		.then(res => {
 			console.info(res);
-			dispatch(addNotification({type: "success", key: "LIFECYCLE_POLICY_ADDED"}));
+			dispatch(addNotification({ type: "success", key: "LIFECYCLE_POLICY_ADDED" }));
 		})
-		.catch((res) => {
+		.catch(res => {
 			console.error(res);
-			dispatch(addNotification({type: "error", key: "LIFECYCLE_POLICY_NOT_SAVED"}));
+			dispatch(addNotification({ type: "error", key: "LIFECYCLE_POLICY_NOT_SAVED" }));
 		});
 });
 
-export const deleteLifeCyclePolicy = createAppAsyncThunk('lifeCycle/fetchLifeCyclePolicies', async (id: string, { dispatch }) => {
+export const deleteLifeCyclePolicy = createAppAsyncThunk("lifeCycle/fetchLifeCyclePolicies", async (id: string, { dispatch }) => {
 	axios
 		.delete(`/api/lifecyclemanagement/policies/${id}`)
-		.then((res) => {
+		.then(res => {
 			console.info(res);
-			dispatch(addNotification({type: "success", key: "LIFECYCLE_POLICY_DELETED"}));
+			dispatch(addNotification({ type: "success", key: "LIFECYCLE_POLICY_DELETED" }));
 		})
-		.catch((res) => {
+		.catch(res => {
 			console.error(res);
-			dispatch(addNotification({type: "error", key: "LIFECYCLE_POLICY_NOT_DELETED"}));
+			dispatch(addNotification({ type: "error", key: "LIFECYCLE_POLICY_NOT_DELETED" }));
 		});
 });
 
 const lifeCycleSlice = createSlice({
-	name: 'lifeCycle',
+	name: "lifeCycle",
 	initialState,
 	reducers: {
 		setLifeCycleColumns(state, action: PayloadAction<
@@ -148,8 +148,8 @@ const lifeCycleSlice = createSlice({
 	// These are used for thunks
 	extraReducers: builder => {
 		builder
-			.addCase(fetchLifeCyclePolicies.pending, (state) => {
-				state.status = 'loading';
+			.addCase(fetchLifeCyclePolicies.pending, state => {
+				state.status = "loading";
 			})
 			// Pass the generated action creators to `.addCase()`
 			.addCase(fetchLifeCyclePolicies.fulfilled, (state, action: PayloadAction<{
@@ -160,7 +160,7 @@ const lifeCycleSlice = createSlice({
 				results: LifeCycleState["results"],
 			}>) => {
 				// Same "mutating" update syntax thanks to Immer
-				state.status = 'succeeded';
+				state.status = "succeeded";
 				const policies = action.payload;
 				state.total = policies.total;
 				state.count = policies.count;
@@ -169,11 +169,11 @@ const lifeCycleSlice = createSlice({
 				state.results = policies.results;
 			})
 			.addCase(fetchLifeCyclePolicies.rejected, (state, action) => {
-				state.status = 'failed';
+				state.status = "failed";
 				state.results = [];
 				state.error = action.error;
 			});
-	}
+	},
 });
 
 export const { setLifeCycleColumns } = lifeCycleSlice.actions;

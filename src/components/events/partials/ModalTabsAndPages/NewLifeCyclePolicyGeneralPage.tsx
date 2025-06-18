@@ -10,7 +10,7 @@ import { LifeCyclePolicy, TargetFilter } from "../../../../slices/lifeCycleSlice
 const NewLifeCyclePolicyGeneralPage = <T extends LifeCyclePolicy & {targetFiltersArray: (TargetFilter & { filter: string })[]}>({
 	formik,
 	nextPage,
-	header
+	header,
 }: {
 	formik: FormikProps<T>,
 	nextPage: (values: T) => void,

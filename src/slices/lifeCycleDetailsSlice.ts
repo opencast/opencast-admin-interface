@@ -1,18 +1,18 @@
-import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios';
-import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { LifeCyclePolicy } from './lifeCycleSlice';
-import { TransformedAcl } from './aclDetailsSlice';
-import { createPolicy } from '../utils/resourceUtils';
-import { Ace } from './aclSlice';
-import { addNotification } from './notificationSlice';
+import { PayloadAction, SerializedError, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { createAppAsyncThunk } from "../createAsyncThunkWithTypes";
+import { LifeCyclePolicy } from "./lifeCycleSlice";
+import { TransformedAcl } from "./aclDetailsSlice";
+import { createPolicy } from "../utils/resourceUtils";
+import { Ace } from "./aclSlice";
+import { addNotification } from "./notificationSlice";
 
 
 /**
  * This file contains redux reducer for actions affecting the state of a lifeCyclePolicy/capture agent
  */
 interface LifeCyclePolicyDetailsState extends LifeCyclePolicy {
-	statusLifeCyclePolicyDetails: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	statusLifeCyclePolicyDetails: "uninitialized" | "loading" | "succeeded" | "failed",
 	errorLifeCyclePolicyDetails: SerializedError | null,
 
 	actionsEnum: string[],
@@ -22,7 +22,7 @@ interface LifeCyclePolicyDetailsState extends LifeCyclePolicy {
 
 // Initial state of lifeCyclePolicy details in redux store
 const initialState: LifeCyclePolicyDetailsState = {
-	statusLifeCyclePolicyDetails: 'uninitialized',
+	statusLifeCyclePolicyDetails: "uninitialized",
 	errorLifeCyclePolicyDetails: null,
   actionParameters: {},
 	timing: "SPECIFIC_DATE",
@@ -43,12 +43,12 @@ const initialState: LifeCyclePolicyDetailsState = {
 };
 
 // fetch details of certain lifeCyclePolicy from server
-export const fetchLifeCyclePolicyDetails = createAppAsyncThunk('lifeCyclePolicyDetails/fetchLifeCyclePolicyDetails', async (id: string) => {
+export const fetchLifeCyclePolicyDetails = createAppAsyncThunk("lifeCyclePolicyDetails/fetchLifeCyclePolicyDetails", async (id: string) => {
 	const res = await axios.get(`/api/lifecyclemanagement/policies/${id}`);
 	const data = res.data;
 
-	data.actionParameters = JSON.parse(data.actionParameters)
-	data.targetFilters = JSON.parse(data.targetFilters)
+	data.actionParameters = JSON.parse(data.actionParameters);
+	data.targetFilters = JSON.parse(data.targetFilters);
 
 	let accessPolicies : {
 		id: number,
@@ -73,97 +73,97 @@ export const fetchLifeCyclePolicyDetails = createAppAsyncThunk('lifeCyclePolicyD
 				newPolicies[policy.role].actions.push(policy.action);
 			}
 		}
-		acls = policyRoles.map((role) => newPolicies[role]);
+		acls = policyRoles.map(role => newPolicies[role]);
 
 	data.accessControlEntries = acls;
 
 	return data;
 });
 
-export const fetchLifeCyclePolicyActions = createAppAsyncThunk('lifeCyclePolicyDetails/fetchLifeCyclePolicyActions', async () => {
-	const res = await axios.get(`/api/lifecyclemanagement/policies/actions`);
+export const fetchLifeCyclePolicyActions = createAppAsyncThunk("lifeCyclePolicyDetails/fetchLifeCyclePolicyActions", async () => {
+	const res = await axios.get("/api/lifecyclemanagement/policies/actions");
 	const data = res.data;
 
 	return data;
 });
 
-export const fetchLifeCyclePolicyTargetTypes = createAppAsyncThunk('lifeCyclePolicyDetails/fetchLifeCyclePolicyTargetTypes', async () => {
-	const res = await axios.get(`/api/lifecyclemanagement/policies/targettypes`);
+export const fetchLifeCyclePolicyTargetTypes = createAppAsyncThunk("lifeCyclePolicyDetails/fetchLifeCyclePolicyTargetTypes", async () => {
+	const res = await axios.get("/api/lifecyclemanagement/policies/targettypes");
 	const data = res.data;
 
 	return data;
 });
 
-export const fetchLifeCyclePolicyTimings = createAppAsyncThunk('lifeCyclePolicyDetails/fetchLifeCyclePolicyTimings', async () => {
-	const res = await axios.get(`/api/lifecyclemanagement/policies/timings`);
+export const fetchLifeCyclePolicyTimings = createAppAsyncThunk("lifeCyclePolicyDetails/fetchLifeCyclePolicyTimings", async () => {
+	const res = await axios.get("/api/lifecyclemanagement/policies/timings");
 	const data = res.data;
 
 	return data;
 });
 
 // Dummy function for compatability
-export const fetchLifeCyclePolicyDetailsAcls = createAppAsyncThunk('lifeCyclePolicyDetails/fetchLifeCyclePolicyDetailsAcls', async (id: string, {getState}) => {
+export const fetchLifeCyclePolicyDetailsAcls = createAppAsyncThunk("lifeCyclePolicyDetails/fetchLifeCyclePolicyDetailsAcls", async (id: string, { getState }) => {
 	const state = getState();
 	return state.lifeCyclePolicyDetails.accessControlEntries;
 });
 
 // Dummy function for compatability
-export const updateLifeCyclePolicyAccess = createAppAsyncThunk('lifeCyclePolicyDetails/fetchLifeCyclePolicyDetailsAcls', async (params: {
+export const updateLifeCyclePolicyAccess = createAppAsyncThunk("lifeCyclePolicyDetails/fetchLifeCyclePolicyDetailsAcls", async (params: {
 	id: string,
 	policies: { acl: { ace: Ace[] } }
-}, {dispatch}) => {
+}, { dispatch }) => {
 	const { id, policies } = params;
 
 	let data = new URLSearchParams();
 	data.append("accessControlEntries", JSON.stringify(policies.acl.ace));
 
 	axios.put(`/api/lifecyclemanagement/policies/${id}`, data)
-		.then((response) => {
+		.then(response => {
 			console.info(response);
-			dispatch(addNotification({type: "success", key: "LIFECYCLEPOLICY_ADDED"}));
+			dispatch(addNotification({ type: "success", key: "LIFECYCLEPOLICY_ADDED" }));
 			return true;
 		})
-		.catch((response) => {
+		.catch(response => {
 			console.error(response);
-			dispatch(addNotification({type: "error", key: "LIFECYCLEPOLICY_NOT_SAVED"}));
+			dispatch(addNotification({ type: "error", key: "LIFECYCLEPOLICY_NOT_SAVED" }));
 			return false;
 		});
 });
 
-export const updateLifeCyclePolicy = createAppAsyncThunk('lifeCyclePolicyDetails/updateLifeCyclePolicy', async (policy: LifeCyclePolicy, {dispatch}) => {
+export const updateLifeCyclePolicy = createAppAsyncThunk("lifeCyclePolicyDetails/updateLifeCyclePolicy", async (policy: LifeCyclePolicy, { dispatch }) => {
 	let data = new URLSearchParams();
 
 	Object.entries(policy).forEach(([key, value]) => {
-		let stringified = value
+		let stringified = value;
 		if (stringified instanceof Date) {
-			stringified = stringified.toJSON()
+			stringified = stringified.toJSON();
 		} else if (stringified === Object(stringified)) {
-			stringified = JSON.stringify(stringified)
+			stringified = JSON.stringify(stringified);
 		}
 		// @ts-expect-error: ???
 		data.append(key, stringified);
-	})
+	});
 
 	axios.put(`/api/lifecyclemanagement/policies/${policy.id}`, data)
-		.then((response) => {
+		.then(response => {
 			console.info(response);
-			dispatch(addNotification({type: "success", key: "LIFECYCLEPOLICY_ADDED"}));
+			dispatch(addNotification({ type: "success", key: "LIFECYCLEPOLICY_ADDED" }));
 		})
-		.catch((response) => {
+		.catch(response => {
 			console.error(response);
-			dispatch(addNotification({type: "error", key: "LIFECYCLEPOLICY_NOT_SAVED"}));
+			dispatch(addNotification({ type: "error", key: "LIFECYCLEPOLICY_NOT_SAVED" }));
 		});
 });
 
 const lifeCyclePolicyDetailsSlice = createSlice({
-	name: 'lifeCyclePolicyDetails',
+	name: "lifeCyclePolicyDetails",
 	initialState,
 	reducers: {},
 	// These are used for thunks
 	extraReducers: builder => {
 		builder
-			.addCase(fetchLifeCyclePolicyDetails.pending, (state) => {
-				state.statusLifeCyclePolicyDetails = 'loading';
+			.addCase(fetchLifeCyclePolicyDetails.pending, state => {
+				state.statusLifeCyclePolicyDetails = "loading";
 			})
 			.addCase(fetchLifeCyclePolicyDetails.fulfilled, (state, action: PayloadAction<{
 				actionParameters: LifeCyclePolicyDetailsState["actionParameters"],
@@ -179,7 +179,7 @@ const lifeCyclePolicyDetailsSlice = createSlice({
 				targetFilters: LifeCyclePolicyDetailsState["targetFilters"],
 				accessControlEntries: LifeCyclePolicyDetailsState["accessControlEntries"],
 			}>) => {
-				state.statusLifeCyclePolicyDetails = 'succeeded';
+				state.statusLifeCyclePolicyDetails = "succeeded";
 				const lifeCyclePolicyDetails = action.payload;
 				state.actionParameters = lifeCyclePolicyDetails.actionParameters;
 				state.timing = lifeCyclePolicyDetails.timing;
@@ -195,7 +195,7 @@ const lifeCyclePolicyDetailsSlice = createSlice({
 				state.accessControlEntries = lifeCyclePolicyDetails.accessControlEntries;
 			})
 			.addCase(fetchLifeCyclePolicyDetails.rejected, (state, action) => {
-				state.statusLifeCyclePolicyDetails = 'failed';
+				state.statusLifeCyclePolicyDetails = "failed";
 				state.errorLifeCyclePolicyDetails = action.error;
 			})
 			.addCase(fetchLifeCyclePolicyActions.fulfilled, (state, action: PayloadAction<
@@ -215,8 +215,8 @@ const lifeCyclePolicyDetailsSlice = createSlice({
 			>) => {
 				const timingsEnum = action.payload;
 				state.timingsEnum = timingsEnum;
-			})
-	}
+			});
+	},
 });
 
 // export const {} = lifeCyclePolicyDetailsSlice.actions;

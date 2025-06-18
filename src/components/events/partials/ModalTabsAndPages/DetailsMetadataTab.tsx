@@ -51,7 +51,7 @@ const DetailsMetadataTab = ({
 	const user = useAppSelector(state => getUserInformation(state));
 
 	const handleSubmit = (values: { [key: string]: any }, catalog: MetadataCatalog) => {
-		dispatch(updateResource({id: resourceId, values, catalog}));
+		dispatch(updateResource({ id: resourceId, values, catalog }));
 	};
 
 	// set current values of metadata fields as initial values
@@ -59,7 +59,7 @@ const DetailsMetadataTab = ({
 		let initialValues: { [key: string]: any } = {};
 
 		// Transform metadata fields and their values provided by backend (saved in redux)
-		metadataCatalog.fields.forEach((field) => {
+		metadataCatalog.fields.forEach(field => {
 			initialValues[field.id] = field.value;
 		});
 
@@ -78,15 +78,15 @@ const DetailsMetadataTab = ({
 	return (<ModalContentTable
 		modalBodyChildren={<Notifications context="not_corner" />}
 	>
-		{metadata.map((catalog) => (
+		{metadata.map(catalog => (
 			// initialize form
 			<Formik<InitialValues>
 				key={catalog.flavor}
 				enableReinitialize
 				initialValues={getInitialValues(catalog)}
-				onSubmit={(values) => handleSubmit(values, catalog)}
+				onSubmit={values => handleSubmit(values, catalog)}
 				innerRef={formikRef}
-			>{(formik) => (
+			>{formik => (
 				/* Render table for each metadata catalog */
 				<div className="obj tbl-details">
 					<header>

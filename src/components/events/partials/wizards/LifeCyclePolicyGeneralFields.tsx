@@ -35,77 +35,77 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 	const metadataFields = useAppSelector(state => getEventMetadata(state));
 
 	useEffect(() => {
-		dispatch(fetchEventMetadata())
+		dispatch(fetchEventMetadata());
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, []);
 
 	const ADDITIONAL_TARGET_FILTER_KEYS_EVENTS = [
 		{
-			id: 'series_name',
-			type: 'text',
-			collection: undefined
+			id: "series_name",
+			type: "text",
+			collection: undefined,
 		},
 		{
-			id: 'presenter',
-			type: 'text',
-			collection: undefined
+			id: "presenter",
+			type: "text",
+			collection: undefined,
 		},
 		{
-			id: 'start_date',
-			type: 'date',
-			collection: undefined
+			id: "start_date",
+			type: "date",
+			collection: undefined,
 		},
 		{
-			id: 'end_date',
-			type: 'date',
-			collection: undefined
+			id: "end_date",
+			type: "date",
+			collection: undefined,
 		},
 		{
-			id: 'created',
-			type: 'date',
-			collection: undefined
+			id: "created",
+			type: "date",
+			collection: undefined,
 		},
 		{
-			id: 'source',
-			type: 'text',
-			collection: undefined
+			id: "source",
+			type: "text",
+			collection: undefined,
 		},
 		{
-			id: 'rights',
-			type: 'text',
-			collection: undefined
+			id: "rights",
+			type: "text",
+			collection: undefined,
 		},
 		{
-			id: 'location',
-			type: 'text',
-			collection: undefined
+			id: "location",
+			type: "text",
+			collection: undefined,
 		},
-	]
+	];
 
-	const eventFilterOptions: { id: string, type: string, collection?: unknown }[] = []
+	const eventFilterOptions: { id: string, type: string, collection?: unknown }[] = [];
 	for (const field of metadataFields.fields) {
-		eventFilterOptions.push(field)
+		eventFilterOptions.push(field);
 	}
 	for (const field of ADDITIONAL_TARGET_FILTER_KEYS_EVENTS) {
-		eventFilterOptions.push(field)
+		eventFilterOptions.push(field);
 	}
 
 	const createTargetFilter = (): TargetFilter => {
 		return {
 			value: "",
 			type: "SEARCH",
-			must: true
-		}
-	}
+			must: true,
+		};
+	};
 
 	const filterOptions = (targetType: string) => {
 		switch (targetType) {
 			case "EVENT":
-				return eventFilterOptions
+				return eventFilterOptions;
 			default:
-				return []
+				return [];
 		}
-	}
+	};
 
 	return (
 		<>
@@ -141,7 +141,7 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 									type: "boolean",
 									required: true,
 									collection: undefined,
-									id: undefined
+									id: undefined,
 								}}
 								component={RenderField}
 							/>
@@ -167,7 +167,7 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 								metadataField={{
 									type: "text",
 									required: true,
-									collection: targetTypes.map((element) => ({ value: element, name: element })),
+									collection: targetTypes.map(element => ({ value: element, name: element })),
 									id: "language",
 								}}
 								component={RenderField}
@@ -182,7 +182,7 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 								metadataField={{
 									type: "text",
 									required: true,
-									collection: timings.map((element) => ({ value: element, name: element })),
+									collection: timings.map(element => ({ value: element, name: element })),
 									id: "language",
 								}}
 								component={RenderField}
@@ -197,8 +197,8 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 								metadataField={{
 									type: "text",
 									required: true,
-									collection: actions.map((element) => ({ value: element, name: element })),
-									id: "language"
+									collection: actions.map(element => ({ value: element, name: element })),
+									id: "language",
 								}}
 								component={RenderField}
 							/>
@@ -217,7 +217,7 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 									type: "date",
 									required: false,
 									collection: undefined,
-									id: undefined
+									id: undefined,
 								}}
 								component={RenderField}
 							/>
@@ -236,7 +236,7 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 									type: "cron",
 									required: false,
 									collection: undefined,
-									id: undefined
+									id: undefined,
 								}}
 								component={RenderField}
 							/>
@@ -294,7 +294,7 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 							{({ replace, remove, push }) => (
 								<>
 									{Object.entries(formik.values.targetFiltersArray).map(([key, filter], index) => {
-										return(
+										return (
 											<tr key={index}>
 												<td className="editable">
 													<Field
@@ -314,7 +314,7 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 															type: getTargetFilterRenderType(filter.filter, filterOptions(formik.values.targetType)),
 															required: true,
 															collection: getTargetFilterRenderCollection(filter.filter, filterOptions(formik.values.targetType)),
-															id: undefined
+															id: undefined,
 														}}
 														component={RenderField}
 													/>
@@ -340,7 +340,7 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 													/>
 												</td>
 											</tr>
-										)
+										);
 									})}
 									<tr>
 										<td colSpan={5}>
@@ -352,7 +352,7 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 											>
 												+{" "}
 												{t(
-													"LIFECYCLE.POLICIES.DETAILS.GENERAL.TARGETFILTERS.NEW"
+													"LIFECYCLE.POLICIES.DETAILS.GENERAL.TARGETFILTERS.NEW",
 												)}
 											</button>
 										</td>
@@ -376,7 +376,7 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 									<td>
 									<Field
 										type="text"
-										name={`actionParameters.workflowId`}
+										name={"actionParameters.workflowId"}
 										metadataField={{
 											type: "text",
 											required: true,
@@ -430,7 +430,7 @@ const DropdownField = ({
 	value,
 	values,
 	clearFieldName,
-	creatable = false
+	creatable = false,
 }: {
 	field: FieldProps["field"]
 	form: FieldProps["form"]
@@ -447,17 +447,17 @@ const DropdownField = ({
 			text={value}
 			options={values ? formatPolicyActionsForDropdown(values) : []}
 			required={true}
-			handleChange={(element) => {
-				setFieldValue(clearFieldName, undefined)
-				element && setFieldValue(field.name, element.value)
+			handleChange={element => {
+				setFieldValue(clearFieldName, undefined);
+				element && setFieldValue(field.name, element.value);
 			}}
 			placeholder={`-- ${t("SELECT_NO_OPTION_SELECTED")} --`}
 			creatable={creatable}
 			customCSS={{
-				width: "100%"
+				width: "100%",
 			}}
 		/>
-	)
+	);
 };
 
 const getTargetFilterRenderType = (filterName: string, targetFilterOptions: { id: string, type: string, collection?: unknown }[]) => {
@@ -470,9 +470,9 @@ const getTargetFilterRenderType = (filterName: string, targetFilterOptions: { id
 		return "text";
 	}
 	return option.type;
-}
+};
 
 const getTargetFilterRenderCollection = (filterName: string, targetFilterOptions: { id: string, type: string, collection?: unknown }[]) => {
 	const option = targetFilterOptions.find(e => e.id === filterName);
-	return option !== undefined ? option.collection : undefined
-}
+	return option !== undefined ? option.collection : undefined;
+};

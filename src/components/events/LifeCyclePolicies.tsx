@@ -70,7 +70,7 @@ const LifeCyclePolicies = () => {
 		await dispatch(fetchLifeCyclePolicyTargetTypes());
 		await dispatch(fetchLifeCyclePolicyTimings());
 
-		newPolicyModalRef.current?.open()
+		newPolicyModalRef.current?.open();
 	};
 
 	return (

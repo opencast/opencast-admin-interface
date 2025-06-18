@@ -38,11 +38,11 @@ const LifeCyclePolicyActionCell = ({
 	};
 
 	const hideDeleteConfirmation = () => {
-		deleteConfirmationModalRef.current?.close?.()
+		deleteConfirmationModalRef.current?.close?.();
 	};
 
 	const showDeleteConfirmation = async () => {
-		deleteConfirmationModalRef.current?.open()
+		deleteConfirmationModalRef.current?.open();
 	};
 
 	const deletingPolicy = (id: string) => {

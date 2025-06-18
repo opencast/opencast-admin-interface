@@ -6,7 +6,7 @@ import moment from "moment";
  * This component renders the mean queue time cells of systems in the table view
  */
 const MeanQueueTimeCell = ({
-	row
+	row,
 }: {
 	row: Service
 }) => {

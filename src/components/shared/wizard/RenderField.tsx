@@ -8,9 +8,9 @@ import DropDown from "../DropDown";
 import { parseISO } from "date-fns";
 import { FieldProps } from "formik";
 import { Cron } from "react-js-cron";
-import 'react-js-cron/dist/styles.css'
+import "react-js-cron/dist/styles.css";
 import { GroupBase, SelectInstance } from "react-select";
-import TextareaAutosize from 'react-textarea-autosize';
+import TextareaAutosize from "react-textarea-autosize";
 
 /**
  * This component renders an editable field for single values depending on the type of the corresponding metadata
@@ -40,13 +40,13 @@ const RenderField = ({
 		<div
 			onClick={() => {
 				if (editableRef.current) {
-					editableRef.current.focus && editableRef.current.focus()
-					editableRef.current.setFocus && editableRef.current.setFocus() // For DatePicker
+					editableRef.current.focus && editableRef.current.focus();
+					editableRef.current.setFocus && editableRef.current.setFocus(); // For DatePicker
 				}
 			}}
 			onFocus={onFocus}
 			onBlur={onBlur}
-			style={{display: "flex", justifyContent: "space-between"}}
+			style={{ display: "flex", justifyContent: "space-between" }}
 		>
 			{metadataField.type === "time" && (
 				<EditableSingleValueTime
@@ -122,7 +122,7 @@ const RenderField = ({
 					showCheck={showCheck}
 				/>
 			)}
-			<div style={{display: "flex", justifyContent: "flex-end"}}>
+			<div style={{ display: "flex", justifyContent: "flex-end" }}>
 				{!focused && showCheck && (
 					<i
 						className={cn("saved fa fa-check", {
@@ -172,11 +172,11 @@ const EditableDateValue = ({
 	return (
 		// For some reason onclick events are bubbling up from the datepicker which we do not want.
 		// Therefore we wrap it.
-		<div onClick={(e) => { e.stopPropagation() }}>
+		<div onClick={e => { e.stopPropagation(); }}>
 			<DatePicker
 				ref={ref}
 				selected={!isNaN(Date.parse(field.value)) ? new Date(field.value) : null}
-				onChange={(value) => setFieldValue(field.name, value)}
+				onChange={value => setFieldValue(field.name, value)}
 				showTimeInput
 				showYearDropdown
 				showMonthDropdown
@@ -225,7 +225,7 @@ const EditableSingleSelect = ({
 				? metadataField.collection.map(item => ({ label: item.label ?? item.name, value: item.value, order: item.order }))
 				: []}
 			required={metadataField.required}
-			handleChange={(element) => element && setFieldValue(field.name, element.value)}
+			handleChange={element => element && setFieldValue(field.name, element.value)}
 			placeholder={focused
 				? `-- ${t("SELECT_NO_OPTION_SELECTED")} --`
 				: `${t("SELECT_NO_OPTION_SELECTED")}`
@@ -277,13 +277,13 @@ const EditableSingleValue = ({
 			className="single-value"
 			autoFocus={isFirstField}
 			type="text"
-			onKeyDown={(event) => {
+			onKeyDown={event => {
 				if (event.key === "Enter") {
 					ref.current?.blur();
 				}
 			}}
 		/>
-	)
+	);
 };
 
 // Renders editable field for time value
@@ -301,11 +301,11 @@ const EditableSingleValueTime = ({
 	return (
 		// For some reason onclick events are bubbling up from the datepicker which we do not want.
 		// Therefore we wrap it.
-		<div onClick={(e) => { e.stopPropagation() }}>
+		<div onClick={e => { e.stopPropagation(); }}>
 			<DatePicker
 				ref={ref}
 				selected={typeof field.value === "string" ? parseISO(field.value) : field.value}
-				onChange={(value) => setFieldValue(field.name, value)}
+				onChange={value => setFieldValue(field.name, value)}
 				showTimeSelect
 				showTimeSelectOnly
 				dateFormat="p"
@@ -341,7 +341,7 @@ const EditableCronValue = ({
 				setValue={(value: string) => setFieldValue(field.name, value)}
 			/>
 		</div>
-	)
+	);
 		// <div onClick={() => setEditMode(true)} className="show-edit">
 		// 	<span className="editable preserve-newlines">{text || ""}</span>
 		// 	<div>

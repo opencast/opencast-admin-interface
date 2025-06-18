@@ -42,7 +42,7 @@ const LifeCyclePolicyDetails = () => {
 		{
 			tabTranslation: "LIFECYCLE.POLICIES.DETAILS.TAB.ACCESSPOLICIES",
 			accessRole: "ROLE_UI_LIFECYCLEPOLICIES_DETAILS_ACCESSPOLICIES_VIEW",
-			name: "Access Policies"
+			name: "Access Policies",
 		},
 	];
 

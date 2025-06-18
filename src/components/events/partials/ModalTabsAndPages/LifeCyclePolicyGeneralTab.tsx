@@ -30,7 +30,7 @@ const LifeCyclePolicyGeneralTab = ({
 	const handleSubmit = (values: LifeCyclePolicy & {workflowParameters: ConfigurationPanelField[], targetFiltersArray: (TargetFilter & { filter: string })[]}) => {
 
 		// Parse filters
-		const targetFilters: typeof values["targetFilters"] = parseTargetFiltersForSubmit(values.targetFiltersArray)
+		const targetFilters: typeof values["targetFilters"] = parseTargetFiltersForSubmit(values.targetFiltersArray);
 
 		// TODO: Improve workflowParameters rendering
 		// Parse action parameters
@@ -49,11 +49,11 @@ const LifeCyclePolicyGeneralTab = ({
 			...values,
 			targetFilters: targetFilters,
 			// actionParameters: newActionParameters,
-		}
+		};
 		// values.actionParameters["workflowParameters"] = JSON.stringify(workflowParameters);
 
 		if (values.action === "START_WORKFLOW") {
-			values.actionParameters["workflowParameters"] = JSON.parse(values.actionParameters["workflowParameters"] as string)
+			values.actionParameters["workflowParameters"] = JSON.parse(values.actionParameters["workflowParameters"] as string);
 		}
 
 		dispatch(updateLifeCyclePolicy(newValues));
@@ -64,21 +64,21 @@ const LifeCyclePolicyGeneralTab = ({
 		let initialValues: LifeCyclePolicy & {workflowParameters: ConfigurationPanelField[], targetFiltersArray: (TargetFilter & { filter: string })[]} = {
 			workflowParameters: [],
 			targetFiltersArray: [],
-			...policy
-		}
+			...policy,
+		};
 
 		// Access policies are handled in a different tab
 		// Remove them here, else they will delete the ACL due to their formatting
 		// @ts-expect-error: TODO: Find a typesafe (or straight up better) way to do this
-		delete initialValues.accessControlEntries
+		delete initialValues.accessControlEntries;
 
 		// Transform filters into something more editable
-		const targetFiltersArray: (TargetFilter & { filter: string })[] = []
+		const targetFiltersArray: (TargetFilter & { filter: string })[] = [];
 		for (const key in policy.targetFilters) {
 			targetFiltersArray.push({
 				filter: key,
-				...policy.targetFilters[key]
-			})
+				...policy.targetFilters[key],
+			});
 		}
 
 		// TODO: Improve workflowParameters rendering
@@ -119,9 +119,9 @@ const LifeCyclePolicyGeneralTab = ({
 			enableReinitialize
 			initialValues={getInitialValues(policy)}
 			validationSchema={LifeCyclePolicySchema[0]}
-			onSubmit={(values) => handleSubmit(values)}
+			onSubmit={values => handleSubmit(values)}
 		>
-			{(formik) => (
+			{formik => (
 				<>
 					<div className="modal-content">
 						<div className="modal-body">
