@@ -1,5 +1,5 @@
 import { FormikProps } from "formik";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import ModalContent from "../../../shared/modals/ModalContent";
@@ -14,7 +14,7 @@ interface RequiredFormProps {
 }
 
 const UserEffectiveRolesTab = <T extends RequiredFormProps>({
-	formik
+	formik,
 }: {
 	formik: FormikProps<T>
 }) => {
@@ -30,7 +30,7 @@ const UserEffectiveRolesTab = <T extends RequiredFormProps>({
 	};
 
 	const handleChangeSearch = async (input: string) => {
-		const filtered = defaultItems.filter((item) => {
+		const filtered = defaultItems.filter(item => {
 			return item.name.toLowerCase().includes(input.toLowerCase());
 		});
 		setSearchField(input);
@@ -51,7 +51,7 @@ const UserEffectiveRolesTab = <T extends RequiredFormProps>({
 						id="search_effective"
 						className="search"
 						value={searchField}
-						onChange={(e) => handleChangeSearch(e.target.value)}
+						onChange={e => handleChangeSearch(e.target.value)}
 						placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
 					/>
 				</div>

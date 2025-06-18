@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FormikProps } from "formik";
 import Notifications from "../../../shared/Notifications";
@@ -80,7 +80,7 @@ const AclAccessPage = <T extends RequiredFormProps>({
 									descriptionText={"USERS.ACLS.NEW.ACCESS.ACCESS_POLICY.DESCRIPTION"}
 									buttonText={"USERS.ACLS.NEW.ACCESS.ACCESS_POLICY.LABEL"}
 									emptyText={"USERS.ACLS.NEW.ACCESS.ACCESS_POLICY.EMPTY"}
-									transactions={{read_only: false}}
+									transactions={{ read_only: false }}
 									aclTemplates={aclTemplates}
 								/>
 
@@ -95,7 +95,7 @@ const AclAccessPage = <T extends RequiredFormProps>({
 											createLabel={"USERS.ACLS.NEW.ACCESS.ACCESS_POLICY.NEW_USER"}
 											formik={formik}
 											hasActions={aclActions.length > 0}
-											transactions={{read_only: false}}
+											transactions={{ read_only: false }}
 											aclActions={aclActions}
 											roles={roles}
 											editAccessRole={editAccessRole}
@@ -110,7 +110,7 @@ const AclAccessPage = <T extends RequiredFormProps>({
 											createLabel={"USERS.ACLS.NEW.ACCESS.ACCESS_POLICY.NEW"}
 											formik={formik}
 											hasActions={aclActions.length > 0}
-											transactions={{read_only: false}}
+											transactions={{ read_only: false }}
 											aclActions={aclActions}
 											roles={roles}
 											editAccessRole={editAccessRole}
@@ -128,7 +128,7 @@ const AclAccessPage = <T extends RequiredFormProps>({
 											createLabel={"USERS.ACLS.NEW.ACCESS.ACCESS_POLICY.NEW"}
 											formik={formik}
 											hasActions={aclActions.length > 0}
-											transactions={{read_only: false}}
+											transactions={{ read_only: false }}
 											aclActions={aclActions}
 											roles={roles}
 											editAccessRole={editAccessRole}

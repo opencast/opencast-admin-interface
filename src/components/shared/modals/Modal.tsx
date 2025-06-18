@@ -30,7 +30,6 @@ export type ModalHandle = {
 export const Modal = forwardRef<ModalHandle, PropsWithChildren<ModalProps>>(({
 	open = false,
 	closeCallback,
-	initialFocus,
 	header,
 	classId,
 	className,

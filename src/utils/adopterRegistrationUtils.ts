@@ -35,10 +35,10 @@ export type Registration = {
 
 // post request for adopter information
 export const postRegistration = async (
-	values: Registration
+	values: Registration,
 ) => {
 	// build body
-	let body = new URLSearchParams();
+	const body = new URLSearchParams();
 	body.append("contactMe", values.contactMe.toString());
 	body.append("systemType", values.systemType);
 	body.append("allowsStatistics", values.allowsStatistics.toString());

@@ -1,12 +1,12 @@
-import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios';
+import { PayloadAction, SerializedError, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import moment from "moment";
 import {
 	createDownloadUrl,
 } from "../utils/statisticsUtils";
 import { getHttpHeaders } from "../utils/resourceUtils";
 import { getStatistics } from "../selectors/statisticsSelectors";
-import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { createAppAsyncThunk } from "../createAsyncThunkWithTypes";
 
 /**
  * This file contains redux reducer for actions affecting the state of statistics
@@ -30,9 +30,9 @@ export type Statistics = {
 }
 
 type StatisticsState = {
-	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	status: "uninitialized" | "loading" | "succeeded" | "failed",
 	error: SerializedError | null,
-	statusUpdate: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	statusUpdate: "uninitialized" | "loading" | "succeeded" | "failed",
 	errorUpdate: SerializedError | null,
 	statistics: Statistics[],
 	hasStatisticsError: boolean,
@@ -40,9 +40,9 @@ type StatisticsState = {
 
 // Initial state of series details in redux store
 const initialState: StatisticsState = {
-	status: 'uninitialized',
+	status: "uninitialized",
 	error: null,
-	statusUpdate: 'uninitialized',
+	statusUpdate: "uninitialized",
 	errorUpdate: null,
 	statistics: [],
 	hasStatisticsError: false,
@@ -50,15 +50,15 @@ const initialState: StatisticsState = {
 
 /* thunks for fetching statistics data */
 
-export const fetchStatisticsPageStatistics = createAppAsyncThunk('statistics/fetchStatisticsPageStatistics', async (organizationId: string, { getState }) => {
+export const fetchStatisticsPageStatistics = createAppAsyncThunk("statistics/fetchStatisticsPageStatistics", async (organizationId: string, { getState }) => {
 	// get prior statistics
 	const state = getState();
 	const statistics = getStatistics(state);
 
-	return await fetchStatistics(organizationId, "organization", statistics)
+	return await fetchStatistics(organizationId, "organization", statistics);
 });
 
-export const fetchStatisticsPageStatisticsValueUpdate = createAppAsyncThunk('statistics/fetchStatisticsPageStatisticsValueUpdate', async (
+export const fetchStatisticsPageStatisticsValueUpdate = createAppAsyncThunk("statistics/fetchStatisticsPageStatisticsValueUpdate", async (
 	params: {
 		id: string,
 		providerId: string,
@@ -73,14 +73,14 @@ export const fetchStatisticsPageStatisticsValueUpdate = createAppAsyncThunk('sta
 	const state = getState();
 	const statistics = getStatistics(state);
 
-	return await fetchStatisticsValueUpdate(id, "organization", providerId, from, to, dataResolution, timeMode, statistics)
+	return await fetchStatisticsValueUpdate(id, "organization", providerId, from, to, dataResolution, timeMode, statistics);
 });
 
 export const fetchStatistics = async (resourceId: string, resourceType: string, statistics: Statistics[]) => {
 	let hasError = false;
 
 	// create url params
-	let params = new URLSearchParams();
+	const params = new URLSearchParams();
 	params.append("resourceType", resourceType);
 
 	let newStatistics: Statistics[] = [];
@@ -88,7 +88,7 @@ export const fetchStatistics = async (resourceId: string, resourceType: string, 
 
 	// get the available statistics providers from API
 	try {
-		const response = await axios.get("/admin-ng/statistics/providers.json", { params })
+		const response = await axios.get("/admin-ng/statistics/providers.json", { params });
 		// default values to use, when statistics are viewed the first time
 		const originalDataResolution = "monthly";
 		const originalTimeMode = "year";
@@ -130,7 +130,7 @@ export const fetchStatistics = async (resourceId: string, resourceType: string, 
 					response.data[i].providerId,
 					from,
 					to,
-					dataResolution
+					dataResolution,
 				);
 
 				// add provider to statistics list and add statistic settings
@@ -161,12 +161,12 @@ export const fetchStatistics = async (resourceId: string, resourceType: string, 
 		});
 
 		// request statistics values from API
-		const dataResponse = await axios.post("/admin-ng/statistics/data.json", requestData, requestHeaders)
+		const dataResponse = await axios.post("/admin-ng/statistics/data.json", requestData, requestHeaders);
 			// iterate over value responses
 			for (const statisticsValue of dataResponse.data) {
 				// get the statistic the response is meant for
 				const stat = newStatistics.find(
-					(element) => element.providerId === statisticsValue.providerId
+					element => element.providerId === statisticsValue.providerId,
 				);
 
 				if (!stat) {
@@ -182,8 +182,8 @@ export const fetchStatistics = async (resourceId: string, resourceType: string, 
 				};
 
 				// put updated statistic into statistics list
-				newStatistics = newStatistics.map((oldStat) =>
-					oldStat === stat ? statistic : oldStat
+				newStatistics = newStatistics.map(oldStat =>
+					oldStat === stat ? statistic : oldStat,
 				);
 
 				// put statistics list into redux store
@@ -192,7 +192,7 @@ export const fetchStatistics = async (resourceId: string, resourceType: string, 
 			}
 			statistics = newStatistics;
 			hasError = false;
-		} catch(leError) {
+		} catch (leError) {
 			// put unfinished statistics list into redux store but set flag that an error occurred
 			statistics = newStatistics;
 			hasError = true;
@@ -229,18 +229,18 @@ export const fetchStatisticsValueUpdate = async (
 		data: JSON.stringify(statisticsValueRequest),
 	});
 
-	let newStatistics
+	let newStatistics;
 	// request statistic values from API
 	await axios
 		.post("/admin-ng/statistics/data.json", requestData, requestHeaders)
-		.then((dataResponse) => {
+		.then(dataResponse => {
 			// if only one element is in the response (as expected), get the response
 			if (dataResponse.data.length === 1) {
 				const newStatisticData = dataResponse.data[0];
 
 				// get the statistic the response is meant for out of the statistics list
 				const stat = statistics.find(
-					(element) => element.providerId === providerId
+					element => element.providerId === providerId,
 				);
 
 				// get statistic options and download url for new statistic settings
@@ -251,7 +251,7 @@ export const fetchStatisticsValueUpdate = async (
 					providerId,
 					from,
 					to,
-					dataResolution
+					dataResolution,
 				);
 
 				// update statistic
@@ -269,57 +269,57 @@ export const fetchStatisticsValueUpdate = async (
 				};
 
 				// put updated statistic into statistics list
-				newStatistics = statistics.map((oldStat) =>
-					oldStat === stat ? statistic : oldStat
+				newStatistics = statistics.map(oldStat =>
+					oldStat === stat ? statistic : oldStat,
 				);
 			}
-		})
+		});
 
 	// put updates statistics list into redux store
-	return newStatistics
+	return newStatistics;
 };
 
 
 
 const statisticsSlice = createSlice({
-	name: 'statistics',
+	name: "statistics",
 	initialState,
 	reducers: {},
 	// These are used for thunks
 	extraReducers: builder => {
 		builder
-			.addCase(fetchStatisticsPageStatistics.pending, (state) => {
-				state.status = 'loading';
+			.addCase(fetchStatisticsPageStatistics.pending, state => {
+				state.status = "loading";
 			})
 			.addCase(fetchStatisticsPageStatistics.fulfilled, (state, action: PayloadAction<{
 				statistics: StatisticsState["statistics"],
 				hasError: StatisticsState["hasStatisticsError"]
 			}>) => {
-				state.status = 'succeeded';
+				state.status = "succeeded";
 				const statistics = action.payload;
 				state.statistics = statistics.statistics;
 				state.hasStatisticsError = statistics.hasError;
 			})
 			.addCase(fetchStatisticsPageStatistics.rejected, (state, action) => {
-				state.status = 'failed';
+				state.status = "failed";
 				state.hasStatisticsError = true;
 				state.error = action.error;
 			})
-			.addCase(fetchStatisticsPageStatisticsValueUpdate.pending, (state) => {
-				state.statusUpdate = 'loading';
+			.addCase(fetchStatisticsPageStatisticsValueUpdate.pending, state => {
+				state.statusUpdate = "loading";
 			})
 			.addCase(fetchStatisticsPageStatisticsValueUpdate.fulfilled, (state, action: PayloadAction<
 				any
 			>) => {
-				state.statusUpdate = 'succeeded';
+				state.statusUpdate = "succeeded";
 				const statistics = action.payload;
 				state.statistics = statistics;
 			})
 			.addCase(fetchStatisticsPageStatisticsValueUpdate.rejected, (state, action) => {
-				state.statusUpdate = 'failed';
+				state.statusUpdate = "failed";
 				state.errorUpdate = action.error;
 			});
-	}
+	},
 });
 
 // export const {} = statisticsSlice.actions;

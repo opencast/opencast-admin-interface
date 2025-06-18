@@ -1,4 +1,3 @@
-import React from "react";
 import Notifications from "../../../shared/Notifications";
 import {
 	getWorkflowOperationDetails,
@@ -51,7 +50,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 				<header>
 					{
 						t(
-							"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TITLE"
+							"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TITLE",
 						) /* Operation Details */
 					}
 				</header>
@@ -63,7 +62,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.TITLE"
+												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.TITLE",
 											) /* Title */
 										}
 									</td>
@@ -73,7 +72,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.DESCRIPTION"
+												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.DESCRIPTION",
 											) /* Description */
 										}
 									</td>
@@ -83,7 +82,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.STATE"
+												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.STATE",
 											) /* State */
 										}
 									</td>
@@ -93,7 +92,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.EXECUTION_HOST"
+												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.EXECUTION_HOST",
 											) /* Execution Host */
 										}
 									</td>
@@ -103,7 +102,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.JOB"
+												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.JOB",
 											) /* Job */
 										}
 									</td>
@@ -113,7 +112,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.TIME_IN_QUEUE"
+												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.TIME_IN_QUEUE",
 											) /* Time in Queue */
 										}
 									</td>
@@ -123,7 +122,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.STARTED"
+												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.STARTED",
 											) /* Started */
 										}
 									</td>
@@ -137,7 +136,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.FINISHED"
+												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.FINISHED",
 											) /* Finished */
 										}
 									</td>
@@ -151,7 +150,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.RETRY_STRATEGY"
+												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.RETRY_STRATEGY",
 											) /* Retry Strategy */
 										}
 									</td>
@@ -161,7 +160,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.FAILED_ATTEMPTS"
+												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.FAILED_ATTEMPTS",
 											) /* Failed Attempts */
 										}
 									</td>
@@ -171,7 +170,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.MAX_ATTEMPTS"
+												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.MAX_ATTEMPTS",
 											) /* Max */
 										}
 									</td>
@@ -181,7 +180,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.EXCEPTION_HANDLER_WORKFLOW"
+												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.EXCEPTION_HANDLER_WORKFLOW",
 											) /* Exception Handler Workflow */
 										}
 									</td>
@@ -191,7 +190,7 @@ const EventDetailsWorkflowOperationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.FAIL_ON_ERROR"
+												"EVENTS.EVENTS.DETAILS.OPERATION_DETAILS.TABLE_HEADERS.FAIL_ON_ERROR",
 											) /* Fail on Error */
 										}
 									</td>

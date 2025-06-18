@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
@@ -53,12 +53,12 @@ const Groups = () => {
 		loadGroups();
 
 		// Fetch groups every minute
-		let fetchGroupsInterval = setInterval(loadGroups, 5000);
+		const fetchGroupsInterval = setInterval(loadGroups, 5000);
 
 		return () => {
 			allowLoadIntoTable = false;
 			clearInterval(fetchGroupsInterval);
-		}
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

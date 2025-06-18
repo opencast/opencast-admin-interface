@@ -1,10 +1,10 @@
-import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
-import { recordingsTableConfig } from '../configs/tableConfigs/recordingsTableConfig';
-import axios from 'axios';
-import { getURLParams } from '../utils/resourceUtils';
-import { addNotification } from './notificationSlice';
-import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
-import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { PayloadAction, SerializedError, createSlice } from "@reduxjs/toolkit";
+import { recordingsTableConfig } from "../configs/tableConfigs/recordingsTableConfig";
+import axios from "axios";
+import { getURLParams } from "../utils/resourceUtils";
+import { addNotification } from "./notificationSlice";
+import { TableConfig } from "../configs/tableConfigs/aclsTableConfig";
+import { createAppAsyncThunk } from "../createAsyncThunkWithTypes";
 
 /**
  * This file contains redux reducer for actions affecting the state of recordings
@@ -22,7 +22,7 @@ export type Recording = {
 }
 
 type RecordingState = {
-	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	status: "uninitialized" | "loading" | "succeeded" | "failed",
 	error: SerializedError | null,
 	results: Recording[],
 	columns: TableConfig["columns"],
@@ -33,14 +33,14 @@ type RecordingState = {
 }
 
 // Fill columns initially with columns defined in recordingsTableConfig
-const initialColumns = recordingsTableConfig.columns.map((column) => ({
+const initialColumns = recordingsTableConfig.columns.map(column => ({
 	...column,
 	deactivated: false,
 }));
 
 // Initial state of recordings in redux store
 const initialState: RecordingState = {
-	status: 'uninitialized',
+	status: "uninitialized",
 	error: null,
 	results: [],
 	columns: initialColumns,
@@ -51,16 +51,16 @@ const initialState: RecordingState = {
 };
 
 // fetch recordings from server
-export const fetchRecordings = createAppAsyncThunk('recordings/fetchRecordings', async (flag: string | undefined, { getState }) => {
+export const fetchRecordings = createAppAsyncThunk("recordings/fetchRecordings", async (flag: string | undefined, { getState }) => {
 	let res;
 
 	if (flag === "inputs") {
 		res = await axios.get(
-			"/admin-ng/capture-agents/agents.json?inputs=true"
+			"/admin-ng/capture-agents/agents.json?inputs=true",
 			);
 		} else {
 			const state = getState();
-			let params = getURLParams(state, "recordings");
+			const params = getURLParams(state, "recordings");
 
 		// /agents.json?filter={filter}&limit=100&offset=0&inputs=false&sort={sort}
 		res = await axios.get("/admin-ng/capture-agents/agents.json", {
@@ -70,7 +70,7 @@ export const fetchRecordings = createAppAsyncThunk('recordings/fetchRecordings',
 
 	const recordings = await res.data;
 
-	let captureAgents = [];
+	const captureAgents = [];
 
 	for (const agent of recordings.results) {
 		const transformedAgent = {
@@ -78,10 +78,10 @@ export const fetchRecordings = createAppAsyncThunk('recordings/fetchRecordings',
 			name: agent.Name,
 			status: agent.Status,
 			updated: agent.Update,
-			inputs: !!agent.inputs ? [...agent.inputs] : [],
-			roomId: !!agent.roomId ? agent.roomId : "",
+			inputs: agent.inputs ? [...agent.inputs] : [],
+			roomId: agent.roomId ? agent.roomId : "",
 			type: "LOCATION",
-			url: !!agent.url ? agent.url : "",
+			url: agent.url ? agent.url : "",
 			removable:
 				"AGENTS.STATUS.OFFLINE" === agent.Status ||
 				"AGENTS.STATUS.UNKNOWN" === agent.Status,
@@ -90,34 +90,34 @@ export const fetchRecordings = createAppAsyncThunk('recordings/fetchRecordings',
 		captureAgents.push(transformedAgent);
 	}
 
-	return { ...recordings, results: captureAgents }
+	return { ...recordings, results: captureAgents };
 });
 
 // delete location with provided id
-export const deleteRecording = createAppAsyncThunk('recordings/deleteRecording', async (id: Recording["id"], { dispatch }) => {
+export const deleteRecording = createAppAsyncThunk("recordings/deleteRecording", async (id: Recording["id"], { dispatch }) => {
 	// API call for deleting a location
 	axios
 		.delete(`/admin-ng/capture-agents/${id}`)
-		.then((res) => {
+		.then(res => {
 			console.info(res);
 			// add success notification
-			dispatch(addNotification({type: "success", key: "LOCATION_DELETED"}));
+			dispatch(addNotification({ type: "success", key: "LOCATION_DELETED" }));
 		})
-		.catch((res) => {
+		.catch(res => {
 			console.error(res);
 			// add error notification depending on status code
 			if (res.status === 401) {
 				dispatch(
-					addNotification({type: "error", key: "LOCATION_NOT_DELETED_NOT_AUTHORIZED"})
+					addNotification({ type: "error", key: "LOCATION_NOT_DELETED_NOT_AUTHORIZED" }),
 				);
 			} else {
-				dispatch(addNotification({type: "error", key: "LOCATION_NOT_DELETED"}));
+				dispatch(addNotification({ type: "error", key: "LOCATION_NOT_DELETED" }));
 			}
 		});
 });
 
 const recordingSlice = createSlice({
-	name: 'recordings',
+	name: "recordings",
 	initialState,
 	reducers: {
 		setRecordingsColumns(state, action: PayloadAction<
@@ -129,8 +129,8 @@ const recordingSlice = createSlice({
 	// These are used for thunks
 	extraReducers: builder => {
 		builder
-			.addCase(fetchRecordings.pending, (state) => {
-				state.status = 'loading';
+			.addCase(fetchRecordings.pending, state => {
+				state.status = "loading";
 			})
 			.addCase(fetchRecordings.fulfilled, (state, action: PayloadAction<{
 				total: RecordingState["total"],
@@ -139,7 +139,7 @@ const recordingSlice = createSlice({
 				offset: RecordingState["offset"],
 				results: RecordingState["results"],
 			}>) => {
-				state.status = 'succeeded';
+				state.status = "succeeded";
 				const recordings = action.payload;
 				state.total = recordings.total;
 				state.count = recordings.count;
@@ -148,10 +148,10 @@ const recordingSlice = createSlice({
 				state.results = recordings.results;
 			})
 			.addCase(fetchRecordings.rejected, (state, action) => {
-				state.status = 'failed';
+				state.status = "failed";
 				state.error = action.error;
 			});
-	}
+	},
 });
 
 export const { setRecordingsColumns } = recordingSlice.actions;

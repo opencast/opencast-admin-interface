@@ -21,7 +21,7 @@ import { ParseKeys } from "i18next";
  * This component renders the adopter registration modal. This modal has various states.
  */
 const RegistrationModal = ({
-	modalRef
+	modalRef,
 }: {
 	modalRef: React.RefObject<ModalHandle | null>
 }) => {
@@ -70,7 +70,7 @@ const RegistrationModalContent = () => {
 	}>();
 
 	useEffect(() => {
-		fetchRegistrationInfos().then((r) => console.log(r));
+		fetchRegistrationInfos().then(r => console.log(r));
 		fetchStatisticSummary();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -85,17 +85,17 @@ const RegistrationModalContent = () => {
 	};
 
 	const fetchRegistrationInfos = async () => {
-		let registrationInfo = await fetchAdopterRegistration();
+		const registrationInfo = await fetchAdopterRegistration();
 
 		// merge response into initial values for formik
-		setInitialValues({...initialValues, ...registrationInfo});
+		setInitialValues({ ...initialValues, ...registrationInfo });
 	};
 
 	const fetchStatisticSummary = async () => {
 		const info = await fetchAdopterStatisticsSummary();
 
 		setStatisticsSummary(info);
-	}
+	};
 
 	const handleSubmit = (values: Registration) => {
 		// post request for adopter information
@@ -148,13 +148,13 @@ const RegistrationModalContent = () => {
 					<div className="row">
 						<p>
 							{t(
-								"ADOPTER_REGISTRATION.MODAL.INFORMATION_STATE.INFORMATION_PARAGRAPH_1"
+								"ADOPTER_REGISTRATION.MODAL.INFORMATION_STATE.INFORMATION_PARAGRAPH_1",
 							)}
 						</p>
 						<br />
 						<p>
 							{t(
-								"ADOPTER_REGISTRATION.MODAL.INFORMATION_STATE.INFORMATION_PARAGRAPH_2"
+								"ADOPTER_REGISTRATION.MODAL.INFORMATION_STATE.INFORMATION_PARAGRAPH_2",
 							)}
 						</p>
 					</div>
@@ -229,7 +229,7 @@ const RegistrationModalContent = () => {
 						<p>
 							<span>
 								{t(
-									"ADOPTER_REGISTRATION.MODAL.THANK_YOU_STATE.TEXT_LEADING_TO_PATH"
+									"ADOPTER_REGISTRATION.MODAL.THANK_YOU_STATE.TEXT_LEADING_TO_PATH",
 								)}
 							</span>
 							<b>
@@ -242,7 +242,7 @@ const RegistrationModalContent = () => {
 							<span>
 								{" "}
 								{t(
-									"ADOPTER_REGISTRATION.MODAL.THANK_YOU_STATE.TEXT_LEADING_AFTER_PATH"
+									"ADOPTER_REGISTRATION.MODAL.THANK_YOU_STATE.TEXT_LEADING_AFTER_PATH",
 								)}
 							</span>
 						</p>
@@ -272,9 +272,9 @@ const RegistrationModalContent = () => {
 			initialValues={initialValues}
 			enableReinitialize
 			validationSchema={AdopterRegistrationSchema}
-			onSubmit={(values) => handleSubmit(values)}
+			onSubmit={values => handleSubmit(values)}
 		>
-			{(formik) => (
+			{formik => (
 				<>
 					{state === "form" && (
 						<ModalContent modalContentClassName="modal-content active">
@@ -282,7 +282,7 @@ const RegistrationModalContent = () => {
 								<fieldset>
 									<legend>
 										{t(
-											"ADOPTER_REGISTRATION.MODAL.FORM_STATE.ORGANISATION"
+											"ADOPTER_REGISTRATION.MODAL.FORM_STATE.ORGANISATION",
 										)}
 									</legend>
 									<div className="row">
@@ -304,7 +304,7 @@ const RegistrationModalContent = () => {
 													}
 												>
 													{t(
-														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.ORGANISATION"
+														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.ORGANISATION",
 													)}
 												</label>
 											</div>
@@ -327,7 +327,51 @@ const RegistrationModalContent = () => {
 													}
 												>
 													{t(
-														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.DEPARTMENT"
+														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.DEPARTMENT",
+													)}
+												</label>
+											</div>
+										</div>
+									</div>
+									<div className="row">
+										<div className="col">
+											<div className="form-group">
+												<Field
+													type="text"
+													name="street"
+													id="adopter_street"
+													className="form-control"
+												/>
+												<label
+													className="form-control-placeholder"
+													htmlFor="adopter_street"
+													style={
+														formik.values.street ? styleWithContent : {}
+													}
+												>
+													{t(
+														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.STREET",
+													)}
+												</label>
+											</div>
+										</div>
+										<div className="col">
+											<div className="form-group">
+												<Field
+													type="text"
+													name="streetNo"
+													id="adopter_streetnumber"
+													className="form-control"
+												/>
+												<label
+													className="form-control-placeholder"
+													htmlFor="adopter_streetnumber"
+													style={
+														formik.values.streetNo ? styleWithContent : {}
+													}
+												>
+													{t(
+														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.NUMBER",
 													)}
 												</label>
 											</div>
@@ -358,7 +402,7 @@ const RegistrationModalContent = () => {
 													}
 												>
 													{t(
-														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.COUNTRY"
+														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.COUNTRY",
 													)}
 												</label>
 											</div>
@@ -382,7 +426,7 @@ const RegistrationModalContent = () => {
 														}
 													>
 														{t(
-															"ADOPTER_REGISTRATION.MODAL.FORM_STATE.POSTAL_CODE"
+															"ADOPTER_REGISTRATION.MODAL.FORM_STATE.POSTAL_CODE",
 														)}
 													</label>
 												</div>
@@ -401,7 +445,7 @@ const RegistrationModalContent = () => {
 														}
 													>
 														{t(
-															"ADOPTER_REGISTRATION.MODAL.FORM_STATE.CITY"
+															"ADOPTER_REGISTRATION.MODAL.FORM_STATE.CITY",
 														)}
 													</label>
 												</div>
@@ -412,7 +456,7 @@ const RegistrationModalContent = () => {
 								<fieldset>
 									<legend>
 										{t(
-											"ADOPTER_REGISTRATION.MODAL.FORM_STATE.CONTACT_INFO"
+											"ADOPTER_REGISTRATION.MODAL.FORM_STATE.CONTACT_INFO",
 										)}
 									</legend>
 									<div className="row">
@@ -434,7 +478,7 @@ const RegistrationModalContent = () => {
 													}
 												>
 													{t(
-														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.FIRST_NAME"
+														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.FIRST_NAME",
 													)}
 												</label>
 											</div>
@@ -455,51 +499,7 @@ const RegistrationModalContent = () => {
 													}
 												>
 													{t(
-														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.LAST_NAME"
-													)}
-												</label>
-											</div>
-										</div>
-									</div>
-									<div className="row">
-										<div className="col">
-											<div className="form-group">
-												<Field
-													type="text"
-													name="street"
-													id="adopter_street"
-													className="form-control"
-												/>
-												<label
-													className="form-control-placeholder"
-													htmlFor="adopter_street"
-													style={
-														formik.values.street ? styleWithContent : {}
-													}
-												>
-													{t(
-														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.STREET"
-													)}
-												</label>
-											</div>
-										</div>
-										<div className="col">
-											<div className="form-group">
-												<Field
-													type="text"
-													name="streetNo"
-													id="adopter_streetnumber"
-													className="form-control"
-												/>
-												<label
-													className="form-control-placeholder"
-													htmlFor="adopter_streetnumber"
-													style={
-														formik.values.streetNo ? styleWithContent : {}
-													}
-												>
-													{t(
-														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.NUMBER"
+														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.LAST_NAME",
 													)}
 												</label>
 											</div>
@@ -522,7 +522,7 @@ const RegistrationModalContent = () => {
 													}
 												>
 													{t(
-														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.MAIL"
+														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.MAIL",
 													)}
 												</label>
 											</div>
@@ -537,7 +537,7 @@ const RegistrationModalContent = () => {
 												/>
 												<label htmlFor="adopter_contactme">
 													{t(
-														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.CONTACT_ME"
+														"ADOPTER_REGISTRATION.MODAL.FORM_STATE.CONTACT_ME",
 													)}
 												</label>
 											</div>
@@ -547,13 +547,13 @@ const RegistrationModalContent = () => {
 								<fieldset>
 									<legend>
 										{t(
-											"ADOPTER_REGISTRATION.MODAL.FORM_STATE.SYSTEM_TYPE_HEADLINE"
+											"ADOPTER_REGISTRATION.MODAL.FORM_STATE.SYSTEM_TYPE_HEADLINE",
 										)}
 									</legend>
 									<div className="row">
 										<div className="form-group">
 											<Field
-												style={{color: "#666", fontWeight: "600"}}
+												style={{ color: "#666", fontWeight: "600" }}
 												id="system_type"
 												name="systemType"
 												as="select"
@@ -574,7 +574,7 @@ const RegistrationModalContent = () => {
 												}
 											>
 												{t(
-													"ADOPTER_REGISTRATION.MODAL.FORM_STATE.SYSTEM_TYPE"
+													"ADOPTER_REGISTRATION.MODAL.FORM_STATE.SYSTEM_TYPE",
 												)}
 											</label>
 										</div>
@@ -583,7 +583,7 @@ const RegistrationModalContent = () => {
 								<fieldset>
 									<legend>
 										{t(
-											"ADOPTER_REGISTRATION.MODAL.FORM_STATE.WHICH_DATA_TO_SHARE"
+											"ADOPTER_REGISTRATION.MODAL.FORM_STATE.WHICH_DATA_TO_SHARE",
 										)}
 									</legend>
 									<div className="form-group form-group-checkbox">
@@ -595,7 +595,7 @@ const RegistrationModalContent = () => {
 										/>
 										<label htmlFor="adopter_allows_statistics">
 											{t(
-													"ADOPTER_REGISTRATION.MODAL.FORM_STATE.USAGE_STATISTICS"
+													"ADOPTER_REGISTRATION.MODAL.FORM_STATE.USAGE_STATISTICS",
 											)}
 										</label>
 								</div>
@@ -608,7 +608,7 @@ const RegistrationModalContent = () => {
 										/>
 										<label htmlFor="adopter_allows_err_reports">
 											{t(
-												"ADOPTER_REGISTRATION.MODAL.FORM_STATE.ERROR_REPORTS"
+												"ADOPTER_REGISTRATION.MODAL.FORM_STATE.ERROR_REPORTS",
 											)}
 										</label>
 									</div>
@@ -616,7 +616,7 @@ const RegistrationModalContent = () => {
 								<fieldset>
 									<legend>
 										{t(
-											"ADOPTER_REGISTRATION.MODAL.FORM_STATE.POLICY_HEADLINE"
+											"ADOPTER_REGISTRATION.MODAL.FORM_STATE.POLICY_HEADLINE",
 										)}
 									</legend>
 									<div className="form-group form-group-checkbox">
@@ -629,7 +629,7 @@ const RegistrationModalContent = () => {
 										<label htmlFor="agreedToPolicy">
 											<span>
 												{t(
-													"ADOPTER_REGISTRATION.MODAL.FORM_STATE.READ_TERMS_OF_USE_BEFORE"
+													"ADOPTER_REGISTRATION.MODAL.FORM_STATE.READ_TERMS_OF_USE_BEFORE",
 												)}
 											</span>
 											<span
@@ -639,12 +639,12 @@ const RegistrationModalContent = () => {
 												}
 											>
 												{" " + t(
-													"ADOPTER_REGISTRATION.MODAL.FORM_STATE.READ_TERMS_OF_USE_LINK"
+													"ADOPTER_REGISTRATION.MODAL.FORM_STATE.READ_TERMS_OF_USE_LINK",
 												) + " "}
 											</span>
 											<span>
 												{t(
-													"ADOPTER_REGISTRATION.MODAL.FORM_STATE.READ_TERMS_OF_USE_AFTER"
+													"ADOPTER_REGISTRATION.MODAL.FORM_STATE.READ_TERMS_OF_USE_AFTER",
 												)}
 											</span>
 										</label>
@@ -754,7 +754,7 @@ const RegistrationModalContent = () => {
 			)}
 		</Formik>
 		</>
-	)
-}
+	);
+};
 
 export default RegistrationModal;

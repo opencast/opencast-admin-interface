@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Formik } from "formik";
 import { initialFormValuesStartTask } from "../../../../configs/modalConfig";
 import WizardStepper, { WizardStep } from "../../../shared/wizard/WizardStepper";
@@ -88,11 +88,11 @@ const StartTaskModal = ({
 			{/* Initialize overall form */}
 			<Formik
 				initialValues={snapshot}
-				validate={(values) => validateFormik(values)}
-				onSubmit={(values) => handleSubmit(values)}
+				validate={values => validateFormik(values)}
+				onSubmit={values => handleSubmit(values)}
 			>
 				{/* Render wizard pages depending on current value of page variable */}
-				{(formik) => {
+				{formik => {
 					// eslint-disable-next-line react-hooks/rules-of-hooks
 					useEffect(() => {
 						formik.validateForm().then();

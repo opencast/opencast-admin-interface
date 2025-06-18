@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { Step, StepButton, StepLabel, Stepper } from "@mui/material";
@@ -44,14 +43,14 @@ const WizardStepper = ({
 	const handleOnClick = async (key: number) => {
 		if (isSummaryReachable(key, steps, completed)) {
 			if (hasAccessPage) {
-				let check = await dispatch(checkAcls(formik.values.acls));
+				const check = await dispatch(checkAcls(formik.values.acls));
 				if (!check) {
 					return;
 				}
 			}
 
 			if (formik.isValid) {
-				let updatedCompleted = completed;
+				const updatedCompleted = completed;
 				updatedCompleted[activePageIndex] = true;
 				setCompleted(updatedCompleted);
 				// If all previous pages have been completed
@@ -87,7 +86,7 @@ const WizardStepper = ({
 							{t(label.translation)}
 						</StepLabel>
 					</StepButton>
-				</Step>
+				</Step>,
 			)}
 		</Stepper>
 	);

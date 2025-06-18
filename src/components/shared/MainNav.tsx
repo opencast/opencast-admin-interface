@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
 import {
 	getOrgProperties,
-	getUserInformation
+	getUserInformation,
 } from "../../selectors/userInfoSelectors";
 import { hasAccess } from "../../utils/utils";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -24,32 +24,32 @@ const MainNav = ({
 	toggleMenu: () => void,
 }) => {
 	const { t } = useTranslation();
-	let navigate = useNavigate();
+	const navigate = useNavigate();
 
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
 
-	const statisticsEnabled = (orgProperties['admin.statistics.enabled'] || 'false').toLowerCase() === 'true';
-	const themesEnabled = (orgProperties['admin.themes.enabled'] || 'false').toLowerCase() === 'true';
+	const statisticsEnabled = (orgProperties["admin.statistics.enabled"] || "false").toLowerCase() === "true";
+	const themesEnabled = (orgProperties["admin.themes.enabled"] || "false").toLowerCase() === "true";
 
 	useHotkeys(
 		availableHotkeys.general.EVENT_VIEW.sequence,
 		() => navigate("/events/events"),
 		{ description: t(availableHotkeys.general.EVENT_VIEW.description) ?? undefined },
-		[]
+		[],
 	);
 
 	useHotkeys(
 		availableHotkeys.general.SERIES_VIEW.sequence,
 		() => navigate("/events/series"),
 		{ description: t(availableHotkeys.general.SERIES_VIEW.description) ?? undefined },
-		[]
+		[],
 	);
 
 	useHotkeys(
 		availableHotkeys.general.MAIN_MENU.sequence,
 		() => toggleMenu(),
 		{ description: t(availableHotkeys.general.MAIN_MENU.description) ?? undefined },
-		[toggleMenu]
+		[toggleMenu],
 	);
 
 	return (
@@ -189,7 +189,7 @@ const MainNavButton = ({
 				{...linkProps}
 			/>
 	);
-}
+};
 
 const MainNavLink = ({
 	path,

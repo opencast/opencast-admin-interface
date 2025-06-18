@@ -1,4 +1,3 @@
-import React from "react";
 import Notifications from "../../../shared/Notifications";
 import {
 	getWorkflowErrorDetails,
@@ -53,7 +52,7 @@ const EventDetailsWorkflowErrorDetails = () => {
 				<header>
 					{
 						t(
-							"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.HEADER"
+							"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.HEADER",
 						) /* Error Details */
 					}
 				</header>
@@ -65,7 +64,7 @@ const EventDetailsWorkflowErrorDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.SEVERITY"
+												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.SEVERITY",
 											) /* Severity */
 										}
 									</td>
@@ -75,7 +74,7 @@ const EventDetailsWorkflowErrorDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.TITLE"
+												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.TITLE",
 											) /* Title */
 										}
 									</td>
@@ -85,7 +84,7 @@ const EventDetailsWorkflowErrorDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.DESCRIPTION"
+												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.DESCRIPTION",
 											) /* Description */
 										}
 									</td>
@@ -95,7 +94,7 @@ const EventDetailsWorkflowErrorDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.JOB_ID"
+												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.JOB_ID",
 											) /* Job ID */
 										}
 									</td>
@@ -105,7 +104,7 @@ const EventDetailsWorkflowErrorDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.DATE"
+												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.DATE",
 											) /* Date */
 										}
 									</td>
@@ -119,7 +118,7 @@ const EventDetailsWorkflowErrorDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.HOST"
+												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.HOST",
 											) /* Host */
 										}
 									</td>
@@ -129,7 +128,7 @@ const EventDetailsWorkflowErrorDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.TYPE"
+												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.TYPE",
 											) /* Type */
 										}
 									</td>
@@ -139,7 +138,7 @@ const EventDetailsWorkflowErrorDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.TECHNICAL_DETAILS"
+												"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DETAILS.TECHNICAL_DETAILS",
 											) /* Technical Details */
 										}
 									</td>

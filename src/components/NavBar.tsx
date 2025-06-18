@@ -67,7 +67,7 @@ const NavBar = ({
 		(create && create.hotkeySequence) ?? [],
 		() => showNewResourceModal(),
 		{ description: create && create.hotkeyDescription ? t(create.hotkeyDescription) : undefined },
-		[showNewResourceModal]
+		[showNewResourceModal],
 	);
 
 	return (
@@ -94,7 +94,7 @@ const NavBar = ({
 						>
 							{t(link.text)}
 						</Link>
-					))
+					));
 				})}
 			</nav>
 

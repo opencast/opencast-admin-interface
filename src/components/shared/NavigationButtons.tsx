@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
 import { ParseKeys } from "i18next";
@@ -30,7 +29,7 @@ const NavigationButtons = ({
 	const submitActiveClassName = {
 		active: !disabled,
 		inactive: disabled,
-	}
+	};
 
 	return (
 		<footer>

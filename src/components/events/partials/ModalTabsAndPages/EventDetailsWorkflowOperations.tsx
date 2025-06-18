@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
 import { getModalWorkflowId, getWorkflowOperations } from "../../../../selectors/eventDetailsSelectors";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
@@ -7,7 +7,7 @@ import { removeNotificationWizardForm } from "../../../../slices/notificationSli
 import {
 	fetchWorkflowOperationDetails,
 	fetchWorkflowOperations,
-	setModalWorkflowTabHierarchy
+	setModalWorkflowTabHierarchy,
 } from "../../../../slices/eventDetailsSlice";
 import { useTranslation } from "react-i18next";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
@@ -31,7 +31,7 @@ const EventDetailsWorkflowOperations = ({
 
   const loadWorkflowOperations = async () => {
 		// Fetching workflow operations from server
-		dispatch(fetchWorkflowOperations({eventId, workflowId}));
+		dispatch(fetchWorkflowOperations({ eventId, workflowId }));
 	};
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const EventDetailsWorkflowOperations = ({
 		loadWorkflowOperations().then();
 
 		// Fetch workflow operations every 5 seconds
-		let fetchWorkflowOperationsInterval = setInterval(loadWorkflowOperations, 5000);
+		const fetchWorkflowOperationsInterval = setInterval(loadWorkflowOperations, 5000);
 
 		// Unmount interval
 		return () => clearInterval(fetchWorkflowOperationsInterval);
@@ -50,7 +50,7 @@ const EventDetailsWorkflowOperations = ({
 		dispatch(removeNotificationWizardForm());
 		dispatch(setModalWorkflowTabHierarchy(tabType));
 		if (tabType === "workflow-operation-details") {
-			dispatch(fetchWorkflowOperationDetails({eventId, workflowId, operationId})).then();
+			dispatch(fetchWorkflowOperationDetails({ eventId, workflowId, operationId })).then();
 		}
 	};
 
@@ -74,7 +74,7 @@ const EventDetailsWorkflowOperations = ({
 				<header>
 					{
 						t(
-							"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TITLE"
+							"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TITLE",
 						) /* Workflow Operations */
 					}
 				</header>
@@ -85,14 +85,14 @@ const EventDetailsWorkflowOperations = ({
 								<th>
 									{
 										t(
-											"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TABLE_HEADERS.STATUS"
+											"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TABLE_HEADERS.STATUS",
 										) /* Status */
 									}
 								</th>
 								<th>
 									{
 										t(
-											"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TABLE_HEADERS.TITLE"
+											"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TABLE_HEADERS.TITLE",
 										) /* Title */
 									}
 									<i />
@@ -100,7 +100,7 @@ const EventDetailsWorkflowOperations = ({
 								<th>
 									{
 										t(
-											"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TABLE_HEADERS.DESCRIPTION"
+											"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.TABLE_HEADERS.DESCRIPTION",
 										) /* Description */
 									}
 									<i />
@@ -126,7 +126,7 @@ const EventDetailsWorkflowOperations = ({
 										>
 											{
 												t(
-													"EVENTS.EVENTS.DETAILS.MEDIA.DETAILS"
+													"EVENTS.EVENTS.DETAILS.MEDIA.DETAILS",
 												) /* Details */
 											}
 										</ButtonLikeAnchor>

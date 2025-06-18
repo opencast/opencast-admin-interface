@@ -64,11 +64,11 @@ const EventDetailsWorkflowTab = ({
 
 	const isRoleWorkflowEdit = hasAccess(
 		"ROLE_UI_EVENTS_DETAILS_WORKFLOWS_EDIT",
-		user
+		user,
 	);
 	const isRoleWorkflowDelete = hasAccess(
 		"ROLE_UI_EVENTS_DETAILS_WORKFLOWS_DELETE",
-		user
+		user,
 	);
 
 	useEffect(() => {
@@ -78,19 +78,19 @@ const EventDetailsWorkflowTab = ({
 	}, []);
 
 	const isCurrentWorkflow = (workflowId: string) => {
-		let currentWorkflow = workflows.entries[workflows.entries.length - 1];
+		const currentWorkflow = workflows.entries[workflows.entries.length - 1];
 		return currentWorkflow.id === workflowId;
 	};
 
 	const workflowAction = (workflowId: string, action: string) => {
 		if (!performingWorkflowAction) {
-			dispatch(performWorkflowAction({eventId, workflowId, action}));
+			dispatch(performWorkflowAction({ eventId, workflowId, action }));
 		}
 	};
 
 	const deleteWorkflow = (workflowId: string) => {
 		if (!deletingWorkflow) {
-			dispatch(deleteWf({eventId, workflowId}));
+			dispatch(deleteWf({ eventId, workflowId }));
 		}
 	};
 
@@ -124,7 +124,7 @@ const EventDetailsWorkflowTab = ({
 		workflowDefinition: string,
 		configuration: { [key: string]: unknown } | undefined
 	}) => {
-		dispatch(saveWorkflowConfig({values, eventId}));
+		dispatch(saveWorkflowConfig({ values, eventId }));
 	};
 
 	return (
@@ -141,7 +141,7 @@ const EventDetailsWorkflowTab = ({
 									<header>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.WORKFLOW_INSTANCES.TITLE"
+												"EVENTS.EVENTS.DETAILS.WORKFLOW_INSTANCES.TITLE",
 											) /* Workflow instances */
 										}
 									</header>
@@ -155,28 +155,28 @@ const EventDetailsWorkflowTab = ({
 													<th>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.WORKFLOWS.TITLE"
+																"EVENTS.EVENTS.DETAILS.WORKFLOWS.TITLE",
 															) /* Title */
 														}
 													</th>
 													<th>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTER"
+																"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTER",
 															) /* Submitter */
 														}
 													</th>
 													<th>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTED"
+																"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTED",
 															) /* Submitted */
 														}
 													</th>
 													<th>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.WORKFLOWS.STATUS"
+																"EVENTS.EVENTS.DETAILS.WORKFLOWS.STATUS",
 															) /* Status */
 														}
 													</th>
@@ -184,7 +184,7 @@ const EventDetailsWorkflowTab = ({
 														<th className="fit">
 															{
 																t(
-																	"EVENTS.EVENTS.DETAILS.WORKFLOWS.ACTIONS"
+																	"EVENTS.EVENTS.DETAILS.WORKFLOWS.ACTIONS",
 																) /* Actions */
 															}
 														</th>
@@ -196,7 +196,7 @@ const EventDetailsWorkflowTab = ({
 												{isLoading ||
 													workflows.entries.map((
 														item,
-														key /*orderBy:'submitted':true track by $index"*/
+														key, /*orderBy:'submitted':true track by $index"*/
 													) => (
 														<tr key={key}>
 															<td>{item.id}</td>
@@ -274,7 +274,7 @@ const EventDetailsWorkflowTab = ({
 																>
 																	{
 																		t(
-																			"EVENTS.EVENTS.DETAILS.MEDIA.DETAILS"
+																			"EVENTS.EVENTS.DETAILS.MEDIA.DETAILS",
 																		) /* Details */
 																	}
 																</ButtonLikeAnchor>
@@ -292,15 +292,15 @@ const EventDetailsWorkflowTab = ({
 									<Formik<InitialValues>
 										initialValues={setInitialValues()}
 										enableReinitialize
-										onSubmit={(values) => handleSubmit(values)}
+										onSubmit={values => handleSubmit(values)}
 										innerRef={formikRef}
 									>
-										{(formik) => (
+										{formik => (
 											<div className="obj list-obj">
 												<header>
 													{
 														t(
-															"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.CONFIGURATION"
+															"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.CONFIGURATION",
 														) /* Workflow configuration */
 													}
 												</header>
@@ -312,7 +312,7 @@ const EventDetailsWorkflowTab = ({
 																	<th>
 																		{
 																			t(
-																				"EVENTS.EVENTS.DETAILS.WORKFLOWS.WORKFLOW"
+																				"EVENTS.EVENTS.DETAILS.WORKFLOWS.WORKFLOW",
 																			) /*Select Workflow*/
 																		}
 																	</th>
@@ -330,9 +330,9 @@ const EventDetailsWorkflowTab = ({
 																					}
 																					text={
 																						workflowDefinitions.find(
-																							(workflowDef) =>
+																							workflowDef =>
 																								workflowDef.id ===
-																								formik.values.workflowDefinition
+																								formik.values.workflowDefinition,
 																						)?.title ?? ""
 																					}
 																					options={
@@ -342,26 +342,26 @@ const EventDetailsWorkflowTab = ({
 																							: []
 																					}
 																					required={true}
-																					handleChange={(element) => {
+																					handleChange={element => {
 																						if (element) {
-																							formik.setFieldValue("workflowDefinition", element.value)
+																							formik.setFieldValue("workflowDefinition", element.value);
 																						}
 																					}}
 																					placeholder={
 																						!!workflowDefinitions &&
 																						workflowDefinitions.length > 0
 																							? t(
-																									"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW"
+																									"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW",
 																							  )
 																							: t(
-																									"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW_EMPTY"
+																									"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW_EMPTY",
 																							  )
 																					}
 																					disabled={
 																						!hasCurrentAgentAccess() ||
 																						!isRoleWorkflowEdit
 																					}
-																					customCSS={{width: "100%"}}
+																					customCSS={{ width: "100%" }}
 																				/>
 																				{/*pre-select-from="workflowDefinitionIds"*/}
 																			</div>
@@ -382,7 +382,7 @@ const EventDetailsWorkflowTab = ({
 																	<th>
 																		{
 																			t(
-																				"EVENTS.EVENTS.DETAILS.WORKFLOWS.CONFIGURATION"
+																				"EVENTS.EVENTS.DETAILS.WORKFLOWS.CONFIGURATION",
 																			) /* Configuration */
 																		}
 																	</th>
@@ -414,7 +414,7 @@ const EventDetailsWorkflowTab = ({
 																				<div>
 																					{
 																						t(
-																							"EVENTS.EVENTS.DETAILS.WORKFLOWS.NO_CONFIGURATION"
+																							"EVENTS.EVENTS.DETAILS.WORKFLOWS.NO_CONFIGURATION",
 																						) /* No config */
 																					}
 																				</div>

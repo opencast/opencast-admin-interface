@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
 import {
 	getModalWorkflowId,
@@ -12,7 +12,7 @@ import { removeNotificationWizardForm } from "../../../../slices/notificationSli
 import {
 	fetchWorkflowErrorDetails,
 	fetchWorkflowErrors,
-	setModalWorkflowTabHierarchy
+	setModalWorkflowTabHierarchy,
 } from "../../../../slices/eventDetailsSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
@@ -50,7 +50,7 @@ const EventDetailsWorkflowErrors = ({
 	};
 
 	useEffect(() => {
-		dispatch(fetchWorkflowErrors({eventId, workflowId})).then();
+		dispatch(fetchWorkflowErrors({ eventId, workflowId })).then();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -58,7 +58,7 @@ const EventDetailsWorkflowErrors = ({
 		dispatch(removeNotificationWizardForm());
 		dispatch(setModalWorkflowTabHierarchy(tabType));
 		if (tabType === "workflow-error-details" && "wiid" in workflow) {
-			dispatch(fetchWorkflowErrorDetails({eventId, workflowId: workflow.wiid, errorId})).then();
+			dispatch(fetchWorkflowErrorDetails({ eventId, workflowId: workflow.wiid, errorId })).then();
 		}
 	};
 
@@ -82,7 +82,7 @@ const EventDetailsWorkflowErrors = ({
 				<header>
 					{
 						t(
-							"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.HEADER"
+							"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.HEADER",
 						) /* Errors & Warnings */
 					}
 				</header>
@@ -97,7 +97,7 @@ const EventDetailsWorkflowErrors = ({
 										<th>
 											{
 												t(
-													"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DATE"
+													"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.DATE",
 												) /* Date */
 											}
 											<i />
@@ -105,7 +105,7 @@ const EventDetailsWorkflowErrors = ({
 										<th>
 											{
 												t(
-													"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.TITLE"
+													"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.TITLE",
 												) /* Errors & Warnings */
 											}
 											<i />
@@ -122,7 +122,7 @@ const EventDetailsWorkflowErrors = ({
 													{!!item.severity && (
 														<div
 															className={`circle ${severityColor(
-																item.severity
+																item.severity,
 															)}`}
 														/>
 													)}
@@ -144,7 +144,7 @@ const EventDetailsWorkflowErrors = ({
 													>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.MEDIA.DETAILS"
+																"EVENTS.EVENTS.DETAILS.MEDIA.DETAILS",
 															) /*  Details */
 														}
 													</ButtonLikeAnchor>
@@ -159,7 +159,7 @@ const EventDetailsWorkflowErrors = ({
 												<td colSpan={4}>
 													{
 														t(
-															"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.EMPTY"
+															"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.EMPTY",
 														) /* No errors found. */
 													}
 												</td>

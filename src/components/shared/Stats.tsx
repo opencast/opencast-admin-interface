@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getFilters, getStats } from "../../selectors/tableFilterSelectors";
 import {
@@ -28,17 +28,17 @@ const Stats = () => {
 	const showStatsFilter = async (stats: StatsType) => {
 		dispatch(resetFilterValues());
 		let filterValue;
-		await stats.filters.forEach((f) => {
+		await stats.filters.forEach(f => {
 			if (f.name.toLowerCase() === "textfilter") {
 				dispatch(editTextFilter(f.value));
 				return;
 			} else {
 				dispatch(removeTextFilter());
 			}
-			let filter = filterMap.find(({ name }) => name === f.name);
+			const filter = filterMap.find(({ name }) => name === f.name);
 			filterValue = f.value;
-			if (!!filter) {
-				dispatch(editFilterValue({filterName: filter.name, value: filterValue}));
+			if (filter) {
+				dispatch(editFilterValue({ filterName: filter.name, value: filterValue }));
 			}
 		});
 		await dispatch(fetchEvents());
@@ -54,7 +54,7 @@ const Stats = () => {
 		// Load stats on mount
 		loadStats();
 
-		let fetchEventsInterval = setInterval(() => loadStats(), 5000);
+		const fetchEventsInterval = setInterval(() => loadStats(), 5000);
 
 		return () => clearInterval(fetchEventsInterval);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -70,7 +70,7 @@ const Stats = () => {
 							<h1>{st.count}</h1>
 							{/* Show the description of the status, if defined,
 								else show name of filter and its value*/}
-							{!!st.description ? (
+							{st.description ? (
 								<span>{t(st.description as ParseKeys)}</span>
 							) : (
 								st.filters.map((filter, key) => (

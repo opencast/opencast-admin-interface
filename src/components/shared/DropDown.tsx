@@ -75,14 +75,14 @@ const DropDown = <T, >({
 		if (handleMenuIsOpen !== undefined) {
 			handleMenuIsOpen(open);
 		}
-	}
+	};
 
 	const formatOptions = (
 		unformattedOptions: DropDownOption[],
 		required: boolean,
 	) => {
 		// Translate?
-		unformattedOptions = unformattedOptions.map(option => ({...option, label: t(option.label as ParseKeys)}));
+		unformattedOptions = unformattedOptions.map(option => ({ ...option, label: t(option.label as ParseKeys) }));
 
 		// Add "No value" option
 		if (!required) {
@@ -98,7 +98,7 @@ const DropDown = <T, >({
 		 * contains an `order` field, indicating that a custom ordering for that list
 		 * exists and the list therefore should not be ordered alphabetically.
 		 */
-		const hasCustomOrder = unformattedOptions.every((item) =>
+		const hasCustomOrder = unformattedOptions.every(item =>
 			isJson(item.label) && JSON.parse(item.label).order !== undefined);
 
 		if (hasCustomOrder) {
@@ -106,16 +106,16 @@ const DropDown = <T, >({
 			unformattedOptions.sort((a, b) => JSON.parse(a.label).order - JSON.parse(b.label).order);
 		} else {
 			// Apply alphabetical ordering.
-			unformattedOptions.sort((a, b) => a.label.localeCompare(b.label))
+			unformattedOptions.sort((a, b) => a.label.localeCompare(b.label));
 		}
 
 		return unformattedOptions;
 	};
 
 
-  let commonProps: Props = {
+  const commonProps: Props = {
 		tabIndex: tabIndex,
-		theme: (theme) => (dropDownSpacingTheme(theme)),
+		theme: theme => (dropDownSpacingTheme(theme)),
 		styles: style,
 		defaultMenuIsOpen: defaultOpen,
 		autoFocus: autoFocus,
@@ -126,7 +126,7 @@ const DropDown = <T, >({
 			required,
 		),
 		placeholder: placeholder,
-		onChange: (element) => handleChange(element as {value: T, label: string}),
+		onChange: element => handleChange(element as {value: T, label: string}),
 		menuIsOpen: menuIsOpen,
 		onMenuOpen: () => openMenu(true),
 		onMenuClose: () => openMenu(false),

@@ -66,5 +66,5 @@ export const humanReadableBytesFilter = (bytesValue: string | number) => {
 
 export const hasScheduledStatus = (event: Event) => {
 	return event.event_status.toUpperCase().indexOf("SCHEDULED") > -1 ||
-		event.event_status.toUpperCase().indexOf("RECORDING") > -1
+		event.event_status.toUpperCase().indexOf("RECORDING") > -1;
 };

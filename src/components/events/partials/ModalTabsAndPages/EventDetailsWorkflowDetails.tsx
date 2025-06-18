@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
 import {
 	getModalWorkflowId,
@@ -38,7 +38,7 @@ const EventDetailsWorkflowDetails = ({
 	const isFetching = useAppSelector(state => isFetchingWorkflowDetails(state));
 
 	useEffect(() => {
-		dispatch(fetchWorkflowDetails({eventId, workflowId}));
+		dispatch(fetchWorkflowDetails({ eventId, workflowId }));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -75,7 +75,7 @@ const EventDetailsWorkflowDetails = ({
 								<header>
 									{
 										t(
-											"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"
+											"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE",
 										) /* Workflow Details */
 									}
 								</header>
@@ -86,7 +86,7 @@ const EventDetailsWorkflowDetails = ({
 												<td>
 													{
 														t(
-															"EVENTS.EVENTS.DETAILS.WORKFLOWS.TITLE"
+															"EVENTS.EVENTS.DETAILS.WORKFLOWS.TITLE",
 														) /* Title */
 													}
 												</td>
@@ -97,7 +97,7 @@ const EventDetailsWorkflowDetails = ({
 													<td>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.WORKFLOWS.DESCRIPTION"
+																"EVENTS.EVENTS.DETAILS.WORKFLOWS.DESCRIPTION",
 															) /* Description */
 														}
 													</td>
@@ -108,7 +108,7 @@ const EventDetailsWorkflowDetails = ({
 												<td>
 													{
 														t(
-															"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTER"
+															"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTER",
 														) /* Submitter*/
 													}
 												</td>
@@ -120,7 +120,7 @@ const EventDetailsWorkflowDetails = ({
 												<td>
 													{
 														t(
-															"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTED"
+															"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTED",
 														) /* Submitted */
 													}
 												</td>
@@ -134,7 +134,7 @@ const EventDetailsWorkflowDetails = ({
 												<td>
 													{
 														t(
-															"EVENTS.EVENTS.DETAILS.WORKFLOWS.STATUS"
+															"EVENTS.EVENTS.DETAILS.WORKFLOWS.STATUS",
 														) /* Status */
 													}
 												</td>
@@ -146,7 +146,7 @@ const EventDetailsWorkflowDetails = ({
 													<td>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.WORKFLOWS.EXECUTION_TIME"
+																"EVENTS.EVENTS.DETAILS.WORKFLOWS.EXECUTION_TIME",
 															) /* Execution time */
 														}
 													</td>
@@ -165,7 +165,7 @@ const EventDetailsWorkflowDetails = ({
 														<td>
 															{
 																t(
-																	"EVENTS.EVENTS.DETAILS.WORKFLOWS.WDID"
+																	"EVENTS.EVENTS.DETAILS.WORKFLOWS.WDID",
 																) /* Workflow definition */
 															}
 														</td>
@@ -184,7 +184,7 @@ const EventDetailsWorkflowDetails = ({
 									<header>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.CONFIGURATION"
+												"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.CONFIGURATION",
 											) /* Workflow configuration */
 										}
 									</header>
@@ -198,7 +198,7 @@ const EventDetailsWorkflowDetails = ({
 															<td>{confKey}</td>
 															<td>{confValue as string}</td>
 														</tr>
-													)
+													),
 												)}
 											</tbody>
 										</table>
@@ -211,7 +211,7 @@ const EventDetailsWorkflowDetails = ({
 								<header>
 									{
 										t(
-											"EVENTS.EVENTS.DETAILS.WORKFLOWS.MORE_INFO"
+											"EVENTS.EVENTS.DETAILS.WORKFLOWS.MORE_INFO",
 										) /* More Information */
 									}
 								</header>
@@ -223,7 +223,7 @@ const EventDetailsWorkflowDetails = ({
 											<span>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.DETAILS_LINK"
+														"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.DETAILS_LINK",
 													) /* Operations */
 												}
 											</span>
@@ -233,7 +233,7 @@ const EventDetailsWorkflowDetails = ({
 											>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
+														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS",
 													) /* Details */
 												}
 											</ButtonLikeAnchor>
@@ -242,7 +242,7 @@ const EventDetailsWorkflowDetails = ({
 											<span>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.TITLE"
+														"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.TITLE",
 													) /* Errors & Warnings */
 												}
 											</span>
@@ -252,7 +252,7 @@ const EventDetailsWorkflowDetails = ({
 											>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
+														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS",
 													) /* Details */
 												}
 											</ButtonLikeAnchor>
@@ -271,7 +271,7 @@ const EventDetailsWorkflowDetails = ({
 								<header>
 									{
 										t(
-											"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"
+											"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE",
 										) /* Workflow Details */
 									}
 								</header>
@@ -290,7 +290,7 @@ const EventDetailsWorkflowDetails = ({
 									<header>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.CONFIGURATION"
+												"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.CONFIGURATION",
 											) /* Workflow configuration */
 										}
 									</header>
@@ -309,7 +309,7 @@ const EventDetailsWorkflowDetails = ({
 								<header>
 									{
 										t(
-											"EVENTS.EVENTS.DETAILS.WORKFLOWS.MORE_INFO"
+											"EVENTS.EVENTS.DETAILS.WORKFLOWS.MORE_INFO",
 										) /* More Information */
 									}
 								</header>
@@ -319,14 +319,14 @@ const EventDetailsWorkflowDetails = ({
 											<span>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.DETAILS_LINK"
+														"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.DETAILS_LINK",
 													) /* Operations */
 												}
 											</span>
 											<ButtonLikeAnchor extraClassName="details-link">
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
+														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS",
 													) /* Details */
 												}
 											</ButtonLikeAnchor>
@@ -335,14 +335,14 @@ const EventDetailsWorkflowDetails = ({
 											<span>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.TITLE"
+														"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.TITLE",
 													) /* Errors & Warnings */
 												}
 											</span>
 											<ButtonLikeAnchor extraClassName="details-link">
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
+														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS",
 													) /* Details */
 												}
 											</ButtonLikeAnchor>

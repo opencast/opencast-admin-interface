@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { renderValidDate } from "../../../utils/dateUtils";
 import { Series } from "../../../slices/seriesSlice";
@@ -7,7 +6,7 @@ import { Series } from "../../../slices/seriesSlice";
  * This component renders the creation date cells of series in the table view
  */
 const SeriesDateTimeCell = ({
-	row
+	row,
 }: {
 	row: Series
 }) => {

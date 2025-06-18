@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { TransformedAcl } from "../../../../../slices/aclDetailsSlice";
 import { ParseKeys } from "i18next";
@@ -8,7 +7,7 @@ import { ParseKeys } from "i18next";
  */
 const AccessSummaryTable = ({
 	policies,
-	header
+	header,
 }: {
 	policies: TransformedAcl[]
 	header: ParseKeys

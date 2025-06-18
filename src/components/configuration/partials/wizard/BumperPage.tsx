@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import FileUpload from "../../../shared/wizard/FileUpload";
@@ -22,7 +21,7 @@ const BumperPage = <T extends RequiredFormProps>({
 	nextPage,
 	previousPage,
 	isTrailer,
-	isEdit
+	isEdit,
 }: {
 	formik: FormikProps<T>,
 	nextPage?: (values: T) => void,
@@ -39,7 +38,7 @@ const BumperPage = <T extends RequiredFormProps>({
 					{t(
 						!isTrailer
 							? "CONFIGURATION.THEMES.DETAILS.BUMPER.DESCRIPTION"
-							: "CONFIGURATION.THEMES.DETAILS.TRAILER.DESCRIPTION"
+							: "CONFIGURATION.THEMES.DETAILS.TRAILER.DESCRIPTION",
 					)}
 				</p>
 				{/* notifications */}
@@ -49,7 +48,7 @@ const BumperPage = <T extends RequiredFormProps>({
 						{t(
 							!isTrailer
 								? "CONFIGURATION.THEMES.DETAILS.BUMPER.ACTIVE"
-								: "CONFIGURATION.THEMES.DETAILS.TRAILER.ACTIVE"
+								: "CONFIGURATION.THEMES.DETAILS.TRAILER.ACTIVE",
 						)}
 					</header>
 					<div className="obj-container content-list padded">
@@ -59,7 +58,7 @@ const BumperPage = <T extends RequiredFormProps>({
 									{t(
 										!isTrailer
 											? "CONFIGURATION.THEMES.DETAILS.BUMPER.ENABLE"
-											: "CONFIGURATION.THEMES.DETAILS.TRAILER.ENABLE"
+											: "CONFIGURATION.THEMES.DETAILS.TRAILER.ENABLE",
 									)}
 								</label>
 							</div>
@@ -85,7 +84,7 @@ const BumperPage = <T extends RequiredFormProps>({
 							{t(
 								!isTrailer
 									? "CONFIGURATION.THEMES.DETAILS.BUMPER.SELECT"
-									: "CONFIGURATION.THEMES.DETAILS.TRAILER.SELECT"
+									: "CONFIGURATION.THEMES.DETAILS.TRAILER.SELECT",
 							)}
 						</header>
 						<div className="obj-container padded">
