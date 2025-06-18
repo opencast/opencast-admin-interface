@@ -17,7 +17,9 @@ import { removeNotificationWizardForm } from "../../../../slices/notificationSli
 import { renderValidDate } from "../../../../utils/dateUtils";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { ParseKeys } from "i18next";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
 
 /**
  * This component manages the workflow details for the workflows tab of the event details modal
@@ -36,7 +38,7 @@ const EventDetailsWorkflowDetails = ({
 	const isFetching = useAppSelector(state => isFetchingWorkflowDetails(state));
 
 	useEffect(() => {
-		dispatch(fetchWorkflowDetails({eventId, workflowId}));
+		dispatch(fetchWorkflowDetails({ eventId, workflowId }));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -51,17 +53,17 @@ const EventDetailsWorkflowDetails = ({
 	}
 
 	return (
-		<div className="modal-content">
-			{/* Hierarchy navigation */}
+		<ModalContentTable
+			modalContentChildren={
+				/* Hierarchy navigation */
 			<EventDetailsTabHierarchyNavigation
 				openSubTab={openSubTab}
 				hierarchyDepth={0}
 				translationKey0={"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"}
 				subTabArgument0={"workflow-details"}
 			/>
-
-			<div className="modal-body">
-				<div className="full-col">
+			}
+		>
 					{/* Notifications */}
 					<Notifications context="not_corner" />
 
@@ -73,7 +75,7 @@ const EventDetailsWorkflowDetails = ({
 								<header>
 									{
 										t(
-											"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"
+											"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE",
 										) /* Workflow Details */
 									}
 								</header>
@@ -84,7 +86,7 @@ const EventDetailsWorkflowDetails = ({
 												<td>
 													{
 														t(
-															"EVENTS.EVENTS.DETAILS.WORKFLOWS.TITLE"
+															"EVENTS.EVENTS.DETAILS.WORKFLOWS.TITLE",
 														) /* Title */
 													}
 												</td>
@@ -95,7 +97,7 @@ const EventDetailsWorkflowDetails = ({
 													<td>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.WORKFLOWS.DESCRIPTION"
+																"EVENTS.EVENTS.DETAILS.WORKFLOWS.DESCRIPTION",
 															) /* Description */
 														}
 													</td>
@@ -106,7 +108,7 @@ const EventDetailsWorkflowDetails = ({
 												<td>
 													{
 														t(
-															"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTER"
+															"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTER",
 														) /* Submitter*/
 													}
 												</td>
@@ -118,7 +120,7 @@ const EventDetailsWorkflowDetails = ({
 												<td>
 													{
 														t(
-															"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTED"
+															"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTED",
 														) /* Submitted */
 													}
 												</td>
@@ -132,7 +134,7 @@ const EventDetailsWorkflowDetails = ({
 												<td>
 													{
 														t(
-															"EVENTS.EVENTS.DETAILS.WORKFLOWS.STATUS"
+															"EVENTS.EVENTS.DETAILS.WORKFLOWS.STATUS",
 														) /* Status */
 													}
 												</td>
@@ -144,7 +146,7 @@ const EventDetailsWorkflowDetails = ({
 													<td>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.WORKFLOWS.EXECUTION_TIME"
+																"EVENTS.EVENTS.DETAILS.WORKFLOWS.EXECUTION_TIME",
 															) /* Execution time */
 														}
 													</td>
@@ -163,7 +165,7 @@ const EventDetailsWorkflowDetails = ({
 														<td>
 															{
 																t(
-																	"EVENTS.EVENTS.DETAILS.WORKFLOWS.WDID"
+																	"EVENTS.EVENTS.DETAILS.WORKFLOWS.WDID",
 																) /* Workflow definition */
 															}
 														</td>
@@ -182,7 +184,7 @@ const EventDetailsWorkflowDetails = ({
 									<header>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.CONFIGURATION"
+												"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.CONFIGURATION",
 											) /* Workflow configuration */
 										}
 									</header>
@@ -196,7 +198,7 @@ const EventDetailsWorkflowDetails = ({
 															<td>{confKey}</td>
 															<td>{confValue as string}</td>
 														</tr>
-													)
+													),
 												)}
 											</tbody>
 										</table>
@@ -209,7 +211,7 @@ const EventDetailsWorkflowDetails = ({
 								<header>
 									{
 										t(
-											"EVENTS.EVENTS.DETAILS.WORKFLOWS.MORE_INFO"
+											"EVENTS.EVENTS.DETAILS.WORKFLOWS.MORE_INFO",
 										) /* More Information */
 									}
 								</header>
@@ -221,39 +223,39 @@ const EventDetailsWorkflowDetails = ({
 											<span>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.DETAILS_LINK"
+														"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.DETAILS_LINK",
 													) /* Operations */
 												}
 											</span>
-											<button
-												className="button-like-anchor details-link"
+											<ButtonLikeAnchor
+												extraClassName="details-link"
 												onClick={() => openSubTab("workflow-operations")}
 											>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
+														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS",
 													) /* Details */
 												}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 										<li>
 											<span>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.TITLE"
+														"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.TITLE",
 													) /* Errors & Warnings */
 												}
 											</span>
-											<button
-												className="button-like-anchor details-link"
+											<ButtonLikeAnchor
+												extraClassName="details-link"
 												onClick={() => openSubTab("errors-and-warnings")}
 											>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
+														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS",
 													) /* Details */
 												}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 									</ul>
 								</div>
@@ -269,7 +271,7 @@ const EventDetailsWorkflowDetails = ({
 								<header>
 									{
 										t(
-											"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE"
+											"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.TITLE",
 										) /* Workflow Details */
 									}
 								</header>
@@ -288,7 +290,7 @@ const EventDetailsWorkflowDetails = ({
 									<header>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.CONFIGURATION"
+												"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.CONFIGURATION",
 											) /* Workflow configuration */
 										}
 									</header>
@@ -307,7 +309,7 @@ const EventDetailsWorkflowDetails = ({
 								<header>
 									{
 										t(
-											"EVENTS.EVENTS.DETAILS.WORKFLOWS.MORE_INFO"
+											"EVENTS.EVENTS.DETAILS.WORKFLOWS.MORE_INFO",
 										) /* More Information */
 									}
 								</header>
@@ -317,42 +319,40 @@ const EventDetailsWorkflowDetails = ({
 											<span>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.DETAILS_LINK"
+														"EVENTS.EVENTS.DETAILS.WORKFLOW_OPERATIONS.DETAILS_LINK",
 													) /* Operations */
 												}
 											</span>
-											<button className="button-like-anchor details-link">
+											<ButtonLikeAnchor extraClassName="details-link">
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
+														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS",
 													) /* Details */
 												}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 										<li>
 											<span>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.TITLE"
+														"EVENTS.EVENTS.DETAILS.ERRORS_AND_WARNINGS.TITLE",
 													) /* Errors & Warnings */
 												}
 											</span>
-											<button className="button-like-anchor details-link">
+											<ButtonLikeAnchor extraClassName="details-link">
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS"
+														"EVENTS.EVENTS.DETAILS.WORKFLOWS.DETAILS",
 													) /* Details */
 												}
-											</button>
+											</ButtonLikeAnchor>
 										</li>
 									</ul>
 								</div>
 							</div>
 						</>
 					)}
-				</div>
-			</div>
-		</div>
+		</ModalContentTable>
 	);
 };
 

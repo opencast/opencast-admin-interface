@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 import i18n from "../i18n/i18n";
 import languages from "../i18n/languages";
 import opencastLogo from "../img/opencast-white.svg?url";
 import { setSpecificServiceFilter } from "../slices/tableFilterSlice";
-import { loadServicesIntoTable } from "../thunks/tableThunks";
 import { getErrorCount, getHealthStatus } from "../selectors/healthSelectors";
 import {
 	getOrgProperties,
@@ -23,24 +22,15 @@ import { UserInfoState } from "../slices/userInfoSlice";
 import { Tooltip } from "./shared/Tooltip";
 import { HiTranslate } from "react-icons/hi";
 import { IconContext } from "react-icons";
+import ButtonLikeAnchor from "./shared/ButtonLikeAnchor";
 import { ModalHandle } from "./shared/modals/Modal";
+import { broadcastLogout } from "../utils/broadcastSync";
 
 // References for detecting a click outside of the container of the dropdown menus
 const containerLang = React.createRef<HTMLDivElement>();
 const containerHelp = React.createRef<HTMLDivElement>();
 const containerUser = React.createRef<HTMLDivElement>();
 const containerNotify = React.createRef<HTMLDivElement>();
-
-function changeLanguage(code: string) {
-	// Load json-file of the language with provided code
-	i18n.changeLanguage(code);
-	// Reload window for updating the flag of the language dropdown menu
-	window.location.reload();
-}
-
-function logout() {
-	window.location.href = "/j_spring_security_logout";
-}
 
 /**
  * Component that renders the header and the navigation in the upper right corner.
@@ -70,36 +60,35 @@ const Header = () => {
 	};
 
 	const showRegistrationModal = () => {
-		registrationModalRef.current?.open()
-	};
-
-	const redirectToServices = async () => {
-		// Load services into table
-		await dispatch(loadServicesIntoTable());
-
-		// set the action filter value of services to true
-		await dispatch(setSpecificServiceFilter({ filter: "actions", filterValue: "true" }));
+		registrationModalRef.current?.open();
 	};
 
 	const showHotKeyCheatSheet = () => {
-		hotKeyCheatSheetModalRef.current?.open()
+		hotKeyCheatSheetModalRef.current?.open();
 	};
 
 	const toggleHotKeyCheatSheet = () => {
 		if (hotKeyCheatSheetModalRef.current?.isOpen?.()) {
-			hotKeyCheatSheetModalRef.current?.close?.()
+			hotKeyCheatSheetModalRef.current?.close?.();
 		} else {
-			hotKeyCheatSheetModalRef.current?.open()
+			hotKeyCheatSheetModalRef.current?.open();
 		}
+	};
+
+	const handleChangeLanguage = (code: string) => {
+		// Load json-file of the language with provided code
+		i18n.changeLanguage(code);
+		// Close the language dropdown menu
+		setMenuLang(false);
 	};
 
 	useHotkeys(
     availableHotkeys.general.HOTKEY_CHEATSHEET.sequence,
     () => toggleHotKeyCheatSheet(),
 		{
-			description: t(availableHotkeys.general.HOTKEY_CHEATSHEET.description) ?? undefined
+			description: t(availableHotkeys.general.HOTKEY_CHEATSHEET.description) ?? undefined,
 		},
-    [toggleHotKeyCheatSheet]
+    [toggleHotKeyCheatSheet],
   );
 
 	useEffect(() => {
@@ -126,7 +115,7 @@ const Header = () => {
 		};
 
 		// Fetching health status information at mount
-		loadHealthStatus().then((r) => console.info(r));
+		loadHealthStatus().then(r => console.info(r));
 		// Fetch health status every minute
 		const interval = setInterval(() => dispatch(fetchHealthStatus()), 5000);
 
@@ -156,12 +145,12 @@ const Header = () => {
 					<div className="nav-dd lang-dd" id="lang-dd" ref={containerLang}>
 						<Tooltip active={!displayMenuLang} title={t("LANGUAGE")}>
 							<button className="lang" onClick={() => setMenuLang(!displayMenuLang)}>
-								<IconContext.Provider value={{ style: {fontSize: "20px"} }}>
+								<IconContext.Provider value={{ style: { fontSize: "20px" } }}>
 									<HiTranslate />
 								</IconContext.Provider>
 							</button>
 						</Tooltip>
-						{displayMenuLang && <MenuLang />}
+						{displayMenuLang && <MenuLang handleChangeLanguage={handleChangeLanguage}/>}
 					</div>
 
 					{/* Media Module */}
@@ -171,7 +160,7 @@ const Header = () => {
 					{!!orgProperties &&
 						!!orgProperties["org.opencastproject.admin.mediamodule.url"] && (
 							<div className="nav-dd">
-								<Tooltip  title={t("MEDIAMODULE")}>
+								<Tooltip title={t("MEDIAMODULE")}>
 									<a
 										href={
 											orgProperties["org.opencastproject.admin.mediamodule.url"]
@@ -187,7 +176,7 @@ const Header = () => {
 					{/* Opencast Studio */}
 					{hasAccess("ROLE_STUDIO", user) && (
 						<div className="nav-dd">
-							<Tooltip  title={t("STUDIO")}>
+							<Tooltip title={t("STUDIO")}>
 								<a href={studioURL} target="_blank" rel="noreferrer">
 									<i className="fa fa-video-camera" />
 								</a>
@@ -216,7 +205,6 @@ const Header = () => {
 							{displayMenuNotify && (
 								<MenuNotify
 									healthStatus={healthStatus}
-									redirectToServices={redirectToServices}
 								/>
 							)}
 						</div>
@@ -282,18 +270,22 @@ const Header = () => {
 	);
 };
 
-const MenuLang = () => {
+const MenuLang = ({ handleChangeLanguage }: { handleChangeLanguage: (code: string) => void }) => {
+	// const handleChangeLanguage = (code: string) => {
+	// 	handleChangeLanguage(code);
+	// };
+
 	return (
 		<ul className="dropdown-ul">
 			{/* one list item for each available language */}
 			{languages.map((language, key) => (
 				<li key={key}>
-					<button
-						className={"button-like-anchor" + (i18n.language === language.code ? " selected" : "")}
-						onClick={() => changeLanguage(language.code)}
+					<ButtonLikeAnchor
+						extraClassName={(i18n.language === language.code ? "selected" : "")}
+						onClick={() => handleChangeLanguage(language.code)}
 					>
 						{language.long}
-					</button>
+					</ButtonLikeAnchor>
 				</li>
 			))}
 		</ul>
@@ -302,20 +294,27 @@ const MenuLang = () => {
 
 const MenuNotify = ({
 	healthStatus,
-	redirectToServices
 }: {
 	healthStatus: HealthStatus[],
-	redirectToServices: () => Promise<void>,
 }) => {
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+
+	const redirectToServices = async () => {
+		// set the action filter value of services to true
+		await dispatch(setSpecificServiceFilter({ filter: "actions", filterValue: "true" }));
+		navigate("/systems/services");
+	};
+
 	return (
 		<ul className="dropdown-ul">
 			{/* For each service in the serviceList (Background Services) one list item */}
 			{healthStatus.map((service, key) => (
 				<li key={key}>
 					{!!service.status && (
-						<Link
-							to="/systems/services"
-							onClick={async () => await redirectToServices()}
+						<button
+							className="button-like-anchor"
+							onClick={() => redirectToServices()}
 						>
 							<span> {service.name} </span>
 							{service.error ? (
@@ -327,7 +326,7 @@ const MenuNotify = ({
 									{service.status}
 								</span>
 							)}
-						</Link>
+						</button>
 					)}
 				</li>
 			))}
@@ -396,16 +395,16 @@ const MenuHelp = ({
 						</li>
 					)}
 				<li>
-					<button className="button-like-anchor" onClick={() => showHotKeys()}>
+					<ButtonLikeAnchor onClick={() => showHotKeys()}>
 						<span>{t("HELP.HOTKEY_CHEAT_SHEET")}</span>
-					</button>
+					</ButtonLikeAnchor>
 				</li>
 				{/* Adoter registration Modal */}
 				{user.isAdmin && (
 					<li>
-						<button className="button-like-anchor" onClick={() => showAdoptersRegistrationModal()}>
+						<ButtonLikeAnchor onClick={() => showAdoptersRegistrationModal()}>
 							<span>{t("HELP.ADOPTER_REGISTRATION")}</span>
-						</button>
+						</ButtonLikeAnchor>
 					</li>
 				)}
 			</ul>
@@ -415,12 +414,18 @@ const MenuHelp = ({
 
 const MenuUser = () => {
 	const { t } = useTranslation();
+
+	const logout = () => {
+		// Here we broadcast logout, in order to redirect other tabs to login page!
+		broadcastLogout();
+		window.location.href = "/j_spring_security_logout";
+	};
 	return (
 		<ul className="dropdown-ul">
 			<li>
-				<button className="button-like-anchor" onClick={() => logout()}>
+				<ButtonLikeAnchor onClick={() => logout()}>
 					<span className="logout-icon">{t("LOGOUT")}</span>
-				</button>
+				</ButtonLikeAnchor>
 			</li>
 		</ul>
 	);

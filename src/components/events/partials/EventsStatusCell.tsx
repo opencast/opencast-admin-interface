@@ -29,15 +29,15 @@ const EventsStatusCell = ({
 		}
 
 		dispatch(fetchWorkflows(row.id)).unwrap()
-			.then(async (workflows) => {
+			.then(async workflows => {
 				// Open workflow overview modal if no workflows available
 				if (!workflows.entries.length) {
 					return dispatch(openModal(EventDetailsPage.Workflow, row));
 				}
 
 				// Show operations of last workflow
-				const lastWorkflow = workflows.entries[workflows.entries.length-1];
-				dispatch(openModal(EventDetailsPage.Workflow, row, 'workflow-operations', 'entry', lastWorkflow.id));
+				const lastWorkflow = workflows.entries[workflows.entries.length - 1];
+				dispatch(openModal(EventDetailsPage.Workflow, row, "workflow-operations", "entry", lastWorkflow.id));
 			});
 	};
 

@@ -1,8 +1,9 @@
-import { forwardRef, PropsWithChildren, useImperativeHandle, useState } from "react";
+import { forwardRef, PropsWithChildren, useCallback, useImperativeHandle, useState } from "react";
 import ReactDOM from "react-dom";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../configs/hotkeysConfig";
 import { useTranslation } from "react-i18next";
+import ButtonLikeAnchor from "../ButtonLikeAnchor";
 // TODO: Implement focus trapping
 // Attempted to do that with focus-trap-react, but it would not focus
 // the correct element in e.g. the new event modal
@@ -39,24 +40,23 @@ export const Modal = forwardRef<ModalHandle, PropsWithChildren<ModalProps>>(({
 	const { t } = useTranslation();
 
 	const [isOpen, setOpen] = useState(open);
+	const close = useCallback(() => {
+		if (closeCallback !== undefined && !closeCallback()) {
+			// Don't close modal
+			return;
+		}
+		setOpen(false);
+	}, [closeCallback]);
 
 	useImperativeHandle(ref, () => ({
 		isOpen: () => isOpen,
 		open: () => setOpen(true),
-		close: () => {
-			if (closeCallback !== undefined && !closeCallback()) {
-				// Don't close modal
-				return;
-			}
-			setOpen(false);
-		},
-	}), [closeCallback, isOpen]);
+		close,
+	}), [close, isOpen]);
 
 	useHotkeys(
 		availableHotkeys.general.CLOSE_MODAL.sequence,
-		// TODO: Figure out what typescripts problem is
-		//@ts-ignore
-		() => ref?.current.close?.(),
+		close,
 		{ description: t(availableHotkeys.general.CLOSE_MODAL.description) ?? undefined },
 		[ref],
 	);
@@ -70,10 +70,9 @@ export const Modal = forwardRef<ModalHandle, PropsWithChildren<ModalProps>>(({
 					className={className ? className : "modal wizard modal-animation"}
 				>
 					<header>
-						<button
-							className="button-like-anchor fa fa-times close-modal"
-							//@ts-ignore
-							onClick={() => ref?.current.close?.()}
+						<ButtonLikeAnchor
+							extraClassName="fa fa-times close-modal"
+							onClick={close}
 							tabIndex={0}
 						/>
 						<h2>

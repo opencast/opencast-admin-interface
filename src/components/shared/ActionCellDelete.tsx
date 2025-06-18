@@ -4,7 +4,7 @@ import { IconButton } from "./IconButton";
 import { ModalHandle } from "./modals/Modal";
 import { ParseKeys } from "i18next";
 
-export const ActionCellDelete = <T,>({
+export const ActionCellDelete = <T, >({
 	editAccessRole,
 	tooltipText,
 	resourceId,
@@ -47,11 +47,10 @@ export const ActionCellDelete = <T,>({
 				resourceType={resourceType}
 				deleteMethod={deleteMethod}
 				deleteAllowed={deleteAllowed}
-				showCautionMessage={showCautionMessage}
 				deleteNotAllowedMessage={deleteNotAllowedMessage}
-				deleteWithCautionMessage={deleteWithCautionMessage}
+				deleteWithCautionMessage={showCautionMessage ? deleteWithCautionMessage : undefined}
 				modalRef={deleteConfirmationModalRef}
 			/>
 		</>
-	)
+	);
 };

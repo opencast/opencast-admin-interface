@@ -22,13 +22,13 @@ const AclsActionsCell = ({
 	const modalRef = useRef<ModalHandle>(null);
 
 	const hideAclDetails = () => {
-		modalRef.current?.close?.()
+		modalRef.current?.close?.();
 	};
 
 	const showAclDetails = async () => {
 		await dispatch(fetchAclDetails(row.id));
 
-		modalRef.current?.open()
+		modalRef.current?.open();
 	};
 
 	const deletingAcl = (id: number) => {
@@ -58,7 +58,7 @@ const AclsActionsCell = ({
 			{/* delete ACL */}
 			<ActionCellDelete
 				editAccessRole={"ROLE_UI_ACLS_DELETE"}
-				tooltipText={"USERS.ACLS.TABLE.TOOLTIP.DETAILS"}
+				tooltipText={"USERS.ACLS.TABLE.TOOLTIP.DELETE"}
 				resourceId={row.id}
 				resourceName={row.name}
 				resourceType={"ACL"}

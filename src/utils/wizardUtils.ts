@@ -11,7 +11,7 @@ export const stepperStyle = {
 export const stepLabelStyle = {
 	root: {
 		alignSelf: "flex-start",
-	}
+	},
 };
 
 // Style of icons used in Stepper
@@ -26,7 +26,7 @@ export const stepIcon = {
 		height: "20px",
 	},
 	circleActive: {
-		transform: "scale(1.3)"
+		transform: "scale(1.3)",
 	},
 };
 
@@ -40,14 +40,11 @@ export const isSummaryReachable = (
 	key: number,
 	steps: {
 		name: string,
-		hidden?: boolean,
 	}[],
 	completed: Record<number, boolean>,
 ) => {
 	if (steps[key].name === "summary") {
-		const visibleSteps = steps.filter((step) => !step.hidden);
-
-		return Object.keys(completed).length >= visibleSteps.length - 2;
+		return Object.keys(completed).length >= steps.length - 2;
 	}
 
 	return true;

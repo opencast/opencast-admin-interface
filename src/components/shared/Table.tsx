@@ -36,10 +36,11 @@ import sortDownIcon from "../../img/tbl-sort-down.png";
 import Notifications from "./Notifications";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { TableColumn } from "../../configs/tableConfigs/aclsTableConfig";
+import ButtonLikeAnchor from "./ButtonLikeAnchor";
 import { ModalHandle } from "./modals/Modal";
 import { ParseKeys } from "i18next";
 
-const containerPageSize = React.createRef<HTMLButtonElement>();
+const containerPageSize = React.createRef<HTMLDivElement>();
 
 type TemplateMap = {
 	[key: string]: ({ row }: { row: any }) => JSX.Element | JSX.Element[]
@@ -85,6 +86,7 @@ const Table = ({
 	// State of dropdown menu
 	const [showPageSizes, setShowPageSizes] = useState(false);
 	const editTableViewModalRef = useRef<ModalHandle>(null);
+	const selectAllCheckboxRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		// Function for handling clicks outside of an open dropdown menu
@@ -111,6 +113,7 @@ const Table = ({
 	};
 
 	const changePageSize = (size: number) => {
+		forceDeselectAll();
 		dispatch(updatePageSize(size));
 		dispatch(setOffset(0));
 		dispatch(updatePages());
@@ -127,6 +130,8 @@ const Table = ({
 	};
 
 	const sortByColumn = (colName: string) => {
+		// By sorting, any selected item has to be deselected!
+		forceDeselectAll();
 		dispatch(setSortBy(colName));
 		let direction: ReverseOptions = "ASC";
 		if (reverse && reverse === "ASC") {
@@ -136,12 +141,19 @@ const Table = ({
 		dispatch(updatePages());
 	};
 
+	const forceDeselectAll = () => {
+		dispatch(changeAllSelected(false));
+		if (selectAllCheckboxRef.current?.checked) {
+			selectAllCheckboxRef.current.checked = false;
+		}
+	};
+
 	const showEditTableViewModal = async () => {
-		editTableViewModalRef.current?.open()
+		editTableViewModalRef.current?.open();
 	};
 
 	const hideEditTableViewModal = () => {
-		editTableViewModalRef.current?.close?.()
+		editTableViewModalRef.current?.close?.();
 	};
 
 	const tryToGetValueForKeyFromRowAsString = (row: Row, key: string) => {
@@ -153,7 +165,7 @@ const Table = ({
 		}
 
 		return "";
-	}
+	};
 
 	return (
 		<>
@@ -161,12 +173,11 @@ const Table = ({
 			<div className="action-bar">
 				<ul>
 					<li>
-						<button
-              onClick={() => showEditTableViewModal()}
-              className="button-like-anchor"
-            >
-                {t("TABLE_EDIT")}
-            </button>
+						<ButtonLikeAnchor
+							onClick={() => showEditTableViewModal()}
+						>
+							{t("TABLE_EDIT")}
+						</ButtonLikeAnchor>
 					</li>
 				</ul>
 			</div>
@@ -186,8 +197,9 @@ const Table = ({
 							<th className="small">
 								{/*Checkbox to select all rows*/}
 								<input
+									ref={selectAllCheckboxRef}
 									type="checkbox"
-									onChange={(e) => onChangeAllSelected(e)}
+									onChange={e => onChangeAllSelected(e)}
 									aria-label={t("EVENTS.EVENTS.TABLE.SELECT_ALL")}
 								/>
 							</th>
@@ -225,24 +237,24 @@ const Table = ({
 								<th key={key} className={cn({ sortable: false })}>
 									<span>{t(column.label)}</span>
 								</th>
-							)
+							),
 						)}
 					</tr>
 				</thead>
 				<tbody>
-					{table.status === 'loading' && rows.length === 0 ? (
+					{table.status === "loading" && rows.length === 0 ? (
 						<tr>
 							<td colSpan={table.columns.length} style={loadingTdStyle}>
 								<i className="fa fa-spinner fa-spin fa-2x fa-fw" />
 							</td>
 						</tr>
-					) : !(table.status === 'loading') && rows.length === 0 ? (
+					) : !(table.status === "loading") && rows.length === 0 ? (
 						//Show if no results and table is not loading
 						<tr>
 							<td colSpan={table.columns.length}>{t("TABLE_NO_RESULT")}</td>
 						</tr>
 					) : (
-						!(table.status === 'loading') &&
+						!(table.status === "loading") &&
 						//Repeat for each row in table.rows
 						rows.map((row, key) => (
 							<tr key={key}>
@@ -282,7 +294,7 @@ const Table = ({
 										</td>
 									) : !column.deactivated ? (
 										<td />
-									) : null
+									) : null,
 								)}
 							</tr>
 						))
@@ -292,10 +304,12 @@ const Table = ({
 
 			{/* Selection of page size */}
 			<div id="tbl-view-controls-container">
-				<button
+				<div
 					className="drop-down-container small flipped"
 					onClick={() => setShowPageSizes(!showPageSizes)}
 					ref={containerPageSize}
+					role="button"
+					tabIndex={0}
 				>
 					<span>{pagination.limit}</span>
 					{/* Drop down menu for selection of page size */}
@@ -303,44 +317,52 @@ const Table = ({
 						<ul className="dropdown-ul">
 							{sizeOptions.map((size, key) => (
 								<li key={key}>
-									<button
-                    onClick={() => changePageSize(size)}
-                    className="button-like-anchor"
-                  >
-                    {size}
-                  </button>
+									<ButtonLikeAnchor
+										onClick={() => changePageSize(size)}
+									>
+										{size}
+									</ButtonLikeAnchor>
 								</li>
 							))}
 						</ul>
 					)}
-				</button>
+				</div>
 
 				{/* Pagination and navigation trough pages */}
 				<div className="pagination">
-					<button
-						className={"button-like-anchor " + cn("prev", { disabled: !isNavigatePrevious() })}
-						onClick={() => dispatch(goToPage(pageOffset - 1))}
+					<ButtonLikeAnchor
+						extraClassName={cn("prev", { disabled: !isNavigatePrevious() })}
+						onClick={() => {
+							dispatch(goToPage(pageOffset - 1));
+							forceDeselectAll();
+						}}
 					>
 						<span className="sr-only">{t("TABLE_PREVIOUS")}</span>
-					</button>
+					</ButtonLikeAnchor>
 					{directAccessible.map((page, key) =>
 						page.active ? (
-							<button key={key} className="button-like-anchor active">
+							<ButtonLikeAnchor key={key} extraClassName="active">
 								{page.label}
-							</button>
+							</ButtonLikeAnchor>
 						) : (
-							<button key={key} className="button-like-anchor" onClick={() => dispatch(goToPage(page.number))}>
+							<ButtonLikeAnchor key={key} onClick={() => {
+								dispatch(goToPage(page.number));
+								forceDeselectAll();
+							}}>
 								{page.label}
-							</button>
-						)
+							</ButtonLikeAnchor>
+						),
 					)}
 
-					<button
-						className={"button-like-anchor " + cn("next", { disabled: !isNavigateNext() })}
-						onClick={() => dispatch(goToPage(pageOffset + 1))}
+					<ButtonLikeAnchor
+						extraClassName={cn("next", { disabled: !isNavigateNext() })}
+						onClick={() => {
+							dispatch(goToPage(pageOffset + 1));
+							forceDeselectAll();
+						}}
 					>
 						<span className="sr-only">{t("TABLE_NEXT")}</span>
-					</button>
+					</ButtonLikeAnchor>
 				</div>
 			</div>
 		</>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	dropDownSpacingTheme,
@@ -16,9 +16,10 @@ export type DropDownOption = {
 }
 
 /**
- * This component provides a bar chart for visualising (statistics) data
+ * This component renders a dropdown menu using react-select
  */
-const DropDown = <T,>({
+const DropDown = <T, >({
+	ref = React.createRef<SelectInstance<any, boolean, GroupBase<any>>>(),
 	value,
 	text,
 	options,
@@ -35,6 +36,7 @@ const DropDown = <T,>({
 	handleMenuIsOpen = undefined,
 	customCSS,
 }: {
+	ref?: React.RefObject<SelectInstance<any, boolean, GroupBase<any>> | null>
 	value: T
 	text: string,
 	options: DropDownOption[],
@@ -50,16 +52,15 @@ const DropDown = <T,>({
 	menuIsOpen?: boolean,
 	handleMenuIsOpen?: (open: boolean) => void,
 	customCSS?: {
+		isMetadataStyle?: boolean,
 		width?: number | string,
 		optionPaddingTop?: number,
 		optionLineHeight?: string
-	}
+	},
 }) => {
 	const { t } = useTranslation();
 
-	const selectRef = React.useRef<SelectInstance<any, boolean, GroupBase<any>>>(null);
-
-	const [searchText, setSearch] = useState("");
+	const selectRef = ref;
 
 	const style = dropDownStyle(customCSS ?? {});
 
@@ -71,22 +72,17 @@ const DropDown = <T,>({
 	}, [menuIsOpen, selectRef]);
 
 	const openMenu = (open: boolean) => {
-		if (handleMenuIsOpen !== undefined && menuIsOpen !== undefined) {
+		if (handleMenuIsOpen !== undefined) {
 			handleMenuIsOpen(open);
 		}
-	}
+	};
 
 	const formatOptions = (
-		unformattedOptions: DropDownOption[],//any[],
-		filterText: string,
+		unformattedOptions: DropDownOption[],
 		required: boolean,
 	) => {
 		// Translate?
-		unformattedOptions = unformattedOptions.map(option => ({...option, label: t(option.label as ParseKeys)}))
-
-		// Filter
-		filterText = filterText.toLowerCase();
-		unformattedOptions = unformattedOptions.filter(option => option.label.toLowerCase().includes(filterText));
+		unformattedOptions = unformattedOptions.map(option => ({ ...option, label: t(option.label as ParseKeys) }));
 
 		// Add "No value" option
 		if (!required) {
@@ -102,7 +98,7 @@ const DropDown = <T,>({
 		 * contains an `order` field, indicating that a custom ordering for that list
 		 * exists and the list therefore should not be ordered alphabetically.
 		 */
-		const hasCustomOrder = unformattedOptions.every((item) =>
+		const hasCustomOrder = unformattedOptions.every(item =>
 			isJson(item.label) && JSON.parse(item.label).order !== undefined);
 
 		if (hasCustomOrder) {
@@ -110,7 +106,7 @@ const DropDown = <T,>({
 			unformattedOptions.sort((a, b) => JSON.parse(a.label).order - JSON.parse(b.label).order);
 		} else {
 			// Apply alphabetical ordering.
-			unformattedOptions.sort((a, b) => a.label.localeCompare(b.label))
+			unformattedOptions.sort((a, b) => a.label.localeCompare(b.label));
 		}
 
 		return unformattedOptions;
@@ -119,21 +115,18 @@ const DropDown = <T,>({
 
   let commonProps: Props = {
 		tabIndex: tabIndex,
-		theme: (theme) => (dropDownSpacingTheme(theme)),
+		theme: theme => (dropDownSpacingTheme(theme)),
 		styles: style,
 		defaultMenuIsOpen: defaultOpen,
 		autoFocus: autoFocus,
 		isSearchable: true,
 		value: { value: value, label: text === "" ? placeholder : text },
-		inputValue: searchText,
 		options: formatOptions(
 			options,
-			searchText,
 			required,
 		),
 		placeholder: placeholder,
-		onInputChange: (value: string) => setSearch(value),
-		onChange: (element) => handleChange(element as {value: T, label: string}),
+		onChange: element => handleChange(element as {value: T, label: string}),
 		menuIsOpen: menuIsOpen,
 		onMenuOpen: () => openMenu(true),
 		onMenuClose: () => openMenu(false),

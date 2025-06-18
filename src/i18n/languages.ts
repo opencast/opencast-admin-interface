@@ -15,7 +15,7 @@ import { sl } from "date-fns/locale/sl";
 import { sv } from "date-fns/locale/sv";
 import { tr } from "date-fns/locale/tr";
 import { zhCN } from "date-fns/locale/zh-CN";
-import {zhTW} from "date-fns/locale/zh-TW";
+import { zhTW } from "date-fns/locale/zh-TW";
 
 /*
  * JSON object that contains all available languages and the following information:
@@ -37,7 +37,7 @@ const languages = [
 	{ code: "gl", long: "Galego", rtl: false, dateLocale: gl },
 	{ code: "he", long: "עברית", rtl: true, dateLocale: he },
 	{ code: "it", long: "Italiano", rtl: false, dateLocale: it },
-	{ code: "nl", long: "Nederlands", rtl: false, dateLocale: nl }, 
+	{ code: "nl", long: "Nederlands", rtl: false, dateLocale: nl },
 	{ code: "pl", long: "Polski", rtl: false, dateLocale: pl },
 	{ code: "sl", long: "Slovenščina", rtl: false, dateLocale: sl },
 	{ code: "sv", long: "Svenska", rtl: false, dateLocale: sv },

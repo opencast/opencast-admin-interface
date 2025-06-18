@@ -27,9 +27,9 @@ import moment from "moment";
 import { AppThunk, useAppDispatch, useAppSelector } from "../../store";
 import { renderValidDate } from "../../utils/dateUtils";
 import { getCurrentLanguageInformation } from "../../utils/utils";
-import { Tooltip } from "./Tooltip";
 import DropDown from "./DropDown";
 import { AsyncThunk } from "@reduxjs/toolkit";
+import ButtonLikeAnchor from "./ButtonLikeAnchor";
 import { ParseKeys } from "i18next";
 
 /**
@@ -76,10 +76,10 @@ const TableFilters = ({
 		dispatch(removeSelectedFilter());
 
 		// Set all values of the filters in filterMap back to ""
-		dispatch(resetFilterValues())
+		dispatch(resetFilterValues());
 
 		// Reload resources when filters are removed
-		await dispatch(loadResource);
+		await dispatch(loadResource());
 		dispatch(loadResourceIntoTable());
 	};
 
@@ -91,7 +91,7 @@ const TableFilters = ({
 			setEndDate(undefined);
 		}
 
-		dispatch(editFilterValue({filterName: filter.name, value: ""}));
+		dispatch(editFilterValue({ filterName: filter.name, value: "" }));
 
 		// Reload resources when filter is removed
 		await dispatch(loadResource());
@@ -115,8 +115,8 @@ const TableFilters = ({
 		// and the filter selections are cleared
 		if (name === "secondFilter") {
 			let filter = filterMap.find(({ name }) => name === selectedFilter);
-			if (!!filter) {
-				dispatch(editFilterValue({filterName: filter.name, value: value}));
+			if (filter) {
+				dispatch(editFilterValue({ filterName: filter.name, value: value }));
 				setFilterSelector(false);
 				dispatch(removeSelectedFilter());
 				dispatch(removeSecondFilter());
@@ -135,41 +135,47 @@ const TableFilters = ({
 	// This helps increase performance by reducing the number of calls to load resources.
 	const applyFilterChangesDebounced = async () => {
 		// No matter what, we go to page one.
-		dispatch(goToPage(0))
+		dispatch(goToPage(0));
 		// Reload of resource
 		await dispatch(loadResource());
 		dispatch(loadResourceIntoTable());
 	};
 
 	useEffect(() => {
-		// Call to apply filter changes with 500MS debounce!
-		let applyFilterChangesDebouncedTimeoutId = setTimeout(applyFilterChangesDebounced, 500);
+		if (itemValue) {
+			// Call to apply filter changes with 500MS debounce!
+			let applyFilterChangesDebouncedTimeoutId = setTimeout(applyFilterChangesDebounced, 500);
 
-		return () => clearTimeout(applyFilterChangesDebouncedTimeoutId);
+			return () => clearTimeout(applyFilterChangesDebouncedTimeoutId);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [itemValue]);
 
-	const handleDatepicker = async (dates?:  [Date | undefined | null, Date | undefined | null]) => {
+	const handleDatepicker = async (dates?: [Date | undefined | null, Date | undefined | null]) => {
 		if (dates != null) {
 			let [start, end] = dates;
 
 			start?.setHours(0);
 			start?.setMinutes(0);
-			start?.setSeconds(0)
+			start?.setSeconds(0);
 			end?.setHours(23);
 			end?.setMinutes(59);
 			end?.setSeconds(59);
 
 			submitDateFilter(start, end);
 
-			if (start) setStartDate(start);
-			if (end) setEndDate(end);
+			if (start) {
+				setStartDate(start);
+			}
+			if (end) {
+				setEndDate(end);
+			}
 		}
-	}
+	};
 
 	// Workaround for entering a date range by only entering one date
 	// (e.g. 01/01/2025 results in a range of 01/01/2025 - 01/01/2025)
-	const handleDatePickerOnKeyDown = async(keyEvent: React.KeyboardEvent<HTMLElement>) => {
+	const handleDatePickerOnKeyDown = async (keyEvent: React.KeyboardEvent<HTMLElement>) => {
 		if (keyEvent.key === "Enter") {
 			let end = endDate ?? (startDate ? new Date(startDate) : undefined);
 			end?.setHours(23);
@@ -178,50 +184,50 @@ const TableFilters = ({
 
 			submitDateFilter(
 				startDate,
-				end
-			)
+				end,
+			);
 		}
-	}
+	};
 
-	const submitDateFilter = async(start: Date | undefined | null, end: Date | undefined | null) => {
+	const submitDateFilter = async (start: Date | undefined | null, end: Date | undefined | null) => {
 		if (start && end && moment(start).isValid() && moment(end).isValid()) {
 			let filter = filterMap.find(({ name }) => name === selectedFilter);
 			if (filter) {
 				dispatch(editFilterValue({
 					filterName: filter.name,
-					value: start.toISOString() + "/" + end.toISOString()
+					value: start.toISOString() + "/" + end.toISOString(),
 				}));
 				setFilterSelector(false);
 				dispatch(removeSelectedFilter());
 				// Reload of resource after going to very first page.
-				dispatch(goToPage(0))
+				dispatch(goToPage(0));
 				await dispatch(loadResource());
 				dispatch(loadResourceIntoTable());
 			}
 		}
-	}
+	};
 
 	useHotkeys(
     availableHotkeys.general.REMOVE_FILTERS.sequence,
     () => removeFilters(),
 		{ description: t(availableHotkeys.general.REMOVE_FILTERS.description) ?? undefined },
-    [removeFilters]
+    [removeFilters],
   );
 
 	const renderBlueBox = (filter: FilterData) => {
-		let valueLabel = filter.options?.find((opt) => opt.value === filter.value)
+		let valueLabel = filter.options?.find(opt => opt.value === filter.value)
 			?.label || filter.value;
 		return (
 			<span className="table-filter-blue-box">
 				{t(filter.label as ParseKeys)}:
-				{filter.translatable? t(valueLabel as ParseKeys) : valueLabel}
+				{filter.translatable ? t(valueLabel as ParseKeys) : valueLabel}
 			</span>
 		);
 	};
 
 	const getSelectedFilterText = () => {
 		return filter?.label ? t(filter.label as ParseKeys) : selectedFilter;
-	}
+	};
 
 	return (
 		<>
@@ -232,7 +238,7 @@ const TableFilters = ({
             type="text"
             className="search expand"
             placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
-            onChange={(e) => handleChange("textFilter", e.target.value)}
+            onChange={e => handleChange("textFilter", e.target.value)}
             name="textFilter"
             value={textFilter}
           />
@@ -243,11 +249,12 @@ const TableFilters = ({
 				{!!filterMap && (
 					<div className="table-filter">
 						<div className="filters">
-							<Tooltip title={t("TABLE_FILTERS.ADD")}>
-								<button className="button-like-anchor" onClick={() => setFilterSelector(!showFilterSelector)}>
-									<i className="fa fa-filter" />
-								</button>
-							</Tooltip>
+							<ButtonLikeAnchor
+								onClick={() => setFilterSelector(!showFilterSelector)}
+								tooltipText="TABLE_FILTERS.ADD"
+							>
+								<i className="fa fa-filter" />
+							</ButtonLikeAnchor>
 
 							{/*show if icon is clicked*/}
 							{showFilterSelector && (
@@ -258,7 +265,7 @@ const TableFilters = ({
 									options={
 										!!filterMap && filterMap.length > 0
 											? filterMap.filter(
-													(filter) => filter.name !== "presentersBibliographic"
+													filter => filter.name !== "presentersBibliographic",
 												)
 												.sort((a, b) => t(a.label as ParseKeys).localeCompare(t(b.label as ParseKeys))) // Sort alphabetically
 												.map(filter => {
@@ -270,14 +277,14 @@ const TableFilters = ({
 											: []
 									}
 									required={true}
-									handleChange={(element) => handleChange("selectedFilter", element!.value)}
+									handleChange={element => handleChange("selectedFilter", element!.value)}
 									placeholder={
 										!!filterMap && filterMap.length > 0
 											? t(
-												"TABLE_FILTERS.FILTER_SELECTION.PLACEHOLDER"
+												"TABLE_FILTERS.FILTER_SELECTION.PLACEHOLDER",
 												)
 											: t(
-												"TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS"
+												"TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS",
 												)
 									}
 									defaultOpen
@@ -327,31 +334,31 @@ const TableFilters = ({
 											)
 										}
 										{/* Remove icon in blue area around filter */}
-										<Tooltip title={t("TABLE_FILTERS.REMOVE")}>
-											<button
-												onClick={() => removeFilter(filter)}
-												className="button-like-anchor"
-											>
-												<i className="fa fa-times" />
-											</button>
-										</Tooltip>
+										<ButtonLikeAnchor
+											onClick={() => removeFilter(filter)}
+											tooltipText="TABLE_FILTERS.REMOVE"
+										>
+											<i className="fa fa-times" />
+										</ButtonLikeAnchor>
 									</span>
 								);
 							})}
 						</div>
 
 						{/* Remove icon to clear all filters */}
-						<Tooltip title={t("TABLE_FILTERS.CLEAR")}>
-							<button className="button-like-anchor" onClick={removeFilters}>
-								<i className="clear fa fa-times" />
-							</button>
-						</Tooltip>
+						<ButtonLikeAnchor
+							onClick={removeFilters}
+							tooltipText="TABLE_FILTERS.CLEAR"
+						>
+							<i className="clear fa fa-times" />
+						</ButtonLikeAnchor>
 						{/* Settings icon to open filters profile dialog (save and editing filter profiles)*/}
-						<Tooltip title={t("TABLE_FILTERS.PROFILES.FILTERS_HEADER")}>
-							<button className="button-like-anchor" onClick={() => setFilterSettings(!showFilterSettings)}>
-								<i className="settings fa fa-cog fa-times" />
-							</button>
-						</Tooltip>
+						<ButtonLikeAnchor
+							onClick={() => setFilterSettings(!showFilterSettings)}
+							tooltipText="TABLE_FILTERS.PROFILES.FILTERS_HEADER"
+						>
+							<i className="settings fa fa-cog fa-times" />
+						</ButtonLikeAnchor>
 
 						{/* Filter profile dialog for saving and editing filter profiles */}
 						<TableFilterProfiles
@@ -400,7 +407,6 @@ const FilterSwitch = ({
 		return null;
 	}
 
-	// eslint-disable-next-line default-case
 	switch (filter.type) {
 		case "select":
 			return (
@@ -411,30 +417,30 @@ const FilterSwitch = ({
 						text={secondFilter}
 						options={
 							!!filter.options && filter.options.length > 0
-								? filter.options.map((option) => {
+								? filter.options.map(option => {
 									if (!filter.translatable) {
 										return {
 											...option,
 											label: option.label.substr(0, 40),
-										}
+										};
 									} else {
 										return {
 											...option,
 											label: t(option.label as ParseKeys).substr(0, 40),
-										}
+										};
 									}
 								})
 								: []
 						}
 						required={true}
-						handleChange={(element) => handleChange("secondFilter", element!.value)}
+						handleChange={element => handleChange("secondFilter", element!.value)}
 						placeholder={
 							!!filter.options && filter.options.length > 0
 								? t(
-									"TABLE_FILTERS.FILTER_VALUE_SELECTION.PLACEHOLDER"
+									"TABLE_FILTERS.FILTER_VALUE_SELECTION.PLACEHOLDER",
 									)
 								: t(
-									"TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS"
+									"TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS",
 									)
 						}
 						autoFocus
@@ -453,8 +459,8 @@ const FilterSwitch = ({
 						startOpen
 						autoFocus
 						selected={startDate}
-						onChange={(dates) => handleDate(dates)}
-						onKeyDown={(key) => handleDatePickerOnKeyDown(key)}
+						onChange={dates => handleDate(dates)}
+						onKeyDown={key => handleDatePickerOnKeyDown(key)}
 						startDate={startDate}
 						endDate={endDate}
 						selectsRange

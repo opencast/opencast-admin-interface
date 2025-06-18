@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Field } from "formik";
 
 const SchedulingInputs = ({
-	inputs
+	inputs,
 }: {
 	inputs: {
 		id: string,
@@ -24,10 +24,10 @@ const SchedulingInputs = ({
 						/>
 						{t(input.value, input.id)}
 					</label>
-				)
+				),
 			)}
 		</>
-	)
+	);
 };
 
 export default SchedulingInputs;

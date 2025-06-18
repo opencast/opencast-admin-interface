@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
 import { useHotkeys } from "react-hotkeys-hook";
 import { availableHotkeys } from "../../../configs/hotkeysConfig";
+import ButtonLikeAnchor from "../ButtonLikeAnchor";
 import { ParseKeys } from "i18next";
 
 /**
@@ -11,7 +12,7 @@ const DetailsModal = ({
 	handleClose,
 	prefix,
 	title,
-	children
+	children,
 }: PropsWithChildren<{
 	handleClose: () => void
 	prefix: ParseKeys
@@ -35,7 +36,10 @@ const DetailsModal = ({
 			<div className="modal-animation modal-overlay" />
 			<section className="modal wizard modal-animation" id="details-modal">
 				<header>
-					<button className="button-like-anchor fa fa-times close-modal" onClick={() => close()} />
+					<ButtonLikeAnchor
+						extraClassName="fa fa-times close-modal"
+						onClick={() => close()}
+					/>
 					<h2>
 						{t(prefix, { name: title })}
 					</h2>

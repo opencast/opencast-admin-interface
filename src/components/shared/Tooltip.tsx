@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import MuiTooltip, { TooltipProps } from "@mui/material/Tooltip";
 
 export const Tooltip = (
-	{ active=true, className, placement="top", ...props }: TooltipProps & { active?: boolean },
+	{ active = true, className, placement = "top", ...props }: TooltipProps & { active?: boolean },
 ) => {
 	const [open, setOpen] = useState(false);
 
@@ -59,7 +59,7 @@ export const Tooltip = (
 			placement={placement}
 			ref={areaRef}
 			onMouseOut={() => (positionRef.current = { x: -9999, y: -9999 })}
-			onMouseMove={(event) => (positionRef.current = { x: event.clientX, y: event.clientY })}
+			onMouseMove={event => (positionRef.current = { x: event.clientX, y: event.clientY })}
 			PopperProps={{
 				anchorEl: {
 					getBoundingClientRect,

@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import { getCurrentLanguageInformation } from "../../utils/utils";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import DatePicker from "react-datepicker";
 import { Formik, FormikErrors } from "formik";
 import { Field } from "./Field";
 import BarChart from "./BarChart";
@@ -14,7 +14,7 @@ import {
 import { localizedMoment } from "../../utils/dateUtils";
 import { parseISO } from "date-fns";
 import { useTranslation } from "react-i18next";
-import type { ChartOptions } from 'chart.js';
+import type { ChartOptions } from "chart.js";
 import { AsyncThunk } from "@reduxjs/toolkit";
 import { useAppDispatch } from "../../store";
 import { DataResolution, TimeMode } from "../../slices/statisticsSlice";
@@ -55,7 +55,7 @@ const TimeSeriesStatistics = ({
 	totalValue: number,
 	sourceData: number[],
 	chartLabels: string[],
-	chartOptions: ChartOptions<'bar'>,
+	chartOptions: ChartOptions<"bar">,
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -82,24 +82,29 @@ const TimeSeriesStatistics = ({
 	// Get info about the current language and its date locale
 	const currentLanguage = getCurrentLanguageInformation();
 
+	// Set the date for the react-datepicker
+	const [startDatepicker, setStartDatepicker] = useState(fromDate ? new Date(fromDate) : null);
+	const [endDatepicker, setEndDatepicker] = useState(toDate ? new Date(toDate) : null);
+
 	// change formik values and get new statistic values from API
 	const change = (
 		setFormikValue: (field: string, value: any) => Promise<void | FormikErrors<any>>,
 		timeMode: TimeMode,
-		from: string | Date,
-		to: string | Date,
-		dataResolution: DataResolution
+		from: string,
+		to: string,
+		dataResolution: DataResolution,
 	) => {
 		if (timeMode === "year" || timeMode === "month") {
 			from = moment(from).clone().startOf(timeMode).format("YYYY-MM-DD");
 			to = moment(from).clone().endOf(timeMode).format("YYYY-MM-DD");
-			setFormikValue("fromDat0e", from);
+			setStartDatepicker(new Date(from));
+			setEndDatepicker(new Date(to));
+			setFormikValue("fromDate", from);
 			setFormikValue("toDate", to);
 			setFormikValue("dataResolution", fixedDataResolutions(timeMode));
 			dataResolution = fixedStatisticDataResolutions(timeMode);
 		}
-
-		dispatch(onChange({id: resourceId, providerId, from, to, dataResolution, timeMode}));
+		dispatch(onChange({ id: resourceId, providerId, from, to, dataResolution, timeMode }));
 	};
 
 	// change time mode in formik and get new values from API
@@ -108,34 +113,10 @@ const TimeSeriesStatistics = ({
 		setFormikValue: (field: string, value: any) => Promise<void | FormikErrors<any>>,
 		from: string,
 		to: string,
-		dataResolution: DataResolution
+		dataResolution: DataResolution,
 	) => {
 		setFormikValue("timeMode", newTimeMode);
 		change(setFormikValue, newTimeMode, from, to, dataResolution);
-	};
-
-	// change custom from date in formik and get new values from API
-	const changeFrom = async (
-		newFrom: Date,
-		setFormikValue: (field: string, value: any) => Promise<void | FormikErrors<any>>,
-		timeMode: TimeMode,
-		to: string,
-		dataResolution: DataResolution,
-	) => {
-		setFormikValue("fromDate", newFrom);
-		change(setFormikValue, timeMode, newFrom, to, dataResolution);
-	};
-
-	// change custom to date in formik and get new values from API
-	const changeTo = async (
-		newTo: Date,
-		setFormikValue: (field: string, value: any) => Promise<void | FormikErrors<any>>,
-		timeMode: TimeMode,
-		from: string,
-		dataResolution: DataResolution
-	) => {
-		setFormikValue("toDate", newTo);
-		change(setFormikValue, timeMode, from, newTo, dataResolution);
 	};
 
 	// change custom time granularity in formik and get new values from API
@@ -153,10 +134,10 @@ const TimeSeriesStatistics = ({
 	// format selected time to display as name of timeframe
 	const formatSelectedTimeframeName = (
 		from: string,
-		timeMode: keyof typeof formatStrings
+		timeMode: keyof typeof formatStrings,
 	) => {
 		return localizedMoment(from, currentLanguage ? currentLanguage.dateLocale.code : "en").format(
-			formatStrings[timeMode]
+			formatStrings[timeMode],
 		);
 	};
 
@@ -199,18 +180,17 @@ const TimeSeriesStatistics = ({
 				dataResolution: dataResolution,
 				// Typescript complains that the method "startOf" cannot take "custom" as a parameter, but in practice
 				// this does not seem to be a problem
-				//@ts-ignore
+				//@ts-expect-error: timeMode should be assignable here
 				fromDate: moment(fromDate).startOf(timeMode).format("YYYY-MM-DD"),
-				//@ts-ignore
+				//@ts-expect-error: timeMode should be assignable here
 				toDate: moment(toDate).endOf(timeMode).format("YYYY-MM-DD"),
 			}}
-			onSubmit={(values) => {}}
+			onSubmit={values => {}}
 		>
-			{(formik) => (
+			{formik => (
 				<div className="statistics-graph">
 					{/* download link for a statistic file */}
 					<div className="download">
-						{/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
 						<a
 							className="download-icon"
 							href={exportUrl}
@@ -243,13 +223,13 @@ const TimeSeriesStatistics = ({
 									value={mode.value}
 									id={providerId + "-mode-" + key}
 // @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
-									onChange={(event) =>
+									onChange={event =>
 										changeTimeMode(
 											event.target.value,
 											formik.setFieldValue,
 											formik.values.fromDate,
 											formik.values.toDate,
-											formik.values.dataResolution
+											formik.values.dataResolution,
 										)
 									}
 								/>
@@ -264,7 +244,6 @@ const TimeSeriesStatistics = ({
 						formik.values.timeMode === "month") && (
 						/* year/month selection for statistic via previous and next buttons */
 						<span className="preset">
-							{/* eslint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/anchor-is-valid */}
 							<a
 								className="navigation prev"
 								onClick={() =>
@@ -272,17 +251,16 @@ const TimeSeriesStatistics = ({
 										formik.setFieldValue,
 										formik.values.fromDate,
 										formik.values.timeMode,
-										formik.values.dataResolution
+										formik.values.dataResolution,
 									)
 								}
 							/>
 							<div>
 								{formatSelectedTimeframeName(
 									formik.values.fromDate,
-									formik.values.timeMode
+									formik.values.timeMode,
 								)}
 							</div>
-							{/* eslint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/anchor-is-valid */}
 							<a
 								className="navigation next"
 								onClick={() =>
@@ -290,7 +268,7 @@ const TimeSeriesStatistics = ({
 										formik.setFieldValue,
 										formik.values.fromDate,
 										formik.values.timeMode,
-										formik.values.dataResolution
+										formik.values.dataResolution,
 									)
 								}
 							/>
@@ -302,57 +280,47 @@ const TimeSeriesStatistics = ({
 						<span className="custom">
 							{/* time range selection */}
 							<div className="range">
+							<span>
+								{t("STATISTICS.TIMERANGE") /* Time range */}{" "}
+							</span>
 								{/* date picker for selecting start date of the statistic */}
-								<span>{t("STATISTICS.FROM") /* From */}</span>
-								<div className="chosen-container">
-									<DatePicker
-										name="fromDate"
-										value={typeof formik.values.fromDate === "string" ? parseISO(formik.values.fromDate) : formik.values.fromDate}
-										slotProps={{ textField: { placeholder: t(
-											"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.START_DATE"
-										) } }}
-										onChange={(value) => {
-											if (value) {
-												changeFrom(
-													value,
-													formik.setFieldValue,
-													formik.values.timeMode,
-													formik.values.toDate,
-													formik.values.dataResolution
-												)
-											}
-										}}
-									/>
-								</div>
-
-								{/* date picker for selecting end date of the statistic */}
-								<span>{t("STATISTICS.TO") /* To */}</span>
-								<div className="chosen-container">
-									<DatePicker
-										name="toDate"
-										value={typeof formik.values.toDate === "string" ? parseISO(formik.values.toDate) : formik.values.toDate}
-										slotProps={{ textField: { placeholder: t(
-											"EVENTS.EVENTS.NEW.SOURCE.PLACEHOLDER.END_DATE"
-										) } }}
-										onChange={(value) => {
-											if (value) {
-												changeTo(
-													value,
-													formik.setFieldValue,
-													formik.values.timeMode,
-													formik.values.fromDate,
-													formik.values.dataResolution
-												)
-											}
-										}}
-									/>
-								</div>
+								<DatePicker
+									selected={new Date(formik.values.fromDate)}
+									onChange={dates => {
+										const [startDate, endDate] = dates;
+										setStartDatepicker(startDate);
+										setEndDatepicker(endDate);
+										const newStartDate = startDate ? moment(startDate).format("YYYY-MM-DD") : formik.values.fromDate;
+										const newEndDate = endDate ? moment(endDate).format("YYYY-MM-DD") : formik.values.toDate;
+										change(
+											formik.setFieldValue,
+											formik.values.timeMode,
+											newStartDate,
+											newEndDate,
+											formik.values.dataResolution,
+										);
+									}}
+									startDate={startDatepicker}
+									endDate={endDatepicker}
+									selectsRange
+									showYearDropdown
+									showMonthDropdown
+									yearDropdownItemNumber={2}
+									swapRange
+									allowSameDay
+									dateFormat="P"
+									popperPlacement="bottom"
+									popperClassName="datepicker-custom"
+									className="datepicker-custom-input"
+									locale={getCurrentLanguageInformation()?.dateLocale}
+									strictParsing
+								/>
 							</div>
 
 							{/* time granularity selection */}
 							<div>
 								<span>
-									{t("STATISTICS.GRANULARITY") + " " /* Granularity */}
+									{t("STATISTICS.GRANULARITY")/* Granularity */}{" "}
 								</span>
 								<div className="chosen-container chosen-container-single">
 									{/* drop-down for selecting the time granularity of the statistic */}
@@ -362,17 +330,17 @@ const TimeSeriesStatistics = ({
 										as="select"
 										data-width="'100px'"
 // @ts-expect-error TS(7006): Parameter 'event' implicitly has an 'any' type.
-										onChange={(event) =>
+										onChange={event =>
 											changeGranularity(
 												event.target.value,
 												formik.setFieldValue,
 												formik.values.timeMode,
 												formik.values.fromDate,
-												formik.values.toDate
+												formik.values.toDate,
 											)
 										}
 										placeholder={t(
-											"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE"
+											"EVENTS.EVENTS.DETAILS.SOURCE.PLACEHOLDER.MINUTE",
 										)}
 									>
 										<option value="" hidden />

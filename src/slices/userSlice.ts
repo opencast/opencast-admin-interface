@@ -1,11 +1,11 @@
-import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from "@reduxjs/toolkit";
 import { usersTableConfig } from "../configs/tableConfigs/usersTableConfig";
-import axios from 'axios';
+import axios from "axios";
 import { transformToIdValueArray } from "../utils/utils";
 import { buildUserBody, getURLParams } from "../utils/resourceUtils";
-import { addNotification } from './notificationSlice';
-import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
-import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { addNotification } from "./notificationSlice";
+import { TableConfig } from "../configs/tableConfigs/aclsTableConfig";
+import { createAppAsyncThunk } from "../createAsyncThunkWithTypes";
 
 /**
  * This file contains redux reducer for actions affecting the state of users
@@ -33,7 +33,7 @@ export type NewUser = {
 }
 
 type UsersState = {
-	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	status: "uninitialized" | "loading" | "succeeded" | "failed",
 	error: SerializedError | null,
 	results: User[],
 	columns: TableConfig["columns"],
@@ -44,15 +44,15 @@ type UsersState = {
 };
 
 // Fill columns initially with columns defined in usersTableConfig
-const initialColumns = usersTableConfig.columns.map((column) => ({
+const initialColumns = usersTableConfig.columns.map(column => ({
 	...column,
 	deactivated: false,
 }));
 
 // Initial state of users in redux store
 const initialState: UsersState = {
-	status: 'uninitialized',
-  error: null,
+	status: "uninitialized",
+	error: null,
 	results: [],
 	columns: initialColumns,
 	total: 0,
@@ -62,7 +62,7 @@ const initialState: UsersState = {
 };
 
 // fetch users from server
-export const fetchUsers = createAppAsyncThunk('users/fetchUsers', async (_, { getState }) => {
+export const fetchUsers = createAppAsyncThunk("users/fetchUsers", async (_, { getState }) => {
 	const state = getState();
 	let params = getURLParams(state, "users");
 	// Just make the async request here, and return the response.
@@ -72,8 +72,14 @@ export const fetchUsers = createAppAsyncThunk('users/fetchUsers', async (_, { ge
 	return res.data;
 });
 
+// For a each role in a list of roles, get user information if available
+export const fetchUsersForTemplate = async (roles: string[]) => {
+	const res = await axios.get("/admin-ng/users/usersforroles.json", { params: { roles: JSON.stringify(roles) } });
+	return res.data as { [key: string]: User };
+};
+
 // new user to backend
-export const postNewUser = createAppAsyncThunk('users/postNewUser', async (values: NewUser, {dispatch}) => {
+export const postNewUser = createAppAsyncThunk("users/postNewUser", async (values: NewUser, { dispatch }) => {
 	// get URL params used for post request
 	let data = buildUserBody(values);
 
@@ -86,37 +92,37 @@ export const postNewUser = createAppAsyncThunk('users/postNewUser', async (value
 		// Usually we would extraReducers for responses, but reducers are not allowed to dispatch
 		// (they need to be free of side effects)
 		// Since we want to dispatch, we have to handle responses in our thunk
-		.then((response) => {
+		.then(response => {
 			console.info(response);
-			dispatch(addNotification({type: "success", key: "USER_ADDED"}));
+			dispatch(addNotification({ type: "success", key: "USER_ADDED" }));
 		})
-		.catch((response) => {
+		.catch(response => {
 			console.error(response);
-			dispatch(addNotification({type: "error", key: "USER_NOT_SAVED"}));
+			dispatch(addNotification({ type: "error", key: "USER_NOT_SAVED" }));
 		});
 });
 
 // delete user with provided id
-export const deleteUser = createAppAsyncThunk('users/deleteUser', async (id: string, {dispatch}) => {
+export const deleteUser = createAppAsyncThunk("users/deleteUser", async (id: string, { dispatch }) => {
 	// API call for deleting an user
 	axios
 		.delete(`/admin-ng/users/${id}.json`)
-		.then((res) => {
+		.then(res => {
 			console.info(res);
 			// add success notification
-			dispatch(addNotification({type: "success", key: "USER_DELETED"}));
+			dispatch(addNotification({ type: "success", key: "USER_DELETED" }));
 		})
-		.catch((res) => {
+		.catch(res => {
 			console.error(res);
 			// add error notification
-			dispatch(addNotification({type: "error", key: "USER_NOT_DELETED"}));
+			dispatch(addNotification({ type: "error", key: "USER_NOT_DELETED" }));
 		});
 });
 
 // get users and their user names
 export const fetchUsersAndUsernames = async () => {
 	let data = await axios.get(
-		"/admin-ng/resources/USERS.NAME.AND.USERNAME.json"
+		"/admin-ng/resources/USERS.NAME.AND.USERNAME.json",
 	);
 
 	const response = await data.data;
@@ -125,7 +131,7 @@ export const fetchUsersAndUsernames = async () => {
 };
 
 const usersSlice = createSlice({
-	name: 'users',
+	name: "users",
 	initialState,
 	reducers: {
 		setUserColumns(state, action: PayloadAction<
@@ -138,8 +144,8 @@ const usersSlice = createSlice({
 	extraReducers: builder => {
 		builder
 			// fetchUsers
-			.addCase(fetchUsers.pending, (state) => {
-				state.status = 'loading';
+			.addCase(fetchUsers.pending, state => {
+				state.status = "loading";
 			})
 			.addCase(fetchUsers.fulfilled, (state, action: PayloadAction<{
 				total: UsersState["total"],
@@ -148,7 +154,7 @@ const usersSlice = createSlice({
 				offset: UsersState["offset"],
 				results: UsersState["results"],
 			}>) => {
-				state.status = 'succeeded';
+				state.status = "succeeded";
 				const users = action.payload;
 				state.total = users.total;
 				state.count = users.count;
@@ -157,11 +163,11 @@ const usersSlice = createSlice({
 				state.results = users.results;
 			})
 			.addCase(fetchUsers.rejected, (state, action) => {
-				state.status = 'failed';
+				state.status = "failed";
 				state.results = [];
 				state.error = action.error;
 			});
-	}
+	},
 });
 
 export const { setUserColumns } = usersSlice.actions;

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Formik } from "formik";
+import { Formik, FormikProps } from "formik";
 import {
 	deletingWorkflow as getDeletingWorkflow,
 	getBaseWorkflow,
@@ -26,19 +26,28 @@ import {
 } from "../../../../slices/eventDetailsSlice";
 import { removeNotificationWizardForm } from "../../../../slices/notificationSlice";
 import { renderValidDate } from "../../../../utils/dateUtils";
-import { Tooltip } from "../../../shared/Tooltip";
 import { WorkflowTabHierarchy } from "../modals/EventDetails";
 import { useTranslation } from "react-i18next";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { formatWorkflowsForDropdown } from "../../../../utils/dropDownUtils";
 import { ParseKeys } from "i18next";
+
+type InitialValues = {
+	workflowDefinition: string;
+	configuration: {
+			[key: string]: any;
+	} | undefined;
+}
 
 /**
  * This component manages the workflows tab of the event details modal
  */
 const EventDetailsWorkflowTab = ({
 	eventId,
+	formikRef,
 }: {
 	eventId: string,
+	formikRef?: React.RefObject<FormikProps<InitialValues> | null>
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -55,11 +64,11 @@ const EventDetailsWorkflowTab = ({
 
 	const isRoleWorkflowEdit = hasAccess(
 		"ROLE_UI_EVENTS_DETAILS_WORKFLOWS_EDIT",
-		user
+		user,
 	);
 	const isRoleWorkflowDelete = hasAccess(
 		"ROLE_UI_EVENTS_DETAILS_WORKFLOWS_DELETE",
-		user
+		user,
 	);
 
 	useEffect(() => {
@@ -75,13 +84,13 @@ const EventDetailsWorkflowTab = ({
 
 	const workflowAction = (workflowId: string, action: string) => {
 		if (!performingWorkflowAction) {
-			dispatch(performWorkflowAction({eventId, workflowId, action}));
+			dispatch(performWorkflowAction({ eventId, workflowId, action }));
 		}
 	};
 
 	const deleteWorkflow = (workflowId: string) => {
 		if (!deletingWorkflow) {
-			dispatch(deleteWf({eventId, workflowId}));
+			dispatch(deleteWf({ eventId, workflowId }));
 		}
 	};
 
@@ -115,7 +124,7 @@ const EventDetailsWorkflowTab = ({
 		workflowDefinition: string,
 		configuration: { [key: string]: unknown } | undefined
 	}) => {
-		dispatch(saveWorkflowConfig({values, eventId}));
+		dispatch(saveWorkflowConfig({ values, eventId }));
 	};
 
 	return (
@@ -132,7 +141,7 @@ const EventDetailsWorkflowTab = ({
 									<header>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.WORKFLOW_INSTANCES.TITLE"
+												"EVENTS.EVENTS.DETAILS.WORKFLOW_INSTANCES.TITLE",
 											) /* Workflow instances */
 										}
 									</header>
@@ -146,28 +155,28 @@ const EventDetailsWorkflowTab = ({
 													<th>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.WORKFLOWS.TITLE"
+																"EVENTS.EVENTS.DETAILS.WORKFLOWS.TITLE",
 															) /* Title */
 														}
 													</th>
 													<th>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTER"
+																"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTER",
 															) /* Submitter */
 														}
 													</th>
 													<th>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTED"
+																"EVENTS.EVENTS.DETAILS.WORKFLOWS.SUBMITTED",
 															) /* Submitted */
 														}
 													</th>
 													<th>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.WORKFLOWS.STATUS"
+																"EVENTS.EVENTS.DETAILS.WORKFLOWS.STATUS",
 															) /* Status */
 														}
 													</th>
@@ -175,7 +184,7 @@ const EventDetailsWorkflowTab = ({
 														<th className="fit">
 															{
 																t(
-																	"EVENTS.EVENTS.DETAILS.WORKFLOWS.ACTIONS"
+																	"EVENTS.EVENTS.DETAILS.WORKFLOWS.ACTIONS",
 																) /* Actions */
 															}
 														</th>
@@ -187,7 +196,7 @@ const EventDetailsWorkflowTab = ({
 												{isLoading ||
 													workflows.entries.map((
 														item,
-														key /*orderBy:'submitted':true track by $index"*/
+														key, /*orderBy:'submitted':true track by $index"*/
 													) => (
 														<tr key={key}>
 															<td>{item.id}</td>
@@ -203,43 +212,40 @@ const EventDetailsWorkflowTab = ({
 																<td>
 																	{item.status ===
 																		"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.RUNNING" && (
-																		<Tooltip title={t("EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.STOP")}>
-																			<button
-																				onClick={() =>
-																					workflowAction(item.id, "STOP")
-																				}
-																				className="button-like-anchor stop fa-fw"
-																			>
-																				{/* STOP */}
-																			</button>
-																		</Tooltip>
+																		<ButtonLikeAnchor
+																			onClick={() =>
+																				workflowAction(item.id, "STOP")
+																			}
+																			extraClassName="stop fa-fw"
+																			tooltipText="EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.STOP"
+																		>
+																			{/* STOP */}
+																		</ButtonLikeAnchor>
 																	)}
 																	{item.status ===
 																		"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.PAUSED" && (
-																		<Tooltip title={t("EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.ABORT")}>
-																			<button
-																				onClick={() =>
-																					workflowAction(item.id, "NONE")
-																				}
-																				className="button-like-anchor fa fa-hand-stop-o fa-fw"
-																				style={{ color: "red" }}
-																			>
-																				{/* Abort */}
-																			</button>
-																		</Tooltip>
+																		<ButtonLikeAnchor
+																			onClick={() =>
+																				workflowAction(item.id, "NONE")
+																			}
+																			extraClassName="fa fa-hand-stop-o fa-fw"
+																			style={{ color: "red" }}
+																			tooltipText="EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.ABORT"
+																		>
+																			{/* Abort */}
+																		</ButtonLikeAnchor>
 																	)}
 																	{item.status ===
 																		"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.PAUSED" && (
-																		<Tooltip title={t("EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.RETRY")}>
-																			<button
-																				onClick={() =>
-																					workflowAction(item.id, "RETRY")
-																				}
-																				className="button-like-anchor fa fa-refresh fa-fw"
-																			>
-																				{/* Retry */}
-																			</button>
-																		</Tooltip>
+																		<ButtonLikeAnchor
+																			onClick={() =>
+																				workflowAction(item.id, "RETRY")
+																			}
+																			extraClassName="fa fa-refresh fa-fw"
+																			tooltipText="EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.RETRY"
+																		>
+																			{/* Retry */}
+																		</ButtonLikeAnchor>
 																	)}
 																	{(item.status ===
 																		"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.SUCCEEDED" ||
@@ -249,34 +255,29 @@ const EventDetailsWorkflowTab = ({
 																			"EVENTS.EVENTS.DETAILS.WORKFLOWS.OPERATION_STATUS.STOPPED") &&
 																		!isCurrentWorkflow(item.id) &&
 																		isRoleWorkflowDelete && (
-																			<Tooltip
-																				title={t(
-																					"EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.DELETE"
-																				)}
+																			<ButtonLikeAnchor
+																				onClick={() => deleteWorkflow(item.id)}
+																				extraClassName="remove fa-fw"
+																				tooltipText="EVENTS.EVENTS.DETAILS.WORKFLOWS.TOOLTIP.DELETE"
 																			>
-																				<button
-																					onClick={() => deleteWorkflow(item.id)}
-																					className="button-like-anchor remove fa-fw"
-																				>
-																					{/* DELETE */}
-																				</button>
-																			</Tooltip>
+																				{/* DELETE */}
+																			</ButtonLikeAnchor>
 																		)}
 																</td>
 															)}
 															<td>
-																<button
-																	className="button-like-anchor details-link"
+																<ButtonLikeAnchor
+																	extraClassName="details-link"
 																	onClick={() =>
 																		openSubTab("workflow-details", item.id)
 																	}
 																>
 																	{
 																		t(
-																			"EVENTS.EVENTS.DETAILS.MEDIA.DETAILS"
+																			"EVENTS.EVENTS.DETAILS.MEDIA.DETAILS",
 																		) /* Details */
 																	}
-																</button>
+																</ButtonLikeAnchor>
 															</td>
 														</tr>
 													))}
@@ -288,17 +289,18 @@ const EventDetailsWorkflowTab = ({
 
 							{workflows.scheduling &&
 								(isLoading || (
-									<Formik
+									<Formik<InitialValues>
 										initialValues={setInitialValues()}
 										enableReinitialize
-										onSubmit={(values) => handleSubmit(values)}
+										onSubmit={values => handleSubmit(values)}
+										innerRef={formikRef}
 									>
-										{(formik) => (
+										{formik => (
 											<div className="obj list-obj">
 												<header>
 													{
 														t(
-															"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.CONFIGURATION"
+															"EVENTS.EVENTS.DETAILS.WORKFLOW_DETAILS.CONFIGURATION",
 														) /* Workflow configuration */
 													}
 												</header>
@@ -310,7 +312,7 @@ const EventDetailsWorkflowTab = ({
 																	<th>
 																		{
 																			t(
-																				"EVENTS.EVENTS.DETAILS.WORKFLOWS.WORKFLOW"
+																				"EVENTS.EVENTS.DETAILS.WORKFLOWS.WORKFLOW",
 																			) /*Select Workflow*/
 																		}
 																	</th>
@@ -328,9 +330,9 @@ const EventDetailsWorkflowTab = ({
 																					}
 																					text={
 																						workflowDefinitions.find(
-																							(workflowDef) =>
+																							workflowDef =>
 																								workflowDef.id ===
-																								formik.values.workflowDefinition
+																								formik.values.workflowDefinition,
 																						)?.title ?? ""
 																					}
 																					options={
@@ -340,26 +342,26 @@ const EventDetailsWorkflowTab = ({
 																							: []
 																					}
 																					required={true}
-																					handleChange={(element) => {
+																					handleChange={element => {
 																						if (element) {
-																							formik.setFieldValue("workflowDefinition", element.value)
+																							formik.setFieldValue("workflowDefinition", element.value);
 																						}
 																					}}
 																					placeholder={
 																						!!workflowDefinitions &&
 																						workflowDefinitions.length > 0
 																							? t(
-																									"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW"
+																									"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW",
 																							  )
 																							: t(
-																									"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW_EMPTY"
+																									"EVENTS.EVENTS.NEW.PROCESSING.SELECT_WORKFLOW_EMPTY",
 																							  )
 																					}
 																					disabled={
 																						!hasCurrentAgentAccess() ||
 																						!isRoleWorkflowEdit
 																					}
-																					customCSS={{width: "100%"}}
+																					customCSS={{ width: "100%" }}
 																				/>
 																				{/*pre-select-from="workflowDefinitionIds"*/}
 																			</div>
@@ -380,7 +382,7 @@ const EventDetailsWorkflowTab = ({
 																	<th>
 																		{
 																			t(
-																				"EVENTS.EVENTS.DETAILS.WORKFLOWS.CONFIGURATION"
+																				"EVENTS.EVENTS.DETAILS.WORKFLOWS.CONFIGURATION",
 																			) /* Configuration */
 																		}
 																	</th>
@@ -412,7 +414,7 @@ const EventDetailsWorkflowTab = ({
 																				<div>
 																					{
 																						t(
-																							"EVENTS.EVENTS.DETAILS.WORKFLOWS.NO_CONFIGURATION"
+																							"EVENTS.EVENTS.DETAILS.WORKFLOWS.NO_CONFIGURATION",
 																						) /* No config */
 																					}
 																				</div>

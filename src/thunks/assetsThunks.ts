@@ -1,32 +1,34 @@
 import axios from "axios";
-import { getAssetUploadOptions } from "../selectors/eventSelectors";
-import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { UploadAssetOption } from "../slices/eventSlice";
+import { getAssetUploadOptions, getSourceUploadOptions } from "../selectors/eventSelectors";
+import { UploadOption } from "../slices/eventSlice";
+import { createAppAsyncThunk } from "../createAsyncThunkWithTypes";
 import { Publication } from "../slices/eventDetailsSlice";
 
 // thunks for assets, especially for getting asset options
 
-export const fetchAssetUploadOptions = createAppAsyncThunk('assets/fetchAssetUploadOptionsAsyncThunk', async (_, { getState }) => {
+export const fetchAssetUploadOptions = createAppAsyncThunk("assets/fetchAssetUploadOptionsAsyncThunk", async (_, { getState }) => {
 	// get old asset upload options
 	const state = getState();
 	const assetUploadOptions = getAssetUploadOptions(state);
+	const assetSourceOptions = getSourceUploadOptions(state);
 
 	const sourcePrefix = "EVENTS.EVENTS.NEW.SOURCE.UPLOAD";
 	const assetPrefix = "EVENTS.EVENTS.NEW.UPLOAD_ASSET.OPTION";
 	const workflowPrefix = "EVENTS.EVENTS.NEW.UPLOAD_ASSET.WORKFLOWDEFID";
 
 	// only fetch asset upload options, if they haven't been fetched yet
-	if (!(assetUploadOptions.length !== 0 && assetUploadOptions.length !== 0)) {
+	if (!(assetUploadOptions.length !== 0 && assetSourceOptions.length !== 0)) {
 		let workflow;
-		let newAssetUploadOptions: UploadAssetOption[] = [];
+		let newAssetUploadOptions: UploadOption[] = [];
+		let newSourceUploadOptions: UploadOption[] = [];
 
 		// request asset upload options from API
 		await axios
 			.get("/admin-ng/resources/eventUploadAssetOptions.json")
-			.then((dataResponse) => {
+			.then(dataResponse => {
 				// iterate over response and only use non-comment lines
 				for (const [optionKey, optionJson] of Object.entries(
-					dataResponse.data
+					dataResponse.data,
 				)) {
 					if (optionKey.charAt(0) !== "$") {
 						const isSourceOption = optionKey.indexOf(sourcePrefix) >= 0;
@@ -43,16 +45,23 @@ export const fetchAssetUploadOptions = createAppAsyncThunk('assets/fetchAssetUpl
 								showAs: isSourceOption ? "source" : "uploadAsset",
 							};
 
-							newAssetUploadOptions.push(option);
+							if ((option.showForNewEvents !== undefined && (isAssetOption && option.showForNewEvents))
+								|| (option.showForNewEvents === undefined && (isAssetOption))) {
+									newAssetUploadOptions.push(option);
+							}
+							if ((option.showForNewEvents !== undefined && (isSourceOption && option.showForNewEvents))
+								|| (option.showForNewEvents === undefined && (isSourceOption))) {
+									newSourceUploadOptions.push(option);
+							}
 						} else if (optionKey.indexOf(workflowPrefix) >= 0) {
 							// if the line is the upload asset workflow id, set the asset upload workflow
 							workflow = optionJson as string;
 						}
 					}
 				}
-			})
+			});
 
-		return { workflow, newAssetUploadOptions };
+		return { workflow, newAssetUploadOptions, newSourceUploadOptions };
 	}
 });
 
@@ -60,7 +69,7 @@ export const fetchAssetUploadOptions = createAppAsyncThunk('assets/fetchAssetUpl
  * Adds information from the publication list provider to publications.
  * The additional info is used for rendering purposes
  */
-export const enrichPublications = createAppAsyncThunk('assets/enrichPublications', async (
+export const enrichPublications = createAppAsyncThunk("assets/enrichPublications", async (
 	publications: {
 		publications: {
 			id: string,
@@ -80,7 +89,7 @@ export const enrichPublications = createAppAsyncThunk('assets/enrichPublications
 	let combinedPublications: Publication[] = [];
 
 	// fill publication objects with additional information
-	publications.publications.forEach((publication) => {
+	publications.publications.forEach(publication => {
 		let newPublication: Publication = {
 			enabled: true,
 			id: publication.id,
@@ -119,7 +128,7 @@ export const enrichPublications = createAppAsyncThunk('assets/enrichPublications
 		combinedPublications.push(newPublication);
 	});
 
-	combinedPublications = combinedPublications.sort(({order: a}, {order:b}) => a - b);
+	combinedPublications = combinedPublications.sort(({ order: a }, { order: b }) => a - b);
 
 	return combinedPublications;
 });

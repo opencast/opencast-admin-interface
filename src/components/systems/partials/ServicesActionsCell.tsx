@@ -15,7 +15,7 @@ const ServicesActionCell = ({
 	const dispatch = useAppDispatch();
 
 	const onClickRestart = async () => {
-		await dispatch(restartService({host: row.hostname, serviceType: row.name}));
+		await dispatch(restartService({ host: row.hostname, serviceType: row.name }));
 		await dispatch(fetchServices());
 		dispatch(loadServicesIntoTable());
 	};
@@ -28,7 +28,7 @@ const ServicesActionCell = ({
 				editAccessRole={"ROLE_UI_SERVICES_STATUS_EDIT"}
 				tooltipText={"SYSTEMS.SERVICES.TABLE.SANITIZE"}
 			/>
-		): <></>
+		) : <></>
 	);
 };
 

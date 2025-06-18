@@ -2,14 +2,14 @@ import moment from "moment";
 import "moment/min/locales.min";
 import { getCurrentLanguageInformation } from "./utils";
 import { DataResolution, TimeMode } from "../slices/statisticsSlice";
-import type { ChartOptions, TooltipItem } from 'chart.js';
+import type { ChartOptions, TooltipItem } from "chart.js";
 
 /**
  * This file contains functions that are needed for thunks for statistics
  */
 
 /* creates callback function for formatting the labels of the xAxis in a statistics diagram */
-function createXAxisTickCallback (
+function createXAxisTickCallback(
 	timeMode: TimeMode,
 	dataResolution: DataResolution,
 	language: string,
@@ -36,8 +36,7 @@ function createXAxisTickCallback (
 	}
 
 	return function (tickValue: number | string) {
-		// Typescript does not like "this", but the chart.js documentation insists we should do it this way
-		// @ts-ignore
+		// @ts-expect-error: Typescript does not like "this", but the chart.js documentation insists we should do it this way
 		return moment(this.getLabelForValue(tickValue)).locale(language).format(formatString);
 	};
 };
@@ -46,7 +45,7 @@ function createXAxisTickCallback (
 const createTooltipCallback = (
 	timeMode: TimeMode,
 	dataResolution: DataResolution,
-	language: string
+	language: string,
 ) => {
 	let formatString;
 	if (timeMode === "year") {
@@ -87,13 +86,13 @@ const createTooltipCallback = (
 /* creates options for statistics chart */
 export const createChartOptions = (
 	timeMode: TimeMode,
-	dataResolution: DataResolution
-): ChartOptions<'bar'> => {
+	dataResolution: DataResolution,
+): ChartOptions<"bar"> => {
 	// Get info about the current language and its date locale
 	const currentLanguageInfo = getCurrentLanguageInformation();
 	let currentLanguage = "";
 	if (currentLanguageInfo) {
-		currentLanguage = currentLanguageInfo.dateLocale.code
+		currentLanguage = currentLanguageInfo.dateLocale.code;
 	}
 
 	return {
@@ -142,7 +141,7 @@ export const createDownloadUrl = (
 	providerId: string,
 	from: Date | string,
 	to: Date | string,
-	dataResolution: string
+	dataResolution: string,
 ) => {
 	const csvUrlSearchParams = new URLSearchParams({
 		dataResolution: dataResolution,
@@ -153,5 +152,5 @@ export const createDownloadUrl = (
 		to: moment(to).endOf("day").toJSON(),
 	});
 
-	return "/admin-ng/statistics/export.csv?" + csvUrlSearchParams;
+	return "/admin-ng/statistics/export.csv?" + csvUrlSearchParams.toString();
 };

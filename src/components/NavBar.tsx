@@ -1,12 +1,11 @@
 import React, { useRef } from "react";
 import { Link, useLocation } from "react-router";
 import { hasAccess } from "../utils/utils";
-import { AppDispatch, useAppDispatch, useAppSelector } from "../store";
+import { useAppSelector } from "../store";
 import { getUserInformation } from "../selectors/userInfoSelectors";
 import cn from "classnames";
 import { useTranslation } from "react-i18next";
 import MainNav from "./shared/MainNav";
-import { setOffset } from "../slices/tableSlice";
 import NewResourceModal, { NewResource } from "./shared/NewResourceModal";
 import { useHotkeys } from "react-hotkeys-hook";
 import { ModalHandle } from "./shared/modals/Modal";
@@ -15,13 +14,6 @@ import { ParseKeys } from "i18next";
 /**
  * Component that renders the nav bar
  */
-type LinkType = {
-	path: string
-	accessRole: string
-	loadFn: (dispatch: AppDispatch) => void
-	text: ParseKeys
-}
-
 type CreateType = {
 	accessRole: string
 	onShowModal?: () => Promise<void>
@@ -45,12 +37,14 @@ const NavBar = ({
 	navAriaLabel?: ParseKeys
 	displayNavigation: boolean
 	setNavigation: React.Dispatch<React.SetStateAction<boolean>>
-	links: LinkType[]
+	links: {
+		path: string
+		accessRole: string
+		text: ParseKeys
+	}[]
 	create?: CreateType
 }) => {
-
 	const { t } = useTranslation();
-	const dispatch = useAppDispatch();
 	const location = useLocation();
 
 	const user = useAppSelector(state => getUserInformation(state));
@@ -58,13 +52,13 @@ const NavBar = ({
 	const newResourceModalRef = useRef<ModalHandle>(null);
 
 	const showNewResourceModal = async () => {
-		create && create.onShowModal && await create.onShowModal()
-		newResourceModalRef.current?.open()
+		create && create.onShowModal && await create.onShowModal();
+		newResourceModalRef.current?.open();
 	};
 
 	const hideNewResourceModal = () => {
-		create && create.onHideModal && create.onHideModal()
-		newResourceModalRef.current?.close?.()
+		create && create.onHideModal && create.onHideModal();
+		newResourceModalRef.current?.close?.();
 	};
 
 	const toggleNavigation = () => {
@@ -75,7 +69,7 @@ const NavBar = ({
 		(create && create.hotkeySequence) ?? [],
 		() => showNewResourceModal(),
 		{ description: create && create.hotkeyDescription ? t(create.hotkeyDescription) : undefined },
-		[showNewResourceModal]
+		[showNewResourceModal],
 	);
 
 	return (
@@ -93,24 +87,17 @@ const NavBar = ({
 			<MainNav isOpen={displayNavigation} toggleMenu={toggleNavigation} />
 
 			<nav aria-label={navAriaLabel && t(navAriaLabel)}>
-				{links.map((link, index) =>
-					{return (hasAccess(link.accessRole, user) && (
+				{links.map((link, index) => {
+					return (hasAccess(link.accessRole, user) && (
 						<Link
 							key={index}
 							to={link.path}
 							className={cn({ active: location.pathname === link.path || (location.pathname === "/" && link.path === "/events/events") })}
-							onClick={() => {
-								if (location.pathname !== link.path) {
-									// Reset the current page to first page
-									dispatch(setOffset(0));
-								}
-								link.loadFn(dispatch)
-							}}
 						>
 							{t(link.text)}
 						</Link>
-					))}
-				)}
+					));
+				})}
 			</nav>
 
 			{children}

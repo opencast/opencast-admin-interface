@@ -7,6 +7,7 @@ import { useAppSelector } from "../../../../store";
 import { FormikProps } from "formik";
 import { EditedEvents } from "../../../../slices/eventSlice";
 import { ParseKeys } from "i18next";
+import ModalContent from "../../../shared/modals/ModalContent";
 
 /**
  * This component renders the summary page of the edit scheduled bulk action
@@ -69,19 +70,19 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 					previous: getMetadataCollectionFieldName(
 						{ collection: seriesOptions },
 						{ value: event.series },
-						t
+						t,
 					),
 					next: getMetadataCollectionFieldName(
 						{ collection: seriesOptions },
 						{ value: event.changedSeries },
-						t
+						t,
 					),
 				});
 			}
 			if (
 				isChanged(
 					event.startTimeHour + ":" + event.startTimeMinutes,
-					event.changedStartTimeHour + ":" + event.changedStartTimeMinutes
+					event.changedStartTimeHour + ":" + event.changedStartTimeMinutes,
 				)
 			) {
 				eventChanges.changes.push({
@@ -94,7 +95,7 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 			if (
 				isChanged(
 					event.endTimeHour + ":" + event.endTimeMinutes,
-					event.changedEndTimeHour + ":" + event.changedEndTimeMinutes
+					event.changedEndTimeHour + ":" + event.changedEndTimeMinutes,
 				)
 			) {
 				eventChanges.changes.push({
@@ -132,7 +133,7 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 				// Keep ids of changed events (used later)
 				formik.setFieldValue(
 					"changedEvent",
-					formik.values.changedEvents.push(event.eventId)
+					formik.values.changedEvents.push(event.eventId),
 				);
 			}
 		}
@@ -148,59 +149,57 @@ const EditScheduledEventsSummaryPage = <T extends RequiredFormProps>({
 
 	return (
 		<>
-			<div className="modal-content active">
-				<div className="modal-body">
-					{changes.length > 0 ? (
-						<div className="full-col">
-							{/*Repeat for each changed event*/}
-							{changes.map((event, key) => (
-								<div key={key} className="obj tbl-list">
-									<header>
-										{t(
-											"BULK_ACTIONS.EDIT_EVENTS.SUMMARY.SINGLE_EVENT_CAPTION",
-											{ title: event.title }
-										)}
-									</header>
-									<div className="obj-container">
-										<table className="main-tbl">
-											<thead>
-												<tr>
-													<th className="fit">
-														{t("BULK_ACTIONS.EDIT_EVENTS.SUMMARY.TYPE")}
-													</th>
-													<th className="fit">
-														{t("BULK_ACTIONS.EDIT_EVENTS.SUMMARY.PREVIOUS")}
-													</th>
-													<th className="fit">
-														{t("BULK_ACTIONS.EDIT_EVENTS.SUMMARY.NEXT")}
-													</th>
+			<ModalContent modalContentClassName="modal-content active">
+				{changes.length > 0 ? (
+					<div className="full-col">
+						{/*Repeat for each changed event*/}
+						{changes.map((event, key) => (
+							<div key={key} className="obj tbl-list">
+								<header>
+									{t(
+										"BULK_ACTIONS.EDIT_EVENTS.SUMMARY.SINGLE_EVENT_CAPTION",
+										{ title: event.title },
+									)}
+								</header>
+								<div className="obj-container">
+									<table className="main-tbl">
+										<thead>
+											<tr>
+												<th className="fit">
+													{t("BULK_ACTIONS.EDIT_EVENTS.SUMMARY.TYPE")}
+												</th>
+												<th className="fit">
+													{t("BULK_ACTIONS.EDIT_EVENTS.SUMMARY.PREVIOUS")}
+												</th>
+												<th className="fit">
+													{t("BULK_ACTIONS.EDIT_EVENTS.SUMMARY.NEXT")}
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											{/* Add table row with old value and new one if something has changed */}
+											{event.changes.map((row, key) => (
+												<tr key={key}>
+													<td>{t(row.type)}</td>
+													<td>{row.previous}</td>
+													<td className="highlighted-cell">{row.next}</td>
 												</tr>
-											</thead>
-											<tbody>
-												{/* Add table row with old value and new one if something has changed */}
-												{event.changes.map((row, key) => (
-													<tr key={key}>
-														<td>{t(row.type)}</td>
-														<td>{row.previous}</td>
-														<td className="highlighted-cell">{row.next}</td>
-													</tr>
-												))}
-											</tbody>
-										</table>
-									</div>
+											))}
+										</tbody>
+									</table>
 								</div>
-							))}
-						</div>
-					) : (
-						<div className="row">
-							{/* Show only if there no changes*/}
-							<div className="alert sticky warning">
-								<p>{t("BULK_ACTIONS.EDIT_EVENTS.GENERAL.NOCHANGES")}</p>
 							</div>
+						))}
+					</div>
+				) : (
+					<div className="row">
+						{/* Show only if there no changes*/}
+						<div className="alert sticky warning">
+							<p>{t("BULK_ACTIONS.EDIT_EVENTS.GENERAL.NOCHANGES")}</p>
 						</div>
-					)}
-				</div>
-			</div>
+					</div>
+				)}
+			</ModalContent>
 
 			{/* Navigation buttons */}
 			<WizardNavigationButtons

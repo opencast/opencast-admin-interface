@@ -2,8 +2,8 @@ import { getFilters, getTextFilter } from "../selectors/tableFilterSelectors";
 import {
 	getPageLimit,
 	getPageOffset,
-	getTableDirection,
-	getTableSorting,
+	getTableDirectionForResource,
+	getTableSortingForResource,
 } from "../selectors/tableSelectors";
 import { TransformedAcl } from "../slices/aclDetailsSlice";
 import { Acl } from "../slices/aclSlice";
@@ -13,9 +13,9 @@ import { UserInfoState } from "../slices/userInfoSlice";
 import { hasAccess, isJson } from "./utils";
 import { RootState } from "../store";
 import { MetadataCatalog, MetadataField } from "../slices/eventSlice";
-import { initialFormValuesNewGroup } from '../configs/modalConfig';
-import { UpdateUser } from '../slices/userDetailsSlice';
-import { ParseKeys, TFunction } from 'i18next';
+import { initialFormValuesNewGroup } from "../configs/modalConfig";
+import { UpdateUser } from "../slices/userDetailsSlice";
+import { ParseKeys, TFunction } from "i18next";
 import { TableState } from "../slices/tableSlice";
 
 /**
@@ -46,8 +46,8 @@ export const getURLParams = (
 		filters.push(["textFilter", textFilter]);
 	}
 	// transform filters for use as URL param
-	for (let key in filterMap) {
-		if (!!filterMap[key].value) {
+	for (const [key, _] of filterMap.entries()) {
+		if (filterMap[key].value) {
 			filters.push([filterMap[key].name, filterMap[key].value.toString()]);
 		}
 	}
@@ -71,10 +71,12 @@ export const getURLParams = (
 		};
 	}
 
-	if (!!getTableSorting(state)) {
+	if (getTableSortingForResource(state, resource)) {
 		params = {
 			...params,
-			sort: getTableSorting(state) + ":" + getTableDirection(state),
+			sort: getTableSortingForResource(state, resource)
+				+ ":"
+				+ getTableDirectionForResource(state, resource),
 		};
 	}
 
@@ -96,7 +98,7 @@ export const buildUserBody = (values: NewUser | UpdateUser) => {
 
 // used for create URLSearchParams for API requests used to create/update group
 export const buildGroupBody = (
-	values: typeof initialFormValuesNewGroup
+	values: typeof initialFormValuesNewGroup,
 ) => {
 	let roles = [],
 		users = [];
@@ -125,7 +127,7 @@ export const getInitialMetadataFieldValues = (
 	let initialValues: { [key: string]: string | string[] | boolean } = {};
 
 	if (!!metadataCatalog.fields && metadataCatalog.fields.length > 0) {
-		metadataCatalog.fields.forEach((field) => {
+		metadataCatalog.fields.forEach(field => {
 			initialValues[metadataCatalog.flavor + "_" + field.id] = field.value;
 		});
 	}
@@ -168,7 +170,7 @@ export const transformMetadataForUpdate = (catalog: MetadataCatalog, values: { [
 	let fields: MetadataCatalog["fields"] = [];
 	let updatedFields: MetadataCatalog["fields"] = [];
 
-	catalog.fields.forEach((field) => {
+	catalog.fields.forEach(field => {
 		if (field.value !== values[field.id]) {
 			let updatedField = {
 				...field,
@@ -189,7 +191,7 @@ export const transformMetadataForUpdate = (catalog: MetadataCatalog, values: { [
 				title: catalog.title,
 				fields: updatedFields,
 			},
-		])
+		]),
 	);
 	const headers = getHttpHeaders();
 
@@ -223,7 +225,7 @@ export const prepareMetadataFieldsForPost = (
 				value: values[catalogPrefix + info.id],
 				$$hashKey: "object:123",
 			};
-			if (!!info.translatable) {
+			if (info.translatable) {
 				fieldValue = {
 					...fieldValue,
 					translatable: info.translatable,
@@ -247,9 +249,9 @@ export const prepareMetadataFieldsForPost = (
 // returns the name for a field value from the collection
 export const getMetadataCollectionFieldName = (metadataField: { collection?: { [key: string]: unknown }[] }, field: { value: unknown }, t: TFunction) => {
 	try {
-		if (!!metadataField.collection) {
+		if (metadataField.collection) {
 			const collectionField = metadataField.collection.find(
-				(element) => element.value === field.value
+				element => element.value === field.value,
 			);
 
 			if (collectionField && isJson(collectionField.name as string)) {
@@ -311,7 +313,7 @@ export const transformAclTemplatesResponse = (acl: Acl) => {
 	let template: TransformedAcl[] = [];
 
 	for (let i = 0; acl.ace.length > i; i++) {
-		if (template.find((rule) => rule.role === acl.ace[i].role)) {
+		if (template.find(rule => rule.role === acl.ace[i].role)) {
 			for (let j = 0; template.length > j; j++) {
 				// Only update entry for policy if already added with other action
 				if (template[j].role === acl.ace[i].role) {

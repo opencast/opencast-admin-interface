@@ -1,6 +1,6 @@
-import { PayloadAction, SerializedError, createSlice, unwrapResult } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from "@reduxjs/toolkit";
 import { eventsTableConfig } from "../configs/tableConfigs/eventsTableConfig";
-import axios, { AxiosProgressEvent } from 'axios';
+import axios, { AxiosProgressEvent } from "axios";
 import moment from "moment-timezone";
 import {
 	getURLParams,
@@ -20,15 +20,15 @@ import {
 	removeNotification,
 	addNotification,
 } from "./notificationSlice";
-import { getAssetUploadOptions, getSchedulingEditedEvents } from '../selectors/eventSelectors';
+import { getAssetUploadOptions, getSchedulingEditedEvents, getSourceUploadOptions } from "../selectors/eventSelectors";
 import { fetchSeriesOptions } from "./seriesSlice";
-import { AppDispatch } from '../store';
-import { enrichPublications, fetchAssetUploadOptions } from '../thunks/assetsThunks';
-import { TransformedAcl } from './aclDetailsSlice';
-import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
-import { Publication } from './eventDetailsSlice';
-import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { FormikErrors } from 'formik';
+import { AppDispatch } from "../store";
+import { fetchAssetUploadOptions } from "../thunks/assetsThunks";
+import { TransformedAcl } from "./aclDetailsSlice";
+import { TableConfig } from "../configs/tableConfigs/aclsTableConfig";
+import { Publication } from "./eventDetailsSlice";
+import { createAppAsyncThunk } from "../createAsyncThunkWithTypes";
+import { FormikErrors } from "formik";
 
 /**
  * This file contains redux reducer for actions affecting the state of events
@@ -135,7 +135,7 @@ export type EditedEvents = {
 	weekday: "MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU",
 }
 
-export type UploadAssetOption = {
+export type UploadOption = {
 	accept: string,
 	displayFallback?: string,
 	"displayFallback.DETAIL"?: string,
@@ -151,9 +151,11 @@ export type UploadAssetOption = {
 	displayOverride?: string,
 	"displayOverride.SHORT"?: string,
 	"displayOverride.DETAIL"?: string,
+	showForNewEvents?: boolean,
+	showForExistingEvents?: boolean,
 }
 
-export type UploadAssetsTrack = UploadAssetOption & {
+export type UploadAssetsTrack = UploadOption & {
 	file?: FileList
 }
 
@@ -167,13 +169,13 @@ export type Conflict = {
 }
 
 type EventState = {
-	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	status: "uninitialized" | "loading" | "succeeded" | "failed",
 	error: SerializedError | null,
-	statusMetadata: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	statusMetadata: "uninitialized" | "loading" | "succeeded" | "failed",
 	errorMetadata: SerializedError | null,
-	statusSchedulingInfo: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	statusSchedulingInfo: "uninitialized" | "loading" | "succeeded" | "failed",
 	errorSchedulingInfo: SerializedError | null,
-	statusAssetUploadOptions: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	statusAssetUploadOptions: "uninitialized" | "loading" | "succeeded" | "failed",
 	errorAssetUploadOptions: SerializedError | null,
 	results: Event[],
 	columns: TableConfig["columns"],
@@ -185,7 +187,8 @@ type EventState = {
 	metadata: MetadataCatalog,
 	extendedMetadata: MetadataCatalog[],
 	isFetchingAssetUploadOptions: boolean,
-	uploadAssetOptions: UploadAssetOption[],
+	uploadAssetOptions: UploadOption[],
+	uploadSourceOptions: UploadOption[],
 	uploadAssetWorkflow: string | undefined,
 	schedulingInfo: {
 		editedEvents: EditedEvents[],
@@ -197,20 +200,20 @@ type EventState = {
 }
 
 // Fill columns initially with columns defined in eventsTableConfig
-const initialColumns = eventsTableConfig.columns.map((column) => ({
+const initialColumns = eventsTableConfig.columns.map(column => ({
 	deactivated: false,
 	...column,
 }));
 
 // Initial state of events in redux store
 const initialState: EventState = {
-	status: 'uninitialized',
+	status: "uninitialized",
 	error: null,
-	statusMetadata: 'uninitialized',
+	statusMetadata: "uninitialized",
 	errorMetadata: null,
-	statusSchedulingInfo: 'uninitialized',
+	statusSchedulingInfo: "uninitialized",
 	errorSchedulingInfo: null,
-	statusAssetUploadOptions: 'uninitialized',
+	statusAssetUploadOptions: "uninitialized",
 	errorAssetUploadOptions: null,
   results: [],
 	columns: initialColumns,
@@ -227,6 +230,7 @@ const initialState: EventState = {
 	extendedMetadata: [],
 	isFetchingAssetUploadOptions: false,
 	uploadAssetOptions: [],
+	uploadSourceOptions: [],
 	uploadAssetWorkflow: "",
 	schedulingInfo: {
 		editedEvents: [],
@@ -235,7 +239,7 @@ const initialState: EventState = {
 };
 
 // fetch events from server
-export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, { dispatch, getState }) => {
+export const fetchEvents = createAppAsyncThunk("events/fetchEvents", async (_, { dispatch, getState }) => {
 	const state = getState();
 	let params: ReturnType<typeof getURLParams> & { getComments?: boolean } = getURLParams(state, "events");
 
@@ -243,15 +247,15 @@ export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, {
 	// (Elasticsearch does not guarantee ordering)
 	params = {
 		...params,
-		sort: params.sort ? params.sort + ",uid:asc" : "uid:asc"
-	}
+		sort: params.sort ? params.sort + ",uid:asc" : "uid:asc",
+	};
 
 	// Only if the notes column is enabled, fetch comment information for events
 	if (state.events.columns.find(column => column.label === "EVENTS.EVENTS.TABLE.ADMINUI_NOTES" && !column.deactivated)) {
 		params = {
 			...params,
-			getComments: true
-		}
+			getComments: true,
+		};
 	}
 
 	// Just make the async request here, and return the response.
@@ -266,21 +270,6 @@ export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, {
 			...response.results[i],
 			date: response.results[i].start_date,
 		};
-		// insert enabled and hide property of publications, if result has publications
-		let result = response.results[i];
-		if (!!result.publications && result.publications.length > 0) {
-			let transformedPublications: Publication[] = [];
-			try {
-				const resultAction = await dispatch(enrichPublications({ publications: result.publications }));
-				transformedPublications = unwrapResult(resultAction);
-			} catch (rejectedValueOrSerializedError) {
-				console.error(rejectedValueOrSerializedError)
-			}
-			response.results[i] = {
-				...response.results[i],
-				publications: transformedPublications,
-			};
-		}
 	}
 	const events = response;
 
@@ -288,7 +277,7 @@ export const fetchEvents = createAppAsyncThunk('events/fetchEvents', async (_, {
 });
 
 // fetch event metadata from server
-export const fetchEventMetadata = createAppAsyncThunk('events/fetchEventMetadata', async (_, { rejectWithValue }) => {
+export const fetchEventMetadata = createAppAsyncThunk("events/fetchEventMetadata", async (_, { rejectWithValue }) => {
 	let data = await axios.get("/admin-ng/event/new/metadata");
 	const response = await data.data;
 
@@ -301,21 +290,21 @@ export const fetchEventMetadata = createAppAsyncThunk('events/fetchEventMetadata
 			metadata = transformMetadataCollection({ ...metadataCatalog });
 		} else {
 			extendedMetadata.push(
-				transformMetadataCollection({ ...metadataCatalog })
+				transformMetadataCollection({ ...metadataCatalog }),
 			);
 		}
 	}
 
 	if (!metadata) {
 		console.error("Main metadata catalog is missing");
-		return rejectWithValue("Main metadata catalog is missing")
+		return rejectWithValue("Main metadata catalog is missing");
 	}
 
-	return { metadata, extendedMetadata }
+	return { metadata, extendedMetadata };
 });
 
 // get merged metadata for provided event ids
-export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', async (ids: Event["id"][]) => {
+export const postEditMetadata = createAppAsyncThunk("events/postEditMetadata", async (ids: Event["id"][]) => {
 	let formData = new URLSearchParams();
 	formData.append("eventIds", JSON.stringify(ids));
 
@@ -326,7 +315,7 @@ export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', a
 			headers: {
 				"Content-Type": "application/x-www-form-urlencoded",
 			},
-		}
+		},
 	);
 	let response = await data.data;
 
@@ -341,7 +330,7 @@ export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', a
 	};
 });
 
-export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata', async (params: {
+export const updateBulkMetadata = createAppAsyncThunk("events/updateBulkMetadata", async (params: {
 	metadataFields: {
 		merged: string[],
 		mergedMetadata: MetadataFieldSelected[],
@@ -362,7 +351,7 @@ export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata
 		},
 	];
 
-	metadataFields.mergedMetadata.forEach((field) => {
+	metadataFields.mergedMetadata.forEach(field => {
 		if (field.selected) {
 			let value = values[field.id];
 			metadata[0].fields.push({
@@ -380,13 +369,13 @@ export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata
 				"Content-Type": "application/x-www-form-urlencoded",
 			},
 		})
-		.then((res) => {
+		.then(res => {
 			console.info(res);
 			dispatch(
-				addNotification({type: "success", key: "BULK_METADATA_UPDATE.ALL_EVENTS_UPDATED"})
+				addNotification({ type: "success", key: "BULK_METADATA_UPDATE.ALL_EVENTS_UPDATED" }),
 			);
 		})
-		.catch((err) => {
+		.catch(err => {
 			console.error(err);
 			// if an internal server error occurred, then backend sends further information
 			if (err.status === 500) {
@@ -394,42 +383,42 @@ export const updateBulkMetadata = createAppAsyncThunk('events/updateBulkMetadata
 				// if this error data is undefined then an unexpected error occurred
 				if (!err.data) {
 					dispatch(
-						addNotification({type: "error", key: "BULK_METADATA_UPDATE.UNEXPECTED_ERROR"})
+						addNotification({ type: "error", key: "BULK_METADATA_UPDATE.UNEXPECTED_ERROR" }),
 					);
 				} else {
 					if (err.data.updated && err.data.updated.length === 0) {
 						dispatch(
-							addNotification({type: "error", key: "BULK_METADATA_UPDATE.NO_EVENTS_UPDATED"})
+							addNotification({ type: "error", key: "BULK_METADATA_UPDATE.NO_EVENTS_UPDATED" }),
 						);
 					}
 					if (err.data.updateFailures && err.data.updateFailures.length > 0) {
 						dispatch(
 							addNotification({
 								type: "warning",
-								key: "BULK_METADATA_UPDATE.SOME_EVENTS_NOT_UPDATED"
-							})
+								key: "BULK_METADATA_UPDATE.SOME_EVENTS_NOT_UPDATED",
+							}),
 						);
 					}
 					if (err.data.notFound && err.data.notFound.length > 0) {
 						dispatch(
 							addNotification({
 								type: "warning",
-								key:"BULK_ACTIONS.EDIT_EVENTS_METADATA.REQUEST_ERRORS.NOT_FOUND"
-							})
+								key: "BULK_ACTIONS.EDIT_EVENTS_METADATA.REQUEST_ERRORS.NOT_FOUND",
+							}),
 						);
 					}
 				}
 			} else {
 				dispatch(
-					addNotification({type: "error", key: "BULK_METADATA_UPDATE.UNEXPECTED_ERROR"})
+					addNotification({ type: "error", key: "BULK_METADATA_UPDATE.UNEXPECTED_ERROR" }),
 				);
 			}
 		});
 });
 
-export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (params: {
+export const postNewEvent = createAppAsyncThunk("events/postNewEvent", async (params: {
 	values: {
-		acls: TransformedAcl[],
+		policies: TransformedAcl[],
 		configuration: { [key: string]: unknown },
 		deviceInputs?: string[],
 		processingWorkflow: string,
@@ -454,6 +443,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	// get asset upload options from redux store
 	const state = getState();
 	const uploadAssetOptions = getAssetUploadOptions(state);
+	const uploadSourceOptions = getSourceUploadOptions(state);
 
 	let formData = new FormData();
 	let source: {
@@ -471,11 +461,11 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	// prepare metadata provided by user
 	let metadata = prepareMetadataFieldsForPost(
 		[metadataInfo],
-		values
+		values,
 	);
 	const extendedMetadataCatalogs = prepareMetadataFieldsForPost(
 		extendedMetadata,
-		values
+		values,
 	);
 
 	// if source mode is UPLOAD than also put metadata fields of that in metadataFields
@@ -511,7 +501,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 			parseInt(values.scheduleStartHour),
 			parseInt(values.scheduleStartMinute),
 			0,
-			0
+			0,
 		);
 
 		let endDate;
@@ -537,7 +527,7 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 			metadata: {
 				start: startDate,
 				device: values.location,
-				inputs: !!values.deviceInputs ? values.deviceInputs.join(",") : "",
+				inputs: values.deviceInputs ? values.deviceInputs.join(",") : "",
 				end: endDate,
 				duration: duration.toString(),
 			},
@@ -563,21 +553,18 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 	// need to provide all possible upload asset options independent of source mode/type
 	let assets: {
 		workflow: string,
-		options: UploadAssetOption[],
-	}= {
+		options: UploadOption[],
+	} = {
 		workflow: WORKFLOW_UPLOAD_ASSETS_NON_TRACK,
 		options: [],
 	};
 
 	// iterate through possible upload asset options and put them in assets
 	// if source mode/type is UPLOAD and a file for a asset is uploaded by user than append file to form data
-	for (let i = 0; uploadAssetOptions.length > i; i++) {
-		if (
-			uploadAssetOptions[i].type === "track" &&
-			values.sourceMode === "UPLOAD"
-		) {
+	for (let i = 0; uploadSourceOptions.length > i; i++) {
+		if (values.sourceMode === "UPLOAD") {
 			let asset = values.uploadAssetsTrack?.find(
-				(asset) => asset.id === uploadAssetOptions[i].id
+				asset => asset.id === uploadSourceOptions[i].id,
 			);
 			if (!!asset && !!asset.file) {
 				if (asset.multiple) {
@@ -588,27 +575,28 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 					formData.append(asset.id + ".0", asset.file[0]);
 				}
 			}
+			assets.options = assets.options.concat(uploadSourceOptions[i]);
+		}
+	}
+	for (let i = 0; uploadAssetOptions.length > i; i++) {
+		if (
+			!!values[uploadAssetOptions[i].id] &&
+			values.sourceMode === "UPLOAD"
+		) {
+			formData.append(
+				uploadAssetOptions[i].id + ".0",
+				values[uploadAssetOptions[i].id] as File,
+			);
 			assets.options = assets.options.concat(uploadAssetOptions[i]);
-		} else {
-			if (
-				!!values[uploadAssetOptions[i].id] &&
-				values.sourceMode === "UPLOAD"
-			) {
-				formData.append(
-					uploadAssetOptions[i].id + ".0",
-					values[uploadAssetOptions[i].id] as File
-				);
-				assets.options = assets.options.concat(uploadAssetOptions[i]);
-			}
 		}
 	}
 
 	// prepare access rules provided by user
-	let access = prepareAccessPolicyRulesForPost(values.acls);
+	let access = prepareAccessPolicyRulesForPost(values.policies);
 
 	// prepare configurations for post
 	let configurationPrepared: { [key: string]: string } = {};
-	Object.keys(values.configuration).forEach((config) => {
+	Object.keys(values.configuration).forEach(config => {
 		configurationPrepared[config] = String(values.configuration[config]);
 	});
 
@@ -627,24 +615,25 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 			access: access,
 			source: source,
 			assets: assets,
-		})
+		}),
 	);
 
 	// Process bar notification
-	var config = {
-		onUploadProgress: function(progressEvent: AxiosProgressEvent) {
-			var percentCompleted = progressEvent.total ? (progressEvent.loaded * 100) / progressEvent.total : undefined;
+	const notificationId = Math.floor(Math.random() * -100000);
+	const config = {
+		onUploadProgress: function (progressEvent: AxiosProgressEvent) {
+			const percentCompleted = progressEvent.total ? (progressEvent.loaded * 100) / progressEvent.total : undefined;
 			if (percentCompleted) {
 				dispatch(addNotification({
-					id: -42000,
+					id: notificationId,
 					type: "success",
 					key: "EVENTS_UPLOAD_STARTED",
 					duration: -1,
-					parameter: { "progress": percentCompleted.toFixed(2) }
-				}))
+					parameter: { "progress": percentCompleted.toFixed(2), "title": metadata[0].fields[0].value },
+				}));
 			}
 			if (!percentCompleted || percentCompleted >= 100) {
-				dispatch(removeNotification(-42000))
+				dispatch(removeNotification(notificationId));
 			}
 		},
 		headers: {
@@ -654,40 +643,40 @@ export const postNewEvent = createAppAsyncThunk('events/postNewEvent', async (pa
 
 	axios
 		.post("/admin-ng/event/new", formData, config)
-		.then((response) => {
+		.then(response => {
 			console.info(response);
-			dispatch(addNotification({type: "success", key: "EVENTS_CREATED"}));
+			dispatch(addNotification({ type: "success", key: "EVENTS_CREATED" }));
 		})
-		.catch((response) => {
+		.catch(response => {
 			console.error(response);
-			dispatch(addNotification({type: "error", key: "EVENTS_NOT_CREATED"}));
+			dispatch(addNotification({ type: "error", key: "EVENTS_NOT_CREATED" }));
 		});
 });
 
 // delete event with provided id
-export const deleteEvent = createAppAsyncThunk('events/deleteEvent', async (id: Event["id"], { dispatch }) => {
+export const deleteEvent = createAppAsyncThunk("events/deleteEvent", async (id: Event["id"], { dispatch }) => {
 	// API call for deleting an event
 	axios
 		.delete(`/admin-ng/event/${id}`)
-		.then((res) => {
+		.then(res => {
 			// add success notification depending on status code
 			if (res.status === 200) {
-				dispatch(addNotification({type: "success", key: "EVENT_DELETED"}));
+				dispatch(addNotification({ type: "success", key: "EVENT_DELETED" }));
 			} else {
-				dispatch(addNotification({type: "success", key: "EVENT_WILL_BE_DELETED"}));
+				dispatch(addNotification({ type: "success", key: "EVENT_WILL_BE_DELETED" }));
 			}
 		})
-		.catch((res) => {
+		.catch(res => {
 			// add error notification depending on status code
 			if (res.status === 401) {
-				dispatch(addNotification({type: "error", key: "EVENTS_NOT_DELETED_NOT_AUTHORIZED"}));
+				dispatch(addNotification({ type: "error", key: "EVENTS_NOT_DELETED_NOT_AUTHORIZED" }));
 			} else {
-				dispatch(addNotification({type: "error", key: "EVENTS_NOT_DELETED"}));
+				dispatch(addNotification({ type: "error", key: "EVENTS_NOT_DELETED" }));
 			}
 		});
 });
 
-export const deleteMultipleEvent = createAppAsyncThunk('events/deleteMultipleEvent', async (events: Event[], { dispatch }) => {
+export const deleteMultipleEvent = createAppAsyncThunk("events/deleteMultipleEvent", async (events: Event[], { dispatch }) => {
 	let data = [];
 
 	for (const event of events) {
@@ -698,19 +687,19 @@ export const deleteMultipleEvent = createAppAsyncThunk('events/deleteMultipleEve
 
 	axios
 		.post("/admin-ng/event/deleteEvents", data)
-		.then((res) => {
+		.then(res => {
 			console.info(res);
 			//add success notification
-			dispatch(addNotification({type: "success", key: "EVENTS_DELETED"}));
+			dispatch(addNotification({ type: "success", key: "EVENTS_DELETED" }));
 		})
-		.catch((res) => {
+		.catch(res => {
 			console.error(res);
 			//add error notification
-			dispatch(addNotification({type: "error", key: "EVENTS_NOT_DELETED"}));
+			dispatch(addNotification({ type: "error", key: "EVENTS_NOT_DELETED" }));
 		});
 });
 
-export const fetchScheduling = createAppAsyncThunk('events/fetchScheduling', async (params: {
+export const fetchScheduling = createAppAsyncThunk("events/fetchScheduling", async (params: {
 	events: Event[],
 	fetchNewScheduling: boolean,
 	setFormikValue: (field: string, value: EditedEvents[]) => Promise<void | FormikErrors<any>>
@@ -733,7 +722,7 @@ export const fetchScheduling = createAppAsyncThunk('events/fetchScheduling', asy
 
 		const response = await axios.post(
 			"/admin-ng/event/scheduling.json",
-			formData
+			formData,
 		);
 
 		let data = await response.data;
@@ -746,10 +735,10 @@ export const fetchScheduling = createAppAsyncThunk('events/fetchScheduling', asy
 				eventId: d.eventId,
 				title: d.agentConfiguration["event.title"],
 				changedTitle: d.agentConfiguration["event.title"],
-				series: !!d.agentConfiguration["event.series"]
+				series: d.agentConfiguration["event.series"]
 					? d.agentConfiguration["event.series"]
 					: "",
-				changedSeries: !!d.agentConfiguration["event.series"]
+				changedSeries: d.agentConfiguration["event.series"]
 					? d.agentConfiguration["event.series"]
 					: "",
 				location: d.agentConfiguration["event.location"],
@@ -780,11 +769,11 @@ export const fetchScheduling = createAppAsyncThunk('events/fetchScheduling', asy
 
 	setFormikValue("editedEvents", editedEvents);
 
-	return { editedEvents, responseSeriesOptions }
+	return { editedEvents, responseSeriesOptions };
 });
 
 // update multiple scheduled events at once
-export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateScheduledEventsBulk', async (
+export const updateScheduledEventsBulk = createAppAsyncThunk("events/updateScheduledEventsBulk", async (
 	values: {
 		changedEvents: string[],
 		editedEvents: EditedEvents[],
@@ -797,10 +786,10 @@ export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateSched
 
 	for (const changedEvent of values.changedEvents) {
 		let eventChanges = values.editedEvents.find(
-			(event) => event.eventId === changedEvent
+			event => event.eventId === changedEvent,
 		);
 		let originalEvent = values.events.find(
-			(event) => event.id === changedEvent
+			event => event.id === changedEvent,
 		);
 
 		if (!eventChanges || !originalEvent) {
@@ -809,8 +798,8 @@ export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateSched
 					type: "error",
 					key: "EVENTS_NOT_UPDATED_ID",
 					duration: 10,
-					parameter: { id: changedEvent }
-				})
+					parameter: { id: changedEvent },
+				}),
 			);
 			return;
 		}
@@ -864,13 +853,13 @@ export const updateScheduledEventsBulk = createAppAsyncThunk('events/updateSched
 
 	axios
 		.put("/admin-ng/event/bulk/update", formData)
-		.then((res) => {
+		.then(res => {
 			console.info(res);
-			dispatch(addNotification({type: "success", key: "EVENTS_UPDATED_ALL"}));
+			dispatch(addNotification({ type: "success", key: "EVENTS_UPDATED_ALL" }));
 		})
-		.catch((res) => {
+		.catch(res => {
 			console.error(res);
-			dispatch(addNotification({type: "error", key: "EVENTS_NOT_UPDATED_ALL"}));
+			dispatch(addNotification({ type: "error", key: "EVENTS_NOT_UPDATED_ALL" }));
 		});
 });
 
@@ -906,7 +895,7 @@ export const checkConflicts = (values: {
 			parseInt(values.scheduleStartHour),
 			parseInt(values.scheduleStartMinute),
 			0,
-			0
+			0,
 		);
 
 		// If start date of event is smaller than today --> Event is in past
@@ -916,9 +905,8 @@ export const checkConflicts = (values: {
 					type: "error",
 					key: "CONFLICT_ALREADY_ENDED",
 					duration: -1,
-					parameter: undefined,
-					context: NOTIFICATION_CONTEXT
-				})
+					context: NOTIFICATION_CONTEXT,
+				}),
 			);
 			check = false;
 		}
@@ -934,9 +922,8 @@ export const checkConflicts = (values: {
 					type: "error",
 					key: "CONFLICT_END_BEFORE_START",
 					duration: -1,
-					parameter: undefined,
-					context: NOTIFICATION_CONTEXT
-				})
+					context: NOTIFICATION_CONTEXT,
+				}),
 			);
 			check = false;
 		}
@@ -955,7 +942,7 @@ export const checkConflicts = (values: {
 						endDate,
 						duration,
 						values.location,
-						values.repeatOn
+						values.repeatOn,
 				  );
 
 		// If conflicts with already scheduled events detected --> need to change times/date
@@ -965,9 +952,8 @@ export const checkConflicts = (values: {
 					type: "error",
 					key: "CONFLICT_DETECTED",
 					duration: -1,
-					parameter: undefined,
-					context: NOTIFICATION_CONTEXT
-				})
+					context: NOTIFICATION_CONTEXT,
+				}),
 			);
 			check = false;
 			return conflicts;
@@ -982,9 +968,9 @@ export const checkForConflicts = async (
 	endDate: Date,
 	duration: number,
 	device: string,
-	repeatOn: string[] | undefined = undefined
+	repeatOn: string[] | undefined = undefined,
 ) => {
-	let metadata = !!repeatOn
+	let metadata = repeatOn
 		? {
 				start: startDate,
 				device: device,
@@ -1009,7 +995,7 @@ export const checkForConflicts = async (
 				"Content-Type": "application/x-www-form-urlencoded",
 			},
 		})
-		.then((response) => {
+		.then(response => {
 			status = response.status;
 			const conflicts = [];
 			if (status === 409) {
@@ -1025,7 +1011,7 @@ export const checkForConflicts = async (
 			}
 			return conflicts;
 		})
-		.catch((reason) => {
+		.catch(reason => {
 			status = reason.response.status;
 			const conflicts = [];
 			if (status === 409) {
@@ -1073,17 +1059,16 @@ export const checkForSchedulingConflicts = (events: EditedEvents[]) => async (di
 
 	axios
 		.post("/admin-ng/event/bulk/conflicts", formData)
-		.then((res) => console.info(res))
-		.catch((res) => {
+		.then(res => console.info(res))
+		.catch(res => {
 			if (res.response.status === 409) {
 				dispatch(
 					addNotification({
 						type: "error",
 						key: "CONFLICT_BULK_DETECTED",
 						duration: -1,
-						parameter: undefined,
-						context: NOTIFICATION_CONTEXT
-					})
+						context: NOTIFICATION_CONTEXT,
+					}),
 				);
 				data = res.response.data;
 			}
@@ -1094,7 +1079,7 @@ export const checkForSchedulingConflicts = (events: EditedEvents[]) => async (di
 };
 
 const eventSlice = createSlice({
-	name: 'events',
+	name: "events",
 	initialState,
 	reducers: {
 		setEventColumns(state, action: PayloadAction<
@@ -1111,8 +1096,8 @@ const eventSlice = createSlice({
 	// These are used for thunks
 	extraReducers: builder => {
 		builder
-			.addCase(fetchEvents.pending, (state) => {
-				state.status = 'loading';
+			.addCase(fetchEvents.pending, state => {
+				state.status = "loading";
 			})
 			.addCase(fetchEvents.fulfilled, (state, action: PayloadAction<{
 				total: EventState["total"],
@@ -1121,7 +1106,7 @@ const eventSlice = createSlice({
 				offset: EventState["offset"],
 				results: EventState["results"],
 			}>) => {
-				state.status = 'succeeded';
+				state.status = "succeeded";
 				const events = action.payload;
 				state.total = events.total;
 				state.count = events.count;
@@ -1130,64 +1115,66 @@ const eventSlice = createSlice({
 				state.results = events.results;
 			})
 			.addCase(fetchEvents.rejected, (state, action) => {
-				state.status = 'failed';
+				state.status = "failed";
 				state.results = [];
 				state.error = action.error;
 			})
-			.addCase(fetchEventMetadata.pending, (state) => {
-				state.statusMetadata = 'loading';
+			.addCase(fetchEventMetadata.pending, state => {
+				state.statusMetadata = "loading";
 			})
 			.addCase(fetchEventMetadata.fulfilled, (state, action: PayloadAction<{
 				metadata: EventState["metadata"],
 				extendedMetadata: EventState["extendedMetadata"],
 			}>) => {
-				state.statusMetadata = 'succeeded';
+				state.statusMetadata = "succeeded";
 				const eventMetadata = action.payload;
 				state.metadata = eventMetadata.metadata;
 				state.extendedMetadata = eventMetadata.extendedMetadata;
 			})
 			.addCase(fetchEventMetadata.rejected, (state, action) => {
-				state.statusMetadata = 'failed';
+				state.statusMetadata = "failed";
 				state.extendedMetadata = [];
 				state.errorMetadata = action.error;
 			})
-			.addCase(fetchScheduling.pending, (state) => {
-				state.statusSchedulingInfo = 'loading';
+			.addCase(fetchScheduling.pending, state => {
+				state.statusSchedulingInfo = "loading";
 			})
 			.addCase(fetchScheduling.fulfilled, (state, action: PayloadAction<{
 				editedEvents: EventState["schedulingInfo"]["editedEvents"],
 				responseSeriesOptions: EventState["schedulingInfo"]["seriesOptions"],
 			}>) => {
-				state.statusSchedulingInfo = 'succeeded';
+				state.statusSchedulingInfo = "succeeded";
 				const schedulingInfo = action.payload;
 				state.schedulingInfo.editedEvents = schedulingInfo.editedEvents;
 				state.schedulingInfo.seriesOptions = schedulingInfo.responseSeriesOptions;
 			})
 			.addCase(fetchScheduling.rejected, (state, action) => {
-				state.statusSchedulingInfo = 'failed';
+				state.statusSchedulingInfo = "failed";
 				state.schedulingInfo.editedEvents = [];
 				state.errorSchedulingInfo = action.error;
 			})
-			.addCase(fetchAssetUploadOptions.pending, (state) => {
-				state.statusAssetUploadOptions = 'loading';
+			.addCase(fetchAssetUploadOptions.pending, state => {
+				state.statusAssetUploadOptions = "loading";
 			})
 			.addCase(fetchAssetUploadOptions.fulfilled, (state, action: PayloadAction<{
 				workflow: EventState["uploadAssetWorkflow"],
 				newAssetUploadOptions: EventState["uploadAssetOptions"],
+				newSourceUploadOptions: EventState["uploadSourceOptions"],
 			} | undefined>) => {
-				state.statusAssetUploadOptions = 'succeeded';
+				state.statusAssetUploadOptions = "succeeded";
 				const assetUpload = action.payload;
 				if (assetUpload) {
 					state.uploadAssetWorkflow = assetUpload.workflow;
 					state.uploadAssetOptions = assetUpload.newAssetUploadOptions;
+					state.uploadSourceOptions = assetUpload.newSourceUploadOptions;
 				}
 			})
 			.addCase(fetchAssetUploadOptions.rejected, (state, action) => {
-				state.statusAssetUploadOptions = 'failed';
+				state.statusAssetUploadOptions = "failed";
 				state.schedulingInfo.editedEvents = [];
 				state.errorAssetUploadOptions = action.error;
 			});
-	}
+	},
 });
 
 export const {

@@ -45,6 +45,8 @@ import {
 } from "../../../../slices/eventDetailsSlice";
 import { addNotification, removeNotificationByKey, removeNotificationWizardForm, removeNotificationWizardTobira } from "../../../../slices/notificationSlice";
 import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
+import { FormikProps } from "formik";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { ParseKeys } from "i18next";
@@ -70,14 +72,14 @@ export type AssetTabHierarchy = "entry" | "add-asset" | "asset-attachments" | "a
  */
 const EventDetails = ({
 	eventId,
-	close,
 	policyChanged,
 	setPolicyChanged,
+	formikRef,
 }: {
 	eventId: string,
-	close?: () => void,
 	policyChanged: boolean,
 	setPolicyChanged: (value: boolean) => void,
+	formikRef: React.RefObject<FormikProps<any> | null>
 }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
@@ -90,27 +92,26 @@ const EventDetails = ({
 		dispatch(fetchEventStatistics(eventId));
 		dispatch(fetchAssetUploadOptions());
 
-		dispatch(fetchHasActiveTransactions(eventId)).then((fetchTransactionResult) => {
-			const result = unwrapResult(fetchTransactionResult)
+		dispatch(fetchHasActiveTransactions(eventId)).then(fetchTransactionResult => {
+			const result = unwrapResult(fetchTransactionResult);
 			if (result.active !== undefined && result.active) {
 				dispatch(
 					addNotification({
 						type: "warning",
 						key: "ACTIVE_TRANSACTION",
 						duration: -1,
-						parameter: undefined,
 						context: NOTIFICATION_CONTEXT,
-						noDuplicates: true
-					})
-				)
+						noDuplicates: true,
+					}),
+				);
 			}
 			if (result.active !== undefined && !result.active) {
 				dispatch(
 					removeNotificationByKey({
 						key: "ACTIVE_TRANSACTION",
-						context: NOTIFICATION_CONTEXT
-					})
-				)
+						context: NOTIFICATION_CONTEXT,
+					}),
+				);
 			}
 		});
 
@@ -218,20 +219,20 @@ const EventDetails = ({
 
 	const openTab = (tabNr: EventDetailsPage) => {
 		dispatch(removeNotificationWizardForm());
-		dispatch(openModalTab(tabNr, "entry", "entry"))
+		dispatch(openModalTab(tabNr, "entry", "entry"));
 	};
 
 	return (
 		<>
 			<nav className="modal-nav" id="modal-nav">
 				{tabs.map((tab, index) => !tab.hidden && hasAccess(tab.accessRole, user) && (
-					<button
+					<ButtonLikeAnchor
 						key={tab.name}
-						className={"button-like-anchor " + cn({ active: page === index })}
+						extraClassName={cn({ active: page === tab.page })}
 						onClick={() => openTab(index)}
 					>
 						{t(tab.tabNameTranslation)}
-					</button>
+					</ButtonLikeAnchor>
 				))}
 			</nav>
 			{/* Initialize overall modal */}
@@ -242,6 +243,7 @@ const EventDetails = ({
 						metadata={[metadata]}
 						updateResource={updateMetadata}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
+						formikRef={formikRef}
 						header={tabs[page].bodyHeaderTranslation}
 					/>
 				)}
@@ -251,21 +253,26 @@ const EventDetails = ({
 						metadata={extendedMetadata}
 						updateResource={updateExtendedMetadata}
 						editAccessRole="ROLE_UI_EVENTS_DETAILS_METADATA_EDIT"
+						formikRef={formikRef}
 					/>
 				)}
-				{page === 2 && <EventDetailsPublicationTab eventId={eventId} />}
+				{page === EventDetailsPage.Publication && <EventDetailsPublicationTab eventId={eventId} />}
 				{page === EventDetailsPage.Assets && (
 					<EventDetailsAssetsTab
 						eventId={eventId}
 					/>
 				)}
-				{page === 4 && !isLoadingScheduling && (
-					<EventDetailsSchedulingTab eventId={eventId} />
+				{page === EventDetailsPage.Scheduling && !isLoadingScheduling && (
+					<EventDetailsSchedulingTab
+						eventId={eventId}
+						formikRef={formikRef}
+					/>
 				)}
 				{page === EventDetailsPage.Workflow &&
 					((workflowTabHierarchy === "entry" && (
 						<EventDetailsWorkflowTab
 							eventId={eventId}
+							formikRef={formikRef}
 						/>
 					)) ||
 						(workflowTabHierarchy === "workflow-details" && (

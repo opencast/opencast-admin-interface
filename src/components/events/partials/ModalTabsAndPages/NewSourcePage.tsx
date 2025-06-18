@@ -41,8 +41,9 @@ import { removeNotificationWizardForm } from "../../../../slices/notificationSli
 import { parseISO } from "date-fns";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { checkConflicts, UploadAssetsTrack } from "../../../../slices/eventSlice";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import SchedulingTime from "../wizards/scheduling/SchedulingTime";
-import SchedulingEndDateDisplay from "../wizards/scheduling/SchedulingEndDateDisplay";
 import SchedulingLocation from "../wizards/scheduling/SchedulingLocation";
 import SchedulingInputs from "../wizards/scheduling/SchedulingInputs";
 import SchedulingConflicts from "../wizards/scheduling/SchedulingConflicts";
@@ -91,7 +92,7 @@ const NewSourcePage = <T extends RequiredFormProps>({
 		dispatch(fetchRecordings("inputs"));
 
 		// validate form because dependent default values need to be checked
-		formik.validateForm().then((r) => console.info(r));
+		formik.validateForm().then(r => console.info(r));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -107,108 +108,103 @@ const NewSourcePage = <T extends RequiredFormProps>({
 
 	return (
 		<>
-			<div className="modal-content">
-				<div className="modal-body">
-					<div className="full-col">
-						{/*Show notifications with context events-form*/}
-						<Notifications context="not_corner" />
+			<ModalContentTable>
+				{/*Show notifications with context events-form*/}
+				<Notifications context="not_corner" />
+				{
+					<SchedulingConflicts
+						conflicts={conflicts}
+					/>
+				}
 
-						{
-							<SchedulingConflicts
-								conflicts={conflicts}
-							/>
-						}
-
-						<div className="obj list-obj">
-							<header className="no-expand">
-								{t("EVENTS.EVENTS.NEW.SOURCE.SELECT_SOURCE")}
-							</header>
-							{/* Radio buttons for choosing source mode */}
-							<div className="obj-container">
-								<ul>
-									{scheduleOptionAvailable() ? (
-										<li>
-											<label>
-												<Field
-													type="radio"
-													name="sourceMode"
-													className="source-toggle"
-													value="UPLOAD"
-												/>
-												<span>
-													{t("EVENTS.EVENTS.NEW.SOURCE.UPLOAD.CAPTION")}
-												</span>
-											</label>
-										</li>
-									) : (
-										<li>
-											<label>
-												<span>
-													{t("EVENTS.EVENTS.NEW.SOURCE.UPLOAD.CAPTION")}
-												</span>
-											</label>
-										</li>
-									)}
-									{scheduleOptionAvailable() && (
-										<>
-											<li>
-												<label>
-													<Field
-														type="radio"
-														name="sourceMode"
-														className="source-toggle"
-														onClick={() =>
-															changeStartDate(
-																new Date(formik.values.scheduleStartDate),
-																formik.values,
-																formik.setFieldValue
-															)
-														}
-														value="SCHEDULE_SINGLE"
-													/>
-													<span>
-														{t(
-															"EVENTS.EVENTS.NEW.SOURCE.SCHEDULE_SINGLE.CAPTION"
-														)}
-													</span>
-												</label>
-											</li>
-											<li>
-												<label>
-													<Field
-														type="radio"
-														name="sourceMode"
-														className="source-toggle"
-														value="SCHEDULE_MULTIPLE"
-													/>
-													<span>
-														{t(
-															"EVENTS.EVENTS.NEW.SOURCE.SCHEDULE_MULTIPLE.CAPTION"
-														)}
-													</span>
-												</label>
-											</li>
-										</>
-									)}
-								</ul>
-							</div>
-						</div>
-
-						{/* Render rest of page depending on which source mode is chosen */}
-						{formik.values.sourceMode === "UPLOAD" && (
-							<Upload formik={formik} />
-						)}
-						{scheduleOptionAvailable() &&
-							(formik.values.sourceMode === "SCHEDULE_SINGLE" ||
-								formik.values.sourceMode === "SCHEDULE_MULTIPLE") && (
-								<Schedule
-									formik={formik}
-									inputDevices={filterDevicesForAccess(user, inputDevices)}
-								/>
+				<div className="obj list-obj">
+					<header className="no-expand">
+						{t("EVENTS.EVENTS.NEW.SOURCE.SELECT_SOURCE")}
+					</header>
+					{/* Radio buttons for choosing source mode */}
+					<div className="obj-container">
+						<ul>
+							{scheduleOptionAvailable() ? (
+								<li>
+									<label>
+										<Field
+											type="radio"
+											name="sourceMode"
+											className="source-toggle"
+											value="UPLOAD"
+										/>
+										<span>
+											{t("EVENTS.EVENTS.NEW.SOURCE.UPLOAD.CAPTION")}
+										</span>
+									</label>
+								</li>
+							) : (
+								<li>
+									<label>
+										<span>
+											{t("EVENTS.EVENTS.NEW.SOURCE.UPLOAD.CAPTION")}
+										</span>
+									</label>
+								</li>
 							)}
+							{scheduleOptionAvailable() && (
+								<>
+									<li>
+										<label>
+											<Field
+												type="radio"
+												name="sourceMode"
+												className="source-toggle"
+												onClick={() =>
+													changeStartDate(
+														new Date(formik.values.scheduleStartDate),
+														formik.values,
+														formik.setFieldValue,
+													)
+												}
+												value="SCHEDULE_SINGLE"
+											/>
+											<span>
+												{t(
+													"EVENTS.EVENTS.NEW.SOURCE.SCHEDULE_SINGLE.CAPTION",
+												)}
+											</span>
+										</label>
+									</li>
+									<li>
+										<label>
+											<Field
+												type="radio"
+												name="sourceMode"
+												className="source-toggle"
+												value="SCHEDULE_MULTIPLE"
+											/>
+											<span>
+												{t(
+													"EVENTS.EVENTS.NEW.SOURCE.SCHEDULE_MULTIPLE.CAPTION",
+												)}
+											</span>
+										</label>
+									</li>
+								</>
+							)}
+						</ul>
 					</div>
 				</div>
-			</div>
+
+				{/* Render rest of page depending on which source mode is chosen */}
+				{formik.values.sourceMode === "UPLOAD" && (
+					<Upload formik={formik} />
+				)}
+				{scheduleOptionAvailable() &&
+					(formik.values.sourceMode === "SCHEDULE_SINGLE" ||
+						formik.values.sourceMode === "SCHEDULE_MULTIPLE") && (
+						<Schedule
+							formik={formik}
+							inputDevices={filterDevicesForAccess(user, inputDevices)}
+						/>
+					)}
+			</ModalContentTable>
 
 			{/* Button for navigation to next page and previous page */}
 			<WizardNavigationButtons
@@ -238,7 +234,7 @@ type RequiredFormPropsUpload = {
 }
 
 const Upload = <T extends RequiredFormPropsUpload>({
-	formik
+	formik,
 }: {
 	formik: FormikProps<T>
 }) => {
@@ -284,7 +280,7 @@ const Upload = <T extends RequiredFormPropsUpload>({
 														id={asset.id}
 														className="blue-btn file-select-btn"
 														accept={asset.accept}
-														onChange={(e) =>
+														onChange={e =>
 															handleChange(e, `uploadAssetsTrack.${key}.file`)
 														}
 														type="file"
@@ -295,15 +291,15 @@ const Upload = <T extends RequiredFormPropsUpload>({
 												</div>
 											</td>
 											<td className="fit">
-												<button
+												<ButtonLikeAnchor
 													style={{ visibility: asset.file ? "visible" : "hidden" }}
-													className="button-like-anchor remove"
-													onClick={(e) => {
+													extraClassName="remove"
+													onClick={e => {
 														formik.setFieldValue(
 															`uploadAssetsTrack.${key}.file`,
-															null
+															null,
 														);
-														(document.getElementById(asset.id) as HTMLInputElement).value = '';
+														(document.getElementById(asset.id) as HTMLInputElement).value = "";
 													}}
 												/>
 											</td>
@@ -362,7 +358,7 @@ const Schedule = <T extends {
 	scheduleDurationMinutes: string
 }>({
 	formik,
-	inputDevices
+	inputDevices,
 }: {
 	formik: FormikProps<T>,
 	inputDevices: Recording[]
@@ -371,9 +367,9 @@ const Schedule = <T extends {
 	const currentLanguage = getCurrentLanguageInformation();
 
 	const renderInputDeviceOptions = () => {
-		if (!!formik.values.location) {
+		if (formik.values.location) {
 			let inputDevice = inputDevices.find(
-				({ name }) => name === formik.values.location
+				({ name }) => name === formik.values.location,
 			);
 			if (!inputDevice) {
 				return <></>;
@@ -382,7 +378,7 @@ const Schedule = <T extends {
 				<SchedulingInputs
 					inputs={inputDevice.inputs}
 				/>
-			)
+			);
 		}
 	};
 
@@ -404,19 +400,19 @@ const Schedule = <T extends {
 							<td>
 								<DatePicker
 									name="scheduleStartDate"
-									selected={typeof formik.values.scheduleStartDate === "string" ? parseISO(formik.values.scheduleStartDate): formik.values.scheduleStartDate}
-									onChange={(value) => {
+									selected={typeof formik.values.scheduleStartDate === "string" ? parseISO(formik.values.scheduleStartDate) : formik.values.scheduleStartDate}
+									onChange={value => {
 										if (formik.values.sourceMode === "SCHEDULE_MULTIPLE") {
 											value && changeStartDateMultiple(
 												value,
 												formik.values,
-												formik.setFieldValue
+												formik.setFieldValue,
 											);
 										} else {
 											value && changeStartDate(
 												value,
 												formik.values,
-												formik.setFieldValue
+												formik.setFieldValue,
 											);
 										}
 									}}
@@ -444,11 +440,11 @@ const Schedule = <T extends {
 										<DatePicker
 											name="scheduleEndDate"
 											selected={typeof formik.values.scheduleEndDate === "string" ? parseISO(formik.values.scheduleEndDate) : formik.values.scheduleEndDate}
-											onChange={(value) =>
+											onChange={value =>
 												value && changeEndDateMultiple(
 													value,
 													formik.values,
-													formik.setFieldValue
+													formik.setFieldValue,
 												)
 											}
 											showYearDropdown
@@ -499,13 +495,13 @@ const Schedule = <T extends {
 									changeStartHourMultiple(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								} else {
 									changeStartHour(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								}
 							}}
@@ -514,13 +510,13 @@ const Schedule = <T extends {
 									changeStartMinuteMultiple(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								} else {
 									changeStartMinute(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								}
 							}}
@@ -538,13 +534,13 @@ const Schedule = <T extends {
 									changeDurationHourMultiple(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								} else {
 									changeDurationHour(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								}
 							}}
@@ -553,13 +549,13 @@ const Schedule = <T extends {
 									changeDurationMinuteMultiple(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								} else {
 									changeDurationMinute(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								}
 							}}
@@ -577,13 +573,13 @@ const Schedule = <T extends {
 									changeEndHourMultiple(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								} else {
 									changeEndHour(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								}
 							}}
@@ -592,26 +588,24 @@ const Schedule = <T extends {
 									changeEndMinuteMultiple(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								} else {
 									changeEndMinute(
 										value,
 										formik.values,
-										formik.setFieldValue
+										formik.setFieldValue,
 									);
 								}
 							}}
+							date={
+								formik.values.sourceMode === "SCHEDULE_SINGLE" &&
+								(new Date(formik.values.scheduleEndDate).getDate() !==
+								new Date(formik.values.scheduleStartDate).getDate())
+								? formik.values.scheduleEndDate
+								: undefined
+							}
 						/>
-
-						{/* display end date if on different day to start date, only if this is current source mode */}
-						{formik.values.sourceMode === "SCHEDULE_SINGLE" &&
-							formik.values.scheduleEndDate.toString() !==
-								formik.values.scheduleStartDate.toString() && (
-									<SchedulingEndDateDisplay
-										scheduleEndDate={formik.values.scheduleEndDate}
-									/>
-							)}
 
 						<SchedulingLocation
 								location={formik.values.location}
@@ -622,18 +616,18 @@ const Schedule = <T extends {
 								callback={async (value: string) => {
 										// Set inputs depending on location
 										let inputDevice = inputDevices.find(
-											({ name }) => name === value
+											({ name }) => name === value,
 										);
 										if (inputDevice) {
 											if (inputDevice.inputs.length > 0) {
-												await formik.setFieldValue("locationHasInputs", true)
+												await formik.setFieldValue("locationHasInputs", true);
 											} else {
-												await formik.setFieldValue("locationHasInputs", false)
+												await formik.setFieldValue("locationHasInputs", false);
 											}
-											await formik.setFieldValue("deviceInputs", inputDevice.inputs.map(input => input.id))
+											await formik.setFieldValue("deviceInputs", inputDevice.inputs.map(input => input.id));
 										}
 										// Set location
-										await formik.setFieldValue("location", value)
+										await formik.setFieldValue("location", value);
 								}}
 							/>
 						<tr>

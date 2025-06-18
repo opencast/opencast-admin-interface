@@ -24,6 +24,7 @@
 	"LOGOUT": "Logout",
 	"RESET": "Reset",
 	"SELECT_NO_OPTION_SELECTED": "No option selected",
+	"SELECT_NO_OPTION_SELECTED_DASHED": "-- No option selected --",
 	"SELECT_NO_OPTIONS_AVAILABLE": "No options available",
 	"SELECT_NO_MATCHING_RESULTS": "No matching results.",
 	"YES": "Yes",
@@ -174,7 +175,7 @@
 		"SERIES_PATH_NOT_UPDATED": "The series path could not be updated",
 		"SERIES_PATH_NOT_REMOVED": "The series path could not be removed",
 		"EVENTS_CREATED": "The event has been created",
-		"EVENTS_UPLOAD_STARTED": "The event is being uploaded… {{ progress }}%",
+		"EVENTS_UPLOAD_STARTED": "The event \"{{ title }}\" is being uploaded… {{ progress }}%",
 		"EVENTS_NOT_CREATED": "The event could not be created",
 		"EVENTS_UPDATED": "The event has been successfully updated",
 		"EVENTS_UPDATED_ALL": "All events have been successfully updated",
@@ -183,6 +184,8 @@
 		"EVENTS_NOT_UPDATED_ALL": "None of the events could be saved",
 		"EVENTS_PROCESSING_DELETE_WORKFLOW": "Deleted Workflow.",
 		"EVENTS_PROCESSING_DELETE_WORKFLOW_FAILED": "Workflow could not be deleted.",
+		"EVENTS_PROCESSING_ACTION_STOP": "The event processing has been stopped.",
+		"EVENTS_PROCESSING_ACTION_NON_STOP": "The event processing could not be stopped.",
 		"SERIES_NOT_UPDATED": "The series could not be saved",
 		"EVENT_DELETED": "The event has been deleted.",
 		"EVENT_WILL_BE_DELETED": "The event is being deleted",
@@ -255,7 +258,7 @@
 				"UNAUTHORIZED": "You are not authorized to delete the highlighted events. Please unselect them to continue."
 			}
 		},
-		"DELETE_EVENTS_WARNING_LINE1": "Once deleted, all event metadata, audio and video files will be deleted and be unrecoverable.",
+		"DELETE_EVENTS_WARNING_LINE1": "Once deleted, all event metadata, audio and video files are irrevocably gone.",
 		"DELETE_EVENTS_WARNING_LINE2": "",
 		"DELETE_SERIES_WARNING_LINE1": "Once deleted, all series metadata will be unrecoverable. Events in the series will not be deleted.",
 		"DELETE_SERIES_WARNING_LINE2": "",
@@ -569,7 +572,8 @@
 						"CAPTIONS_WEBVTT": "Captions WebVTT",
 						"PREVIEW_IMAGE": "Preview image",
 						"SMIL": "Smil catalog",
-						"TRACK_PARTS": "Track parts"
+						"TRACK_PARTS": "Track parts",
+						"SUBTITLES": "Subtitles"
 					}
 				},
 				"ACCESS": {
@@ -890,7 +894,11 @@
 						"ADDITIONAL_ACTIONS": "Additional Actions",
 						"ACTION": "Actions",
 						"NEW": "New policy",
-						"DETAILS": "Details"
+						"NON_USER_ROLES": "Roles and Groups authorized for the event",
+						"USER": "User",
+						"USERS": "Users who are authorized for the event",
+						"NEW_USER": "New user",
+						"SANITIZATION_NOTE": "User role sanitization is enabled in your Opencast, therefore user roles are displayed alongside other roles. This does not impact role functionality in any way."
 					},
 					"ROLES": {
 						"LABEL": "Select or create a role"
@@ -1200,7 +1208,10 @@
 						"ADDITIONAL_ACTIONS": "Additional Actions",
 						"ACTION": "Actions",
 						"NEW": "New policy",
-						"DETAILS": "Details",
+						"NON_USER_ROLES": "Roles and Groups authorized for the series",
+						"USER": "User",
+						"USERS": "Users who are authorized for the series",
+						"NEW_USER": "New user",
 						"REPLACE_EVENT_ACLS": "Update series permissions",
 						"REPLACE_EVENT_ACLS_HINT": "Ensure all events of this series have these permissions in effect",
 						"LOAD_MORE_LIMIT": "policies shown.",
@@ -1459,8 +1470,11 @@
 						"ADDITIONAL_ACTIONS": "Additional Actions",
 						"ACTION": "Actions",
 						"NEW": "New policy",
-						"DETAILS": "Details",
-						"DESCRIPTION": "Please choose a pre-configured set of policies or add custom policies below"
+						"NON_USER_ROLES": "Roles and Groups authorized for the access policy",
+						"DESCRIPTION": "Please choose a pre-configured set of policies or add custom policies below",
+						"USER": "User",
+						"USERS": "Users who are authorized for the access policy",
+						"NEW_USER": "New user"
 					},
 					"ROLES": {
 						"LABEL": "Select a role",
@@ -1691,7 +1705,6 @@
 				"HOST_NAME": "Host name",
 				"NODE_NAME": "Node name",
 				"CORES": "Cores",
-				"COMPLETED": "Jobs completed",
 				"RUNNING": "Jobs running",
 				"QUEUED": "Jobs queued",
 				"MAINTENANCE": "Maintenance",
@@ -1702,6 +1715,7 @@
 		"SERVICES": {
 			"TABLE": {
 				"CAPTION": "Services",
+				"ONLINE": "Online",
 				"STATUS": "Status",
 				"NAME": "Service name",
 				"HOST_NAME": "Host name",
@@ -2075,9 +2089,8 @@
 	"STATISTICS": {
 		"NOT_AVAILABLE": "Statistics cannot be displayed at the moment. Please try again later.",
 		"UNSUPPORTED_TYPE": "Sorry, Opencast cannot render this type of statistical data.",
-		"FROM": "From",
-		"TO": "To",
 		"TOTAL": "Total",
+		"TIMERANGE": "Time Range",
 		"GRANULARITY": "Granularity",
 		"NAVIGATION": {
 			"ORGANIZATION": "Organization"

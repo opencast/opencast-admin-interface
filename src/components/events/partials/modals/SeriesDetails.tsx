@@ -25,6 +25,7 @@ import {
 	updateSeriesMetadata,
 } from "../../../../slices/seriesDetailsSlice";
 import DetailsTobiraTab from "../ModalTabsAndPages/DetailsTobiraTab";
+import ButtonLikeAnchor from "../../../shared/ButtonLikeAnchor";
 import { removeNotificationWizardTobira } from "../../../../slices/notificationSlice";
 import { ParseKeys } from "i18next";
 
@@ -63,7 +64,7 @@ const SeriesDetails = ({
 
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
-	const themesEnabled = (orgProperties['admin.themes.enabled'] || 'false').toLowerCase() === 'true';
+	const themesEnabled = (orgProperties["admin.themes.enabled"] || "false").toLowerCase() === "true";
 
 	// information about each tab
 	const tabs: {
@@ -92,7 +93,7 @@ const SeriesDetails = ({
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.THEME",
 			accessRole: "ROLE_UI_SERIES_DETAILS_THEMES_VIEW",
 			name: "theme",
-			hidden: !theme && !themesEnabled
+			hidden: !theme && !themesEnabled,
 		},
 		{
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.TOBIRA",
@@ -117,13 +118,13 @@ const SeriesDetails = ({
 			{/* navigation for navigating between tabs */}
 			<nav className="modal-nav" id="modal-nav">
 				{tabs.map((tab, index) => !tab.hidden && hasAccess(tab.accessRole, user) && (
-					<button
+					<ButtonLikeAnchor
 						key={tab.name}
-						className={"button-like-anchor " + cn({ active: page === index })}
+						extraClassName={cn({ active: page === index })}
 						onClick={() => openTab(index)}
 					>
 						{t(tab.tabNameTranslation)}
-					</button>
+					</ButtonLikeAnchor>
 				))}
 			</nav>
 

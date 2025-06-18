@@ -9,6 +9,9 @@ import DropDown from "../../../shared/DropDown";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { updateSeriesTheme } from "../../../../slices/seriesDetailsSlice";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import ModalContentTable from "../../../shared/modals/ModalContentTable";
+
+type SeriesTheme = { id: string; value: string; };
 
 /**
  * This component renders the tab for editing the theme of a certain series
@@ -18,11 +21,8 @@ const SeriesDetailsThemeTab = ({
 	themeNames,
 	seriesId,
 }: {
-	theme: string,
-	themeNames: {
-		id: string;
-		value: string;
-	}[],
+	theme: SeriesTheme | null,
+	themeNames: SeriesTheme[],
 	seriesId: string
 }) => {
 	const { t } = useTranslation();
@@ -30,11 +30,11 @@ const SeriesDetailsThemeTab = ({
 
 	const user = useAppSelector(state => getUserInformation(state));
 
-	const handleSubmit = (values: { theme: string }) => {
-		dispatch(updateSeriesTheme({id: seriesId, values: values}));
+	const handleSubmit = (values: { theme: SeriesTheme | null }) => {
+		dispatch(updateSeriesTheme({ id: seriesId, values: values }));
 	};
 
-	const checkValidity = (formik: FormikProps<{theme: string }>) => {
+	const checkValidity = (formik: FormikProps<{theme: SeriesTheme | null }>) => {
 		if (formik.dirty && formik.isValid) {
 			// check if user provided values differ from initial ones
 			return !_.isEqual(formik.values, formik.initialValues);
@@ -47,64 +47,60 @@ const SeriesDetailsThemeTab = ({
 		<Formik
 			enableReinitialize
 			initialValues={{ theme: theme }}
-			onSubmit={(values) => handleSubmit(values)}
+			onSubmit={values => handleSubmit(values)}
 		>
-			{(formik) => (
+			{formik => (
 				<>
-					<div className="modal-content">
-						<div className="modal-body">
-							<div className="full-col">
-								{/* Notifications */}
-								<Notifications context="not_corner" />
-								<div className="obj quick-actions">
-									<header>{t("CONFIGURATION.NAVIGATION.THEMES")}</header>
-									<div className="obj-container padded">
-										<ul>
-											<li>
-												<p>{t("EVENTS.SERIES.NEW.THEME.DESCRIPTION.TEXT")}</p>
-												{themeNames.length > 0 && (
-													<div className="editable">
-														<DropDown
-															value={formik.values.theme}
-															text={formik.values.theme}
-															options={themeNames.map(names => ({ label: names.value, value: names.id }))}
-															required={false}
-															handleChange={(element) => {
-																if (element) {
-																	formik.setFieldValue("theme", element.value)
-																}
-															}}
-															placeholder={t("EVENTS.SERIES.NEW.THEME.LABEL")}
-															disabled={
-																!hasAccess(
-																	"ROLE_UI_SERIES_DETAILS_THEMES_EDIT",
-																	user
-																)
-															}
-															customCSS={{ width: "100%" }}
-														/>
-													</div>
-												)}
-											</li>
-										</ul>
-									</div>
-									{formik.dirty && (
-										<>
-											{/* Render buttons for updating theme */}
-											<WizardNavigationButtons
-												formik={formik}
-												customValidation={!checkValidity(formik)}
-												previousPage={() => formik.resetForm()}
-												createTranslationString="SAVE"
-												cancelTranslationString="CANCEL"
-												isLast
-											/>
-										</>
-									)}
-								</div>
+					<ModalContentTable>
+						{/* Notifications */}
+						<Notifications context="not_corner" />
+						<div className="obj quick-actions">
+							<header>{t("CONFIGURATION.NAVIGATION.THEMES")}</header>
+							<div className="obj-container padded">
+								<ul>
+									<li>
+										<p>{t("EVENTS.SERIES.NEW.THEME.DESCRIPTION.TEXT")}</p>
+										{themeNames.length > 0 && (
+											<div className="editable">
+												<DropDown
+													value={formik.values.theme?.id}
+													text={formik.values.theme?.value || ""}
+													options={themeNames.map(names => ({ label: names.value, value: names.id }))}
+													required={false}
+													handleChange={element => {
+														if (element) {
+															formik.setFieldValue("theme", { id: element.value, value: element.label });
+														}
+													}}
+													placeholder={t("EVENTS.SERIES.NEW.THEME.LABEL")}
+													disabled={
+														!hasAccess(
+															"ROLE_UI_SERIES_DETAILS_THEMES_EDIT",
+															user,
+														)
+													}
+													customCSS={{ width: "100%" }}
+												/>
+											</div>
+										)}
+									</li>
+								</ul>
 							</div>
+							{formik.dirty && (
+								<>
+									{/* Render buttons for updating theme */}
+									<WizardNavigationButtons
+										formik={formik}
+										customValidation={!checkValidity(formik)}
+										previousPage={() => formik.resetForm()}
+										createTranslationString="SAVE"
+										cancelTranslationString="CANCEL"
+										isLast
+									/>
+								</>
+							)}
 						</div>
-					</div>
+					</ModalContentTable>
 				</>
 			)}
 		</Formik>
