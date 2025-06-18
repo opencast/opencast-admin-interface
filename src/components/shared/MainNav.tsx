@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router";
+import { NavLink, useLocation, useNavigate } from "react-router";
 import {
 	getOrgProperties,
 	getUserInformation,
@@ -52,6 +52,127 @@ const MainNav = ({
 		[toggleMenu],
 	);
 
+    // Find current view based on pathname of router
+	const location = useLocation();
+	let pathname = "";
+	let firstPathFragment = "";
+	if (location?.pathname.length > 0) {
+		pathname = location.pathname;
+		if (pathname.startsWith("/")) {
+			firstPathFragment = pathname.substring(1, pathname.indexOf("/", 1));
+		}
+	}
+
+	interface linkMapItem {
+		links: (React.ComponentProps<typeof MainNavLink> & {accessRole: string})[]
+	}
+
+	const linkMap: { [key: string]: linkMapItem } = {
+		"events": {
+			links: [
+				{
+					path: "/events/events",
+					accessRole: "ROLE_UI_EVENTS_VIEW",
+					tooltipTitle: "NAV.EVENTS.TITLE",
+					className: "events"
+				},
+				{
+					path: "/events/series",
+					accessRole: "ROLE_UI_SERIES_VIEW",
+					tooltipTitle: "NAV.EVENTS.TITLE",
+					className: "events",
+				}
+			]
+		},
+		"recordings": {
+			links: [
+				{
+					path: "/recordings/recordings",
+					accessRole: "ROLE_UI_LOCATIONS_VIEW",
+					tooltipTitle: "NAV.CAPTUREAGENTS.TITLE",
+					className: "recordings",
+				}
+			]
+		},
+		"systems": {
+			links: [
+				{
+					path: "/systems/jobs",
+					accessRole: "ROLE_UI_JOBS_VIEW",
+					tooltipTitle: "NAV.SYSTEMS.TITLE",
+					className: "systems"
+				},
+				{
+					path: "/systems/servers",
+					accessRole: "ROLE_UI_SERVERS_VIEW",
+					tooltipTitle: "NAV.SYSTEMS.TITLE",
+					className: "systems"
+				},
+				{
+					path: "/systems/services",
+					accessRole: "ROLE_UI_SERVICES_VIEW",
+					tooltipTitle: "NAV.SYSTEMS.TITLE",
+					className: "systems"
+				}
+			]
+		},
+		"users": {
+			links: [
+				{
+					path: "/users/users",
+					accessRole: "ROLE_UI_USERS_VIEW",
+					tooltipTitle: "NAV.USERS.TITLE",
+					className: "users"
+				},
+				{
+					path: "/users/groups",
+					accessRole: "ROLE_UI_GROUPS_VIEW",
+					tooltipTitle: "NAV.USERS.TITLE",
+					className: "users"
+				},
+				{
+					path: "/users/acls",
+					accessRole: "ROLE_UI_ACLS_VIEW",
+					tooltipTitle: "NAV.USERS.TITLE",
+					className: "users"
+				}
+			]
+		},
+		"configuration": {
+			links: [
+				{
+					path: "/configuration/themes",
+					accessRole: "ROLE_UI_THEMES_VIEW",
+					tooltipTitle: "NAV.CONFIGURATION.TITLE",
+					className: "configuration"
+				}
+			]
+		},
+		"statistics": {
+			links: [
+				{
+					path: "/statistics/organization",
+					accessRole: "ROLE_UI_STATISTICS_ORGANIZATION_VIEW",
+					tooltipTitle: "NAV.STATISTICS.TITLE",
+					className: "statistics"
+				}
+			]
+		}
+	};
+
+	// Link arrays containing more than one link must be sorted so that the
+	// current view is always the first element. Otherwise, NavLink will not
+	// recognize the current view as active.
+	if (firstPathFragment.length > 0) {
+		let arrToSort = linkMap[firstPathFragment as keyof typeof linkMap].links;
+		if (arrToSort != undefined && arrToSort.length > 1) {
+			arrToSort.forEach((item : any) => {
+				if (item.path === pathname) { item.tmpIndex = 0 } else { item.tmpIndex = 1 }
+			});
+			arrToSort.sort((a: any, b: any) => a.tmpIndex - b.tmpIndex);
+		}
+	}
+
 	return (
 		<div className="menu-top" >
 			<ButtonLikeAnchor onClick={() => toggleMenu()}>
@@ -65,102 +186,30 @@ const MainNav = ({
 						{/* todo: more than one href? how? roles? (see MainNav admin-ui-frontend)*/}
 						<MainNavButton
 							accessRole="ROLE_UI_NAV_RECORDINGS_VIEW"
-							links={[
-								{
-									path: "/events/events",
-									accessRole: "ROLE_UI_EVENTS_VIEW",
-									tooltipTitle: "NAV.EVENTS.TITLE",
-									className: "events",
-								},
-								{
-									path: "/events/series",
-									accessRole: "ROLE_UI_SERIES_VIEW",
-									tooltipTitle: "NAV.EVENTS.TITLE",
-									className: "events",
-								},
-							]}
+							links={linkMap["events"].links}
 						/>
 						<MainNavButton
 							accessRole="ROLE_UI_NAV_CAPTURE_VIEW"
-							links={[
-								{
-									path: "/recordings/recordings",
-									accessRole: "ROLE_UI_LOCATIONS_VIEW",
-									tooltipTitle: "NAV.CAPTUREAGENTS.TITLE",
-									className: "recordings",
-								},
-							]}
+							links={linkMap["recordings"].links}
 						/>
 						<MainNavButton
 							accessRole="ROLE_UI_NAV_SYSTEMS_VIEW"
-							links={[
-								{
-									path: "/systems/jobs",
-									accessRole: "ROLE_UI_JOBS_VIEW",
-									tooltipTitle: "NAV.SYSTEMS.TITLE",
-									className: "systems",
-								},
-								{
-									path: "/systems/servers",
-									accessRole: "ROLE_UI_SERVERS_VIEW",
-									tooltipTitle: "NAV.SYSTEMS.TITLE",
-									className: "systems",
-								},
-								{
-									path: "/systems/services",
-									accessRole: "ROLE_UI_SERVICES_VIEW",
-									tooltipTitle: "NAV.SYSTEMS.TITLE",
-									className: "systems",
-								},
-							]}
+							links={linkMap["systems"].links}
 						/>
 						<MainNavButton
 							accessRole="ROLE_UI_NAV_ORGANIZATION_VIEW"
-							links={[
-								{
-									path: "/users/users",
-									accessRole: "ROLE_UI_USERS_VIEW",
-									tooltipTitle: "NAV.USERS.TITLE",
-									className: "users",
-								},
-								{
-									path: "/users/groups",
-									accessRole: "ROLE_UI_GROUPS_VIEW",
-									tooltipTitle: "NAV.USERS.TITLE",
-									className: "users",
-								},
-								{
-									path: "/users/acls",
-									accessRole: "ROLE_UI_ACLS_VIEW",
-									tooltipTitle: "NAV.USERS.TITLE",
-									className: "users",
-								},
-							]}
+							links={linkMap["users"].links}
 						/>
 						{themesEnabled &&
 							<MainNavButton
 								accessRole="ROLE_UI_NAV_CONFIGURATION_VIEW"
-								links={[
-									{
-										path: "/configuration/themes",
-										accessRole: "ROLE_UI_THEMES_VIEW",
-										tooltipTitle: "NAV.CONFIGURATION.TITLE",
-										className: "configuration",
-									},
-								]}
+								links={linkMap["configuration"].links}
 							/>
 						}
 						{statisticsEnabled &&
 							<MainNavButton
 								accessRole="ROLE_UI_NAV_STATISTICS_VIEW"
-								links={[
-									{
-										path: "/statistics/organization",
-										accessRole: "ROLE_UI_STATISTICS_ORGANIZATION_VIEW",
-										tooltipTitle: "NAV.STATISTICS.TITLE",
-										className: "statistics",
-									},
-								]}
+								links={linkMap["statistics"].links}
 							/>
 						}
 					</div>
@@ -194,7 +243,7 @@ const MainNavButton = ({
 const MainNavLink = ({
 	path,
 	tooltipTitle,
-	className,
+	className
 }: {
 	path: string
 	tooltipTitle: ParseKeys
@@ -203,11 +252,12 @@ const MainNavLink = ({
 	const { t } = useTranslation();
 
 	return (
-		<Link to={path}>
+		<NavLink to={path}
+			className={({ isActive }) => isActive ? "roll-up-menu-active" : ""}>
 			<Tooltip title={t(tooltipTitle)} placement={"right"}>
 				<i className={className} />
 			</Tooltip>
-		</Link>
+		</NavLink>
 	);
 };
 
