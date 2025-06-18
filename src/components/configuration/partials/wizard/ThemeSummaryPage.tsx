@@ -21,7 +21,7 @@ interface RequiredFormProps {
 
 const ThemeSummaryPage = <T extends RequiredFormProps>({
 	formik,
-	previousPage
+	previousPage,
 }: {
 	formik: FormikProps<T>,
 	previousPage?: (values: T) => void,
@@ -46,7 +46,7 @@ const ThemeSummaryPage = <T extends RequiredFormProps>({
 									<p>
 										<span>
 											{t(
-												"CONFIGURATION.THEMES.DETAILS.BUMPER.FILE_UPLOADED"
+												"CONFIGURATION.THEMES.DETAILS.BUMPER.FILE_UPLOADED",
 											)}
 										</span>
 										{formik.values.bumperFileName}
@@ -61,7 +61,7 @@ const ThemeSummaryPage = <T extends RequiredFormProps>({
 									<p>
 										<span>
 											{t(
-												"CONFIGURATION.THEMES.DETAILS.TRAILER.FILE_UPLOADED"
+												"CONFIGURATION.THEMES.DETAILS.TRAILER.FILE_UPLOADED",
 											)}
 										</span>
 										{formik.values.trailerFileName}
@@ -77,7 +77,7 @@ const ThemeSummaryPage = <T extends RequiredFormProps>({
 										<p>
 											<span>
 												{t(
-													"CONFIGURATION.THEMES.DETAILS.TITLE.FILE_UPLOADED"
+													"CONFIGURATION.THEMES.DETAILS.TITLE.FILE_UPLOADED",
 												)}
 											</span>
 											{formik.values.titleSlideBackgroundName}
@@ -92,7 +92,7 @@ const ThemeSummaryPage = <T extends RequiredFormProps>({
 									<p>
 										<span>
 											{t(
-												"CONFIGURATION.THEMES.DETAILS.WATERMARK.FILE_UPLOADED"
+												"CONFIGURATION.THEMES.DETAILS.WATERMARK.FILE_UPLOADED",
 											)}
 										</span>
 										{formik.values.watermarkFileName}

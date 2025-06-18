@@ -1,11 +1,11 @@
-import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
-import { groupsTableConfig } from '../configs/tableConfigs/groupsTableConfig';
-import axios from 'axios';
-import { buildGroupBody, getURLParams } from '../utils/resourceUtils';
-import { addNotification } from './notificationSlice';
-import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
-import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
-import { initialFormValuesNewGroup } from '../configs/modalConfig';
+import { PayloadAction, SerializedError, createSlice } from "@reduxjs/toolkit";
+import { groupsTableConfig } from "../configs/tableConfigs/groupsTableConfig";
+import axios from "axios";
+import { buildGroupBody, getURLParams } from "../utils/resourceUtils";
+import { addNotification } from "./notificationSlice";
+import { TableConfig } from "../configs/tableConfigs/aclsTableConfig";
+import { createAppAsyncThunk } from "../createAsyncThunkWithTypes";
+import { initialFormValuesNewGroup } from "../configs/modalConfig";
 
 /**
  * This file contains redux reducer for actions affecting the state of groups
@@ -19,7 +19,7 @@ export type Group = {
 }
 
 type GroupState = {
-	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	status: "uninitialized" | "loading" | "succeeded" | "failed",
 	error: SerializedError | null,
 	results: Group[],
 	columns: TableConfig["columns"],
@@ -30,14 +30,14 @@ type GroupState = {
 }
 
 // Fill columns initially with columns defined in groupsTableConfig
-const initialColumns = groupsTableConfig.columns.map((column) => ({
+const initialColumns = groupsTableConfig.columns.map(column => ({
 	...column,
 	deactivated: false,
 }));
 
 // Initial state of groups in redux store
 const initialState: GroupState = {
-	status: 'uninitialized',
+	status: "uninitialized",
 	error: null,
 	results: [],
 	columns: initialColumns,
@@ -48,7 +48,7 @@ const initialState: GroupState = {
 };
 
 // fetch groups from server
-export const fetchGroups = createAppAsyncThunk('groups/fetchGroups', async (_, { getState }) => {
+export const fetchGroups = createAppAsyncThunk("groups/fetchGroups", async (_, { getState }) => {
 	const state = getState();
 	let params = getURLParams(state, "groups");
 	// Just make the async request here, and return the response.
@@ -59,7 +59,7 @@ export const fetchGroups = createAppAsyncThunk('groups/fetchGroups', async (_, {
 });
 
 // post new group to backend
-export const postNewGroup = createAppAsyncThunk('groups/postNewGroup', async (values: typeof initialFormValuesNewGroup, {dispatch}) => {
+export const postNewGroup = createAppAsyncThunk("groups/postNewGroup", async (values: typeof initialFormValuesNewGroup, { dispatch }) => {
 	// get URL params used for post request
 	let data = buildGroupBody(values);
 
@@ -70,36 +70,36 @@ export const postNewGroup = createAppAsyncThunk('groups/postNewGroup', async (va
 				"Content-Type": "application/x-www-form-urlencoded",
 			},
 		})
-		.then((response) => {
-			dispatch(addNotification({type: "success", key: "GROUP_ADDED"}));
+		.then(response => {
+			dispatch(addNotification({ type: "success", key: "GROUP_ADDED" }));
 		})
-		.catch((response) => {
+		.catch(response => {
 			console.error(response);
 			if (response.status === 409) {
-				dispatch(addNotification({type: "error", key: "GROUP_CONFLICT"}));
+				dispatch(addNotification({ type: "error", key: "GROUP_CONFLICT" }));
 			} else {
-				dispatch(addNotification({type: "error", key: "GROUP_NOT_SAVED"}));
+				dispatch(addNotification({ type: "error", key: "GROUP_NOT_SAVED" }));
 			}
 		});
 });
 
-export const deleteGroup = createAppAsyncThunk('groups/deleteGroup', async (id: Group["id"], {dispatch}) => {
+export const deleteGroup = createAppAsyncThunk("groups/deleteGroup", async (id: Group["id"], { dispatch }) => {
 	// API call for deleting a group
 	axios
 		.delete(`/admin-ng/groups/${id}`)
-		.then((res) => {
+		.then(res => {
 			// add success notification
-			dispatch(addNotification({type: "success", key: "GROUP_DELETED"}));
+			dispatch(addNotification({ type: "success", key: "GROUP_DELETED" }));
 		})
-		.catch((res) => {
+		.catch(res => {
 			console.error(res);
 			// add error notification
-			dispatch(addNotification({type: "error", key: "GROUP_NOT_DELETED"}));
+			dispatch(addNotification({ type: "error", key: "GROUP_NOT_DELETED" }));
 		});
 });
 
 const groupSlice = createSlice({
-	name: 'groups',
+	name: "groups",
 	initialState,
 	reducers: {
 		setGroupColumns(state, action: PayloadAction<
@@ -111,8 +111,8 @@ const groupSlice = createSlice({
 	// These are used for thunks
 	extraReducers: builder => {
 		builder
-			.addCase(fetchGroups.pending, (state) => {
-				state.status = 'loading';
+			.addCase(fetchGroups.pending, state => {
+				state.status = "loading";
 			})
 			.addCase(fetchGroups.fulfilled, (state, action: PayloadAction<{
 				total: GroupState["total"],
@@ -121,7 +121,7 @@ const groupSlice = createSlice({
 				offset: GroupState["offset"],
 				results: GroupState["results"],
 			}>) => {
-				state.status = 'succeeded';
+				state.status = "succeeded";
 				const groups = action.payload;
 				state.total = groups.total;
 				state.count = groups.count;
@@ -130,10 +130,10 @@ const groupSlice = createSlice({
 				state.results = groups.results;
 			})
 			.addCase(fetchGroups.rejected, (state, action) => {
-				state.status = 'failed';
+				state.status = "failed";
 				state.error = action.error;
 			});
-	}
+	},
 });
 
 export const { setGroupColumns } = groupSlice.actions;

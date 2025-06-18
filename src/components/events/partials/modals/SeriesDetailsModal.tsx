@@ -30,10 +30,10 @@ const SeriesDetailsModal = ({
 	};
 
 	const close = () => {
-		let isUnsavedChanges = false
-		isUnsavedChanges = policyChanged
+		let isUnsavedChanges = false;
+		isUnsavedChanges = policyChanged;
 		if (formikRef.current && formikRef.current.dirty !== undefined && formikRef.current.dirty) {
-			isUnsavedChanges = true
+			isUnsavedChanges = true;
 		}
 
 		if (!isUnsavedChanges || confirmUnsaved()) {
@@ -54,7 +54,7 @@ const SeriesDetailsModal = ({
 			<SeriesDetails
 				seriesId={seriesId}
 				policyChanged={policyChanged}
-				setPolicyChanged={(value) => setPolicyChanged(value)}
+				setPolicyChanged={value => setPolicyChanged(value)}
 				formikRef={formikRef}
 			/>
 		</Modal>

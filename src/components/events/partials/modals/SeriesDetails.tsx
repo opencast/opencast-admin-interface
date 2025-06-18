@@ -67,7 +67,7 @@ const SeriesDetails = ({
 
 	const user = useAppSelector(state => getUserInformation(state));
 	const orgProperties = useAppSelector(state => getOrgProperties(state));
-	const themesEnabled = (orgProperties['admin.themes.enabled'] || 'false').toLowerCase() === 'true';
+	const themesEnabled = (orgProperties["admin.themes.enabled"] || "false").toLowerCase() === "true";
 
 	// information about each tab
 	const tabs: {
@@ -96,7 +96,7 @@ const SeriesDetails = ({
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.THEME",
 			accessRole: "ROLE_UI_SERIES_DETAILS_THEMES_VIEW",
 			name: "theme",
-			hidden: !theme && !themesEnabled
+			hidden: !theme && !themesEnabled,
 		},
 		{
 			tabNameTranslation: "EVENTS.SERIES.DETAILS.TABS.TOBIRA",

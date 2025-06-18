@@ -16,7 +16,7 @@ import { postNewTheme, ThemeDetailsInitialValues } from "../../../../slices/them
  * This component manages the pages of the new theme wizard and the submission of values
  */
 const NewThemeWizard = ({
-	close
+	close,
 }: {
 	close: () => void
 }) => {
@@ -80,10 +80,10 @@ const NewThemeWizard = ({
 			<Formik
 				initialValues={snapshot}
 				validationSchema={currentValidationSchema}
-				onSubmit={(values) => handleSubmit(values)}
+				onSubmit={values => handleSubmit(values)}
 			>
 				{/* Render wizard pages depending on current value of page variable */}
-				{(formik) => {
+				{formik => {
 					// eslint-disable-next-line react-hooks/rules-of-hooks
 					useEffect(() => {
 						formik.validateForm();
