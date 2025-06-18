@@ -102,8 +102,10 @@ const Events = () => {
 	}, [location.hash]);
 
 	const onNewEventModal = async () => {
-		await dispatch(fetchEventMetadata());
-		await dispatch(fetchAssetUploadOptions());
+		await Promise.all([
+			dispatch(fetchEventMetadata()),
+			dispatch(fetchAssetUploadOptions()),
+		]);
 
 		newEventModalRef.current?.open();
 	};

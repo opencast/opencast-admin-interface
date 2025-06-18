@@ -64,11 +64,10 @@ const NewAccessPage = <T extends RequiredFormProps>({
 		// fetch data about roles, acl templates and actions from backend
 		async function fetchData() {
 			setLoading(true);
-			const responseTemplates = await fetchAclTemplates();
+			const [responseTemplates, responseActions, responseRoles] = await Promise.all([
+				fetchAclTemplates(), fetchAclActions(), fetchRolesWithTarget("ACL")]);
 			setAclTemplates(responseTemplates);
-			const responseActions = await fetchAclActions();
 			setAclActions(responseActions);
-			const responseRoles = await fetchRolesWithTarget("ACL");
 			setRoles(responseRoles);
 			setLoading(false);
 		}
