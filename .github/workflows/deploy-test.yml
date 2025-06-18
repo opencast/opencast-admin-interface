@@ -24,7 +24,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
 
-      - name: get Node.js
+      - name: get node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -32,11 +32,14 @@ jobs:
       - name: download dependencies
         run: npm ci
 
+      - name: determine the correct test server
+        id: vite-url
+        run: echo "VITE_TEST_SERVER_URL=`./.github/get-release-server.sh ${{ github.base_ref }}`" >> GITHUB_ENV
+
       - name: build app
         env:
-          PUBLIC_URL: /${{ steps.build-path.outputs.build }}
+          VITE_TEST_SERVER_URL: ${{ steps.vite-url.outputs.VITE_TEST_SERVER_URL }}
           NODE_ENV: development
-          VITE_TEST_SERVER_URL: "https://develop.opencast.org"
           VITE_TEST_SERVER_AUTH: "admin:opencast"
         run: npm run build
 

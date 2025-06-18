@@ -91,7 +91,7 @@ const ThemeDetails = ({
 
 	// update theme
 	const handleSubmit = (values: ThemeDetailsInitialValues) => {
-		dispatch(updateThemeDetails({id: themeDetails.id, values: values}));
+		dispatch(updateThemeDetails({ id: themeDetails.id, values: values }));
 		close();
 	};
 
@@ -108,10 +108,10 @@ const ThemeDetails = ({
 			<Formik
 				initialValues={initialValues}
 				validationSchema={currentValidationSchema}
-				onSubmit={(values) => handleSubmit(values)}
+				onSubmit={values => handleSubmit(values)}
 			>
 				{/* render modal pages depending on current value of page variable */}
-				{(formik) => (
+				{formik => (
 					<div>
 						{page === 0 && <GeneralPage formik={formik} isEdit />}
 						{page === 1 && <BumperPage formik={formik} isEdit />}

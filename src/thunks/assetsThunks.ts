@@ -1,12 +1,12 @@
 import axios from "axios";
 import { getAssetUploadOptions, getSourceUploadOptions } from "../selectors/eventSelectors";
 import { UploadOption } from "../slices/eventSlice";
-import { createAppAsyncThunk } from '../createAsyncThunkWithTypes'
+import { createAppAsyncThunk } from "../createAsyncThunkWithTypes";
 import { Publication } from "../slices/eventDetailsSlice";
 
 // thunks for assets, especially for getting asset options
 
-export const fetchAssetUploadOptions = createAppAsyncThunk('assets/fetchAssetUploadOptionsAsyncThunk', async (_, { getState }) => {
+export const fetchAssetUploadOptions = createAppAsyncThunk("assets/fetchAssetUploadOptionsAsyncThunk", async (_, { getState }) => {
 	// get old asset upload options
 	const state = getState();
 	const assetUploadOptions = getAssetUploadOptions(state);
@@ -25,10 +25,10 @@ export const fetchAssetUploadOptions = createAppAsyncThunk('assets/fetchAssetUpl
 		// request asset upload options from API
 		await axios
 			.get("/admin-ng/resources/eventUploadAssetOptions.json")
-			.then((dataResponse) => {
+			.then(dataResponse => {
 				// iterate over response and only use non-comment lines
 				for (const [optionKey, optionJson] of Object.entries(
-					dataResponse.data
+					dataResponse.data,
 				)) {
 					if (optionKey.charAt(0) !== "$") {
 						const isSourceOption = optionKey.indexOf(sourcePrefix) >= 0;
@@ -59,7 +59,7 @@ export const fetchAssetUploadOptions = createAppAsyncThunk('assets/fetchAssetUpl
 						}
 					}
 				}
-			})
+			});
 
 		return { workflow, newAssetUploadOptions, newSourceUploadOptions };
 	}
@@ -69,7 +69,7 @@ export const fetchAssetUploadOptions = createAppAsyncThunk('assets/fetchAssetUpl
  * Adds information from the publication list provider to publications.
  * The additional info is used for rendering purposes
  */
-export const enrichPublications = createAppAsyncThunk('assets/enrichPublications', async (
+export const enrichPublications = createAppAsyncThunk("assets/enrichPublications", async (
 	publications: {
 		publications: {
 			id: string,
@@ -89,7 +89,7 @@ export const enrichPublications = createAppAsyncThunk('assets/enrichPublications
 	let combinedPublications: Publication[] = [];
 
 	// fill publication objects with additional information
-	publications.publications.forEach((publication) => {
+	publications.publications.forEach(publication => {
 		let newPublication: Publication = {
 			enabled: true,
 			id: publication.id,
@@ -128,7 +128,7 @@ export const enrichPublications = createAppAsyncThunk('assets/enrichPublications
 		combinedPublications.push(newPublication);
 	});
 
-	combinedPublications = combinedPublications.sort(({order: a}, {order: b}) => a - b);
+	combinedPublications = combinedPublications.sort(({ order: a }, { order: b }) => a - b);
 
 	return combinedPublications;
 });

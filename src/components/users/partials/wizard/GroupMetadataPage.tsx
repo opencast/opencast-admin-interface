@@ -11,7 +11,7 @@ import ModalContent from "../../../shared/modals/ModalContent";
 const GroupMetadataPage = <T, >({
 	formik,
 	nextPage,
-	isEdit
+	isEdit,
 }: {
 	formik: FormikProps<T>,
 	nextPage?: (values: T) => void,
