@@ -4,7 +4,7 @@ import { Server } from "../../../slices/serverSlice";
  * This component renders the status cells of servers in the table view
  */
 const ServersStatusCell = ({
-	row
+	row,
 }: {
 	row: Server
 }) => {

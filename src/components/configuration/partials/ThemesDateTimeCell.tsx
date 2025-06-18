@@ -6,7 +6,7 @@ import { ThemeDetailsType } from "../../../slices/themeSlice";
  * This component renders the creation date cells of themes in the table view
  */
 const ThemesDateTimeCell = ({
-	row
+	row,
 }: {
 	row: ThemeDetailsType
 }) => {

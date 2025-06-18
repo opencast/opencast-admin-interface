@@ -6,7 +6,7 @@ import { Series } from "../../../slices/seriesSlice";
  * This component renders the creation date cells of series in the table view
  */
 const SeriesDateTimeCell = ({
-	row
+	row,
 }: {
 	row: Series
 }) => {

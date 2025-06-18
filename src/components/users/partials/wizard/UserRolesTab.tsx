@@ -13,7 +13,7 @@ interface RequiredFormProps {
 }
 
 const UserRolesTab = <T extends RequiredFormProps>({
-	formik
+	formik,
 }: {
 	formik: FormikProps<T>
 }) => {

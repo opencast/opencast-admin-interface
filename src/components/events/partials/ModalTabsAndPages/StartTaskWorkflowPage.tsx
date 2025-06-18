@@ -72,22 +72,22 @@ const StartTaskWorkflowPage = <T extends RequiredFormProps>({
 									value={formik.values.workflow}
 									text={
 										workflowDef.find(
-											(workflowDef) =>
-												workflowDef.id === formik.values.workflow
+											workflowDef =>
+												workflowDef.id === formik.values.workflow,
 										)?.title ?? ""
 									}
 									options={formatWorkflowsForDropdown(workflowDef)}
 									required={true}
-									handleChange={(element) => {
+									handleChange={element => {
 										if (element) {
-											setDefaultValues(element.value)
+											setDefaultValues(element.value);
 										}
 									}}
 									placeholder={t(
-										"EVENTS.EVENTS.DETAILS.PUBLICATIONS.SELECT_WORKFLOW"
+										"EVENTS.EVENTS.DETAILS.PUBLICATIONS.SELECT_WORKFLOW",
 									)}
 									tabIndex={99}
-									customCSS={{width: "100%"}}
+									customCSS={{ width: "100%" }}
 								/>
 							</div>
 						)}

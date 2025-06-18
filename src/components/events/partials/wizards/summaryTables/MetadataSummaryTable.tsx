@@ -11,7 +11,7 @@ import { ParseKeys } from "i18next";
 const MetadataSummaryTable = ({
 	metadataCatalogs,
 	formikValues,
-	header
+	header,
 }: {
 	metadataCatalogs: MetadataCatalog[],
 	formikValues: { [key: string]: string | string[] | boolean | Date },
@@ -50,12 +50,12 @@ const MetadataSummaryTable = ({
 						{
 							value: fieldValue,
 						},
-						t
-					)
+						t,
+					);
 				}
 
 				if (fieldValue instanceof Date) {
-					fieldValue = t("dateFormats.dateTime.short", { dateTime: fieldValue })
+					fieldValue = t("dateFormats.dateTime.short", { dateTime: fieldValue });
 				}
 
 				metadata = metadata.concat({

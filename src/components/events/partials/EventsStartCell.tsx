@@ -6,7 +6,7 @@ import { Event } from "../../../slices/eventSlice";
  * This component renders the start cells of events in the table view
  */
 const EventsStartCell = ({
-	row
+	row,
 }: {
 	row: Event
 }) => {

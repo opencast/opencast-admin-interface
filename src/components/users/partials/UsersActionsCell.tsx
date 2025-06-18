@@ -28,11 +28,11 @@ const UsersActionCell = ({
 	const showUserDetails = async () => {
 		await dispatch(fetchUserDetails(row.username));
 
-		modalRef.current?.open()
+		modalRef.current?.open();
 	};
 
 	const hideUserDetails = () => {
-		modalRef.current?.close?.()
+		modalRef.current?.close?.();
 	};
 
 	return (

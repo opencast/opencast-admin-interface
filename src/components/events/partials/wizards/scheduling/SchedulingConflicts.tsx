@@ -35,7 +35,7 @@ const SchedulingConflicts = ({
 				</tbody>
 			</table>
 		) : <></>
-	)
+	);
 };
 
 export default SchedulingConflicts;

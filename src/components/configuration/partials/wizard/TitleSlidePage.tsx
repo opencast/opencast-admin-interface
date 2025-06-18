@@ -18,7 +18,7 @@ const TitleSlidePage = <T extends RequiredFormProps>({
 	formik,
 	nextPage,
 	previousPage,
-	isEdit
+	isEdit,
 }: {
 	formik: FormikProps<T>,
 	nextPage?: (values: T) => void,

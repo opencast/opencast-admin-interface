@@ -1,6 +1,6 @@
-import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios';
-import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import { PayloadAction, SerializedError, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { createAppAsyncThunk } from "../createAsyncThunkWithTypes";
 
 /**
  * This file contains redux reducer for actions affecting the state of a recording/capture agent
@@ -16,13 +16,13 @@ export interface RecordingDetails {
 }
 
 interface RecordingDetailsState extends RecordingDetails {
-	statusRecordingDetails: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	statusRecordingDetails: "uninitialized" | "loading" | "succeeded" | "failed",
 	errorRecordingDetails: SerializedError | null,
 }
 
 // Initial state of recording details in redux store
 const initialState: RecordingDetailsState = {
-	statusRecordingDetails: 'uninitialized',
+	statusRecordingDetails: "uninitialized",
 	errorRecordingDetails: null,
 	name: "",
 	status: "",
@@ -34,7 +34,7 @@ const initialState: RecordingDetailsState = {
 };
 
 // fetch details of certain recording from server
-export const fetchRecordingDetails = createAppAsyncThunk('recordingDetails/fetchRecordingDetails', async (name: RecordingDetails["name"]) => {
+export const fetchRecordingDetails = createAppAsyncThunk("recordingDetails/fetchRecordingDetails", async (name: RecordingDetails["name"]) => {
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -43,14 +43,14 @@ export const fetchRecordingDetails = createAppAsyncThunk('recordingDetails/fetch
 });
 
 const recordingDetailsSlice = createSlice({
-	name: 'recordingDetails',
+	name: "recordingDetails",
 	initialState,
 	reducers: {},
 	// These are used for thunks
 	extraReducers: builder => {
 		builder
-			.addCase(fetchRecordingDetails.pending, (state) => {
-				state.statusRecordingDetails = 'loading';
+			.addCase(fetchRecordingDetails.pending, state => {
+				state.statusRecordingDetails = "loading";
 			})
 			.addCase(fetchRecordingDetails.fulfilled, (state, action: PayloadAction<{
 				Name: RecordingDetailsState["name"],
@@ -61,7 +61,7 @@ const recordingDetailsSlice = createSlice({
 				configuration: RecordingDetailsState["configuration"],
 				inputs: RecordingDetailsState["inputs"],
 			}>) => {
-				state.statusRecordingDetails = 'succeeded';
+				state.statusRecordingDetails = "succeeded";
 				const recordingDetails = action.payload;
 				state.name = recordingDetails.Name;
 				state.status = recordingDetails.Status;
@@ -72,10 +72,10 @@ const recordingDetailsSlice = createSlice({
 				state.inputs = recordingDetails.inputs;
 			})
 			.addCase(fetchRecordingDetails.rejected, (state, action) => {
-				state.statusRecordingDetails = 'failed';
+				state.statusRecordingDetails = "failed";
 				state.errorRecordingDetails = action.error;
 			});
-	}
+	},
 });
 
 // export const {} = recordingDetailsSlice.actions;

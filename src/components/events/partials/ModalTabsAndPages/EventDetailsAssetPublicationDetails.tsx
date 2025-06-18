@@ -26,7 +26,7 @@ const EventDetailsAssetPublicationDetails = () => {
 				<header>
 					{
 						t(
-							"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.CAPTION"
+							"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.CAPTION",
 						) /* Publication Details */
 					}
 				</header>
@@ -38,7 +38,7 @@ const EventDetailsAssetPublicationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.ID"
+												"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.ID",
 											) /* Id */
 										}
 									</td>
@@ -48,7 +48,7 @@ const EventDetailsAssetPublicationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.TYPE"
+												"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.TYPE",
 											) /* Type */
 										}
 									</td>
@@ -58,7 +58,7 @@ const EventDetailsAssetPublicationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.MIMETYPE"
+												"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.MIMETYPE",
 											) /* Mimetype */
 										}
 									</td>
@@ -69,7 +69,7 @@ const EventDetailsAssetPublicationDetails = () => {
 										<td>
 											{
 												t(
-													"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.SIZE"
+													"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.SIZE",
 												) /* Size */
 											}
 										</td>
@@ -80,7 +80,7 @@ const EventDetailsAssetPublicationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.CHANNEL"
+												"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.CHANNEL",
 											) /* Channel */
 										}
 									</td>
@@ -90,7 +90,7 @@ const EventDetailsAssetPublicationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.REFERENCE"
+												"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.REFERENCE",
 											) /* Reference */
 										}
 									</td>
@@ -100,7 +100,7 @@ const EventDetailsAssetPublicationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.TAGS"
+												"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.TAGS",
 											) /* Tags */
 										}
 									</td>
@@ -114,7 +114,7 @@ const EventDetailsAssetPublicationDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.URL"
+												"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.DETAILS.URL",
 											) /* Link */
 										}
 									</td>

@@ -27,13 +27,13 @@ const NewThemePage = <T extends RequiredFormProps>({
 	const seriesThemes = useAppSelector(state => getSeriesThemes(state));
 
 	const getDescription = (id: string) => {
-		const theme = seriesThemes.find((theme) => theme.id === id);
+		const theme = seriesThemes.find(theme => theme.id === id);
 
 		return theme?.description;
 	};
 
 	const getName = (id: string) => {
-		const theme = seriesThemes.find((theme) => theme.id === id);
+		const theme = seriesThemes.find(theme => theme.id === id);
 
 		return theme?.name;
 	};
@@ -58,11 +58,11 @@ const NewThemePage = <T extends RequiredFormProps>({
 													text={
 														getName(formik.values.theme) ?? ""
 													}
-													options={seriesThemes.map(theme => ({ label: theme.name, value: theme.id}))}
+													options={seriesThemes.map(theme => ({ label: theme.name, value: theme.id }))}
 													required={false}
-													handleChange={(element) => {
+													handleChange={element => {
 														if (element) {
-															formik.setFieldValue("theme", element.value)
+															formik.setFieldValue("theme", element.value);
 														}
 													}}
 													placeholder={t("EVENTS.SERIES.NEW.THEME.LABEL")}

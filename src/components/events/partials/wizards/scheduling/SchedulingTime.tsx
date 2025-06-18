@@ -14,7 +14,7 @@ const SchedulingTime = ({
 	minutePlaceholder,
 	callbackHour,
 	callbackMinute,
-	date
+	date,
 }: {
 	hour: string,
 	minute: string,
@@ -43,15 +43,15 @@ const SchedulingTime = ({
 					text={hour}
 					options={formatTimeForDropdown(hours)}
 					required={true}
-					handleChange={(element) => {
+					handleChange={element => {
 						if (element) {
-							callbackHour(element.value)
+							callbackHour(element.value);
 							// TODO: Allow for ChangeMultiple for NewSourcePage
 						}
 					}}
 					placeholder={t(hourPlaceholder)}
 					disabled={disabled}
-					customCSS={{width: 70}}
+					customCSS={{ width: 70 }}
 				/>
 
 				{/* drop-down for minute */}
@@ -60,14 +60,14 @@ const SchedulingTime = ({
 					text={minute}
 					options={formatTimeForDropdown(minutes)}
 					required={true}
-					handleChange={(element) => {
+					handleChange={element => {
 						if (element) {
-							callbackMinute(element.value)
+							callbackMinute(element.value);
 						}
 					}}
 					placeholder={t(minutePlaceholder)}
 					disabled={disabled}
-					customCSS={{width: 70}}
+					customCSS={{ width: 70 }}
 				/>
 
 				{/* Displays given date. Can be used to signify which date the
@@ -75,13 +75,13 @@ const SchedulingTime = ({
 				{date &&
 					<span style={{ marginLeft: "10px" }}>
 						{new Date(date).toLocaleDateString(
-							currentLanguage ? currentLanguage.dateLocale.code : undefined
+							currentLanguage ? currentLanguage.dateLocale.code : undefined,
 						)}
 					</span>
 				}
 			</td>
 		</tr>
-	)
+	);
 
 };
 

@@ -26,7 +26,7 @@ const EventDetailsAssetPublications = ({
 
 	const openSubTab = (subTabName: AssetTabHierarchy, publicationId = "") => {
 		if (subTabName === "publication-details") {
-			dispatch(fetchAssetPublicationDetails({eventId, publicationId})).then();
+			dispatch(fetchAssetPublicationDetails({ eventId, publicationId })).then();
 		}
 		dispatch(setModalAssetsTabHierarchy(subTabName));
 	};
@@ -40,7 +40,7 @@ const EventDetailsAssetPublications = ({
 				<header>
 					{
 						t(
-							"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.CAPTION"
+							"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.CAPTION",
 						) /* Publications */
 					}
 				</header>
@@ -51,21 +51,21 @@ const EventDetailsAssetPublications = ({
 								<th>
 									{
 										t(
-											"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.ID"
+											"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.ID",
 										) /* ID */
 									}
 								</th>
 								<th>
 									{
 										t(
-											"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.CHANNEL"
+											"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.CHANNEL",
 										) /* Channel */
 									}
 								</th>
 								<th>
 									{
 										t(
-											"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.TAGS"
+											"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.TAGS",
 										) /* Tags */
 									}
 								</th>
@@ -92,7 +92,7 @@ const EventDetailsAssetPublications = ({
 											>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
+														"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS",
 													) /* Details */
 												}
 											</ButtonLikeAnchor>

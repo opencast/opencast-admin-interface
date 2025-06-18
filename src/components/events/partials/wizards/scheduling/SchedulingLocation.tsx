@@ -37,9 +37,9 @@ const SchedulingLocation = ({
 					text={location}
 					options={formatCaptureAgentForDropdown(inputDevices)}
 					required={true}
-					handleChange={(element) => {
+					handleChange={element => {
 						if (element) {
-							callback(element.value)
+							callback(element.value);
 						}
 					}}
 					placeholder={t(placeholder)}
@@ -47,7 +47,7 @@ const SchedulingLocation = ({
 				/>
 			</td>
 		</tr>
-	)
+	);
 };
 
 export default SchedulingLocation;

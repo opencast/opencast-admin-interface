@@ -38,7 +38,7 @@ const NewSeriesSummary = <T extends RequiredFormProps>({
 	const seriesThemes = useAppSelector(state => getSeriesThemes(state));
 
 	// Get additional information about chosen series theme
-	const theme = seriesThemes.find((theme) => theme.id === formik.values.theme);
+	const theme = seriesThemes.find(theme => theme.id === formik.values.theme);
 
 	return (
 		<>

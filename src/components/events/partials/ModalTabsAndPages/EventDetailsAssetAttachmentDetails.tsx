@@ -25,7 +25,7 @@ const EventDetailsAssetAttachmentDetails = () => {
 				<header>
 					{
 						t(
-							"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.CAPTION"
+							"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.CAPTION",
 						) /* Attachment Details */
 					}
 				</header>
@@ -37,7 +37,7 @@ const EventDetailsAssetAttachmentDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.ID"
+												"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.ID",
 											) /* Id */
 										}
 									</td>
@@ -47,7 +47,7 @@ const EventDetailsAssetAttachmentDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.TYPE"
+												"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.TYPE",
 											) /* Type */
 										}
 									</td>
@@ -57,7 +57,7 @@ const EventDetailsAssetAttachmentDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.MIMETYPE"
+												"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.MIMETYPE",
 											) /* Mimetype */
 										}
 									</td>
@@ -68,7 +68,7 @@ const EventDetailsAssetAttachmentDetails = () => {
 										<td>
 											{
 												t(
-													"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.SIZE"
+													"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.SIZE",
 												) /* Size */
 											}
 										</td>
@@ -79,7 +79,7 @@ const EventDetailsAssetAttachmentDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.CHECKSUM"
+												"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.CHECKSUM",
 											) /* Checksum */
 										}
 									</td>
@@ -89,7 +89,7 @@ const EventDetailsAssetAttachmentDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.REFERENCE"
+												"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.REFERENCE",
 											) /* Reference */
 										}
 									</td>
@@ -99,7 +99,7 @@ const EventDetailsAssetAttachmentDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.TAGS"
+												"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.TAGS",
 											) /* Tags */
 										}
 									</td>
@@ -113,7 +113,7 @@ const EventDetailsAssetAttachmentDetails = () => {
 									<td>
 										{
 											t(
-												"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.URL"
+												"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.DETAILS.URL",
 											) /* Link */
 										}
 									</td>

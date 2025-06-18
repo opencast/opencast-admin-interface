@@ -10,8 +10,8 @@ export default defineConfig({
     base: process.env.PUBLIC_URL || "",
     plugins: [react(), svgr(), viteTsconfigPaths()],
     define: {
-        'import.meta.env.VITE_GIT_COMMIT_HASH': JSON.stringify(commitHash),
-        'import.meta.env.VITE_APP_BUILD_DATE': JSON.stringify(new Date().toISOString()),
+        "import.meta.env.VITE_GIT_COMMIT_HASH": JSON.stringify(commitHash),
+        "import.meta.env.VITE_APP_BUILD_DATE": JSON.stringify(new Date().toISOString()),
     },
     build: {
         outDir: "build",

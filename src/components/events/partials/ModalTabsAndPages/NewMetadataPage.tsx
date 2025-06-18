@@ -12,7 +12,7 @@ import ModalContentTable from "../../../shared/modals/ModalContentTable";
  */
 const NewMetadataPage = ({
 	metadataCatalogs,
-	header
+	header,
 }: {
 	metadataCatalogs: MetadataCatalog [],
 	header?: ParseKeys
@@ -47,7 +47,7 @@ const NewMetadataPage = ({
 												</td>
 												{field.readOnly ? (
 													// non-editable field if readOnly is set or user doesn't have edit access rights
-													!!field.collection ? (
+													field.collection ? (
 														<td>{getMetadataCollectionFieldName(field, field, t)}</td>
 													) : (
 														<td>{field.value}</td>

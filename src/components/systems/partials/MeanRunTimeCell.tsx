@@ -5,7 +5,7 @@ import moment from "moment";
  * This component renders the mean run time cells of systems in the table view
  */
 const MeanRunTimeCell = ({
-	row
+	row,
 }: {
 	row: Service
 }) => {

@@ -4,7 +4,7 @@ import { Series } from "../../../slices/seriesSlice";
  * This component renders the contributors cells of series in the table view
  */
 const SeriesContributorsCell = ({
-	row
+	row,
 }: {
 	row: Series
 }) => {

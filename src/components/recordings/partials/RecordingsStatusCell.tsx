@@ -6,7 +6,7 @@ import { ParseKeys } from "i18next";
  * This component renders the status cells of recordings in the table view
  */
 const RecordingsStatusCell = ({
-	row
+	row,
 }: {
 	row: Recording
 }) => {

@@ -18,7 +18,7 @@ interface RequiredFormProps {
 }
 
 const EditUserGeneralTab = <T extends RequiredFormProps>({
-	formik
+	formik,
 }: {
 	formik: FormikProps<T>
 }) => {

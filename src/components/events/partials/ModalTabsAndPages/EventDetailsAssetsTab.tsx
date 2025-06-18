@@ -165,7 +165,7 @@ const EventDetailsAssetsTab = ({
 													!transactionsReadOnly &&
 													hasAccess(
 														"ROLE_UI_EVENTS_DETAILS_ASSETS_EDIT",
-														user
+														user,
 													) && (
 														<ButtonLikeAnchor
 															extraClassName="details-link"
@@ -184,7 +184,7 @@ const EventDetailsAssetsTab = ({
 											<td>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.CAPTION"
+														"EVENTS.EVENTS.DETAILS.ASSETS.ATTACHMENTS.CAPTION",
 													) /* Attachments */
 												}
 											</td>
@@ -199,7 +199,7 @@ const EventDetailsAssetsTab = ({
 													>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
+																"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS",
 															) /* Details */
 														}
 													</ButtonLikeAnchor>
@@ -210,7 +210,7 @@ const EventDetailsAssetsTab = ({
 											<td>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.ASSETS.CATALOGS.CAPTION"
+														"EVENTS.EVENTS.DETAILS.ASSETS.CATALOGS.CAPTION",
 													) /* Catalogs */
 												}
 											</td>
@@ -225,7 +225,7 @@ const EventDetailsAssetsTab = ({
 													>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
+																"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS",
 															) /* Details */
 														}
 													</ButtonLikeAnchor>
@@ -236,7 +236,7 @@ const EventDetailsAssetsTab = ({
 											<td>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.ASSETS.MEDIA.CAPTION"
+														"EVENTS.EVENTS.DETAILS.ASSETS.MEDIA.CAPTION",
 													) /* Media */
 												}
 											</td>
@@ -249,7 +249,7 @@ const EventDetailsAssetsTab = ({
 													>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
+																"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS",
 															) /* Details */
 														}
 													</ButtonLikeAnchor>
@@ -260,7 +260,7 @@ const EventDetailsAssetsTab = ({
 											<td>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.CAPTION"
+														"EVENTS.EVENTS.DETAILS.ASSETS.PUBLICATIONS.CAPTION",
 													) /* Publications */
 												}
 											</td>
@@ -275,7 +275,7 @@ const EventDetailsAssetsTab = ({
 													>
 														{
 															t(
-																"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
+																"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS",
 															) /* Details */
 														}
 													</ButtonLikeAnchor>

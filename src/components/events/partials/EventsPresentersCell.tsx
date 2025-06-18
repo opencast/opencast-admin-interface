@@ -21,10 +21,10 @@ const EventsPresentersCell = ({
 	// Filter with value of current cell
 	const addFilter = async (presenter: string) => {
 		let filter = filterMap.find(
-			({ name }) => name === "presentersBibliographic"
+			({ name }) => name === "presentersBibliographic",
 		);
-		if (!!filter) {
-			await dispatch(editFilterValue({filterName: filter.name, value: presenter}));
+		if (filter) {
+			await dispatch(editFilterValue({ filterName: filter.name, value: presenter }));
 			await dispatch(fetchEvents());
 			dispatch(loadEventsIntoTable());
 		}

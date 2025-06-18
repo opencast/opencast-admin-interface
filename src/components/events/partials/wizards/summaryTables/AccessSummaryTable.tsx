@@ -7,7 +7,7 @@ import { ParseKeys } from "i18next";
  */
 const AccessSummaryTable = ({
 	policies,
-	header
+	header,
 }: {
 	policies: TransformedAcl[]
 	header: ParseKeys

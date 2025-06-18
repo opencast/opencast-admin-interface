@@ -21,15 +21,15 @@ const EventsSeriesCell = ({
 	// Filter with value of current cell
 	const addFilter = async (seriesId: string) => {
 		let filter = filterMap.find(({ name }) => name === "series");
-		if (!!filter) {
-			await dispatch(editFilterValue({filterName: filter.name, value: seriesId}));
+		if (filter) {
+			await dispatch(editFilterValue({ filterName: filter.name, value: seriesId }));
 			await dispatch(fetchEvents());
 			dispatch(loadEventsIntoTable());
 		}
 	};
 
 	return (
-		!!row.series ? (
+		row.series ? (
 			// Link template for series of event
 			<IconButton
 				callback={() => row.series
