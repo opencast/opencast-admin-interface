@@ -62,7 +62,7 @@ const TableFilters = ({
 	const [startDate, setStartDate] = useState<Date | undefined>(undefined);
 	const [endDate, setEndDate] = useState<Date | undefined>(undefined);
 
-	let filter = filterMap.find(({ name }) => name === selectedFilter);
+	const filter = filterMap.find(({ name }) => name === selectedFilter);
 
 	// Remove all selected filters, no filter should be "active" anymore
 	const removeFilters = async () => {
@@ -114,9 +114,9 @@ const TableFilters = ({
 		// If the change is in secondFilter (filter is picked) then the selected value is saved in filterMap
 		// and the filter selections are cleared
 		if (name === "secondFilter") {
-			let filter = filterMap.find(({ name }) => name === selectedFilter);
+			const filter = filterMap.find(({ name }) => name === selectedFilter);
 			if (filter) {
-				dispatch(editFilterValue({ filterName: filter.name, value: value }));
+				dispatch(editFilterValue({filterName: filter.name, value: value}));
 				setFilterSelector(false);
 				dispatch(removeSelectedFilter());
 				dispatch(removeSecondFilter());
@@ -144,7 +144,7 @@ const TableFilters = ({
 	useEffect(() => {
 		if (itemValue) {
 			// Call to apply filter changes with 500MS debounce!
-			let applyFilterChangesDebouncedTimeoutId = setTimeout(applyFilterChangesDebounced, 500);
+			const applyFilterChangesDebouncedTimeoutId = setTimeout(applyFilterChangesDebounced, 500);
 
 			return () => clearTimeout(applyFilterChangesDebouncedTimeoutId);
 		}
@@ -153,7 +153,7 @@ const TableFilters = ({
 
 	const handleDatepicker = async (dates?: [Date | undefined | null, Date | undefined | null]) => {
 		if (dates != null) {
-			let [start, end] = dates;
+			const [start, end] = dates;
 
 			start?.setHours(0);
 			start?.setMinutes(0);
@@ -177,7 +177,7 @@ const TableFilters = ({
 	// (e.g. 01/01/2025 results in a range of 01/01/2025 - 01/01/2025)
 	const handleDatePickerOnKeyDown = async (keyEvent: React.KeyboardEvent<HTMLElement>) => {
 		if (keyEvent.key === "Enter") {
-			let end = endDate ?? (startDate ? new Date(startDate) : undefined);
+			const end = endDate ?? (startDate ? new Date(startDate) : undefined);
 			end?.setHours(23);
 			end?.setMinutes(59);
 			end?.setSeconds(59);
@@ -191,7 +191,7 @@ const TableFilters = ({
 
 	const submitDateFilter = async (start: Date | undefined | null, end: Date | undefined | null) => {
 		if (start && end && moment(start).isValid() && moment(end).isValid()) {
-			let filter = filterMap.find(({ name }) => name === selectedFilter);
+			const filter = filterMap.find(({ name }) => name === selectedFilter);
 			if (filter) {
 				dispatch(editFilterValue({
 					filterName: filter.name,
@@ -215,7 +215,7 @@ const TableFilters = ({
   );
 
 	const renderBlueBox = (filter: FilterData) => {
-		let valueLabel = filter.options?.find(opt => opt.value === filter.value)
+		const valueLabel = filter.options?.find(opt => opt.value === filter.value)
 			?.label || filter.value;
 		return (
 			<span className="table-filter-blue-box">

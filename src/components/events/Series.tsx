@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router";
 import TableFilters from "../shared/TableFilters";
@@ -39,7 +39,7 @@ const Series = () => {
 	const newSeriesModalRef = useRef<ModalHandle>(null);
 	const deleteModalRef = useRef<ModalHandle>(null);
 
-	let location = useLocation();
+	const location = useLocation();
 
 	const series = useAppSelector(state => getTotalSeries(state));
 	const showActions = useAppSelector(state => isShowActions(state));
@@ -69,7 +69,7 @@ const Series = () => {
 		loadSeries();
 
 		// Fetch series every minute
-		let fetchSeriesInterval = setInterval(() => loadSeries(), 5000);
+		const fetchSeriesInterval = setInterval(() => loadSeries(), 5000);
 
 		return () => {
 			allowLoadIntoTable = false;

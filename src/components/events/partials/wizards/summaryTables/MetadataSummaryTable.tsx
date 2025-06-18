@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { getMetadataCollectionFieldName } from "../../../../../utils/resourceUtils";
 import { MetadataCatalog } from "../../../../../slices/eventSlice";

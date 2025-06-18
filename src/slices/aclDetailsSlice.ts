@@ -45,7 +45,7 @@ export const fetchAclDetails = createAppAsyncThunk("aclDetails/fetchAclDetails",
 
 	let aclDetails = res.data;
 
-	let acl: Acl = aclDetails.acl;
+	const acl: Acl = aclDetails.acl;
 	let transformedAcls: TransformedAcl[] = [];
 
 	// transform policies for further use
@@ -134,10 +134,10 @@ export const updateAclDetails = createAppAsyncThunk("aclDetails/updateAclDetails
 }, { dispatch }) => {
 	const { values, aclId } = params;
 	// transform ACLs back to structure used by backend
-	let acls = prepareAccessPolicyRulesForPost(values.policies);
+	const acls = prepareAccessPolicyRulesForPost(values.policies);
 
 	// set params for request body
-	let data = new URLSearchParams();
+	const data = new URLSearchParams();
 	data.append("name", values.name);
 	data.append("acl", JSON.stringify(acls));
 

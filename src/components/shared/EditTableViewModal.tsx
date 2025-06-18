@@ -223,7 +223,7 @@ const EditTableViewModalContent = ({
 										onDragEnd={onDragEnd}
 									>
 										<Droppable droppableId="droppable">
-											{(provided, snapshot) => (
+											{(provided, _snapshot) => (
 												<div
 													{...provided.droppableProps}
 													ref={provided.innerRef}
@@ -232,7 +232,7 @@ const EditTableViewModalContent = ({
 													{activeCols.filter(col => col).map((column, key) =>
 														(
 															<Draggablee key={column.name} draggableId={column.name} index={key}>
-																{(provided, snapshot) => (
+																{(provided, _snapshot) => (
 																	<div
 																		ref={provided.innerRef}
 																		{...provided.draggableProps}

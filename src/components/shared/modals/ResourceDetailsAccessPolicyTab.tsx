@@ -122,10 +122,12 @@ const ResourceDetailsAccessPolicyTab = ({
 			await dispatch(fetchAccessPolicies(resourceId));
 			fetchRolesWithTarget("ACL").then(roles => setRoles(roles));
 			if (fetchHasActiveTransactions) {
-				const fetchTransactionResult = await dispatch(fetchHasActiveTransactions(resourceId)).then(unwrapResult);
-				fetchTransactionResult.active !== undefined
-					? setTransactions({ read_only: fetchTransactionResult.active })
-					: setTransactions({ read_only: true });
+				const fetchTransactionResult = await dispatch(fetchHasActiveTransactions(resourceId)).then(unwrapResult)
+				if (fetchTransactionResult.active !== undefined) {
+					setTransactions({ read_only: fetchTransactionResult.active })
+				} else {
+					setTransactions({ read_only: true });
+				}
 				if (
 					fetchTransactionResult.active === undefined ||
 					fetchTransactionResult.active
@@ -142,7 +144,7 @@ const ResourceDetailsAccessPolicyTab = ({
 			setLoading(false);
 		}
 
-		fetchData().then(r => {});
+		fetchData().then(() => {});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -435,9 +437,9 @@ export const AccessPolicyTable = <T extends AccessPolicyTabFormikProps>({
 	}, []);
 
 	const createPolicy = (role: string, withUser: boolean): TransformedAcl => {
-		let user = withUser ? { username: "", name: "", email: "" } : undefined;
+		const user = withUser ? {username: "", name: "", email: ""} : undefined
 
-		let newRole: TransformedAcl = {
+		const newRole: TransformedAcl = {
 			role: role,
 			read: true,
 			write: false,

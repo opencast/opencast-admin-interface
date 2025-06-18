@@ -1,4 +1,3 @@
-import React from "react";
 import { loadServicesIntoTable } from "../../../thunks/tableThunks";
 import { useAppDispatch } from "../../../store";
 import { Service, fetchServices, restartService } from "../../../slices/serviceSlice";

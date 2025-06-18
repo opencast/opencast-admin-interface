@@ -157,6 +157,7 @@ const EditScheduledEventsEditPage = <T extends RequiredFormProps>({
 				{/* Repeat table for each selected event */}
 				{!loading && (
 					<FieldArray name="editedEvents">
+						{ }
 						{({ insert, remove, push }) => (
 							<>
 							{hasAccess(

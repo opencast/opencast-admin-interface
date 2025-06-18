@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SelectContainer from "../../../shared/wizard/SelectContainer";
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { fetchUsersAndUsernames } from "../../../../slices/userSlice";
@@ -30,7 +30,7 @@ const GroupUsersPage = <T, >({
 			setLoading(true);
 			const responseUsers = await fetchUsersAndUsernames();
 
-			let userNames = [];
+			const userNames = [];
 			for (let i = 0; i < responseUsers.length; i++) {
 				userNames.push({
 					id: responseUsers[i].id,

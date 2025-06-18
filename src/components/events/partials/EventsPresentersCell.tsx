@@ -1,4 +1,3 @@
-import React from "react";
 import { getFilters } from "../../../selectors/tableFilterSelectors";
 import { editFilterValue } from "../../../slices/tableFilterSlice";
 import { loadEventsIntoTable } from "../../../thunks/tableThunks";
@@ -21,7 +20,7 @@ const EventsPresentersCell = ({
 
 	// Filter with value of current cell
 	const addFilter = async (presenter: string) => {
-		let filter = filterMap.find(
+		const filter = filterMap.find(
 			({ name }) => name === "presentersBibliographic",
 		);
 		if (filter) {

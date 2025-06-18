@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
@@ -48,7 +48,7 @@ const Themes = () => {
 		loadThemes();
 
 		// Fetch themes every minute
-		let fetchThemesInterval = setInterval(loadThemes, 5000);
+		const fetchThemesInterval = setInterval(loadThemes, 5000);
 
 		return () => {
 			allowLoadIntoTable = false;
