@@ -61,7 +61,7 @@ const Events = () => {
 	const events = useAppSelector(state => getTotalEvents(state));
 	const isFetchingAssetUploadOptions = useAppSelector(state => getIsFetchingAssetUploadOptions(state));
 
-	let location = useLocation();
+	const location = useLocation();
 
 	useEffect(() => {
 		// State variable for interrupting the load function
@@ -92,7 +92,7 @@ const Events = () => {
 		loadEvents();
 
 		// Fetch events every five seconds
-		let fetchEventsInterval = setInterval(() => loadEvents(), 5000);
+		const fetchEventsInterval = setInterval(() => loadEvents(), 5000);
 
 		return () => {
 			allowLoadIntoTable = false;

@@ -103,7 +103,7 @@ export const fetchSeriesDetailsMetadata = createAppAsyncThunk("seriesDetails/fet
 
 	const mainCatalog = "dublincore/series";
 	let seriesMetadata: SeriesDetailsState["metadata"] | undefined = undefined;
-	let extendedMetadata: SeriesDetailsState["extendedMetadata"] = [];
+	const extendedMetadata: SeriesDetailsState["extendedMetadata"] = [];
 
 	for (const catalog of metadataResponse) {
 		if (catalog.flavor === mainCatalog) {
@@ -163,7 +163,7 @@ export const fetchSeriesDetailsThemeNames = createAppAsyncThunk("seriesDetails/f
 	const response = res.data;
 
 	// transform response for further use
-	let themeNames = transformToIdValueArray(response);
+	const themeNames = transformToIdValueArray(response);
 
 	return themeNames;
 });
@@ -184,7 +184,7 @@ export const updateSeriesMetadata = createAppAsyncThunk("seriesDetails/updateSer
 	await axios.put(`/admin-ng/series/${id}/metadata`, data, headers);
 
 	// updated metadata in series details redux store
-	let seriesMetadata = {
+	const seriesMetadata = {
 		flavor: catalog.flavor,
 		title: catalog.title,
 		fields: fields,
@@ -208,14 +208,14 @@ export const updateExtendedSeriesMetadata = createAppAsyncThunk("seriesDetails/u
 	await axios.put(`/admin-ng/series/${id}/metadata`, data, headers);
 
 	// updated metadata in series details redux store
-	let seriesMetadata = {
+	const seriesMetadata = {
 		flavor: catalog.flavor,
 		title: catalog.title,
 		fields: fields,
 	};
 
 	const oldExtendedMetadata = getSeriesDetailsExtendedMetadata(getState());
-	let newExtendedMetadata = [];
+	const newExtendedMetadata = [];
 
 	for (const catalog of oldExtendedMetadata) {
 		if (
@@ -239,9 +239,9 @@ export const updateSeriesAccess = createAppAsyncThunk("seriesDetails/updateSerie
 	}, { dispatch }) => {
 	const { id, policies, override } = params;
 
-	let data = new URLSearchParams();
+	const data = new URLSearchParams();
 
-	let overrideString = override ? String(true) : String(false);
+	const overrideString = override ? String(true) : String(false);
 
 	data.append("acl", JSON.stringify(policies));
 	data.append("override", overrideString);
@@ -284,7 +284,7 @@ export const updateSeriesTheme = createAppAsyncThunk("seriesDetails/updateSeries
 }, { dispatch }) => {
 	const { id, values } = params;
 
-	let themeId = values.theme?.id;
+	const themeId = values.theme?.id;
 
 	if (!themeId || themeId === "") {
 		axios
@@ -304,15 +304,15 @@ export const updateSeriesTheme = createAppAsyncThunk("seriesDetails/updateSeries
 				console.error(response);
 			});
 	} else {
-		let data = new URLSearchParams();
+		const data = new URLSearchParams();
 		data.append("themeId", themeId);
 
 		axios
 			.put(`/admin-ng/series/${id}/theme`, data)
 			.then(response => {
-				let themeResponse = response.data;
+				const themeResponse = response.data;
 
-				let seriesTheme = transformToIdValueArray(themeResponse)[0];
+				const seriesTheme = transformToIdValueArray(themeResponse)[0];
 
 				dispatch(setSeriesDetailsTheme(seriesTheme));
 				dispatch(

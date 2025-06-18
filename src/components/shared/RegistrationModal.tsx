@@ -85,7 +85,7 @@ const RegistrationModalContent = () => {
 	};
 
 	const fetchRegistrationInfos = async () => {
-		let registrationInfo = await fetchAdopterRegistration();
+		const registrationInfo = await fetchAdopterRegistration();
 
 		// merge response into initial values for formik
 		setInitialValues({ ...initialValues, ...registrationInfo });

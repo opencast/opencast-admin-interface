@@ -277,8 +277,8 @@ export const fetchEvents = createAppAsyncThunk("events/fetchEvents", async (_, {
 });
 
 // fetch event metadata from server
-export const fetchEventMetadata = createAppAsyncThunk("events/fetchEventMetadata", async (_, { rejectWithValue }) => {
-	let data = await axios.get("/admin-ng/event/new/metadata");
+export const fetchEventMetadata = createAppAsyncThunk('events/fetchEventMetadata', async (_, { rejectWithValue }) => {
+	const data = await axios.get("/admin-ng/event/new/metadata");
 	const response = await data.data;
 
 	const mainCatalog = "dublincore/episode";
@@ -304,11 +304,11 @@ export const fetchEventMetadata = createAppAsyncThunk("events/fetchEventMetadata
 });
 
 // get merged metadata for provided event ids
-export const postEditMetadata = createAppAsyncThunk("events/postEditMetadata", async (ids: Event["id"][]) => {
-	let formData = new URLSearchParams();
+export const postEditMetadata = createAppAsyncThunk('events/postEditMetadata', async (ids: Event["id"][]) => {
+	const formData = new URLSearchParams();
 	formData.append("eventIds", JSON.stringify(ids));
 
-	let data = await axios.post(
+	const data = await axios.post(
 		"/admin-ng/event/events/metadata.json",
 		formData,
 		{
@@ -317,10 +317,10 @@ export const postEditMetadata = createAppAsyncThunk("events/postEditMetadata", a
 			},
 		},
 	);
-	let response = await data.data;
+	const response = await data.data;
 
 	// transform response
-	let metadata = transformMetadataFields(response.metadata)
+	const metadata = transformMetadataFields(response.metadata)
 		.map(field => ({ ...field, selected: false }));
 	return {
 		mergedMetadata: metadata,
@@ -341,9 +341,9 @@ export const updateBulkMetadata = createAppAsyncThunk("events/updateBulkMetadata
 }, { dispatch }) => {
 	const { metadataFields, values } = params;
 
-	let formData = new URLSearchParams();
+	const formData = new URLSearchParams();
 	formData.append("eventIds", JSON.stringify(metadataFields.merged));
-	let metadata : { flavor: string, title: string, fields: any[]}[] = [
+	const metadata : { flavor: string, title: string, fields: any[]}[] = [
 		{
 			flavor: "dublincore/episode",
 			title: "EVENTS.EVENTS.DETAILS.CATALOG.EPISODE",
@@ -353,7 +353,7 @@ export const updateBulkMetadata = createAppAsyncThunk("events/updateBulkMetadata
 
 	metadataFields.mergedMetadata.forEach(field => {
 		if (field.selected) {
-			let value = values[field.id];
+			const value = values[field.id];
 			metadata[0].fields.push({
 				...field,
 				value: value,
@@ -445,7 +445,7 @@ export const postNewEvent = createAppAsyncThunk("events/postNewEvent", async (pa
 	const uploadAssetOptions = getAssetUploadOptions(state);
 	const uploadSourceOptions = getSourceUploadOptions(state);
 
-	let formData = new FormData();
+	const formData = new FormData();
 	let source: {
 		type: string,
 		metadata?: {
@@ -459,7 +459,7 @@ export const postNewEvent = createAppAsyncThunk("events/postNewEvent", async (pa
 	} | undefined = undefined;
 
 	// prepare metadata provided by user
-	let metadata = prepareMetadataFieldsForPost(
+	const metadata = prepareMetadataFieldsForPost(
 		[metadataInfo],
 		values,
 	);
@@ -494,7 +494,7 @@ export const postNewEvent = createAppAsyncThunk("events/postNewEvent", async (pa
 		//let offset = getTimezoneOffset();
 
 		// Prepare start date of event for post
-		let startDate = new Date(values.scheduleStartDate);
+		const startDate = new Date(values.scheduleStartDate);
 		// NOTE: if time zone issues still occur during further testing, try to set times to UTC (-offset)
 		//startDate.setHours((values.scheduleStartHour - offset), values.scheduleStartMinute, 0, 0);
 		startDate.setHours(
@@ -517,7 +517,7 @@ export const postNewEvent = createAppAsyncThunk("events/postNewEvent", async (pa
 		endDate.setHours(parseInt(values.scheduleEndHour), parseInt(values.scheduleEndMinute), 0, 0);
 
 		// transform duration into milliseconds
-		let duration =
+		const duration =
 			parseInt(values.scheduleDurationHours) * 3600000 +
 			parseInt(values.scheduleDurationMinutes) * 60000;
 
@@ -535,7 +535,7 @@ export const postNewEvent = createAppAsyncThunk("events/postNewEvent", async (pa
 
 		if (values.sourceMode === "SCHEDULE_MULTIPLE") {
 			// assemble an iCalendar RRULE (repetition instruction) for the given user input
-			let rRule =
+			const rRule =
 				"FREQ=WEEKLY;BYDAY=" +
 				values.repeatOn.join(",") +
 				";BYHOUR=" +
@@ -551,7 +551,7 @@ export const postNewEvent = createAppAsyncThunk("events/postNewEvent", async (pa
 
 	// information about upload assets options
 	// need to provide all possible upload asset options independent of source mode/type
-	let assets: {
+	const assets: {
 		workflow: string,
 		options: UploadOption[],
 	} = {
@@ -563,7 +563,7 @@ export const postNewEvent = createAppAsyncThunk("events/postNewEvent", async (pa
 	// if source mode/type is UPLOAD and a file for a asset is uploaded by user than append file to form data
 	for (let i = 0; uploadSourceOptions.length > i; i++) {
 		if (values.sourceMode === "UPLOAD") {
-			let asset = values.uploadAssetsTrack?.find(
+			const asset = values.uploadAssetsTrack?.find(
 				asset => asset.id === uploadSourceOptions[i].id,
 			);
 			if (!!asset && !!asset.file) {
@@ -592,10 +592,10 @@ export const postNewEvent = createAppAsyncThunk("events/postNewEvent", async (pa
 	}
 
 	// prepare access rules provided by user
-	let access = prepareAccessPolicyRulesForPost(values.policies);
+	const access = prepareAccessPolicyRulesForPost(values.policies);
 
 	// prepare configurations for post
-	let configurationPrepared: { [key: string]: string } = {};
+	const configurationPrepared: { [key: string]: string } = {};
 	Object.keys(values.configuration).forEach(config => {
 		configurationPrepared[config] = String(values.configuration[config]);
 	});
@@ -676,8 +676,8 @@ export const deleteEvent = createAppAsyncThunk("events/deleteEvent", async (id: 
 		});
 });
 
-export const deleteMultipleEvent = createAppAsyncThunk("events/deleteMultipleEvent", async (events: Event[], { dispatch }) => {
-	let data = [];
+export const deleteMultipleEvent = createAppAsyncThunk('events/deleteMultipleEvent', async (events: Event[], { dispatch }) => {
+	const data = [];
 
 	for (const event of events) {
 		if (event.selected) {
@@ -710,7 +710,7 @@ export const fetchScheduling = createAppAsyncThunk("events/fetchScheduling", asy
 
 	// Only load schedule info about event, when not loaded before
 	if (fetchNewScheduling) {
-		let formData = new FormData();
+		const formData = new FormData();
 
 		for (const event of events) {
 			if (event.selected) {
@@ -725,13 +725,13 @@ export const fetchScheduling = createAppAsyncThunk("events/fetchScheduling", asy
 			formData,
 		);
 
-		let data = await response.data;
+		const data = await response.data;
 
 		// transform data for further use
 		for (const d of data) {
-			let startDate = new Date(d.start);
-			let endDate = new Date(d.end);
-			let event = {
+			const startDate = new Date(d.start);
+			const endDate = new Date(d.end);
+			const event = {
 				eventId: d.eventId,
 				title: d.agentConfiguration["event.title"],
 				changedTitle: d.agentConfiguration["event.title"],
@@ -780,15 +780,15 @@ export const updateScheduledEventsBulk = createAppAsyncThunk("events/updateSched
 		events: Event[],
 	},
 { dispatch }) => {
-	let formData = new FormData();
-	let update = [];
-	let timezone = moment.tz.guess();
+	const formData = new FormData();
+	const update = [];
+	const timezone = moment.tz.guess();
 
 	for (const changedEvent of values.changedEvents) {
-		let eventChanges = values.editedEvents.find(
+		const eventChanges = values.editedEvents.find(
 			event => event.eventId === changedEvent,
 		);
-		let originalEvent = values.events.find(
+		const originalEvent = values.events.find(
 			event => event.id === changedEvent,
 		);
 
@@ -889,7 +889,7 @@ export const checkConflicts = (values: {
 		// let offset = getTimezoneOffset();
 
 		// Prepare start date of event for check
-		let startDate = new Date(values.scheduleStartDate);
+		const startDate = new Date(values.scheduleStartDate);
 		// NOTE: if time zone issues still occur during further testing, try to set times to UTC (-offset)
 		startDate.setHours(
 			parseInt(values.scheduleStartHour),
@@ -929,12 +929,12 @@ export const checkConflicts = (values: {
 		}
 
 		// transform duration into milliseconds (needed for API request)
-		let duration =
+		const duration =
 			parseInt(values.scheduleDurationHours) * 3600000 +
 			parseInt(values.scheduleDurationMinutes) * 60000;
 
 		// Check for conflicts with other already scheduled events
-		let conflicts =
+		const conflicts =
 			values.sourceMode === "SCHEDULE_SINGLE"
 				? await checkForConflicts(startDate, endDate, duration, values.location)
 				: await checkForConflicts(
@@ -970,7 +970,7 @@ export const checkForConflicts = async (
 	device: string,
 	repeatOn: string[] | undefined = undefined,
 ) => {
-	let metadata = repeatOn
+	const metadata = repeatOn
 		? {
 				start: startDate,
 				device: device,
@@ -986,7 +986,7 @@ export const checkForConflicts = async (
 			};
 	let status = 0;
 
-	let formData = new URLSearchParams();
+	const formData = new URLSearchParams();
 	formData.append("metadata", JSON.stringify(metadata));
 
 	return await axios
@@ -1032,8 +1032,8 @@ export const checkForConflicts = async (
 // check if there are any scheduling conflicts with other events
 export const checkForSchedulingConflicts = (events: EditedEvents[]) => async (dispatch: AppDispatch) => {
 	const formData = new FormData();
-	let update = [];
-	let timezone = moment.tz.guess();
+	const update = [];
+	const timezone = moment.tz.guess();
 	for (const event of events) {
 		update.push({
 			events: [event.eventId],

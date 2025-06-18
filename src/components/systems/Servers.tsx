@@ -53,7 +53,7 @@ const Servers = () => {
 		loadServers();
 
 		// Fetch servers every minute
-		let fetchServersInterval = setInterval(() => loadServers(), 5000);
+		const fetchServersInterval = setInterval(() => loadServers(), 5000);
 
 		return () => {
 			allowLoadIntoTable = false;

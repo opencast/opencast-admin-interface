@@ -34,7 +34,7 @@ const DeleteEventsModal = ({
 	const onChangeAllSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selected = e.target.checked;
 		setAllChecked(selected);
-		let changedSelection = selectedEvents.map(event => {
+		const changedSelection = selectedEvents.map(event => {
 			return {
 				...event,
 				selected: selected,
@@ -46,7 +46,7 @@ const DeleteEventsModal = ({
 	// Handle change of checkboxes indicating which events to consider further
 	const onChangeSelected = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
 		const selected = e.target.checked;
-		let changedEvents = selectedEvents.map(event => {
+		const changedEvents = selectedEvents.map(event => {
 			if (isEvent(event) && event.id === id) {
 				return {
 					...event,

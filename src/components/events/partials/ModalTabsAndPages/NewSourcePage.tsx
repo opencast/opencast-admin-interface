@@ -368,7 +368,7 @@ const Schedule = <T extends {
 
 	const renderInputDeviceOptions = () => {
 		if (formik.values.location) {
-			let inputDevice = inputDevices.find(
+			const inputDevice = inputDevices.find(
 				({ name }) => name === formik.values.location,
 			);
 			if (!inputDevice) {

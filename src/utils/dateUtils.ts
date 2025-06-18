@@ -13,7 +13,7 @@ export const renderValidDate = (date: string) => {
 
 // transform relative date to an absolute date
 export const relativeToAbsoluteDate = (relative: string, type: string, from: boolean) => {
-	let localMoment = moment();
+	const localMoment = moment();
 
 	let absolute;
 	if (from) {
@@ -33,8 +33,8 @@ export const relativeDateSpanToFilterValue = (
 	toRelativeDate: string,
 	type: string,
 ) => {
-	let fromAbsoluteDate = relativeToAbsoluteDate(fromRelativeDate, type, true);
-	let toAbsoluteDate = relativeToAbsoluteDate(toRelativeDate, type, false);
+	const fromAbsoluteDate = relativeToAbsoluteDate(fromRelativeDate, type, true);
+	const toAbsoluteDate = relativeToAbsoluteDate(toRelativeDate, type, false);
 
 	return (
 		fromAbsoluteDate.toISOString() +
@@ -110,7 +110,7 @@ const changeStart = (
 	checkConflicts?: (id: string, startDate: Date, endDate: Date, ca: string) => unknown,
 ) => {
 	const startDate = makeDate(start.date, start.hour, start.minute);
-	let endDate = makeDate(
+	const endDate = makeDate(
 		start.date,
 		formikValues.scheduleEndHour,
 		formikValues.scheduleEndMinute,

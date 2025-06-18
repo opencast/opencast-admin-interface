@@ -45,11 +45,11 @@ const DeleteSeriesModal = ({
 	useEffect(() => {
 		async function fetchData() {
 			// Query from backend if deletion of series with events allowed
-			let response = await getSeriesConfig();
+			const response = await getSeriesConfig();
 			setDeleteWithSeriesAllowed(response);
 
 			// Check for each selected series if it has events
-			let series = [];
+			const series = [];
 			for (let i = 0; i < selectedSeries.length; i++) {
 				const selectedSeriesInThisLoop = selectedSeries[i];
 				const events = isSeries(selectedSeriesInThisLoop) ? await hasEvents(selectedSeriesInThisLoop.id.toString()) : false;
@@ -74,7 +74,7 @@ const DeleteSeriesModal = ({
 	const onChangeAllSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selected = e.target.checked;
 		setAllChecked(selected);
-		let changedSelection = selectedSeries.map(series => {
+		const changedSelection = selectedSeries.map(series => {
 			return {
 				...series,
 				selected: selected,
@@ -86,7 +86,7 @@ const DeleteSeriesModal = ({
 	// Handle change of checkboxes indicating which series to consider further
 	const onChangeSelected = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
 		const selected = e.target.checked;
-		let changedSeries = selectedSeries.map(series => {
+		const changedSeries = selectedSeries.map(series => {
 			if (isSeries(series) && series.id === id) {
 				return {
 					...series,

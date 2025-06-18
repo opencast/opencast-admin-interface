@@ -7,7 +7,7 @@ export const getSourceURL = async () => {
 			"/api/info/organization/properties/engageuiurl",
 		);
 
-		let data = await response.data;
+		const data = await response.data;
 
 		if (data["org.opencastproject.engage.ui.url"]) {
 			return data["org.opencastproject.engage.ui.url"];

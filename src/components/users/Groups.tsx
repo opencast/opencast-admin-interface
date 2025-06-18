@@ -53,7 +53,7 @@ const Groups = () => {
 		loadGroups();
 
 		// Fetch groups every minute
-		let fetchGroupsInterval = setInterval(loadGroups, 5000);
+		const fetchGroupsInterval = setInterval(loadGroups, 5000);
 
 		return () => {
 			allowLoadIntoTable = false;

@@ -127,7 +127,7 @@ const healthSlice = createSlice({
 			.addCase(fetchHealthStatus.rejected, (state, action) => {
 				state.statusHealth = "failed";
 
-				let healthStatus = {
+				const healthStatus = {
 					name: STATES_NAMES,
 					status: action.error.message ?? "",
 					error: true,
