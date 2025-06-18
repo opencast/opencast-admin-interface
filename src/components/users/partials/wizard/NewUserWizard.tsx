@@ -98,12 +98,25 @@ const NewUserWizard = ({
 
 							{/* Navigation buttons and validation */}
 							<WizardNavigationButtons
-								isLast
-								formik={formik}
-								nextPage={() => formik.handleSubmit()}
-								previousPage={() => close()}
-								cancelTranslationString={"CANCEL"}
-							/>
+							isLast={tab === 1}
+							formik={formik}
+							nextPage={() => {
+							if (tab < 1) {
+							setTab(tab + 1);
+							} else {
+								formik.handleSubmit();
+								}
+						}}
+							previousPage={() => {
+							if (tab > 0) {
+							setTab(tab - 1);
+							} else {
+							close();
+					}
+			}}
+					cancelTranslationString={"CANCEL"}
+				/>
+
 						</>
 					);
 				}}
