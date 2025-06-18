@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { User } from "../../../slices/userSlice";
 
@@ -13,7 +12,7 @@ const UsersRolesCell = ({
 	const { t } = useTranslation();
 
 	const getRoleString = () => {
-		let displayRoles = [];
+		const displayRoles = [];
 		let roleCountUI = 0;
 		let roleCountAPI = 0;
 		let roleCountCaptureAgent = 0;

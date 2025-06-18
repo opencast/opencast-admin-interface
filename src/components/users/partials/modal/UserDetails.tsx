@@ -11,7 +11,6 @@ import { UpdateUser, updateUserDetails } from "../../../../slices/userDetailsSli
 import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
 import { ParseKeys } from "i18next";
 import { UserRole } from "../../../../slices/userSlice";
-import { SerializedError } from "@reduxjs/toolkit";
 
 /**
  * This component manages the pages of the user details

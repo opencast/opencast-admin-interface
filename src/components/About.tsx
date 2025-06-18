@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Header";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
@@ -24,7 +24,7 @@ const About = () => {
 			.then(response => {
 				setAboutContent(response.data);
 			})
-			.catch(error => {
+			.catch(() => {
 				axios.get(getURL(typeof i18n.options.fallbackLng === "string" ? i18n.options.fallbackLng : "en-US"))
 					.then(response => {
 						setAboutContent(response.data);

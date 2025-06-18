@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Notifications from "../../../shared/Notifications";
 import { getModalWorkflowId, getWorkflowOperations } from "../../../../selectors/eventDetailsSelectors";
 import EventDetailsTabHierarchyNavigation from "./EventDetailsTabHierarchyNavigation";
@@ -39,7 +39,7 @@ const EventDetailsWorkflowOperations = ({
 		loadWorkflowOperations().then();
 
 		// Fetch workflow operations every 5 seconds
-		let fetchWorkflowOperationsInterval = setInterval(loadWorkflowOperations, 5000);
+		const fetchWorkflowOperationsInterval = setInterval(loadWorkflowOperations, 5000);
 
 		// Unmount interval
 		return () => clearInterval(fetchWorkflowOperationsInterval);

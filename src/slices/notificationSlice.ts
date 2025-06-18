@@ -52,8 +52,9 @@ export const addNotification = createAppAsyncThunk("notifications/addNotificatio
 	context?: OurNotification["context"],
 	id?: OurNotification["id"]
 	noDuplicates?: boolean,   // Do not add this notification if one with the same key already exists (in the same context)
-}, { dispatch, getState }) => {
-	let { type, key, duration, parameter, context, id, noDuplicates } = params;
+}, {dispatch, getState}) => {
+	let { duration, parameter, context } = params
+	const { type, key, id, noDuplicates } = params
 
 	if (noDuplicates) {
 		const state = getState();
@@ -114,7 +115,7 @@ export const addNotification = createAppAsyncThunk("notifications/addNotificatio
 	}
 
 	// Get newly created notification and its id
-	let latestNotification = getLastAddedNotification(getState());
+	const latestNotification = getLastAddedNotification(getState());
 
 	// Fade out notification if it is not -1 -> -1 means 'stay forever'
 	// Start timeout for fading out after time in duration is over

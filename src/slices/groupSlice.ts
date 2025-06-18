@@ -50,7 +50,7 @@ const initialState: GroupState = {
 // fetch groups from server
 export const fetchGroups = createAppAsyncThunk("groups/fetchGroups", async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state, "groups");
+	const params = getURLParams(state, "groups");
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -61,7 +61,7 @@ export const fetchGroups = createAppAsyncThunk("groups/fetchGroups", async (_, {
 // post new group to backend
 export const postNewGroup = createAppAsyncThunk("groups/postNewGroup", async (values: typeof initialFormValuesNewGroup, { dispatch }) => {
 	// get URL params used for post request
-	let data = buildGroupBody(values);
+	const data = buildGroupBody(values);
 
 	// POST request
 	axios
@@ -70,7 +70,7 @@ export const postNewGroup = createAppAsyncThunk("groups/postNewGroup", async (va
 				"Content-Type": "application/x-www-form-urlencoded",
 			},
 		})
-		.then(response => {
+		.then(() => {
 			dispatch(addNotification({ type: "success", key: "GROUP_ADDED" }));
 		})
 		.catch(response => {
@@ -87,7 +87,7 @@ export const deleteGroup = createAppAsyncThunk("groups/deleteGroup", async (id: 
 	// API call for deleting a group
 	axios
 		.delete(`/admin-ng/groups/${id}`)
-		.then(res => {
+		.then(() => {
 			// add success notification
 			dispatch(addNotification({ type: "success", key: "GROUP_DELETED" }));
 		})

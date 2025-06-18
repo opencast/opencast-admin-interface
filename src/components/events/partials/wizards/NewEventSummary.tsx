@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	getAssetUploadOptions,
@@ -67,15 +67,15 @@ const NewEventSummary = <T extends RequiredFormProps>({
 
 	// upload asset that user has provided
 	useEffect(() => {
-		let uploadAssetsNonTrack: {
+		const uploadAssetsNonTrack: {
 			name: string,
 			translate?: string,
 			value: any,
 		}[] = [];
 		for (let i = 0; uploadAssetOptions.length > i; i++) {
-			let fieldValue = formik.values[uploadAssetOptions[i].id];
+			const fieldValue = formik.values[uploadAssetOptions[i].id];
 			if (fieldValue) {
-				const displayOverride = uploadAssetOptions[i].displayOverride as ParseKeys;
+				const displayOverride = uploadAssetOptions[i].displayOverride as ParseKeys
 				setUploadAssetsNonTrack(uploadAssetsNonTrack.concat({
 					name: uploadAssetOptions[i].id,
 					translate: displayOverride

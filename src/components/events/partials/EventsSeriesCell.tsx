@@ -1,4 +1,3 @@
-import React from "react";
 import { getFilters } from "../../../selectors/tableFilterSelectors";
 import { editFilterValue } from "../../../slices/tableFilterSlice";
 import { loadEventsIntoTable } from "../../../thunks/tableThunks";
@@ -21,9 +20,9 @@ const EventsSeriesCell = ({
 
 	// Filter with value of current cell
 	const addFilter = async (seriesId: string) => {
-		let filter = filterMap.find(({ name }) => name === "series");
+		const filter = filterMap.find(({ name }) => name === "series");
 		if (filter) {
-			await dispatch(editFilterValue({ filterName: filter.name, value: seriesId }));
+			await dispatch(editFilterValue({filterName: filter.name, value: seriesId}));
 			await dispatch(fetchEvents());
 			dispatch(loadEventsIntoTable());
 		}

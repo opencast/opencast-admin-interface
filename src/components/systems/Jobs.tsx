@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
@@ -53,7 +53,7 @@ const Jobs = () => {
 		loadJobs();
 
 		// Fetch jobs every minute
-		let fetchJobInterval = setInterval(() => loadJobs(), 5000);
+		const fetchJobInterval = setInterval(() => loadJobs(), 5000);
 
 		return () => {
 			allowLoadIntoTable = false;

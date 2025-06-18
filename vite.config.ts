@@ -25,7 +25,7 @@ export default defineConfig({
                 target: process.env.PROXY_TARGET || "https://develop.opencast.org",
                 changeOrigin: true,
                 secure: false,
-                configure: (proxy, options) => {
+                configure: (_proxy, options) => {
                     const username = "admin";
                     const password = "opencast";
                     options.auth = process.env.PROXY_AUTH || `${username}:${password}`;

@@ -70,9 +70,9 @@ export const fetchUsage = createAppAsyncThunk("themeDetails/fetchUsage", async (
 export const updateThemeDetails = createAppAsyncThunk("themeDetails/updateThemeDetails", async (params: {
 	id: ThemeDetailsState["details"]["id"],
 	values: ThemeDetailsInitialValues
-}, { dispatch }) => {
-	const { values, id } = params;
-	let data = buildThemeBody(values);
+}, {dispatch}) => {
+	const { values, id } = params
+	const data = buildThemeBody(values);
 
 	// request for updating
 	axios

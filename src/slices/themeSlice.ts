@@ -65,7 +65,7 @@ const initialState: ThemeState = {
 // fetch themes from server
 export const fetchThemes = createAppAsyncThunk("theme/fetchThemes", async (_, { getState }) => {
 	const state = getState();
-	let params = getURLParams(state, "themes");
+	const params = getURLParams(state, "themes");
 	// Just make the async request here, and return the response.
 	// This will automatically dispatch a `pending` action first,
 	// and then `fulfilled` or `rejected` actions based on the promise.
@@ -97,7 +97,7 @@ export const postNewTheme = createAppAsyncThunk("theme/postNewTheme", async (val
 // }
 , { dispatch }) => {
 	// get URL params used for post request
-	let data = buildThemeBody(values);
+	const data = buildThemeBody(values);
 
 	axios
 		.post("/admin-ng/themes", data, {

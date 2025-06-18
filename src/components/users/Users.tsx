@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
@@ -53,7 +53,7 @@ const Users = () => {
 		loadUsers();
 
 		// Fetch users every minute
-		let fetchUsersInterval = setInterval(loadUsers, 5000);
+		const fetchUsersInterval = setInterval(loadUsers, 5000);
 
 		return () => {
 			allowLoadIntoTable = false;
