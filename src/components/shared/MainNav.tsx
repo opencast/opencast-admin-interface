@@ -67,7 +67,7 @@ const MainNav = ({
 		links: (React.ComponentProps<typeof MainNavLink> & {accessRole: string})[]
 	}
 
-	const linkMap = {
+	const linkMap: { [key: string]: linkMapItem } = {
 		"events": {
 			links: [
 				{
@@ -83,81 +83,81 @@ const MainNav = ({
 					className: "events",
 				}
 			]
-		} as linkMapItem,
+		},
 		"recordings": {
 			links: [
 				{
 					path: "/recordings/recordings",
 					accessRole: "ROLE_UI_LOCATIONS_VIEW",
-					tooltipTitle: "NAV.CAPTUREAGENTS.TITLE" as ParseKeys,
+					tooltipTitle: "NAV.CAPTUREAGENTS.TITLE",
 					className: "recordings",
 				}
 			]
-		} as linkMapItem,
+		},
 		"systems": {
 			links: [
 				{
 					path: "/systems/jobs",
 					accessRole: "ROLE_UI_JOBS_VIEW",
-					tooltipTitle: "NAV.SYSTEMS.TITLE" as ParseKeys,
+					tooltipTitle: "NAV.SYSTEMS.TITLE",
 					className: "systems"
 				},
 				{
 					path: "/systems/servers",
 					accessRole: "ROLE_UI_SERVERS_VIEW",
-					tooltipTitle: "NAV.SYSTEMS.TITLE" as ParseKeys,
+					tooltipTitle: "NAV.SYSTEMS.TITLE",
 					className: "systems"
 				},
 				{
 					path: "/systems/services",
 					accessRole: "ROLE_UI_SERVICES_VIEW",
-					tooltipTitle: "NAV.SYSTEMS.TITLE" as ParseKeys,
+					tooltipTitle: "NAV.SYSTEMS.TITLE",
 					className: "systems"
 				}
 			]
-		} as linkMapItem,
+		},
 		"users": {
 			links: [
 				{
 					path: "/users/users",
 					accessRole: "ROLE_UI_USERS_VIEW",
-					tooltipTitle: "NAV.USERS.TITLE" as ParseKeys,
+					tooltipTitle: "NAV.USERS.TITLE",
 					className: "users"
 				},
 				{
 					path: "/users/groups",
 					accessRole: "ROLE_UI_GROUPS_VIEW",
-					tooltipTitle: "NAV.USERS.TITLE" as ParseKeys,
+					tooltipTitle: "NAV.USERS.TITLE",
 					className: "users"
 				},
 				{
 					path: "/users/acls",
 					accessRole: "ROLE_UI_ACLS_VIEW",
-					tooltipTitle: "NAV.USERS.TITLE" as ParseKeys,
+					tooltipTitle: "NAV.USERS.TITLE",
 					className: "users"
 				}
 			]
-		} as linkMapItem,
+		},
 		"configuration": {
 			links: [
 				{
 					path: "/configuration/themes",
 					accessRole: "ROLE_UI_THEMES_VIEW",
-					tooltipTitle: "NAV.CONFIGURATION.TITLE" as ParseKeys,
+					tooltipTitle: "NAV.CONFIGURATION.TITLE",
 					className: "configuration"
 				}
 			]
-		} as linkMapItem,
+		},
 		"statistics": {
 			links: [
 				{
 					path: "/statistics/organization",
 					accessRole: "ROLE_UI_STATISTICS_ORGANIZATION_VIEW",
-					tooltipTitle: "NAV.STATISTICS.TITLE" as ParseKeys,
+					tooltipTitle: "NAV.STATISTICS.TITLE",
 					className: "statistics"
 				}
 			]
-		} as linkMapItem
+		}
 	};
 
 	// Link arrays containing more than one link must be sorted so that the
