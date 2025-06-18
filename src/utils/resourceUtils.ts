@@ -13,9 +13,9 @@ import { UserInfoState } from "../slices/userInfoSlice";
 import { hasAccess, isJson } from "./utils";
 import { RootState } from "../store";
 import { MetadataCatalog, MetadataField } from "../slices/eventSlice";
-import { initialFormValuesNewGroup } from '../configs/modalConfig';
-import { UpdateUser } from '../slices/userDetailsSlice';
-import { ParseKeys, TFunction } from 'i18next';
+import { initialFormValuesNewGroup } from "../configs/modalConfig";
+import { UpdateUser } from "../slices/userDetailsSlice";
+import { ParseKeys, TFunction } from "i18next";
 import { TableState } from "../slices/tableSlice";
 
 /**
@@ -98,7 +98,7 @@ export const buildUserBody = (values: NewUser | UpdateUser) => {
 
 // used for create URLSearchParams for API requests used to create/update group
 export const buildGroupBody = (
-	values: typeof initialFormValuesNewGroup
+	values: typeof initialFormValuesNewGroup,
 ) => {
 	let roles = [],
 		users = [];
@@ -127,7 +127,7 @@ export const getInitialMetadataFieldValues = (
 	let initialValues: { [key: string]: string | string[] | boolean } = {};
 
 	if (!!metadataCatalog.fields && metadataCatalog.fields.length > 0) {
-		metadataCatalog.fields.forEach((field) => {
+		metadataCatalog.fields.forEach(field => {
 			initialValues[metadataCatalog.flavor + "_" + field.id] = field.value;
 		});
 	}
@@ -170,7 +170,7 @@ export const transformMetadataForUpdate = (catalog: MetadataCatalog, values: { [
 	let fields: MetadataCatalog["fields"] = [];
 	let updatedFields: MetadataCatalog["fields"] = [];
 
-	catalog.fields.forEach((field) => {
+	catalog.fields.forEach(field => {
 		if (field.value !== values[field.id]) {
 			let updatedField = {
 				...field,
@@ -191,7 +191,7 @@ export const transformMetadataForUpdate = (catalog: MetadataCatalog, values: { [
 				title: catalog.title,
 				fields: updatedFields,
 			},
-		])
+		]),
 	);
 	const headers = getHttpHeaders();
 
@@ -251,7 +251,7 @@ export const getMetadataCollectionFieldName = (metadataField: { collection?: { [
 	try {
 		if (metadataField.collection) {
 			const collectionField = metadataField.collection.find(
-				(element) => element.value === field.value
+				element => element.value === field.value,
 			);
 
 			if (collectionField && isJson(collectionField.name as string)) {
@@ -313,7 +313,7 @@ export const transformAclTemplatesResponse = (acl: Acl) => {
 	let template: TransformedAcl[] = [];
 
 	for (let i = 0; acl.ace.length > i; i++) {
-		if (template.find((rule) => rule.role === acl.ace[i].role)) {
+		if (template.find(rule => rule.role === acl.ace[i].role)) {
 			for (let j = 0; template.length > j; j++) {
 				// Only update entry for policy if already added with other action
 				if (template[j].role === acl.ace[i].role) {

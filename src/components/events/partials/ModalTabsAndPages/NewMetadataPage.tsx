@@ -13,7 +13,7 @@ import ModalContentTable from "../../../shared/modals/ModalContentTable";
  */
 const NewMetadataPage = ({
 	metadataCatalogs,
-	header
+	header,
 }: {
 	metadataCatalogs: MetadataCatalog [],
 	header?: ParseKeys

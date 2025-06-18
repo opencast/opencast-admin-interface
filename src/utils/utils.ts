@@ -60,7 +60,7 @@ export const makeTwoDigits = (number: number) => {
  * to [{id: id1, value: value1},{id: id2, value: value2}]
  */
 export const transformToIdValueArray = (data: {[key: string | number]: string}) => {
-	return Object.keys(data).map((key) => {
+	return Object.keys(data).map(key => {
 		return {
 			id: key,
 			value: data[key],
@@ -75,7 +75,7 @@ export const transformToIdValueArray = (data: {[key: string | number]: string}) 
 export const parseBooleanInObject = (baseObject: {[key: string]: unknown}) => {
 	let parsedObject: {[key: string]: unknown} = {};
 
-	Object.keys(baseObject).forEach((config) => {
+	Object.keys(baseObject).forEach(config => {
 		parsedObject[config] = parseValueForBooleanStrings(baseObject[config]);
 	});
 
@@ -144,4 +144,4 @@ export const translateOverrideFallback = (asset: UploadOption, t: TFunction, suf
 	}
 
 	return result;
-}
+};

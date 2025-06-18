@@ -28,7 +28,7 @@ const Stats = () => {
 	const showStatsFilter = async (stats: StatsType) => {
 		dispatch(resetFilterValues());
 		let filterValue;
-		await stats.filters.forEach((f) => {
+		await stats.filters.forEach(f => {
 			if (f.name.toLowerCase() === "textfilter") {
 				dispatch(editTextFilter(f.value));
 				return;
@@ -38,7 +38,7 @@ const Stats = () => {
 			let filter = filterMap.find(({ name }) => name === f.name);
 			filterValue = f.value;
 			if (filter) {
-				dispatch(editFilterValue({filterName: filter.name, value: filterValue}));
+				dispatch(editFilterValue({ filterName: filter.name, value: filterValue }));
 			}
 		});
 		await dispatch(fetchEvents());

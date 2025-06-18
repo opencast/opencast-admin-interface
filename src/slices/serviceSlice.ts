@@ -1,9 +1,9 @@
-import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, SerializedError, createSlice } from "@reduxjs/toolkit";
 import { servicesTableConfig } from "../configs/tableConfigs/servicesTableConfig";
-import axios from 'axios';
-import { getURLParams } from '../utils/resourceUtils';
-import { TableConfig } from '../configs/tableConfigs/aclsTableConfig';
-import { createAppAsyncThunk } from '../createAsyncThunkWithTypes';
+import axios from "axios";
+import { getURLParams } from "../utils/resourceUtils";
+import { TableConfig } from "../configs/tableConfigs/aclsTableConfig";
+import { createAppAsyncThunk } from "../createAsyncThunkWithTypes";
 
 /**
  * This file contains redux reducer for actions affecting the state of services
@@ -23,7 +23,7 @@ export type Service = {
 }
 
 type ServiceState = {
-	status: 'uninitialized' | 'loading' | 'succeeded' | 'failed',
+	status: "uninitialized" | "loading" | "succeeded" | "failed",
 	error: SerializedError | null,
 	results: Service[],
 	columns: TableConfig["columns"],
@@ -34,14 +34,14 @@ type ServiceState = {
 }
 
 // Fill columns initially with columns defined in servicesTableConfig
-const initialColumns = servicesTableConfig.columns.map((column) => ({
+const initialColumns = servicesTableConfig.columns.map(column => ({
 	...column,
 	deactivated: false,
 }));
 
 // Initial state of services in redux store
 const initialState: ServiceState = {
-	status: 'uninitialized',
+	status: "uninitialized",
 	error: null,
 	results: [],
 	columns: initialColumns,
@@ -52,7 +52,7 @@ const initialState: ServiceState = {
 };
 
 // fetch services from server
-export const fetchServices = createAppAsyncThunk('services/fetchServices', async (_, { getState }) => {
+export const fetchServices = createAppAsyncThunk("services/fetchServices", async (_, { getState }) => {
 	const state = getState();
 	let params = getURLParams(state, "services");
 	// Just make the async request here, and return the response.
@@ -63,27 +63,27 @@ export const fetchServices = createAppAsyncThunk('services/fetchServices', async
 });
 
 // restarts a service after initiated by user
-export const restartService = createAppAsyncThunk('services/fetchServices', async (params: {
+export const restartService = createAppAsyncThunk("services/fetchServices", async (params: {
 	host: Service["hostname"],
 	serviceType: string
 }) => {
-	const { host, serviceType } = params
+	const { host, serviceType } = params;
 	let data = new URLSearchParams();
 	data.append("host", host);
 	data.append("serviceType", serviceType);
 
 	axios
 		.post("/services/sanitize", data)
-		.then((response) => {
+		.then(response => {
 			console.log(response);
 		})
-		.catch((response) => {
+		.catch(response => {
 			console.log(response);
 		});
 });
 
 const serviceSlice = createSlice({
-	name: 'services',
+	name: "services",
 	initialState,
 	reducers: {
 		setServiceColumns(state, action: PayloadAction<
@@ -95,8 +95,8 @@ const serviceSlice = createSlice({
 	// These are used for thunks
 	extraReducers: builder => {
 		builder
-			.addCase(fetchServices.pending, (state) => {
-				state.status = 'loading';
+			.addCase(fetchServices.pending, state => {
+				state.status = "loading";
 			})
 			.addCase(fetchServices.fulfilled, (state, action: PayloadAction<{
 				total: ServiceState["total"],
@@ -105,7 +105,7 @@ const serviceSlice = createSlice({
 				offset: ServiceState["offset"],
 				results: ServiceState["results"],
 			}>) => {
-				state.status = 'succeeded';
+				state.status = "succeeded";
 				const acls = action.payload;
 				state.total = acls.total;
 				state.count = acls.count;
@@ -114,10 +114,10 @@ const serviceSlice = createSlice({
 				state.results = acls.results;
 			})
 			.addCase(fetchServices.rejected, (state, action) => {
-				state.status = 'failed';
+				state.status = "failed";
 				state.error = action.error;
 			});
-	}
+	},
 });
 
 export const { setServiceColumns } = serviceSlice.actions;

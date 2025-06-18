@@ -24,7 +24,7 @@ const EventDetailsPublicationTab = ({
 	};
 
 	useEffect(() => {
-		dispatch(fetchEventPublications(eventId)).then((r) => console.info(r));
+		dispatch(fetchEventPublications(eventId)).then(r => console.info(r));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -40,7 +40,7 @@ const EventDetailsPublicationTab = ({
 							<>
 								<p>
 									{t(
-										"EVENTS.EVENTS.DETAILS.PUBLICATIONS.PUBLICATION_DESCRIPTION"
+										"EVENTS.EVENTS.DETAILS.PUBLICATIONS.PUBLICATION_DESCRIPTION",
 									)}
 								</p>
 								{/* list all publications depending on their existing information */}
@@ -75,7 +75,7 @@ const EventDetailsPublicationTab = ({
 												) : (
 													<span style={styleSpan}>
 														{t(
-															"EVENTS.EVENTS.DETAILS.PUBLICATIONS.LIVE_EVENT_NOT_IN_PROGRESS"
+															"EVENTS.EVENTS.DETAILS.PUBLICATIONS.LIVE_EVENT_NOT_IN_PROGRESS",
 														)}
 													</span>
 												)}
@@ -87,7 +87,7 @@ const EventDetailsPublicationTab = ({
 						) : (
 							<p>
 								{t(
-									"EVENTS.EVENTS.DETAILS.PUBLICATIONS.NO_PUBLICATIONS_AVAILABLE"
+									"EVENTS.EVENTS.DETAILS.PUBLICATIONS.NO_PUBLICATIONS_AVAILABLE",
 								)}
 							</p>
 						)}

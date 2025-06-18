@@ -27,7 +27,7 @@ const EventDetailsAssetMedia = ({
 
 	const openSubTab = (subTabName: AssetTabHierarchy, mediaId = "") => {
 		if (subTabName === "media-details") {
-			dispatch(fetchAssetMediaDetails({eventId, mediaId})).then();
+			dispatch(fetchAssetMediaDetails({ eventId, mediaId })).then();
 		}
 		dispatch(setModalAssetsTabHierarchy(subTabName));
 	};
@@ -54,7 +54,7 @@ const EventDetailsAssetMedia = ({
 								<th>
 									{
 										t(
-											"EVENTS.EVENTS.DETAILS.ASSETS.MEDIA.MIMETYPE"
+											"EVENTS.EVENTS.DETAILS.ASSETS.MEDIA.MIMETYPE",
 										) /* Mimetype */
 									}
 								</th>
@@ -85,7 +85,7 @@ const EventDetailsAssetMedia = ({
 											>
 												{
 													t(
-														"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS"
+														"EVENTS.EVENTS.DETAILS.ASSETS.DETAILS",
 													) /* Details */
 												}
 											</ButtonLikeAnchor>

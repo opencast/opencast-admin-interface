@@ -44,7 +44,7 @@ const WizardNavigationButtons = <T, >({
 				: () => { !!nextPage && nextPage(formik.values); }
 			}
 			previousPage={
-				() => { !!previousPage && previousPage(formik.values) }
+				() => { !!previousPage && previousPage(formik.values); }
 			}
 			nextTranslationString={
 				isLast

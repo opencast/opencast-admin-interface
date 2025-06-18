@@ -75,7 +75,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 		for (let i = 0; uploadAssetOptions.length > i; i++) {
 			let fieldValue = formik.values[uploadAssetOptions[i].id];
 			if (fieldValue) {
-				const displayOverride = uploadAssetOptions[i].displayOverride as ParseKeys
+				const displayOverride = uploadAssetOptions[i].displayOverride as ParseKeys;
 				setUploadAssetsNonTrack(uploadAssetsNonTrack.concat({
 					name: uploadAssetOptions[i].id,
 					translate: displayOverride
@@ -90,7 +90,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 
 	// Get additional information about chosen workflow definition
 	const workflowDefinition = workflowDef.find(
-		(workflow) => workflow.id === formik.values.processingWorkflow
+		workflow => workflow.id === formik.values.processingWorkflow,
 	);
 
 	const endsOnSameDay = formik.values.scheduleStartDate === formik.values.scheduleEndDate;
@@ -164,7 +164,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 												</td>
 												<td>{asset.file[0].name}</td>
 											</tr>
-										) : null
+										) : null,
 									)}
 									{!!formik.values.startDate && (
 									<tr>
@@ -230,13 +230,13 @@ const NewEventSummary = <T extends RequiredFormProps>({
 										<tr>
 											<td>
 												{t(
-													"EVENTS.EVENTS.NEW.SOURCE.SCHEDULE_MULTIPLE.WEEKDAYS"
+													"EVENTS.EVENTS.NEW.SOURCE.SCHEDULE_MULTIPLE.WEEKDAYS",
 												)}
 											</td>
 											<td>
 												{formik.values.repeatOn
-													.map((day) =>
-														t(`EVENTS.EVENTS.NEW.WEEKDAYSLONG.${day}`)
+													.map(day =>
+														t(`EVENTS.EVENTS.NEW.WEEKDAYSLONG.${day}`),
 													)
 													.join(", ")}
 											</td>
@@ -291,7 +291,7 @@ const NewEventSummary = <T extends RequiredFormProps>({
 											{formik.values.configuration[config].toString()}
 										</td>
 									</tr>
-								)
+								),
 							)}
 						</tbody>
 					</table>

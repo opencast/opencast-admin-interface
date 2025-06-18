@@ -76,7 +76,7 @@ const TableFilters = ({
 		dispatch(removeSelectedFilter());
 
 		// Set all values of the filters in filterMap back to ""
-		dispatch(resetFilterValues())
+		dispatch(resetFilterValues());
 
 		// Reload resources when filters are removed
 		await dispatch(loadResource());
@@ -91,7 +91,7 @@ const TableFilters = ({
 			setEndDate(undefined);
 		}
 
-		dispatch(editFilterValue({filterName: filter.name, value: ""}));
+		dispatch(editFilterValue({ filterName: filter.name, value: "" }));
 
 		// Reload resources when filter is removed
 		await dispatch(loadResource());
@@ -116,7 +116,7 @@ const TableFilters = ({
 		if (name === "secondFilter") {
 			let filter = filterMap.find(({ name }) => name === selectedFilter);
 			if (filter) {
-				dispatch(editFilterValue({filterName: filter.name, value: value}));
+				dispatch(editFilterValue({ filterName: filter.name, value: value }));
 				setFilterSelector(false);
 				dispatch(removeSelectedFilter());
 				dispatch(removeSecondFilter());
@@ -135,7 +135,7 @@ const TableFilters = ({
 	// This helps increase performance by reducing the number of calls to load resources.
 	const applyFilterChangesDebounced = async () => {
 		// No matter what, we go to page one.
-		dispatch(goToPage(0))
+		dispatch(goToPage(0));
 		// Reload of resource
 		await dispatch(loadResource());
 		dispatch(loadResourceIntoTable());
@@ -157,7 +157,7 @@ const TableFilters = ({
 
 			start?.setHours(0);
 			start?.setMinutes(0);
-			start?.setSeconds(0)
+			start?.setSeconds(0);
 			end?.setHours(23);
 			end?.setMinutes(59);
 			end?.setSeconds(59);
@@ -171,7 +171,7 @@ const TableFilters = ({
 				setEndDate(end);
 			}
 		}
-	}
+	};
 
 	// Workaround for entering a date range by only entering one date
 	// (e.g. 01/01/2025 results in a range of 01/01/2025 - 01/01/2025)
@@ -184,10 +184,10 @@ const TableFilters = ({
 
 			submitDateFilter(
 				startDate,
-				end
-			)
+				end,
+			);
 		}
-	}
+	};
 
 	const submitDateFilter = async (start: Date | undefined | null, end: Date | undefined | null) => {
 		if (start && end && moment(start).isValid() && moment(end).isValid()) {
@@ -195,27 +195,27 @@ const TableFilters = ({
 			if (filter) {
 				dispatch(editFilterValue({
 					filterName: filter.name,
-					value: start.toISOString() + "/" + end.toISOString()
+					value: start.toISOString() + "/" + end.toISOString(),
 				}));
 				setFilterSelector(false);
 				dispatch(removeSelectedFilter());
 				// Reload of resource after going to very first page.
-				dispatch(goToPage(0))
+				dispatch(goToPage(0));
 				await dispatch(loadResource());
 				dispatch(loadResourceIntoTable());
 			}
 		}
-	}
+	};
 
 	useHotkeys(
     availableHotkeys.general.REMOVE_FILTERS.sequence,
     () => removeFilters(),
 		{ description: t(availableHotkeys.general.REMOVE_FILTERS.description) ?? undefined },
-    [removeFilters]
+    [removeFilters],
   );
 
 	const renderBlueBox = (filter: FilterData) => {
-		let valueLabel = filter.options?.find((opt) => opt.value === filter.value)
+		let valueLabel = filter.options?.find(opt => opt.value === filter.value)
 			?.label || filter.value;
 		return (
 			<span className="table-filter-blue-box">
@@ -227,7 +227,7 @@ const TableFilters = ({
 
 	const getSelectedFilterText = () => {
 		return filter?.label ? t(filter.label as ParseKeys) : selectedFilter;
-	}
+	};
 
 	return (
 		<>
@@ -238,7 +238,7 @@ const TableFilters = ({
             type="text"
             className="search expand"
             placeholder={t("TABLE_FILTERS.PLACEHOLDER")}
-            onChange={(e) => handleChange("textFilter", e.target.value)}
+            onChange={e => handleChange("textFilter", e.target.value)}
             name="textFilter"
             value={textFilter}
           />
@@ -265,7 +265,7 @@ const TableFilters = ({
 									options={
 										!!filterMap && filterMap.length > 0
 											? filterMap.filter(
-													(filter) => filter.name !== "presentersBibliographic"
+													filter => filter.name !== "presentersBibliographic",
 												)
 												.sort((a, b) => t(a.label as ParseKeys).localeCompare(t(b.label as ParseKeys))) // Sort alphabetically
 												.map(filter => {
@@ -277,14 +277,14 @@ const TableFilters = ({
 											: []
 									}
 									required={true}
-									handleChange={(element) => handleChange("selectedFilter", element!.value)}
+									handleChange={element => handleChange("selectedFilter", element!.value)}
 									placeholder={
 										!!filterMap && filterMap.length > 0
 											? t(
-												"TABLE_FILTERS.FILTER_SELECTION.PLACEHOLDER"
+												"TABLE_FILTERS.FILTER_SELECTION.PLACEHOLDER",
 												)
 											: t(
-												"TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS"
+												"TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS",
 												)
 									}
 									defaultOpen
@@ -417,30 +417,30 @@ const FilterSwitch = ({
 						text={secondFilter}
 						options={
 							!!filter.options && filter.options.length > 0
-								? filter.options.map((option) => {
+								? filter.options.map(option => {
 									if (!filter.translatable) {
 										return {
 											...option,
 											label: option.label.substr(0, 40),
-										}
+										};
 									} else {
 										return {
 											...option,
 											label: t(option.label as ParseKeys).substr(0, 40),
-										}
+										};
 									}
 								})
 								: []
 						}
 						required={true}
-						handleChange={(element) => handleChange("secondFilter", element!.value)}
+						handleChange={element => handleChange("secondFilter", element!.value)}
 						placeholder={
 							!!filter.options && filter.options.length > 0
 								? t(
-									"TABLE_FILTERS.FILTER_VALUE_SELECTION.PLACEHOLDER"
+									"TABLE_FILTERS.FILTER_VALUE_SELECTION.PLACEHOLDER",
 									)
 								: t(
-									"TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS"
+									"TABLE_FILTERS.FILTER_SELECTION.NO_OPTIONS",
 									)
 						}
 						autoFocus
@@ -459,8 +459,8 @@ const FilterSwitch = ({
 						startOpen
 						autoFocus
 						selected={startDate}
-						onChange={(dates) => handleDate(dates)}
-						onKeyDown={(key) => handleDatePickerOnKeyDown(key)}
+						onChange={dates => handleDate(dates)}
+						onKeyDown={key => handleDatePickerOnKeyDown(key)}
 						startDate={startDate}
 						endDate={endDate}
 						selectsRange
