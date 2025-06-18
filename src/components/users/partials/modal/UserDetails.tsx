@@ -78,7 +78,7 @@ const UserDetails: React.FC<{
 			roles: values.assignedRoles,
 		};
 
-		dispatch(updateUserDetails({values: newValues, username: userDetails.username}));
+		dispatch(updateUserDetails({ values: newValues, username: userDetails.username }));
 		close();
 	};
 
@@ -91,9 +91,9 @@ const UserDetails: React.FC<{
 			<Formik
 				initialValues={initialValues}
 				validationSchema={EditUserSchema}
-				onSubmit={(values) => handleSubmit(values)}
+				onSubmit={values => handleSubmit(values)}
 			>
-				{(formik) => (
+				{formik => (
 					<>
 						{page === 0 && <EditUserGeneralTab formik={formik} />}
 						{page === 1 && <UserRolesTab formik={formik} />}

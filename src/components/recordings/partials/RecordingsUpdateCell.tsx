@@ -7,7 +7,7 @@ import { Recording } from "../../../slices/recordingSlice";
  * This component renders the updated cells of recordings in the table view
  */
 const RecordingsUpdateCell = ({
-	row
+	row,
 }: {
 	row: Recording
 }) => {
