@@ -498,6 +498,8 @@ const ResourceDetailsAccessPolicyTab = ({
 																										user
 																									)
 																								}
+																								skipTranslate
+																								optionHeight={35}
 																								customCSS={{ width: 360, optionPaddingTop: 5 }}
 																							/>
 																						) : (
