@@ -9,7 +9,7 @@ import { seriesTemplateMap } from "../../configs/tableConfigs/seriesTableMap";
 import {
 	loadSeriesIntoTable,
 } from "../../thunks/tableThunks";
-import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
+import { fetchFilters } from "../../slices/tableFilterSlice";
 import { getTotalSeries, isShowActions } from "../../selectors/seriesSeletctor";
 import Header from "../Header";
 import NavBar from "../NavBar";
@@ -52,9 +52,6 @@ const Series = () => {
 		dispatch(resetTableProperties());
 
 		dispatch(fetchFilters("series"));
-
-		// Reset text filer
-		dispatch(editTextFilter(""));
 
 		// disable actions button
 		dispatch(showActionsSeries(false));

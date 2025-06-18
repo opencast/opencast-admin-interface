@@ -50,7 +50,7 @@ const TableFilters = ({
 	const filterMap = useAppSelector(state => getFilters(state, resource));
 	const secondFilter = useAppSelector(state => getSecondFilter(state));
 	const selectedFilter = useAppSelector(state => getSelectedFilter(state));
-	const textFilter = useAppSelector(state => getTextFilter(state));
+	const textFilter = useAppSelector(state => getTextFilter(state, resource));
 
 	// Variables for showing different dialogs depending on what was clicked
 	const [showFilterSelector, setFilterSelector] = useState(false);
@@ -71,7 +71,7 @@ const TableFilters = ({
 		setEndDate(undefined);
 		setFilterSelector(false);
 
-		dispatch(removeTextFilter());
+		dispatch(removeTextFilter(resource));
 		dispatch(removeSelectedFilter());
 		dispatch(removeSelectedFilter());
 
@@ -102,7 +102,7 @@ const TableFilters = ({
 	const handleChange = (name: string, value: string) => {
 		let mustApplyChanges = false;
 		if (name === "textFilter") {
-			dispatch(editTextFilter(value));
+			dispatch(editTextFilter({ text: value, resource: resource }));
 			mustApplyChanges = true;
 		}
 

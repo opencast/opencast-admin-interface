@@ -39,7 +39,7 @@ export const getURLParams = (
 	// get filter map from state
 	const filters = [];
 	const filterMap = getFilters(state, resource);
-	const textFilter = getTextFilter(state);
+	const textFilter = getTextFilter(state, resource);
 
 	// check if textFilter has value and transform for use as URL param
 	if (textFilter !== "") {

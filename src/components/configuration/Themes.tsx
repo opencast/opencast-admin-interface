@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import TableFilters from "../shared/TableFilters";
 import Table from "../shared/Table";
-import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
+import { fetchFilters } from "../../slices/tableFilterSlice";
 import { themesTemplateMap } from "../../configs/tableConfigs/themesTableMap";
 import { getTotalThemes } from "../../selectors/themeSelectors";
 import { loadThemesIntoTable } from "../../thunks/tableThunks";
@@ -34,9 +34,6 @@ const Themes = () => {
 		dispatch(resetTableProperties());
 
 		dispatch(fetchFilters("themes"));
-
-		// Reset text filter
-		dispatch(editTextFilter(""));
 
 		// Load themes on mount
 		const loadThemes = async () => {

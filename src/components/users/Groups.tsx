@@ -5,7 +5,7 @@ import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
 import { getTotalGroups } from "../../selectors/groupSelectors";
 import { groupsTemplateMap } from "../../configs/tableConfigs/groupsTableMap";
-import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
+import { fetchFilters } from "../../slices/tableFilterSlice";
 import {
 	loadGroupsIntoTable,
 } from "../../thunks/tableThunks";
@@ -36,9 +36,6 @@ const Groups = () => {
 		dispatch(resetTableProperties());
 
 		dispatch(fetchFilters("groups"));
-
-		// Reset text filter
-		dispatch(editTextFilter(""));
 
 		// Load groups on mount
 		 const loadGroups = async () => {

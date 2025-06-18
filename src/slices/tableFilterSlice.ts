@@ -22,6 +22,11 @@ export type FilterData = {
 	value: string,
 }
 
+export type TextFilter = {
+	text: string,
+	resource: string // Not from the backend. We set this to keep track of which table this filter belongs to
+}
+
 export type Stats = {
 	count: number,
 	description: string,
@@ -42,7 +47,7 @@ type TableFilterState = {
 	currentResource: string,
 	data: FilterData[],
 	filterProfiles: FilterProfile[],
-	textFilter: string,
+	textFilter: TextFilter[],
 	selectedFilter: string,
 	secondFilter: string,
 	stats: Stats[],
@@ -57,7 +62,7 @@ const initialState: TableFilterState = {
 	currentResource: "",
 	data: [],
 	filterProfiles: [],
-	textFilter: "",
+	textFilter: [],
 	selectedFilter: "",
 	secondFilter: "",
 	stats: [],
@@ -304,13 +309,27 @@ const tableFilterSlice = createSlice({
 			});
 		},
 		editTextFilter(state, action: PayloadAction<
-			TableFilterState["textFilter"]
+			TableFilterState["textFilter"][0]
 		>) {
 			const textFilter = action.payload;
-			state.textFilter = textFilter;
+
+			const existingIndex = state.textFilter.findIndex(obj => obj.resource === textFilter.resource);
+
+			let updatedItems;
+			if (existingIndex !== -1) {
+				updatedItems = state.textFilter.map((filter, index) =>
+					index === existingIndex ? { ...filter, ...textFilter } : filter,
+				);
+			} else {
+				updatedItems = [...state.textFilter, textFilter];
+			}
+
+			state.textFilter = updatedItems;
 		},
-		removeTextFilter(state) {
-			state.textFilter = "";
+		removeTextFilter(state, action: PayloadAction<
+			TableFilterState["textFilter"][0]["resource"]
+		>) {
+			state.textFilter = state.textFilter.filter(fil => fil.resource !== action.payload);
 		},
 		loadFilterProfile(state, action: PayloadAction<
 			TableFilterState["data"]

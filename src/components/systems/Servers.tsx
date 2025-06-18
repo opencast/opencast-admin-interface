@@ -5,7 +5,7 @@ import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
 import { serversTemplateMap } from "../../configs/tableConfigs/serversTableMap";
 import { getTotalServers } from "../../selectors/serverSelectors";
-import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
+import { fetchFilters } from "../../slices/tableFilterSlice";
 import {
 	loadServersIntoTable,
 } from "../../thunks/tableThunks";
@@ -36,9 +36,6 @@ const Servers = () => {
 		dispatch(resetTableProperties());
 
 		dispatch(fetchFilters("servers"));
-
-		// Reset text filter
-		dispatch(editTextFilter(""));
 
 		// Load servers on mount
 		const loadServers = async () => {

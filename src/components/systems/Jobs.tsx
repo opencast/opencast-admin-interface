@@ -5,7 +5,7 @@ import Table from "../shared/Table";
 import Notifications from "../shared/Notifications";
 import { jobsTemplateMap } from "../../configs/tableConfigs/jobsTableConfig";
 import { getTotalJobs } from "../../selectors/jobSelectors";
-import { fetchFilters, editTextFilter } from "../../slices/tableFilterSlice";
+import { fetchFilters } from "../../slices/tableFilterSlice";
 import {
 	loadJobsIntoTable,
 } from "../../thunks/tableThunks";
@@ -36,9 +36,6 @@ const Jobs = () => {
 		dispatch(resetTableProperties());
 
 		dispatch(fetchFilters("jobs"));
-
-		// Reset text filter
-		dispatch(editTextFilter(""));
 
 		// Load jobs on mount
 		const loadJobs = async () => {
