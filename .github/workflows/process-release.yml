@@ -1,0 +1,86 @@
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      # CF: 17.x-YYYY-MM-DD
+      - '*.x-*-*-*'
+
+name: Create release
+jobs:
+  build:
+    name: Create release from tag
+    if: github.repository_owner == 'opencast'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write #for the release
+      pull-requests: write #For the PR in the upstream repo
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: get node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: download dependencies
+        run: npm ci
+
+      - name: build release
+        env:
+          PUBLIC_URL: /admin-ui
+        run: npm run build
+
+      - name: create release tarball
+        working-directory: build
+        run: |
+          tar -czf "../oc-admin-ui-$(git describe --tags).tar.gz" *
+          echo INTERFACE_CHECKSUM=`sha256sum oc-admin-ui-$(git describe --tags).tar.gz | cut -f 1 -d " "` >> $GITHUB_ENV
+          echo INTERFACE_TAG=$(git describe --tags) >> $GITHUB_ENV
+          echo BASE_BRANCH=$(git describe --tags | cut -c 1-4) >> $GITHUB_ENV
+
+      - name: create new release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: oc-admin-ui-*.tar.gz
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+
+      - name: Prepare git
+        run: |
+          git config --global user.name "Release Bot"
+          git config --global user.email "cloud@opencast.org"
+
+      - name: Prepare GitHub SSH key
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        run: |
+          install -dm 700 ~/.ssh/
+          echo "${DEPLOY_KEY}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Clone upstream repository
+        run: |
+          #This token is an account wide token which allows creation of PRs and pushes.
+          #echo "GH_TOKEN=${{ secrets.ACCESS_TOKEN }}" >> token.txt
+          #gh auth login --with-token < token.txt
+          git clone -b r/$BASE_BRANCH "git@github.com:opencast/opencast.git" ~/opencast
+          cd ~/opencast
+          git checkout -b t/admin-ui-$INTERFACE_TAG
+
+      - name: Update the admin ui pom file
+        #env:
+        #  GH_TOKEN: ${{ github.token }}
+        run: |
+          cd ~/opencast
+          sed -i "s#<interface.sha256>.*</interface.sha256>#<interface.sha256>$INTERFACE_CHECKSUM</interface.sha256>#" modules/admin-ui-interface/pom.xml
+          sed -i "s#<interface.url>.*</interface.url>#<interface.url>https://github.com/opencast/opencast-admin-interface/releases/download/$INTERFACE_TAG/oc-admin-ui-$INTERFACE_TAG.tar.gz</interface.url>#" modules/admin-ui-interface/pom.xml
+          git add modules/admin-ui-interface/pom.xml
+          git commit -m "Updating admin ui to $INTERFACE_TAG"
+          git push origin t/admin-ui-$INTERFACE_TAG
+          #This token is an account wide token which allows creation of PRs and pushes.
+          echo "${{ secrets.PR_TOKEN }}" > token.txt
+          gh auth login --with-token < token.txt
+          gh pr create --title "Update $BASE_BRANCH Admin UI to $INTERFACE_TAG" --label admin-ui --label maintenance --body "Updating Opencast $BASE_BRANCH Admin UI module to $INTERFACE_TAG" --head=opencast:t/admin-ui-$INTERFACE_TAG --base r/$BASE_BRANCH -R opencast/opencast

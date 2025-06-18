@@ -12,7 +12,7 @@ const NewMetadataCommonPage = <T, >({
 	formik,
 	nextPage,
 	metadataFields,
-	header
+	header,
 }: {
 	formik: FormikProps<T>,
 	nextPage: (values: T) => void,

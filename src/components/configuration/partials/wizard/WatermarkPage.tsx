@@ -23,7 +23,7 @@ const WatermarkPage = <T extends RequiredFormProps>({
 	formik,
 	nextPage,
 	previousPage,
-	isEdit
+	isEdit,
 }: {
 	formik: FormikProps<T>,
 	nextPage?: (values: T) => void,
@@ -104,12 +104,12 @@ const WatermarkPage = <T extends RequiredFormProps>({
 															active:
 																formik.values.watermarkPosition ===
 																"topLeft",
-														}
+														},
 													)}
 													onClick={() => handleButtonClick("topLeft")}
 												>
 													{t(
-														"CONFIGURATION.THEMES.DETAILS.WATERMARK.TOP_LEFT"
+														"CONFIGURATION.THEMES.DETAILS.WATERMARK.TOP_LEFT",
 													)}
 												</button>
 												<button
@@ -119,12 +119,12 @@ const WatermarkPage = <T extends RequiredFormProps>({
 															active:
 																formik.values.watermarkPosition ===
 																"topRight",
-														}
+														},
 													)}
 													onClick={() => handleButtonClick("topRight")}
 												>
 													{t(
-														"CONFIGURATION.THEMES.DETAILS.WATERMARK.TOP_RIGHT"
+														"CONFIGURATION.THEMES.DETAILS.WATERMARK.TOP_RIGHT",
 													)}
 												</button>
 												<button
@@ -134,12 +134,12 @@ const WatermarkPage = <T extends RequiredFormProps>({
 															active:
 																formik.values.watermarkPosition ===
 																"bottomLeft",
-														}
+														},
 													)}
 													onClick={() => handleButtonClick("bottomLeft")}
 												>
 													{t(
-														"CONFIGURATION.THEMES.DETAILS.WATERMARK.BOTTOM_LEFT"
+														"CONFIGURATION.THEMES.DETAILS.WATERMARK.BOTTOM_LEFT",
 													)}
 												</button>
 												<button
@@ -149,12 +149,12 @@ const WatermarkPage = <T extends RequiredFormProps>({
 															active:
 																formik.values.watermarkPosition ===
 																"bottomRight",
-														}
+														},
 													)}
 													onClick={() => handleButtonClick("bottomRight")}
 												>
 													{t(
-														"CONFIGURATION.THEMES.DETAILS.WATERMARK.BOTTOM_RIGHT"
+														"CONFIGURATION.THEMES.DETAILS.WATERMARK.BOTTOM_RIGHT",
 													)}
 												</button>
 											</div>

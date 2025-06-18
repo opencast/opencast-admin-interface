@@ -12,13 +12,13 @@ export const getAclTemplateText = (
 		id: string
 		value: string
 	}[],
-	formikTemplate: string
+	formikTemplate: string,
 ) => {
 	if (!!aclTemplates && aclTemplates.length > 0) {
 		const template = aclTemplates.find(
-			(template) => formikTemplate === template.id
+			template => formikTemplate === template.id,
 		);
-		return !!template ? template.value : "";
+		return template ? template.value : "";
 	} else {
 		return "";
 	}
@@ -26,35 +26,35 @@ export const getAclTemplateText = (
 
 export const filterRoles = (roles: Role[], policies: TransformedAcl[]) => {
 	return roles.filter(
-		(role) => !policies.find((policy) => policy.role === role.name)
+		role => !policies.find(policy => policy.role === role.name),
 	);
 };
 
 // Get all policies that have user information, or all policies that do not have user information
 export const policiesFiltered = (
 	policies: TransformedAcl[],
-	byUser: boolean
+	byUser: boolean,
 ) => {
 	if (byUser) {
-		return policies.filter((policy) => policy.user !== undefined)
+		return policies.filter(policy => policy.user !== undefined);
 	} else {
-		return policies.filter((policy) => policy.user === undefined)
+		return policies.filter(policy => policy.user === undefined);
 	}
-}
+};
 
 // Get all roles that have user information, or all policies that do not have user information
 export const rolesFilteredbyPolicies = (
 roles: Role[],
 policies: TransformedAcl[],
-byUser: boolean
+byUser: boolean,
 ) => {
-	roles = filterRoles(roles, policies)
+	roles = filterRoles(roles, policies);
 	if (byUser) {
-		return roles.filter(role => role.user !== undefined)
+		return roles.filter(role => role.user !== undefined);
 	} else {
-		return roles.filter(role => role.user === undefined)
+		return roles.filter(role => role.user === undefined);
 	}
-}
+};
 
 /* fetches the policies for the chosen template and sets the policies in the formik form to those policies */
 export const handleTemplateChange = async <T extends { policies: TransformedAcl[], aclTemplate: string }>(
@@ -67,20 +67,20 @@ export const handleTemplateChange = async <T extends { policies: TransformedAcl[
 	// fetch information about chosen template from backend
 	let template = await fetchAclTemplateById(templateId);
 	// fetch user info
-	let users = await fetchUsersForTemplate(template.map(role => role.role))
+	let users = await fetchUsersForTemplate(template.map(role => role.role));
 
 	// Add user info to applicable roles
-	template = template.map((acl) => {
+	template = template.map(acl => {
 		if (users && users[acl.role]) {
 			acl.user = {
 				username: users[acl.role].username,
 				name: users[acl.role].name,
 				email: users[acl.role].email,
-			}
+			};
 		}
 
-		return acl
-	})
+		return acl;
+	});
 
 	// always add current user to acl since template could lock the user out
 	if (defaultUser) {
@@ -93,7 +93,7 @@ export const handleTemplateChange = async <T extends { policies: TransformedAcl[
 				username: defaultUser.user.username,
 				name: defaultUser.user.name,
 				email: defaultUser.user.email,
-			}
+			},
 		});
 	}
 
@@ -102,8 +102,8 @@ export const handleTemplateChange = async <T extends { policies: TransformedAcl[
 		const prefixString = aclDefaults["keep_on_template_switch_role_prefixes"] as string;
 		const prefixes = prefixString.split(",");
 		for (const policy of formik.values.policies) {
-			if (prefixes.some(prefix => policy.role.startsWith(prefix)) && !template.find((acl) => acl.role === policy.role)) {
-				template.push(policy)
+			if (prefixes.some(prefix => policy.role.startsWith(prefix)) && !template.find(acl => acl.role === policy.role)) {
+				template.push(policy);
 			}
 		}
 	}
