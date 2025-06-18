@@ -121,6 +121,7 @@
 				"USER": "The following user will be deleted",
 				"THEME": "The following theme will be deleted",
 				"LOCATION": "The following location will be deleted",
+				"LIFECYCLE_POLICY": "The following lifeCycle policy will be deleted",
 				"TOBIRA_PATH": "The series will be removed from the following path in Tobira:"
 			},
 			"NAME": "Name"
@@ -196,6 +197,10 @@
 		"EVENTS_NOT_DELETED_NOT_AUTHORIZED": "The event(s) could not be deleted, because you don't have the permission to do so.",
 		"SERIES_DELETED": "The series has been deleted",
 		"SERIES_NOT_DELETED": "The series could not be deleted",
+		"LIFECYCLE_POLICY_ADDED": "The lifeCycle policy has been created",
+		"LIFECYCLE_POLICY_NOT_SAVED": "The lifeCycle policy could not be saved",
+		"LIFECYCLE_POLICY_DELETED": "The lifeCycle policy has been deleted",
+		"LIFECYCLE_POLICY_NOT_DELETED": "The lifeCycle policy could not be deleted",
 		"LOCATION_DELETED": "The location has been deleted",
 		"LOCATION_NOT_DELETED": "The location could not be deleted",
 		"LOCATION_NOT_DELETED_NOT_AUTHORIZED": "The location could not be deleted, because you don't have the permission to do so.",
@@ -1264,6 +1269,77 @@
 					"STATUS": "Status",
 					"LOCATION": "Location",
 					"LINK": "Link"
+				}
+			}
+		}
+	},
+	"LIFECYCLE": {
+		"NAVIGATION": {
+			"POLICIES": "LifeCycle Policies"
+		},
+		"POLICIES": {
+			"TABLE": {
+				"ACTION": "Actions",
+				"CAPTION": "LifeCycle Policies",
+				"ISACTIVE": "Active",
+				"TIMING": "Timing",
+				"TITLE": "Title",
+				"TOOLTIP": {
+					"DETAILS": "LifeCycle Policy Details",
+					"DELETE": "Delete LifeCycle Policy"
+				},
+				"ADD_POLICY": "Add LifeCycle Policy"
+			},
+			"NEW": {
+				"CAPTION": "Create LifeCycle Policy",
+				"GENERAL": {
+					"CAPTION": "General"
+				}
+			},
+			"DETAILS": {
+				"HEADER": "LifeCycle Policy Details",
+				"GENERAL": {
+					"ACTION": "Action",
+					"ACTIONDATE": "Action Date",
+					"ACTIONPARAMETERS": {
+						"CAPTION": "Action Parameters",
+						"WORKFLOW_ID": "Workflow ID",
+						"WORKFLOW_PARAMETERS": "Workflow Parameters"
+					},
+					"CAPTION": "LifeCycle Policy Details",
+					"CRONTRIGGER": "Cron Trigger",
+					"ID": "Identifier",
+					"ISACTIVE": "Active",
+					"ISCREATEDFROMCONFIG": "Created from Config",
+					"TARGETTYPE": "Target Type",
+					"TARGETFILTERS": {
+						"CAPTION": "Target Filters",
+						"FILTER": "Filter",
+						"VALUE": "Value",
+						"TYPE": "Type",
+						"MUST": "Must",
+						"NEW": "New Filter"
+					},
+					"TIMING": "Timing",
+					"TITLE": "Title",
+					"NOTE": {
+						"TITLE": "A note on editing LifeCycle Policies",
+						"MESSAGE": "The same policy cannot affect the same target multiple times. Depending on your goals, creating a new policy may be required."
+					}
+				},
+				"ACCESS": {
+					"LABEL": "Select a template",
+					"DESCRIPTION": "At least one role with Read and Write permissions is required.",
+					"NON_USER_ROLES": "Roles and Groups authorized for the policy",
+					"ROLE": "Role",
+					"NEW": "New policy",
+					"USER": "User",
+					"USERS": "Users who are authorized for the policy",
+					"NEW_USER": "New user"
+				},
+				"TAB": {
+					"GENERAL": "General",
+					"ACCESSPOLICIES": "Access Policies"
 				}
 			}
 		}

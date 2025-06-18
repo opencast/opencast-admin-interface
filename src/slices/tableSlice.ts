@@ -10,6 +10,7 @@ import { AclResult } from "./aclSlice";
 import { ThemeDetailsType } from "./themeSlice";
 import { Series } from "./seriesSlice";
 import { Event } from "./eventSlice";
+import { LifeCyclePolicy } from "./lifeCycleSlice";
 import { eventsTableConfig } from "../configs/tableConfigs/eventsTableConfig";
 import { seriesTableConfig } from "../configs/tableConfigs/seriesTableConfig";
 import { recordingsTableConfig } from "../configs/tableConfigs/recordingsTableConfig";
@@ -19,6 +20,7 @@ import { servicesTableConfig } from "../configs/tableConfigs/servicesTableConfig
 import { usersTableConfig } from "../configs/tableConfigs/usersTableConfig";
 import { groupsTableConfig } from "../configs/tableConfigs/groupsTableConfig";
 import { themesTableConfig } from "../configs/tableConfigs/themesTableConfig";
+import { lifeCyclePolicyTableConfig } from "../configs/tableConfigs/lifeCyclePoliciesTableConfig";
 
 /*
 Overview of the structure of the data in arrays in state
@@ -68,18 +70,18 @@ export function isRowSelectable(row: Row) {
 	return false;
 }
 
-export function isEvent(row: Event | Series | Recording | Server | Job | Service | User | Group | AclResult | ThemeDetailsType): row is Event {
+export function isEvent(row: Event | Series | Recording | Server | Job | Service | User | Group | AclResult | ThemeDetailsType | LifeCyclePolicy): row is Event {
 	return (row as Event).event_status !== undefined;
 }
 
-export function isSeries(row: Row | Event | Series | Recording | Server | Job | Service | User | Group | AclResult | ThemeDetailsType): row is Series {
+export function isSeries(row: Row | Event | Series | Recording | Server | Job | Service | User | Group | AclResult | ThemeDetailsType | LifeCyclePolicy): row is Series {
 	return (row as Series).organizers !== undefined;
 }
 
 // TODO: Improve row typing. While this somewhat correctly reflects the current state of our code, it is rather annoying to work with.
-export type Row = { selected: boolean } & (Event | Series | Recording | Server | Job | Service | User | Group | AclResult | ThemeDetailsType)
+export type Row = { selected: boolean } & (Event | Series | Recording | Server | Job | Service | User | Group | AclResult | ThemeDetailsType | LifeCyclePolicy)
 
-export type Resource = "events" | "series" | "recordings" | "jobs" | "servers" | "services" | "users" | "groups" | "acls" | "themes"
+export type Resource = "events" | "series" | "recordings" | "jobs" | "servers" | "services" | "users" | "groups" | "acls" | "themes" | "lifeCyclePolicies"
 
 export type ReverseOptions = "ASC" | "DESC"
 
@@ -113,6 +115,7 @@ const initialState: TableState = {
 		groups: groupsTableConfig.multiSelect,
 		acls: aclsTableConfig.multiSelect,
 		themes: themesTableConfig.multiSelect,
+		lifeCyclePolicies: lifeCyclePolicyTableConfig.multiSelect,
 	},
 	resource: "events",
 	pages: [],
@@ -128,6 +131,7 @@ const initialState: TableState = {
 		groups: "name",
 		acls: "name",
 		themes: "name",
+		lifeCyclePolicies: "title",
 	},
 	predicate: "",
 	reverse: {
@@ -141,6 +145,7 @@ const initialState: TableState = {
 		groups: "ASC",
 		acls: "ASC",
 		themes: "ASC",
+		lifeCyclePolicies: "ASC",
 	},
 	rows: [],
 	maxLabel: "",

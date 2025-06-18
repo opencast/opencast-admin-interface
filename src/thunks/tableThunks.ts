@@ -35,6 +35,7 @@ import { fetchRecordings, setRecordingsColumns } from "../slices/recordingSlice"
 import { setGroupColumns } from "../slices/groupSlice";
 import { fetchAcls, setAclColumns } from "../slices/aclSlice";
 import { AppDispatch, AppThunk, RootState } from "../store";
+import { fetchLifeCyclePolicies, setLifeCycleColumns } from "../slices/lifeCycleSlice";
 
 /**
  * This file contains methods/thunks used to manage the table in the main view and its state changes
@@ -112,6 +113,30 @@ export const loadSeriesIntoTable = (): AppThunk => (dispatch, getState) => {
 		pages: pages,
 		sortBy: table.sortBy["series"],
 		reverse: table.reverse["series"],
+		totalItems: total,
+	};
+
+	dispatch(loadResourceIntoTable(tableData));
+};
+
+export const loadLifeCyclePoliciesIntoTable = (): AppThunk => (dispatch, getState) => {
+	const { lifeCycle, table } = getState();
+	const pagination = table.pagination;
+	const resource = lifeCycle.results;
+	const total = lifeCycle.total;
+
+	const pages = calculatePages(total / pagination.limit, pagination.offset);
+
+	let tableData = {
+		resource: "lifeCyclePolicies" as const,
+		rows: resource.map(obj => {
+			return { ...obj, selected: false };
+		}),
+		columns: lifeCycle.columns,
+		multiSelect: table.multiSelect["lifeCyclePolicies"],
+		pages: pages,
+		sortBy: table.sortBy["lifeCyclePolicies"],
+		reverse: table.reverse["lifeCyclePolicies"],
 		totalItems: total,
 	};
 
@@ -335,6 +360,11 @@ export const goToPage = (pageNumber: number) => async (dispatch: AppDispatch, ge
 			dispatch(loadSeriesIntoTable());
 			break;
 		}
+		case "lifeCyclePolicies": {
+			await dispatch(fetchLifeCyclePolicies());
+			dispatch(loadLifeCyclePoliciesIntoTable());
+			break;
+		}
 		case "recordings": {
 			await dispatch(fetchRecordings());
 			dispatch(loadRecordingsIntoTable());
@@ -401,6 +431,11 @@ export const updatePages = () => async (dispatch: AppDispatch, getState: () => R
 		case "series": {
 			await dispatch(fetchSeries());
 			dispatch(loadSeriesIntoTable());
+			break;
+		}
+		case "lifeCyclePolicies": {
+			await dispatch(fetchLifeCyclePolicies());
+			dispatch(loadLifeCyclePoliciesIntoTable());
 			break;
 		}
 		case "recordings": {
@@ -510,6 +545,11 @@ export const changeColumnSelection = (updatedColumns: TableConfig["columns"]) =>
 			}
 
 			dispatch(loadSeriesIntoTable());
+			break;
+		}
+		case "lifeCyclePolicies": {
+			await dispatch(setLifeCycleColumns(updatedColumns));
+			dispatch(loadLifeCyclePoliciesIntoTable());
 			break;
 		}
 		case "recordings": {

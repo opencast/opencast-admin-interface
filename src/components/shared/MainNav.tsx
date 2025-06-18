@@ -78,6 +78,12 @@ const MainNav = ({
 									tooltipTitle: "NAV.EVENTS.TITLE",
 									className: "events",
 								},
+								{
+									path: "/events/lifeCyclePolicies",
+									accessRole: "ROLE_UI_LIFECYCLEPOLICIES_VIEW",
+									tooltipTitle: "NAV.EVENTS.TITLE",
+									className: "events",
+								},
 							]}
 						/>
 						<MainNavButton

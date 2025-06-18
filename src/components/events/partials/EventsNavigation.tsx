@@ -18,4 +18,9 @@ export const eventsLinks: {
 		accessRole: "ROLE_UI_SERIES_VIEW",
 		text: "EVENTS.EVENTS.NAVIGATION.SERIES",
 	},
+	{
+		path: "/events/lifeCyclePolicies",
+		accessRole: "ROLE_UI_LIFECYCLEPOLICIES_VIEW",
+		text: "LIFECYCLE.NAVIGATION.POLICIES",
+	},
 ];

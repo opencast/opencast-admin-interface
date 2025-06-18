@@ -7,7 +7,8 @@ import { getCurrentLanguageInformation } from "../../../utils/utils";
 import DropDown from "../DropDown";
 import { parseISO } from "date-fns";
 import { FieldProps } from "formik";
-import { MetadataField } from "../../../slices/eventSlice";
+import { Cron } from "react-js-cron";
+import "react-js-cron/dist/styles.css";
 import { GroupBase, SelectInstance } from "react-select";
 import TextareaAutosize from "react-textarea-autosize";
 
@@ -22,7 +23,7 @@ const RenderField = ({
 	isFirstField = false,
 }: {
 	field: FieldProps["field"]
-	metadataField: MetadataField
+	metadataField: { type: string, collection: { [key: string]: unknown }[], required: boolean, id: string }, //MetadataField
 	form: FieldProps["form"]
 	showCheck?: boolean,
 	isFirstField?: boolean,
@@ -117,6 +118,14 @@ const RenderField = ({
 					ref={editableRef}
 				/>
 			)}
+			{metadataField.type === "cron" && (
+				<EditableCronValue
+					field={field}
+					form={form}
+					text={field.value}
+					showCheck={showCheck}
+				/>
+			)}
 			<div style={{ display: "flex", justifyContent: "flex-end" }}>
 				{!focused && showCheck && (
 					<i
@@ -201,7 +210,7 @@ const EditableSingleSelect = ({
 	ref,
 }: {
 	field: FieldProps["field"]
-	metadataField: MetadataField
+	metadataField: { type: string, collection: { [key: string]: any }[], required: boolean, id: string }, //MetadataField
 	text: string
 	form: FieldProps["form"]
 	isFirstField?: boolean,
@@ -315,5 +324,42 @@ const EditableSingleValueTime = ({
 		</div>
 	);
 };
+
+const EditableCronValue = ({
+	field,
+	form: { initialValues, setFieldValue },
+	text,
+	showCheck,
+} : {
+	field: FieldProps["field"]
+	form: FieldProps["form"]
+	text: string
+	showCheck?: boolean,
+}) => {
+
+	return (
+		<div>
+			<Cron
+				className={"my-project-cron"}
+				value={field.value}
+				setValue={(value: string) => setFieldValue(field.name, value)}
+			/>
+		</div>
+	);
+		// <div onClick={() => setEditMode(true)} className="show-edit">
+		// 	<span className="editable preserve-newlines">{text || ""}</span>
+		// 	<div>
+		// 		<i className="edit fa fa-pencil-square" />
+		// 		{showCheck && (
+		// 			<i
+		// 				className={cn("saved fa fa-check", {
+		// 					active: initialValues[field.name] !== field.value,
+		// 				})}
+		// 			/>
+		// 		)}
+		// 	</div>
+		// </div>
+};
+
 
 export default RenderField;

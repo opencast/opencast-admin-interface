@@ -6,12 +6,13 @@ import NewThemeWizard from "../configuration/partials/wizard/NewThemeWizard";
 import NewAclWizard from "../users/partials/wizard/NewAclWizard";
 import NewGroupWizard from "../users/partials/wizard/NewGroupWizard";
 import NewUserWizard from "../users/partials/wizard/NewUserWizard";
+import NewLifeCyclePolicyWizard from "../events/partials/wizards/NewLifeCyclePolicyWizard";
 import { Modal, ModalHandle } from "./modals/Modal";
 
 /**
  * This component renders the modal for adding new resources
  */
-export type NewResource = "events" | "series" | "user" | "group" | "acl" | "themes";
+export type NewResource = "events" | "series" | "user" | "group" | "acl" | "themes" | "lifecyclepolicy";
 
 const NewResourceModal = ({
 	handleClose,
@@ -19,7 +20,7 @@ const NewResourceModal = ({
 	modalRef,
 }: {
 	handleClose: () => void,
-	resource: "events" | "series" | "user" | "group" | "acl" | "themes"
+	resource: NewResource
 	modalRef: React.RefObject<ModalHandle | null>
 }) => {
 	const { t } = useTranslation();
@@ -36,6 +37,7 @@ const NewResourceModal = ({
 			case "acl": return t("USERS.ACLS.NEW.CAPTION");
 			case "group": return t("USERS.GROUPS.NEW.CAPTION");
 			case "user": return t("USERS.USERS.DETAILS.NEWCAPTION");
+			case "lifecyclepolicy": return t("LIFECYCLE.POLICIES.NEW.CAPTION");
 		}
 	};
 
@@ -69,6 +71,10 @@ const NewResourceModal = ({
 			{resource === "user" && (
 				// New User Wizard
 				<NewUserWizard close={close} />
+			)}
+			{resource === "lifecyclepolicy" && (
+				// New LifeCyclePolicy Wizard
+				<NewLifeCyclePolicyWizard close={close} />
 			)}
 		</Modal>
 	);
