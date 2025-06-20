@@ -228,6 +228,8 @@ const AclAccessPage = <T extends RequiredFormProps>({
 																							"USERS.ACLS.NEW.ACCESS.ROLES.LABEL"
 																						)}
 																						disabled={!isAccess}
+																						skipTranslate
+																						optionHeight={35}
 																						customCSS={{ width: 360, optionPaddingTop: 5 }}
 																					/>
 																				</td>
