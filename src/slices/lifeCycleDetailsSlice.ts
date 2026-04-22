@@ -144,8 +144,7 @@ export const updateLifeCyclePolicyAccess = createAppAsyncThunk("lifeCyclePolicyD
 	data.append("accessControlEntries", JSON.stringify(policies.acl.ace));
 
 	await axios.put(`/api/lifecyclemanagement/policies/${id}`, data)
-		.then(response => {
-			console.info(response);
+		.then(_response => {
 			dispatch(addNotification({ type: "success", key: "LIFECYCLE_POLICY_ADDED" }));
 			return true;
 		})
@@ -171,8 +170,7 @@ export const updateLifeCyclePolicy = createAppAsyncThunk("lifeCyclePolicyDetails
 	});
 
 	await axios.put(`/api/lifecyclemanagement/policies/${policy.id}`, data)
-		.then(response => {
-			console.info(response);
+		.then(_response => {
 			dispatch(addNotification({ type: "success", key: "LIFECYCLE_POLICY_ADDED" }));
 		})
 		.catch(response => {
