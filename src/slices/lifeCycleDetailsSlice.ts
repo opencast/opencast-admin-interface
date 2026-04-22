@@ -155,7 +155,7 @@ export const updateLifeCyclePolicyAccess = createAppAsyncThunk("lifeCyclePolicyD
 		});
 });
 
-export const updateLifeCyclePolicy = createAppAsyncThunk("lifeCyclePolicyDetails/updateLifeCyclePolicy", async (policy: LifeCyclePolicy, { dispatch }) => {
+export const updateLifeCyclePolicy = createAppAsyncThunk("lifeCyclePolicyDetails/updateLifeCyclePolicy", async (policy: LifeCyclePolicy) => {
 	const data = new URLSearchParams();
 
 	Object.entries(policy).forEach(([key, value]) => {
@@ -169,14 +169,7 @@ export const updateLifeCyclePolicy = createAppAsyncThunk("lifeCyclePolicyDetails
 		data.append(key, stringified);
 	});
 
-	await axios.put(`/api/lifecyclemanagement/policies/${policy.id}`, data)
-		.then(_response => {
-			dispatch(addNotification({ type: "success", key: "LIFECYCLE_POLICY_ADDED" }));
-		})
-		.catch(response => {
-			console.error(response);
-			dispatch(addNotification({ type: "error", key: "LIFECYCLEPOLICY_NOT_SAVED" }));
-		});
+	await axios.put(`/api/lifecyclemanagement/policies/${policy.id}`, data);
 });
 
 /**

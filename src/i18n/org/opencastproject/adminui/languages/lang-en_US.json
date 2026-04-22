@@ -211,6 +211,7 @@
 		"SERIES_DELETED": "The series has been deleted",
 		"SERIES_NOT_DELETED": "The series could not be deleted",
 		"LIFECYCLE_POLICY_ADDED": "The lifeCycle policy has been created",
+		"LIFECYCLE_POLICY_SAVED": "The lifeCycle policy was saved",
 		"LIFECYCLE_POLICY_NOT_SAVED": "The lifeCycle policy could not be saved",
 		"LIFECYCLE_POLICY_DELETED": "The lifeCycle policy has been deleted",
 		"LIFECYCLE_POLICY_NOT_DELETED": "The lifeCycle policy could not be deleted",

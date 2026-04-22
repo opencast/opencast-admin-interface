@@ -3,7 +3,6 @@ import { LifeCyclePolicy, TargetFilter } from "../../../../slices/lifeCycleSlice
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { Formik, FormikProps } from "formik";
 import Notifications from "../../../shared/Notifications";
-import cn from "classnames";
 import { ConfigurationPanelField } from "../../../../slices/workflowSlice";
 import { updateLifeCyclePolicy } from "../../../../slices/lifeCycleDetailsSlice";
 import LifeCyclePolicyGeneralFields from "../wizards/LifeCyclePolicyGeneralFields";
@@ -12,6 +11,9 @@ import { getUserInformation } from "../../../../selectors/userInfoSelectors";
 import { LifeCyclePolicySchema } from "../../../../utils/validate";
 import _ from "lodash";
 import { parseTargetFiltersForEditing, parseTargetFiltersForSubmit } from "../../../../utils/lifeCycleUtils";
+import WizardNavigationButtons from "../../../shared/wizard/WizardNavigationButtons";
+import { addNotification } from "../../../../slices/notificationSlice";
+import { NOTIFICATION_CONTEXT } from "../../../../configs/modalConfig";
 
 /**
  * This component renders details about a recording/capture agent
@@ -54,7 +56,24 @@ const LifeCyclePolicyGeneralTab = ({
 		};
 		// values.actionParameters["workflowParameters"] = JSON.stringify(workflowParameters);
 
-		dispatch(updateLifeCyclePolicy(newValues));
+		dispatch(updateLifeCyclePolicy(newValues))
+			.unwrap()
+			.then(() => {
+				dispatch(addNotification({
+					type: "info",
+					key: "LIFECYCLE_POLICY_SAVED",
+					duration: 3,
+					context: NOTIFICATION_CONTEXT,
+				}));
+			})
+			.catch(() => {
+				dispatch(addNotification({
+					type: "warning",
+					key: "LIFECYCLE_POLICY_NOT_SAVED",
+					duration: 3,
+					context: NOTIFICATION_CONTEXT,
+				}));
+			});
 	};
 
 	// set current values of metadata fields as initial values
@@ -150,30 +169,15 @@ const LifeCyclePolicyGeneralTab = ({
 									</div>
 
 									{formik.dirty && (
-										<>
-											{/* Render buttons for updating metadata */}
-											<footer>
-												<button
-													type="submit"
-													onClick={() => formik.handleSubmit()}
-													disabled={!checkValidity(formik)}
-													className={cn("submit", {
-														active: checkValidity(formik),
-														inactive: !checkValidity(formik),
-													})}
-												>
-													{t("SAVE")}
-												</button>
-												<button
-													className="cancel"
-													onClick={() => formik.resetForm()}
-												>
-													{t("CANCEL")}
-												</button>
-											</footer>
-
-											<div className="btm-spacer" />
-										</>
+										// Render buttons for updating metadata
+										<WizardNavigationButtons
+											formik={formik}
+											customValidation={!checkValidity(formik)}
+											previousPage={() => formik.resetForm()}
+											createTranslationString="SAVE"
+											cancelTranslationString="CANCEL"
+											isLast
+										/>
 									)}
 								{/* </div> */}
 							</div>
