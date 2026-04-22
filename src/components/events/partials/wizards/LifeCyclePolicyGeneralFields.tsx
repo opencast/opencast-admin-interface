@@ -158,22 +158,18 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 								/>
 							</td>
 					</tr>
-					<tr>
-						<td>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.ISACTIVE")}<i className="required">*</i></td>
-						<td className="editable">
-							<Field
-								type="checkbox"
-								name="isActive"
-								metadataField={{
-									type: "boolean",
-									required: true,
-									collection: undefined,
-									id: undefined,
-								}}
-								component={RenderField}
-							/>
-						</td>
-					</tr>
+					{!isNew &&
+						<tr>
+							<td>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.ISACTIVE")}<i className="required">*</i></td>
+							<td className="editable">
+								<Field
+									type="checkbox"
+									name="isActive"
+									disabled={true}
+								/>
+							</td>
+						</tr>
+					}
 					{!isNew &&
 						<tr>
 							<td>{t("LIFECYCLE.POLICIES.DETAILS.GENERAL.ISCREATEDFROMCONFIG")}</td>
