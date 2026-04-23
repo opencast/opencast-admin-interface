@@ -155,7 +155,7 @@ export const updateLifeCyclePolicyAccess = createAppAsyncThunk("lifeCyclePolicyD
 		});
 });
 
-export const updateLifeCyclePolicy = createAppAsyncThunk("lifeCyclePolicyDetails/updateLifeCyclePolicy", async (policy: LifeCyclePolicy) => {
+export const updateLifeCyclePolicy = createAppAsyncThunk("lifeCyclePolicyDetails/updateLifeCyclePolicy", async (policy: LifeCyclePolicy, { dispatch }) => {
 	const data = new URLSearchParams();
 
 	Object.entries(policy).forEach(([key, value]) => {
@@ -170,6 +170,8 @@ export const updateLifeCyclePolicy = createAppAsyncThunk("lifeCyclePolicyDetails
 	});
 
 	await axios.put(`/api/lifecyclemanagement/policies/${policy.id}`, data);
+
+	dispatch(setPolicy(policy));
 });
 
 /**
@@ -198,6 +200,20 @@ const lifeCyclePolicyDetailsSlice = createSlice({
 			LifeCyclePolicyDetailsState["modal"]["policy"]
 		>) {
 			state.modal.policy = action.payload;
+		},
+		setPolicy(state, action: PayloadAction<LifeCyclePolicy>) {
+			state.actionParameters = action.payload.actionParameters;
+			state.timing = action.payload.timing;
+			state.action = action.payload.action;
+			state.targetType = action.payload.targetType;
+			state.id = action.payload.id;
+			state.title = action.payload.title;
+			state.isActive = action.payload.isActive;
+			state.isCreatedFromConfig = action.payload.isCreatedFromConfig;
+			state.actionDate = action.payload.actionDate;
+			state.cronTrigger = action.payload.cronTrigger;
+			state.targetFilters = action.payload.targetFilters;
+			state.accessControlEntries = action.payload.accessControlEntries;
 		},
 	},
 	// These are used for thunks
@@ -263,6 +279,7 @@ const lifeCyclePolicyDetailsSlice = createSlice({
 export const {
 	setShowModal,
 	setModalLifeCyclePolicy,
+	setPolicy,
 } = lifeCyclePolicyDetailsSlice.actions;
 
 // Export the slice reducer as the default export
