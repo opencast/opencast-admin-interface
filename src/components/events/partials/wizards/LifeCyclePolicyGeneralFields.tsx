@@ -363,7 +363,7 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 																	type: getTargetFilterRenderType(filter.filter, availableFilterOptions),
 																	required: true,
 																	collection: getTargetFilterRenderCollection(filter.filter, availableFilterOptions),
-																	id: undefined,
+																	id: filter.filter,
 																}}
 																component={RenderField}
 															/>
