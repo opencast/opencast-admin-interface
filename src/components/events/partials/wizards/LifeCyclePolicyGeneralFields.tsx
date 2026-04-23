@@ -351,7 +351,7 @@ const LifeCyclePolicyGeneralFields = <T extends LifeCyclePolicy & {targetFilters
 																	formik.setFieldValue(`targetFiltersTransformed.${outerKey}.${key}.value`, undefined);
 																	formik.setFieldValue(`targetFiltersTransformed.${outerKey}.${key}.filter`, element?.value ?? undefined);
 																	// Reset type when filter changes
-																	formik.setFieldValue(`targetFiltersTransformed.${outerKey}.${key}.type`, undefined);
+																	formik.setFieldValue(`targetFiltersTransformed.${outerKey}.${key}.type`, element?.value ? filterTargetTypesByFilter(element?.value)[0] : undefined);
 																}}
 															/>
 														</td>
