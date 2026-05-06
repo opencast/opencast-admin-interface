@@ -56,9 +56,9 @@ const LifeCyclePolicyDetailsModal = () => {
           focusTrapActive={false}
         >
           <LifeCyclePolicyDetails
-            policyId={policy.id}
-            policyChanged={policyChanged}
-            setPolicyChanged={value => setPolicyChanged(value)}
+            _policyId={policy.id}
+            _policyChanged={policyChanged}
+            _setPolicyChanged={value => setPolicyChanged(value)}
           />
         </Modal>
       }
