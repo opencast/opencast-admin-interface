@@ -82,19 +82,21 @@
      }
   }
 
+  .stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
   .total {
-    float: left;
-    position: absolute;
     padding-top: 17px;
     padding-left: 20px;
     font-size: 12px;
   }
 
   .download {
-    float: right;
     padding-top: 14px;
     padding-right: 14px;
-    margin-left: -100%;
 
     .download-icon {
         font-size: 30px;

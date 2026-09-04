@@ -191,20 +191,22 @@ const TimeSeriesStatistics = ({
 		>
 			{formik => (
 				<div className="statistics-graph">
-					{/* download link for a statistic file */}
-					<div className="download">
-						<a
-							href={exportUrl}
-							download={exportFileName(statTitle)}
-						>
-							<LuDownload className="download-icon"/>
-						</a>
-					</div>
+					<div className="stats-header">
+						{/* statistics total value */}
+						<div className="total">
+							<span>{t("STATISTICS.TOTAL") /* Total */}</span>
+							<span>{": " + totalValue}</span>
+						</div>
 
-					{/* statistics total value */}
-					<div className="total">
-						<span>{t("STATISTICS.TOTAL") /* Total */}</span>
-						<span>{": " + totalValue}</span>
+						{/* download link for a statistic file */}
+						<div className="download">
+							<a
+								href={exportUrl}
+								download={exportFileName(statTitle)}
+							>
+								<LuDownload className="download-icon"/>
+							</a>
+						</div>
 					</div>
 
 					{/* radio buttons for selecting the mode of choosing the timeframe of statistic */}
