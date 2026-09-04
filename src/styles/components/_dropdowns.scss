@@ -66,7 +66,7 @@
         margin-right: 10px;
     }
 
-    > ul {
+    @mixin dropdown-menu-base {
         position: absolute;
         transition: all 200ms;
         background: variables.$off-white;
@@ -77,6 +77,10 @@
         opacity: 1;
         pointer-events: auto;
         z-index: variables.$max-z + 10;
+    }
+
+    > ul {
+        @include dropdown-menu-base;
         top: 100%;
         left: -1px;
         right: -1px;
@@ -141,16 +145,7 @@
         }
 
         > ul {
-            position: absolute;
-            transition: all 200ms;
-            background: variables.$off-white;
-            list-style: none;
-            border-bottom-left-radius: variables.$main-border-radius;
-            border-bottom-right-radius: variables.$main-border-radius;
-            border: variables.$thin-border-stroke variables.$main-border-color;
-            opacity: 1;
-            pointer-events: auto;
-            z-index: variables.$max-z + 10;
+            @include dropdown-menu-base;
 
             > li {
                 color: variables.$medium-prim-color;
