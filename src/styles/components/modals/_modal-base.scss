@@ -260,31 +260,31 @@
 
         .tbl-container {
             width: variables.$modal-full-col-width;
-
-            .obj-container .table-series .wrapper {
-
-                padding: 1% 2%;
-
-                &:first-child {
-                    padding-top: 2%;
-                }
-
-                &:last-child {
-                    padding-bottom: 2%;
-                }
-
-                header {
-                    border: variables.$thin-border-stroke variables.$main-border-color;
-                }
-
-                .main-tbl {
-                    border: variables.$thin-border-stroke variables.$main-border-color;
-                    border-top: none;
-                    border-top-left-radius: 0;
-                    border-top-right-radius: 0;
-                }
-            }
         }
+    }
+}
+
+// Audio/video stream tables on the event asset media details tab
+.media-stream-table-wrapper {
+    padding: 1% 2%;
+
+    &:first-child {
+        padding-top: 2%;
+    }
+
+    &:last-child {
+        padding-bottom: 2%;
+    }
+
+    header {
+        border: variables.$thin-border-stroke variables.$main-border-color;
+    }
+
+    .main-tbl {
+        border: variables.$thin-border-stroke variables.$main-border-color;
+        border-top: none;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
     }
 }
 
