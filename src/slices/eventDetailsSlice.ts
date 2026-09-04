@@ -1190,8 +1190,6 @@ export const saveSchedulingInfo = createAppAsyncThunk("eventDetails/saveScheduli
 	return source;
 });
 
-// TODO: This does not return a boolean anymore. Fix this in usage, make users
-// get their info from the state
 export const checkConflicts = createAppAsyncThunk("eventDetails/checkConflicts", async (params: {
 	eventId: Event["id"],
 	startDate: Date,
