@@ -1528,7 +1528,6 @@ export const fetchWorkflowErrorDetails = createAppAsyncThunk("eventDetails/fetch
 	return data.data;
 });
 
-// TODO: Fix this after the modernization of statisticsThunks happened
 export const fetchEventStatistics = createAppAsyncThunk("eventDetails/fetchEventStatistics", async (eventId: Event["id"], { getState }) => {
 	// get prior statistics
 	const state = getState();
@@ -1543,7 +1542,6 @@ export const fetchEventStatistics = createAppAsyncThunk("eventDetails/fetchEvent
 	);
 });
 
-// TODO: Fix this after the modernization of statisticsThunks happened
 export const fetchEventStatisticsValueUpdate = createAppAsyncThunk("eventDetails/fetchEventStatisticsValueUpdate", async (params: {
 	id: Event["id"],
 	providerId: string,
