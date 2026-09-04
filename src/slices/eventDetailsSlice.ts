@@ -2365,9 +2365,9 @@ const eventDetailsSlice = createSlice({
 			})
 			.addCase(fetchWorkflowDetails.rejected, (state, action) => {
 				state.statusWorkflowDetails = "failed";
-				// This is the empty workflow data from the original reducer
-				// TODO: Figure out why it is so vastly different from our initial state
-				// and maybe fix our initial state if this is actually correct
+				// Falls back to the same placeholder as our initial state (workflowId/description
+				// only, not the full workflow-details shape); consumers already narrow on
+				// `"status" in workflow` before reading details-only fields, so this degrades safely.
 				const emptyWorkflowData = {
 					workflowId: "",
 					description: "",
