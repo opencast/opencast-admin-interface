@@ -79,53 +79,6 @@
             float: none;
         }
 
-        input,
-        textarea,
-        .drop-down-container,
-
-
-        // Checkbox Content
-        // ----------------------------------------
-
-        // ## Todo: Update markup and require a block level container
-        // to split checkboxes and labels into groups and rows
-
-        .checkbox-container.one-line { // refactor out .one-line after markup change
-
-            input[type="checkbox"],
-            label {
-                display: inline-block;
-                width: auto;
-            }
-
-            input[type='checkbox'] {
-                margin-right: 5px;
-            }
-
-        }
-
-
-        // Inline Content
-        // ----------------------------------------
-
-        .inline-content {
-
-            > label {
-                float: left;
-                margin-top: 14px;
-                margin-right: 8px;
-                margin-left: 8px;
-            }
-
-            > input {
-                float: left;
-            }
-
-            &.inline-content-padded {
-                padding: 18px 0 0;
-            }
-        }
-
         input[type="radio"] {
             float: left;
             margin: 1px 5px 0 0;
@@ -137,23 +90,6 @@
         &.no-padding {
             margin-top: 0;
         }
-
-        [class$="-column"] {
-            display: inline-block;
-        }
-
-        .small-column {
-            width: 25%;
-            padding-right: 10px;
-        }
-
-        .medium-column {
-            width: 40%;
-
-            > .inline-content > label {
-                width: 50%;
-            }
-        }
     }
 
     .button-container {
@@ -161,15 +97,6 @@
 
         a {
             padding: 10px 20px;
-        }
-
-        &.float-opposite {
-            a:first-child {
-                float: left;
-            }
-            a:last-child {
-                float: right;
-            }
         }
     }
 
