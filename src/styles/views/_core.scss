@@ -89,7 +89,7 @@ body {
                 color: variables.$medium-prim-color;
             }
 
-            .drop-down-container {
+            .action-menu {
                 margin-right: 10px;
 
                 &:last-child {
@@ -151,10 +151,6 @@ body {
                 color: variables.$off-white;
                 text-shadow: 0 0 3px variables.$color-pagination-active-box-shadow;
             }
-        }
-
-        .drop-down-container {
-            float: right;
         }
     }
 }

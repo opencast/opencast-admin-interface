@@ -53,7 +53,7 @@ const TableActionDropdown = ({
 
 	return (
 		<div
-			className={cn("drop-down-container", { disabled: disabled })}
+			className={cn("action-menu", { disabled: disabled })}
 			aria-disabled={disabled}
 			onClick={e => handleActionMenu(e)}
 			ref={containerAction}
@@ -62,7 +62,7 @@ const TableActionDropdown = ({
 			<LuChevronDown className="chevron-down"/>
 			{/* show dropdown if actions is clicked*/}
 			{displayActionMenu && (
-				<ul className="dropdown-ul">
+				<ul>
 					{actions.map((action, key) =>
 						<Action
 							key={key}

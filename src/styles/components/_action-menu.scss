@@ -22,7 +22,7 @@
  */
 
 
-.drop-down-container {
+.action-menu {
     width: 160px;
     height: 40px;
     border-radius: variables.$main-border-radius;
@@ -54,19 +54,13 @@
         box-shadow: inset 0px 1px 6px 2px variables.$color-button-box-shadow;
     }
 
-    // Menu Icon Settings
-    $icon-color: variables.$medium-prim-color;
-    $icon-font-size: 15px;
-    $icon-display-value: inline-block;
-    $icon-pesudo-position: before;
-
     .chevron-down {
         color: inherit;
         font-size: 12px;
         margin-right: 10px;
     }
 
-    @mixin dropdown-menu-base {
+    > ul {
         position: absolute;
         transition: all 200ms;
         background: variables.$off-white;
@@ -77,10 +71,6 @@
         opacity: 1;
         pointer-events: auto;
         z-index: variables.$max-z + 10;
-    }
-
-    > ul {
-        @include dropdown-menu-base;
         top: 100%;
         left: -1px;
         right: -1px;
@@ -104,104 +94,7 @@
                     color: variables.$off-white;
                     background: variables.$bright-blue;
                 }
-
-                &.more-link {
-                  text-align: center;
-                  color: variables.$l-blue;
-                }
             }
-
-            &:last-child a {
-                border-bottom-left-radius: variables.$main-border-radius;
-                border-bottom-right-radius: variables.$main-border-radius;
-            }
-        }
-
-        > span {
-            padding: 3px 15px 3px 45px;
-            display: block;
-
-            > span {
-                display: block;
-                font-size: 10px;
-                color: variables.$light-prim-color;
-                margin-top: -20px;
-            }
-        }
-    }
-
-    &.small {
-        width: 75px;
-        height: 28px;
-        font-weight: 600;
-        font-size: 12px;
-        text-shadow: 0 1px 0 variables.$white;
-        background-repeat: repeat-x;
-
-        &:after {
-            position: absolute;
-            top: 7px;
-            right: 10px;
-        }
-
-        > ul {
-            @include dropdown-menu-base;
-
-            > li {
-                color: variables.$medium-prim-color;
-                font-size: 12px;
-                line-height: 20px;
-                font-weight: 600;
-                cursor: default;
-                display: block;
-
-                span > span {
-                    display: block;
-                    font-size: 10px;
-                    color: variables.$light-prim-color;
-                    margin-top: -20px;
-                }
-
-                button {
-                    display: block;
-                    padding: 4px 15px;
-                }
-            }
-        }
-    }
-
-    // Flipped
-    &.flipped {
-
-        &.active {
-            border-top-left-radius: 0;
-            border-top-right-radius: 0;
-            border-bottom-left-radius: variables.$main-border-radius;
-            border-bottom-right-radius: variables.$main-border-radius;
-        }
-
-        > ul {
-            top: auto;
-            bottom: 100%;
-            border-top-left-radius: variables.$main-border-radius;
-            border-top-right-radius: variables.$main-border-radius;
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-    }
-
-    // Active State
-    &.active {
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-
-        &:after {
-            transform: rotate(180deg);
-        }
-
-        > ul {
-            opacity: 1;
-            pointer-events: auto;
         }
     }
 }
