@@ -131,25 +131,6 @@
             box-shadow: inset 0 3px 10px 2px variables.$color-table-cell-shadow;
         }
 
-        // Special column
-        &.action {
-            width: 202px;
-            text-align: center;
-            padding-left: 0;
-
-            &.single {
-                width: 70px !important;
-            }
-
-            &.double {
-                width: 80px !important;
-            }
-
-            &.triple {
-                width: 110px !important;
-            }
-        }
-
         &.small {
             width: 30px;
         }
@@ -164,10 +145,6 @@
 
         &.full-width {
             width: 100%;
-        }
-
-        &.status-col {
-            width: 43px;
         }
 
         span {
