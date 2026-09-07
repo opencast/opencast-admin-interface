@@ -183,7 +183,8 @@
 
         .btn-container {
             width: 100%;
-            float: right;
+            display: flex;
+            justify-content: flex-end;
             padding: 5px;
             border-bottom-left-radius: variables.$main-border-radius;
             border-bottom-right-radius: variables.$main-border-radius;
@@ -191,17 +192,17 @@
             border-top: 1px solid variables.$main-border-color;
         }
 
+        // When both buttons are present, push cancel to the opposite end
+        // from save instead of leaving a fixed gap between them.
         .cancel {
             @include button.btn(white);
-            margin-right: 3px;
-            float: left;
+            margin-right: auto;
             height: 28px;
         } // cancel
 
         .save {
             @include button.btn(green);
             text-shadow: none;
-            float: right;
             height: 28px;
         } // save
     } // input-container
