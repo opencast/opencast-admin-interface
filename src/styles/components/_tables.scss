@@ -212,10 +212,6 @@
             }
         }
 
-        &.darker-row {
-            background: variables.$color-lightgray-dark-2;
-        }
-
         &.disabled {
             opacity: 50%;
         }
@@ -364,11 +360,6 @@
 
         &.nowrap {
             white-space: nowrap;
-        }
-
-        // For action row that only has one button
-        &.single-btn > a {
-            margin-left: 10px;
         }
 
         &:last-child {
