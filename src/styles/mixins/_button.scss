@@ -181,26 +181,6 @@ button {
 }
 
 // Buttons
-.add-btn {
-    @include btn(green);
-    display: inline;
-
-    // Circle button
-    &.circle-btn {
-        border-radius: 50%;
-        display: inline-block;
-        padding: 0;
-        width: 24px;
-        height: 24px;
-
-        > i {
-            position: absolute;
-            top: 7px;
-            left: 7px;
-        }
-    }
-}
-
 .cancel-btn {
     @include btn(white);
 }
@@ -209,7 +189,6 @@ button {
     @include btn(lightblue);
 }
 
-.red-btn,
 .danger-btn {
     @include btn(red);
 }

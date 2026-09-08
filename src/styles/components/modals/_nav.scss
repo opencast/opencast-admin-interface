@@ -23,7 +23,7 @@
  */
 
 
-.modal .modal-nav, .event-container .modal-nav {
+.modal .modal-nav {
 
     $height: 50px;
     $line-height: 20px;
@@ -45,11 +45,6 @@
         line-height: $line-height;
         color: variables.$modal-nav-link-color;
         font-size: 13px;
-
-        &.wider {
-            padding-left: 2px;
-            padding-right: 2px;
-        }
 
         &:first-child {
             margin-left: 3px;

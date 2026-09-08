@@ -72,11 +72,6 @@
     }
 }
 
-.multi-select-search {
-    @extend .multi-select-col;
-    float: none;
-}
-
 // Used to indicate the correlation between multiple select columns
 .exchange-icon {
     width: 6%;
@@ -94,23 +89,18 @@
     $icon-top-margin: 90px;
     $multiple-select-expanded-height: 133px;
 
-    &.offset-col-1,
-    &.offset-col-2 {
+    &.offset-col {
 
         .exchange-icon {
             top: $icon-top-margin;
         }
     }
 
-    &.offset-col-1 .multi-select-col:first-child select[multiple] {
-        height: $multiple-select-expanded-height;
-    }
-
-    &.offset-col-2 .multi-select-col:last-child .row:first-child  {
+    &.offset-col .multi-select-col:last-child .row:first-child  {
        margin-top: 50px;
     }
 
-    &.offset-col-2 .multi-select-col:last-child select[multiple] {
+    &.offset-col .multi-select-col:last-child select[multiple] {
         height: $multiple-select-expanded-height;
     }
 }

@@ -192,7 +192,7 @@ const SelectContainer = ({
 
 	return (
 		<div className="row">
-			<div className="multi-select-container offset-col-2">
+			<div className="multi-select-container offset-col">
 				<div className="multi-select-col">
 					<div className="row">
 						<label>

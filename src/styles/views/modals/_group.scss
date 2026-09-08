@@ -24,7 +24,7 @@
 .modal#group-modal {
    @extend .medium-modal; //small-modal
 
-   .multi-select-col, .multi-select-search {
+   .multi-select-col {
         width: 47%;
 
         input.search {

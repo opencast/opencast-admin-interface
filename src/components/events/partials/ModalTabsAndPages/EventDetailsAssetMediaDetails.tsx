@@ -142,9 +142,9 @@ const EventDetailsAssetMediaDetails = () => {
 					{t("EVENTS.EVENTS.DETAILS.ASSETS.STREAMS") /* Streams */}
 				</header>
 				<div className="obj-container">
-					<div className="table-series">
+					<div>
 						{/* table with details for the audio streams */}
-						<div className="wrapper">
+						<div className="media-stream-table-wrapper">
 							<header>
 								{
 									t(
@@ -248,7 +248,7 @@ const EventDetailsAssetMediaDetails = () => {
 						</div>
 
 						{/* table with details for the video streams */}
-						<div className="wrapper">
+						<div className="media-stream-table-wrapper">
 							<header>
 								{
 									t(

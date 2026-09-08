@@ -186,20 +186,6 @@
         }
     }
 
-
-    // Quick Actions
-    // ----------------------------------------
-
-    &.quick-actions {
-
-        .drop-down-container {
-            width: 200px;
-            text-align: left;
-        }
-    }
-
-
-
     // Headerless Table Lists
     // ----------------------------------------
 
@@ -264,19 +250,6 @@
             color: variables.$color-link-hover;
         }
     }
-
-
-    // Dropdown Container
-    // ----------------------------------------
-
-    .drop-down-container {
-        margin: 0 0;
-
-        &.full-width {
-            width: 100%;
-        }
-    }
-
 
     // Manage Files
     // ----------------------------------------

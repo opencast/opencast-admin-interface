@@ -131,25 +131,6 @@
             box-shadow: inset 0 3px 10px 2px variables.$color-table-cell-shadow;
         }
 
-        // Special column
-        &.action {
-            width: 202px;
-            text-align: center;
-            padding-left: 0;
-
-            &.single {
-                width: 70px !important;
-            }
-
-            &.double {
-                width: 80px !important;
-            }
-
-            &.triple {
-                width: 110px !important;
-            }
-        }
-
         &.small {
             width: 30px;
         }
@@ -164,10 +145,6 @@
 
         &.full-width {
             width: 100%;
-        }
-
-        &.status-col {
-            width: 43px;
         }
 
         span {
@@ -235,10 +212,6 @@
             }
         }
 
-        &.darker-row {
-            background: variables.$color-lightgray-dark-2;
-        }
-
         &.disabled {
             opacity: 50%;
         }
@@ -275,6 +248,7 @@
         vertical-align: middle;
 
         // Action icons
+        // Each modifier below is a sibling selector
         > a, > button {
             display: inline-block;
             margin-right: 10px;
@@ -284,77 +258,75 @@
             color: variables.$ref-blue;
             padding: unset;
             line-height: normal;
+        }
 
-            &.action-cell-button {
-                width: 17px;
-                height: 17px;
+        > a.action-cell-button, > button.action-cell-button {
+            width: 17px;
+            height: 17px;
 
-                > svg {
-                    width: 100%;
-                    height: 100%;
-                }
-
-                .blue {
-                    color: variables.$ref-blue;
-                }
-
-                .darkgrey {
-                    color: variables.$color-darkgray;
-                }
+            > svg {
+                width: 100%;
+                height: 100%;
             }
 
-            &.remove {
-                color: variables.$red;
+            .blue {
+                color: variables.$ref-blue;
             }
 
-            &.more-series {
-                color: variables.$green;
-            }
-
-            &.cut {
-                .badge {
-                  position: relative;
-                  margin-right: -9px;
-                  left: -7px;
-                  bottom: 10px;
-                  width: 6px;
-                  height: 6px;
-                  display: inline-block;
-                  border-radius:100%;
-                  background-color: variables.$red;
-                }
-            }
-
-            &.edit {
-                color: variables.$l-blue;
-            }
-
-            &.fa {
-                font-size: 18px;
+            .darkgrey {
                 color: variables.$color-darkgray;
             }
+        }
 
-            &.crosslink {
-                border-bottom: 1px solid transparent;
-                text-align: left;
+        > a.remove, > button.remove {
+            color: variables.$red;
+        }
 
-                &:hover {
-                    border-bottom: 1px solid;
-                }
-             }
+        > a.more-series, > button.more-series {
+            color: variables.$green;
+        }
 
-            .notification {
-                position: absolute;
-                top: -3px;
-                right: -3px;
-                width: 7px;
-                height: 7px;
-                border-radius: 50%;
-                border: 2px solid variables.$white;
-                background: variables.$red;
-                width: 10px;
-                height: 10px;
+        > a.cut .badge, > button.cut .badge {
+            position: relative;
+            margin-right: -9px;
+            left: -7px;
+            bottom: 10px;
+            width: 6px;
+            height: 6px;
+            display: inline-block;
+            border-radius:100%;
+            background-color: variables.$red;
+        }
+
+        > a.edit, > button.edit {
+            color: variables.$l-blue;
+        }
+
+        > a.fa, > button.fa {
+            font-size: 18px;
+            color: variables.$color-darkgray;
+        }
+
+        > a.crosslink, > button.crosslink {
+            border-bottom: 1px solid transparent;
+            text-align: left;
+
+            &:hover {
+                border-bottom: 1px solid;
             }
+        }
+
+        > a .notification, > button .notification {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            border: 2px solid variables.$white;
+            background: variables.$red;
+            width: 10px;
+            height: 10px;
         }
 
         .notes-container {
@@ -388,11 +360,6 @@
 
         &.nowrap {
             white-space: nowrap;
-        }
-
-        // For action row that only has one button
-        &.single-btn > a {
-            margin-left: 10px;
         }
 
         &:last-child {
