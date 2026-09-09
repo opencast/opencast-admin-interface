@@ -181,17 +181,24 @@
                 justify-content: center;
 
                 .chevron-up {
-                    position: relative;
-                    top: 3px;
                     color: variables.$color-gray;
                 }
                 .chevron-down {
-                    position: relative;
-                    top: -3px;
                     color: variables.$color-gray;
                 }
                 .active {
                     color: variables.$color-darkgray;
+                }
+
+                &.chevron-pair {
+                    .chevron-up{
+                        position: relative;
+                        top: 3px;
+                    }
+                    .chevron-down {
+                        position: relative;
+                        top: -3px;
+                    }
                 }
             }
         }
