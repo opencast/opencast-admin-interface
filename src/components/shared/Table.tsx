@@ -249,13 +249,17 @@ const TableHeadRows = ({ forceDeselectAll }: { forceDeselectAll: () => unknown }
 					>
 						<span>
 							<span>{t(column.label)}</span>
-							<div>
-								<LuChevronUp
-									className={cn("chevron-up", { active: reverse === "ASC" && column.name === sortBy })}
-								/>
-								<LuChevronDown
-									className={cn("chevron-down", { active: reverse === "DESC" && column.name === sortBy })}
-								/>
+							<div className={cn({ "chevron-pair": !(column.name === sortBy && reverse !== "NONE") })}>
+								{!(column.name === sortBy && reverse === "DESC") && (
+									<LuChevronUp
+										className={cn("chevron-up", { active: reverse === "ASC" && column.name === sortBy })}
+									/>
+								)}
+								{!(column.name === sortBy && reverse === "ASC") && (
+									<LuChevronDown
+										className={cn("chevron-down", { active: reverse === "DESC" && column.name === sortBy })}
+									/>
+								)}
 							</div>
 						</span>
 					</th>
