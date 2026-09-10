@@ -484,7 +484,7 @@ export const AccessPolicyTable = <T extends AccessPolicyTabFormikProps>({
 							{/* column headers */}
 							<thead>
 								<tr>
-									<th>
+									<th style={{ minWidth: 220 }}>
 										{
 											t(
 												firstColumnHeader,
