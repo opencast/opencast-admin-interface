@@ -60,7 +60,6 @@ export const addNotification = (params: {
 		const state = getState();
 		for (const notif of state.notifications.notifications) {
 			if (notif.key === key && notif.context === context) {
-				console.log("Did not add notification with key " + key + " because a notification with that key already exists.");
 				return;
 			}
 		}
@@ -143,7 +142,6 @@ const notificationSlice = createSlice({
 		}>) {
 			const { notification, id } = action.payload;
 			if (state.notifications.filter(e => e.id === id).length > 0) {
-				console.log("Notification with id: " + id + " already exists.");
 				state.notifications = state.notifications.map(oldNotification => {
 					if (oldNotification.id === id) {
 						return {

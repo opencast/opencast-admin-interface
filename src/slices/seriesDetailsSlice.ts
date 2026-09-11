@@ -335,6 +335,14 @@ export const updateSeriesTheme = (params: {
 			})
 			.catch(response => {
 				console.error(response);
+				dispatch(
+					addNotification({
+						type: "error",
+						key: "SERIES_THEME_NOT_SAVED",
+						duration: -1,
+						context: NOTIFICATION_CONTEXT,
+					}),
+				);
 			});
 	} else {
 		const data = new URLSearchParams();
@@ -359,6 +367,14 @@ export const updateSeriesTheme = (params: {
 			})
 			.catch(response => {
 				console.error(response);
+				dispatch(
+					addNotification({
+						type: "error",
+						key: "SERIES_THEME_NOT_SAVED",
+						duration: -1,
+						context: NOTIFICATION_CONTEXT,
+					}),
+				);
 			});
 	}
 };

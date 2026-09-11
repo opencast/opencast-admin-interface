@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Formik } from "formik";
+import { useAppDispatch, useAppSelector } from "../../store";
 import { Field } from "./Field";
 import TermsOfUsePage from "./modals/TermsOfUsePage";
 import { countries, states, systemTypes } from "../../configs/adopterRegistrationConfig";
@@ -8,11 +9,16 @@ import cn from "classnames";
 import { AdopterRegistrationSchema } from "../../utils/validate";
 import {
 	Registration,
+	Statistics,
+	fetchRegistration,
+	fetchStatistics,
+	postAdopterRegistration,
 	deleteAdopterRegistration,
-	fetchAdopterRegistration,
-	fetchAdopterStatisticsSummary,
-	postRegistration,
-} from "../../utils/adopterRegistrationUtils";
+} from "../../slices/registrationSlice";
+import {
+	getRegistration,
+	getStatistics,
+} from "../../selectors/registrationSelectors";
 import ModalContent from "./modals/ModalContent";
 import { Modal, ModalHandle } from "./modals/Modal";
 import { ParseKeys } from "i18next";
@@ -47,11 +53,15 @@ const RegistrationModal = ({
 
 const RegistrationModalContent = () => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
+
+	const registration = useAppSelector(state => getRegistration(state));
+	const statistics = useAppSelector(state => getStatistics(state));
 
 	// current state of the modal that is shown
 	const [state, setState] = useState<keyof typeof states>("information");
 	// initial values for Formik
-	const [initialValues, setInitialValues] = useState<Registration & { agreedToPolicy: boolean, registered: boolean }>({
+	const [registrationValues, setRegistration] = useState<Registration & { registered: boolean }>({
 		contactMe: false,
 		systemType: "",
 		allowsStatistics: false,
@@ -66,21 +76,31 @@ const RegistrationModalContent = () => {
 		street: "",
 		streetNo: "",
 		email: "",
+		termsVersionAgreed: "",
 		agreedToPolicy: false,
+		dateModified: "",
+		dateCreated: "",
 		registered: false,
 	});
 
-	const [statisticsSummary, setStatisticsSummary] = useState<{
-		general: { [key: string]: unknown },
-		statistics: { [key: string]: unknown },
-	}>();
+	const [statisticsValues, setStatistics] = useState<Statistics>({
+		statistics: {
+			version: "",
+		},
+	});
 
 	useEffect(() => {
-		fetchRegistrationInfos();
-		fetchStatisticSummary();
-		// Only run on mount
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+		dispatch(fetchRegistration());
+		dispatch(fetchStatistics());
+	}, [dispatch]);
+
+	useEffect(() => {
+		setRegistration(registrationValues => ({ ...registrationValues, ...registration }));
+	}, [registration]);
+
+	useEffect(() => {
+		setStatistics(statisticsValues => ({ ...statisticsValues, ...statistics }));
+	}, [statistics]);
 
 	const onClickContinue = () => {
 		// if state is deleteSubmit then delete infos about adaptor else show next state
@@ -91,22 +111,10 @@ const RegistrationModalContent = () => {
 		}
 	};
 
-	const fetchRegistrationInfos = async () => {
-		const registrationInfo = await fetchAdopterRegistration();
-
-		// merge response into initial values for formik
-		setInitialValues({ ...initialValues, ...registrationInfo });
-	};
-
-	const fetchStatisticSummary = async () => {
-		const info = await fetchAdopterStatisticsSummary();
-
-		setStatisticsSummary(info);
-	};
 
 	const handleSubmit = (values: Registration) => {
 		// post request for adopter information
-		postRegistration(values)
+		postAdopterRegistration(values)
 			.then(() => {
 				// show thank you state
 				return setState(states[state].nextState[0] as keyof typeof states);
@@ -267,7 +275,7 @@ const RegistrationModalContent = () => {
 
 		{/* shows registration form containing adaptor information */}
 		<Formik
-			initialValues={initialValues}
+			initialValues={registrationValues}
 			enableReinitialize
 			validationSchema={AdopterRegistrationSchema}
 			onSubmit={values => handleSubmit(values)}
@@ -627,7 +635,7 @@ const RegistrationModalContent = () => {
 								<p>{t("ADOPTER_REGISTRATION.MODAL.SUMMARY_STATE.STATS_HEADER")}</p>
 								<div className="scrollbox">
 									<pre>
-										{JSON.stringify(statisticsSummary?.statistics, null, "\t")}
+										{JSON.stringify(statisticsValues, null, "\t")}
 									</pre>
 								</div>
 							</>

@@ -165,8 +165,8 @@ const EventDetailsSchedulingTab = ({
 			if (!_.isEqual(formik.values, formik.initialValues)) {
 				if (!_.isEqual(formik.values.inputs, formik.initialValues.inputs)) {
 					return !_.isEqual(
-						formik.values.inputs.sort(),
-						formik.initialValues.inputs.sort(),
+						[...formik.values.inputs].sort(),
+						[...formik.initialValues.inputs].sort(),
 					);
 				} else {
 					return true;

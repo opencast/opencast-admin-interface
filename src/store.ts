@@ -16,6 +16,7 @@ import groups from "./slices/groupSlice";
 import acls from "./slices/aclSlice";
 import themes from "./slices/themeSlice";
 import health from "./slices/healthSlice";
+import registration from "./slices/registrationSlice";
 import notifications from "./slices/notificationSlice";
 import workflows from "./slices/workflowSlice";
 import eventDetails from "./slices/eventDetailsSlice";
@@ -68,6 +69,7 @@ const reducers = combineReducers({
   acls: persistReducer(aclsPersistConfig, acls),
   themes: persistReducer(themesPersistConfig, themes),
   health,
+  registration,
   notifications,
   workflows,
   eventDetails,

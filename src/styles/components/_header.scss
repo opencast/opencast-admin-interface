@@ -160,6 +160,9 @@
         .dropdown-ul{
             width: auto;
             right: 8px;
+            .wide-text{
+              padding-right: 5px;
+            }
         }
         #error-count{
             min-width: 10px;

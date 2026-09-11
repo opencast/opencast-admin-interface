@@ -422,7 +422,9 @@ const EditableSingleSelectDropDown = <T, >({
 			}
 			customCSS={{ isMetadataStyle: focused ? false : true, width: "100%" }}
 			handleMenuIsOpen={(open: boolean) => setFocused(open)}
-			openMenuOnFocus
+			// Deliberately false: with the menu open, Tab breaks keyboard
+			// navigation through the metadata form fields (see f44c9b7).
+			openMenuOnFocus={false}
 			autoFocus={isFirstField}
 			skipTranslate={!metadataField.translatable}
 		/>

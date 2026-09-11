@@ -1,10 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	dropDownSpacingTheme,
 	dropDownStyle,
 } from "../../utils/componentStyles";
-import { GroupBase, MenuListProps, SelectInstance } from "react-select";
+import {
+	components as SelectComponents,
+	GroupBase,
+	MenuListProps,
+	OptionProps,
+	SelectInstance,
+	ValueContainerProps,
+} from "react-select";
 import { ParseKeys } from "i18next";
 import { List, RowComponentProps } from "react-window";
 import AsyncSelect, { AsyncProps } from "react-select/async";
@@ -16,11 +23,25 @@ export type DropDownOption<T> = {
 	order?: number
 }
 
+// How long to wait after the user stops typing before firing a fetchOptions() search request.
+const SEARCH_DEBOUNCE_MS = 300;
+
+function MenuListRow({
+	index,
+	names,
+	style,
+}: RowComponentProps<{
+	names: React.ReactNode[];
+}>) {
+	const name = names[index];
+	return <div style={style}>{name}</div>;
+}
+
 /**
  * This component renders a dropdown menu using react-select
  */
 const DropDown = <T, >({
-	ref = React.createRef<SelectInstance<DropDownOption<T>, boolean, GroupBase<DropDownOption<T>>>>(),
+	ref,
 	value,
 	text,
 	options,
@@ -69,7 +90,8 @@ const DropDown = <T, >({
 }) => {
 	const { t } = useTranslation();
 
-	const selectRef = ref;
+	const internalRef = useRef<SelectInstance<DropDownOption<T>, boolean, GroupBase<DropDownOption<T>>> | null>(null);
+	const selectRef = ref ?? internalRef;
 
 	const style = dropDownStyle<T>(customCSS ?? {});
 
@@ -91,10 +113,11 @@ const DropDown = <T, >({
 		required: boolean,
 	) => {
 		// Translate
-		// Translating is expensive, skip it if it is not required
-		if (!skipTranslate) {
-			unformattedOptions = unformattedOptions.map(option => ({ ...option, label: t(option.label as ParseKeys) }));
-		}
+		// Translating is expensive, skip it if it is not required.
+		// Either way, copy the array so the input is not transmuted later.
+		unformattedOptions = skipTranslate
+			? [...unformattedOptions]
+			: unformattedOptions.map(option => ({ ...option, label: t(option.label as ParseKeys) }));
 
 		// Add "No value" option
 		if (!required) {
@@ -126,11 +149,33 @@ const DropDown = <T, >({
 		return unformattedOptions;
 	};
 
+	/**
+	 * Wrapper that adds the title attribute to options, which should result
+	 * in a native tooltip that is intended to help with very long labels.
+	 */
+	const OptionWithTitle = useCallback((
+		props: OptionProps<DropDownOption<T>, boolean, GroupBase<DropDownOption<T>>>,
+	) => (
+		<SelectComponents.Option {...props} innerProps={{ ...props.innerProps, title: props.data.label }} />
+	), []);
+
+	/**
+	 * Same wrapper as above, but for the input field.
+	 */
+	const ValueContainerWithTitle = useCallback((
+		props: ValueContainerProps<DropDownOption<T>, boolean, GroupBase<DropDownOption<T>>>,
+	) => (
+		<SelectComponents.ValueContainer
+			{...props}
+			innerProps={{ ...props.innerProps, title: props.getValue()[0]?.label }}
+		/>
+	), []);
+
 	const itemHeight = optionHeight;
 	/**
 	 * Custom component for list virtualization
 	 */
-	const MenuList = (props: MenuListProps<DropDownOption<T>, false>) => {
+	const MenuList = useCallback((props: MenuListProps<DropDownOption<T>, false>) => {
 		const { children, maxHeight } = props;
 		const items = React.Children.toArray(children);
 
@@ -149,18 +194,7 @@ const DropDown = <T, >({
 				/>
 			</div>
 		) : null;
-	};
-
-	function MenuListRow({
-		index,
-		names,
-		style,
-	}: RowComponentProps<{
-		names: React.ReactNode[];
-	}>) {
-		const name = names[index];
-		return <div style={style}>{name}</div>;
-	}
+	}, [itemHeight]);
 
 	const filterOptions = (inputValue: string) => {
 		if (options) {
@@ -171,14 +205,23 @@ const DropDown = <T, >({
 		return [];
 	};
 
+	const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+	useEffect(() => {
+		return () => clearTimeout(debounceTimeoutRef.current);
+	}, []);
+
 	const loadOptionsAsync = (inputValue: string, callback: (options: DropDownOption<T>[]) => void) => {
-		const timeout = async () => {
-			callback(formatOptions(
-				fetchOptions ? await fetchOptions(inputValue) : filterOptions(inputValue),
-				required,
-			));
-		};
-		setTimeout(() => { timeout(); }, 1000);
+		clearTimeout(debounceTimeoutRef.current);
+		debounceTimeoutRef.current = setTimeout(() => {
+			const timeout = async () => {
+				callback(formatOptions(
+					fetchOptions ? await fetchOptions(inputValue) : filterOptions(inputValue),
+					required,
+				));
+			};
+			void timeout();
+		}, SEARCH_DEBOUNCE_MS);
 	};
 
 	const loadOptions = (
@@ -216,8 +259,12 @@ const DropDown = <T, >({
 		onMenuClose: () => openMenu(false),
 		isDisabled: disabled,
 		openMenuOnFocus: openMenuOnFocus,
-		menuPlacement: menuPlacement ?? "auto",
-		components: { MenuList },
+		menuPlacement: menuPlacement,
+		components: {
+			MenuList,
+			Option: OptionWithTitle,
+			ValueContainer: ValueContainerWithTitle,
+		},
 	};
 
 	return creatable ? (
@@ -229,7 +276,6 @@ const DropDown = <T, >({
 		<AsyncSelect
 			ref={selectRef}
 			{...commonProps}
-			openMenuOnFocus={false}
 			noOptionsMessage={() => t("SELECT_NO_MATCHING_RESULTS")}
 		/>
 	);
